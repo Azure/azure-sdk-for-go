@@ -36,6 +36,11 @@ const (
 	Incremental DeploymentMode = "Incremental"
 )
 
+// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
+func PossibleDeploymentModeValues() [2]DeploymentMode {
+	return [2]DeploymentMode{Complete, Incremental}
+}
+
 // BasicDependency deployment dependency information.
 type BasicDependency struct {
 	// ID - Gets or sets the ID of the dependency.
@@ -454,6 +459,15 @@ type DeploymentValidateResult struct {
 	Error *ManagementErrorWithDetails `json:"error,omitempty"`
 	// Properties - Gets or sets the template deployment properties.
 	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
+}
+
+// FeatureOperationResult ...
+type FeatureOperationResult struct {
+	autorest.Response `json:"-"`
+	// Name - The name of the operation.
+	Name *string `json:"name,omitempty"`
+	// Operations - The array of feature operations.
+	Operations *[]OperationDisplay `json:"operations,omitempty"`
 }
 
 // GenericResource resource information.
@@ -887,6 +901,18 @@ func (future MoveResourcesFuture) Result(client Client) (ar autorest.Response, e
 		err = autorest.NewErrorWithError(err, "resources.MoveResourcesFuture", "Result", resp, "Failure responding to request")
 	}
 	return
+}
+
+// OperationDisplay ...
+type OperationDisplay struct {
+	// Provider - Operation provider.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - Operation resource.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - Operation.
+	Operation *string `json:"operation,omitempty"`
+	// Description - Operation description.
+	Description *string `json:"description,omitempty"`
 }
 
 // ParametersLink entity representing the reference to the deployment paramaters.

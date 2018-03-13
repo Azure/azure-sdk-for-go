@@ -23,6 +23,27 @@ import (
 	"net/http"
 )
 
+// OperationDisplay ...
+type OperationDisplay struct {
+	// Provider - Operation provider.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - Operation resource.
+	Resource *string `json:"resource,omitempty"`
+	// Operation - Operation.
+	Operation *string `json:"operation,omitempty"`
+	// Description - Operation description.
+	Description *string `json:"description,omitempty"`
+}
+
+// OperationResult ...
+type OperationResult struct {
+	autorest.Response `json:"-"`
+	// Name - The name of the operation.
+	Name *string `json:"name,omitempty"`
+	// Operations - The array of feature operations.
+	Operations *[]OperationDisplay `json:"operations,omitempty"`
+}
+
 // OperationsListResult list of previewed features.
 type OperationsListResult struct {
 	autorest.Response `json:"-"`

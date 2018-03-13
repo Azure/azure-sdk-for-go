@@ -35,6 +35,11 @@ const (
 	UDP ContainerGroupNetworkProtocol = "UDP"
 )
 
+// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
+func PossibleContainerGroupNetworkProtocolValues() [2]ContainerGroupNetworkProtocol {
+	return [2]ContainerGroupNetworkProtocol{TCP, UDP}
+}
+
 // ContainerRestartPolicy enumerates the values for container restart policy.
 type ContainerRestartPolicy string
 
@@ -42,6 +47,11 @@ const (
 	// Always ...
 	Always ContainerRestartPolicy = "always"
 )
+
+// PossibleContainerRestartPolicyValues returns an array of possible values for the ContainerRestartPolicy const type.
+func PossibleContainerRestartPolicyValues() [1]ContainerRestartPolicy {
+	return [1]ContainerRestartPolicy{Always}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -52,6 +62,11 @@ const (
 	// Windows ...
 	Windows OperatingSystemTypes = "Windows"
 )
+
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
 
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {

@@ -1,6 +1,3 @@
-// Package network implements the Azure ARM Network service API version 2016-12-01.
-//
-// Network Client
 package network
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -22,102 +19,106 @@ package network
 
 import (
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Network
-	DefaultBaseURI = "https://management.azure.com"
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = "2016-12-01"
+	// DefaultBaseURL is the default URL used for the service Network
+	DefaultBaseURL = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Network.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+// ManagementClient is the base client for Network.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(p pipeline.Pipeline) ManagementClient {
+	u, err := url.Parse(DefaultBaseURL)
+	if err != nil {
+		panic(err)
 	}
+	return NewManagementClientWithURL(*u, p)
+}
+
+// NewManagementClientWithURL creates an instance of the ManagementClient client.
+func NewManagementClientWithURL(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
+	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
 }
 
 // CheckDNSNameAvailability checks whether a domain name in the cloudapp.net zone is available for use.
 //
-// location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform
-// to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-func (client BaseClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (result DNSNameAvailabilityResult, err error) {
-	req, err := client.CheckDNSNameAvailabilityPreparer(ctx, location, domainNameLabel)
+// location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform to
+// the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+func (client ManagementClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel *string) (*DNSNameAvailabilityResult, error) {
+	req, err := client.checkDNSNameAvailabilityPreparer(location, domainNameLabel)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.CheckDNSNameAvailabilitySender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.checkDNSNameAvailabilityResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CheckDNSNameAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*DNSNameAvailabilityResult), err
 }
 
-// CheckDNSNameAvailabilityPreparer prepares the CheckDNSNameAvailability request.
-func (client BaseClient) CheckDNSNameAvailabilityPreparer(ctx context.Context, location string, domainNameLabel string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+// checkDNSNameAvailabilityPreparer prepares the CheckDNSNameAvailability request.
+func (client ManagementClient) checkDNSNameAvailabilityPreparer(location string, domainNameLabel *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2016-12-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	if domainNameLabel != nil {
+		params.Set("domainNameLabel", *domainNameLabel)
 	}
-	if len(domainNameLabel) > 0 {
-		queryParameters["domainNameLabel"] = autorest.Encode("query", domainNameLabel)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params.Set("api-version", APIVersion)
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// CheckDNSNameAvailabilitySender sends the CheckDNSNameAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) CheckDNSNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CheckDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request. The method always
-// closes the http.Response Body.
-func (client BaseClient) CheckDNSNameAvailabilityResponder(resp *http.Response) (result DNSNameAvailabilityResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// checkDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request.
+func (client ManagementClient) checkDNSNameAvailabilityResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DNSNameAvailabilityResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

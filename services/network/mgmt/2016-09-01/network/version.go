@@ -19,7 +19,7 @@ package network
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v12.2.1-beta services"
+	return "Azure-SDK-For-Go/v12.2.1-beta arm-network/2016-09-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

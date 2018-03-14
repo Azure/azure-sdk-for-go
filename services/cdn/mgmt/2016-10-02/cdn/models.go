@@ -37,6 +37,11 @@ const (
 	Deleting CustomDomainResourceState = "Deleting"
 )
 
+// PossibleCustomDomainResourceStateValues returns an array of possible values for the CustomDomainResourceState const type.
+func PossibleCustomDomainResourceStateValues() [3]CustomDomainResourceState {
+	return [3]CustomDomainResourceState{Active, Creating, Deleting}
+}
+
 // CustomHTTPSProvisioningState enumerates the values for custom https provisioning state.
 type CustomHTTPSProvisioningState string
 
@@ -52,6 +57,11 @@ const (
 	// Failed ...
 	Failed CustomHTTPSProvisioningState = "Failed"
 )
+
+// PossibleCustomHTTPSProvisioningStateValues returns an array of possible values for the CustomHTTPSProvisioningState const type.
+func PossibleCustomHTTPSProvisioningStateValues() [5]CustomHTTPSProvisioningState {
+	return [5]CustomHTTPSProvisioningState{Disabled, Disabling, Enabled, Enabling, Failed}
+}
 
 // EndpointResourceState enumerates the values for endpoint resource state.
 type EndpointResourceState string
@@ -71,6 +81,11 @@ const (
 	EndpointResourceStateStopping EndpointResourceState = "Stopping"
 )
 
+// PossibleEndpointResourceStateValues returns an array of possible values for the EndpointResourceState const type.
+func PossibleEndpointResourceStateValues() [6]EndpointResourceState {
+	return [6]EndpointResourceState{EndpointResourceStateCreating, EndpointResourceStateDeleting, EndpointResourceStateRunning, EndpointResourceStateStarting, EndpointResourceStateStopped, EndpointResourceStateStopping}
+}
+
 // GeoFilterActions enumerates the values for geo filter actions.
 type GeoFilterActions string
 
@@ -80,6 +95,11 @@ const (
 	// Block ...
 	Block GeoFilterActions = "Block"
 )
+
+// PossibleGeoFilterActionsValues returns an array of possible values for the GeoFilterActions const type.
+func PossibleGeoFilterActionsValues() [2]GeoFilterActions {
+	return [2]GeoFilterActions{Allow, Block}
+}
 
 // OptimizationType enumerates the values for optimization type.
 type OptimizationType string
@@ -97,6 +117,11 @@ const (
 	VideoOnDemandMediaStreaming OptimizationType = "VideoOnDemandMediaStreaming"
 )
 
+// PossibleOptimizationTypeValues returns an array of possible values for the OptimizationType const type.
+func PossibleOptimizationTypeValues() [5]OptimizationType {
+	return [5]OptimizationType{DynamicSiteAcceleration, GeneralMediaStreaming, GeneralWebDelivery, LargeFileDownload, VideoOnDemandMediaStreaming}
+}
+
 // OriginResourceState enumerates the values for origin resource state.
 type OriginResourceState string
 
@@ -108,6 +133,11 @@ const (
 	// OriginResourceStateDeleting ...
 	OriginResourceStateDeleting OriginResourceState = "Deleting"
 )
+
+// PossibleOriginResourceStateValues returns an array of possible values for the OriginResourceState const type.
+func PossibleOriginResourceStateValues() [3]OriginResourceState {
+	return [3]OriginResourceState{OriginResourceStateActive, OriginResourceStateCreating, OriginResourceStateDeleting}
+}
 
 // ProfileResourceState enumerates the values for profile resource state.
 type ProfileResourceState string
@@ -123,6 +153,11 @@ const (
 	ProfileResourceStateDisabled ProfileResourceState = "Disabled"
 )
 
+// PossibleProfileResourceStateValues returns an array of possible values for the ProfileResourceState const type.
+func PossibleProfileResourceStateValues() [4]ProfileResourceState {
+	return [4]ProfileResourceState{ProfileResourceStateActive, ProfileResourceStateCreating, ProfileResourceStateDeleting, ProfileResourceStateDisabled}
+}
+
 // QueryStringCachingBehavior enumerates the values for query string caching behavior.
 type QueryStringCachingBehavior string
 
@@ -137,6 +172,11 @@ const (
 	UseQueryString QueryStringCachingBehavior = "UseQueryString"
 )
 
+// PossibleQueryStringCachingBehaviorValues returns an array of possible values for the QueryStringCachingBehavior const type.
+func PossibleQueryStringCachingBehaviorValues() [4]QueryStringCachingBehavior {
+	return [4]QueryStringCachingBehavior{BypassCaching, IgnoreQueryString, NotSet, UseQueryString}
+}
+
 // ResourceType enumerates the values for resource type.
 type ResourceType string
 
@@ -144,6 +184,11 @@ const (
 	// MicrosoftCdnProfilesEndpoints ...
 	MicrosoftCdnProfilesEndpoints ResourceType = "Microsoft.Cdn/Profiles/Endpoints"
 )
+
+// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
+func PossibleResourceTypeValues() [1]ResourceType {
+	return [1]ResourceType{MicrosoftCdnProfilesEndpoints}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -160,6 +205,11 @@ const (
 	// StandardVerizon ...
 	StandardVerizon SkuName = "Standard_Verizon"
 )
+
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [5]SkuName {
+	return [5]SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardVerizon}
+}
 
 // CheckNameAvailabilityInput input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {

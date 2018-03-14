@@ -24,52 +24,53 @@ import (
 	"net/http"
 )
 
-// ProviderOperationsMetadataClient is the role based access control provides you a way to apply granular level policy
-// administration down to individual resources or resource groups. These operations enable you to manage role
+// ProviderOperationsMetadataGroupClient is the role based access control provides you a way to apply granular level
+// policy administration down to individual resources or resource groups. These operations enable you to manage role
 // definitions and role assignments. A role definition describes the set of actions that can be performed on resources.
 // A role assignment grants access to Azure Active Directory users.
-type ProviderOperationsMetadataClient struct {
+type ProviderOperationsMetadataGroupClient struct {
 	BaseClient
 }
 
-// NewProviderOperationsMetadataClient creates an instance of the ProviderOperationsMetadataClient client.
-func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
-	return NewProviderOperationsMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProviderOperationsMetadataGroupClient creates an instance of the ProviderOperationsMetadataGroupClient client.
+func NewProviderOperationsMetadataGroupClient(subscriptionID string) ProviderOperationsMetadataGroupClient {
+	return NewProviderOperationsMetadataGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProviderOperationsMetadataClientWithBaseURI creates an instance of the ProviderOperationsMetadataClient client.
-func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
-	return ProviderOperationsMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProviderOperationsMetadataGroupClientWithBaseURI creates an instance of the ProviderOperationsMetadataGroupClient
+// client.
+func NewProviderOperationsMetadataGroupClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataGroupClient {
+	return ProviderOperationsMetadataGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets provider operations metadata for the specified resource provider.
 //
 // resourceProviderNamespace is the namespace of the resource provider. expand is specifies whether to expand the
 // values.
-func (client ProviderOperationsMetadataClient) Get(ctx context.Context, resourceProviderNamespace string, expand string) (result ProviderOperationsMetadata, err error) {
+func (client ProviderOperationsMetadataGroupClient) Get(ctx context.Context, resourceProviderNamespace string, expand string) (result ProviderOperationsMetadata, err error) {
 	req, err := client.GetPreparer(ctx, resourceProviderNamespace, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ProviderOperationsMetadataClient) GetPreparer(ctx context.Context, resourceProviderNamespace string, expand string) (*http.Request, error) {
+func (client ProviderOperationsMetadataGroupClient) GetPreparer(ctx context.Context, resourceProviderNamespace string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 	}
@@ -94,14 +95,14 @@ func (client ProviderOperationsMetadataClient) GetPreparer(ctx context.Context, 
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderOperationsMetadataClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ProviderOperationsMetadataGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
+func (client ProviderOperationsMetadataGroupClient) GetResponder(resp *http.Response) (result ProviderOperationsMetadata, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,31 +116,31 @@ func (client ProviderOperationsMetadataClient) GetResponder(resp *http.Response)
 // List gets provider operations metadata for all resource providers.
 //
 // expand is specifies whether to expand the values.
-func (client ProviderOperationsMetadataClient) List(ctx context.Context, expand string) (result ProviderOperationsMetadataListResultPage, err error) {
+func (client ProviderOperationsMetadataGroupClient) List(ctx context.Context, expand string) (result ProviderOperationsMetadataListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.pomlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.pomlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProviderOperationsMetadataClient) ListPreparer(ctx context.Context, expand string) (*http.Request, error) {
+func (client ProviderOperationsMetadataGroupClient) ListPreparer(ctx context.Context, expand string) (*http.Request, error) {
 	const APIVersion = "2018-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -160,14 +161,14 @@ func (client ProviderOperationsMetadataClient) ListPreparer(ctx context.Context,
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProviderOperationsMetadataClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProviderOperationsMetadataGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProviderOperationsMetadataClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
+func (client ProviderOperationsMetadataGroupClient) ListResponder(resp *http.Response) (result ProviderOperationsMetadataListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -179,10 +180,10 @@ func (client ProviderOperationsMetadataClient) ListResponder(resp *http.Response
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ProviderOperationsMetadataClient) listNextResults(lastResults ProviderOperationsMetadataListResult) (result ProviderOperationsMetadataListResult, err error) {
+func (client ProviderOperationsMetadataGroupClient) listNextResults(lastResults ProviderOperationsMetadataListResult) (result ProviderOperationsMetadataListResult, err error) {
 	req, err := lastResults.providerOperationsMetadataListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -190,17 +191,17 @@ func (client ProviderOperationsMetadataClient) listNextResults(lastResults Provi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "authorization.ProviderOperationsMetadataGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProviderOperationsMetadataClient) ListComplete(ctx context.Context, expand string) (result ProviderOperationsMetadataListResultIterator, err error) {
+func (client ProviderOperationsMetadataGroupClient) ListComplete(ctx context.Context, expand string) (result ProviderOperationsMetadataListResultIterator, err error) {
 	result.page, err = client.List(ctx, expand)
 	return
 }

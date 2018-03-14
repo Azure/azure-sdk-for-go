@@ -36,6 +36,11 @@ const (
 	Password2 PasswordName = "password2"
 )
 
+// PossiblePasswordNameValues returns an array of possible values for the PasswordName const type.
+func PossiblePasswordNameValues() [2]PasswordName {
+	return [2]PasswordName{Password, Password2}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -46,6 +51,11 @@ const (
 	Succeeded ProvisioningState = "Succeeded"
 )
 
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [2]ProvisioningState {
+	return [2]ProvisioningState{Creating, Succeeded}
+}
+
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
@@ -53,6 +63,11 @@ const (
 	// Basic ...
 	Basic SkuTier = "Basic"
 )
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [1]SkuTier {
+	return [1]SkuTier{Basic}
+}
 
 // OperationDefinition the definition of a container registry operation.
 type OperationDefinition struct {

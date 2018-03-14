@@ -31,13 +31,13 @@ type WebTestsClient struct {
 }
 
 // NewWebTestsClient creates an instance of the WebTestsClient client.
-func NewWebTestsClient(subscriptionID string) WebTestsClient {
-	return NewWebTestsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewWebTestsClient(subscriptionID string, purgeID string) WebTestsClient {
+	return NewWebTestsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewWebTestsClientWithBaseURI creates an instance of the WebTestsClient client.
-func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
-	return WebTestsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WebTestsClient {
+	return WebTestsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // CreateOrUpdate creates or updates an Application Insights web test definition.

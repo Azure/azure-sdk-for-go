@@ -50,6 +50,16 @@ const (
 	S72m HanaInstanceSizeNamesEnum = "S72m"
 )
 
+// Disk specifies the disk information fo the HANA instance
+type Disk struct {
+	// Name - The disk name.
+	Name *string `json:"name,omitempty"`
+	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
+	Lun *int32 `json:"lun,omitempty"`
+}
+
 // Display detailed HANA operation information
 type Display struct {
 	// Provider - The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with “Microsoft” for 1st party services.
@@ -306,7 +316,7 @@ type HardwareProfile struct {
 	HanaInstanceSize HanaInstanceSizeNamesEnum `json:"hanaInstanceSize,omitempty"`
 }
 
-// IPAddress ...
+// IPAddress specifies the IP address of the network interaface.
 type IPAddress struct {
 	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
@@ -384,4 +394,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type StorageProfile struct {
 	// NfsIPAddress - IP Address to connect to storage.
 	NfsIPAddress *string `json:"nfsIpAddress,omitempty"`
+	// OsDisks - Specifies information about the operating system disk used by the hana instance.
+	OsDisks *[]Disk `json:"osDisks,omitempty"`
 }

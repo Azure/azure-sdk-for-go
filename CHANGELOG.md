@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v14.3.0`
+
+### Changes
+
+- Add exports for max file range and sizes for files in storage.
+- Updated README regarding blob storage support.
+- Add godoc indexer tool.
+- Add apidiff tool.
+
+## `v14.2.0`
+
+### Changes
+
+- For blob storage, added GetProperties() method to Container.
+- Added PublicAccess field to ContainerProperties struct.
+
 ## `v14.1.1`
 
 - Fixing timestamp marshalling bug in the `storage` package.

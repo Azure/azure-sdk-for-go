@@ -1065,3 +1065,73 @@ func (client DatabasesClient) UpdateResponder(resp *http.Response) (result Datab
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// UpgradeDataWarehouse upgrades a data warehouse.
+//
+// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
+// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
+// the data warehouse to upgrade.
+func (client DatabasesClient) UpgradeDataWarehouse(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result DatabasesUpgradeDataWarehouseFuture, err error) {
+	req, err := client.UpgradeDataWarehousePreparer(ctx, resourceGroupName, serverName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "UpgradeDataWarehouse", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpgradeDataWarehouseSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesClient", "UpgradeDataWarehouse", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpgradeDataWarehousePreparer prepares the UpgradeDataWarehouse request.
+func (client DatabasesClient) UpgradeDataWarehousePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2014-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/upgradeDataWarehouse", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpgradeDataWarehouseSender sends the UpgradeDataWarehouse request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabasesClient) UpgradeDataWarehouseSender(req *http.Request) (future DatabasesUpgradeDataWarehouseFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// UpgradeDataWarehouseResponder handles the response to the UpgradeDataWarehouse request. The method always
+// closes the http.Response Body.
+func (client DatabasesClient) UpgradeDataWarehouseResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

@@ -2061,6 +2061,55 @@ func (future DatabasesGroupUpdateFuture) Result(client DatabasesGroupClient) (d 
 	return
 }
 
+// DatabasesGroupUpgradeDataWarehouseFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DatabasesGroupUpgradeDataWarehouseFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesGroupUpgradeDataWarehouseFuture) Result(client DatabasesGroupClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpgradeDataWarehouseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupUpgradeDataWarehouseFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.UpgradeDataWarehouseResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpgradeDataWarehouseFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpgradeDataWarehouseFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.UpgradeDataWarehouseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpgradeDataWarehouseFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // DatabaseUpdate represents a database update.
 type DatabaseUpdate struct {
 	// Tags - Resource tags.

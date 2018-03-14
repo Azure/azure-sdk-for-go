@@ -458,7 +458,7 @@ func (client ZonesClient) ListByResourceGroupComplete(ctx context.Context, resou
 // dot). parameters is parameters supplied to the Update operation. ifMatch is the etag of the DNS zone. Omit this
 // value to always overwrite the current zone. Specify the last-seen etag value to prevent accidentally
 // overwritting any concurrent changes.
-func (client ZonesClient) Update(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, ifMatch string) (result Zone, err error) {
+func (client ZonesClient) Update(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, ifMatch string) (result Zone, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, zoneName, parameters, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "Update", nil, "Failure preparing request")
@@ -481,7 +481,7 @@ func (client ZonesClient) Update(ctx context.Context, resourceGroupName string, 
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ZonesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, parameters Zone, ifMatch string) (*http.Request, error) {
+func (client ZonesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, zoneName string, parameters ZoneUpdate, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

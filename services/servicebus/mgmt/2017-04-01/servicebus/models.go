@@ -2017,6 +2017,8 @@ type SBQueueProperties struct {
 	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
 	// Status - Enumerates the possible values for the status of a messaging entity. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'
 	Status EntityStatus `json:"status,omitempty"`
+	// EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+	EnableBatchedOperations *bool `json:"enableBatchedOperations,omitempty"`
 	// AutoDeleteOnIdle - ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
 	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
 	// EnablePartitioning - A value that indicates whether the queue is to be partitioned across multiple message brokers.

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v14.4.0`
+
+### Changes
+
+- Added new preview API versions for mysql and postgresql.
+
 ## `v14.3.0`
 
 ### Changes

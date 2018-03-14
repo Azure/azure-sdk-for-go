@@ -20,6 +20,7 @@ package containerinstance
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -35,6 +36,11 @@ const (
 	UDP ContainerGroupNetworkProtocol = "UDP"
 )
 
+// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
+func PossibleContainerGroupNetworkProtocolValues() [2]ContainerGroupNetworkProtocol {
+	return [2]ContainerGroupNetworkProtocol{TCP, UDP}
+}
+
 // ContainerGroupRestartPolicy enumerates the values for container group restart policy.
 type ContainerGroupRestartPolicy string
 
@@ -47,6 +53,11 @@ const (
 	OnFailure ContainerGroupRestartPolicy = "OnFailure"
 )
 
+// PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
+func PossibleContainerGroupRestartPolicyValues() [3]ContainerGroupRestartPolicy {
+	return [3]ContainerGroupRestartPolicy{Always, Never, OnFailure}
+}
+
 // ContainerNetworkProtocol enumerates the values for container network protocol.
 type ContainerNetworkProtocol string
 
@@ -56,6 +67,11 @@ const (
 	// ContainerNetworkProtocolUDP ...
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
 )
+
+// PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
+func PossibleContainerNetworkProtocolValues() [2]ContainerNetworkProtocol {
+	return [2]ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -67,6 +83,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // OperationsOrigin enumerates the values for operations origin.
 type OperationsOrigin string
 
@@ -76,6 +97,11 @@ const (
 	// User ...
 	User OperationsOrigin = "User"
 )
+
+// PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
+func PossibleOperationsOriginValues() [2]OperationsOrigin {
+	return [2]OperationsOrigin{System, User}
+}
 
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
@@ -128,6 +154,31 @@ func (c *Container) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ContainerExecRequest the start container exec request.
+type ContainerExecRequest struct {
+	// Command - The command to be executed.
+	Command *string `json:"command,omitempty"`
+	// TerminalSize - The size of the terminal.
+	TerminalSize *ContainerExecRequestTerminalSize `json:"terminalSize,omitempty"`
+}
+
+// ContainerExecRequestTerminalSize the size of the terminal.
+type ContainerExecRequestTerminalSize struct {
+	// Row - The row size of the terminal
+	Row *int32 `json:"row,omitempty"`
+	// Column - The column size of the terminal
+	Column *int32 `json:"column,omitempty"`
+}
+
+// ContainerExecResponse the information for the container exec command.
+type ContainerExecResponse struct {
+	autorest.Response `json:"-"`
+	// WebSocketURI - The uri for the exec websocket.
+	WebSocketURI *string `json:"webSocketUri,omitempty"`
+	// Password - The password to start the exec command.
+	Password *string `json:"password,omitempty"`
 }
 
 // ContainerGroup a container group.
@@ -371,6 +422,55 @@ type ContainerGroupPropertiesInstanceView struct {
 	Events *[]Event `json:"events,omitempty"`
 	// State - The state of the container group. Only valid in response.
 	State *string `json:"state,omitempty"`
+}
+
+// ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ContainerGroupsCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ContainerGroupsCreateOrUpdateFuture) Result(client ContainerGroupsClient) (cg ContainerGroup, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return cg, azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		cg, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	cg, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // ContainerPort the port exposed on the container instance.

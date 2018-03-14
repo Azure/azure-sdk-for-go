@@ -117,7 +117,7 @@ func (client NodeReportsClient) GetResponder(resp *http.Response) (result DscNod
 // GetContent retrieve the Dsc node reports by node id and report id.
 //
 // automationAccountName is the automation account name. nodeID is the Dsc node id. reportID is the report id.
-func (client NodeReportsClient) GetContent(ctx context.Context, automationAccountName string, nodeID string, reportID string) (result ReadCloser, err error) {
+func (client NodeReportsClient) GetContent(ctx context.Context, automationAccountName string, nodeID string, reportID string) (result SetObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
@@ -177,12 +177,13 @@ func (client NodeReportsClient) GetContentSender(req *http.Request) (*http.Respo
 
 // GetContentResponder handles the response to the GetContent request. The method always
 // closes the http.Response Body.
-func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result ReadCloser, err error) {
-	result.Value = &resp.Body
+func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }

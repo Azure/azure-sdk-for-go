@@ -19,7 +19,7 @@
 
 package resources
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
+import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-02-01/resources"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -68,11 +68,30 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
+func PossibleDeploymentModeValues() [2]DeploymentMode {
+	return original.PossibleDeploymentModeValues()
+}
+
+type OnErrorDeploymentType = original.OnErrorDeploymentType
+
+const (
+	LastSuccessful     OnErrorDeploymentType = original.LastSuccessful
+	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
+)
+
+func PossibleOnErrorDeploymentTypeValues() [2]OnErrorDeploymentType {
+	return original.PossibleOnErrorDeploymentTypeValues()
+}
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
+
+func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 
 type AliasPathType = original.AliasPathType
 type AliasType = original.AliasType
@@ -120,6 +139,8 @@ type ListResultPage = original.ListResultPage
 type ManagementErrorWithDetails = original.ManagementErrorWithDetails
 type MoveInfo = original.MoveInfo
 type MoveResourcesFuture = original.MoveResourcesFuture
+type OnErrorDeployment = original.OnErrorDeployment
+type OnErrorDeploymentExtended = original.OnErrorDeploymentExtended
 type ParametersLink = original.ParametersLink
 type Plan = original.Plan
 type Provider = original.Provider

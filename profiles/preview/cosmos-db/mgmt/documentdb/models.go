@@ -105,11 +105,19 @@ const (
 	Parse            DatabaseAccountKind = original.Parse
 )
 
+func PossibleDatabaseAccountKindValues() [3]DatabaseAccountKind {
+	return original.PossibleDatabaseAccountKindValues()
+}
+
 type DatabaseAccountOfferType = original.DatabaseAccountOfferType
 
 const (
 	Standard DatabaseAccountOfferType = original.Standard
 )
+
+func PossibleDatabaseAccountOfferTypeValues() [1]DatabaseAccountOfferType {
+	return original.PossibleDatabaseAccountOfferTypeValues()
+}
 
 type DefaultConsistencyLevel = original.DefaultConsistencyLevel
 
@@ -121,6 +129,10 @@ const (
 	Strong           DefaultConsistencyLevel = original.Strong
 )
 
+func PossibleDefaultConsistencyLevelValues() [5]DefaultConsistencyLevel {
+	return original.PossibleDefaultConsistencyLevelValues()
+}
+
 type KeyKind = original.KeyKind
 
 const (
@@ -129,6 +141,10 @@ const (
 	Secondary         KeyKind = original.Secondary
 	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
+
+func PossibleKeyKindValues() [4]KeyKind {
+	return original.PossibleKeyKindValues()
+}
 
 type PrimaryAggregationType = original.PrimaryAggregationType
 
@@ -141,6 +157,10 @@ const (
 	Total     PrimaryAggregationType = original.Total
 )
 
+func PossiblePrimaryAggregationTypeValues() [6]PrimaryAggregationType {
+	return original.PossiblePrimaryAggregationTypeValues()
+}
+
 type UnitType = original.UnitType
 
 const (
@@ -152,6 +172,10 @@ const (
 	Percent        UnitType = original.Percent
 	Seconds        UnitType = original.Seconds
 )
+
+func PossibleUnitTypeValues() [7]UnitType {
+	return original.PossibleUnitTypeValues()
+}
 
 type Capability = original.Capability
 type ConsistencyPolicy = original.ConsistencyPolicy

@@ -73,6 +73,27 @@ type Assignment struct {
 	Sku *Sku `json:"sku,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Assignment.
+func (a Assignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AssignmentProperties != nil {
+		objectMap["properties"] = a.AssignmentProperties
+	}
+	if a.ID != nil {
+		objectMap["id"] = a.ID
+	}
+	if a.Type != nil {
+		objectMap["type"] = a.Type
+	}
+	if a.Name != nil {
+		objectMap["name"] = a.Name
+	}
+	if a.Sku != nil {
+		objectMap["sku"] = a.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for Assignment struct.
 func (a *Assignment) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -262,6 +283,21 @@ type Definition struct {
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the policy definition.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Definition.
+func (d Definition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.DefinitionProperties != nil {
+		objectMap["properties"] = d.DefinitionProperties
+	}
+	if d.ID != nil {
+		objectMap["id"] = d.ID
+	}
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Definition struct.
@@ -456,6 +492,24 @@ type SetDefinition struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource (Microsoft.Authorization/policySetDefinitions).
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SetDefinition.
+func (sd SetDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sd.SetDefinitionProperties != nil {
+		objectMap["properties"] = sd.SetDefinitionProperties
+	}
+	if sd.ID != nil {
+		objectMap["id"] = sd.ID
+	}
+	if sd.Name != nil {
+		objectMap["name"] = sd.Name
+	}
+	if sd.Type != nil {
+		objectMap["type"] = sd.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SetDefinition struct.

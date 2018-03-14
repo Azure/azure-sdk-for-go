@@ -55,6 +55,11 @@ const (
 	Westus2 AzureRegions = "westus2"
 )
 
+// PossibleAzureRegionsValues returns an array of possible values for the AzureRegions const type.
+func PossibleAzureRegionsValues() [12]AzureRegions {
+	return [12]AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
+}
+
 // OperationStatusType enumerates the values for operation status type.
 type OperationStatusType string
 
@@ -66,6 +71,11 @@ const (
 	// Success ...
 	Success OperationStatusType = "Success"
 )
+
+// PossibleOperationStatusTypeValues returns an array of possible values for the OperationStatusType const type.
+func PossibleOperationStatusTypeValues() [3]OperationStatusType {
+	return [3]OperationStatusType{Failed, FAILED, Success}
+}
 
 // ReadableType enumerates the values for readable type.
 type ReadableType string
@@ -87,6 +97,11 @@ const (
 	ReadableTypePrebuiltEntityExtractor ReadableType = "Prebuilt Entity Extractor"
 )
 
+// PossibleReadableTypeValues returns an array of possible values for the ReadableType const type.
+func PossibleReadableTypeValues() [7]ReadableType {
+	return [7]ReadableType{ReadableTypeClosedListEntityExtractor, ReadableTypeCompositeEntityExtractor, ReadableTypeEntityExtractor, ReadableTypeHierarchicalChildEntityExtractor, ReadableTypeHierarchicalEntityExtractor, ReadableTypeIntentClassifier, ReadableTypePrebuiltEntityExtractor}
+}
+
 // ReadableType1 enumerates the values for readable type 1.
 type ReadableType1 string
 
@@ -106,6 +121,11 @@ const (
 	// ReadableType1PrebuiltEntityExtractor ...
 	ReadableType1PrebuiltEntityExtractor ReadableType1 = "Prebuilt Entity Extractor"
 )
+
+// PossibleReadableType1Values returns an array of possible values for the ReadableType1 const type.
+func PossibleReadableType1Values() [7]ReadableType1 {
+	return [7]ReadableType1{ReadableType1ClosedListEntityExtractor, ReadableType1CompositeEntityExtractor, ReadableType1EntityExtractor, ReadableType1HierarchicalChildEntityExtractor, ReadableType1HierarchicalEntityExtractor, ReadableType1IntentClassifier, ReadableType1PrebuiltEntityExtractor}
+}
 
 // ReadableType2 enumerates the values for readable type 2.
 type ReadableType2 string
@@ -127,6 +147,11 @@ const (
 	ReadableType2PrebuiltEntityExtractor ReadableType2 = "Prebuilt Entity Extractor"
 )
 
+// PossibleReadableType2Values returns an array of possible values for the ReadableType2 const type.
+func PossibleReadableType2Values() [7]ReadableType2 {
+	return [7]ReadableType2{ReadableType2ClosedListEntityExtractor, ReadableType2CompositeEntityExtractor, ReadableType2EntityExtractor, ReadableType2HierarchicalChildEntityExtractor, ReadableType2HierarchicalEntityExtractor, ReadableType2IntentClassifier, ReadableType2PrebuiltEntityExtractor}
+}
+
 // ReadableType3 enumerates the values for readable type 3.
 type ReadableType3 string
 
@@ -147,6 +172,11 @@ const (
 	ReadableType3PrebuiltEntityExtractor ReadableType3 = "Prebuilt Entity Extractor"
 )
 
+// PossibleReadableType3Values returns an array of possible values for the ReadableType3 const type.
+func PossibleReadableType3Values() [7]ReadableType3 {
+	return [7]ReadableType3{ReadableType3ClosedListEntityExtractor, ReadableType3CompositeEntityExtractor, ReadableType3EntityExtractor, ReadableType3HierarchicalChildEntityExtractor, ReadableType3HierarchicalEntityExtractor, ReadableType3IntentClassifier, ReadableType3PrebuiltEntityExtractor}
+}
+
 // Status enumerates the values for status.
 type Status string
 
@@ -162,6 +192,11 @@ const (
 	// StatusUpToDate ...
 	StatusUpToDate Status = "UpToDate"
 )
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() [5]Status {
+	return [5]Status{StatusFail, StatusInProgress, StatusQueued, StatusSuccess, StatusUpToDate}
+}
 
 // Status1 enumerates the values for status 1.
 type Status1 string
@@ -179,6 +214,11 @@ const (
 	Status1UpToDate Status1 = "UpToDate"
 )
 
+// PossibleStatus1Values returns an array of possible values for the Status1 const type.
+func PossibleStatus1Values() [5]Status1 {
+	return [5]Status1{Status1Fail, Status1InProgress, Status1Queued, Status1Success, Status1UpToDate}
+}
+
 // TrainingStatus enumerates the values for training status.
 type TrainingStatus string
 
@@ -190,6 +230,11 @@ const (
 	// Trained ...
 	Trained TrainingStatus = "Trained"
 )
+
+// PossibleTrainingStatusValues returns an array of possible values for the TrainingStatus const type.
+func PossibleTrainingStatusValues() [3]TrainingStatus {
+	return [3]TrainingStatus{InProgress, NeedsTraining, Trained}
+}
 
 // ApplicationCreateObject properties for creating a new LUIS Application
 type ApplicationCreateObject struct {
@@ -1269,7 +1314,9 @@ func (vi VersionInfo) MarshalJSON() ([]byte, error) {
 	if vi.EndpointHitsCount != nil {
 		objectMap["endpointHitsCount"] = vi.EndpointHitsCount
 	}
-	objectMap["trainingStatus"] = vi.TrainingStatus
+	if vi.TrainingStatus != "" {
+		objectMap["trainingStatus"] = vi.TrainingStatus
+	}
 	return json.Marshal(objectMap)
 }
 

@@ -90,7 +90,7 @@ func (client DpsCertificateClient) CreateOrUpdatePreparer(ctx context.Context, r
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}", pathParameters),
@@ -394,6 +394,73 @@ func (client DpsCertificateClient) GetResponder(resp *http.Response) (result Cer
 	return
 }
 
+// List get all the certificates tied to the provisioning service.
+//
+// resourceGroupName is name of resource group. provisioningServiceName is name of provisioning service to retrieve
+// certificates for.
+func (client DpsCertificateClient) List(ctx context.Context, resourceGroupName string, provisioningServiceName string) (result CertificateListDescription, err error) {
+	req, err := client.ListPreparer(ctx, resourceGroupName, provisioningServiceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.DpsCertificateClient", "List", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "iothub.DpsCertificateClient", "List", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "iothub.DpsCertificateClient", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client DpsCertificateClient) ListPreparer(ctx context.Context, resourceGroupName string, provisioningServiceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"provisioningServiceName": autorest.Encode("path", provisioningServiceName),
+		"resourceGroupName":       autorest.Encode("path", resourceGroupName),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-11-15"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client DpsCertificateClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client DpsCertificateClient) ListResponder(resp *http.Response) (result CertificateListDescription, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // VerifyCertificate verifies the certificate's private key possession by providing the leaf cert issued by the
 // verifying pre uploaded certificate.
 //
@@ -466,7 +533,7 @@ func (client DpsCertificateClient) VerifyCertificatePreparer(ctx context.Context
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/verify", pathParameters),

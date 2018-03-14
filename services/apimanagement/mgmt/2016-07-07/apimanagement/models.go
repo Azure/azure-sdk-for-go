@@ -2639,7 +2639,9 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	if sp.CustomProperties != nil {
 		objectMap["customProperties"] = sp.CustomProperties
 	}
-	objectMap["vpnType"] = sp.VpnType
+	if sp.VpnType != "" {
+		objectMap["vpnType"] = sp.VpnType
+	}
 	return json.Marshal(objectMap)
 }
 

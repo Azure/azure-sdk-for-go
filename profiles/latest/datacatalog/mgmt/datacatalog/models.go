@@ -59,6 +59,10 @@ const (
 	Standard SkuType = original.Standard
 )
 
+func PossibleSkuTypeValues() [2]SkuType {
+	return original.PossibleSkuTypeValues()
+}
+
 type ADCCatalog = original.ADCCatalog
 type ADCCatalogProperties = original.ADCCatalogProperties
 type ADCCatalogsDeleteFuture = original.ADCCatalogsDeleteFuture

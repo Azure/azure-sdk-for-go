@@ -42,6 +42,10 @@ const (
 	On               SpendingLimit = original.On
 )
 
+func PossibleSpendingLimitValues() [3]SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+
 type State = original.State
 
 const (
@@ -51,6 +55,10 @@ const (
 	PastDue  State = original.PastDue
 	Warned   State = original.Warned
 )
+
+func PossibleStateValues() [5]State {
+	return original.PossibleStateValues()
+}
 
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator

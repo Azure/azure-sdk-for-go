@@ -62,6 +62,10 @@ const (
 	Swarm      OrchestratorTypes = original.Swarm
 )
 
+func PossibleOrchestratorTypesValues() [5]OrchestratorTypes {
+	return original.PossibleOrchestratorTypesValues()
+}
+
 type OSType = original.OSType
 
 const (
@@ -69,12 +73,20 @@ const (
 	Windows OSType = original.Windows
 )
 
+func PossibleOSTypeValues() [2]OSType {
+	return original.PossibleOSTypeValues()
+}
+
 type StorageProfileTypes = original.StorageProfileTypes
 
 const (
 	ManagedDisks   StorageProfileTypes = original.ManagedDisks
 	StorageAccount StorageProfileTypes = original.StorageAccount
 )
+
+func PossibleStorageProfileTypesValues() [2]StorageProfileTypes {
+	return original.PossibleStorageProfileTypesValues()
+}
 
 type VMSizeTypes = original.VMSizeTypes
 
@@ -210,6 +222,10 @@ const (
 	StandardNV24        VMSizeTypes = original.StandardNV24
 	StandardNV6         VMSizeTypes = original.StandardNV6
 )
+
+func PossibleVMSizeTypesValues() [130]VMSizeTypes {
+	return original.PossibleVMSizeTypesValues()
+}
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile

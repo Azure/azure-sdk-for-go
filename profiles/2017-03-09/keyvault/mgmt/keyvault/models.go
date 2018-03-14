@@ -42,6 +42,10 @@ const (
 	Replace AccessPolicyUpdateKind = original.Replace
 )
 
+func PossibleAccessPolicyUpdateKindValues() [3]AccessPolicyUpdateKind {
+	return original.PossibleAccessPolicyUpdateKindValues()
+}
+
 type CertificatePermissions = original.CertificatePermissions
 
 const (
@@ -61,12 +65,20 @@ const (
 	Update         CertificatePermissions = original.Update
 )
 
+func PossibleCertificatePermissionsValues() [14]CertificatePermissions {
+	return original.PossibleCertificatePermissionsValues()
+}
+
 type CreateMode = original.CreateMode
 
 const (
 	CreateModeDefault CreateMode = original.CreateModeDefault
 	CreateModeRecover CreateMode = original.CreateModeRecover
 )
+
+func PossibleCreateModeValues() [2]CreateMode {
+	return original.PossibleCreateModeValues()
+}
 
 type KeyPermissions = original.KeyPermissions
 
@@ -89,12 +101,20 @@ const (
 	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
 )
 
+func PossibleKeyPermissionsValues() [16]KeyPermissions {
+	return original.PossibleKeyPermissionsValues()
+}
+
 type Reason = original.Reason
 
 const (
 	AccountNameInvalid Reason = original.AccountNameInvalid
 	AlreadyExists      Reason = original.AlreadyExists
 )
+
+func PossibleReasonValues() [2]Reason {
+	return original.PossibleReasonValues()
+}
 
 type SecretPermissions = original.SecretPermissions
 
@@ -109,12 +129,20 @@ const (
 	SecretPermissionsSet     SecretPermissions = original.SecretPermissionsSet
 )
 
+func PossibleSecretPermissionsValues() [8]SecretPermissions {
+	return original.PossibleSecretPermissionsValues()
+}
+
 type SkuName = original.SkuName
 
 const (
 	Premium  SkuName = original.Premium
 	Standard SkuName = original.Standard
 )
+
+func PossibleSkuNameValues() [2]SkuName {
+	return original.PossibleSkuNameValues()
+}
 
 type StoragePermissions = original.StoragePermissions
 
@@ -134,6 +162,10 @@ const (
 	StoragePermissionsSetsas        StoragePermissions = original.StoragePermissionsSetsas
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
+
+func PossibleStoragePermissionsValues() [14]StoragePermissions {
+	return original.PossibleStoragePermissionsValues()
+}
 
 type AccessPolicyEntry = original.AccessPolicyEntry
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult

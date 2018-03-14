@@ -53,6 +53,11 @@ const (
 	Westusapicognitivemicrosoftcom AzureRegionBaseURL = "westus.api.cognitive.microsoft.com"
 )
 
+// PossibleAzureRegionBaseURLValues returns an array of possible values for the AzureRegionBaseURL const type.
+func PossibleAzureRegionBaseURLValues() [13]AzureRegionBaseURL {
+	return [13]AzureRegionBaseURL{Australiaeastapicognitivemicrosoftcom, Brazilsouthapicognitivemicrosoftcom, ContentmoderatortestazureApinet, Eastasiaapicognitivemicrosoftcom, Eastus2apicognitivemicrosoftcom, Eastusapicognitivemicrosoftcom, Northeuropeapicognitivemicrosoftcom, Southcentralusapicognitivemicrosoftcom, Southeastasiaapicognitivemicrosoftcom, Westcentralusapicognitivemicrosoftcom, Westeuropeapicognitivemicrosoftcom, Westus2apicognitivemicrosoftcom, Westusapicognitivemicrosoftcom}
+}
+
 // StatusEnum enumerates the values for status enum.
 type StatusEnum string
 
@@ -65,6 +70,11 @@ const (
 	Unpublished StatusEnum = "Unpublished"
 )
 
+// PossibleStatusEnumValues returns an array of possible values for the StatusEnum const type.
+func PossibleStatusEnumValues() [3]StatusEnum {
+	return [3]StatusEnum{Complete, Pending, Unpublished}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -74,6 +84,11 @@ const (
 	// TypeText ...
 	TypeText Type = "Text"
 )
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() [2]Type {
+	return [2]Type{TypeImage, TypeText}
+}
 
 // Address address details.
 type Address struct {

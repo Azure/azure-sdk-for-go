@@ -60,12 +60,20 @@ const (
 	Send   AccessRights = original.Send
 )
 
+func PossibleAccessRightsValues() [3]AccessRights {
+	return original.PossibleAccessRightsValues()
+}
+
 type EncodingCaptureDescription = original.EncodingCaptureDescription
 
 const (
 	Avro        EncodingCaptureDescription = original.Avro
 	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
 )
+
+func PossibleEncodingCaptureDescriptionValues() [2]EncodingCaptureDescription {
+	return original.PossibleEncodingCaptureDescriptionValues()
+}
 
 type EntityStatus = original.EntityStatus
 
@@ -81,6 +89,10 @@ const (
 	Unknown         EntityStatus = original.Unknown
 )
 
+func PossibleEntityStatusValues() [9]EntityStatus {
+	return original.PossibleEntityStatusValues()
+}
+
 type FilterType = original.FilterType
 
 const (
@@ -88,12 +100,20 @@ const (
 	FilterTypeSQLFilter         FilterType = original.FilterTypeSQLFilter
 )
 
+func PossibleFilterTypeValues() [2]FilterType {
+	return original.PossibleFilterTypeValues()
+}
+
 type KeyType = original.KeyType
 
 const (
 	PrimaryKey   KeyType = original.PrimaryKey
 	SecondaryKey KeyType = original.SecondaryKey
 )
+
+func PossibleKeyTypeValues() [2]KeyType {
+	return original.PossibleKeyTypeValues()
+}
 
 type ProvisioningStateDR = original.ProvisioningStateDR
 
@@ -103,6 +123,10 @@ const (
 	Succeeded ProvisioningStateDR = original.Succeeded
 )
 
+func PossibleProvisioningStateDRValues() [3]ProvisioningStateDR {
+	return original.PossibleProvisioningStateDRValues()
+}
+
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
@@ -110,6 +134,10 @@ const (
 	PrimaryNotReplicating RoleDisasterRecovery = original.PrimaryNotReplicating
 	Secondary             RoleDisasterRecovery = original.Secondary
 )
+
+func PossibleRoleDisasterRecoveryValues() [3]RoleDisasterRecovery {
+	return original.PossibleRoleDisasterRecoveryValues()
+}
 
 type SkuName = original.SkuName
 
@@ -119,6 +147,10 @@ const (
 	Standard SkuName = original.Standard
 )
 
+func PossibleSkuNameValues() [3]SkuName {
+	return original.PossibleSkuNameValues()
+}
+
 type SkuTier = original.SkuTier
 
 const (
@@ -126,6 +158,10 @@ const (
 	SkuTierPremium  SkuTier = original.SkuTierPremium
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
+
+func PossibleSkuTierValues() [3]SkuTier {
+	return original.PossibleSkuTierValues()
+}
 
 type UnavailableReason = original.UnavailableReason
 
@@ -137,6 +173,10 @@ const (
 	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
 	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
+
+func PossibleUnavailableReasonValues() [6]UnavailableReason {
+	return original.PossibleUnavailableReasonValues()
+}
 
 type AccessKeys = original.AccessKeys
 type Action = original.Action

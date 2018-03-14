@@ -45,6 +45,10 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
+func PossibleErrorCodeValues() [6]ErrorCode {
+	return original.PossibleErrorCodeValues()
+}
+
 type ErrorSubCode = original.ErrorSubCode
 
 const (
@@ -61,6 +65,10 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
+func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+	return original.PossibleErrorSubCodeValues()
+}
+
 type Freshness = original.Freshness
 
 const (
@@ -68,6 +76,10 @@ const (
 	Month Freshness = original.Month
 	Week  Freshness = original.Week
 )
+
+func PossibleFreshnessValues() [3]Freshness {
+	return original.PossibleFreshnessValues()
+}
 
 type SafeSearch = original.SafeSearch
 
@@ -77,12 +89,20 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
+func PossibleSafeSearchValues() [3]SafeSearch {
+	return original.PossibleSafeSearchValues()
+}
+
 type TextFormat = original.TextFormat
 
 const (
 	HTML TextFormat = original.HTML
 	Raw  TextFormat = original.Raw
 )
+
+func PossibleTextFormatValues() [2]TextFormat {
+	return original.PossibleTextFormatValues()
+}
 
 type Type = original.Type
 
@@ -105,6 +125,10 @@ const (
 	TypeTrendingTopics      Type = original.TypeTrendingTopics
 	TypeVideoObject         Type = original.TypeVideoObject
 )
+
+func PossibleTypeValues() [17]Type {
+	return original.PossibleTypeValues()
+}
 
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer

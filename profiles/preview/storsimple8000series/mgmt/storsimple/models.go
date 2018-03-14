@@ -149,12 +149,20 @@ const (
 	Enabled  AlertEmailNotificationStatus = original.Enabled
 )
 
+func PossibleAlertEmailNotificationStatusValues() [2]AlertEmailNotificationStatus {
+	return original.PossibleAlertEmailNotificationStatusValues()
+}
+
 type AlertScope = original.AlertScope
 
 const (
 	AlertScopeDevice   AlertScope = original.AlertScopeDevice
 	AlertScopeResource AlertScope = original.AlertScopeResource
 )
+
+func PossibleAlertScopeValues() [2]AlertScope {
+	return original.PossibleAlertScopeValues()
+}
 
 type AlertSeverity = original.AlertSeverity
 
@@ -164,6 +172,10 @@ const (
 	Warning       AlertSeverity = original.Warning
 )
 
+func PossibleAlertSeverityValues() [3]AlertSeverity {
+	return original.PossibleAlertSeverityValues()
+}
+
 type AlertSourceType = original.AlertSourceType
 
 const (
@@ -171,12 +183,20 @@ const (
 	AlertSourceTypeResource AlertSourceType = original.AlertSourceTypeResource
 )
 
+func PossibleAlertSourceTypeValues() [2]AlertSourceType {
+	return original.PossibleAlertSourceTypeValues()
+}
+
 type AlertStatus = original.AlertStatus
 
 const (
 	Active  AlertStatus = original.Active
 	Cleared AlertStatus = original.Cleared
 )
+
+func PossibleAlertStatusValues() [2]AlertStatus {
+	return original.PossibleAlertStatusValues()
+}
 
 type AuthenticationType = original.AuthenticationType
 
@@ -187,6 +207,10 @@ const (
 	NTLM    AuthenticationType = original.NTLM
 )
 
+func PossibleAuthenticationTypeValues() [4]AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+
 type AuthorizationEligibility = original.AuthorizationEligibility
 
 const (
@@ -194,12 +218,20 @@ const (
 	InEligible AuthorizationEligibility = original.InEligible
 )
 
+func PossibleAuthorizationEligibilityValues() [2]AuthorizationEligibility {
+	return original.PossibleAuthorizationEligibilityValues()
+}
+
 type AuthorizationStatus = original.AuthorizationStatus
 
 const (
 	AuthorizationStatusDisabled AuthorizationStatus = original.AuthorizationStatusDisabled
 	AuthorizationStatusEnabled  AuthorizationStatus = original.AuthorizationStatusEnabled
 )
+
+func PossibleAuthorizationStatusValues() [2]AuthorizationStatus {
+	return original.PossibleAuthorizationStatusValues()
+}
 
 type BackupJobCreationType = original.BackupJobCreationType
 
@@ -209,12 +241,20 @@ const (
 	BySSM      BackupJobCreationType = original.BySSM
 )
 
+func PossibleBackupJobCreationTypeValues() [3]BackupJobCreationType {
+	return original.PossibleBackupJobCreationTypeValues()
+}
+
 type BackupPolicyCreationType = original.BackupPolicyCreationType
 
 const (
 	BackupPolicyCreationTypeBySaaS BackupPolicyCreationType = original.BackupPolicyCreationTypeBySaaS
 	BackupPolicyCreationTypeBySSM  BackupPolicyCreationType = original.BackupPolicyCreationTypeBySSM
 )
+
+func PossibleBackupPolicyCreationTypeValues() [2]BackupPolicyCreationType {
+	return original.PossibleBackupPolicyCreationTypeValues()
+}
 
 type BackupStatus = original.BackupStatus
 
@@ -223,12 +263,20 @@ const (
 	BackupStatusEnabled  BackupStatus = original.BackupStatusEnabled
 )
 
+func PossibleBackupStatusValues() [2]BackupStatus {
+	return original.PossibleBackupStatusValues()
+}
+
 type BackupType = original.BackupType
 
 const (
 	CloudSnapshot BackupType = original.CloudSnapshot
 	LocalSnapshot BackupType = original.LocalSnapshot
 )
+
+func PossibleBackupTypeValues() [2]BackupType {
+	return original.PossibleBackupTypeValues()
+}
 
 type ControllerID = original.ControllerID
 
@@ -239,6 +287,10 @@ const (
 	ControllerIDUnknown     ControllerID = original.ControllerIDUnknown
 )
 
+func PossibleControllerIDValues() [4]ControllerID {
+	return original.PossibleControllerIDValues()
+}
+
 type ControllerPowerStateAction = original.ControllerPowerStateAction
 
 const (
@@ -246,6 +298,10 @@ const (
 	Shutdown ControllerPowerStateAction = original.Shutdown
 	Start    ControllerPowerStateAction = original.Start
 )
+
+func PossibleControllerPowerStateActionValues() [3]ControllerPowerStateAction {
+	return original.PossibleControllerPowerStateActionValues()
+}
 
 type ControllerStatus = original.ControllerStatus
 
@@ -257,6 +313,10 @@ const (
 	ControllerStatusRecovering ControllerStatus = original.ControllerStatusRecovering
 	ControllerStatusWarning    ControllerStatus = original.ControllerStatusWarning
 )
+
+func PossibleControllerStatusValues() [6]ControllerStatus {
+	return original.PossibleControllerStatusValues()
+}
 
 type DayOfWeek = original.DayOfWeek
 
@@ -270,12 +330,20 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
+func PossibleDayOfWeekValues() [7]DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+
 type DeviceConfigurationStatus = original.DeviceConfigurationStatus
 
 const (
 	Complete DeviceConfigurationStatus = original.Complete
 	Pending  DeviceConfigurationStatus = original.Pending
 )
+
+func PossibleDeviceConfigurationStatusValues() [2]DeviceConfigurationStatus {
+	return original.PossibleDeviceConfigurationStatusValues()
+}
 
 type DeviceStatus = original.DeviceStatus
 
@@ -293,6 +361,10 @@ const (
 	Unknown           DeviceStatus = original.Unknown
 )
 
+func PossibleDeviceStatusValues() [11]DeviceStatus {
+	return original.PossibleDeviceStatusValues()
+}
+
 type DeviceType = original.DeviceType
 
 const (
@@ -300,6 +372,10 @@ const (
 	DeviceTypeSeries8000PhysicalAppliance DeviceType = original.DeviceTypeSeries8000PhysicalAppliance
 	DeviceTypeSeries8000VirtualAppliance  DeviceType = original.DeviceTypeSeries8000VirtualAppliance
 )
+
+func PossibleDeviceTypeValues() [3]DeviceType {
+	return original.PossibleDeviceTypeValues()
+}
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
 
@@ -309,12 +385,20 @@ const (
 	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = original.EncryptionAlgorithmRSAESPKCS1V15
 )
 
+func PossibleEncryptionAlgorithmValues() [3]EncryptionAlgorithm {
+	return original.PossibleEncryptionAlgorithmValues()
+}
+
 type EncryptionStatus = original.EncryptionStatus
 
 const (
 	EncryptionStatusDisabled EncryptionStatus = original.EncryptionStatusDisabled
 	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
 )
+
+func PossibleEncryptionStatusValues() [2]EncryptionStatus {
+	return original.PossibleEncryptionStatusValues()
+}
 
 type FeatureSupportStatus = original.FeatureSupportStatus
 
@@ -323,6 +407,10 @@ const (
 	Supported                FeatureSupportStatus = original.Supported
 	UnsupportedDeviceVersion FeatureSupportStatus = original.UnsupportedDeviceVersion
 )
+
+func PossibleFeatureSupportStatusValues() [3]FeatureSupportStatus {
+	return original.PossibleFeatureSupportStatusValues()
+}
 
 type HardwareComponentStatus = original.HardwareComponentStatus
 
@@ -336,6 +424,10 @@ const (
 	HardwareComponentStatusWarning    HardwareComponentStatus = original.HardwareComponentStatusWarning
 )
 
+func PossibleHardwareComponentStatusValues() [7]HardwareComponentStatus {
+	return original.PossibleHardwareComponentStatusValues()
+}
+
 type InEligibilityCategory = original.InEligibilityCategory
 
 const (
@@ -343,6 +435,10 @@ const (
 	NotSupportedAppliance InEligibilityCategory = original.NotSupportedAppliance
 	RolloverPending       InEligibilityCategory = original.RolloverPending
 )
+
+func PossibleInEligibilityCategoryValues() [3]InEligibilityCategory {
+	return original.PossibleInEligibilityCategoryValues()
+}
 
 type ISCSIAndCloudStatus = original.ISCSIAndCloudStatus
 
@@ -353,6 +449,10 @@ const (
 	ISCSIAndCloudStatusIscsiEnabled         ISCSIAndCloudStatus = original.ISCSIAndCloudStatusIscsiEnabled
 )
 
+func PossibleISCSIAndCloudStatusValues() [4]ISCSIAndCloudStatus {
+	return original.PossibleISCSIAndCloudStatusValues()
+}
+
 type JobStatus = original.JobStatus
 
 const (
@@ -361,6 +461,10 @@ const (
 	Running   JobStatus = original.Running
 	Succeeded JobStatus = original.Succeeded
 )
+
+func PossibleJobStatusValues() [4]JobStatus {
+	return original.PossibleJobStatusValues()
+}
 
 type JobType = original.JobType
 
@@ -377,6 +481,10 @@ const (
 	SupportPackageLogs        JobType = original.SupportPackageLogs
 )
 
+func PossibleJobTypeValues() [10]JobType {
+	return original.PossibleJobTypeValues()
+}
+
 type KeyRolloverStatus = original.KeyRolloverStatus
 
 const (
@@ -384,11 +492,19 @@ const (
 	Required    KeyRolloverStatus = original.Required
 )
 
+func PossibleKeyRolloverStatusValues() [2]KeyRolloverStatus {
+	return original.PossibleKeyRolloverStatusValues()
+}
+
 type Kind = original.Kind
 
 const (
 	Series8000 Kind = original.Series8000
 )
+
+func PossibleKindValues() [1]Kind {
+	return original.PossibleKindValues()
+}
 
 type ManagerType = original.ManagerType
 
@@ -396,6 +512,10 @@ const (
 	GardaV1    ManagerType = original.GardaV1
 	HelsinkiV1 ManagerType = original.HelsinkiV1
 )
+
+func PossibleManagerTypeValues() [2]ManagerType {
+	return original.PossibleManagerTypeValues()
+}
 
 type MetricAggregationType = original.MetricAggregationType
 
@@ -408,6 +528,10 @@ const (
 	MetricAggregationTypeTotal   MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
+func PossibleMetricAggregationTypeValues() [6]MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
+}
+
 type MetricUnit = original.MetricUnit
 
 const (
@@ -419,12 +543,20 @@ const (
 	Seconds        MetricUnit = original.Seconds
 )
 
+func PossibleMetricUnitValues() [6]MetricUnit {
+	return original.PossibleMetricUnitValues()
+}
+
 type MonitoringStatus = original.MonitoringStatus
 
 const (
 	MonitoringStatusDisabled MonitoringStatus = original.MonitoringStatusDisabled
 	MonitoringStatusEnabled  MonitoringStatus = original.MonitoringStatusEnabled
 )
+
+func PossibleMonitoringStatusValues() [2]MonitoringStatus {
+	return original.PossibleMonitoringStatusValues()
+}
 
 type NetInterfaceID = original.NetInterfaceID
 
@@ -438,12 +570,20 @@ const (
 	NetInterfaceIDInvalid NetInterfaceID = original.NetInterfaceIDInvalid
 )
 
+func PossibleNetInterfaceIDValues() [7]NetInterfaceID {
+	return original.PossibleNetInterfaceIDValues()
+}
+
 type NetInterfaceStatus = original.NetInterfaceStatus
 
 const (
 	NetInterfaceStatusDisabled NetInterfaceStatus = original.NetInterfaceStatusDisabled
 	NetInterfaceStatusEnabled  NetInterfaceStatus = original.NetInterfaceStatusEnabled
 )
+
+func PossibleNetInterfaceStatusValues() [2]NetInterfaceStatus {
+	return original.PossibleNetInterfaceStatusValues()
+}
 
 type NetworkMode = original.NetworkMode
 
@@ -454,6 +594,10 @@ const (
 	NetworkModeIPV6    NetworkMode = original.NetworkModeIPV6
 )
 
+func PossibleNetworkModeValues() [4]NetworkMode {
+	return original.PossibleNetworkModeValues()
+}
+
 type OperationStatus = original.OperationStatus
 
 const (
@@ -463,12 +607,20 @@ const (
 	OperationStatusUpdating  OperationStatus = original.OperationStatusUpdating
 )
 
+func PossibleOperationStatusValues() [4]OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+
 type OwnerShipStatus = original.OwnerShipStatus
 
 const (
 	NotOwned OwnerShipStatus = original.NotOwned
 	Owned    OwnerShipStatus = original.Owned
 )
+
+func PossibleOwnerShipStatusValues() [2]OwnerShipStatus {
+	return original.PossibleOwnerShipStatusValues()
+}
 
 type RecurrenceType = original.RecurrenceType
 
@@ -479,6 +631,10 @@ const (
 	Weekly  RecurrenceType = original.Weekly
 )
 
+func PossibleRecurrenceTypeValues() [4]RecurrenceType {
+	return original.PossibleRecurrenceTypeValues()
+}
+
 type RemoteManagementModeConfiguration = original.RemoteManagementModeConfiguration
 
 const (
@@ -488,12 +644,20 @@ const (
 	RemoteManagementModeConfigurationUnknown             RemoteManagementModeConfiguration = original.RemoteManagementModeConfigurationUnknown
 )
 
+func PossibleRemoteManagementModeConfigurationValues() [4]RemoteManagementModeConfiguration {
+	return original.PossibleRemoteManagementModeConfigurationValues()
+}
+
 type ScheduledBackupStatus = original.ScheduledBackupStatus
 
 const (
 	ScheduledBackupStatusDisabled ScheduledBackupStatus = original.ScheduledBackupStatusDisabled
 	ScheduledBackupStatusEnabled  ScheduledBackupStatus = original.ScheduledBackupStatusEnabled
 )
+
+func PossibleScheduledBackupStatusValues() [2]ScheduledBackupStatus {
+	return original.PossibleScheduledBackupStatusValues()
+}
 
 type ScheduleStatus = original.ScheduleStatus
 
@@ -502,12 +666,20 @@ const (
 	ScheduleStatusEnabled  ScheduleStatus = original.ScheduleStatusEnabled
 )
 
+func PossibleScheduleStatusValues() [2]ScheduleStatus {
+	return original.PossibleScheduleStatusValues()
+}
+
 type SslStatus = original.SslStatus
 
 const (
 	SslStatusDisabled SslStatus = original.SslStatusDisabled
 	SslStatusEnabled  SslStatus = original.SslStatusEnabled
 )
+
+func PossibleSslStatusValues() [2]SslStatus {
+	return original.PossibleSslStatusValues()
+}
 
 type TargetEligibilityResultCode = original.TargetEligibilityResultCode
 
@@ -521,12 +693,20 @@ const (
 	TargetSourceIncompatibleVersionError      TargetEligibilityResultCode = original.TargetSourceIncompatibleVersionError
 )
 
+func PossibleTargetEligibilityResultCodeValues() [7]TargetEligibilityResultCode {
+	return original.PossibleTargetEligibilityResultCodeValues()
+}
+
 type TargetEligibilityStatus = original.TargetEligibilityStatus
 
 const (
 	TargetEligibilityStatusEligible    TargetEligibilityStatus = original.TargetEligibilityStatusEligible
 	TargetEligibilityStatusNotEligible TargetEligibilityStatus = original.TargetEligibilityStatusNotEligible
 )
+
+func PossibleTargetEligibilityStatusValues() [2]TargetEligibilityStatus {
+	return original.PossibleTargetEligibilityStatusValues()
+}
 
 type VirtualMachineAPIType = original.VirtualMachineAPIType
 
@@ -535,12 +715,20 @@ const (
 	Classic VirtualMachineAPIType = original.Classic
 )
 
+func PossibleVirtualMachineAPITypeValues() [2]VirtualMachineAPIType {
+	return original.PossibleVirtualMachineAPITypeValues()
+}
+
 type VolumeStatus = original.VolumeStatus
 
 const (
 	VolumeStatusOffline VolumeStatus = original.VolumeStatusOffline
 	VolumeStatusOnline  VolumeStatus = original.VolumeStatusOnline
 )
+
+func PossibleVolumeStatusValues() [2]VolumeStatus {
+	return original.PossibleVolumeStatusValues()
+}
 
 type VolumeType = original.VolumeType
 
@@ -549,6 +737,10 @@ const (
 	LocallyPinned VolumeType = original.LocallyPinned
 	Tiered        VolumeType = original.Tiered
 )
+
+func PossibleVolumeTypeValues() [3]VolumeType {
+	return original.PossibleVolumeTypeValues()
+}
 
 type AccessControlRecord = original.AccessControlRecord
 type AccessControlRecordList = original.AccessControlRecordList

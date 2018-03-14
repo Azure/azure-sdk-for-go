@@ -41,12 +41,20 @@ const (
 	Single AppliedScopeType = original.Single
 )
 
+func PossibleAppliedScopeTypeValues() [2]AppliedScopeType {
+	return original.PossibleAppliedScopeTypeValues()
+}
+
 type AppliedScopeType1 = original.AppliedScopeType1
 
 const (
 	AppliedScopeType1Shared AppliedScopeType1 = original.AppliedScopeType1Shared
 	AppliedScopeType1Single AppliedScopeType1 = original.AppliedScopeType1Single
 )
+
+func PossibleAppliedScopeType1Values() [2]AppliedScopeType1 {
+	return original.PossibleAppliedScopeType1Values()
+}
 
 type Code = original.Code
 
@@ -108,11 +116,19 @@ const (
 	UnsupportedReservationTerm                    Code = original.UnsupportedReservationTerm
 )
 
+func PossibleCodeValues() [55]Code {
+	return original.PossibleCodeValues()
+}
+
 type Kind = original.Kind
 
 const (
 	MicrosoftCompute Kind = original.MicrosoftCompute
 )
+
+func PossibleKindValues() [1]Kind {
+	return original.PossibleKindValues()
+}
 
 type Location = original.Location
 
@@ -143,6 +159,10 @@ const (
 	Westus2            Location = original.Westus2
 )
 
+func PossibleLocationValues() [24]Location {
+	return original.PossibleLocationValues()
+}
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -160,6 +180,10 @@ const (
 	Split                 ProvisioningState = original.Split
 	Succeeded             ProvisioningState = original.Succeeded
 )
+
+func PossibleProvisioningStateValues() [13]ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 
 type ProvisioningState1 = original.ProvisioningState1
 
@@ -179,6 +203,10 @@ const (
 	ProvisioningState1Succeeded             ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
+func PossibleProvisioningState1Values() [13]ProvisioningState1 {
+	return original.PossibleProvisioningState1Values()
+}
+
 type StatusCode = original.StatusCode
 
 const (
@@ -193,12 +221,20 @@ const (
 	StatusCodeSucceeded              StatusCode = original.StatusCodeSucceeded
 )
 
+func PossibleStatusCodeValues() [9]StatusCode {
+	return original.PossibleStatusCodeValues()
+}
+
 type Term = original.Term
 
 const (
 	P1Y Term = original.P1Y
 	P3Y Term = original.P3Y
 )
+
+func PossibleTermValues() [2]Term {
+	return original.PossibleTermValues()
+}
 
 type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations

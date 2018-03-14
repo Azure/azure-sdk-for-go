@@ -36,6 +36,11 @@ const (
 	MonthlyGrain Datagrain = "monthly"
 )
 
+// PossibleDatagrainValues returns an array of possible values for the Datagrain const type.
+func PossibleDatagrainValues() [2]Datagrain {
+	return [2]Datagrain{DailyGrain, MonthlyGrain}
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - Error code.

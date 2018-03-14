@@ -51,12 +51,20 @@ const (
 	Send   AccessRights = original.Send
 )
 
+func PossibleAccessRightsValues() [3]AccessRights {
+	return original.PossibleAccessRightsValues()
+}
+
 type KeyType = original.KeyType
 
 const (
 	PrimaryKey   KeyType = original.PrimaryKey
 	SecondaryKey KeyType = original.SecondaryKey
 )
+
+func PossibleKeyTypeValues() [2]KeyType {
+	return original.PossibleKeyTypeValues()
+}
 
 type ProvisioningStateEnum = original.ProvisioningStateEnum
 
@@ -69,6 +77,10 @@ const (
 	Updating  ProvisioningStateEnum = original.Updating
 )
 
+func PossibleProvisioningStateEnumValues() [6]ProvisioningStateEnum {
+	return original.PossibleProvisioningStateEnumValues()
+}
+
 type RelaytypeEnum = original.RelaytypeEnum
 
 const (
@@ -76,11 +88,19 @@ const (
 	NetTCP RelaytypeEnum = original.NetTCP
 )
 
+func PossibleRelaytypeEnumValues() [2]RelaytypeEnum {
+	return original.PossibleRelaytypeEnumValues()
+}
+
 type SkuTier = original.SkuTier
 
 const (
 	Standard SkuTier = original.Standard
 )
+
+func PossibleSkuTierValues() [1]SkuTier {
+	return original.PossibleSkuTierValues()
+}
 
 type UnavailableReason = original.UnavailableReason
 
@@ -92,6 +112,10 @@ const (
 	SubscriptionIsDisabled                UnavailableReason = original.SubscriptionIsDisabled
 	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
+
+func PossibleUnavailableReasonValues() [6]UnavailableReason {
+	return original.PossibleUnavailableReasonValues()
+}
 
 type AccessKeys = original.AccessKeys
 type AuthorizationRule = original.AuthorizationRule

@@ -71,12 +71,20 @@ const (
 	ObjectTypeUser             ObjectType = original.ObjectTypeUser
 )
 
+func PossibleObjectTypeValues() [5]ObjectType {
+	return original.PossibleObjectTypeValues()
+}
+
 type UserType = original.UserType
 
 const (
 	Guest  UserType = original.Guest
 	Member UserType = original.Member
 )
+
+func PossibleUserTypeValues() [2]UserType {
+	return original.PossibleUserTypeValues()
+}
 
 type AADObject = original.AADObject
 type ADGroup = original.ADGroup

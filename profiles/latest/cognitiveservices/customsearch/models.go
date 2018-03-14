@@ -54,6 +54,10 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
+func PossibleErrorCodeValues() [6]ErrorCode {
+	return original.PossibleErrorCodeValues()
+}
+
 type ErrorSubCode = original.ErrorSubCode
 
 const (
@@ -70,6 +74,10 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
+func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+	return original.PossibleErrorSubCodeValues()
+}
+
 type SafeSearch = original.SafeSearch
 
 const (
@@ -78,12 +86,20 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
+func PossibleSafeSearchValues() [3]SafeSearch {
+	return original.PossibleSafeSearchValues()
+}
+
 type TextFormat = original.TextFormat
 
 const (
 	HTML TextFormat = original.HTML
 	Raw  TextFormat = original.Raw
 )
+
+func PossibleTextFormatValues() [2]TextFormat {
+	return original.PossibleTextFormatValues()
+}
 
 type Type = original.Type
 
@@ -100,6 +116,10 @@ const (
 	TypeWebPage             Type = original.TypeWebPage
 	TypeWebWebAnswer        Type = original.TypeWebWebAnswer
 )
+
+func PossibleTypeValues() [11]Type {
+	return original.PossibleTypeValues()
+}
 
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer

@@ -30,14 +30,14 @@ type ProactiveDetectionConfigurationsClient struct {
 }
 
 // NewProactiveDetectionConfigurationsClient creates an instance of the ProactiveDetectionConfigurationsClient client.
-func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
-	return NewProactiveDetectionConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewProactiveDetectionConfigurationsClient(subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
+	return NewProactiveDetectionConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewProactiveDetectionConfigurationsClientWithBaseURI creates an instance of the
 // ProactiveDetectionConfigurationsClient client.
-func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ProactiveDetectionConfigurationsClient {
-	return ProactiveDetectionConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
+	return ProactiveDetectionConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // Get get the ProactiveDetection configuration for this configuration id.
@@ -219,7 +219,7 @@ func (client ProactiveDetectionConfigurationsClient) UpdatePreparer(ctx context.
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/ProactiveDetectionConfigs/{ConfigurationId}", pathParameters),

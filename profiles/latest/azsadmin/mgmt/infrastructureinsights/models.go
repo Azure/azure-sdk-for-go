@@ -51,6 +51,10 @@ const (
 	VirtualMachine   MetricsSourceType = original.VirtualMachine
 )
 
+func PossibleMetricsSourceTypeValues() [3]MetricsSourceType {
+	return original.PossibleMetricsSourceTypeValues()
+}
+
 type MetricsUnit = original.MetricsUnit
 
 const (
@@ -62,6 +66,10 @@ const (
 	Percentage MetricsUnit = original.Percentage
 	TB         MetricsUnit = original.TB
 )
+
+func PossibleMetricsUnitValues() [7]MetricsUnit {
+	return original.PossibleMetricsUnitValues()
+}
 
 type Alert = original.Alert
 type AlertList = original.AlertList

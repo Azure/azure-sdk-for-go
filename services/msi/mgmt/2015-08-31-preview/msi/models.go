@@ -33,6 +33,11 @@ const (
 	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = "Microsoft.ManagedIdentity/userAssignedIdentities"
 )
 
+// PossibleUserAssignedIdentitiesValues returns an array of possible values for the UserAssignedIdentities const type.
+func PossibleUserAssignedIdentitiesValues() [1]UserAssignedIdentities {
+	return [1]UserAssignedIdentities{MicrosoftManagedIdentityuserAssignedIdentities}
+}
+
 // CloudError an error response from the ManagedServiceIdentity service.
 type CloudError struct {
 	// Error - A list of additional details about the error.
@@ -86,7 +91,9 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	if i.IdentityProperties != nil {
 		objectMap["properties"] = i.IdentityProperties
 	}
-	objectMap["type"] = i.Type
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
 	return json.Marshal(objectMap)
 }
 

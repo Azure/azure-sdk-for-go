@@ -36,6 +36,11 @@ const (
 	Unavailable AccountStatus = "Unavailable"
 )
 
+// PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
+func PossibleAccountStatusValues() [2]AccountStatus {
+	return [2]AccountStatus{Available, Unavailable}
+}
+
 // AccountType enumerates the values for account type.
 type AccountType string
 
@@ -52,6 +57,11 @@ const (
 	StandardZRS AccountType = "Standard_ZRS"
 )
 
+// PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
+func PossibleAccountTypeValues() [5]AccountType {
+	return [5]AccountType{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
+}
+
 // KeyName enumerates the values for key name.
 type KeyName string
 
@@ -61,6 +71,11 @@ const (
 	// Key2 ...
 	Key2 KeyName = "key2"
 )
+
+// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
+func PossibleKeyNameValues() [2]KeyName {
+	return [2]KeyName{Key1, Key2}
+}
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
@@ -74,6 +89,11 @@ const (
 	Succeeded ProvisioningState = "Succeeded"
 )
 
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [3]ProvisioningState {
+	return [3]ProvisioningState{Creating, ResolvingDNS, Succeeded}
+}
+
 // Reason enumerates the values for reason.
 type Reason string
 
@@ -83,6 +103,11 @@ const (
 	// AlreadyExists ...
 	AlreadyExists Reason = "AlreadyExists"
 )
+
+// PossibleReasonValues returns an array of possible values for the Reason const type.
+func PossibleReasonValues() [2]Reason {
+	return [2]Reason{AccountNameInvalid, AlreadyExists}
+}
 
 // UsageUnit enumerates the values for usage unit.
 type UsageUnit string
@@ -101,6 +126,11 @@ const (
 	// Seconds ...
 	Seconds UsageUnit = "Seconds"
 )
+
+// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
+func PossibleUsageUnitValues() [6]UsageUnit {
+	return [6]UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
+}
 
 // Account the storage account.
 type Account struct {

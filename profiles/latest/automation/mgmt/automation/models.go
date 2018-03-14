@@ -106,6 +106,15 @@ func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string
 	return original.NewDscCompilationJobClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
 }
 
+type DscCompilationJobStreamClient = original.DscCompilationJobStreamClient
+
+func NewDscCompilationJobStreamClient(subscriptionID string, resourceGroupName string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClient(subscriptionID, resourceGroupName)
+}
+func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
+}
+
 type DscConfigurationClient = original.DscConfigurationClient
 
 func NewDscConfigurationClient(subscriptionID string, resourceGroupName string) DscConfigurationClient {
@@ -178,6 +187,15 @@ func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string, resour
 	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
 }
 
+type LinkedWorkspaceClient = original.LinkedWorkspaceClient
+
+func NewLinkedWorkspaceClient(subscriptionID string, resourceGroupName string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClient(subscriptionID, resourceGroupName)
+}
+func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
+}
+
 type AccountState = original.AccountState
 
 const (
@@ -186,12 +204,20 @@ const (
 	Unavailable AccountState = original.Unavailable
 )
 
+func PossibleAccountStateValues() [3]AccountState {
+	return original.PossibleAccountStateValues()
+}
+
 type AgentRegistrationKeyName = original.AgentRegistrationKeyName
 
 const (
 	Primary   AgentRegistrationKeyName = original.Primary
 	Secondary AgentRegistrationKeyName = original.Secondary
 )
+
+func PossibleAgentRegistrationKeyNameValues() [2]AgentRegistrationKeyName {
+	return original.PossibleAgentRegistrationKeyNameValues()
+}
 
 type ContentSourceType = original.ContentSourceType
 
@@ -200,11 +226,19 @@ const (
 	URI             ContentSourceType = original.URI
 )
 
+func PossibleContentSourceTypeValues() [2]ContentSourceType {
+	return original.PossibleContentSourceTypeValues()
+}
+
 type DscConfigurationProvisioningState = original.DscConfigurationProvisioningState
 
 const (
 	Succeeded DscConfigurationProvisioningState = original.Succeeded
 )
+
+func PossibleDscConfigurationProvisioningStateValues() [1]DscConfigurationProvisioningState {
+	return original.PossibleDscConfigurationProvisioningStateValues()
+}
 
 type DscConfigurationState = original.DscConfigurationState
 
@@ -213,6 +247,10 @@ const (
 	DscConfigurationStateNew       DscConfigurationState = original.DscConfigurationStateNew
 	DscConfigurationStatePublished DscConfigurationState = original.DscConfigurationStatePublished
 )
+
+func PossibleDscConfigurationStateValues() [3]DscConfigurationState {
+	return original.PossibleDscConfigurationStateValues()
+}
 
 type HTTPStatusCode = original.HTTPStatusCode
 
@@ -266,6 +304,23 @@ const (
 	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
+func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
+	return original.PossibleHTTPStatusCodeValues()
+}
+
+type JobProvisioningState = original.JobProvisioningState
+
+const (
+	JobProvisioningStateFailed     JobProvisioningState = original.JobProvisioningStateFailed
+	JobProvisioningStateProcessing JobProvisioningState = original.JobProvisioningStateProcessing
+	JobProvisioningStateSucceeded  JobProvisioningState = original.JobProvisioningStateSucceeded
+	JobProvisioningStateSuspended  JobProvisioningState = original.JobProvisioningStateSuspended
+)
+
+func PossibleJobProvisioningStateValues() [4]JobProvisioningState {
+	return original.PossibleJobProvisioningStateValues()
+}
+
 type JobStatus = original.JobStatus
 
 const (
@@ -284,6 +339,10 @@ const (
 	JobStatusSuspending   JobStatus = original.JobStatusSuspending
 )
 
+func PossibleJobStatusValues() [13]JobStatus {
+	return original.PossibleJobStatusValues()
+}
+
 type JobStreamType = original.JobStreamType
 
 const (
@@ -295,6 +354,10 @@ const (
 	Verbose  JobStreamType = original.Verbose
 	Warning  JobStreamType = original.Warning
 )
+
+func PossibleJobStreamTypeValues() [7]JobStreamType {
+	return original.PossibleJobStreamTypeValues()
+}
 
 type ModuleProvisioningState = original.ModuleProvisioningState
 
@@ -317,11 +380,19 @@ const (
 	ModuleProvisioningStateUpdating                    ModuleProvisioningState = original.ModuleProvisioningStateUpdating
 )
 
+func PossibleModuleProvisioningStateValues() [16]ModuleProvisioningState {
+	return original.PossibleModuleProvisioningStateValues()
+}
+
 type RunbookProvisioningState = original.RunbookProvisioningState
 
 const (
 	RunbookProvisioningStateSucceeded RunbookProvisioningState = original.RunbookProvisioningStateSucceeded
 )
+
+func PossibleRunbookProvisioningStateValues() [1]RunbookProvisioningState {
+	return original.PossibleRunbookProvisioningStateValues()
+}
 
 type RunbookState = original.RunbookState
 
@@ -330,6 +401,10 @@ const (
 	RunbookStateNew       RunbookState = original.RunbookStateNew
 	RunbookStatePublished RunbookState = original.RunbookStatePublished
 )
+
+func PossibleRunbookStateValues() [3]RunbookState {
+	return original.PossibleRunbookStateValues()
+}
 
 type RunbookTypeEnum = original.RunbookTypeEnum
 
@@ -341,6 +416,10 @@ const (
 	PowerShellWorkflow      RunbookTypeEnum = original.PowerShellWorkflow
 	Script                  RunbookTypeEnum = original.Script
 )
+
+func PossibleRunbookTypeEnumValues() [6]RunbookTypeEnum {
+	return original.PossibleRunbookTypeEnumValues()
+}
 
 type ScheduleDay = original.ScheduleDay
 
@@ -354,6 +433,10 @@ const (
 	Wednesday ScheduleDay = original.Wednesday
 )
 
+func PossibleScheduleDayValues() [7]ScheduleDay {
+	return original.PossibleScheduleDayValues()
+}
+
 type ScheduleFrequency = original.ScheduleFrequency
 
 const (
@@ -364,12 +447,20 @@ const (
 	Week    ScheduleFrequency = original.Week
 )
 
+func PossibleScheduleFrequencyValues() [5]ScheduleFrequency {
+	return original.PossibleScheduleFrequencyValues()
+}
+
 type SkuNameEnum = original.SkuNameEnum
 
 const (
 	Basic SkuNameEnum = original.Basic
 	Free  SkuNameEnum = original.Free
 )
+
+func PossibleSkuNameEnumValues() [2]SkuNameEnum {
+	return original.PossibleSkuNameEnumValues()
+}
 
 type Account = original.Account
 type AccountCreateOrUpdateParameters = original.AccountCreateOrUpdateParameters
@@ -482,6 +573,7 @@ type JobListResult = original.JobListResult
 type JobListResultIterator = original.JobListResultIterator
 type JobListResultPage = original.JobListResultPage
 type JobProperties = original.JobProperties
+type JobProvisioningStateProperty = original.JobProvisioningStateProperty
 type JobSchedule = original.JobSchedule
 type JobScheduleCreateParameters = original.JobScheduleCreateParameters
 type JobScheduleCreateProperties = original.JobScheduleCreateProperties
@@ -494,6 +586,7 @@ type JobStreamListResult = original.JobStreamListResult
 type JobStreamListResultIterator = original.JobStreamListResultIterator
 type JobStreamListResultPage = original.JobStreamListResultPage
 type JobStreamProperties = original.JobStreamProperties
+type LinkedWorkspace = original.LinkedWorkspace
 type Module = original.Module
 type ModuleCreateOrUpdateParameters = original.ModuleCreateOrUpdateParameters
 type ModuleCreateOrUpdateProperties = original.ModuleCreateOrUpdateProperties
@@ -507,6 +600,7 @@ type ModuleUpdateProperties = original.ModuleUpdateProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
+type ProxyResource = original.ProxyResource
 type ReadCloser = original.ReadCloser
 type Resource = original.Resource
 type RunAsCredentialAssociationProperty = original.RunAsCredentialAssociationProperty
@@ -517,8 +611,8 @@ type RunbookCreateOrUpdateDraftProperties = original.RunbookCreateOrUpdateDraftP
 type RunbookCreateOrUpdateParameters = original.RunbookCreateOrUpdateParameters
 type RunbookCreateOrUpdateProperties = original.RunbookCreateOrUpdateProperties
 type RunbookDraft = original.RunbookDraft
-type RunbookDraftCreateOrUpdateFuture = original.RunbookDraftCreateOrUpdateFuture
 type RunbookDraftPublishFuture = original.RunbookDraftPublishFuture
+type RunbookDraftReplaceContentFuture = original.RunbookDraftReplaceContentFuture
 type RunbookDraftUndoEditResult = original.RunbookDraftUndoEditResult
 type RunbookListResult = original.RunbookListResult
 type RunbookListResultIterator = original.RunbookListResultIterator
@@ -537,6 +631,7 @@ type ScheduleListResultPage = original.ScheduleListResultPage
 type ScheduleProperties = original.ScheduleProperties
 type ScheduleUpdateParameters = original.ScheduleUpdateParameters
 type ScheduleUpdateProperties = original.ScheduleUpdateProperties
+type SetObject = original.SetObject
 type Sku = original.Sku
 type Statistics = original.Statistics
 type StatisticsListResult = original.StatisticsListResult
@@ -639,13 +734,13 @@ func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string, resou
 	return original.NewStatisticsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
 }
 
-type TestJobsClient = original.TestJobsClient
+type TestJobClient = original.TestJobClient
 
-func NewTestJobsClient(subscriptionID string, resourceGroupName string) TestJobsClient {
-	return original.NewTestJobsClient(subscriptionID, resourceGroupName)
+func NewTestJobClient(subscriptionID string, resourceGroupName string) TestJobClient {
+	return original.NewTestJobClient(subscriptionID, resourceGroupName)
 }
-func NewTestJobsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) TestJobsClient {
-	return original.NewTestJobsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
+func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) TestJobClient {
+	return original.NewTestJobClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
 }
 
 type TestJobStreamsClient = original.TestJobStreamsClient

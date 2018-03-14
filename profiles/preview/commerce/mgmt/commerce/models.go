@@ -41,6 +41,10 @@ const (
 	Hourly AggregationGranularity = original.Hourly
 )
 
+func PossibleAggregationGranularityValues() [2]AggregationGranularity {
+	return original.PossibleAggregationGranularityValues()
+}
+
 type Name = original.Name
 
 const (
@@ -49,6 +53,10 @@ const (
 	NameOfferTermInfo      Name = original.NameOfferTermInfo
 	NameRecurringCharge    Name = original.NameRecurringCharge
 )
+
+func PossibleNameValues() [4]Name {
+	return original.PossibleNameValues()
+}
 
 type ErrorResponse = original.ErrorResponse
 type InfoField = original.InfoField

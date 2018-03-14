@@ -156,6 +156,24 @@ type ManagementLockObject struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagementLockObject.
+func (mlo ManagementLockObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mlo.ManagementLockProperties != nil {
+		objectMap["properties"] = mlo.ManagementLockProperties
+	}
+	if mlo.ID != nil {
+		objectMap["id"] = mlo.ID
+	}
+	if mlo.Type != nil {
+		objectMap["type"] = mlo.Type
+	}
+	if mlo.Name != nil {
+		objectMap["name"] = mlo.Name
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ManagementLockObject struct.
 func (mlo *ManagementLockObject) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage

@@ -67,6 +67,10 @@ const (
 	WaitingForNodes           ClusterState = original.WaitingForNodes
 )
 
+func PossibleClusterStateValues() [10]ClusterState {
+	return original.PossibleClusterStateValues()
+}
+
 type DurabilityLevel = original.DurabilityLevel
 
 const (
@@ -75,12 +79,20 @@ const (
 	Silver DurabilityLevel = original.Silver
 )
 
+func PossibleDurabilityLevelValues() [3]DurabilityLevel {
+	return original.PossibleDurabilityLevelValues()
+}
+
 type Environment = original.Environment
 
 const (
 	Linux   Environment = original.Linux
 	Windows Environment = original.Windows
 )
+
+func PossibleEnvironmentValues() [2]Environment {
+	return original.PossibleEnvironmentValues()
+}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -91,6 +103,10 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+func PossibleProvisioningStateValues() [4]ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+
 type ReliabilityLevel = original.ReliabilityLevel
 
 const (
@@ -98,6 +114,10 @@ const (
 	ReliabilityLevelGold   ReliabilityLevel = original.ReliabilityLevelGold
 	ReliabilityLevelSilver ReliabilityLevel = original.ReliabilityLevelSilver
 )
+
+func PossibleReliabilityLevelValues() [3]ReliabilityLevel {
+	return original.PossibleReliabilityLevelValues()
+}
 
 type ReliabilityLevel1 = original.ReliabilityLevel1
 
@@ -108,6 +128,10 @@ const (
 	ReliabilityLevel1Silver   ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
 
+func PossibleReliabilityLevel1Values() [4]ReliabilityLevel1 {
+	return original.PossibleReliabilityLevel1Values()
+}
+
 type UpgradeMode = original.UpgradeMode
 
 const (
@@ -115,12 +139,20 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
+func PossibleUpgradeModeValues() [2]UpgradeMode {
+	return original.PossibleUpgradeModeValues()
+}
+
 type UpgradeMode1 = original.UpgradeMode1
 
 const (
 	UpgradeMode1Automatic UpgradeMode1 = original.UpgradeMode1Automatic
 	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
 )
+
+func PossibleUpgradeMode1Values() [2]UpgradeMode1 {
+	return original.PossibleUpgradeMode1Values()
+}
 
 type X509StoreName = original.X509StoreName
 
@@ -134,6 +166,10 @@ const (
 	TrustedPeople        X509StoreName = original.TrustedPeople
 	TrustedPublisher     X509StoreName = original.TrustedPublisher
 )
+
+func PossibleX509StoreNameValues() [8]X509StoreName {
+	return original.PossibleX509StoreNameValues()
+}
 
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AzureActiveDirectory = original.AzureActiveDirectory

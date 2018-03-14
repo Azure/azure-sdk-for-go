@@ -96,7 +96,7 @@ func (client DscConfigurationClient) CreateOrUpdatePreparer(ctx context.Context,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}", pathParameters),
@@ -273,7 +273,7 @@ func (client DscConfigurationClient) GetResponder(resp *http.Response) (result D
 // GetContent retrieve the configuration script identified by configuration name.
 //
 // automationAccountName is the automation account name. configurationName is the configuration name.
-func (client DscConfigurationClient) GetContent(ctx context.Context, automationAccountName string, configurationName string) (result ReadCloser, err error) {
+func (client DscConfigurationClient) GetContent(ctx context.Context, automationAccountName string, configurationName string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
@@ -332,12 +332,13 @@ func (client DscConfigurationClient) GetContentSender(req *http.Request) (*http.
 
 // GetContentResponder handles the response to the GetContent request. The method always
 // closes the http.Response Body.
-func (client DscConfigurationClient) GetContentResponder(resp *http.Response) (result ReadCloser, err error) {
-	result.Value = &resp.Body
+func (client DscConfigurationClient) GetContentResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
 }

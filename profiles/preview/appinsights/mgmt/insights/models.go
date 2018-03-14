@@ -21,13 +21,22 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
+type AnnotationsClient = original.AnnotationsClient
+
+func NewAnnotationsClient(subscriptionID string, purgeID string) AnnotationsClient {
+	return original.NewAnnotationsClient(subscriptionID, purgeID)
+}
+func NewAnnotationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) AnnotationsClient {
+	return original.NewAnnotationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
 type APIKeysClient = original.APIKeysClient
 
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClient(subscriptionID)
+func NewAPIKeysClient(subscriptionID string, purgeID string) APIKeysClient {
+	return original.NewAPIKeysClient(subscriptionID, purgeID)
 }
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) APIKeysClient {
+	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 const (
@@ -36,65 +45,83 @@ const (
 
 type BaseClient = original.BaseClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, purgeID string) BaseClient {
+	return original.New(subscriptionID, purgeID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, purgeID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ComponentAvailableFeaturesClient = original.ComponentAvailableFeaturesClient
 
-func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
-	return original.NewComponentAvailableFeaturesClient(subscriptionID)
+func NewComponentAvailableFeaturesClient(subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClient(subscriptionID, purgeID)
 }
-func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentAvailableFeaturesClient {
-	return original.NewComponentAvailableFeaturesClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
 
-func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
+func NewComponentCurrentBillingFeaturesClient(subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID, purgeID)
 }
-func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
+	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ComponentFeatureCapabilitiesClient = original.ComponentFeatureCapabilitiesClient
 
-func NewComponentFeatureCapabilitiesClient(subscriptionID string) ComponentFeatureCapabilitiesClient {
-	return original.NewComponentFeatureCapabilitiesClient(subscriptionID)
+func NewComponentFeatureCapabilitiesClient(subscriptionID string, purgeID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClient(subscriptionID, purgeID)
 }
-func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) ComponentFeatureCapabilitiesClient {
-	return original.NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
 
-func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClient(subscriptionID)
+func NewComponentQuotaStatusClient(subscriptionID string, purgeID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClient(subscriptionID, purgeID)
 }
-func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ComponentsClient = original.ComponentsClient
 
-func NewComponentsClient(subscriptionID string) ComponentsClient {
-	return original.NewComponentsClient(subscriptionID)
+func NewComponentsClient(subscriptionID string, purgeID string) ComponentsClient {
+	return original.NewComponentsClient(subscriptionID, purgeID)
 }
-func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
-	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentsClient {
+	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ExportConfigurationsClient = original.ExportConfigurationsClient
 
-func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClient(subscriptionID)
+func NewExportConfigurationsClient(subscriptionID string, purgeID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClient(subscriptionID, purgeID)
 }
-func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+type FavoriteClient = original.FavoriteClient
+
+func NewFavoriteClient(subscriptionID string, purgeID string) FavoriteClient {
+	return original.NewFavoriteClient(subscriptionID, purgeID)
+}
+func NewFavoriteClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) FavoriteClient {
+	return original.NewFavoriteClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+type FavoritesClient = original.FavoritesClient
+
+func NewFavoritesClient(subscriptionID string, purgeID string) FavoritesClient {
+	return original.NewFavoritesClient(subscriptionID, purgeID)
+}
+func NewFavoritesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) FavoritesClient {
+	return original.NewFavoritesClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ApplicationType = original.ApplicationType
@@ -104,17 +131,68 @@ const (
 	Web   ApplicationType = original.Web
 )
 
+func PossibleApplicationTypeValues() [2]ApplicationType {
+	return original.PossibleApplicationTypeValues()
+}
+
+type FavoriteSourceType = original.FavoriteSourceType
+
+const (
+	Events       FavoriteSourceType = original.Events
+	Funnel       FavoriteSourceType = original.Funnel
+	Impact       FavoriteSourceType = original.Impact
+	Notebook     FavoriteSourceType = original.Notebook
+	Retention    FavoriteSourceType = original.Retention
+	Segmentation FavoriteSourceType = original.Segmentation
+	Sessions     FavoriteSourceType = original.Sessions
+	Userflows    FavoriteSourceType = original.Userflows
+)
+
+func PossibleFavoriteSourceTypeValues() [8]FavoriteSourceType {
+	return original.PossibleFavoriteSourceTypeValues()
+}
+
+type FavoriteType = original.FavoriteType
+
+const (
+	Shared FavoriteType = original.Shared
+	User   FavoriteType = original.User
+)
+
+func PossibleFavoriteTypeValues() [2]FavoriteType {
+	return original.PossibleFavoriteTypeValues()
+}
+
 type FlowType = original.FlowType
 
 const (
 	Bluefield FlowType = original.Bluefield
 )
 
+func PossibleFlowTypeValues() [1]FlowType {
+	return original.PossibleFlowTypeValues()
+}
+
+type PurgeState = original.PurgeState
+
+const (
+	Completed PurgeState = original.Completed
+	Pending   PurgeState = original.Pending
+)
+
+func PossiblePurgeStateValues() [2]PurgeState {
+	return original.PossiblePurgeStateValues()
+}
+
 type RequestSource = original.RequestSource
 
 const (
 	Rest RequestSource = original.Rest
 )
+
+func PossibleRequestSourceValues() [1]RequestSource {
+	return original.PossibleRequestSourceValues()
+}
 
 type WebTestKind = original.WebTestKind
 
@@ -123,6 +201,12 @@ const (
 	Ping      WebTestKind = original.Ping
 )
 
+func PossibleWebTestKindValues() [2]WebTestKind {
+	return original.PossibleWebTestKindValues()
+}
+
+type Annotation = original.Annotation
+type AnnotationError = original.AnnotationError
 type APIKeyRequest = original.APIKeyRequest
 type ApplicationInsightsComponent = original.ApplicationInsightsComponent
 type ApplicationInsightsComponentAPIKey = original.ApplicationInsightsComponentAPIKey
@@ -132,6 +216,7 @@ type ApplicationInsightsComponentBillingFeatures = original.ApplicationInsightsC
 type ApplicationInsightsComponentDataVolumeCap = original.ApplicationInsightsComponentDataVolumeCap
 type ApplicationInsightsComponentExportConfiguration = original.ApplicationInsightsComponentExportConfiguration
 type ApplicationInsightsComponentExportRequest = original.ApplicationInsightsComponentExportRequest
+type ApplicationInsightsComponentFavorite = original.ApplicationInsightsComponentFavorite
 type ApplicationInsightsComponentFeature = original.ApplicationInsightsComponentFeature
 type ApplicationInsightsComponentFeatureCapabilities = original.ApplicationInsightsComponentFeatureCapabilities
 type ApplicationInsightsComponentFeatureCapability = original.ApplicationInsightsComponentFeatureCapability
@@ -142,15 +227,26 @@ type ApplicationInsightsComponentProactiveDetectionConfiguration = original.Appl
 type ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions = original.ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions
 type ApplicationInsightsComponentProperties = original.ApplicationInsightsComponentProperties
 type ApplicationInsightsComponentQuotaStatus = original.ApplicationInsightsComponentQuotaStatus
+type ApplicationInsightsComponentWebTestLocation = original.ApplicationInsightsComponentWebTestLocation
+type ApplicationInsightsWebTestLocationsListResult = original.ApplicationInsightsWebTestLocationsListResult
+type ComponentPurgeBody = original.ComponentPurgeBody
+type ComponentPurgeBodyFilters = original.ComponentPurgeBodyFilters
+type ComponentPurgeResponse = original.ComponentPurgeResponse
+type ComponentPurgeStatusResponse = original.ComponentPurgeStatusResponse
 type ErrorResponse = original.ErrorResponse
+type InnerError = original.InnerError
+type ListAnnotation = original.ListAnnotation
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
+type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
+type ListWorkItemConfiguration = original.ListWorkItemConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
+type SetObject = original.SetObject
 type TagsResource = original.TagsResource
 type WebTest = original.WebTest
 type WebTestGeolocation = original.WebTestGeolocation
@@ -159,22 +255,25 @@ type WebTestListResultIterator = original.WebTestListResultIterator
 type WebTestListResultPage = original.WebTestListResultPage
 type WebTestProperties = original.WebTestProperties
 type WebTestPropertiesConfiguration = original.WebTestPropertiesConfiguration
+type WorkItemConfiguration = original.WorkItemConfiguration
+type WorkItemConfigurationError = original.WorkItemConfigurationError
+type WorkItemCreateConfiguration = original.WorkItemCreateConfiguration
 type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, purgeID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, purgeID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
 
-func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
-	return original.NewProactiveDetectionConfigurationsClient(subscriptionID)
+func NewProactiveDetectionConfigurationsClient(subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
+	return original.NewProactiveDetectionConfigurationsClient(subscriptionID, purgeID)
 }
-func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ProactiveDetectionConfigurationsClient {
-	return original.NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
+	return original.NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -183,11 +282,29 @@ func Version() string {
 	return original.Version()
 }
 
+type WebTestLocationsClient = original.WebTestLocationsClient
+
+func NewWebTestLocationsClient(subscriptionID string, purgeID string) WebTestLocationsClient {
+	return original.NewWebTestLocationsClient(subscriptionID, purgeID)
+}
+func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WebTestLocationsClient {
+	return original.NewWebTestLocationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
 type WebTestsClient = original.WebTestsClient
 
-func NewWebTestsClient(subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClient(subscriptionID)
+func NewWebTestsClient(subscriptionID string, purgeID string) WebTestsClient {
+	return original.NewWebTestsClient(subscriptionID, purgeID)
 }
-func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
+func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WebTestsClient {
+	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+type WorkItemConfigurationsClient = original.WorkItemConfigurationsClient
+
+func NewWorkItemConfigurationsClient(subscriptionID string, purgeID string) WorkItemConfigurationsClient {
+	return original.NewWorkItemConfigurationsClient(subscriptionID, purgeID)
+}
+func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WorkItemConfigurationsClient {
+	return original.NewWorkItemConfigurationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }

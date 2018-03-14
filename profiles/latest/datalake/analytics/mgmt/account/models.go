@@ -87,12 +87,20 @@ const (
 	User             AADObjectType = original.User
 )
 
+func PossibleAADObjectTypeValues() [3]AADObjectType {
+	return original.PossibleAADObjectTypeValues()
+}
+
 type DataLakeAnalyticsAccountState = original.DataLakeAnalyticsAccountState
 
 const (
 	Active    DataLakeAnalyticsAccountState = original.Active
 	Suspended DataLakeAnalyticsAccountState = original.Suspended
 )
+
+func PossibleDataLakeAnalyticsAccountStateValues() [2]DataLakeAnalyticsAccountState {
+	return original.PossibleDataLakeAnalyticsAccountStateValues()
+}
 
 type DataLakeAnalyticsAccountStatus = original.DataLakeAnalyticsAccountStatus
 
@@ -110,12 +118,20 @@ const (
 	Undeleting DataLakeAnalyticsAccountStatus = original.Undeleting
 )
 
+func PossibleDataLakeAnalyticsAccountStatusValues() [11]DataLakeAnalyticsAccountStatus {
+	return original.PossibleDataLakeAnalyticsAccountStatusValues()
+}
+
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
 	Disabled FirewallAllowAzureIpsState = original.Disabled
 	Enabled  FirewallAllowAzureIpsState = original.Enabled
 )
+
+func PossibleFirewallAllowAzureIpsStateValues() [2]FirewallAllowAzureIpsState {
+	return original.PossibleFirewallAllowAzureIpsStateValues()
+}
 
 type FirewallState = original.FirewallState
 
@@ -124,6 +140,10 @@ const (
 	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
+func PossibleFirewallStateValues() [2]FirewallState {
+	return original.PossibleFirewallStateValues()
+}
+
 type OperationOrigin = original.OperationOrigin
 
 const (
@@ -131,6 +151,10 @@ const (
 	OperationOriginUser       OperationOrigin = original.OperationOriginUser
 	OperationOriginUsersystem OperationOrigin = original.OperationOriginUsersystem
 )
+
+func PossibleOperationOriginValues() [3]OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
 
 type SubscriptionState = original.SubscriptionState
 
@@ -141,6 +165,10 @@ const (
 	SubscriptionStateUnregistered SubscriptionState = original.SubscriptionStateUnregistered
 	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
+
+func PossibleSubscriptionStateValues() [5]SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
+}
 
 type TierType = original.TierType
 
@@ -155,6 +183,10 @@ const (
 	Commitment500AUHours    TierType = original.Commitment500AUHours
 	Consumption             TierType = original.Consumption
 )
+
+func PossibleTierTypeValues() [9]TierType {
+	return original.PossibleTierTypeValues()
+}
 
 type AccountsCreateFutureType = original.AccountsCreateFutureType
 type AccountsDeleteFutureType = original.AccountsDeleteFutureType

@@ -41,6 +41,11 @@ const (
 	Swarm OrchestratorTypes = "Swarm"
 )
 
+// PossibleOrchestratorTypesValues returns an array of possible values for the OrchestratorTypes const type.
+func PossibleOrchestratorTypesValues() [5]OrchestratorTypes {
+	return [5]OrchestratorTypes{Custom, DCOS, DockerCE, Kubernetes, Swarm}
+}
+
 // OSType enumerates the values for os type.
 type OSType string
 
@@ -51,6 +56,11 @@ const (
 	Windows OSType = "Windows"
 )
 
+// PossibleOSTypeValues returns an array of possible values for the OSType const type.
+func PossibleOSTypeValues() [2]OSType {
+	return [2]OSType{Linux, Windows}
+}
+
 // StorageProfileTypes enumerates the values for storage profile types.
 type StorageProfileTypes string
 
@@ -60,6 +70,11 @@ const (
 	// StorageAccount ...
 	StorageAccount StorageProfileTypes = "StorageAccount"
 )
+
+// PossibleStorageProfileTypesValues returns an array of possible values for the StorageProfileTypes const type.
+func PossibleStorageProfileTypesValues() [2]StorageProfileTypes {
+	return [2]StorageProfileTypes{ManagedDisks, StorageAccount}
+}
 
 // VMSizeTypes enumerates the values for vm size types.
 type VMSizeTypes string
@@ -326,6 +341,11 @@ const (
 	// StandardNV6 ...
 	StandardNV6 VMSizeTypes = "Standard_NV6"
 )
+
+// PossibleVMSizeTypesValues returns an array of possible values for the VMSizeTypes const type.
+func PossibleVMSizeTypesValues() [130]VMSizeTypes {
+	return [130]VMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA1V2, StandardA2, StandardA2mV2, StandardA2V2, StandardA3, StandardA4, StandardA4mV2, StandardA4V2, StandardA5, StandardA6, StandardA7, StandardA8, StandardA8mV2, StandardA8V2, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD11V2Promo, StandardD12, StandardD12V2, StandardD12V2Promo, StandardD13, StandardD13V2, StandardD13V2Promo, StandardD14, StandardD14V2, StandardD14V2Promo, StandardD15V2, StandardD16sV3, StandardD16V3, StandardD1V2, StandardD2, StandardD2sV3, StandardD2V2, StandardD2V2Promo, StandardD2V3, StandardD3, StandardD3V2, StandardD3V2Promo, StandardD4, StandardD4sV3, StandardD4V2, StandardD4V2Promo, StandardD4V3, StandardD5V2, StandardD5V2Promo, StandardD8sV3, StandardD8V3, StandardDS1, StandardDS11, StandardDS11V2, StandardDS11V2Promo, StandardDS12, StandardDS12V2, StandardDS12V2Promo, StandardDS13, StandardDS13V2, StandardDS13V2Promo, StandardDS14, StandardDS14V2, StandardDS14V2Promo, StandardDS15V2, StandardDS1V2, StandardDS2, StandardDS2V2, StandardDS2V2Promo, StandardDS3, StandardDS3V2, StandardDS3V2Promo, StandardDS4, StandardDS4V2, StandardDS4V2Promo, StandardDS5V2, StandardDS5V2Promo, StandardE16sV3, StandardE16V3, StandardE2sV3, StandardE2V3, StandardE32sV3, StandardE32V3, StandardE4sV3, StandardE4V3, StandardE64sV3, StandardE64V3, StandardE8sV3, StandardE8V3, StandardF1, StandardF16, StandardF16s, StandardF1s, StandardF2, StandardF2s, StandardF4, StandardF4s, StandardF8, StandardF8s, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5, StandardH16, StandardH16m, StandardH16mr, StandardH16r, StandardH8, StandardH8m, StandardL16s, StandardL32s, StandardL4s, StandardL8s, StandardM128s, StandardM64ms, StandardNC12, StandardNC24, StandardNC24r, StandardNC6, StandardNV12, StandardNV24, StandardNV6}
+}
 
 // AccessProfile profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
@@ -1158,6 +1178,24 @@ type ManagedClusterUpgradeProfile struct {
 	Type *string `json:"type,omitempty"`
 	// ManagedClusterUpgradeProfileProperties - Properties of upgrade profile.
 	*ManagedClusterUpgradeProfileProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedClusterUpgradeProfile.
+func (mcup ManagedClusterUpgradeProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcup.ID != nil {
+		objectMap["id"] = mcup.ID
+	}
+	if mcup.Name != nil {
+		objectMap["name"] = mcup.Name
+	}
+	if mcup.Type != nil {
+		objectMap["type"] = mcup.Type
+	}
+	if mcup.ManagedClusterUpgradeProfileProperties != nil {
+		objectMap["properties"] = mcup.ManagedClusterUpgradeProfileProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ManagedClusterUpgradeProfile struct.

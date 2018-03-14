@@ -37,6 +37,11 @@ const (
 	VirtualMachine MetricsSourceType = "VirtualMachine"
 )
 
+// PossibleMetricsSourceTypeValues returns an array of possible values for the MetricsSourceType const type.
+func PossibleMetricsSourceTypeValues() [3]MetricsSourceType {
+	return [3]MetricsSourceType{PhysicalNode, ResourceProvider, VirtualMachine}
+}
+
 // MetricsUnit enumerates the values for metrics unit.
 type MetricsUnit string
 
@@ -56,6 +61,11 @@ const (
 	// TB ...
 	TB MetricsUnit = "TB"
 )
+
+// PossibleMetricsUnitValues returns an array of possible values for the MetricsUnit const type.
+func PossibleMetricsUnitValues() [7]MetricsUnit {
+	return [7]MetricsUnit{B, GB, KB, MB, One, Percentage, TB}
+}
 
 // Alert this class models an alert resource.
 type Alert struct {

@@ -41,6 +41,10 @@ const (
 	AssetTypeResource AssetType = original.AssetTypeResource
 )
 
+func PossibleAssetTypeValues() [2]AssetType {
+	return original.PossibleAssetTypeValues()
+}
+
 type ColumnFormat = original.ColumnFormat
 
 const (
@@ -63,6 +67,10 @@ const (
 	Uint8          ColumnFormat = original.Uint8
 )
 
+func PossibleColumnFormatValues() [17]ColumnFormat {
+	return original.PossibleColumnFormatValues()
+}
+
 type ColumnType = original.ColumnType
 
 const (
@@ -72,6 +80,10 @@ const (
 	String  ColumnType = original.String
 )
 
+func PossibleColumnTypeValues() [4]ColumnType {
+	return original.PossibleColumnTypeValues()
+}
+
 type DiagnosticsLevel = original.DiagnosticsLevel
 
 const (
@@ -80,11 +92,19 @@ const (
 	None  DiagnosticsLevel = original.None
 )
 
+func PossibleDiagnosticsLevelValues() [3]DiagnosticsLevel {
+	return original.PossibleDiagnosticsLevelValues()
+}
+
 type InputPortType = original.InputPortType
 
 const (
 	Dataset InputPortType = original.Dataset
 )
+
+func PossibleInputPortTypeValues() [1]InputPortType {
+	return original.PossibleInputPortTypeValues()
+}
 
 type OutputPortType = original.OutputPortType
 
@@ -92,12 +112,20 @@ const (
 	OutputPortTypeDataset OutputPortType = original.OutputPortTypeDataset
 )
 
+func PossibleOutputPortTypeValues() [1]OutputPortType {
+	return original.PossibleOutputPortTypeValues()
+}
+
 type PackageType = original.PackageType
 
 const (
 	PackageTypeGraph                PackageType = original.PackageTypeGraph
 	PackageTypeWebServiceProperties PackageType = original.PackageTypeWebServiceProperties
 )
+
+func PossiblePackageTypeValues() [2]PackageType {
+	return original.PossiblePackageTypeValues()
+}
 
 type ParameterType = original.ParameterType
 
@@ -116,6 +144,10 @@ const (
 	ParameterTypeString          ParameterType = original.ParameterTypeString
 )
 
+func PossibleParameterTypeValues() [12]ParameterType {
+	return original.PossibleParameterTypeValues()
+}
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -124,6 +156,10 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 	Unknown      ProvisioningState = original.Unknown
 )
+
+func PossibleProvisioningStateValues() [4]ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 
 type AssetItem = original.AssetItem
 type AsyncOperationErrorInfo = original.AsyncOperationErrorInfo

@@ -34,6 +34,11 @@ const (
 	None EntityNameUnavailabilityReason = "None"
 )
 
+// PossibleEntityNameUnavailabilityReasonValues returns an array of possible values for the EntityNameUnavailabilityReason const type.
+func PossibleEntityNameUnavailabilityReasonValues() [3]EntityNameUnavailabilityReason {
+	return [3]EntityNameUnavailabilityReason{AlreadyExists, Invalid, None}
+}
+
 // KeyType enumerates the values for key type.
 type KeyType string
 
@@ -44,6 +49,11 @@ const (
 	Secondary KeyType = "Secondary"
 )
 
+// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
+func PossibleKeyTypeValues() [2]KeyType {
+	return [2]KeyType{Primary, Secondary}
+}
+
 // ResourceType enumerates the values for resource type.
 type ResourceType string
 
@@ -51,6 +61,11 @@ const (
 	// Mediaservices ...
 	Mediaservices ResourceType = "mediaservices"
 )
+
+// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
+func PossibleResourceTypeValues() [1]ResourceType {
+	return [1]ResourceType{Mediaservices}
+}
 
 // APIEndpoint the properties for a Media Services REST API endpoint.
 type APIEndpoint struct {

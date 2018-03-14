@@ -19,7 +19,7 @@
 
 package mysql
 
-import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-04-30-preview/mysql"
+import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01-preview/mysql"
 
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
@@ -96,6 +96,21 @@ const (
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
 
+func PossibleCreateModeValues() [3]CreateMode {
+	return original.PossibleCreateModeValues()
+}
+
+type GeoRedundantBackup = original.GeoRedundantBackup
+
+const (
+	Disabled GeoRedundantBackup = original.Disabled
+	Enabled  GeoRedundantBackup = original.Enabled
+)
+
+func PossibleGeoRedundantBackupValues() [2]GeoRedundantBackup {
+	return original.PossibleGeoRedundantBackupValues()
+}
+
 type OperationOrigin = original.OperationOrigin
 
 const (
@@ -104,13 +119,21 @@ const (
 	User         OperationOrigin = original.User
 )
 
+func PossibleOperationOriginValues() [3]OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
+
 type ServerState = original.ServerState
 
 const (
-	Disabled ServerState = original.Disabled
-	Dropping ServerState = original.Dropping
-	Ready    ServerState = original.Ready
+	ServerStateDisabled ServerState = original.ServerStateDisabled
+	ServerStateDropping ServerState = original.ServerStateDropping
+	ServerStateReady    ServerState = original.ServerStateReady
 )
+
+func PossibleServerStateValues() [3]ServerState {
+	return original.PossibleServerStateValues()
+}
 
 type ServerVersion = original.ServerVersion
 
@@ -119,12 +142,21 @@ const (
 	FiveFullStopSix   ServerVersion = original.FiveFullStopSix
 )
 
+func PossibleServerVersionValues() [2]ServerVersion {
+	return original.PossibleServerVersionValues()
+}
+
 type SkuTier = original.SkuTier
 
 const (
-	Basic    SkuTier = original.Basic
-	Standard SkuTier = original.Standard
+	Basic           SkuTier = original.Basic
+	GeneralPurpose  SkuTier = original.GeneralPurpose
+	MemoryOptimized SkuTier = original.MemoryOptimized
 )
+
+func PossibleSkuTierValues() [3]SkuTier {
+	return original.PossibleSkuTierValues()
+}
 
 type SslEnforcementEnum = original.SslEnforcementEnum
 
@@ -132,6 +164,10 @@ const (
 	SslEnforcementEnumDisabled SslEnforcementEnum = original.SslEnforcementEnumDisabled
 	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
 )
+
+func PossibleSslEnforcementEnumValues() [2]SslEnforcementEnum {
+	return original.PossibleSslEnforcementEnumValues()
+}
 
 type Configuration = original.Configuration
 type ConfigurationListResult = original.ConfigurationListResult
@@ -167,12 +203,13 @@ type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
-type ServersCreateOrUpdateFuture = original.ServersCreateOrUpdateFuture
+type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type ServerUpdateParameters = original.ServerUpdateParameters
 type ServerUpdateParametersProperties = original.ServerUpdateParametersProperties
 type Sku = original.Sku
+type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
 type OperationsClient = original.OperationsClient
 
@@ -181,15 +218,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type PerformanceTiersClient = original.PerformanceTiersClient
-
-func NewPerformanceTiersClient(subscriptionID string) PerformanceTiersClient {
-	return original.NewPerformanceTiersClient(subscriptionID)
-}
-func NewPerformanceTiersClientWithBaseURI(baseURI string, subscriptionID string) PerformanceTiersClient {
-	return original.NewPerformanceTiersClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ServersClient = original.ServersClient

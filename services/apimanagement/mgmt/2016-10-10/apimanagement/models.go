@@ -1054,7 +1054,9 @@ func (bc BackendContract) MarshalJSON() ([]byte, error) {
 	if bc.ID != nil {
 		objectMap["id"] = bc.ID
 	}
-	objectMap["protocol"] = bc.Protocol
+	if bc.Protocol != "" {
+		objectMap["protocol"] = bc.Protocol
+	}
 	if bc.Certificate != nil {
 		objectMap["certificate"] = bc.Certificate
 	}
@@ -1176,7 +1178,9 @@ func (br BackendResponse) MarshalJSON() ([]byte, error) {
 	if br.ID != nil {
 		objectMap["id"] = br.ID
 	}
-	objectMap["protocol"] = br.Protocol
+	if br.Protocol != "" {
+		objectMap["protocol"] = br.Protocol
+	}
 	if br.Certificate != nil {
 		objectMap["certificate"] = br.Certificate
 	}
@@ -1238,7 +1242,9 @@ type BackendUpdateParameters struct {
 // MarshalJSON is the custom marshaler for BackendUpdateParameters.
 func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["protocol"] = bup.Protocol
+	if bup.Protocol != "" {
+		objectMap["protocol"] = bup.Protocol
+	}
 	if bup.Certificate != nil {
 		objectMap["certificate"] = bup.Certificate
 	}
@@ -3241,7 +3247,9 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	if sp.CustomProperties != nil {
 		objectMap["customProperties"] = sp.CustomProperties
 	}
-	objectMap["vpnType"] = sp.VpnType
+	if sp.VpnType != "" {
+		objectMap["vpnType"] = sp.VpnType
+	}
 	return json.Marshal(objectMap)
 }
 

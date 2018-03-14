@@ -66,12 +66,20 @@ const (
 	Weekend   DayOfWeek = original.Weekend
 )
 
+func PossibleDayOfWeekValues() [9]DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+
 type KeyType = original.KeyType
 
 const (
 	Primary   KeyType = original.Primary
 	Secondary KeyType = original.Secondary
 )
+
+func PossibleKeyTypeValues() [2]KeyType {
+	return original.PossibleKeyTypeValues()
+}
 
 type RebootType = original.RebootType
 
@@ -81,6 +89,10 @@ const (
 	SecondaryNode RebootType = original.SecondaryNode
 )
 
+func PossibleRebootTypeValues() [3]RebootType {
+	return original.PossibleRebootTypeValues()
+}
+
 type ReplicationRole = original.ReplicationRole
 
 const (
@@ -88,12 +100,20 @@ const (
 	ReplicationRoleSecondary ReplicationRole = original.ReplicationRoleSecondary
 )
 
+func PossibleReplicationRoleValues() [2]ReplicationRole {
+	return original.PossibleReplicationRoleValues()
+}
+
 type SkuFamily = original.SkuFamily
 
 const (
 	C SkuFamily = original.C
 	P SkuFamily = original.P
 )
+
+func PossibleSkuFamilyValues() [2]SkuFamily {
+	return original.PossibleSkuFamilyValues()
+}
 
 type SkuName = original.SkuName
 
@@ -103,7 +123,12 @@ const (
 	Standard SkuName = original.Standard
 )
 
+func PossibleSkuNameValues() [3]SkuName {
+	return original.PossibleSkuNameValues()
+}
+
 type AccessKeys = original.AccessKeys
+type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type CommonProperties = original.CommonProperties
 type CreateFuture = original.CreateFuture
 type CreateParameters = original.CreateParameters
@@ -132,6 +157,7 @@ type LinkedServerWithPropertiesListPage = original.LinkedServerWithPropertiesLis
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
+type NotificationListResponse = original.NotificationListResponse
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -150,6 +176,7 @@ type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
+type UpgradeNotification = original.UpgradeNotification
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {

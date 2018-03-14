@@ -48,6 +48,10 @@ const (
 	SingleBox CompileMode = original.SingleBox
 )
 
+func PossibleCompileModeValues() [3]CompileMode {
+	return original.PossibleCompileModeValues()
+}
+
 type ResourceType = original.ResourceType
 
 const (
@@ -59,6 +63,10 @@ const (
 	VertexResourceInUserFolder     ResourceType = original.VertexResourceInUserFolder
 )
 
+func PossibleResourceTypeValues() [6]ResourceType {
+	return original.PossibleResourceTypeValues()
+}
+
 type Result = original.Result
 
 const (
@@ -67,6 +75,10 @@ const (
 	None      Result = original.None
 	Succeeded Result = original.Succeeded
 )
+
+func PossibleResultValues() [4]Result {
+	return original.PossibleResultValues()
+}
 
 type SeverityTypes = original.SeverityTypes
 
@@ -78,6 +90,10 @@ const (
 	UserWarning   SeverityTypes = original.UserWarning
 	Warning       SeverityTypes = original.Warning
 )
+
+func PossibleSeverityTypesValues() [6]SeverityTypes {
+	return original.PossibleSeverityTypesValues()
+}
 
 type State = original.State
 
@@ -94,6 +110,10 @@ const (
 	StateWaitingForCapacity State = original.StateWaitingForCapacity
 )
 
+func PossibleStateValues() [10]State {
+	return original.PossibleStateValues()
+}
+
 type Type = original.Type
 
 const (
@@ -103,6 +123,10 @@ const (
 	TypeUSQL          Type = original.TypeUSQL
 )
 
+func PossibleTypeValues() [4]Type {
+	return original.PossibleTypeValues()
+}
+
 type TypeBasicCreateJobProperties = original.TypeBasicCreateJobProperties
 
 const (
@@ -111,6 +135,10 @@ const (
 	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
+func PossibleTypeBasicCreateJobPropertiesValues() [3]TypeBasicCreateJobProperties {
+	return original.PossibleTypeBasicCreateJobPropertiesValues()
+}
+
 type TypeEnum = original.TypeEnum
 
 const (
@@ -118,6 +146,10 @@ const (
 	Scope TypeEnum = original.Scope
 	USQL  TypeEnum = original.USQL
 )
+
+func PossibleTypeEnumValues() [3]TypeEnum {
+	return original.PossibleTypeEnumValues()
+}
 
 type BaseJobParameters = original.BaseJobParameters
 type BuildJobParameters = original.BuildJobParameters

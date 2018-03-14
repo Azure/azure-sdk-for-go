@@ -18,326 +18,234 @@ package network
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // RoutesClient is the network Client
 type RoutesClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewRoutesClient creates an instance of the RoutesClient client.
-func NewRoutesClient(subscriptionID string) RoutesClient {
-	return NewRoutesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRoutesClient(p pipeline.Pipeline) RoutesClient {
+	return RoutesClient{NewManagementClient(p)}
 }
 
-// NewRoutesClientWithBaseURI creates an instance of the RoutesClient client.
-func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
-	return RoutesClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// CreateOrUpdate creates or updates a route in the specified route table.
+// CreateOrUpdate creates or updates a route in the specified route table. This method may poll for completion. Polling
+// can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
+// outstanding HTTP requests.
 //
-// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is
-// the name of the route. routeParameters is parameters supplied to the create or update route operation.
-func (client RoutesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (result RoutesCreateOrUpdateFuture, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, routeTableName, routeName, routeParameters)
+// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is the
+// name of the route. routeParameters is parameters supplied to the create or update route operation.
+func (client RoutesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*Route, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, routeTableName, routeName, routeParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Route), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client RoutesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"routeName":         autorest.Encode("path", routeName),
-		"routeTableName":    autorest.Encode("path", routeTableName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}", pathParameters),
-		autorest.WithJSON(routeParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client RoutesClient) CreateOrUpdateSender(req *http.Request) (future RoutesCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client RoutesClient) createOrUpdatePreparer(resourceGroupName string, routeTableName string, routeName string, routeParameters Route) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-09-01")
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(routeParameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client RoutesClient) CreateOrUpdateResponder(resp *http.Response) (result Route, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client RoutesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusCreated)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Route{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Delete deletes the specified route from a route table.
+// Delete deletes the specified route from a route table. This method may poll for completion. Polling can be canceled
+// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
 //
-// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is
-// the name of the route.
-func (client RoutesClient) Delete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (result RoutesDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, routeTableName, routeName)
+// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is the
+// name of the route.
+func (client RoutesClient) Delete(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, routeTableName, routeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client RoutesClient) DeletePreparer(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"routeName":         autorest.Encode("path", routeName),
-		"routeTableName":    autorest.Encode("path", routeTableName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client RoutesClient) DeleteSender(req *http.Request) (future RoutesDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client RoutesClient) deletePreparer(resourceGroupName string, routeTableName string, routeName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-09-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client RoutesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client RoutesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusAccepted, http.StatusOK, http.StatusNoContent)
+	if resp == nil {
+		return nil, err
+	}
+	resp.Response().Body.Close()
+	return resp, err
 }
 
 // Get gets the specified route from a route table.
 //
-// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is
-// the name of the route.
-func (client RoutesClient) Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (result Route, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, routeTableName, routeName)
+// resourceGroupName is the name of the resource group. routeTableName is the name of the route table. routeName is the
+// name of the route.
+func (client RoutesClient) Get(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*Route, error) {
+	req, err := client.getPreparer(resourceGroupName, routeTableName, routeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Route), err
 }
 
-// GetPreparer prepares the Get request.
-func (client RoutesClient) GetPreparer(ctx context.Context, resourceGroupName string, routeTableName string, routeName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"routeName":         autorest.Encode("path", routeName),
-		"routeTableName":    autorest.Encode("path", routeTableName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+// getPreparer prepares the Get request.
+func (client RoutesClient) getPreparer(resourceGroupName string, routeTableName string, routeName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes/{routeName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	params := req.URL.Query()
+	params.Set("api-version", "2017-09-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client RoutesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client RoutesClient) GetResponder(resp *http.Response) (result Route, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getResponder handles the response to the Get request.
+func (client RoutesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Route{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets all routes in a route table.
 //
 // resourceGroupName is the name of the resource group. routeTableName is the name of the route table.
-func (client RoutesClient) List(ctx context.Context, resourceGroupName string, routeTableName string) (result RouteListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, routeTableName)
+func (client RoutesClient) List(ctx context.Context, resourceGroupName string, routeTableName string) (*RouteListResult, error) {
+	req, err := client.listPreparer(resourceGroupName, routeTableName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.rlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.rlr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*RouteListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client RoutesClient) ListPreparer(ctx context.Context, resourceGroupName string, routeTableName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"routeTableName":    autorest.Encode("path", routeTableName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client RoutesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client RoutesClient) ListResponder(resp *http.Response) (result RouteListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client RoutesClient) listNextResults(lastResults RouteListResult) (result RouteListResult, err error) {
-	req, err := lastResults.routeListResultPreparer()
+// listPreparer prepares the List request.
+func (client RoutesClient) listPreparer(resourceGroupName string, routeTableName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeTables/{routeTableName}/routes"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.RoutesClient", "listNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.RoutesClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RoutesClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-09-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RoutesClient) ListComplete(ctx context.Context, resourceGroupName string, routeTableName string) (result RouteListResultIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, routeTableName)
-	return
+// listResponder handles the response to the List request.
+func (client RoutesClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &RouteListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

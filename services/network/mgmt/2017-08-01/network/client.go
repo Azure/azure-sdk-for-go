@@ -1,6 +1,3 @@
-// Package network implements the Azure ARM Network service API version .
-//
-// Network Client
 package network
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -21,31 +18,105 @@ package network
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+	"context"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Network
-	DefaultBaseURI = "https://management.azure.com"
+	// ServiceVersion specifies the version of the operations used in this package.
+	ServiceVersion = ""
+	// DefaultBaseURL is the default URL used for the service Network
+	DefaultBaseURL = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Network.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+// ManagementClient is the base client for Network.
+type ManagementClient struct {
+	url url.URL
+	p   pipeline.Pipeline
 }
 
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
-}
-
-// NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+// NewManagementClient creates an instance of the ManagementClient client.
+func NewManagementClient(p pipeline.Pipeline) ManagementClient {
+	u, err := url.Parse(DefaultBaseURL)
+	if err != nil {
+		panic(err)
 	}
+	return NewManagementClientWithURL(*u, p)
+}
+
+// NewManagementClientWithURL creates an instance of the ManagementClient client.
+func NewManagementClientWithURL(url url.URL, p pipeline.Pipeline) ManagementClient {
+	return ManagementClient{
+		url: url,
+		p:   p,
+	}
+}
+
+// URL returns a copy of the URL for this client.
+func (mc ManagementClient) URL() url.URL {
+	return mc.url
+}
+
+// Pipeline returns the pipeline for this client.
+func (mc ManagementClient) Pipeline() pipeline.Pipeline {
+	return mc.p
+}
+
+// CheckDNSNameAvailability checks whether a domain name in the cloudapp.azure.com zone is available for use.
+//
+// location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform to
+// the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+func (client ManagementClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (*DNSNameAvailabilityResult, error) {
+	req, err := client.checkDNSNameAvailabilityPreparer(location, domainNameLabel)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.checkDNSNameAvailabilityResponder}, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*DNSNameAvailabilityResult), err
+}
+
+// checkDNSNameAvailabilityPreparer prepares the CheckDNSNameAvailability request.
+func (client ManagementClient) checkDNSNameAvailabilityPreparer(location string, domainNameLabel string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
+	}
+	params := req.URL.Query()
+	params.Set("domainNameLabel", domainNameLabel)
+	params.Set("api-version", "2017-08-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
+}
+
+// checkDNSNameAvailabilityResponder handles the response to the CheckDNSNameAvailability request.
+func (client ManagementClient) checkDNSNameAvailabilityResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &DNSNameAvailabilityResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

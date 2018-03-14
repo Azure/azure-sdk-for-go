@@ -566,6 +566,14 @@ const (
 	Integrated ManagedPipelineMode = "Integrated"
 )
 
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// SystemAssigned ...
+	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+)
+
 // MSDeployLogEntryType enumerates the values for ms deploy log entry type.
 type MSDeployLogEntryType string
 
@@ -1253,6 +1261,122 @@ type ApplicationLogsConfig struct {
 	AzureTableStorage *AzureTableStorageApplicationLogsConfig `json:"azureTableStorage,omitempty"`
 	// AzureBlobStorage - Application logs to blob storage configuration.
 	AzureBlobStorage *AzureBlobStorageApplicationLogsConfig `json:"azureBlobStorage,omitempty"`
+}
+
+// ApplicationStack application stack.
+type ApplicationStack struct {
+	// Name - Application stack name.
+	Name *string `json:"name,omitempty"`
+	// Display - Application stack display name.
+	Display *string `json:"display,omitempty"`
+	// Dependency - Application stack dependency.
+	Dependency *string `json:"dependency,omitempty"`
+	// MajorVersions - List of major versions available.
+	MajorVersions *[]StackMajorVersion `json:"majorVersions,omitempty"`
+	// Frameworks - List of frameworks associated with application stack.
+	Frameworks *[]ApplicationStack `json:"frameworks,omitempty"`
+}
+
+// ApplicationStackCollection collection of Application Stacks
+type ApplicationStackCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]ApplicationStack `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ApplicationStackCollectionIterator provides access to a complete listing of ApplicationStack values.
+type ApplicationStackCollectionIterator struct {
+	i    int
+	page ApplicationStackCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ApplicationStackCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ApplicationStackCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ApplicationStackCollectionIterator) Response() ApplicationStackCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ApplicationStackCollectionIterator) Value() ApplicationStack {
+	if !iter.page.NotDone() {
+		return ApplicationStack{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (asc ApplicationStackCollection) IsEmpty() bool {
+	return asc.Value == nil || len(*asc.Value) == 0
+}
+
+// applicationStackCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (asc ApplicationStackCollection) applicationStackCollectionPreparer() (*http.Request, error) {
+	if asc.NextLink == nil || len(to.String(asc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(asc.NextLink)))
+}
+
+// ApplicationStackCollectionPage contains a page of ApplicationStack values.
+type ApplicationStackCollectionPage struct {
+	fn  func(ApplicationStackCollection) (ApplicationStackCollection, error)
+	asc ApplicationStackCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ApplicationStackCollectionPage) Next() error {
+	next, err := page.fn(page.asc)
+	if err != nil {
+		return err
+	}
+	page.asc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ApplicationStackCollectionPage) NotDone() bool {
+	return !page.asc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ApplicationStackCollectionPage) Response() ApplicationStackCollection {
+	return page.asc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ApplicationStackCollectionPage) Values() []ApplicationStack {
+	if page.asc.IsEmpty() {
+		return nil
+	}
+	return *page.asc.Value
 }
 
 // AppsCreateFunctionFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -9577,12 +9701,6 @@ type ListOperation struct {
 	Value             *[]Operation `json:"value,omitempty"`
 }
 
-// ListRecommendation ...
-type ListRecommendation struct {
-	autorest.Response `json:"-"`
-	Value             *[]Recommendation `json:"value,omitempty"`
-}
-
 // ListVnetInfo ...
 type ListVnetInfo struct {
 	autorest.Response `json:"-"`
@@ -9605,8 +9723,8 @@ type LocalizableString struct {
 
 // ManagedServiceIdentity managed service identity.
 type ManagedServiceIdentity struct {
-	// Type - Type of managed service identity.
-	Type interface{} `json:"type,omitempty"`
+	// Type - Type of managed service identity. Possible values include: 'SystemAssigned'
+	Type ManagedServiceIdentityType `json:"type,omitempty"`
 	// TenantID - Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalID - Principal Id of managed service identity.
@@ -12053,6 +12171,182 @@ type ReadCloser struct {
 
 // Recommendation represents a recommendation result generated by the recommendation engine.
 type Recommendation struct {
+	// RecommendationProperties - Recommendation resource specific properties
+	*RecommendationProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for Recommendation struct.
+func (r *Recommendation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recommendationProperties RecommendationProperties
+				err = json.Unmarshal(*v, &recommendationProperties)
+				if err != nil {
+					return err
+				}
+				r.RecommendationProperties = &recommendationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				r.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				r.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				r.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				r.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RecommendationCollection collection of recommendations.
+type RecommendationCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]Recommendation `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RecommendationCollectionIterator provides access to a complete listing of Recommendation values.
+type RecommendationCollectionIterator struct {
+	i    int
+	page RecommendationCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RecommendationCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RecommendationCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RecommendationCollectionIterator) Response() RecommendationCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RecommendationCollectionIterator) Value() Recommendation {
+	if !iter.page.NotDone() {
+		return Recommendation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rc RecommendationCollection) IsEmpty() bool {
+	return rc.Value == nil || len(*rc.Value) == 0
+}
+
+// recommendationCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rc RecommendationCollection) recommendationCollectionPreparer() (*http.Request, error) {
+	if rc.NextLink == nil || len(to.String(rc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rc.NextLink)))
+}
+
+// RecommendationCollectionPage contains a page of Recommendation values.
+type RecommendationCollectionPage struct {
+	fn func(RecommendationCollection) (RecommendationCollection, error)
+	rc RecommendationCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RecommendationCollectionPage) Next() error {
+	next, err := page.fn(page.rc)
+	if err != nil {
+		return err
+	}
+	page.rc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RecommendationCollectionPage) NotDone() bool {
+	return !page.rc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RecommendationCollectionPage) Response() RecommendationCollection {
+	return page.rc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RecommendationCollectionPage) Values() []Recommendation {
+	if page.rc.IsEmpty() {
+		return nil
+	}
+	return *page.rc.Value
+}
+
+// RecommendationProperties recommendation resource specific properties
+type RecommendationProperties struct {
 	// CreationTime - Timestamp when this instance was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// RecommendationID - A GUID value that each recommendation object is associated with.
@@ -12100,6 +12394,80 @@ type Recommendation struct {
 // RecommendationRule represents a recommendation rule that the recommendation engine can perform.
 type RecommendationRule struct {
 	autorest.Response `json:"-"`
+	// RecommendationRuleProperties - RecommendationRule resource specific properties
+	*RecommendationRuleProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecommendationRule struct.
+func (rr *RecommendationRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recommendationRuleProperties RecommendationRuleProperties
+				err = json.Unmarshal(*v, &recommendationRuleProperties)
+				if err != nil {
+					return err
+				}
+				rr.RecommendationRuleProperties = &recommendationRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				rr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RecommendationRuleProperties recommendationRule resource specific properties
+type RecommendationRuleProperties struct {
 	// Name - Unique name of the rule.
 	Name *string `json:"name,omitempty"`
 	// DisplayName - UI friendly name of the rule.
@@ -15685,6 +16053,28 @@ type SourceControlProperties struct {
 	RefreshToken *string `json:"refreshToken,omitempty"`
 	// ExpirationTime - OAuth token expiration.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
+}
+
+// StackMajorVersion application stack major version.
+type StackMajorVersion struct {
+	// DisplayVersion - Application stack major version (display only).
+	DisplayVersion *string `json:"displayVersion,omitempty"`
+	// RuntimeVersion - Application stack major version (runtime only).
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	// IsDefault - <code>true</code> if this is the default major version; otherwise, <code>false</code>.
+	IsDefault *bool `json:"isDefault,omitempty"`
+	// MinorVersions - Minor versions associated with the major version.
+	MinorVersions *[]StackMinorVersion `json:"minorVersions,omitempty"`
+}
+
+// StackMinorVersion application stack minor version.
+type StackMinorVersion struct {
+	// DisplayVersion - Application stack minor version (display only).
+	DisplayVersion *string `json:"displayVersion,omitempty"`
+	// RuntimeVersion - Application stack minor version (runtime only).
+	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	// IsDefault - <code>true</code> if this is the default minor version; otherwise, <code>false</code>.
+	IsDefault *bool `json:"isDefault,omitempty"`
 }
 
 // StampCapacity stamp capacity information.

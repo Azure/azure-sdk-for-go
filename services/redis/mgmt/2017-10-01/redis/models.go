@@ -21,6 +21,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -110,6 +111,14 @@ type AccessKeys struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - The current secondary key that clients can use to authenticate with Redis cache.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// CheckNameAvailabilityParameters parameters body to pass for  name availability check.
+type CheckNameAvailabilityParameters struct {
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 }
 
 // CommonProperties create/Update/Get common properties of the redis cache.
@@ -1065,6 +1074,15 @@ func (page ListResultPage) Values() []ResourceType {
 	return *page.lr.Value
 }
 
+// NotificationListResponse the response of listUpgradeNotifications.
+type NotificationListResponse struct {
+	autorest.Response `json:"-"`
+	// Value - List of all notifications.
+	Value *[]UpgradeNotification `json:"value,omitempty"`
+	// NextLink - Link for next set of notifications.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -1636,6 +1654,31 @@ func (up UpdateProperties) MarshalJSON() ([]byte, error) {
 	}
 	if up.ShardCount != nil {
 		objectMap["shardCount"] = up.ShardCount
+	}
+	return json.Marshal(objectMap)
+}
+
+// UpgradeNotification properties of upgrade notification.
+type UpgradeNotification struct {
+	// Name - Name of upgrade notification.
+	Name *string `json:"name,omitempty"`
+	// Timestamp - Timestamp when upgrade notification occured.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// UpsellNotification - Details about this upgrade notification
+	UpsellNotification map[string]*string `json:"upsellNotification"`
+}
+
+// MarshalJSON is the custom marshaler for UpgradeNotification.
+func (un UpgradeNotification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if un.Name != nil {
+		objectMap["name"] = un.Name
+	}
+	if un.Timestamp != nil {
+		objectMap["timestamp"] = un.Timestamp
+	}
+	if un.UpsellNotification != nil {
+		objectMap["upsellNotification"] = un.UpsellNotification
 	}
 	return json.Marshal(objectMap)
 }

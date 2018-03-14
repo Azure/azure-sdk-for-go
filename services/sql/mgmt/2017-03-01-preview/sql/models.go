@@ -1737,6 +1737,12 @@ type DatabaseOperationProperties struct {
 	ErrorSeverity *int32 `json:"errorSeverity,omitempty"`
 	// IsUserError - Whether or not the error is a user error.
 	IsUserError *bool `json:"isUserError,omitempty"`
+	// EstimatedCompletionTime - The estimated completion time of the operation.
+	EstimatedCompletionTime *date.Time `json:"estimatedCompletionTime,omitempty"`
+	// Description - The operation description.
+	Description *string `json:"description,omitempty"`
+	// IsCancellable - Whether the operation can be cancelled.
+	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
 // DatabaseProperties represents the properties of a database.

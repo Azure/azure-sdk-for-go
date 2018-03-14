@@ -37,6 +37,11 @@ const (
 	CreateModeServerPropertiesForCreate CreateMode = "ServerPropertiesForCreate"
 )
 
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() [3]CreateMode {
+	return [3]CreateMode{CreateModeDefault, CreateModePointInTimeRestore, CreateModeServerPropertiesForCreate}
+}
+
 // OperationOrigin enumerates the values for operation origin.
 type OperationOrigin string
 
@@ -48,6 +53,11 @@ const (
 	// User ...
 	User OperationOrigin = "user"
 )
+
+// PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
+func PossibleOperationOriginValues() [3]OperationOrigin {
+	return [3]OperationOrigin{NotSpecified, System, User}
+}
 
 // ServerState enumerates the values for server state.
 type ServerState string
@@ -61,6 +71,11 @@ const (
 	Ready ServerState = "Ready"
 )
 
+// PossibleServerStateValues returns an array of possible values for the ServerState const type.
+func PossibleServerStateValues() [3]ServerState {
+	return [3]ServerState{Disabled, Dropping, Ready}
+}
+
 // ServerVersion enumerates the values for server version.
 type ServerVersion string
 
@@ -70,6 +85,11 @@ const (
 	// NineFullStopSix ...
 	NineFullStopSix ServerVersion = "9.6"
 )
+
+// PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
+func PossibleServerVersionValues() [2]ServerVersion {
+	return [2]ServerVersion{NineFullStopFive, NineFullStopSix}
+}
 
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
@@ -81,6 +101,11 @@ const (
 	Standard SkuTier = "Standard"
 )
 
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [2]SkuTier {
+	return [2]SkuTier{Basic, Standard}
+}
+
 // SslEnforcementEnum enumerates the values for ssl enforcement enum.
 type SslEnforcementEnum string
 
@@ -90,6 +115,11 @@ const (
 	// SslEnforcementEnumEnabled ...
 	SslEnforcementEnumEnabled SslEnforcementEnum = "Enabled"
 )
+
+// PossibleSslEnforcementEnumValues returns an array of possible values for the SslEnforcementEnum const type.
+func PossibleSslEnforcementEnumValues() [2]SslEnforcementEnum {
+	return [2]SslEnforcementEnum{SslEnforcementEnumDisabled, SslEnforcementEnumEnabled}
+}
 
 // Configuration represents a Configuration.
 type Configuration struct {

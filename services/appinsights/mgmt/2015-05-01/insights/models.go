@@ -35,6 +35,53 @@ const (
 	Web ApplicationType = "web"
 )
 
+// PossibleApplicationTypeValues returns an array of possible values for the ApplicationType const type.
+func PossibleApplicationTypeValues() [2]ApplicationType {
+	return [2]ApplicationType{Other, Web}
+}
+
+// FavoriteSourceType enumerates the values for favorite source type.
+type FavoriteSourceType string
+
+const (
+	// Events ...
+	Events FavoriteSourceType = "events"
+	// Funnel ...
+	Funnel FavoriteSourceType = "funnel"
+	// Impact ...
+	Impact FavoriteSourceType = "impact"
+	// Notebook ...
+	Notebook FavoriteSourceType = "notebook"
+	// Retention ...
+	Retention FavoriteSourceType = "retention"
+	// Segmentation ...
+	Segmentation FavoriteSourceType = "segmentation"
+	// Sessions ...
+	Sessions FavoriteSourceType = "sessions"
+	// Userflows ...
+	Userflows FavoriteSourceType = "userflows"
+)
+
+// PossibleFavoriteSourceTypeValues returns an array of possible values for the FavoriteSourceType const type.
+func PossibleFavoriteSourceTypeValues() [8]FavoriteSourceType {
+	return [8]FavoriteSourceType{Events, Funnel, Impact, Notebook, Retention, Segmentation, Sessions, Userflows}
+}
+
+// FavoriteType enumerates the values for favorite type.
+type FavoriteType string
+
+const (
+	// Shared ...
+	Shared FavoriteType = "shared"
+	// User ...
+	User FavoriteType = "user"
+)
+
+// PossibleFavoriteTypeValues returns an array of possible values for the FavoriteType const type.
+func PossibleFavoriteTypeValues() [2]FavoriteType {
+	return [2]FavoriteType{Shared, User}
+}
+
 // FlowType enumerates the values for flow type.
 type FlowType string
 
@@ -42,6 +89,11 @@ const (
 	// Bluefield ...
 	Bluefield FlowType = "Bluefield"
 )
+
+// PossibleFlowTypeValues returns an array of possible values for the FlowType const type.
+func PossibleFlowTypeValues() [1]FlowType {
+	return [1]FlowType{Bluefield}
+}
 
 // PurgeState enumerates the values for purge state.
 type PurgeState string
@@ -53,6 +105,11 @@ const (
 	Pending PurgeState = "Pending"
 )
 
+// PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
+func PossiblePurgeStateValues() [2]PurgeState {
+	return [2]PurgeState{Completed, Pending}
+}
+
 // RequestSource enumerates the values for request source.
 type RequestSource string
 
@@ -60,6 +117,11 @@ const (
 	// Rest ...
 	Rest RequestSource = "rest"
 )
+
+// PossibleRequestSourceValues returns an array of possible values for the RequestSource const type.
+func PossibleRequestSourceValues() [1]RequestSource {
+	return [1]RequestSource{Rest}
+}
 
 // WebTestKind enumerates the values for web test kind.
 type WebTestKind string
@@ -70,6 +132,11 @@ const (
 	// Ping ...
 	Ping WebTestKind = "ping"
 )
+
+// PossibleWebTestKindValues returns an array of possible values for the WebTestKind const type.
+func PossibleWebTestKindValues() [2]WebTestKind {
+	return [2]WebTestKind{Multistep, Ping}
+}
 
 // Annotation annotation associated with an application insights resource.
 type Annotation struct {
@@ -353,6 +420,34 @@ type ApplicationInsightsComponentExportRequest struct {
 	DestinationAccountID *string `json:"DestinationAccountId,omitempty"`
 }
 
+// ApplicationInsightsComponentFavorite properties that define a favorite that is associated to an Application
+// Insights component.
+type ApplicationInsightsComponentFavorite struct {
+	autorest.Response `json:"-"`
+	// Name - The user-defined name of the favorite.
+	Name *string `json:"Name,omitempty"`
+	// Config - Configuration of this particular favorite, which are driven by the Azure portal UX. Configuration data is a string containing valid JSON
+	Config *string `json:"Config,omitempty"`
+	// Version - This instance's version of the data model. This can change as new features are added that can be marked favorite. Current examples include MetricsExplorer (ME) and Search.
+	Version *string `json:"Version,omitempty"`
+	// FavoriteID - Internally assigned unique id of the favorite definition.
+	FavoriteID *string `json:"FavoriteId,omitempty"`
+	// FavoriteType - Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'Shared', 'User'
+	FavoriteType FavoriteType `json:"FavoriteType,omitempty"`
+	// SourceType - The source of the favorite definition.
+	SourceType *string `json:"SourceType,omitempty"`
+	// TimeModified - Date and time in UTC of the last modification that was made to this favorite definition.
+	TimeModified *string `json:"TimeModified,omitempty"`
+	// Tags - A list of 0 or more tags that are associated with this favorite definition
+	Tags *[]string `json:"Tags,omitempty"`
+	// Category - Favorite category, as defined by the user at creation time.
+	Category *string `json:"Category,omitempty"`
+	// IsGeneratedFromTemplate - Flag denoting wether or not this favorite was generated from a template.
+	IsGeneratedFromTemplate *bool `json:"IsGeneratedFromTemplate,omitempty"`
+	// UserID - Unique user id of the specific user that owns this favorite.
+	UserID *string `json:"UserId,omitempty"`
+}
+
 // ApplicationInsightsComponentFeature an Application Insights component daily data volume cap status
 type ApplicationInsightsComponentFeature struct {
 	// FeatureName - The pricing feature name.
@@ -609,6 +704,23 @@ type ApplicationInsightsComponentQuotaStatus struct {
 	ExpirationTime *string `json:"ExpirationTime,omitempty"`
 }
 
+// ApplicationInsightsComponentWebTestLocation properties that define a web test location available to an
+// Application Insights Component.
+type ApplicationInsightsComponentWebTestLocation struct {
+	// DisplayName - The display name of the web test location.
+	DisplayName *string `json:"DisplayName,omitempty"`
+	// Tag - Internally defined geographic location tag.
+	Tag *string `json:"Tag,omitempty"`
+}
+
+// ApplicationInsightsWebTestLocationsListResult describes the list of web test locations available to an
+// Application Insights Component.
+type ApplicationInsightsWebTestLocationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of web test locations.
+	Value *[]ApplicationInsightsComponentWebTestLocation `json:"value,omitempty"`
+}
+
 // ComponentPurgeBody describes the body of a purge request for an App Insights component
 type ComponentPurgeBody struct {
 	// Table - Table from which to purge data.
@@ -666,6 +778,12 @@ type ListAnnotation struct {
 type ListApplicationInsightsComponentExportConfiguration struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationInsightsComponentExportConfiguration `json:"value,omitempty"`
+}
+
+// ListApplicationInsightsComponentFavorite ...
+type ListApplicationInsightsComponentFavorite struct {
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationInsightsComponentFavorite `json:"value,omitempty"`
 }
 
 // ListApplicationInsightsComponentProactiveDetectionConfiguration ...

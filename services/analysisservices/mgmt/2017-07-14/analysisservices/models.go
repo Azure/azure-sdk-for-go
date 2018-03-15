@@ -54,6 +54,11 @@ const (
 	Updating ProvisioningState = "Updating"
 )
 
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() [12]ProvisioningState {
+	return [12]ProvisioningState{Deleting, Failed, Paused, Pausing, Preparing, Provisioning, Resuming, Scaling, Succeeded, Suspended, Suspending, Updating}
+}
+
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
@@ -65,6 +70,11 @@ const (
 	// Standard ...
 	Standard SkuTier = "Standard"
 )
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [3]SkuTier {
+	return [3]SkuTier{Basic, Development, Standard}
+}
 
 // State enumerates the values for state.
 type State string
@@ -96,6 +106,11 @@ const (
 	StateUpdating State = "Updating"
 )
 
+// PossibleStateValues returns an array of possible values for the State const type.
+func PossibleStateValues() [12]State {
+	return [12]State{StateDeleting, StateFailed, StatePaused, StatePausing, StatePreparing, StateProvisioning, StateResuming, StateScaling, StateSucceeded, StateSuspended, StateSuspending, StateUpdating}
+}
+
 // Status enumerates the values for status.
 type Status string
 
@@ -103,6 +118,11 @@ const (
 	// Live ...
 	Live Status = "Live"
 )
+
+// PossibleStatusValues returns an array of possible values for the Status const type.
+func PossibleStatusValues() [1]Status {
+	return [1]Status{Live}
+}
 
 // CheckServerNameAvailabilityParameters details of server name request body.
 type CheckServerNameAvailabilityParameters struct {

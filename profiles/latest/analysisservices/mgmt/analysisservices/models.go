@@ -41,6 +41,10 @@ const (
 	ReadOnly ConnectionMode = original.ReadOnly
 )
 
+func PossibleConnectionModeValues() [2]ConnectionMode {
+	return original.PossibleConnectionModeValues()
+}
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -58,6 +62,10 @@ const (
 	Updating     ProvisioningState = original.Updating
 )
 
+func PossibleProvisioningStateValues() [12]ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+
 type SkuTier = original.SkuTier
 
 const (
@@ -65,6 +73,10 @@ const (
 	Development SkuTier = original.Development
 	Standard    SkuTier = original.Standard
 )
+
+func PossibleSkuTierValues() [3]SkuTier {
+	return original.PossibleSkuTierValues()
+}
 
 type State = original.State
 
@@ -83,11 +95,19 @@ const (
 	StateUpdating     State = original.StateUpdating
 )
 
+func PossibleStateValues() [12]State {
+	return original.PossibleStateValues()
+}
+
 type Status = original.Status
 
 const (
 	Live Status = original.Live
 )
+
+func PossibleStatusValues() [1]Status {
+	return original.PossibleStatusValues()
+}
 
 type CheckServerNameAvailabilityParameters = original.CheckServerNameAvailabilityParameters
 type CheckServerNameAvailabilityResult = original.CheckServerNameAvailabilityResult

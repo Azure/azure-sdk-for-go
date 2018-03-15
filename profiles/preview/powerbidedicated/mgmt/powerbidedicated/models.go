@@ -60,11 +60,19 @@ const (
 	Updating     ProvisioningState = original.Updating
 )
 
+func PossibleProvisioningStateValues() [12]ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+
 type SkuTier = original.SkuTier
 
 const (
 	PBIEAzure SkuTier = original.PBIEAzure
 )
+
+func PossibleSkuTierValues() [1]SkuTier {
+	return original.PossibleSkuTierValues()
+}
 
 type State = original.State
 
@@ -82,6 +90,10 @@ const (
 	StateSuspending   State = original.StateSuspending
 	StateUpdating     State = original.StateUpdating
 )
+
+func PossibleStateValues() [12]State {
+	return original.PossibleStateValues()
+}
 
 type CapacitiesCreateFuture = original.CapacitiesCreateFuture
 type CapacitiesDeleteFuture = original.CapacitiesDeleteFuture

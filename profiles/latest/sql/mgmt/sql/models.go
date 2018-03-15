@@ -95,12 +95,20 @@ const (
 	SQL        AuthenticationType = original.SQL
 )
 
+func PossibleAuthenticationTypeValues() [2]AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+
 type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
 
 const (
 	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
 	Invalid       CheckNameAvailabilityReason = original.Invalid
 )
+
+func PossibleCheckNameAvailabilityReasonValues() [2]CheckNameAvailabilityReason {
+	return original.PossibleCheckNameAvailabilityReasonValues()
+}
 
 type CreateMode = original.CreateMode
 
@@ -114,6 +122,10 @@ const (
 	Restore                        CreateMode = original.Restore
 	RestoreLongTermRetentionBackup CreateMode = original.RestoreLongTermRetentionBackup
 )
+
+func PossibleCreateModeValues() [8]CreateMode {
+	return original.PossibleCreateModeValues()
+}
 
 type DatabaseEdition = original.DatabaseEdition
 
@@ -131,6 +143,10 @@ const (
 	Web           DatabaseEdition = original.Web
 )
 
+func PossibleDatabaseEditionValues() [11]DatabaseEdition {
+	return original.PossibleDatabaseEditionValues()
+}
+
 type ElasticPoolEdition = original.ElasticPoolEdition
 
 const (
@@ -138,6 +154,10 @@ const (
 	ElasticPoolEditionPremium  ElasticPoolEdition = original.ElasticPoolEditionPremium
 	ElasticPoolEditionStandard ElasticPoolEdition = original.ElasticPoolEditionStandard
 )
+
+func PossibleElasticPoolEditionValues() [3]ElasticPoolEdition {
+	return original.PossibleElasticPoolEditionValues()
+}
 
 type ElasticPoolState = original.ElasticPoolState
 
@@ -147,12 +167,20 @@ const (
 	Ready    ElasticPoolState = original.Ready
 )
 
+func PossibleElasticPoolStateValues() [3]ElasticPoolState {
+	return original.PossibleElasticPoolStateValues()
+}
+
 type ReadScale = original.ReadScale
 
 const (
 	ReadScaleDisabled ReadScale = original.ReadScaleDisabled
 	ReadScaleEnabled  ReadScale = original.ReadScaleEnabled
 )
+
+func PossibleReadScaleValues() [2]ReadScale {
+	return original.PossibleReadScaleValues()
+}
 
 type RecommendedIndexAction = original.RecommendedIndexAction
 
@@ -161,6 +189,10 @@ const (
 	Drop    RecommendedIndexAction = original.Drop
 	Rebuild RecommendedIndexAction = original.Rebuild
 )
+
+func PossibleRecommendedIndexActionValues() [3]RecommendedIndexAction {
+	return original.PossibleRecommendedIndexActionValues()
+}
 
 type RecommendedIndexState = original.RecommendedIndexState
 
@@ -178,6 +210,10 @@ const (
 	Verifying     RecommendedIndexState = original.Verifying
 )
 
+func PossibleRecommendedIndexStateValues() [11]RecommendedIndexState {
+	return original.PossibleRecommendedIndexStateValues()
+}
+
 type RecommendedIndexType = original.RecommendedIndexType
 
 const (
@@ -186,6 +222,10 @@ const (
 	COLUMNSTORE          RecommendedIndexType = original.COLUMNSTORE
 	NONCLUSTERED         RecommendedIndexType = original.NONCLUSTERED
 )
+
+func PossibleRecommendedIndexTypeValues() [4]RecommendedIndexType {
+	return original.PossibleRecommendedIndexTypeValues()
+}
 
 type ReplicationRole = original.ReplicationRole
 
@@ -197,6 +237,10 @@ const (
 	ReplicationRoleSource               ReplicationRole = original.ReplicationRoleSource
 )
 
+func PossibleReplicationRoleValues() [5]ReplicationRole {
+	return original.PossibleReplicationRoleValues()
+}
+
 type ReplicationState = original.ReplicationState
 
 const (
@@ -206,11 +250,19 @@ const (
 	SUSPENDED ReplicationState = original.SUSPENDED
 )
 
+func PossibleReplicationStateValues() [4]ReplicationState {
+	return original.PossibleReplicationStateValues()
+}
+
 type SampleName = original.SampleName
 
 const (
 	AdventureWorksLT SampleName = original.AdventureWorksLT
 )
+
+func PossibleSampleNameValues() [1]SampleName {
+	return original.PossibleSampleNameValues()
+}
 
 type SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdmins
 
@@ -218,6 +270,10 @@ const (
 	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsDisabled
 	SecurityAlertPolicyEmailAccountAdminsEnabled  SecurityAlertPolicyEmailAccountAdmins = original.SecurityAlertPolicyEmailAccountAdminsEnabled
 )
+
+func PossibleSecurityAlertPolicyEmailAccountAdminsValues() [2]SecurityAlertPolicyEmailAccountAdmins {
+	return original.PossibleSecurityAlertPolicyEmailAccountAdminsValues()
+}
 
 type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
@@ -227,12 +283,20 @@ const (
 	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
+func PossibleSecurityAlertPolicyStateValues() [3]SecurityAlertPolicyState {
+	return original.PossibleSecurityAlertPolicyStateValues()
+}
+
 type SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefault
 
 const (
 	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultDisabled
 	SecurityAlertPolicyUseServerDefaultEnabled  SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefaultEnabled
 )
+
+func PossibleSecurityAlertPolicyUseServerDefaultValues() [2]SecurityAlertPolicyUseServerDefault {
+	return original.PossibleSecurityAlertPolicyUseServerDefaultValues()
+}
 
 type ServiceObjectiveName = original.ServiceObjectiveName
 
@@ -304,12 +368,20 @@ const (
 	ServiceObjectiveNameSystem4L    ServiceObjectiveName = original.ServiceObjectiveNameSystem4L
 )
 
+func PossibleServiceObjectiveNameValues() [65]ServiceObjectiveName {
+	return original.PossibleServiceObjectiveNameValues()
+}
+
 type StorageKeyType = original.StorageKeyType
 
 const (
 	SharedAccessKey  StorageKeyType = original.SharedAccessKey
 	StorageAccessKey StorageKeyType = original.StorageAccessKey
 )
+
+func PossibleStorageKeyTypeValues() [2]StorageKeyType {
+	return original.PossibleStorageKeyTypeValues()
+}
 
 type TransparentDataEncryptionActivityStatus = original.TransparentDataEncryptionActivityStatus
 
@@ -318,12 +390,20 @@ const (
 	Encrypting TransparentDataEncryptionActivityStatus = original.Encrypting
 )
 
+func PossibleTransparentDataEncryptionActivityStatusValues() [2]TransparentDataEncryptionActivityStatus {
+	return original.PossibleTransparentDataEncryptionActivityStatusValues()
+}
+
 type TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatus
 
 const (
 	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusDisabled
 	TransparentDataEncryptionStatusEnabled  TransparentDataEncryptionStatus = original.TransparentDataEncryptionStatusEnabled
 )
+
+func PossibleTransparentDataEncryptionStatusValues() [2]TransparentDataEncryptionStatus {
+	return original.PossibleTransparentDataEncryptionStatusValues()
+}
 
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse

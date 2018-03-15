@@ -38,6 +38,11 @@ const (
 	Send AccessRights = "Send"
 )
 
+// PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
+func PossibleAccessRightsValues() [3]AccessRights {
+	return [3]AccessRights{Listen, Manage, Send}
+}
+
 // EncodingCaptureDescription enumerates the values for encoding capture description.
 type EncodingCaptureDescription string
 
@@ -47,6 +52,11 @@ const (
 	// AvroDeflate ...
 	AvroDeflate EncodingCaptureDescription = "AvroDeflate"
 )
+
+// PossibleEncodingCaptureDescriptionValues returns an array of possible values for the EncodingCaptureDescription const type.
+func PossibleEncodingCaptureDescriptionValues() [2]EncodingCaptureDescription {
+	return [2]EncodingCaptureDescription{Avro, AvroDeflate}
+}
 
 // EntityStatus enumerates the values for entity status.
 type EntityStatus string
@@ -72,6 +82,11 @@ const (
 	Unknown EntityStatus = "Unknown"
 )
 
+// PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
+func PossibleEntityStatusValues() [9]EntityStatus {
+	return [9]EntityStatus{Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown}
+}
+
 // FilterType enumerates the values for filter type.
 type FilterType string
 
@@ -82,6 +97,11 @@ const (
 	FilterTypeSQLFilter FilterType = "SqlFilter"
 )
 
+// PossibleFilterTypeValues returns an array of possible values for the FilterType const type.
+func PossibleFilterTypeValues() [2]FilterType {
+	return [2]FilterType{FilterTypeCorrelationFilter, FilterTypeSQLFilter}
+}
+
 // KeyType enumerates the values for key type.
 type KeyType string
 
@@ -91,6 +111,11 @@ const (
 	// SecondaryKey ...
 	SecondaryKey KeyType = "SecondaryKey"
 )
+
+// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
+func PossibleKeyTypeValues() [2]KeyType {
+	return [2]KeyType{PrimaryKey, SecondaryKey}
+}
 
 // ProvisioningStateDR enumerates the values for provisioning state dr.
 type ProvisioningStateDR string
@@ -104,6 +129,11 @@ const (
 	Succeeded ProvisioningStateDR = "Succeeded"
 )
 
+// PossibleProvisioningStateDRValues returns an array of possible values for the ProvisioningStateDR const type.
+func PossibleProvisioningStateDRValues() [3]ProvisioningStateDR {
+	return [3]ProvisioningStateDR{Accepted, Failed, Succeeded}
+}
+
 // RoleDisasterRecovery enumerates the values for role disaster recovery.
 type RoleDisasterRecovery string
 
@@ -115,6 +145,11 @@ const (
 	// Secondary ...
 	Secondary RoleDisasterRecovery = "Secondary"
 )
+
+// PossibleRoleDisasterRecoveryValues returns an array of possible values for the RoleDisasterRecovery const type.
+func PossibleRoleDisasterRecoveryValues() [3]RoleDisasterRecovery {
+	return [3]RoleDisasterRecovery{Primary, PrimaryNotReplicating, Secondary}
+}
 
 // SkuName enumerates the values for sku name.
 type SkuName string
@@ -128,6 +163,11 @@ const (
 	Standard SkuName = "Standard"
 )
 
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() [3]SkuName {
+	return [3]SkuName{Basic, Premium, Standard}
+}
+
 // SkuTier enumerates the values for sku tier.
 type SkuTier string
 
@@ -139,6 +179,11 @@ const (
 	// SkuTierStandard ...
 	SkuTierStandard SkuTier = "Standard"
 )
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() [3]SkuTier {
+	return [3]SkuTier{SkuTierBasic, SkuTierPremium, SkuTierStandard}
+}
 
 // UnavailableReason enumerates the values for unavailable reason.
 type UnavailableReason string
@@ -157,6 +202,11 @@ const (
 	// TooManyNamespaceInCurrentSubscription ...
 	TooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
 )
+
+// PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
+func PossibleUnavailableReasonValues() [6]UnavailableReason {
+	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+}
 
 // AccessKeys namespace/ServiceBus Connection String
 type AccessKeys struct {
@@ -199,6 +249,24 @@ type ArmDisasterRecovery struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArmDisasterRecovery.
+func (adr ArmDisasterRecovery) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if adr.ArmDisasterRecoveryProperties != nil {
+		objectMap["properties"] = adr.ArmDisasterRecoveryProperties
+	}
+	if adr.ID != nil {
+		objectMap["id"] = adr.ID
+	}
+	if adr.Name != nil {
+		objectMap["name"] = adr.Name
+	}
+	if adr.Type != nil {
+		objectMap["type"] = adr.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ArmDisasterRecovery struct.
@@ -434,6 +502,18 @@ type Destination struct {
 	*DestinationProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Destination.
+func (d Destination) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	if d.DestinationProperties != nil {
+		objectMap["properties"] = d.DestinationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for Destination struct.
 func (d *Destination) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -497,6 +577,24 @@ type Eventhub struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Eventhub.
+func (e Eventhub) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.EventhubProperties != nil {
+		objectMap["properties"] = e.EventhubProperties
+	}
+	if e.ID != nil {
+		objectMap["id"] = e.ID
+	}
+	if e.Name != nil {
+		objectMap["name"] = e.Name
+	}
+	if e.Type != nil {
+		objectMap["type"] = e.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Eventhub struct.
@@ -1119,6 +1217,24 @@ type Rule struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Rule.
+func (r Rule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Ruleproperties != nil {
+		objectMap["properties"] = r.Ruleproperties
+	}
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for Rule struct.
 func (r *Rule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1295,6 +1411,24 @@ type SBAuthorizationRule struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SBAuthorizationRule.
+func (sar SBAuthorizationRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sar.SBAuthorizationRuleProperties != nil {
+		objectMap["properties"] = sar.SBAuthorizationRuleProperties
+	}
+	if sar.ID != nil {
+		objectMap["id"] = sar.ID
+	}
+	if sar.Name != nil {
+		objectMap["name"] = sar.Name
+	}
+	if sar.Type != nil {
+		objectMap["type"] = sar.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SBAuthorizationRule struct.
@@ -1832,6 +1966,24 @@ type SBQueue struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SBQueue.
+func (sq SBQueue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sq.SBQueueProperties != nil {
+		objectMap["properties"] = sq.SBQueueProperties
+	}
+	if sq.ID != nil {
+		objectMap["id"] = sq.ID
+	}
+	if sq.Name != nil {
+		objectMap["name"] = sq.Name
+	}
+	if sq.Type != nil {
+		objectMap["type"] = sq.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for SBQueue struct.
 func (sq *SBQueue) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2017,6 +2169,8 @@ type SBQueueProperties struct {
 	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
 	// Status - Enumerates the possible values for the status of a messaging entity. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'
 	Status EntityStatus `json:"status,omitempty"`
+	// EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+	EnableBatchedOperations *bool `json:"enableBatchedOperations,omitempty"`
 	// AutoDeleteOnIdle - ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
 	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
 	// EnablePartitioning - A value that indicates whether the queue is to be partitioned across multiple message brokers.
@@ -2050,6 +2204,24 @@ type SBSubscription struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SBSubscription.
+func (ss SBSubscription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.SBSubscriptionProperties != nil {
+		objectMap["properties"] = ss.SBSubscriptionProperties
+	}
+	if ss.ID != nil {
+		objectMap["id"] = ss.ID
+	}
+	if ss.Name != nil {
+		objectMap["name"] = ss.Name
+	}
+	if ss.Type != nil {
+		objectMap["type"] = ss.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SBSubscription struct.
@@ -2254,6 +2426,24 @@ type SBTopic struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SBTopic.
+func (st SBTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if st.SBTopicProperties != nil {
+		objectMap["properties"] = st.SBTopicProperties
+	}
+	if st.ID != nil {
+		objectMap["id"] = st.ID
+	}
+	if st.Name != nil {
+		objectMap["name"] = st.Name
+	}
+	if st.Type != nil {
+		objectMap["type"] = st.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SBTopic struct.

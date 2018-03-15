@@ -37,6 +37,11 @@ const (
 	Suspended DataLakeStoreAccountState = "suspended"
 )
 
+// PossibleDataLakeStoreAccountStateValues returns an array of possible values for the DataLakeStoreAccountState const type.
+func PossibleDataLakeStoreAccountStateValues() [2]DataLakeStoreAccountState {
+	return [2]DataLakeStoreAccountState{Active, Suspended}
+}
+
 // DataLakeStoreAccountStatus enumerates the values for data lake store account status.
 type DataLakeStoreAccountStatus string
 
@@ -61,6 +66,11 @@ const (
 	Suspending DataLakeStoreAccountStatus = "Suspending"
 )
 
+// PossibleDataLakeStoreAccountStatusValues returns an array of possible values for the DataLakeStoreAccountStatus const type.
+func PossibleDataLakeStoreAccountStatusValues() [9]DataLakeStoreAccountStatus {
+	return [9]DataLakeStoreAccountStatus{Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending}
+}
+
 // EncryptionConfigType enumerates the values for encryption config type.
 type EncryptionConfigType string
 
@@ -71,6 +81,11 @@ const (
 	UserManaged EncryptionConfigType = "UserManaged"
 )
 
+// PossibleEncryptionConfigTypeValues returns an array of possible values for the EncryptionConfigType const type.
+func PossibleEncryptionConfigTypeValues() [2]EncryptionConfigType {
+	return [2]EncryptionConfigType{ServiceManaged, UserManaged}
+}
+
 // EncryptionIdentityType enumerates the values for encryption identity type.
 type EncryptionIdentityType string
 
@@ -78,6 +93,11 @@ const (
 	// SystemAssigned ...
 	SystemAssigned EncryptionIdentityType = "SystemAssigned"
 )
+
+// PossibleEncryptionIdentityTypeValues returns an array of possible values for the EncryptionIdentityType const type.
+func PossibleEncryptionIdentityTypeValues() [1]EncryptionIdentityType {
+	return [1]EncryptionIdentityType{SystemAssigned}
+}
 
 // EncryptionProvisioningState enumerates the values for encryption provisioning state.
 type EncryptionProvisioningState string
@@ -89,6 +109,11 @@ const (
 	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = "Succeeded"
 )
 
+// PossibleEncryptionProvisioningStateValues returns an array of possible values for the EncryptionProvisioningState const type.
+func PossibleEncryptionProvisioningStateValues() [2]EncryptionProvisioningState {
+	return [2]EncryptionProvisioningState{EncryptionProvisioningStateCreating, EncryptionProvisioningStateSucceeded}
+}
+
 // EncryptionState enumerates the values for encryption state.
 type EncryptionState string
 
@@ -98,6 +123,11 @@ const (
 	// Enabled ...
 	Enabled EncryptionState = "Enabled"
 )
+
+// PossibleEncryptionStateValues returns an array of possible values for the EncryptionState const type.
+func PossibleEncryptionStateValues() [2]EncryptionState {
+	return [2]EncryptionState{Disabled, Enabled}
+}
 
 // OperationStatus enumerates the values for operation status.
 type OperationStatus string
@@ -110,6 +140,11 @@ const (
 	// OperationStatusSucceeded ...
 	OperationStatusSucceeded OperationStatus = "Succeeded"
 )
+
+// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
+func PossibleOperationStatusValues() [3]OperationStatus {
+	return [3]OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
+}
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
 // indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from the

@@ -59,12 +59,20 @@ const (
 	Enabled  ExternalAccess = original.Enabled
 )
 
+func PossibleExternalAccessValues() [2]ExternalAccess {
+	return original.PossibleExternalAccessValues()
+}
+
 type Ldaps = original.Ldaps
 
 const (
 	LdapsDisabled Ldaps = original.LdapsDisabled
 	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
+
+func PossibleLdapsValues() [2]Ldaps {
+	return original.PossibleLdapsValues()
+}
 
 type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult

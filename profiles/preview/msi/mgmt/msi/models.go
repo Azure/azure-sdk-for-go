@@ -40,6 +40,10 @@ const (
 	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = original.MicrosoftManagedIdentityuserAssignedIdentities
 )
 
+func PossibleUserAssignedIdentitiesValues() [1]UserAssignedIdentities {
+	return original.PossibleUserAssignedIdentitiesValues()
+}
+
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Identity = original.Identity

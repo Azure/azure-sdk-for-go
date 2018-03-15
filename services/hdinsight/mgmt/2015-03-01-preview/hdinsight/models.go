@@ -37,6 +37,11 @@ const (
 	Succeeded AsyncOperationState = "Succeeded"
 )
 
+// PossibleAsyncOperationStateValues returns an array of possible values for the AsyncOperationState const type.
+func PossibleAsyncOperationStateValues() [3]AsyncOperationState {
+	return [3]AsyncOperationState{Failed, InProgress, Succeeded}
+}
+
 // ClusterProvisioningState enumerates the values for cluster provisioning state.
 type ClusterProvisioningState string
 
@@ -53,6 +58,11 @@ const (
 	ClusterProvisioningStateSucceeded ClusterProvisioningState = "Succeeded"
 )
 
+// PossibleClusterProvisioningStateValues returns an array of possible values for the ClusterProvisioningState const type.
+func PossibleClusterProvisioningStateValues() [5]ClusterProvisioningState {
+	return [5]ClusterProvisioningState{ClusterProvisioningStateCanceled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateInProgress, ClusterProvisioningStateSucceeded}
+}
+
 // DirectoryType enumerates the values for directory type.
 type DirectoryType string
 
@@ -60,6 +70,11 @@ const (
 	// ActiveDirectory ...
 	ActiveDirectory DirectoryType = "ActiveDirectory"
 )
+
+// PossibleDirectoryTypeValues returns an array of possible values for the DirectoryType const type.
+func PossibleDirectoryTypeValues() [1]DirectoryType {
+	return [1]DirectoryType{ActiveDirectory}
+}
 
 // EnabledCredential enumerates the values for enabled credential.
 type EnabledCredential string
@@ -71,6 +86,11 @@ const (
 	True EnabledCredential = "true"
 )
 
+// PossibleEnabledCredentialValues returns an array of possible values for the EnabledCredential const type.
+func PossibleEnabledCredentialValues() [2]EnabledCredential {
+	return [2]EnabledCredential{False, True}
+}
+
 // OSType enumerates the values for os type.
 type OSType string
 
@@ -81,6 +101,11 @@ const (
 	Windows OSType = "Windows"
 )
 
+// PossibleOSTypeValues returns an array of possible values for the OSType const type.
+func PossibleOSTypeValues() [2]OSType {
+	return [2]OSType{Linux, Windows}
+}
+
 // Tier enumerates the values for tier.
 type Tier string
 
@@ -90,6 +115,11 @@ const (
 	// Standard ...
 	Standard Tier = "Standard"
 )
+
+// PossibleTierValues returns an array of possible values for the Tier const type.
+func PossibleTierValues() [2]Tier {
+	return [2]Tier{Premium, Standard}
+}
 
 // Application the HDInsight cluster application
 type Application struct {

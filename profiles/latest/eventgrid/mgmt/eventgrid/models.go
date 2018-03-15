@@ -51,6 +51,10 @@ const (
 	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
 )
 
+func PossibleEndpointTypeValues() [3]EndpointType {
+	return original.PossibleEndpointTypeValues()
+}
+
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
 
 const (
@@ -62,12 +66,20 @@ const (
 	Updating  EventSubscriptionProvisioningState = original.Updating
 )
 
+func PossibleEventSubscriptionProvisioningStateValues() [6]EventSubscriptionProvisioningState {
+	return original.PossibleEventSubscriptionProvisioningStateValues()
+}
+
 type ResourceRegionType = original.ResourceRegionType
 
 const (
 	GlobalResource   ResourceRegionType = original.GlobalResource
 	RegionalResource ResourceRegionType = original.RegionalResource
 )
+
+func PossibleResourceRegionTypeValues() [2]ResourceRegionType {
+	return original.PossibleResourceRegionTypeValues()
+}
 
 type TopicProvisioningState = original.TopicProvisioningState
 
@@ -80,6 +92,10 @@ const (
 	TopicProvisioningStateUpdating  TopicProvisioningState = original.TopicProvisioningStateUpdating
 )
 
+func PossibleTopicProvisioningStateValues() [6]TopicProvisioningState {
+	return original.PossibleTopicProvisioningStateValues()
+}
+
 type TopicTypeProvisioningState = original.TopicTypeProvisioningState
 
 const (
@@ -90,6 +106,10 @@ const (
 	TopicTypeProvisioningStateSucceeded TopicTypeProvisioningState = original.TopicTypeProvisioningStateSucceeded
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
+
+func PossibleTopicTypeProvisioningStateValues() [6]TopicTypeProvisioningState {
+	return original.PossibleTopicTypeProvisioningStateValues()
+}
 
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties

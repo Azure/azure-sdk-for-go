@@ -35,6 +35,11 @@ const (
 	Enabled ExternalAccess = "Enabled"
 )
 
+// PossibleExternalAccessValues returns an array of possible values for the ExternalAccess const type.
+func PossibleExternalAccessValues() [2]ExternalAccess {
+	return [2]ExternalAccess{Disabled, Enabled}
+}
+
 // Ldaps enumerates the values for ldaps.
 type Ldaps string
 
@@ -44,6 +49,11 @@ const (
 	// LdapsEnabled ...
 	LdapsEnabled Ldaps = "Enabled"
 )
+
+// PossibleLdapsValues returns an array of possible values for the Ldaps const type.
+func PossibleLdapsValues() [2]Ldaps {
+	return [2]Ldaps{LdapsDisabled, LdapsEnabled}
+}
 
 // DomainService domain service.
 type DomainService struct {

@@ -30,14 +30,14 @@ type ComponentCurrentBillingFeaturesClient struct {
 }
 
 // NewComponentCurrentBillingFeaturesClient creates an instance of the ComponentCurrentBillingFeaturesClient client.
-func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return NewComponentCurrentBillingFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewComponentCurrentBillingFeaturesClient(subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
+	return NewComponentCurrentBillingFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewComponentCurrentBillingFeaturesClientWithBaseURI creates an instance of the ComponentCurrentBillingFeaturesClient
 // client.
-func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
-	return ComponentCurrentBillingFeaturesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
+	return ComponentCurrentBillingFeaturesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // Get returns current billing features for an Application Insights component.
@@ -148,7 +148,7 @@ func (client ComponentCurrentBillingFeaturesClient) UpdatePreparer(ctx context.C
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/currentbillingfeatures", pathParameters),

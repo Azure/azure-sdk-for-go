@@ -30,13 +30,13 @@ type APIKeysClient struct {
 }
 
 // NewAPIKeysClient creates an instance of the APIKeysClient client.
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return NewAPIKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAPIKeysClient(subscriptionID string, purgeID string) APIKeysClient {
+	return NewAPIKeysClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewAPIKeysClientWithBaseURI creates an instance of the APIKeysClient client.
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return APIKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) APIKeysClient {
+	return APIKeysClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // Create create an API Key of an Application Insights component.
@@ -80,7 +80,7 @@ func (client APIKeysClient) CreatePreparer(ctx context.Context, resourceGroupNam
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/ApiKeys", pathParameters),

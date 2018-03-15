@@ -38,6 +38,11 @@ const (
 	ReadWrite CachingTypes = "ReadWrite"
 )
 
+// PossibleCachingTypesValues returns an array of possible values for the CachingTypes const type.
+func PossibleCachingTypesValues() [3]CachingTypes {
+	return [3]CachingTypes{None, ReadOnly, ReadWrite}
+}
+
 // ComponentNames enumerates the values for component names.
 type ComponentNames string
 
@@ -45,6 +50,11 @@ const (
 	// MicrosoftWindowsShellSetup ...
 	MicrosoftWindowsShellSetup ComponentNames = "Microsoft-Windows-Shell-Setup"
 )
+
+// PossibleComponentNamesValues returns an array of possible values for the ComponentNames const type.
+func PossibleComponentNamesValues() [1]ComponentNames {
+	return [1]ComponentNames{MicrosoftWindowsShellSetup}
+}
 
 // DiskCreateOptionTypes enumerates the values for disk create option types.
 type DiskCreateOptionTypes string
@@ -58,6 +68,11 @@ const (
 	FromImage DiskCreateOptionTypes = "FromImage"
 )
 
+// PossibleDiskCreateOptionTypesValues returns an array of possible values for the DiskCreateOptionTypes const type.
+func PossibleDiskCreateOptionTypesValues() [3]DiskCreateOptionTypes {
+	return [3]DiskCreateOptionTypes{Attach, Empty, FromImage}
+}
+
 // InstanceViewTypes enumerates the values for instance view types.
 type InstanceViewTypes string
 
@@ -65,6 +80,11 @@ const (
 	// InstanceView ...
 	InstanceView InstanceViewTypes = "instanceView"
 )
+
+// PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
+func PossibleInstanceViewTypesValues() [1]InstanceViewTypes {
+	return [1]InstanceViewTypes{InstanceView}
+}
 
 // OperatingSystemTypes enumerates the values for operating system types.
 type OperatingSystemTypes string
@@ -76,6 +96,11 @@ const (
 	Windows OperatingSystemTypes = "Windows"
 )
 
+// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
+func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+	return [2]OperatingSystemTypes{Linux, Windows}
+}
+
 // PassNames enumerates the values for pass names.
 type PassNames string
 
@@ -83,6 +108,11 @@ const (
 	// OobeSystem ...
 	OobeSystem PassNames = "OobeSystem"
 )
+
+// PossiblePassNamesValues returns an array of possible values for the PassNames const type.
+func PossiblePassNamesValues() [1]PassNames {
+	return [1]PassNames{OobeSystem}
+}
 
 // ProtocolTypes enumerates the values for protocol types.
 type ProtocolTypes string
@@ -94,6 +124,11 @@ const (
 	HTTPS ProtocolTypes = "Https"
 )
 
+// PossibleProtocolTypesValues returns an array of possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() [2]ProtocolTypes {
+	return [2]ProtocolTypes{HTTP, HTTPS}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -101,6 +136,11 @@ const (
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
 )
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+	return [1]ResourceIdentityType{SystemAssigned}
+}
 
 // SettingNames enumerates the values for setting names.
 type SettingNames string
@@ -111,6 +151,11 @@ const (
 	// FirstLogonCommands ...
 	FirstLogonCommands SettingNames = "FirstLogonCommands"
 )
+
+// PossibleSettingNamesValues returns an array of possible values for the SettingNames const type.
+func PossibleSettingNamesValues() [2]SettingNames {
+	return [2]SettingNames{AutoLogon, FirstLogonCommands}
+}
 
 // StatusLevelTypes enumerates the values for status level types.
 type StatusLevelTypes string
@@ -124,6 +169,11 @@ const (
 	Warning StatusLevelTypes = "Warning"
 )
 
+// PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
+func PossibleStatusLevelTypesValues() [3]StatusLevelTypes {
+	return [3]StatusLevelTypes{Error, Info, Warning}
+}
+
 // UpgradeMode enumerates the values for upgrade mode.
 type UpgradeMode string
 
@@ -134,6 +184,11 @@ const (
 	Manual UpgradeMode = "Manual"
 )
 
+// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
+func PossibleUpgradeModeValues() [2]UpgradeMode {
+	return [2]UpgradeMode{Automatic, Manual}
+}
+
 // VirtualMachineScaleSetSkuScaleType enumerates the values for virtual machine scale set sku scale type.
 type VirtualMachineScaleSetSkuScaleType string
 
@@ -143,6 +198,11 @@ const (
 	// VirtualMachineScaleSetSkuScaleTypeNone ...
 	VirtualMachineScaleSetSkuScaleTypeNone VirtualMachineScaleSetSkuScaleType = "None"
 )
+
+// PossibleVirtualMachineScaleSetSkuScaleTypeValues returns an array of possible values for the VirtualMachineScaleSetSkuScaleType const type.
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() [2]VirtualMachineScaleSetSkuScaleType {
+	return [2]VirtualMachineScaleSetSkuScaleType{VirtualMachineScaleSetSkuScaleTypeAutomatic, VirtualMachineScaleSetSkuScaleTypeNone}
+}
 
 // VirtualMachineSizeTypes enumerates the values for virtual machine size types.
 type VirtualMachineSizeTypes string
@@ -275,6 +335,11 @@ const (
 	// StandardGS5 ...
 	StandardGS5 VirtualMachineSizeTypes = "Standard_GS5"
 )
+
+// PossibleVirtualMachineSizeTypesValues returns an array of possible values for the VirtualMachineSizeTypes const type.
+func PossibleVirtualMachineSizeTypesValues() [63]VirtualMachineSizeTypes {
+	return [63]VirtualMachineSizeTypes{BasicA0, BasicA1, BasicA2, BasicA3, BasicA4, StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD15V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS11V2, StandardDS12, StandardDS12V2, StandardDS13, StandardDS13V2, StandardDS14, StandardDS14V2, StandardDS15V2, StandardDS1V2, StandardDS2, StandardDS2V2, StandardDS3, StandardDS3V2, StandardDS4, StandardDS4V2, StandardDS5V2, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
+}
 
 // AdditionalUnattendContent specifies additional XML formatted information that can be included in the
 // Unattend.xml file, which is used by Windows Setup. Contents are defined by setting name, component name, and the
@@ -719,6 +784,18 @@ type NetworkInterfaceReference struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkInterfaceReference.
+func (nir NetworkInterfaceReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nir.NetworkInterfaceReferenceProperties != nil {
+		objectMap["properties"] = nir.NetworkInterfaceReferenceProperties
+	}
+	if nir.ID != nil {
+		objectMap["id"] = nir.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for NetworkInterfaceReference struct.
 func (nir *NetworkInterfaceReference) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1152,6 +1229,18 @@ type VirtualMachineCaptureResult struct {
 	*VirtualMachineCaptureResultProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineCaptureResult.
+func (vmcr VirtualMachineCaptureResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmcr.VirtualMachineCaptureResultProperties != nil {
+		objectMap["properties"] = vmcr.VirtualMachineCaptureResultProperties
+	}
+	if vmcr.ID != nil {
+		objectMap["id"] = vmcr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for VirtualMachineCaptureResult struct.
@@ -2003,6 +2092,21 @@ type VirtualMachineScaleSetExtension struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetExtension.
+func (vmsse VirtualMachineScaleSetExtension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmsse.Name != nil {
+		objectMap["name"] = vmsse.Name
+	}
+	if vmsse.VirtualMachineScaleSetExtensionProperties != nil {
+		objectMap["properties"] = vmsse.VirtualMachineScaleSetExtensionProperties
+	}
+	if vmsse.ID != nil {
+		objectMap["id"] = vmsse.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetExtension struct.
 func (vmsse *VirtualMachineScaleSetExtension) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2104,6 +2208,21 @@ type VirtualMachineScaleSetIPConfiguration struct {
 	*VirtualMachineScaleSetIPConfigurationProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetIPConfiguration.
+func (vmssic VirtualMachineScaleSetIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssic.Name != nil {
+		objectMap["name"] = vmssic.Name
+	}
+	if vmssic.VirtualMachineScaleSetIPConfigurationProperties != nil {
+		objectMap["properties"] = vmssic.VirtualMachineScaleSetIPConfigurationProperties
+	}
+	if vmssic.ID != nil {
+		objectMap["id"] = vmssic.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetIPConfiguration struct.
@@ -2477,6 +2596,21 @@ type VirtualMachineScaleSetNetworkConfiguration struct {
 	*VirtualMachineScaleSetNetworkConfigurationProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetNetworkConfiguration.
+func (vmssnc VirtualMachineScaleSetNetworkConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssnc.Name != nil {
+		objectMap["name"] = vmssnc.Name
+	}
+	if vmssnc.VirtualMachineScaleSetNetworkConfigurationProperties != nil {
+		objectMap["properties"] = vmssnc.VirtualMachineScaleSetNetworkConfigurationProperties
+	}
+	if vmssnc.ID != nil {
+		objectMap["id"] = vmssnc.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetNetworkConfiguration struct.

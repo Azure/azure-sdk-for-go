@@ -40,7 +40,7 @@ func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string, r
 	return TestJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
-// Get retrieve a test job streams identified by runbook name and stream id.
+// Get retrieve a test job stream of the test job identified by runbook name and stream id.
 //
 // automationAccountName is the automation account name. runbookName is the runbook name. jobStreamID is the job
 // stream id.

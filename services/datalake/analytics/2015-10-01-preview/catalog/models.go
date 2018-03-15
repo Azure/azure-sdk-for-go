@@ -35,6 +35,11 @@ const (
 	Resource FileType = "Resource"
 )
 
+// PossibleFileTypeValues returns an array of possible values for the FileType const type.
+func PossibleFileTypeValues() [2]FileType {
+	return [2]FileType{Assembly, Resource}
+}
+
 // DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters dataLakeAnalytics DataLakeAnalyticsAccount information.
 type DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters struct {
 	// Password - the password for the secret to pass in

@@ -31,13 +31,13 @@ type WebTestsClient struct {
 }
 
 // NewWebTestsClient creates an instance of the WebTestsClient client.
-func NewWebTestsClient(subscriptionID string) WebTestsClient {
-	return NewWebTestsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewWebTestsClient(subscriptionID string, purgeID string) WebTestsClient {
+	return NewWebTestsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewWebTestsClientWithBaseURI creates an instance of the WebTestsClient client.
-func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
-	return WebTestsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WebTestsClient {
+	return WebTestsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // CreateOrUpdate creates or updates an Application Insights web test definition.
@@ -91,7 +91,7 @@ func (client WebTestsClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}", pathParameters),
@@ -476,7 +476,7 @@ func (client WebTestsClient) UpdateTagsPreparer(ctx context.Context, resourceGro
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/webtests/{webTestName}", pathParameters),

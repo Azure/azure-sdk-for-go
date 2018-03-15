@@ -30,13 +30,13 @@ type ExportConfigurationsClient struct {
 }
 
 // NewExportConfigurationsClient creates an instance of the ExportConfigurationsClient client.
-func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
-	return NewExportConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExportConfigurationsClient(subscriptionID string, purgeID string) ExportConfigurationsClient {
+	return NewExportConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
 // NewExportConfigurationsClientWithBaseURI creates an instance of the ExportConfigurationsClient client.
-func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
-	return ExportConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ExportConfigurationsClient {
+	return ExportConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
 // Create create a Continuous Export configuration of an Application Insights component.
@@ -80,7 +80,7 @@ func (client ExportConfigurationsClient) CreatePreparer(ctx context.Context, res
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/exportconfiguration", pathParameters),
@@ -357,7 +357,7 @@ func (client ExportConfigurationsClient) UpdatePreparer(ctx context.Context, res
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsJSON(),
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/exportconfiguration/{exportId}", pathParameters),

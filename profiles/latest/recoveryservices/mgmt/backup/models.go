@@ -132,6 +132,10 @@ const (
 	XSync   AzureFileShareType = original.XSync
 )
 
+func PossibleAzureFileShareTypeValues() [3]AzureFileShareType {
+	return original.PossibleAzureFileShareTypeValues()
+}
+
 type ContainerType = original.ContainerType
 
 const (
@@ -152,6 +156,10 @@ const (
 	ContainerTypeWindows                    ContainerType = original.ContainerTypeWindows
 )
 
+func PossibleContainerTypeValues() [15]ContainerType {
+	return original.PossibleContainerTypeValues()
+}
+
 type ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainer
 
 const (
@@ -170,6 +178,10 @@ const (
 	ContainerTypeVMAppContainer1                        ContainerTypeBasicProtectionContainer = original.ContainerTypeVMAppContainer1
 )
 
+func PossibleContainerTypeBasicProtectionContainerValues() [13]ContainerTypeBasicProtectionContainer {
+	return original.PossibleContainerTypeBasicProtectionContainerValues()
+}
+
 type CopyOptions = original.CopyOptions
 
 const (
@@ -179,6 +191,10 @@ const (
 	CopyOptionsOverwrite      CopyOptions = original.CopyOptionsOverwrite
 	CopyOptionsSkip           CopyOptions = original.CopyOptionsSkip
 )
+
+func PossibleCopyOptionsValues() [5]CopyOptions {
+	return original.PossibleCopyOptionsValues()
+}
 
 type DataSourceType = original.DataSourceType
 
@@ -198,6 +214,10 @@ const (
 	DataSourceTypeVMwareVM          DataSourceType = original.DataSourceTypeVMwareVM
 )
 
+func PossibleDataSourceTypeValues() [13]DataSourceType {
+	return original.PossibleDataSourceTypeValues()
+}
+
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -210,6 +230,10 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
+func PossibleDayOfWeekValues() [7]DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+
 type EngineType = original.EngineType
 
 const (
@@ -217,6 +241,10 @@ const (
 	BackupEngineTypeBackupEngineBase        EngineType = original.BackupEngineTypeBackupEngineBase
 	BackupEngineTypeDpmBackupEngine         EngineType = original.BackupEngineTypeDpmBackupEngine
 )
+
+func PossibleEngineTypeValues() [3]EngineType {
+	return original.PossibleEngineTypeValues()
+}
 
 type EnhancedSecurityState = original.EnhancedSecurityState
 
@@ -226,6 +254,10 @@ const (
 	EnhancedSecurityStateInvalid  EnhancedSecurityState = original.EnhancedSecurityStateInvalid
 )
 
+func PossibleEnhancedSecurityStateValues() [3]EnhancedSecurityState {
+	return original.PossibleEnhancedSecurityStateValues()
+}
+
 type FabricName = original.FabricName
 
 const (
@@ -233,12 +265,20 @@ const (
 	FabricNameInvalid FabricName = original.FabricNameInvalid
 )
 
+func PossibleFabricNameValues() [2]FabricName {
+	return original.PossibleFabricNameValues()
+}
+
 type FeatureType = original.FeatureType
 
 const (
 	FeatureTypeAzureVMResourceBackup FeatureType = original.FeatureTypeAzureVMResourceBackup
 	FeatureTypeFeatureSupportRequest FeatureType = original.FeatureTypeFeatureSupportRequest
 )
+
+func PossibleFeatureTypeValues() [2]FeatureType {
+	return original.PossibleFeatureTypeValues()
+}
 
 type HealthState = original.HealthState
 
@@ -249,6 +289,10 @@ const (
 	HealthStatePassed          HealthState = original.HealthStatePassed
 )
 
+func PossibleHealthStateValues() [4]HealthState {
+	return original.PossibleHealthStateValues()
+}
+
 type HealthStatus = original.HealthStatus
 
 const (
@@ -257,6 +301,10 @@ const (
 	HealthStatusInvalid         HealthStatus = original.HealthStatusInvalid
 	HealthStatusPassed          HealthStatus = original.HealthStatusPassed
 )
+
+func PossibleHealthStatusValues() [4]HealthStatus {
+	return original.PossibleHealthStatusValues()
+}
 
 type HTTPStatusCode = original.HTTPStatusCode
 
@@ -310,6 +358,10 @@ const (
 	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
+func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
+	return original.PossibleHTTPStatusCodeValues()
+}
+
 type InquiryStatus = original.InquiryStatus
 
 const (
@@ -317,6 +369,10 @@ const (
 	InquiryStatusInvalid InquiryStatus = original.InquiryStatusInvalid
 	InquiryStatusSuccess InquiryStatus = original.InquiryStatusSuccess
 )
+
+func PossibleInquiryStatusValues() [3]InquiryStatus {
+	return original.PossibleInquiryStatusValues()
+}
 
 type ItemType = original.ItemType
 
@@ -336,6 +392,10 @@ const (
 	ItemTypeVMwareVM          ItemType = original.ItemTypeVMwareVM
 )
 
+func PossibleItemTypeValues() [13]ItemType {
+	return original.PossibleItemTypeValues()
+}
+
 type JobOperationType = original.JobOperationType
 
 const (
@@ -349,6 +409,10 @@ const (
 	JobOperationTypeUnRegister       JobOperationType = original.JobOperationTypeUnRegister
 )
 
+func PossibleJobOperationTypeValues() [8]JobOperationType {
+	return original.PossibleJobOperationTypeValues()
+}
+
 type JobStatus = original.JobStatus
 
 const (
@@ -361,6 +425,10 @@ const (
 	JobStatusInvalid               JobStatus = original.JobStatusInvalid
 )
 
+func PossibleJobStatusValues() [7]JobStatus {
+	return original.PossibleJobStatusValues()
+}
+
 type JobSupportedAction = original.JobSupportedAction
 
 const (
@@ -368,6 +436,10 @@ const (
 	JobSupportedActionInvalid     JobSupportedAction = original.JobSupportedActionInvalid
 	JobSupportedActionRetriable   JobSupportedAction = original.JobSupportedActionRetriable
 )
+
+func PossibleJobSupportedActionValues() [3]JobSupportedAction {
+	return original.PossibleJobSupportedActionValues()
+}
 
 type JobType = original.JobType
 
@@ -380,6 +452,10 @@ const (
 	JobTypeMabJob           JobType = original.JobTypeMabJob
 )
 
+func PossibleJobTypeValues() [6]JobType {
+	return original.PossibleJobTypeValues()
+}
+
 type LastBackupStatus = original.LastBackupStatus
 
 const (
@@ -388,6 +464,10 @@ const (
 	LastBackupStatusIRPending LastBackupStatus = original.LastBackupStatusIRPending
 	LastBackupStatusUnhealthy LastBackupStatus = original.LastBackupStatusUnhealthy
 )
+
+func PossibleLastBackupStatusValues() [4]LastBackupStatus {
+	return original.PossibleLastBackupStatusValues()
+}
 
 type MabServerType = original.MabServerType
 
@@ -409,6 +489,10 @@ const (
 	MabServerTypeWindows                    MabServerType = original.MabServerTypeWindows
 )
 
+func PossibleMabServerTypeValues() [15]MabServerType {
+	return original.PossibleMabServerTypeValues()
+}
+
 type ManagementType = original.ManagementType
 
 const (
@@ -423,6 +507,10 @@ const (
 	ManagementTypeMAB               ManagementType = original.ManagementTypeMAB
 )
 
+func PossibleManagementTypeValues() [9]ManagementType {
+	return original.PossibleManagementTypeValues()
+}
+
 type ManagementTypeBasicProtectionPolicy = original.ManagementTypeBasicProtectionPolicy
 
 const (
@@ -434,6 +522,10 @@ const (
 	BackupManagementTypeMAB                     ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeMAB
 	BackupManagementTypeProtectionPolicy        ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeProtectionPolicy
 )
+
+func PossibleManagementTypeBasicProtectionPolicyValues() [7]ManagementTypeBasicProtectionPolicy {
+	return original.PossibleManagementTypeBasicProtectionPolicyValues()
+}
 
 type MonthOfYear = original.MonthOfYear
 
@@ -453,6 +545,10 @@ const (
 	MonthOfYearSeptember MonthOfYear = original.MonthOfYearSeptember
 )
 
+func PossibleMonthOfYearValues() [13]MonthOfYear {
+	return original.PossibleMonthOfYearValues()
+}
+
 type ObjectType = original.ObjectType
 
 const (
@@ -460,6 +556,10 @@ const (
 	ObjectTypeOperationResultInfo           ObjectType = original.ObjectTypeOperationResultInfo
 	ObjectTypeOperationResultInfoBase       ObjectType = original.ObjectTypeOperationResultInfoBase
 )
+
+func PossibleObjectTypeValues() [3]ObjectType {
+	return original.PossibleObjectTypeValues()
+}
 
 type ObjectTypeBasicBackupRequest = original.ObjectTypeBasicBackupRequest
 
@@ -470,12 +570,20 @@ const (
 	ObjectTypeIaasVMBackupRequest         ObjectTypeBasicBackupRequest = original.ObjectTypeIaasVMBackupRequest
 )
 
+func PossibleObjectTypeBasicBackupRequestValues() [4]ObjectTypeBasicBackupRequest {
+	return original.PossibleObjectTypeBasicBackupRequestValues()
+}
+
 type ObjectTypeBasicILRRequest = original.ObjectTypeBasicILRRequest
 
 const (
 	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeBasicILRRequest = original.ObjectTypeIaasVMILRRegistrationRequest
 	ObjectTypeILRRequest                   ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
 )
+
+func PossibleObjectTypeBasicILRRequestValues() [2]ObjectTypeBasicILRRequest {
+	return original.PossibleObjectTypeBasicILRRequestValues()
+}
 
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
@@ -485,6 +593,10 @@ const (
 	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
 )
+
+func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() [4]ObjectTypeBasicOperationStatusExtendedInfo {
+	return original.PossibleObjectTypeBasicOperationStatusExtendedInfoValues()
+}
 
 type ObjectTypeBasicRecoveryPoint = original.ObjectTypeBasicRecoveryPoint
 
@@ -498,6 +610,10 @@ const (
 	ObjectTypeRecoveryPoint                            ObjectTypeBasicRecoveryPoint = original.ObjectTypeRecoveryPoint
 )
 
+func PossibleObjectTypeBasicRecoveryPointValues() [7]ObjectTypeBasicRecoveryPoint {
+	return original.PossibleObjectTypeBasicRecoveryPointValues()
+}
+
 type ObjectTypeBasicRestoreRequest = original.ObjectTypeBasicRestoreRequest
 
 const (
@@ -509,6 +625,10 @@ const (
 	ObjectTypeRestoreRequest                            ObjectTypeBasicRestoreRequest = original.ObjectTypeRestoreRequest
 )
 
+func PossibleObjectTypeBasicRestoreRequestValues() [6]ObjectTypeBasicRestoreRequest {
+	return original.PossibleObjectTypeBasicRestoreRequestValues()
+}
+
 type OperationStatusValues = original.OperationStatusValues
 
 const (
@@ -519,6 +639,10 @@ const (
 	OperationStatusValuesSucceeded  OperationStatusValues = original.OperationStatusValuesSucceeded
 )
 
+func PossibleOperationStatusValuesValues() [5]OperationStatusValues {
+	return original.PossibleOperationStatusValuesValues()
+}
+
 type OverwriteOptions = original.OverwriteOptions
 
 const (
@@ -527,6 +651,10 @@ const (
 	OverwriteOptionsOverwrite      OverwriteOptions = original.OverwriteOptionsOverwrite
 )
 
+func PossibleOverwriteOptionsValues() [3]OverwriteOptions {
+	return original.PossibleOverwriteOptionsValues()
+}
+
 type ProtectableContainerType = original.ProtectableContainerType
 
 const (
@@ -534,6 +662,10 @@ const (
 	ProtectableContainerTypeStorageContainer     ProtectableContainerType = original.ProtectableContainerTypeStorageContainer
 	ProtectableContainerTypeVMAppContainer       ProtectableContainerType = original.ProtectableContainerTypeVMAppContainer
 )
+
+func PossibleProtectableContainerTypeValues() [3]ProtectableContainerType {
+	return original.PossibleProtectableContainerTypeValues()
+}
 
 type ProtectableItemType = original.ProtectableItemType
 
@@ -549,6 +681,10 @@ const (
 	ProtectableItemTypeWorkloadProtectableItem                ProtectableItemType = original.ProtectableItemTypeWorkloadProtectableItem
 )
 
+func PossibleProtectableItemTypeValues() [9]ProtectableItemType {
+	return original.PossibleProtectableItemTypeValues()
+}
+
 type ProtectedItemHealthStatus = original.ProtectedItemHealthStatus
 
 const (
@@ -558,6 +694,10 @@ const (
 	ProtectedItemHealthStatusNotReachable ProtectedItemHealthStatus = original.ProtectedItemHealthStatusNotReachable
 	ProtectedItemHealthStatusUnhealthy    ProtectedItemHealthStatus = original.ProtectedItemHealthStatusUnhealthy
 )
+
+func PossibleProtectedItemHealthStatusValues() [5]ProtectedItemHealthStatus {
+	return original.PossibleProtectedItemHealthStatusValues()
+}
 
 type ProtectedItemState = original.ProtectedItemState
 
@@ -569,6 +709,10 @@ const (
 	ProtectedItemStateProtectionPaused  ProtectedItemState = original.ProtectedItemStateProtectionPaused
 	ProtectedItemStateProtectionStopped ProtectedItemState = original.ProtectedItemStateProtectionStopped
 )
+
+func PossibleProtectedItemStateValues() [6]ProtectedItemState {
+	return original.PossibleProtectedItemStateValues()
+}
 
 type ProtectedItemType = original.ProtectedItemType
 
@@ -585,12 +729,20 @@ const (
 	ProtectedItemTypeProtectedItem                          ProtectedItemType = original.ProtectedItemTypeProtectedItem
 )
 
+func PossibleProtectedItemTypeValues() [10]ProtectedItemType {
+	return original.PossibleProtectedItemTypeValues()
+}
+
 type ProtectionIntentItemType = original.ProtectionIntentItemType
 
 const (
 	ProtectionIntentItemTypeAzureResourceItem ProtectionIntentItemType = original.ProtectionIntentItemTypeAzureResourceItem
 	ProtectionIntentItemTypeProtectionIntent  ProtectionIntentItemType = original.ProtectionIntentItemTypeProtectionIntent
 )
+
+func PossibleProtectionIntentItemTypeValues() [2]ProtectionIntentItemType {
+	return original.PossibleProtectionIntentItemTypeValues()
+}
 
 type ProtectionState = original.ProtectionState
 
@@ -603,6 +755,10 @@ const (
 	ProtectionStateProtectionStopped ProtectionState = original.ProtectionStateProtectionStopped
 )
 
+func PossibleProtectionStateValues() [6]ProtectionState {
+	return original.PossibleProtectionStateValues()
+}
+
 type ProtectionStatus = original.ProtectionStatus
 
 const (
@@ -613,6 +769,10 @@ const (
 	ProtectionStatusProtectionFailed ProtectionStatus = original.ProtectionStatusProtectionFailed
 )
 
+func PossibleProtectionStatusValues() [5]ProtectionStatus {
+	return original.PossibleProtectionStatusValues()
+}
+
 type RecoveryPointTierStatus = original.RecoveryPointTierStatus
 
 const (
@@ -622,6 +782,10 @@ const (
 	RecoveryPointTierStatusValid    RecoveryPointTierStatus = original.RecoveryPointTierStatusValid
 )
 
+func PossibleRecoveryPointTierStatusValues() [4]RecoveryPointTierStatus {
+	return original.PossibleRecoveryPointTierStatusValues()
+}
+
 type RecoveryPointTierType = original.RecoveryPointTierType
 
 const (
@@ -629,6 +793,10 @@ const (
 	RecoveryPointTierTypeInstantRP  RecoveryPointTierType = original.RecoveryPointTierTypeInstantRP
 	RecoveryPointTierTypeInvalid    RecoveryPointTierType = original.RecoveryPointTierTypeInvalid
 )
+
+func PossibleRecoveryPointTierTypeValues() [3]RecoveryPointTierType {
+	return original.PossibleRecoveryPointTierTypeValues()
+}
 
 type RecoveryType = original.RecoveryType
 
@@ -638,6 +806,10 @@ const (
 	RecoveryTypeOriginalLocation  RecoveryType = original.RecoveryTypeOriginalLocation
 	RecoveryTypeRestoreDisks      RecoveryType = original.RecoveryTypeRestoreDisks
 )
+
+func PossibleRecoveryTypeValues() [4]RecoveryType {
+	return original.PossibleRecoveryTypeValues()
+}
 
 type RestorePointQueryType = original.RestorePointQueryType
 
@@ -650,6 +822,10 @@ const (
 	RestorePointQueryTypeLog                 RestorePointQueryType = original.RestorePointQueryTypeLog
 )
 
+func PossibleRestorePointQueryTypeValues() [6]RestorePointQueryType {
+	return original.PossibleRestorePointQueryTypeValues()
+}
+
 type RestorePointType = original.RestorePointType
 
 const (
@@ -659,6 +835,10 @@ const (
 	RestorePointTypeLog          RestorePointType = original.RestorePointTypeLog
 )
 
+func PossibleRestorePointTypeValues() [4]RestorePointType {
+	return original.PossibleRestorePointTypeValues()
+}
+
 type RestoreRequestType = original.RestoreRequestType
 
 const (
@@ -666,6 +846,10 @@ const (
 	RestoreRequestTypeInvalid          RestoreRequestType = original.RestoreRequestTypeInvalid
 	RestoreRequestTypeItemLevelRestore RestoreRequestType = original.RestoreRequestTypeItemLevelRestore
 )
+
+func PossibleRestoreRequestTypeValues() [3]RestoreRequestType {
+	return original.PossibleRestoreRequestTypeValues()
+}
 
 type RetentionDurationType = original.RetentionDurationType
 
@@ -677,6 +861,10 @@ const (
 	RetentionDurationTypeYears   RetentionDurationType = original.RetentionDurationTypeYears
 )
 
+func PossibleRetentionDurationTypeValues() [5]RetentionDurationType {
+	return original.PossibleRetentionDurationTypeValues()
+}
+
 type RetentionPolicyType = original.RetentionPolicyType
 
 const (
@@ -685,6 +873,10 @@ const (
 	RetentionPolicyTypeSimpleRetentionPolicy   RetentionPolicyType = original.RetentionPolicyTypeSimpleRetentionPolicy
 )
 
+func PossibleRetentionPolicyTypeValues() [3]RetentionPolicyType {
+	return original.PossibleRetentionPolicyTypeValues()
+}
+
 type RetentionScheduleFormat = original.RetentionScheduleFormat
 
 const (
@@ -692,6 +884,10 @@ const (
 	RetentionScheduleFormatInvalid RetentionScheduleFormat = original.RetentionScheduleFormatInvalid
 	RetentionScheduleFormatWeekly  RetentionScheduleFormat = original.RetentionScheduleFormatWeekly
 )
+
+func PossibleRetentionScheduleFormatValues() [3]RetentionScheduleFormat {
+	return original.PossibleRetentionScheduleFormatValues()
+}
 
 type SchedulePolicyType = original.SchedulePolicyType
 
@@ -702,6 +898,10 @@ const (
 	SchedulePolicyTypeSimpleSchedulePolicy   SchedulePolicyType = original.SchedulePolicyTypeSimpleSchedulePolicy
 )
 
+func PossibleSchedulePolicyTypeValues() [4]SchedulePolicyType {
+	return original.PossibleSchedulePolicyTypeValues()
+}
+
 type ScheduleRunType = original.ScheduleRunType
 
 const (
@@ -709,6 +909,10 @@ const (
 	ScheduleRunTypeInvalid ScheduleRunType = original.ScheduleRunTypeInvalid
 	ScheduleRunTypeWeekly  ScheduleRunType = original.ScheduleRunTypeWeekly
 )
+
+func PossibleScheduleRunTypeValues() [3]ScheduleRunType {
+	return original.PossibleScheduleRunTypeValues()
+}
 
 type SQLDataDirectoryType = original.SQLDataDirectoryType
 
@@ -718,6 +922,10 @@ const (
 	SQLDataDirectoryTypeLog     SQLDataDirectoryType = original.SQLDataDirectoryTypeLog
 )
 
+func PossibleSQLDataDirectoryTypeValues() [3]SQLDataDirectoryType {
+	return original.PossibleSQLDataDirectoryTypeValues()
+}
+
 type StorageType = original.StorageType
 
 const (
@@ -726,6 +934,10 @@ const (
 	StorageTypeLocallyRedundant StorageType = original.StorageTypeLocallyRedundant
 )
 
+func PossibleStorageTypeValues() [3]StorageType {
+	return original.PossibleStorageTypeValues()
+}
+
 type StorageTypeState = original.StorageTypeState
 
 const (
@@ -733,6 +945,10 @@ const (
 	StorageTypeStateLocked   StorageTypeState = original.StorageTypeStateLocked
 	StorageTypeStateUnlocked StorageTypeState = original.StorageTypeStateUnlocked
 )
+
+func PossibleStorageTypeStateValues() [3]StorageTypeState {
+	return original.PossibleStorageTypeStateValues()
+}
 
 type SupportStatus = original.SupportStatus
 
@@ -744,6 +960,10 @@ const (
 	SupportStatusSupported    SupportStatus = original.SupportStatusSupported
 )
 
+func PossibleSupportStatusValues() [5]SupportStatus {
+	return original.PossibleSupportStatusValues()
+}
+
 type Type = original.Type
 
 const (
@@ -751,6 +971,10 @@ const (
 	TypeBackupProtectionContainerCountSummary Type = original.TypeBackupProtectionContainerCountSummary
 	TypeInvalid                               Type = original.TypeInvalid
 )
+
+func PossibleTypeValues() [3]Type {
+	return original.PossibleTypeValues()
+}
 
 type TypeEnum = original.TypeEnum
 
@@ -761,6 +985,10 @@ const (
 	TypeEnumInvalid      TypeEnum = original.TypeEnumInvalid
 	TypeEnumLog          TypeEnum = original.TypeEnumLog
 )
+
+func PossibleTypeEnumValues() [5]TypeEnum {
+	return original.PossibleTypeEnumValues()
+}
 
 type UsagesUnit = original.UsagesUnit
 
@@ -773,6 +1001,10 @@ const (
 	Seconds        UsagesUnit = original.Seconds
 )
 
+func PossibleUsagesUnitValues() [6]UsagesUnit {
+	return original.PossibleUsagesUnitValues()
+}
+
 type ValidationStatus = original.ValidationStatus
 
 const (
@@ -780,6 +1012,10 @@ const (
 	ValidationStatusInvalid   ValidationStatus = original.ValidationStatusInvalid
 	ValidationStatusSucceeded ValidationStatus = original.ValidationStatusSucceeded
 )
+
+func PossibleValidationStatusValues() [3]ValidationStatus {
+	return original.PossibleValidationStatusValues()
+}
 
 type WeekOfMonth = original.WeekOfMonth
 
@@ -791,6 +1027,10 @@ const (
 	Third  WeekOfMonth = original.Third
 )
 
+func PossibleWeekOfMonthValues() [5]WeekOfMonth {
+	return original.PossibleWeekOfMonthValues()
+}
+
 type WorkloadItemType = original.WorkloadItemType
 
 const (
@@ -798,6 +1038,10 @@ const (
 	WorkloadItemTypeSQLDataBase WorkloadItemType = original.WorkloadItemTypeSQLDataBase
 	WorkloadItemTypeSQLInstance WorkloadItemType = original.WorkloadItemTypeSQLInstance
 )
+
+func PossibleWorkloadItemTypeValues() [3]WorkloadItemType {
+	return original.PossibleWorkloadItemTypeValues()
+}
 
 type WorkloadItemTypeBasicWorkloadItem = original.WorkloadItemTypeBasicWorkloadItem
 
@@ -807,6 +1051,10 @@ const (
 	WorkloadItemTypeSQLInstance1        WorkloadItemTypeBasicWorkloadItem = original.WorkloadItemTypeSQLInstance1
 	WorkloadItemTypeWorkloadItem        WorkloadItemTypeBasicWorkloadItem = original.WorkloadItemTypeWorkloadItem
 )
+
+func PossibleWorkloadItemTypeBasicWorkloadItemValues() [4]WorkloadItemTypeBasicWorkloadItem {
+	return original.PossibleWorkloadItemTypeBasicWorkloadItemValues()
+}
 
 type WorkloadType = original.WorkloadType
 
@@ -825,6 +1073,10 @@ const (
 	WorkloadTypeVM                WorkloadType = original.WorkloadTypeVM
 	WorkloadTypeVMwareVM          WorkloadType = original.WorkloadTypeVMwareVM
 )
+
+func PossibleWorkloadTypeValues() [13]WorkloadType {
+	return original.PossibleWorkloadTypeValues()
+}
 
 type AzureBackupServerContainer = original.AzureBackupServerContainer
 type AzureBackupServerEngine = original.AzureBackupServerEngine

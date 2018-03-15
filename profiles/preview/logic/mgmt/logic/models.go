@@ -79,6 +79,10 @@ const (
 	X12          AgreementType = original.X12
 )
 
+func PossibleAgreementTypeValues() [4]AgreementType {
+	return original.PossibleAgreementTypeValues()
+}
+
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -91,6 +95,10 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
+func PossibleDayOfWeekValues() [7]DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+
 type DaysOfWeek = original.DaysOfWeek
 
 const (
@@ -102,6 +110,10 @@ const (
 	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
 	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
+
+func PossibleDaysOfWeekValues() [7]DaysOfWeek {
+	return original.PossibleDaysOfWeekValues()
+}
 
 type EdifactCharacterSet = original.EdifactCharacterSet
 
@@ -123,6 +135,10 @@ const (
 	EdifactCharacterSetUNOY         EdifactCharacterSet = original.EdifactCharacterSetUNOY
 )
 
+func PossibleEdifactCharacterSetValues() [15]EdifactCharacterSet {
+	return original.PossibleEdifactCharacterSetValues()
+}
+
 type EdifactDecimalIndicator = original.EdifactDecimalIndicator
 
 const (
@@ -130,6 +146,10 @@ const (
 	EdifactDecimalIndicatorDecimal      EdifactDecimalIndicator = original.EdifactDecimalIndicatorDecimal
 	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = original.EdifactDecimalIndicatorNotSpecified
 )
+
+func PossibleEdifactDecimalIndicatorValues() [3]EdifactDecimalIndicator {
+	return original.PossibleEdifactDecimalIndicatorValues()
+}
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
 
@@ -143,6 +163,10 @@ const (
 	EncryptionAlgorithmRC2          EncryptionAlgorithm = original.EncryptionAlgorithmRC2
 )
 
+func PossibleEncryptionAlgorithmValues() [7]EncryptionAlgorithm {
+	return original.PossibleEncryptionAlgorithmValues()
+}
+
 type HashingAlgorithm = original.HashingAlgorithm
 
 const (
@@ -155,6 +179,10 @@ const (
 	HashingAlgorithmSHA2512      HashingAlgorithm = original.HashingAlgorithmSHA2512
 )
 
+func PossibleHashingAlgorithmValues() [7]HashingAlgorithm {
+	return original.PossibleHashingAlgorithmValues()
+}
+
 type IntegrationAccountSkuName = original.IntegrationAccountSkuName
 
 const (
@@ -162,6 +190,10 @@ const (
 	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = original.IntegrationAccountSkuNameNotSpecified
 	IntegrationAccountSkuNameStandard     IntegrationAccountSkuName = original.IntegrationAccountSkuNameStandard
 )
+
+func PossibleIntegrationAccountSkuNameValues() [3]IntegrationAccountSkuName {
+	return original.PossibleIntegrationAccountSkuNameValues()
+}
 
 type KeyType = original.KeyType
 
@@ -171,12 +203,20 @@ const (
 	KeyTypeSecondary    KeyType = original.KeyTypeSecondary
 )
 
+func PossibleKeyTypeValues() [3]KeyType {
+	return original.PossibleKeyTypeValues()
+}
+
 type MapType = original.MapType
 
 const (
 	MapTypeNotSpecified MapType = original.MapTypeNotSpecified
 	MapTypeXslt         MapType = original.MapTypeXslt
 )
+
+func PossibleMapTypeValues() [2]MapType {
+	return original.PossibleMapTypeValues()
+}
 
 type MessageFilterType = original.MessageFilterType
 
@@ -185,6 +225,10 @@ const (
 	MessageFilterTypeInclude      MessageFilterType = original.MessageFilterTypeInclude
 	MessageFilterTypeNotSpecified MessageFilterType = original.MessageFilterTypeNotSpecified
 )
+
+func PossibleMessageFilterTypeValues() [3]MessageFilterType {
+	return original.PossibleMessageFilterTypeValues()
+}
 
 type ParameterType = original.ParameterType
 
@@ -200,12 +244,20 @@ const (
 	ParameterTypeString       ParameterType = original.ParameterTypeString
 )
 
+func PossibleParameterTypeValues() [9]ParameterType {
+	return original.PossibleParameterTypeValues()
+}
+
 type PartnerType = original.PartnerType
 
 const (
 	PartnerTypeB2B          PartnerType = original.PartnerTypeB2B
 	PartnerTypeNotSpecified PartnerType = original.PartnerTypeNotSpecified
 )
+
+func PossiblePartnerTypeValues() [2]PartnerType {
+	return original.PossiblePartnerTypeValues()
+}
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
@@ -220,12 +272,20 @@ const (
 	RecurrenceFrequencyYear         RecurrenceFrequency = original.RecurrenceFrequencyYear
 )
 
+func PossibleRecurrenceFrequencyValues() [8]RecurrenceFrequency {
+	return original.PossibleRecurrenceFrequencyValues()
+}
+
 type SchemaType = original.SchemaType
 
 const (
 	SchemaTypeNotSpecified SchemaType = original.SchemaTypeNotSpecified
 	SchemaTypeXML          SchemaType = original.SchemaTypeXML
 )
+
+func PossibleSchemaTypeValues() [2]SchemaType {
+	return original.PossibleSchemaTypeValues()
+}
 
 type SegmentTerminatorSuffix = original.SegmentTerminatorSuffix
 
@@ -236,6 +296,10 @@ const (
 	SegmentTerminatorSuffixNone         SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNone
 	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNotSpecified
 )
+
+func PossibleSegmentTerminatorSuffixValues() [5]SegmentTerminatorSuffix {
+	return original.PossibleSegmentTerminatorSuffixValues()
+}
 
 type SigningAlgorithm = original.SigningAlgorithm
 
@@ -248,6 +312,10 @@ const (
 	SigningAlgorithmSHA2512      SigningAlgorithm = original.SigningAlgorithmSHA2512
 )
 
+func PossibleSigningAlgorithmValues() [6]SigningAlgorithm {
+	return original.PossibleSigningAlgorithmValues()
+}
+
 type SkuName = original.SkuName
 
 const (
@@ -259,6 +327,10 @@ const (
 	SkuNameStandard     SkuName = original.SkuNameStandard
 )
 
+func PossibleSkuNameValues() [6]SkuName {
+	return original.PossibleSkuNameValues()
+}
+
 type TrailingSeparatorPolicy = original.TrailingSeparatorPolicy
 
 const (
@@ -268,6 +340,10 @@ const (
 	TrailingSeparatorPolicyOptional     TrailingSeparatorPolicy = original.TrailingSeparatorPolicyOptional
 )
 
+func PossibleTrailingSeparatorPolicyValues() [4]TrailingSeparatorPolicy {
+	return original.PossibleTrailingSeparatorPolicyValues()
+}
+
 type UsageIndicator = original.UsageIndicator
 
 const (
@@ -276,6 +352,10 @@ const (
 	UsageIndicatorProduction   UsageIndicator = original.UsageIndicatorProduction
 	UsageIndicatorTest         UsageIndicator = original.UsageIndicatorTest
 )
+
+func PossibleUsageIndicatorValues() [4]UsageIndicator {
+	return original.PossibleUsageIndicatorValues()
+}
 
 type WorkflowProvisioningState = original.WorkflowProvisioningState
 
@@ -300,6 +380,10 @@ const (
 	WorkflowProvisioningStateUpdating      WorkflowProvisioningState = original.WorkflowProvisioningStateUpdating
 )
 
+func PossibleWorkflowProvisioningStateValues() [18]WorkflowProvisioningState {
+	return original.PossibleWorkflowProvisioningStateValues()
+}
+
 type WorkflowState = original.WorkflowState
 
 const (
@@ -310,6 +394,10 @@ const (
 	WorkflowStateNotSpecified WorkflowState = original.WorkflowStateNotSpecified
 	WorkflowStateSuspended    WorkflowState = original.WorkflowStateSuspended
 )
+
+func PossibleWorkflowStateValues() [6]WorkflowState {
+	return original.PossibleWorkflowStateValues()
+}
 
 type WorkflowStatus = original.WorkflowStatus
 
@@ -328,6 +416,10 @@ const (
 	WorkflowStatusTimedOut     WorkflowStatus = original.WorkflowStatusTimedOut
 	WorkflowStatusWaiting      WorkflowStatus = original.WorkflowStatusWaiting
 )
+
+func PossibleWorkflowStatusValues() [13]WorkflowStatus {
+	return original.PossibleWorkflowStatusValues()
+}
 
 type WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningState
 
@@ -352,6 +444,10 @@ const (
 	WorkflowTriggerProvisioningStateUpdating      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUpdating
 )
 
+func PossibleWorkflowTriggerProvisioningStateValues() [18]WorkflowTriggerProvisioningState {
+	return original.PossibleWorkflowTriggerProvisioningStateValues()
+}
+
 type X12CharacterSet = original.X12CharacterSet
 
 const (
@@ -361,6 +457,10 @@ const (
 	X12CharacterSetUTF8         X12CharacterSet = original.X12CharacterSetUTF8
 )
 
+func PossibleX12CharacterSetValues() [4]X12CharacterSet {
+	return original.PossibleX12CharacterSetValues()
+}
+
 type X12DateFormat = original.X12DateFormat
 
 const (
@@ -368,6 +468,10 @@ const (
 	X12DateFormatNotSpecified X12DateFormat = original.X12DateFormatNotSpecified
 	X12DateFormatYYMMDD       X12DateFormat = original.X12DateFormatYYMMDD
 )
+
+func PossibleX12DateFormatValues() [3]X12DateFormat {
+	return original.PossibleX12DateFormatValues()
+}
 
 type X12TimeFormat = original.X12TimeFormat
 
@@ -378,6 +482,10 @@ const (
 	X12TimeFormatHHMMSSdd     X12TimeFormat = original.X12TimeFormatHHMMSSdd
 	X12TimeFormatNotSpecified X12TimeFormat = original.X12TimeFormatNotSpecified
 )
+
+func PossibleX12TimeFormatValues() [5]X12TimeFormat {
+	return original.PossibleX12TimeFormatValues()
+}
 
 type AgreementContent = original.AgreementContent
 type AS2AcknowledgementConnectionSettings = original.AS2AcknowledgementConnectionSettings

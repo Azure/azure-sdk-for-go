@@ -25,58 +25,58 @@ import (
 	"net/http"
 )
 
-// AutoscaleSettingsClient is the monitor Management Client
-type AutoscaleSettingsClient struct {
+// AutoscaleSettingsGroupClient is the monitor Management Client
+type AutoscaleSettingsGroupClient struct {
 	BaseClient
 }
 
-// NewAutoscaleSettingsClient creates an instance of the AutoscaleSettingsClient client.
-func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
-	return NewAutoscaleSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAutoscaleSettingsGroupClient creates an instance of the AutoscaleSettingsGroupClient client.
+func NewAutoscaleSettingsGroupClient(subscriptionID string) AutoscaleSettingsGroupClient {
+	return NewAutoscaleSettingsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAutoscaleSettingsClientWithBaseURI creates an instance of the AutoscaleSettingsClient client.
-func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
-	return AutoscaleSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAutoscaleSettingsGroupClientWithBaseURI creates an instance of the AutoscaleSettingsGroupClient client.
+func NewAutoscaleSettingsGroupClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsGroupClient {
+	return AutoscaleSettingsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an autoscale setting.
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
 // parameters is parameters supplied to the operation.
-func (client AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (result AutoscaleSettingResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.AutoscaleSetting", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.AutoscaleSetting.Profiles", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.AutoscaleSetting.Profiles", Name: validation.MaxItems, Rule: 20, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewError("insights.AutoscaleSettingsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("insights.AutoscaleSettingsGroupClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, autoscaleSettingName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AutoscaleSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (*http.Request, error) {
+func (client AutoscaleSettingsGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"autoscaleSettingName": autorest.Encode("path", autoscaleSettingName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -100,14 +100,14 @@ func (client AutoscaleSettingsClient) CreateOrUpdatePreparer(ctx context.Context
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutoscaleSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client AutoscaleSettingsGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AutoscaleSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) CreateOrUpdateResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,30 +121,30 @@ func (client AutoscaleSettingsClient) CreateOrUpdateResponder(resp *http.Respons
 // Delete deletes and autoscale setting
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
-func (client AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result autorest.Response, err error) {
+func (client AutoscaleSettingsGroupClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, autoscaleSettingName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AutoscaleSettingsClient) DeletePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Request, error) {
+func (client AutoscaleSettingsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"autoscaleSettingName": autorest.Encode("path", autoscaleSettingName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -166,14 +166,14 @@ func (client AutoscaleSettingsClient) DeletePreparer(ctx context.Context, resour
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutoscaleSettingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client AutoscaleSettingsGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AutoscaleSettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AutoscaleSettingsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -186,30 +186,30 @@ func (client AutoscaleSettingsClient) DeleteResponder(resp *http.Response) (resu
 // Get gets an autoscale setting
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
-func (client AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (result AutoscaleSettingResource, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, autoscaleSettingName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AutoscaleSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Request, error) {
+func (client AutoscaleSettingsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"autoscaleSettingName": autorest.Encode("path", autoscaleSettingName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -231,14 +231,14 @@ func (client AutoscaleSettingsClient) GetPreparer(ctx context.Context, resourceG
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutoscaleSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AutoscaleSettingsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AutoscaleSettingsClient) GetResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) GetResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -252,31 +252,31 @@ func (client AutoscaleSettingsClient) GetResponder(resp *http.Response) (result 
 // ListByResourceGroup lists the autoscale settings for a resource group
 //
 // resourceGroupName is the name of the resource group.
-func (client AutoscaleSettingsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AutoscaleSettingResourceCollectionPage, err error) {
+func (client AutoscaleSettingsGroupClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AutoscaleSettingResourceCollectionPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.asrc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.asrc, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client AutoscaleSettingsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client AutoscaleSettingsGroupClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -297,14 +297,14 @@ func (client AutoscaleSettingsClient) ListByResourceGroupPreparer(ctx context.Co
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutoscaleSettingsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client AutoscaleSettingsGroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client AutoscaleSettingsClient) ListByResourceGroupResponder(resp *http.Response) (result AutoscaleSettingResourceCollection, err error) {
+func (client AutoscaleSettingsGroupClient) ListByResourceGroupResponder(resp *http.Response) (result AutoscaleSettingResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -316,10 +316,10 @@ func (client AutoscaleSettingsClient) ListByResourceGroupResponder(resp *http.Re
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client AutoscaleSettingsClient) listByResourceGroupNextResults(lastResults AutoscaleSettingResourceCollection) (result AutoscaleSettingResourceCollection, err error) {
+func (client AutoscaleSettingsGroupClient) listByResourceGroupNextResults(lastResults AutoscaleSettingResourceCollection) (result AutoscaleSettingResourceCollection, err error) {
 	req, err := lastResults.autoscaleSettingResourceCollectionPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -327,17 +327,17 @@ func (client AutoscaleSettingsClient) listByResourceGroupNextResults(lastResults
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AutoscaleSettingsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result AutoscaleSettingResourceCollectionIterator, err error) {
+func (client AutoscaleSettingsGroupClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result AutoscaleSettingResourceCollectionIterator, err error) {
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
@@ -346,30 +346,30 @@ func (client AutoscaleSettingsClient) ListByResourceGroupComplete(ctx context.Co
 //
 // resourceGroupName is the name of the resource group. autoscaleSettingName is the autoscale setting name.
 // autoscaleSettingResource is parameters supplied to the operation.
-func (client AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (result AutoscaleSettingResource, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsGroupClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AutoscaleSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (*http.Request, error) {
+func (client AutoscaleSettingsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"autoscaleSettingName": autorest.Encode("path", autoscaleSettingName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -393,14 +393,14 @@ func (client AutoscaleSettingsClient) UpdatePreparer(ctx context.Context, resour
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client AutoscaleSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client AutoscaleSettingsGroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AutoscaleSettingsClient) UpdateResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
+func (client AutoscaleSettingsGroupClient) UpdateResponder(resp *http.Response) (result AutoscaleSettingResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

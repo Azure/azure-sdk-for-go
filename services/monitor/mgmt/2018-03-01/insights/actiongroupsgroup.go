@@ -25,26 +25,26 @@ import (
 	"net/http"
 )
 
-// ActionGroupsClient is the monitor Management Client
-type ActionGroupsClient struct {
+// ActionGroupsGroupClient is the monitor Management Client
+type ActionGroupsGroupClient struct {
 	BaseClient
 }
 
-// NewActionGroupsClient creates an instance of the ActionGroupsClient client.
-func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
-	return NewActionGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewActionGroupsGroupClient creates an instance of the ActionGroupsGroupClient client.
+func NewActionGroupsGroupClient(subscriptionID string) ActionGroupsGroupClient {
+	return NewActionGroupsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewActionGroupsClientWithBaseURI creates an instance of the ActionGroupsClient client.
-func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
-	return ActionGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewActionGroupsGroupClientWithBaseURI creates an instance of the ActionGroupsGroupClient client.
+func NewActionGroupsGroupClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsGroupClient {
+	return ActionGroupsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a new action group or update an existing one.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 // actionGroup is the action group to create or use for the update.
-func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (result ActionGroupResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: actionGroup,
 			Constraints: []validation.Constraint{{Target: "actionGroup.ActionGroup", Name: validation.Null, Rule: false,
@@ -52,39 +52,39 @@ func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGro
 					Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.MaxLength, Rule: 15, Chain: nil}}},
 					{Target: "actionGroup.ActionGroup.Enabled", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("insights.ActionGroupsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("insights.ActionGroupsGroupClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, actionGroupName, actionGroup)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ActionGroupsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (*http.Request, error) {
+func (client ActionGroupsGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionGroupName":   autorest.Encode("path", actionGroupName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -101,14 +101,14 @@ func (client ActionGroupsClient) CreateOrUpdatePreparer(ctx context.Context, res
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) CreateOrUpdateResponder(resp *http.Response) (result ActionGroupResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -122,37 +122,37 @@ func (client ActionGroupsClient) CreateOrUpdateResponder(resp *http.Response) (r
 // Delete delete an action group.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
-func (client ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string) (result autorest.Response, err error) {
+func (client ActionGroupsGroupClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, actionGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ActionGroupsClient) DeletePreparer(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Request, error) {
+func (client ActionGroupsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionGroupName":   autorest.Encode("path", actionGroupName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -167,14 +167,14 @@ func (client ActionGroupsClient) DeletePreparer(ctx context.Context, resourceGro
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ActionGroupsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -188,43 +188,43 @@ func (client ActionGroupsClient) DeleteResponder(resp *http.Response) (result au
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 // enableRequest is the receiver to re-enable.
-func (client ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (result autorest.Response, err error) {
+func (client ActionGroupsGroupClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: enableRequest,
 			Constraints: []validation.Constraint{{Target: "enableRequest.ReceiverName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("insights.ActionGroupsClient", "EnableReceiver", err.Error())
+		return result, validation.NewError("insights.ActionGroupsGroupClient", "EnableReceiver", err.Error())
 	}
 
 	req, err := client.EnableReceiverPreparer(ctx, resourceGroupName, actionGroupName, enableRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "EnableReceiver", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "EnableReceiver", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EnableReceiverSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "EnableReceiver", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "EnableReceiver", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EnableReceiverResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "EnableReceiver", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "EnableReceiver", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // EnableReceiverPreparer prepares the EnableReceiver request.
-func (client ActionGroupsClient) EnableReceiverPreparer(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (*http.Request, error) {
+func (client ActionGroupsGroupClient) EnableReceiverPreparer(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionGroupName":   autorest.Encode("path", actionGroupName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -241,14 +241,14 @@ func (client ActionGroupsClient) EnableReceiverPreparer(ctx context.Context, res
 
 // EnableReceiverSender sends the EnableReceiver request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) EnableReceiverSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) EnableReceiverSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // EnableReceiverResponder handles the response to the EnableReceiver request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) EnableReceiverResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ActionGroupsGroupClient) EnableReceiverResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -261,37 +261,37 @@ func (client ActionGroupsClient) EnableReceiverResponder(resp *http.Response) (r
 // Get get an action group.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
-func (client ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string) (result ActionGroupResource, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, actionGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ActionGroupsClient) GetPreparer(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Request, error) {
+func (client ActionGroupsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionGroupName":   autorest.Encode("path", actionGroupName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -306,14 +306,14 @@ func (client ActionGroupsClient) GetPreparer(ctx context.Context, resourceGroupN
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) GetResponder(resp *http.Response) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) GetResponder(resp *http.Response) (result ActionGroupResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -327,36 +327,36 @@ func (client ActionGroupsClient) GetResponder(resp *http.Response) (result Actio
 // ListByResourceGroup get a list of all action groups in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client ActionGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ActionGroupList, err error) {
+func (client ActionGroupsGroupClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ActionGroupList, err error) {
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ActionGroupsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ActionGroupsGroupClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -371,14 +371,14 @@ func (client ActionGroupsClient) ListByResourceGroupPreparer(ctx context.Context
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result ActionGroupList, err error) {
+func (client ActionGroupsGroupClient) ListByResourceGroupResponder(resp *http.Response) (result ActionGroupList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -390,35 +390,35 @@ func (client ActionGroupsClient) ListByResourceGroupResponder(resp *http.Respons
 }
 
 // ListBySubscriptionID get a list of all action groups in a subscription.
-func (client ActionGroupsClient) ListBySubscriptionID(ctx context.Context) (result ActionGroupList, err error) {
+func (client ActionGroupsGroupClient) ListBySubscriptionID(ctx context.Context) (result ActionGroupList, err error) {
 	req, err := client.ListBySubscriptionIDPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListBySubscriptionID", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListBySubscriptionID", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySubscriptionIDSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListBySubscriptionID", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListBySubscriptionID", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListBySubscriptionID", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "ListBySubscriptionID", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySubscriptionIDPreparer prepares the ListBySubscriptionID request.
-func (client ActionGroupsClient) ListBySubscriptionIDPreparer(ctx context.Context) (*http.Request, error) {
+func (client ActionGroupsGroupClient) ListBySubscriptionIDPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -433,14 +433,14 @@ func (client ActionGroupsClient) ListBySubscriptionIDPreparer(ctx context.Contex
 
 // ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) ListBySubscriptionIDResponder(resp *http.Response) (result ActionGroupList, err error) {
+func (client ActionGroupsGroupClient) ListBySubscriptionIDResponder(resp *http.Response) (result ActionGroupList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -455,37 +455,37 @@ func (client ActionGroupsClient) ListBySubscriptionIDResponder(resp *http.Respon
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 // actionGroupPatch is parameters supplied to the operation.
-func (client ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (result ActionGroupResource, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, actionGroupName, actionGroupPatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ActionGroupsGroupClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ActionGroupsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (*http.Request, error) {
+func (client ActionGroupsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionGroupName":   autorest.Encode("path", actionGroupName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-01"
+	const APIVersion = "2018-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -502,14 +502,14 @@ func (client ActionGroupsClient) UpdatePreparer(ctx context.Context, resourceGro
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionGroupsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client ActionGroupsGroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ActionGroupsClient) UpdateResponder(resp *http.Response) (result ActionGroupResource, err error) {
+func (client ActionGroupsGroupClient) UpdateResponder(resp *http.Response) (result ActionGroupResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

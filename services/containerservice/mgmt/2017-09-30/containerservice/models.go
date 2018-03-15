@@ -350,7 +350,7 @@ func PossibleVMSizeTypesValues() [130]VMSizeTypes {
 // AccessProfile profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
 	// KubeConfig - Base64-encoded Kubernetes configuration file.
-	KubeConfig *string `json:"kubeConfig,omitempty"`
+	KubeConfig *[]byte `json:"kubeConfig,omitempty"`
 }
 
 // AgentPoolProfile profile for the container service agent pool.
@@ -1180,24 +1180,6 @@ type ManagedClusterUpgradeProfile struct {
 	*ManagedClusterUpgradeProfileProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ManagedClusterUpgradeProfile.
-func (mcup ManagedClusterUpgradeProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mcup.ID != nil {
-		objectMap["id"] = mcup.ID
-	}
-	if mcup.Name != nil {
-		objectMap["name"] = mcup.Name
-	}
-	if mcup.Type != nil {
-		objectMap["type"] = mcup.Type
-	}
-	if mcup.ManagedClusterUpgradeProfileProperties != nil {
-		objectMap["properties"] = mcup.ManagedClusterUpgradeProfileProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for ManagedClusterUpgradeProfile struct.
 func (mcup *ManagedClusterUpgradeProfile) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1316,24 +1298,6 @@ type OrchestratorVersionProfileListResult struct {
 	Type *string `json:"type,omitempty"`
 	// OrchestratorVersionProfileProperties - The properties of an orchestrator version profile.
 	*OrchestratorVersionProfileProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OrchestratorVersionProfileListResult.
-func (ovplr OrchestratorVersionProfileListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ovplr.ID != nil {
-		objectMap["id"] = ovplr.ID
-	}
-	if ovplr.Name != nil {
-		objectMap["name"] = ovplr.Name
-	}
-	if ovplr.Type != nil {
-		objectMap["type"] = ovplr.Type
-	}
-	if ovplr.OrchestratorVersionProfileProperties != nil {
-		objectMap["properties"] = ovplr.OrchestratorVersionProfileProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for OrchestratorVersionProfileListResult struct.

@@ -444,7 +444,7 @@ func PossibleVMSizeTypesValues() [177]VMSizeTypes {
 // AccessProfile profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
 	// KubeConfig - Base64-encoded Kubernetes configuration file.
-	KubeConfig *string `json:"kubeConfig,omitempty"`
+	KubeConfig *[]byte `json:"kubeConfig,omitempty"`
 }
 
 // AgentPoolProfile profile for the container service agent pool.

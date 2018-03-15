@@ -130,6 +130,36 @@ func PossibleQuotaUsageStatusValues() [4]QuotaUsageStatus {
 	return [4]QuotaUsageStatus{Blocked, Included, InOverage, Unknown}
 }
 
+// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
+type ResourceSkuRestrictionsReasonCode string
+
+const (
+	// NotAvailableForSubscription ...
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
+	// QuotaID ...
+	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
+)
+
+// PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
+func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
+	return [2]ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
+}
+
+// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
+type ResourceSkuRestrictionsType string
+
+const (
+	// Location ...
+	Location ResourceSkuRestrictionsType = "Location"
+	// Zone ...
+	Zone ResourceSkuRestrictionsType = "Zone"
+)
+
+// PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
+func PossibleResourceSkuRestrictionsTypeValues() [2]ResourceSkuRestrictionsType {
+	return [2]ResourceSkuRestrictionsType{Location, Zone}
+}
+
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -730,6 +760,144 @@ type ResourceAndSku struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Sku - The SKU of Cognitive Services account.
 	Sku *Sku `json:"sku,omitempty"`
+}
+
+// ResourceSku describes an available Cognitive Services SKU.
+type ResourceSku struct {
+	// ResourceType - The type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Name - The name of SKU.
+	Name *string `json:"name,omitempty"`
+	// Tier - Specifies the tier of Cognitive Services account.
+	Tier *string `json:"tier,omitempty"`
+	// Kind - The Kind of resources that are supported in this SKU.
+	Kind *string `json:"kind,omitempty"`
+	// Locations - The set of locations that the SKU is available.
+	Locations *[]string `json:"locations,omitempty"`
+	// Restrictions - The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
+	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
+}
+
+// ResourceSkuRestrictionInfo ...
+type ResourceSkuRestrictionInfo struct {
+	// Locations - Locations where the SKU is restricted
+	Locations *[]string `json:"locations,omitempty"`
+	// Zones - List of availability zones where the SKU is restricted.
+	Zones *[]string `json:"zones,omitempty"`
+}
+
+// ResourceSkuRestrictions describes restrictions of a SKU.
+type ResourceSkuRestrictions struct {
+	// Type - The type of restrictions. Possible values include: 'Location', 'Zone'
+	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
+	// Values - The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
+	Values *[]string `json:"values,omitempty"`
+	// RestrictionInfo - The information about the restriction where the SKU cannot be used.
+	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
+	// ReasonCode - The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// ResourceSkusResult the Get Skus operation response.
+type ResourceSkusResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of skus available for the subscription.
+	Value *[]ResourceSku `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of Skus.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ResourceSkusResultIterator provides access to a complete listing of ResourceSku values.
+type ResourceSkusResultIterator struct {
+	i    int
+	page ResourceSkusResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ResourceSkusResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ResourceSkusResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ResourceSkusResultIterator) Response() ResourceSkusResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ResourceSkusResultIterator) Value() ResourceSku {
+	if !iter.page.NotDone() {
+		return ResourceSku{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rsr ResourceSkusResult) IsEmpty() bool {
+	return rsr.Value == nil || len(*rsr.Value) == 0
+}
+
+// resourceSkusResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rsr ResourceSkusResult) resourceSkusResultPreparer() (*http.Request, error) {
+	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rsr.NextLink)))
+}
+
+// ResourceSkusResultPage contains a page of ResourceSku values.
+type ResourceSkusResultPage struct {
+	fn  func(ResourceSkusResult) (ResourceSkusResult, error)
+	rsr ResourceSkusResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ResourceSkusResultPage) Next() error {
+	next, err := page.fn(page.rsr)
+	if err != nil {
+		return err
+	}
+	page.rsr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ResourceSkusResultPage) NotDone() bool {
+	return !page.rsr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ResourceSkusResultPage) Response() ResourceSkusResult {
+	return page.rsr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ResourceSkusResultPage) Values() []ResourceSku {
+	if page.rsr.IsEmpty() {
+		return nil
+	}
+	return *page.rsr.Value
 }
 
 // Sku the SKU of the cognitive services account.

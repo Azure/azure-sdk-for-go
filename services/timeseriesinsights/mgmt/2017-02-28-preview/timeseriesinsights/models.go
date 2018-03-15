@@ -170,15 +170,6 @@ type AccessPolicyCreateOrUpdateParameters struct {
 	*AccessPolicyResourceProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AccessPolicyCreateOrUpdateParameters.
-func (apcoup AccessPolicyCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if apcoup.AccessPolicyResourceProperties != nil {
-		objectMap["properties"] = apcoup.AccessPolicyResourceProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyCreateOrUpdateParameters struct.
 func (apcoup *AccessPolicyCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -230,24 +221,6 @@ type AccessPolicyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessPolicyResource.
-func (apr AccessPolicyResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if apr.AccessPolicyResourceProperties != nil {
-		objectMap["properties"] = apr.AccessPolicyResourceProperties
-	}
-	if apr.ID != nil {
-		objectMap["id"] = apr.ID
-	}
-	if apr.Name != nil {
-		objectMap["name"] = apr.Name
-	}
-	if apr.Type != nil {
-		objectMap["type"] = apr.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyResource struct.
@@ -314,15 +287,6 @@ type AccessPolicyResourceProperties struct {
 // AccessPolicyUpdateParameters ...
 type AccessPolicyUpdateParameters struct {
 	*AccessPolicyMutableProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessPolicyUpdateParameters.
-func (apup AccessPolicyUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if apup.AccessPolicyMutableProperties != nil {
-		objectMap["properties"] = apup.AccessPolicyMutableProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyUpdateParameters struct.
@@ -841,9 +805,7 @@ func (ehescoup EventHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byt
 	if ehescoup.EventHubEventSourceCreationProperties != nil {
 		objectMap["properties"] = ehescoup.EventHubEventSourceCreationProperties
 	}
-	if ehescoup.Kind != "" {
-		objectMap["kind"] = ehescoup.Kind
-	}
+	objectMap["kind"] = ehescoup.Kind
 	if ehescoup.Location != nil {
 		objectMap["location"] = ehescoup.Location
 	}
@@ -981,9 +943,7 @@ func (ehesr EventHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	if ehesr.EventHubEventSourceResourceProperties != nil {
 		objectMap["properties"] = ehesr.EventHubEventSourceResourceProperties
 	}
-	if ehesr.Kind != "" {
-		objectMap["kind"] = ehesr.Kind
-	}
+	objectMap["kind"] = ehesr.Kind
 	if ehesr.Location != nil {
 		objectMap["location"] = ehesr.Location
 	}
@@ -1246,9 +1206,7 @@ func unmarshalBasicEventSourceCreateOrUpdateParametersArray(body []byte) ([]Basi
 func (escoup EventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	escoup.Kind = KindEventSourceCreateOrUpdateParameters
 	objectMap := make(map[string]interface{})
-	if escoup.Kind != "" {
-		objectMap["kind"] = escoup.Kind
-	}
+	objectMap["kind"] = escoup.Kind
 	if escoup.Location != nil {
 		objectMap["location"] = escoup.Location
 	}
@@ -1388,9 +1346,7 @@ func unmarshalBasicEventSourceResourceArray(body []byte) ([]BasicEventSourceReso
 func (esr EventSourceResource) MarshalJSON() ([]byte, error) {
 	esr.Kind = KindBasicEventSourceResourceKindEventSourceResource
 	objectMap := make(map[string]interface{})
-	if esr.Kind != "" {
-		objectMap["kind"] = esr.Kind
-	}
+	objectMap["kind"] = esr.Kind
 	if esr.Location != nil {
 		objectMap["location"] = esr.Location
 	}
@@ -1498,9 +1454,7 @@ func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte
 	if ithescoup.IoTHubEventSourceCreationProperties != nil {
 		objectMap["properties"] = ithescoup.IoTHubEventSourceCreationProperties
 	}
-	if ithescoup.Kind != "" {
-		objectMap["kind"] = ithescoup.Kind
-	}
+	objectMap["kind"] = ithescoup.Kind
 	if ithescoup.Location != nil {
 		objectMap["location"] = ithescoup.Location
 	}
@@ -1636,9 +1590,7 @@ func (ithesr IoTHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	if ithesr.IoTHubEventSourceResourceProperties != nil {
 		objectMap["properties"] = ithesr.IoTHubEventSourceResourceProperties
 	}
-	if ithesr.Kind != "" {
-		objectMap["kind"] = ithesr.Kind
-	}
+	objectMap["kind"] = ithesr.Kind
 	if ithesr.Location != nil {
 		objectMap["location"] = ithesr.Location
 	}

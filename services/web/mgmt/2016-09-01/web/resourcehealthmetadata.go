@@ -43,7 +43,7 @@ func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID s
 // GetBySite gets the category of ResourceHealthMetadata to use for the given site
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of web app
-func (client ResourceHealthMetadataClient) GetBySite(ctx context.Context, resourceGroupName string, name string) (result ResourceHealthMetadataCollectionPage, err error) {
+func (client ResourceHealthMetadataClient) GetBySite(ctx context.Context, resourceGroupName string, name string) (result ResourceHealthMetadata, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -52,7 +52,6 @@ func (client ResourceHealthMetadataClient) GetBySite(ctx context.Context, resour
 		return result, validation.NewError("web.ResourceHealthMetadataClient", "GetBySite", err.Error())
 	}
 
-	result.fn = client.getBySiteNextResults
 	req, err := client.GetBySitePreparer(ctx, resourceGroupName, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySite", nil, "Failure preparing request")
@@ -61,12 +60,12 @@ func (client ResourceHealthMetadataClient) GetBySite(ctx context.Context, resour
 
 	resp, err := client.GetBySiteSender(req)
 	if err != nil {
-		result.rhmc.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySite", resp, "Failure sending request")
 		return
 	}
 
-	result.rhmc, err = client.GetBySiteResponder(resp)
+	result, err = client.GetBySiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySite", resp, "Failure responding to request")
 	}
@@ -104,7 +103,7 @@ func (client ResourceHealthMetadataClient) GetBySiteSender(req *http.Request) (*
 
 // GetBySiteResponder handles the response to the GetBySite request. The method always
 // closes the http.Response Body.
-func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
+func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,38 +114,11 @@ func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Respons
 	return
 }
 
-// getBySiteNextResults retrieves the next set of results, if any.
-func (client ResourceHealthMetadataClient) getBySiteNextResults(lastResults ResourceHealthMetadataCollection) (result ResourceHealthMetadataCollection, err error) {
-	req, err := lastResults.resourceHealthMetadataCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.GetBySiteSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.GetBySiteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// GetBySiteComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourceHealthMetadataClient) GetBySiteComplete(ctx context.Context, resourceGroupName string, name string) (result ResourceHealthMetadataCollectionIterator, err error) {
-	result.page, err = client.GetBySite(ctx, resourceGroupName, name)
-	return
-}
-
 // GetBySiteSlot gets the category of ResourceHealthMetadata to use for the given site
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of web app slot is
 // name of web app slot. If not specified then will default to production slot.
-func (client ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result ResourceHealthMetadataCollectionPage, err error) {
+func (client ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result ResourceHealthMetadata, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -155,7 +127,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, re
 		return result, validation.NewError("web.ResourceHealthMetadataClient", "GetBySiteSlot", err.Error())
 	}
 
-	result.fn = client.getBySiteSlotNextResults
 	req, err := client.GetBySiteSlotPreparer(ctx, resourceGroupName, name, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySiteSlot", nil, "Failure preparing request")
@@ -164,12 +135,12 @@ func (client ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, re
 
 	resp, err := client.GetBySiteSlotSender(req)
 	if err != nil {
-		result.rhmc.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySiteSlot", resp, "Failure sending request")
 		return
 	}
 
-	result.rhmc, err = client.GetBySiteSlotResponder(resp)
+	result, err = client.GetBySiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "GetBySiteSlot", resp, "Failure responding to request")
 	}
@@ -208,7 +179,7 @@ func (client ResourceHealthMetadataClient) GetBySiteSlotSender(req *http.Request
 
 // GetBySiteSlotResponder handles the response to the GetBySiteSlot request. The method always
 // closes the http.Response Body.
-func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
+func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -216,33 +187,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// getBySiteSlotNextResults retrieves the next set of results, if any.
-func (client ResourceHealthMetadataClient) getBySiteSlotNextResults(lastResults ResourceHealthMetadataCollection) (result ResourceHealthMetadataCollection, err error) {
-	req, err := lastResults.resourceHealthMetadataCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteSlotNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.GetBySiteSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteSlotNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.GetBySiteSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "getBySiteSlotNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// GetBySiteSlotComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourceHealthMetadataClient) GetBySiteSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result ResourceHealthMetadataCollectionIterator, err error) {
-	result.page, err = client.GetBySiteSlot(ctx, resourceGroupName, name, slot)
 	return
 }
 

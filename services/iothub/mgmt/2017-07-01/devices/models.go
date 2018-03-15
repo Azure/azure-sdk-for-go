@@ -790,9 +790,7 @@ func (ihp IotHubProperties) MarshalJSON() ([]byte, error) {
 	if ihp.OperationsMonitoringProperties != nil {
 		objectMap["operationsMonitoringProperties"] = ihp.OperationsMonitoringProperties
 	}
-	if ihp.Features != "" {
-		objectMap["features"] = ihp.Features
-	}
+	objectMap["features"] = ihp.Features
 	return json.Marshal(objectMap)
 }
 

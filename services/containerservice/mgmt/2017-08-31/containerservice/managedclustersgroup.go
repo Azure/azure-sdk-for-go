@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// ManagedClustersClient is the the Container Service Client.
-type ManagedClustersClient struct {
+// ManagedClustersGroupClient is the the Container Service Client.
+type ManagedClustersGroupClient struct {
 	BaseClient
 }
 
-// NewManagedClustersClient creates an instance of the ManagedClustersClient client.
-func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
-	return NewManagedClustersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewManagedClustersGroupClient creates an instance of the ManagedClustersGroupClient client.
+func NewManagedClustersGroupClient(subscriptionID string) ManagedClustersGroupClient {
+	return NewManagedClustersGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewManagedClustersClientWithBaseURI creates an instance of the ManagedClustersClient client.
-func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
-	return ManagedClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewManagedClustersGroupClientWithBaseURI creates an instance of the ManagedClustersGroupClient client.
+func NewManagedClustersGroupClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersGroupClient {
+	return ManagedClustersGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a managed cluster with the specified configuration for agents and Kubernetes
@@ -45,7 +45,7 @@ func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) 
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the managed cluster resource.
 // parameters is parameters supplied to the Create or Update a Managed Cluster operation.
-func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster) (result ManagedClustersCreateOrUpdateFuture, err error) {
+func (client ManagedClustersGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster) (result ManagedClustersGroupCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ManagedClusterProperties", Name: validation.Null, Rule: false,
@@ -63,18 +63,18 @@ func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resource
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("containerservice.ManagedClustersClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("containerservice.ManagedClustersGroupClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, resourceName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -82,7 +82,7 @@ func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ManagedClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster) (*http.Request, error) {
+func (client ManagedClustersGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -95,7 +95,7 @@ func (client ManagedClustersClient) CreateOrUpdatePreparer(ctx context.Context, 
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsJSON(),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}", pathParameters),
@@ -106,7 +106,7 @@ func (client ManagedClustersClient) CreateOrUpdatePreparer(ctx context.Context, 
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) CreateOrUpdateSender(req *http.Request) (future ManagedClustersCreateOrUpdateFuture, err error) {
+func (client ManagedClustersGroupClient) CreateOrUpdateSender(req *http.Request) (future ManagedClustersGroupCreateOrUpdateFuture, err error) {
 	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
 	future.Future = azure.NewFuture(req)
 	future.req = req
@@ -121,7 +121,7 @@ func (client ManagedClustersClient) CreateOrUpdateSender(req *http.Request) (fut
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) CreateOrUpdateResponder(resp *http.Response) (result ManagedCluster, err error) {
+func (client ManagedClustersGroupClient) CreateOrUpdateResponder(resp *http.Response) (result ManagedCluster, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -135,16 +135,16 @@ func (client ManagedClustersClient) CreateOrUpdateResponder(resp *http.Response)
 // Delete deletes the managed cluster with a specified resource group and name.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the managed cluster resource.
-func (client ManagedClustersClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedClustersDeleteFuture, err error) {
+func (client ManagedClustersGroupClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedClustersGroupDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -152,7 +152,7 @@ func (client ManagedClustersClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ManagedClustersClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client ManagedClustersGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -174,7 +174,7 @@ func (client ManagedClustersClient) DeletePreparer(ctx context.Context, resource
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) DeleteSender(req *http.Request) (future ManagedClustersDeleteFuture, err error) {
+func (client ManagedClustersGroupClient) DeleteSender(req *http.Request) (future ManagedClustersGroupDeleteFuture, err error) {
 	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
 	future.Future = azure.NewFuture(req)
 	future.req = req
@@ -189,7 +189,7 @@ func (client ManagedClustersClient) DeleteSender(req *http.Request) (future Mana
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ManagedClustersGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -202,30 +202,30 @@ func (client ManagedClustersClient) DeleteResponder(resp *http.Response) (result
 // Get gets the details of the managed cluster with a specified resource group and name.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the managed cluster resource.
-func (client ManagedClustersClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedCluster, err error) {
+func (client ManagedClustersGroupClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedCluster, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ManagedClustersClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client ManagedClustersGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -247,14 +247,14 @@ func (client ManagedClustersClient) GetPreparer(ctx context.Context, resourceGro
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ManagedClustersGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) GetResponder(resp *http.Response) (result ManagedCluster, err error) {
+func (client ManagedClustersGroupClient) GetResponder(resp *http.Response) (result ManagedCluster, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -270,30 +270,30 @@ func (client ManagedClustersClient) GetResponder(resp *http.Response) (result Ma
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the managed cluster resource.
 // roleName is the name of the role for managed cluster accessProfile resource.
-func (client ManagedClustersClient) GetAccessProfiles(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (result ManagedClusterAccessProfile, err error) {
+func (client ManagedClustersGroupClient) GetAccessProfiles(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (result ManagedClusterAccessProfile, err error) {
 	req, err := client.GetAccessProfilesPreparer(ctx, resourceGroupName, resourceName, roleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetAccessProfiles", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetAccessProfiles", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetAccessProfilesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetAccessProfiles", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetAccessProfiles", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetAccessProfilesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetAccessProfiles", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetAccessProfiles", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetAccessProfilesPreparer prepares the GetAccessProfiles request.
-func (client ManagedClustersClient) GetAccessProfilesPreparer(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (*http.Request, error) {
+func (client ManagedClustersGroupClient) GetAccessProfilesPreparer(ctx context.Context, resourceGroupName string, resourceName string, roleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -316,14 +316,14 @@ func (client ManagedClustersClient) GetAccessProfilesPreparer(ctx context.Contex
 
 // GetAccessProfilesSender sends the GetAccessProfiles request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) GetAccessProfilesSender(req *http.Request) (*http.Response, error) {
+func (client ManagedClustersGroupClient) GetAccessProfilesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetAccessProfilesResponder handles the response to the GetAccessProfiles request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) GetAccessProfilesResponder(resp *http.Response) (result ManagedClusterAccessProfile, err error) {
+func (client ManagedClustersGroupClient) GetAccessProfilesResponder(resp *http.Response) (result ManagedClusterAccessProfile, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -338,30 +338,30 @@ func (client ManagedClustersClient) GetAccessProfilesResponder(resp *http.Respon
 // name.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the managed cluster resource.
-func (client ManagedClustersClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedClusterUpgradeProfile, err error) {
+func (client ManagedClustersGroupClient) GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string) (result ManagedClusterUpgradeProfile, err error) {
 	req, err := client.GetUpgradeProfilePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetUpgradeProfile", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetUpgradeProfile", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetUpgradeProfileSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetUpgradeProfile", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetUpgradeProfile", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetUpgradeProfileResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "GetUpgradeProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "GetUpgradeProfile", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetUpgradeProfilePreparer prepares the GetUpgradeProfile request.
-func (client ManagedClustersClient) GetUpgradeProfilePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client ManagedClustersGroupClient) GetUpgradeProfilePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -383,14 +383,14 @@ func (client ManagedClustersClient) GetUpgradeProfilePreparer(ctx context.Contex
 
 // GetUpgradeProfileSender sends the GetUpgradeProfile request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) GetUpgradeProfileSender(req *http.Request) (*http.Response, error) {
+func (client ManagedClustersGroupClient) GetUpgradeProfileSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetUpgradeProfileResponder handles the response to the GetUpgradeProfile request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) GetUpgradeProfileResponder(resp *http.Response) (result ManagedClusterUpgradeProfile, err error) {
+func (client ManagedClustersGroupClient) GetUpgradeProfileResponder(resp *http.Response) (result ManagedClusterUpgradeProfile, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -403,31 +403,31 @@ func (client ManagedClustersClient) GetUpgradeProfileResponder(resp *http.Respon
 
 // List gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
 // cluster.
-func (client ManagedClustersClient) List(ctx context.Context) (result ManagedClusterListResultPage, err error) {
+func (client ManagedClustersGroupClient) List(ctx context.Context) (result ManagedClusterListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.mclr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.mclr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ManagedClustersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ManagedClustersGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -447,14 +447,14 @@ func (client ManagedClustersClient) ListPreparer(ctx context.Context) (*http.Req
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ManagedClustersGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) ListResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
+func (client ManagedClustersGroupClient) ListResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -466,10 +466,10 @@ func (client ManagedClustersClient) ListResponder(resp *http.Response) (result M
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ManagedClustersClient) listNextResults(lastResults ManagedClusterListResult) (result ManagedClusterListResult, err error) {
+func (client ManagedClustersGroupClient) listNextResults(lastResults ManagedClusterListResult) (result ManagedClusterListResult, err error) {
 	req, err := lastResults.managedClusterListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -477,17 +477,17 @@ func (client ManagedClustersClient) listNextResults(lastResults ManagedClusterLi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagedClustersClient) ListComplete(ctx context.Context) (result ManagedClusterListResultIterator, err error) {
+func (client ManagedClustersGroupClient) ListComplete(ctx context.Context) (result ManagedClusterListResultIterator, err error) {
 	result.page, err = client.List(ctx)
 	return
 }
@@ -496,31 +496,31 @@ func (client ManagedClustersClient) ListComplete(ctx context.Context) (result Ma
 // properties of each managed cluster.
 //
 // resourceGroupName is the name of the resource group.
-func (client ManagedClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ManagedClusterListResultPage, err error) {
+func (client ManagedClustersGroupClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ManagedClusterListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.mclr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.mclr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ManagedClustersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ManagedClustersGroupClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -541,14 +541,14 @@ func (client ManagedClustersClient) ListByResourceGroupPreparer(ctx context.Cont
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client ManagedClustersClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client ManagedClustersGroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ManagedClustersClient) ListByResourceGroupResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
+func (client ManagedClustersGroupClient) ListByResourceGroupResponder(resp *http.Response) (result ManagedClusterListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -560,10 +560,10 @@ func (client ManagedClustersClient) ListByResourceGroupResponder(resp *http.Resp
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ManagedClustersClient) listByResourceGroupNextResults(lastResults ManagedClusterListResult) (result ManagedClusterListResult, err error) {
+func (client ManagedClustersGroupClient) listByResourceGroupNextResults(lastResults ManagedClusterListResult) (result ManagedClusterListResult, err error) {
 	req, err := lastResults.managedClusterListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -571,17 +571,17 @@ func (client ManagedClustersClient) listByResourceGroupNextResults(lastResults M
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagedClustersClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ManagedClusterListResultIterator, err error) {
+func (client ManagedClustersGroupClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ManagedClusterListResultIterator, err error) {
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }

@@ -1542,9 +1542,7 @@ type KeyCreateParameters struct {
 // MarshalJSON is the custom marshaler for KeyCreateParameters.
 func (kcp KeyCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if kcp.Kty != "" {
-		objectMap["kty"] = kcp.Kty
-	}
+	objectMap["kty"] = kcp.Kty
 	if kcp.KeySize != nil {
 		objectMap["key_size"] = kcp.KeySize
 	}
@@ -1557,9 +1555,7 @@ func (kcp KeyCreateParameters) MarshalJSON() ([]byte, error) {
 	if kcp.Tags != nil {
 		objectMap["tags"] = kcp.Tags
 	}
-	if kcp.Curve != "" {
-		objectMap["crv"] = kcp.Curve
-	}
+	objectMap["crv"] = kcp.Curve
 	return json.Marshal(objectMap)
 }
 

@@ -1,7 +1,7 @@
-// Package batch implements the Azure ARM Batch service API version 2017-05-01.5.0.
+// Package redis implements the Azure ARM Redis service API version 2018-03-01.
 //
-// A client for issuing REST requests to the Azure Batch service.
-package batch
+// REST API for Azure Redis Cache Service.
+package redis
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,25 +25,27 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Batch
-	DefaultBaseURI = "https://batch.core.windows.net"
+	// DefaultBaseURI is the default URI used for the service Redis
+	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Batch.
+// BaseClient is the base client for Redis.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

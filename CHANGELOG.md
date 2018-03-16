@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v14.5.0`
+
+### Changes
+
+- Added new preview packages for apimanagement and dns.
+
 ## `v14.4.0`
 
 ### Changes

@@ -30,13 +30,13 @@ type AnnotationsClient struct {
 }
 
 // NewAnnotationsClient creates an instance of the AnnotationsClient client.
-func NewAnnotationsClient(subscriptionID string, purgeID string) AnnotationsClient {
-	return NewAnnotationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewAnnotationsClient(subscriptionID string) AnnotationsClient {
+	return NewAnnotationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAnnotationsClientWithBaseURI creates an instance of the AnnotationsClient client.
-func NewAnnotationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) AnnotationsClient {
-	return AnnotationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewAnnotationsClientWithBaseURI(baseURI string, subscriptionID string) AnnotationsClient {
+	return AnnotationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create an Annotation of an Application Insights component.

@@ -30,13 +30,13 @@ type ExportConfigurationsClient struct {
 }
 
 // NewExportConfigurationsClient creates an instance of the ExportConfigurationsClient client.
-func NewExportConfigurationsClient(subscriptionID string, purgeID string) ExportConfigurationsClient {
-	return NewExportConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
+	return NewExportConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewExportConfigurationsClientWithBaseURI creates an instance of the ExportConfigurationsClient client.
-func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ExportConfigurationsClient {
-	return ExportConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
+	return ExportConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a Continuous Export configuration of an Application Insights component.

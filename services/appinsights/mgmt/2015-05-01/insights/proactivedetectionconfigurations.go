@@ -30,14 +30,14 @@ type ProactiveDetectionConfigurationsClient struct {
 }
 
 // NewProactiveDetectionConfigurationsClient creates an instance of the ProactiveDetectionConfigurationsClient client.
-func NewProactiveDetectionConfigurationsClient(subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
-	return NewProactiveDetectionConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
+	return NewProactiveDetectionConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProactiveDetectionConfigurationsClientWithBaseURI creates an instance of the
 // ProactiveDetectionConfigurationsClient client.
-func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ProactiveDetectionConfigurationsClient {
-	return ProactiveDetectionConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ProactiveDetectionConfigurationsClient {
+	return ProactiveDetectionConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get the ProactiveDetection configuration for this configuration id.

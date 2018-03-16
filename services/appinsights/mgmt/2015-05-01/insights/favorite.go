@@ -30,13 +30,13 @@ type FavoriteClient struct {
 }
 
 // NewFavoriteClient creates an instance of the FavoriteClient client.
-func NewFavoriteClient(subscriptionID string, purgeID string) FavoriteClient {
-	return NewFavoriteClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewFavoriteClient(subscriptionID string) FavoriteClient {
+	return NewFavoriteClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewFavoriteClientWithBaseURI creates an instance of the FavoriteClient client.
-func NewFavoriteClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) FavoriteClient {
-	return FavoriteClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewFavoriteClientWithBaseURI(baseURI string, subscriptionID string) FavoriteClient {
+	return FavoriteClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Add adds a new favorites to an Application Insights component.

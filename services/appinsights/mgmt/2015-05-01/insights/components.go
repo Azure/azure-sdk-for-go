@@ -31,13 +31,13 @@ type ComponentsClient struct {
 }
 
 // NewComponentsClient creates an instance of the ComponentsClient client.
-func NewComponentsClient(subscriptionID string, purgeID string) ComponentsClient {
-	return NewComponentsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewComponentsClient(subscriptionID string) ComponentsClient {
+	return NewComponentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewComponentsClientWithBaseURI creates an instance of the ComponentsClient client.
-func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentsClient {
-	return ComponentsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
+	return ComponentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates (or updates) an Application Insights component. Note: You cannot specify a different value
@@ -254,9 +254,10 @@ func (client ComponentsClient) GetResponder(resp *http.Response) (result Applica
 // request.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource.
-func (client ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string) (result ComponentPurgeStatusResponse, err error) {
-	req, err := client.GetPurgeStatusPreparer(ctx, resourceGroupName, resourceName)
+// component resource. purgeID is in a purge status request, this is the Id of the operation the status of which is
+// returned.
+func (client ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (result ComponentPurgeStatusResponse, err error) {
+	req, err := client.GetPurgeStatusPreparer(ctx, resourceGroupName, resourceName, purgeID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "GetPurgeStatus", nil, "Failure preparing request")
 		return
@@ -278,9 +279,9 @@ func (client ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroup
 }
 
 // GetPurgeStatusPreparer prepares the GetPurgeStatus request.
-func (client ComponentsClient) GetPurgeStatusPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client ComponentsClient) GetPurgeStatusPreparer(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"purgeId":           autorest.Encode("path", client.PurgeID),
+		"purgeId":           autorest.Encode("path", purgeID),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

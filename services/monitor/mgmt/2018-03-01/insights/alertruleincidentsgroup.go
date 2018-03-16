@@ -24,49 +24,49 @@ import (
 	"net/http"
 )
 
-// AlertRuleIncidentsClient is the monitor Management Client
-type AlertRuleIncidentsClient struct {
+// AlertRuleIncidentsGroupClient is the monitor Management Client
+type AlertRuleIncidentsGroupClient struct {
 	BaseClient
 }
 
-// NewAlertRuleIncidentsClient creates an instance of the AlertRuleIncidentsClient client.
-func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
-	return NewAlertRuleIncidentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAlertRuleIncidentsGroupClient creates an instance of the AlertRuleIncidentsGroupClient client.
+func NewAlertRuleIncidentsGroupClient(subscriptionID string) AlertRuleIncidentsGroupClient {
+	return NewAlertRuleIncidentsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAlertRuleIncidentsClientWithBaseURI creates an instance of the AlertRuleIncidentsClient client.
-func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
-	return AlertRuleIncidentsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAlertRuleIncidentsGroupClientWithBaseURI creates an instance of the AlertRuleIncidentsGroupClient client.
+func NewAlertRuleIncidentsGroupClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsGroupClient {
+	return AlertRuleIncidentsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets an incident associated to an alert rule
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule. incidentName is the name
 // of the incident to retrieve.
-func (client AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (result Incident, err error) {
+func (client AlertRuleIncidentsGroupClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (result Incident, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, ruleName, incidentName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AlertRuleIncidentsClient) GetPreparer(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (*http.Request, error) {
+func (client AlertRuleIncidentsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"incidentName":      autorest.Encode("path", incidentName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -89,14 +89,14 @@ func (client AlertRuleIncidentsClient) GetPreparer(ctx context.Context, resource
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRuleIncidentsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AlertRuleIncidentsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AlertRuleIncidentsClient) GetResponder(resp *http.Response) (result Incident, err error) {
+func (client AlertRuleIncidentsGroupClient) GetResponder(resp *http.Response) (result Incident, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -110,30 +110,30 @@ func (client AlertRuleIncidentsClient) GetResponder(resp *http.Response) (result
 // ListByAlertRule gets a list of incidents associated to an alert rule
 //
 // resourceGroupName is the name of the resource group. ruleName is the name of the rule.
-func (client AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string) (result IncidentListResult, err error) {
+func (client AlertRuleIncidentsGroupClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string) (result IncidentListResult, err error) {
 	req, err := client.ListByAlertRulePreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "ListByAlertRule", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "ListByAlertRule", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByAlertRuleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "ListByAlertRule", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "ListByAlertRule", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByAlertRuleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsClient", "ListByAlertRule", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRuleIncidentsGroupClient", "ListByAlertRule", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByAlertRulePreparer prepares the ListByAlertRule request.
-func (client AlertRuleIncidentsClient) ListByAlertRulePreparer(ctx context.Context, resourceGroupName string, ruleName string) (*http.Request, error) {
+func (client AlertRuleIncidentsGroupClient) ListByAlertRulePreparer(ctx context.Context, resourceGroupName string, ruleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"ruleName":          autorest.Encode("path", ruleName),
@@ -155,14 +155,14 @@ func (client AlertRuleIncidentsClient) ListByAlertRulePreparer(ctx context.Conte
 
 // ListByAlertRuleSender sends the ListByAlertRule request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRuleIncidentsClient) ListByAlertRuleSender(req *http.Request) (*http.Response, error) {
+func (client AlertRuleIncidentsGroupClient) ListByAlertRuleSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAlertRuleResponder handles the response to the ListByAlertRule request. The method always
 // closes the http.Response Body.
-func (client AlertRuleIncidentsClient) ListByAlertRuleResponder(resp *http.Response) (result IncidentListResult, err error) {
+func (client AlertRuleIncidentsGroupClient) ListByAlertRuleResponder(resp *http.Response) (result IncidentListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

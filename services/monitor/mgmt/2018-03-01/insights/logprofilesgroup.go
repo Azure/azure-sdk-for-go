@@ -25,25 +25,25 @@ import (
 	"net/http"
 )
 
-// LogProfilesClient is the monitor Management Client
-type LogProfilesClient struct {
+// LogProfilesGroupClient is the monitor Management Client
+type LogProfilesGroupClient struct {
 	BaseClient
 }
 
-// NewLogProfilesClient creates an instance of the LogProfilesClient client.
-func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
-	return NewLogProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLogProfilesGroupClient creates an instance of the LogProfilesGroupClient client.
+func NewLogProfilesGroupClient(subscriptionID string) LogProfilesGroupClient {
+	return NewLogProfilesGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLogProfilesClientWithBaseURI creates an instance of the LogProfilesClient client.
-func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
-	return LogProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLogProfilesGroupClientWithBaseURI creates an instance of the LogProfilesGroupClient client.
+func NewLogProfilesGroupClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesGroupClient {
+	return LogProfilesGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update a log profile in Azure Monitoring REST API.
 //
 // logProfileName is the name of the log profile. parameters is parameters supplied to the operation.
-func (client LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource) (result LogProfileResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.LogProfileProperties", Name: validation.Null, Rule: true,
@@ -55,32 +55,32 @@ func (client LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileNa
 								Chain: []validation.Constraint{{Target: "parameters.LogProfileProperties.RetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("insights.LogProfilesClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("insights.LogProfilesGroupClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, logProfileName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client LogProfilesClient) CreateOrUpdatePreparer(ctx context.Context, logProfileName string, parameters LogProfileResource) (*http.Request, error) {
+func (client LogProfilesGroupClient) CreateOrUpdatePreparer(ctx context.Context, logProfileName string, parameters LogProfileResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"logProfileName": autorest.Encode("path", logProfileName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -103,14 +103,14 @@ func (client LogProfilesClient) CreateOrUpdatePreparer(ctx context.Context, logP
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogProfilesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client LogProfilesGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client LogProfilesClient) CreateOrUpdateResponder(resp *http.Response) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) CreateOrUpdateResponder(resp *http.Response) (result LogProfileResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -124,30 +124,30 @@ func (client LogProfilesClient) CreateOrUpdateResponder(resp *http.Response) (re
 // Delete deletes the log profile.
 //
 // logProfileName is the name of the log profile.
-func (client LogProfilesClient) Delete(ctx context.Context, logProfileName string) (result autorest.Response, err error) {
+func (client LogProfilesGroupClient) Delete(ctx context.Context, logProfileName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, logProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client LogProfilesClient) DeletePreparer(ctx context.Context, logProfileName string) (*http.Request, error) {
+func (client LogProfilesGroupClient) DeletePreparer(ctx context.Context, logProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"logProfileName": autorest.Encode("path", logProfileName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -168,14 +168,14 @@ func (client LogProfilesClient) DeletePreparer(ctx context.Context, logProfileNa
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogProfilesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client LogProfilesGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LogProfilesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LogProfilesGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -188,30 +188,30 @@ func (client LogProfilesClient) DeleteResponder(resp *http.Response) (result aut
 // Get gets the log profile.
 //
 // logProfileName is the name of the log profile.
-func (client LogProfilesClient) Get(ctx context.Context, logProfileName string) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) Get(ctx context.Context, logProfileName string) (result LogProfileResource, err error) {
 	req, err := client.GetPreparer(ctx, logProfileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client LogProfilesClient) GetPreparer(ctx context.Context, logProfileName string) (*http.Request, error) {
+func (client LogProfilesGroupClient) GetPreparer(ctx context.Context, logProfileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"logProfileName": autorest.Encode("path", logProfileName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -232,14 +232,14 @@ func (client LogProfilesClient) GetPreparer(ctx context.Context, logProfileName 
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogProfilesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LogProfilesGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client LogProfilesClient) GetResponder(resp *http.Response) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) GetResponder(resp *http.Response) (result LogProfileResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -251,30 +251,30 @@ func (client LogProfilesClient) GetResponder(resp *http.Response) (result LogPro
 }
 
 // List list the log profiles.
-func (client LogProfilesClient) List(ctx context.Context) (result LogProfileCollection, err error) {
+func (client LogProfilesGroupClient) List(ctx context.Context) (result LogProfileCollection, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client LogProfilesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client LogProfilesGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -294,14 +294,14 @@ func (client LogProfilesClient) ListPreparer(ctx context.Context) (*http.Request
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogProfilesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client LogProfilesGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client LogProfilesClient) ListResponder(resp *http.Response) (result LogProfileCollection, err error) {
+func (client LogProfilesGroupClient) ListResponder(resp *http.Response) (result LogProfileCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -315,30 +315,30 @@ func (client LogProfilesClient) ListResponder(resp *http.Response) (result LogPr
 // Update updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
 //
 // logProfileName is the name of the log profile. logProfilesResource is parameters supplied to the operation.
-func (client LogProfilesClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (result LogProfileResource, err error) {
 	req, err := client.UpdatePreparer(ctx, logProfileName, logProfilesResource)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.LogProfilesGroupClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client LogProfilesClient) UpdatePreparer(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (*http.Request, error) {
+func (client LogProfilesGroupClient) UpdatePreparer(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"logProfileName": autorest.Encode("path", logProfileName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -361,14 +361,14 @@ func (client LogProfilesClient) UpdatePreparer(ctx context.Context, logProfileNa
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client LogProfilesClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client LogProfilesGroupClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client LogProfilesClient) UpdateResponder(resp *http.Response) (result LogProfileResource, err error) {
+func (client LogProfilesGroupClient) UpdateResponder(resp *http.Response) (result LogProfileResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

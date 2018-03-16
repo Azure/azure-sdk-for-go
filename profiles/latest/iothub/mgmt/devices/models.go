@@ -72,7 +72,7 @@ const (
 	ServiceConnectDeviceConnect                          AccessRights = original.ServiceConnectDeviceConnect
 )
 
-func PossibleAccessRightsValues() [15]AccessRights {
+func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	None             Capabilities = original.None
 )
 
-func PossibleCapabilitiesValues() [2]Capabilities {
+func PossibleCapabilitiesValues() []Capabilities {
 	return original.PossibleCapabilitiesValues()
 }
 
@@ -94,7 +94,7 @@ const (
 	Invalid       IotHubNameUnavailabilityReason = original.Invalid
 )
 
-func PossibleIotHubNameUnavailabilityReasonValues() [2]IotHubNameUnavailabilityReason {
+func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
 	return original.PossibleIotHubNameUnavailabilityReasonValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	IotHubScaleTypeNone      IotHubScaleType = original.IotHubScaleTypeNone
 )
 
-func PossibleIotHubScaleTypeValues() [3]IotHubScaleType {
+func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 	return original.PossibleIotHubScaleTypeValues()
 }
 
@@ -119,7 +119,7 @@ const (
 	S3 IotHubSku = original.S3
 )
 
-func PossibleIotHubSkuValues() [4]IotHubSku {
+func PossibleIotHubSkuValues() []IotHubSku {
 	return original.PossibleIotHubSkuValues()
 }
 
@@ -130,7 +130,7 @@ const (
 	Standard IotHubSkuTier = original.Standard
 )
 
-func PossibleIotHubSkuTierValues() [2]IotHubSkuTier {
+func PossibleIotHubSkuTierValues() []IotHubSkuTier {
 	return original.PossibleIotHubSkuTierValues()
 }
 
@@ -141,7 +141,7 @@ const (
 	Reject IPFilterActionType = original.Reject
 )
 
-func PossibleIPFilterActionTypeValues() [2]IPFilterActionType {
+func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 	return original.PossibleIPFilterActionTypeValues()
 }
 
@@ -156,7 +156,7 @@ const (
 	Unknown   JobStatus = original.Unknown
 )
 
-func PossibleJobStatusValues() [6]JobStatus {
+func PossibleJobStatusValues() []JobStatus {
 	return original.PossibleJobStatusValues()
 }
 
@@ -175,7 +175,7 @@ const (
 	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
-func PossibleJobTypeValues() [10]JobType {
+func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
 
@@ -188,7 +188,7 @@ const (
 	OperationMonitoringLevelNone             OperationMonitoringLevel = original.OperationMonitoringLevelNone
 )
 
-func PossibleOperationMonitoringLevelValues() [4]OperationMonitoringLevel {
+func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
 	return original.PossibleOperationMonitoringLevelValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	TwinChangeEvents         RoutingSource = original.TwinChangeEvents
 )
 
-func PossibleRoutingSourceValues() [4]RoutingSource {
+func PossibleRoutingSourceValues() []RoutingSource {
 	return original.PossibleRoutingSourceValues()
 }
 

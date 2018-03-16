@@ -225,6 +225,14 @@ func PossibleVMPriorityValues() [2]VMPriority {
 	return [2]VMPriority{Dedicated, Lowpriority}
 }
 
+// AppInsightsReference specifies Azure Application Insights information for performance counters reporting.
+type AppInsightsReference struct {
+	Component          *ResourceID `json:"component,omitempty"`
+	InstrumentationKey *string     `json:"instrumentationKey,omitempty"`
+	// InstrumentationKeySecretReference - Specifies KeyVault Store and Secret which contains Azure Application Insights instrumentation key. One of instumentationKey or instrumentationKeySecretReference must be specified.
+	InstrumentationKeySecretReference *KeyVaultSecretReference `json:"instrumentationKeySecretReference,omitempty"`
+}
+
 // AutoScaleSettings the system automatically scales the cluster up and down (within minimumNodeCount and
 // maximumNodeCount) based on the pending and running jobs on the cluster.
 type AutoScaleSettings struct {
@@ -239,7 +247,7 @@ type AzureBlobFileSystemReference struct {
 	AccountName   *string                      `json:"accountName,omitempty"`
 	ContainerName *string                      `json:"containerName,omitempty"`
 	Credentials   *AzureStorageCredentialsInfo `json:"credentials,omitempty"`
-	// RelativeMountPath - Note that all blob file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
+	// RelativeMountPath - Note that all cluster level blob file systems will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level blob file systems will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 	MountOptions      *string `json:"mountOptions,omitempty"`
 }
@@ -249,7 +257,7 @@ type AzureFileShareReference struct {
 	AccountName  *string                      `json:"accountName,omitempty"`
 	AzureFileURL *string                      `json:"azureFileUrl,omitempty"`
 	Credentials  *AzureStorageCredentialsInfo `json:"credentials,omitempty"`
-	// RelativeMountPath - Note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
+	// RelativeMountPath - Note that all cluster level file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and all job level file shares will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 	// FileMode - Default value is 0777. Valid only if OS is linux.
 	FileMode *string `json:"fileMode,omitempty"`
@@ -817,10 +825,18 @@ type DataDisks struct {
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
-// EnvironmentSetting a collection of environment variables to set.
-type EnvironmentSetting struct {
+// EnvironmentVariable a collection of environment variables to set.
+type EnvironmentVariable struct {
 	Name  *string `json:"name,omitempty"`
 	Value *string `json:"value,omitempty"`
+}
+
+// EnvironmentVariableWithSecretValue a collection of environment variables with secret values to set.
+type EnvironmentVariableWithSecretValue struct {
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
+	// ValueSecretReference - Specifies KeyVault Store and Secret which contains the value for the environment variable. One of value or valueSecretReference must be provided.
+	ValueSecretReference *KeyVaultSecretReference `json:"valueSecretReference,omitempty"`
 }
 
 // Error an error response from the Batch AI service.
@@ -833,13 +849,14 @@ type Error struct {
 	Details *[]NameValuePair `json:"details,omitempty"`
 }
 
-// File properties of the file.
+// File properties of the file or directory.
 type File struct {
-	// Name - file name
+	// Name - Name of the file.
 	Name *string `json:"name,omitempty"`
-	// DownloadURL - This will be returned only if the model has been archived. During job run, this won't be returned and customers can use SSH tunneling to download. Users can use Get Remote Login Information API to get the IP address and port information of all the compute nodes running the job.
+	// IsDirectory - Indicates if the file is a directory.
+	IsDirectory *bool   `json:"isDirectory,omitempty"`
 	DownloadURL *string `json:"downloadUrl,omitempty"`
-	// FileProperties - The properties associated with the file.
+	// FileProperties - The properties associated with the file. The properties are not returned for directories.
 	*FileProperties `json:"properties,omitempty"`
 }
 
@@ -860,6 +877,15 @@ func (f *File) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				f.Name = &name
+			}
+		case "isDirectory":
+			if v != nil {
+				var isDirectory bool
+				err = json.Unmarshal(*v, &isDirectory)
+				if err != nil {
+					return err
+				}
+				f.IsDirectory = &isDirectory
 			}
 		case "downloadUrl":
 			if v != nil {
@@ -888,7 +914,7 @@ func (f *File) UnmarshalJSON(body []byte) error {
 // FileListResult values returned by the List operation.
 type FileListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The collection of returned job files.
+	// Value - The collection of returned job directories and files.
 	Value *[]File `json:"value,omitempty"`
 	// NextLink - The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1303,7 +1329,7 @@ type FileServerReference struct {
 	FileServer *ResourceID `json:"fileServer,omitempty"`
 	// SourceDirectory - If this property is not specified, the entire File Server will be mounted.
 	SourceDirectory *string `json:"sourceDirectory,omitempty"`
-	// RelativeMountPath - Note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
+	// RelativeMountPath - Note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
 	MountOptions      *string `json:"mountOptions,omitempty"`
 }
@@ -1410,6 +1436,8 @@ type ImageReference struct {
 	Offer     *string `json:"offer,omitempty"`
 	Sku       *string `json:"sku,omitempty"`
 	Version   *string `json:"version,omitempty"`
+	// VirtualMachineImageID - The virtual machine image must be in the same region and subscription as the cluster. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration. Note, you need to provide publisher, offer and sku of the base OS image of which the custom image has been derived from.
+	VirtualMachineImageID *string `json:"virtualMachineImageId,omitempty"`
 }
 
 // ImageSourceRegistry details of the container image such as name, URL and credentials.
@@ -1421,7 +1449,7 @@ type ImageSourceRegistry struct {
 
 // InputDirectory input directory for the job.
 type InputDirectory struct {
-	// ID - It will be available for the job as an environment variable under AZ_BATCHAI_INPUT_id. The service will also provide the following  environment variable: AZ_BATCHAI_PREV_OUTPUT_Name. The value of the variable will be populated if the job is being retried after a previous failure, otherwise it will be set to nothing.
+	// ID - The path of the input directory will be available as a value of an environment variable with AZ_BATCHAI_INPUT_<id> name, where <id> is the value of id attribute.
 	ID   *string `json:"id,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -1543,11 +1571,14 @@ type JobBaseProperties struct {
 	// Priority - Priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority *int32      `json:"priority,omitempty"`
 	Cluster  *ResourceID `json:"cluster,omitempty"`
+	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// NodeCount - The job will be gang scheduled on that many compute nodes
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// ContainerSettings - If the container was downloaded as part of cluster setup then the same container image will be used. If not provided, the job will run on the VM.
 	ContainerSettings     *ContainerSettings     `json:"containerSettings,omitempty"`
 	CntkSettings          *CNTKsettings          `json:"cntkSettings,omitempty"`
+	PyTorchSettings       *PyTorchSettings       `json:"pyTorchSettings,omitempty"`
 	TensorFlowSettings    *TensorFlowSettings    `json:"tensorFlowSettings,omitempty"`
 	CaffeSettings         *CaffeSettings         `json:"caffeSettings,omitempty"`
 	Caffe2Settings        *Caffe2Settings        `json:"caffe2Settings,omitempty"`
@@ -1559,8 +1590,10 @@ type JobBaseProperties struct {
 	StdOutErrPathPrefix *string            `json:"stdOutErrPathPrefix,omitempty"`
 	InputDirectories    *[]InputDirectory  `json:"inputDirectories,omitempty"`
 	OutputDirectories   *[]OutputDirectory `json:"outputDirectories,omitempty"`
-	// EnvironmentVariables - Batch AI service sets the following environment variables for all jobs: AZ_BATCHAI_INPUT_id, AZ_BATCHAI_OUTPUT_id, AZ_BATCHAI_NUM_GPUS_PER_NODE. For distributed TensorFlow jobs, following additional environment variables are set by the Batch AI Service: AZ_BATCHAI_PS_HOSTS, AZ_BATCHAI_WORKER_HOSTS
-	EnvironmentVariables *[]EnvironmentSetting `json:"environmentVariables,omitempty"`
+	// EnvironmentVariables - Batch AI will setup these additional environment variables for the job.
+	EnvironmentVariables *[]EnvironmentVariable `json:"environmentVariables,omitempty"`
+	// Secrets - Batch AI will setup these additional environment variables for the job. Server will never report values of these variables back.
+	Secrets *[]EnvironmentVariableWithSecretValue `json:"secrets,omitempty"`
 	// Constraints - Constraints associated with the Job.
 	Constraints *JobBasePropertiesConstraints `json:"constraints,omitempty"`
 }
@@ -1753,13 +1786,18 @@ type JobProperties struct {
 	// Priority - Priority associated with the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority *int32      `json:"priority,omitempty"`
 	Cluster  *ResourceID `json:"cluster,omitempty"`
+	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
+	// JobOutputDirectoryPathSegment - Batch AI creates job's output directories under an unique path to avoid conflicts between jobs. This value contains a path segment generated by Batch AI to make the path unique and can be used to find the output directory on the node or mounted filesystem.
+	JobOutputDirectoryPathSegment *string `json:"jobOutputDirectoryPathSegment,omitempty"`
 	// NodeCount - The job will be gang scheduled on that many compute nodes
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// ContainerSettings - If the container was downloaded as part of cluster setup then the same container image will be used. If not provided, the job will run on the VM.
 	ContainerSettings *ContainerSettings `json:"containerSettings,omitempty"`
-	// ToolType - Possible values are: cntk, tensorflow, caffe, caffe2, chainer, custom. Possible values include: 'ToolTypeCntk', 'ToolTypeTensorflow', 'ToolTypeCaffe', 'ToolTypeCaffe2', 'ToolTypeChainer', 'ToolTypeCustom'
+	// ToolType - Possible values are: cntk, tensorflow, caffe, caffe2, chainer, pytorch, custom. Possible values include: 'ToolTypeCntk', 'ToolTypeTensorflow', 'ToolTypeCaffe', 'ToolTypeCaffe2', 'ToolTypeChainer', 'ToolTypeCustom'
 	ToolType              ToolType               `json:"toolType,omitempty"`
 	CntkSettings          *CNTKsettings          `json:"cntkSettings,omitempty"`
+	PyTorchSettings       *PyTorchSettings       `json:"pyTorchSettings,omitempty"`
 	TensorFlowSettings    *TensorFlowSettings    `json:"tensorFlowSettings,omitempty"`
 	CaffeSettings         *CaffeSettings         `json:"caffeSettings,omitempty"`
 	ChainerSettings       *ChainerSettings       `json:"chainerSettings,omitempty"`
@@ -1770,8 +1808,10 @@ type JobProperties struct {
 	StdOutErrPathPrefix *string            `json:"stdOutErrPathPrefix,omitempty"`
 	InputDirectories    *[]InputDirectory  `json:"inputDirectories,omitempty"`
 	OutputDirectories   *[]OutputDirectory `json:"outputDirectories,omitempty"`
-	// EnvironmentVariables - Batch AI services sets the following environment variables for all jobs: AZ_BATCHAI_INPUT_id, AZ_BATCHAI_OUTPUT_id, AZ_BATCHAI_NUM_GPUS_PER_NODE, For distributed TensorFlow jobs, following additional environment variables are set by the Batch AI Service: AZ_BATCHAI_PS_HOSTS, AZ_BATCHAI_WORKER_HOSTS.
-	EnvironmentVariables *[]EnvironmentSetting `json:"environmentVariables,omitempty"`
+	// EnvironmentVariables - Batch AI will setup these additional environment variables for the job.
+	EnvironmentVariables *[]EnvironmentVariable `json:"environmentVariables,omitempty"`
+	// Secrets - Batch AI will setup these additional environment variables for the job. Server will never report values of these variables back.
+	Secrets *[]EnvironmentVariableWithSecretValue `json:"secrets,omitempty"`
 	// Constraints - Constraints associated with the Job.
 	Constraints *JobPropertiesConstraints `json:"constraints,omitempty"`
 	// CreationTime - The creation time of the job.
@@ -1961,6 +2001,108 @@ type KeyVaultSecretReference struct {
 	SecretURL   *string     `json:"secretUrl,omitempty"`
 }
 
+// ListUsagesResult the List Usages operation response.
+type ListUsagesResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of compute resource usages.
+	Value *[]Usage `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next page of compute resource usage information.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListUsagesResultIterator provides access to a complete listing of Usage values.
+type ListUsagesResultIterator struct {
+	i    int
+	page ListUsagesResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListUsagesResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListUsagesResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListUsagesResultIterator) Response() ListUsagesResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListUsagesResultIterator) Value() Usage {
+	if !iter.page.NotDone() {
+		return Usage{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lur ListUsagesResult) IsEmpty() bool {
+	return lur.Value == nil || len(*lur.Value) == 0
+}
+
+// listUsagesResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lur ListUsagesResult) listUsagesResultPreparer() (*http.Request, error) {
+	if lur.NextLink == nil || len(to.String(lur.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lur.NextLink)))
+}
+
+// ListUsagesResultPage contains a page of Usage values.
+type ListUsagesResultPage struct {
+	fn  func(ListUsagesResult) (ListUsagesResult, error)
+	lur ListUsagesResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListUsagesResultPage) Next() error {
+	next, err := page.fn(page.lur)
+	if err != nil {
+		return err
+	}
+	page.lur = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListUsagesResultPage) NotDone() bool {
+	return !page.lur.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListUsagesResultPage) Response() ListUsagesResult {
+	return page.lur
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListUsagesResultPage) Values() []Usage {
+	if page.lur.IsEmpty() {
+		return nil
+	}
+	return *page.lur.Value
+}
+
 // LocalDataVolume represents mapping of host directories to directories in the container.
 type LocalDataVolume struct {
 	HostPath  *string `json:"hostPath,omitempty"`
@@ -2003,8 +2145,10 @@ type NameValuePair struct {
 // NodeSetup use this to prepare the VM. NOTE: The volumes specified in mountVolumes are mounted first and then the
 // setupTask is run. Therefore the setup task can use local mountPaths in its execution.
 type NodeSetup struct {
-	SetupTask    *SetupTask    `json:"setupTask,omitempty"`
-	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
+	SetupTask *SetupTask `json:"setupTask,omitempty"`
+	// MountVolumes - Specified mount volumes will be available to all jobs executing on the cluster. The volumes will be mounted at location specified by $AZ_BATCHAI_MOUNT_ROOT environment variable.
+	MountVolumes                *MountVolumes                `json:"mountVolumes,omitempty"`
+	PerformanceCountersSettings *PerformanceCountersSettings `json:"performanceCountersSettings,omitempty"`
 }
 
 // NodeStateCounts counts of various compute node states on the cluster.
@@ -2137,16 +2281,22 @@ func (page OperationListResultPage) Values() []Operation {
 
 // OutputDirectory output directory for the job.
 type OutputDirectory struct {
-	// ID - It will be available for the job as an environment variable under AZ_BATCHAI_OUTPUT_id.
+	// ID - The path of the output directory will be available as a value of an environment variable with AZ_BATCHAI_OUTPUT_<id> name, where <id> is the value of id attribute.
 	ID *string `json:"id,omitempty"`
-	// PathPrefix - NOTE: This is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs.
+	// PathPrefix - NOTE: This is an absolute path to prefix. E.g. $AZ_BATCHAI_MOUNT_ROOT/MyNFS/MyLogs. You can find the full path to the output directory by combining pathPrefix, jobOutputDirectoryPathSegment (reported by get job) and pathSuffix.
 	PathPrefix *string `json:"pathPrefix,omitempty"`
-	// PathSuffix - The suffix path where the output directory will be created.
+	// PathSuffix - The suffix path where the output directory will be created. E.g. models. You can find the full path to the output directory by combining pathPrefix, jobOutputDirectoryPathSegment (reported by get job) and pathSuffix.
 	PathSuffix *string `json:"pathSuffix,omitempty"`
 	// Type - Default value is Custom. The possible values are Model, Logs, Summary, and Custom. Users can use multiple enums for a single directory. Eg. outPutType='Model,Logs, Summary'. Possible values include: 'Model', 'Logs', 'Summary', 'Custom'
 	Type OutputType `json:"type,omitempty"`
 	// CreateNew - Default is true. If false, then the directory is not created and can be any directory path that the user specifies.
 	CreateNew *bool `json:"createNew,omitempty"`
+}
+
+// PerformanceCountersSettings performance counters reporting settings.
+type PerformanceCountersSettings struct {
+	// AppInsightsReference - If provided, Batch AI will upload node performance counters to the corresponding Azure Application Insights account.
+	AppInsightsReference *AppInsightsReference `json:"appInsightsReference,omitempty"`
 }
 
 // PrivateRegistryCredentials credentials to access a container image in a private repository.
@@ -2156,6 +2306,17 @@ type PrivateRegistryCredentials struct {
 	Password *string `json:"password,omitempty"`
 	// PasswordSecretReference - Users can store their secrets in Azure KeyVault and pass it to the Batch AI Service to integrate with KeyVault. One of password or passwordSecretReference must be specified.
 	PasswordSecretReference *KeyVaultSecretReference `json:"passwordSecretReference,omitempty"`
+}
+
+// PyTorchSettings specifies the settings for pyTorch job.
+type PyTorchSettings struct {
+	PythonScriptFilePath  *string `json:"pythonScriptFilePath,omitempty"`
+	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
+	CommandLineArgs       *string `json:"commandLineArgs,omitempty"`
+	// ProcessCount - The default value for this property is equal to nodeCount property.
+	ProcessCount *int32 `json:"processCount,omitempty"`
+	// CommunicationBackend - Valid values are 'TCP', 'Gloo' or 'MPI'. Not required for non-distributed jobs.
+	CommunicationBackend *string `json:"communicationBackend,omitempty"`
 }
 
 // RemoteLoginInformation contains remote login details to SSH/RDP to a compute node in cluster.
@@ -2320,16 +2481,21 @@ type ScaleSettings struct {
 
 // SetupTask specifies a setup task which can be used to customize the compute nodes of the cluster.
 type SetupTask struct {
-	CommandLine          *string               `json:"commandLine,omitempty"`
-	EnvironmentVariables *[]EnvironmentSetting `json:"environmentVariables,omitempty"`
-	RunElevated          *bool                 `json:"runElevated,omitempty"`
-	// StdOutErrPathPrefix - The path where the Batch AI service will upload the stdout and stderror of setup task.
+	CommandLine          *string                `json:"commandLine,omitempty"`
+	EnvironmentVariables *[]EnvironmentVariable `json:"environmentVariables,omitempty"`
+	// Secrets - Server will never report values of these variables back.
+	Secrets *[]EnvironmentVariableWithSecretValue `json:"secrets,omitempty"`
+	// RunElevated - Note. Non-elevated tasks are run under an account added into sudoer list and can perform sudo when required.
+	RunElevated *bool `json:"runElevated,omitempty"`
+	// StdOutErrPathPrefix - The prefix of a path where the Batch AI service will upload the stdout and stderr of the setup task.
 	StdOutErrPathPrefix *string `json:"stdOutErrPathPrefix,omitempty"`
+	// StdOutErrPathSuffix - Batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatinate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
+	StdOutErrPathSuffix *string `json:"stdOutErrPathSuffix,omitempty"`
 }
 
 // SSHConfiguration SSH configuration settings for the VM
 type SSHConfiguration struct {
-	// PublicIPsToAllow - Default value is '*' can be used to match all source IPs. Maximum number of publicIPs that can be specified are 400.
+	// PublicIPsToAllow - Default value is '*' can be used to match all source IPs. Maximum number of IP ranges that can be specified are 400.
 	PublicIPsToAllow    *[]string            `json:"publicIPsToAllow,omitempty"`
 	UserAccountSettings *UserAccountSettings `json:"userAccountSettings,omitempty"`
 }
@@ -2352,8 +2518,28 @@ type TensorFlowSettings struct {
 // UnmanagedFileSystemReference details of the file system to mount on the compute cluster nodes.
 type UnmanagedFileSystemReference struct {
 	MountCommand *string `json:"mountCommand,omitempty"`
-	// RelativeMountPath - Note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
+	// RelativeMountPath - Note that all cluster level unmanaged file system will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level unmanaged file system will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
 	RelativeMountPath *string `json:"relativeMountPath,omitempty"`
+}
+
+// Usage describes Batch AI Resource Usage.
+type Usage struct {
+	// Unit - An enum describing the unit of usage measurement.
+	Unit *string `json:"unit,omitempty"`
+	// CurrentValue - The current usage of the resource.
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// Limit - The maximum permitted usage of the resource.
+	Limit *int64 `json:"limit,omitempty"`
+	// Name - The name of the type of usage.
+	Name *UsageName `json:"name,omitempty"`
+}
+
+// UsageName the Usage Names.
+type UsageName struct {
+	// Value - The name of the resource.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - The localized name of the resource.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // UserAccountSettings settings for user account that gets created on each on the nodes of a cluster.

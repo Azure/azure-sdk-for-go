@@ -44,8 +44,8 @@ const (
 )
 
 // PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
-func PossibleManagementOperationStateValues() [6]ManagementOperationState {
-	return [6]ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
+func PossibleManagementOperationStateValues() []ManagementOperationState {
+	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
 }
 
 // DatabaseOperation a database operation.

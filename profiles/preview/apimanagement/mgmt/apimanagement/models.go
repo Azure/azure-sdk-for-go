@@ -19,7 +19,7 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-01-01/apimanagement"
 
 type APIClient = original.APIClient
 
@@ -248,7 +248,7 @@ const (
 	Soap APIType = original.Soap
 )
 
-func PossibleAPITypeValues() [2]APIType {
+func PossibleAPITypeValues() []APIType {
 	return original.PossibleAPITypeValues()
 }
 
@@ -261,7 +261,7 @@ const (
 	Succeeded  AsyncOperationStatus = original.Succeeded
 )
 
-func PossibleAsyncOperationStatusValues() [4]AsyncOperationStatus {
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 	return original.PossibleAsyncOperationStatusValues()
 }
 
@@ -278,7 +278,7 @@ const (
 	TRACE   AuthorizationMethod = original.TRACE
 )
 
-func PossibleAuthorizationMethodValues() [8]AuthorizationMethod {
+func PossibleAuthorizationMethodValues() []AuthorizationMethod {
 	return original.PossibleAuthorizationMethodValues()
 }
 
@@ -289,7 +289,7 @@ const (
 	BackendProtocolSoap BackendProtocol = original.BackendProtocolSoap
 )
 
-func PossibleBackendProtocolValues() [2]BackendProtocol {
+func PossibleBackendProtocolValues() []BackendProtocol {
 	return original.PossibleBackendProtocolValues()
 }
 
@@ -300,7 +300,7 @@ const (
 	Query               BearerTokenSendingMethod = original.Query
 )
 
-func PossibleBearerTokenSendingMethodValues() [2]BearerTokenSendingMethod {
+func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 	return original.PossibleBearerTokenSendingMethodValues()
 }
 
@@ -311,7 +311,7 @@ const (
 	Body  ClientAuthenticationMethod = original.Body
 )
 
-func PossibleClientAuthenticationMethodValues() [2]ClientAuthenticationMethod {
+func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	return original.PossibleClientAuthenticationMethodValues()
 }
 
@@ -322,7 +322,7 @@ const (
 	Signup Confirmation = original.Signup
 )
 
-func PossibleConfirmationValues() [2]Confirmation {
+func PossibleConfirmationValues() []Confirmation {
 	return original.PossibleConfirmationValues()
 }
 
@@ -334,7 +334,7 @@ const (
 	Success      ConnectivityStatusType = original.Success
 )
 
-func PossibleConnectivityStatusTypeValues() [3]ConnectivityStatusType {
+func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 	return original.PossibleConnectivityStatusTypeValues()
 }
 
@@ -349,8 +349,20 @@ const (
 	WsdlLink        ContentFormat = original.WsdlLink
 )
 
-func PossibleContentFormatValues() [6]ContentFormat {
+func PossibleContentFormatValues() []ContentFormat {
 	return original.PossibleContentFormatValues()
+}
+
+type ExportFormat = original.ExportFormat
+
+const (
+	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
+)
+
+func PossibleExportFormatValues() []ExportFormat {
+	return original.PossibleExportFormatValues()
 }
 
 type GrantType = original.GrantType
@@ -362,7 +374,7 @@ const (
 	ResourceOwnerPassword GrantType = original.ResourceOwnerPassword
 )
 
-func PossibleGrantTypeValues() [4]GrantType {
+func PossibleGrantTypeValues() []GrantType {
 	return original.PossibleGrantTypeValues()
 }
 
@@ -374,7 +386,7 @@ const (
 	System   GroupType = original.System
 )
 
-func PossibleGroupTypeValues() [3]GroupType {
+func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
 }
 
@@ -387,7 +399,7 @@ const (
 	Scm        HostnameType = original.Scm
 )
 
-func PossibleHostnameTypeValues() [4]HostnameType {
+func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()
 }
 
@@ -402,7 +414,7 @@ const (
 	Twitter   IdentityProviderType = original.Twitter
 )
 
-func PossibleIdentityProviderTypeValues() [6]IdentityProviderType {
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 	return original.PossibleIdentityProviderTypeValues()
 }
 
@@ -413,7 +425,7 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -424,7 +436,7 @@ const (
 	AzureEventHub       LoggerType = original.AzureEventHub
 )
 
-func PossibleLoggerTypeValues() [2]LoggerType {
+func PossibleLoggerTypeValues() []LoggerType {
 	return original.PossibleLoggerTypeValues()
 }
 
@@ -436,7 +448,7 @@ const (
 	Valid         NameAvailabilityReason = original.Valid
 )
 
-func PossibleNameAvailabilityReasonValues() [3]NameAvailabilityReason {
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
 }
 
@@ -452,8 +464,19 @@ const (
 	RequestPublisherNotificationMessage               NotificationName = original.RequestPublisherNotificationMessage
 )
 
-func PossibleNotificationNameValues() [7]NotificationName {
+func PossibleNotificationNameValues() []NotificationName {
 	return original.PossibleNotificationNameValues()
+}
+
+type PolicyContentFormat = original.PolicyContentFormat
+
+const (
+	XML     PolicyContentFormat = original.XML
+	XMLLink PolicyContentFormat = original.XMLLink
+)
+
+func PossiblePolicyContentFormatValues() []PolicyContentFormat {
+	return original.PossiblePolicyContentFormatValues()
 }
 
 type PolicyScopeContract = original.PolicyScopeContract
@@ -466,7 +489,7 @@ const (
 	PolicyScopeContractTenant    PolicyScopeContract = original.PolicyScopeContractTenant
 )
 
-func PossiblePolicyScopeContractValues() [5]PolicyScopeContract {
+func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return original.PossiblePolicyScopeContractValues()
 }
 
@@ -477,7 +500,7 @@ const (
 	Published    ProductState = original.Published
 )
 
-func PossibleProductStateValues() [2]ProductState {
+func PossibleProductStateValues() []ProductState {
 	return original.PossibleProductStateValues()
 }
 
@@ -488,19 +511,8 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
-func PossibleProtocolValues() [2]Protocol {
+func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
-}
-
-type SamplingType = original.SamplingType
-
-const (
-	Adaptive SamplingType = original.Adaptive
-	Fixed    SamplingType = original.Fixed
-)
-
-func PossibleSamplingTypeValues() [2]SamplingType {
-	return original.PossibleSamplingTypeValues()
 }
 
 type SkuType = original.SkuType
@@ -512,8 +524,19 @@ const (
 	SkuTypeStandard  SkuType = original.SkuTypeStandard
 )
 
-func PossibleSkuTypeValues() [4]SkuType {
+func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
+}
+
+type SoapAPIType = original.SoapAPIType
+
+const (
+	SoapPassThrough SoapAPIType = original.SoapPassThrough
+	SoapToRest      SoapAPIType = original.SoapToRest
+)
+
+func PossibleSoapAPITypeValues() []SoapAPIType {
+	return original.PossibleSoapAPITypeValues()
 }
 
 type StoreName = original.StoreName
@@ -523,7 +546,7 @@ const (
 	Root                 StoreName = original.Root
 )
 
-func PossibleStoreNameValues() [2]StoreName {
+func PossibleStoreNameValues() []StoreName {
 	return original.PossibleStoreNameValues()
 }
 
@@ -538,7 +561,7 @@ const (
 	Suspended SubscriptionState = original.Suspended
 )
 
-func PossibleSubscriptionStateValues() [6]SubscriptionState {
+func PossibleSubscriptionStateValues() []SubscriptionState {
 	return original.PossibleSubscriptionStateValues()
 }
 
@@ -561,7 +584,7 @@ const (
 	RequestDeveloperNotificationMessage               TemplateName = original.RequestDeveloperNotificationMessage
 )
 
-func PossibleTemplateNameValues() [14]TemplateName {
+func PossibleTemplateNameValues() []TemplateName {
 	return original.PossibleTemplateNameValues()
 }
 
@@ -574,7 +597,7 @@ const (
 	UserStatePending UserState = original.UserStatePending
 )
 
-func PossibleUserStateValues() [4]UserState {
+func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
 }
 
@@ -586,8 +609,20 @@ const (
 	VersioningSchemeSegment VersioningScheme = original.VersioningSchemeSegment
 )
 
-func PossibleVersioningSchemeValues() [3]VersioningScheme {
+func PossibleVersioningSchemeValues() []VersioningScheme {
 	return original.PossibleVersioningSchemeValues()
+}
+
+type VersioningScheme1 = original.VersioningScheme1
+
+const (
+	VersioningScheme1Header  VersioningScheme1 = original.VersioningScheme1Header
+	VersioningScheme1Query   VersioningScheme1 = original.VersioningScheme1Query
+	VersioningScheme1Segment VersioningScheme1 = original.VersioningScheme1Segment
+)
+
+func PossibleVersioningScheme1Values() []VersioningScheme1 {
+	return original.PossibleVersioningScheme1Values()
 }
 
 type VirtualNetworkType = original.VirtualNetworkType
@@ -598,7 +633,7 @@ const (
 	VirtualNetworkTypeNone     VirtualNetworkType = original.VirtualNetworkTypeNone
 )
 
-func PossibleVirtualNetworkTypeValues() [3]VirtualNetworkType {
+func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
 	return original.PossibleVirtualNetworkTypeValues()
 }
 
@@ -626,13 +661,14 @@ type APIRevisionCollection = original.APIRevisionCollection
 type APIRevisionCollectionIterator = original.APIRevisionCollectionIterator
 type APIRevisionCollectionPage = original.APIRevisionCollectionPage
 type APIRevisionContract = original.APIRevisionContract
-type APIRevisionContractProperties = original.APIRevisionContractProperties
 type APIRevisionInfoContract = original.APIRevisionInfoContract
+type APITagResourceContractProperties = original.APITagResourceContractProperties
 type APIUpdateContract = original.APIUpdateContract
 type APIVersionSetCollection = original.APIVersionSetCollection
 type APIVersionSetCollectionIterator = original.APIVersionSetCollectionIterator
 type APIVersionSetCollectionPage = original.APIVersionSetCollectionPage
 type APIVersionSetContract = original.APIVersionSetContract
+type APIVersionSetContractDetails = original.APIVersionSetContractDetails
 type APIVersionSetContractProperties = original.APIVersionSetContractProperties
 type APIVersionSetEntityBase = original.APIVersionSetEntityBase
 type APIVersionSetUpdateParameters = original.APIVersionSetUpdateParameters
@@ -704,18 +740,20 @@ type IdentityProviderBaseParameters = original.IdentityProviderBaseParameters
 type IdentityProviderContract = original.IdentityProviderContract
 type IdentityProviderContractProperties = original.IdentityProviderContractProperties
 type IdentityProviderList = original.IdentityProviderList
+type IdentityProviderListIterator = original.IdentityProviderListIterator
+type IdentityProviderListPage = original.IdentityProviderListPage
 type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
 type IdentityProviderUpdateProperties = original.IdentityProviderUpdateProperties
+type ListNetworkStatusContractByLocation = original.ListNetworkStatusContractByLocation
 type LoggerCollection = original.LoggerCollection
 type LoggerCollectionIterator = original.LoggerCollectionIterator
 type LoggerCollectionPage = original.LoggerCollectionPage
 type LoggerContract = original.LoggerContract
 type LoggerContractProperties = original.LoggerContractProperties
-type LoggerSamplingContract = original.LoggerSamplingContract
-type LoggerSamplingProperties = original.LoggerSamplingProperties
 type LoggerUpdateContract = original.LoggerUpdateContract
 type LoggerUpdateParameters = original.LoggerUpdateParameters
 type NetworkStatusContract = original.NetworkStatusContract
+type NetworkStatusContractByLocation = original.NetworkStatusContractByLocation
 type NotificationCollection = original.NotificationCollection
 type NotificationCollectionIterator = original.NotificationCollectionIterator
 type NotificationCollectionPage = original.NotificationCollectionPage
@@ -737,13 +775,12 @@ type OperationContract = original.OperationContract
 type OperationContractProperties = original.OperationContractProperties
 type OperationDisplay = original.OperationDisplay
 type OperationEntityBaseContract = original.OperationEntityBaseContract
-type OperationEntityContract = original.OperationEntityContract
-type OperationEntityContractProperties = original.OperationEntityContractProperties
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResultContract = original.OperationResultContract
 type OperationResultLogItemContract = original.OperationResultLogItemContract
+type OperationTagResourceContractProperties = original.OperationTagResourceContractProperties
 type OperationUpdateContract = original.OperationUpdateContract
 type OperationUpdateContractProperties = original.OperationUpdateContractProperties
 type ParameterContract = original.ParameterContract
@@ -764,6 +801,7 @@ type ProductCollectionPage = original.ProductCollectionPage
 type ProductContract = original.ProductContract
 type ProductContractProperties = original.ProductContractProperties
 type ProductEntityBaseParameters = original.ProductEntityBaseParameters
+type ProductTagResourceContractProperties = original.ProductTagResourceContractProperties
 type ProductUpdateParameters = original.ProductUpdateParameters
 type ProductUpdateProperties = original.ProductUpdateProperties
 type PropertyCollection = original.PropertyCollection
@@ -787,6 +825,8 @@ type RecipientUserContract = original.RecipientUserContract
 type RecipientUsersContractProperties = original.RecipientUsersContractProperties
 type RegionContract = original.RegionContract
 type RegionListResult = original.RegionListResult
+type RegionListResultIterator = original.RegionListResultIterator
+type RegionListResultPage = original.RegionListResultPage
 type RegistrationDelegationSettingsProperties = original.RegistrationDelegationSettingsProperties
 type ReportCollection = original.ReportCollection
 type ReportCollectionIterator = original.ReportCollectionIterator
@@ -856,7 +896,7 @@ type TagResourceCollection = original.TagResourceCollection
 type TagResourceCollectionIterator = original.TagResourceCollectionIterator
 type TagResourceCollectionPage = original.TagResourceCollectionPage
 type TagResourceContract = original.TagResourceContract
-type TagResourceContractProperties = original.TagResourceContractProperties
+type TagTagResourceContractProperties = original.TagTagResourceContractProperties
 type TenantConfigurationDeployFuture = original.TenantConfigurationDeployFuture
 type TenantConfigurationSaveFuture = original.TenantConfigurationSaveFuture
 type TenantConfigurationSyncStateContract = original.TenantConfigurationSyncStateContract
@@ -872,6 +912,8 @@ type UserCreateParameterProperties = original.UserCreateParameterProperties
 type UserCreateParameters = original.UserCreateParameters
 type UserEntityBaseParameters = original.UserEntityBaseParameters
 type UserIdentityCollection = original.UserIdentityCollection
+type UserIdentityCollectionIterator = original.UserIdentityCollectionIterator
+type UserIdentityCollectionPage = original.UserIdentityCollectionPage
 type UserIdentityContract = original.UserIdentityContract
 type UserTokenParameters = original.UserTokenParameters
 type UserTokenResult = original.UserTokenResult

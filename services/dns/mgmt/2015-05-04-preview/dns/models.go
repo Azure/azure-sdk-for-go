@@ -49,8 +49,8 @@ const (
 )
 
 // PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
-func PossibleRecordTypeValues() [9]RecordType {
-	return [9]RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
+func PossibleRecordTypeValues() []RecordType {
+	return []RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
 }
 
 // AaaaRecord an AAAA record.

@@ -126,8 +126,8 @@ const (
 )
 
 // PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
-	return [47]HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return []HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
 }
 
 // OperationStatus enumerates the values for operation status.
@@ -143,8 +143,8 @@ const (
 )
 
 // PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() [3]OperationStatus {
-	return [3]OperationStatus{Failed, InProgress, Succeeded}
+func PossibleOperationStatusValues() []OperationStatus {
+	return []OperationStatus{Failed, InProgress, Succeeded}
 }
 
 // RecordType enumerates the values for record type.
@@ -172,8 +172,8 @@ const (
 )
 
 // PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
-func PossibleRecordTypeValues() [9]RecordType {
-	return [9]RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
+func PossibleRecordTypeValues() []RecordType {
+	return []RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
 }
 
 // AaaaRecord an AAAA record.

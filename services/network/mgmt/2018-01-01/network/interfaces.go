@@ -18,1064 +18,745 @@ package network
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"bytes"
 	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"encoding/json"
+	"github.com/Azure/azure-pipeline-go/pipeline"
+	"io/ioutil"
 	"net/http"
 )
 
 // InterfacesClient is the network Client
 type InterfacesClient struct {
-	BaseClient
+	ManagementClient
 }
 
 // NewInterfacesClient creates an instance of the InterfacesClient client.
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return NewInterfacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewInterfacesClient(p pipeline.Pipeline) InterfacesClient {
+	return InterfacesClient{NewManagementClient(p)}
 }
 
-// NewInterfacesClientWithBaseURI creates an instance of the InterfacesClient client.
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return InterfacesClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
-
-// CreateOrUpdate creates or updates a network interface.
+// CreateOrUpdate creates or updates a network interface. This method may poll for completion. Polling can be canceled
+// by passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP
+// requests.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 // parameters is parameters supplied to the create or update network interface operation.
-func (client InterfacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters Interface) (result InterfacesCreateOrUpdateFuture, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, networkInterfaceName, parameters)
+func (client InterfacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters Interface) (*Interface, error) {
+	req, err := client.createOrUpdatePreparer(resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "CreateOrUpdate", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.createOrUpdateResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Interface), err
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client InterfacesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters Interface) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) CreateOrUpdateSender(req *http.Request) (future InterfacesCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// createOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client InterfacesClient) createOrUpdatePreparer(resourceGroupName string, networkInterfaceName string, parameters Interface) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
+	req, err := pipeline.NewRequest("PUT", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) CreateOrUpdateResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// createOrUpdateResponder handles the response to the CreateOrUpdate request.
+func (client InterfacesClient) createOrUpdateResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusCreated, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Interface{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// Delete deletes the specified network interface.
+// Delete deletes the specified network interface. This method may poll for completion. Polling can be canceled by
+// passing the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
-func (client InterfacesClient) Delete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result InterfacesDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, networkInterfaceName)
+func (client InterfacesClient) Delete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*http.Response, error) {
+	req, err := client.deletePreparer(resourceGroupName, networkInterfaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Delete", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.DeleteSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.deleteResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Delete", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.Response(), err
 }
 
-// DeletePreparer prepares the Delete request.
-func (client InterfacesClient) DeletePreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) DeleteSender(req *http.Request) (future InterfacesDeleteFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// deletePreparer prepares the Delete request.
+func (client InterfacesClient) deletePreparer(resourceGroupName string, networkInterfaceName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
+	req, err := pipeline.NewRequest("DELETE", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
+// deleteResponder handles the response to the Delete request.
+func (client InterfacesClient) deleteResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusNoContent, http.StatusAccepted, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	resp.Response().Body.Close()
+	return resp, err
 }
 
 // Get gets information about the specified network interface.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 // expand is expands referenced resources.
-func (client InterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, expand string) (result Interface, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, networkInterfaceName, expand)
+func (client InterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, expand *string) (*Interface, error) {
+	req, err := client.getPreparer(resourceGroupName, networkInterfaceName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", resp, "Failure sending request")
-		return
+		return nil, err
 	}
+	return resp.(*Interface), err
+}
 
-	result, err = client.GetResponder(resp)
+// getPreparer prepares the Get request.
+func (client InterfacesClient) getPreparer(resourceGroupName string, networkInterfaceName string, expand *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", resp, "Failure responding to request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	if expand != nil {
+		params.Set("$expand", *expand)
+	}
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetPreparer prepares the Get request.
-func (client InterfacesClient) GetPreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+// getResponder handles the response to the Get request.
+func (client InterfacesClient) getResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
 	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	result := &Interface{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) GetResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetEffectiveRouteTable gets all route tables applied to a network interface.
+// GetEffectiveRouteTable gets all route tables applied to a network interface. This method may poll for completion.
+// Polling can be canceled by passing the cancel channel argument. The channel will be used to cancel polling and any
+// outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
-func (client InterfacesClient) GetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result InterfacesGetEffectiveRouteTableFuture, err error) {
-	req, err := client.GetEffectiveRouteTablePreparer(ctx, resourceGroupName, networkInterfaceName)
+func (client InterfacesClient) GetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResult, error) {
+	req, err := client.getEffectiveRouteTablePreparer(resourceGroupName, networkInterfaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetEffectiveRouteTable", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetEffectiveRouteTableSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getEffectiveRouteTableResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetEffectiveRouteTable", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*EffectiveRouteListResult), err
 }
 
-// GetEffectiveRouteTablePreparer prepares the GetEffectiveRouteTable request.
-func (client InterfacesClient) GetEffectiveRouteTablePreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveRouteTable", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetEffectiveRouteTableSender sends the GetEffectiveRouteTable request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) GetEffectiveRouteTableSender(req *http.Request) (future InterfacesGetEffectiveRouteTableFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// getEffectiveRouteTablePreparer prepares the GetEffectiveRouteTable request.
+func (client InterfacesClient) getEffectiveRouteTablePreparer(resourceGroupName string, networkInterfaceName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveRouteTable"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetEffectiveRouteTableResponder handles the response to the GetEffectiveRouteTable request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) GetEffectiveRouteTableResponder(resp *http.Response) (result EffectiveRouteListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getEffectiveRouteTableResponder handles the response to the GetEffectiveRouteTable request.
+func (client InterfacesClient) getEffectiveRouteTableResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &EffectiveRouteListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetVirtualMachineScaleSetIPConfiguration get the specified network interface ip configuration in a virtual machine
 // scale set.
 //
-// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual
-// machine scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the
-// network interface. IPConfigurationName is the name of the ip configuration. expand is expands referenced
-// resources.
-func (client InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand string) (result InterfaceIPConfiguration, err error) {
-	req, err := client.GetVirtualMachineScaleSetIPConfigurationPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, expand)
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
+// interface. IPConfigurationName is the name of the ip configuration. expand is expands referenced resources.
+func (client InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand *string) (*InterfaceIPConfiguration, error) {
+	req, err := client.getVirtualMachineScaleSetIPConfigurationPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetVirtualMachineScaleSetIPConfigurationSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getVirtualMachineScaleSetIPConfigurationResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetVirtualMachineScaleSetIPConfigurationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceIPConfiguration), err
 }
 
-// GetVirtualMachineScaleSetIPConfigurationPreparer prepares the GetVirtualMachineScaleSetIPConfiguration request.
-func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationPreparer(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"ipConfigurationName":        autorest.Encode("path", IPConfigurationName),
-		"networkInterfaceName":       autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
-		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
-		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
-		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
+// getVirtualMachineScaleSetIPConfigurationPreparer prepares the GetVirtualMachineScaleSetIPConfiguration request.
+func (client InterfacesClient) getVirtualMachineScaleSetIPConfigurationPreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, IPConfigurationName string, expand *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", "2017-03-30")
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetVirtualMachineScaleSetIPConfigurationSender sends the GetVirtualMachineScaleSetIPConfiguration request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetVirtualMachineScaleSetIPConfigurationResponder handles the response to the GetVirtualMachineScaleSetIPConfiguration request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) GetVirtualMachineScaleSetIPConfigurationResponder(resp *http.Response) (result InterfaceIPConfiguration, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getVirtualMachineScaleSetIPConfigurationResponder handles the response to the GetVirtualMachineScaleSetIPConfiguration request.
+func (client InterfacesClient) getVirtualMachineScaleSetIPConfigurationResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceIPConfiguration{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // GetVirtualMachineScaleSetNetworkInterface get the specified network interface in a virtual machine scale set.
 //
-// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual
-// machine scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the
-// network interface. expand is expands referenced resources.
-func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result Interface, err error) {
-	req, err := client.GetVirtualMachineScaleSetNetworkInterfacePreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
+// interface. expand is expands referenced resources.
+func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand *string) (*Interface, error) {
+	req, err := client.getVirtualMachineScaleSetNetworkInterfacePreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.GetVirtualMachineScaleSetNetworkInterfaceSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.getVirtualMachineScaleSetNetworkInterfaceResponder}, req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result, err = client.GetVirtualMachineScaleSetNetworkInterfaceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*Interface), err
 }
 
-// GetVirtualMachineScaleSetNetworkInterfacePreparer prepares the GetVirtualMachineScaleSetNetworkInterface request.
-func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfacePreparer(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName":       autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
-		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
-		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
-		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
+// getVirtualMachineScaleSetNetworkInterfacePreparer prepares the GetVirtualMachineScaleSetNetworkInterface request.
+func (client InterfacesClient) getVirtualMachineScaleSetNetworkInterfacePreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}"
+	req, err := pipeline.NewRequest("GET", u, nil)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
+	params := req.URL.Query()
+	params.Set("api-version", "2017-03-30")
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// GetVirtualMachineScaleSetNetworkInterfaceSender sends the GetVirtualMachineScaleSetNetworkInterface request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetVirtualMachineScaleSetNetworkInterfaceResponder handles the response to the GetVirtualMachineScaleSetNetworkInterface request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterfaceResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// getVirtualMachineScaleSetNetworkInterfaceResponder handles the response to the GetVirtualMachineScaleSetNetworkInterface request.
+func (client InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Interface{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // List gets all network interfaces in a resource group.
 //
 // resourceGroupName is the name of the resource group.
-func (client InterfacesClient) List(ctx context.Context, resourceGroupName string) (result InterfaceListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName)
+func (client InterfacesClient) List(ctx context.Context, resourceGroupName string) (*InterfaceListResult, error) {
+	req, err := client.listPreparer(resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "List", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "List", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "List", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceListResult), err
 }
 
-// ListPreparer prepares the List request.
-func (client InterfacesClient) ListPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client InterfacesClient) listNextResults(lastResults InterfaceListResult) (result InterfaceListResult, err error) {
-	req, err := lastResults.interfaceListResultPreparer()
+// listPreparer prepares the List request.
+func (client InterfacesClient) listPreparer(resourceGroupName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client InterfacesClient) ListComplete(ctx context.Context, resourceGroupName string) (result InterfaceListResultIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName)
-	return
+// listResponder handles the response to the List request.
+func (client InterfacesClient) listResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListAll gets all network interfaces in a subscription.
-func (client InterfacesClient) ListAll(ctx context.Context) (result InterfaceListResultPage, err error) {
-	result.fn = client.listAllNextResults
-	req, err := client.ListAllPreparer(ctx)
+func (client InterfacesClient) ListAll(ctx context.Context) (*InterfaceListResult, error) {
+	req, err := client.listAllPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListAll", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListAllSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listAllResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListAll", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListAllResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListAll", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceListResult), err
 }
 
-// ListAllPreparer prepares the ListAll request.
-func (client InterfacesClient) ListAllPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListAllSender sends the ListAll request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListAllSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListAllResponder handles the response to the ListAll request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListAllResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listAllNextResults retrieves the next set of results, if any.
-func (client InterfacesClient) listAllNextResults(lastResults InterfaceListResult) (result InterfaceListResult, err error) {
-	req, err := lastResults.interfaceListResultPreparer()
+// listAllPreparer prepares the ListAll request.
+func (client InterfacesClient) listAllPreparer() (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listAllNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListAllSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listAllNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListAllResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listAllNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client InterfacesClient) ListAllComplete(ctx context.Context) (result InterfaceListResultIterator, err error) {
-	result.page, err = client.ListAll(ctx)
-	return
+// listAllResponder handles the response to the ListAll request.
+func (client InterfacesClient) listAllResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// ListEffectiveNetworkSecurityGroups gets all network security groups applied to a network interface.
+// ListEffectiveNetworkSecurityGroups gets all network security groups applied to a network interface. This method may
+// poll for completion. Polling can be canceled by passing the cancel channel argument. The channel will be used to
+// cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
-func (client InterfacesClient) ListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result InterfacesListEffectiveNetworkSecurityGroupsFuture, err error) {
-	req, err := client.ListEffectiveNetworkSecurityGroupsPreparer(ctx, resourceGroupName, networkInterfaceName)
+func (client InterfacesClient) ListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResult, error) {
+	req, err := client.listEffectiveNetworkSecurityGroupsPreparer(resourceGroupName, networkInterfaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListEffectiveNetworkSecurityGroups", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.ListEffectiveNetworkSecurityGroupsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listEffectiveNetworkSecurityGroupsResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListEffectiveNetworkSecurityGroups", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*EffectiveNetworkSecurityGroupListResult), err
 }
 
-// ListEffectiveNetworkSecurityGroupsPreparer prepares the ListEffectiveNetworkSecurityGroups request.
-func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsPreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListEffectiveNetworkSecurityGroupsSender sends the ListEffectiveNetworkSecurityGroups request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsSender(req *http.Request) (future InterfacesListEffectiveNetworkSecurityGroupsFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// listEffectiveNetworkSecurityGroupsPreparer prepares the ListEffectiveNetworkSecurityGroups request.
+func (client InterfacesClient) listEffectiveNetworkSecurityGroupsPreparer(resourceGroupName string, networkInterfaceName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups"
+	req, err := pipeline.NewRequest("POST", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListEffectiveNetworkSecurityGroupsResponder handles the response to the ListEffectiveNetworkSecurityGroups request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListEffectiveNetworkSecurityGroupsResponder(resp *http.Response) (result EffectiveNetworkSecurityGroupListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// listEffectiveNetworkSecurityGroupsResponder handles the response to the ListEffectiveNetworkSecurityGroups request.
+func (client InterfacesClient) listEffectiveNetworkSecurityGroupsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK, http.StatusAccepted)
+	if resp == nil {
+		return nil, err
+	}
+	result := &EffectiveNetworkSecurityGroupListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListVirtualMachineScaleSetIPConfigurations get the specified network interface ip configuration in a virtual machine
 // scale set.
 //
-// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual
-// machine scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the
-// network interface. expand is expands referenced resources.
-func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurations(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result InterfaceIPConfigurationListResultPage, err error) {
-	result.fn = client.listVirtualMachineScaleSetIPConfigurationsNextResults
-	req, err := client.ListVirtualMachineScaleSetIPConfigurationsPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index. networkInterfaceName is the name of the network
+// interface. expand is expands referenced resources.
+func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurations(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand *string) (*InterfaceIPConfigurationListResult, error) {
+	req, err := client.listVirtualMachineScaleSetIPConfigurationsPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListVirtualMachineScaleSetIPConfigurationsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listVirtualMachineScaleSetIPConfigurationsResponder}, req)
 	if err != nil {
-		result.iiclr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.iiclr, err = client.ListVirtualMachineScaleSetIPConfigurationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceIPConfigurationListResult), err
 }
 
-// ListVirtualMachineScaleSetIPConfigurationsPreparer prepares the ListVirtualMachineScaleSetIPConfigurations request.
-func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsPreparer(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName":       autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
-		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
-		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
-		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListVirtualMachineScaleSetIPConfigurationsSender sends the ListVirtualMachineScaleSetIPConfigurations request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListVirtualMachineScaleSetIPConfigurationsResponder handles the response to the ListVirtualMachineScaleSetIPConfigurations request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsResponder(resp *http.Response) (result InterfaceIPConfigurationListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listVirtualMachineScaleSetIPConfigurationsNextResults retrieves the next set of results, if any.
-func (client InterfacesClient) listVirtualMachineScaleSetIPConfigurationsNextResults(lastResults InterfaceIPConfigurationListResult) (result InterfaceIPConfigurationListResult, err error) {
-	req, err := lastResults.interfaceIPConfigurationListResultPreparer()
+// listVirtualMachineScaleSetIPConfigurationsPreparer prepares the ListVirtualMachineScaleSetIPConfigurations request.
+func (client InterfacesClient) listVirtualMachineScaleSetIPConfigurationsPreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand *string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetIPConfigurationsNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-03-30")
+	if expand != nil {
+		params.Set("$expand", *expand)
 	}
-	resp, err := client.ListVirtualMachineScaleSetIPConfigurationsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetIPConfigurationsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListVirtualMachineScaleSetIPConfigurationsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetIPConfigurationsNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListVirtualMachineScaleSetIPConfigurationsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurationsComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, expand string) (result InterfaceIPConfigurationListResultIterator, err error) {
-	result.page, err = client.ListVirtualMachineScaleSetIPConfigurations(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
-	return
+// listVirtualMachineScaleSetIPConfigurationsResponder handles the response to the ListVirtualMachineScaleSetIPConfigurations request.
+func (client InterfacesClient) listVirtualMachineScaleSetIPConfigurationsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceIPConfigurationListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListVirtualMachineScaleSetNetworkInterfaces gets all network interfaces in a virtual machine scale set.
 //
-// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual
-// machine scale set.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result InterfaceListResultPage, err error) {
-	result.fn = client.listVirtualMachineScaleSetNetworkInterfacesNextResults
-	req, err := client.ListVirtualMachineScaleSetNetworkInterfacesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName)
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set.
+func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (*InterfaceListResult, error) {
+	req, err := client.listVirtualMachineScaleSetNetworkInterfacesPreparer(resourceGroupName, virtualMachineScaleSetName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListVirtualMachineScaleSetNetworkInterfacesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listVirtualMachineScaleSetNetworkInterfacesResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListVirtualMachineScaleSetNetworkInterfacesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceListResult), err
 }
 
-// ListVirtualMachineScaleSetNetworkInterfacesPreparer prepares the ListVirtualMachineScaleSetNetworkInterfaces request.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesPreparer(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
-		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
-		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListVirtualMachineScaleSetNetworkInterfacesSender sends the ListVirtualMachineScaleSetNetworkInterfaces request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListVirtualMachineScaleSetNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetNetworkInterfaces request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listVirtualMachineScaleSetNetworkInterfacesNextResults retrieves the next set of results, if any.
-func (client InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesNextResults(lastResults InterfaceListResult) (result InterfaceListResult, err error) {
-	req, err := lastResults.interfaceListResultPreparer()
+// listVirtualMachineScaleSetNetworkInterfacesPreparer prepares the ListVirtualMachineScaleSetNetworkInterfaces request.
+func (client InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesPreparer(resourceGroupName string, virtualMachineScaleSetName string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetNetworkInterfacesNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListVirtualMachineScaleSetNetworkInterfacesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetNetworkInterfacesNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListVirtualMachineScaleSetNetworkInterfacesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetNetworkInterfacesNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-03-30")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListVirtualMachineScaleSetNetworkInterfacesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfacesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (result InterfaceListResultIterator, err error) {
-	result.page, err = client.ListVirtualMachineScaleSetNetworkInterfaces(ctx, resourceGroupName, virtualMachineScaleSetName)
-	return
+// listVirtualMachineScaleSetNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetNetworkInterfaces request.
+func (client InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
 // ListVirtualMachineScaleSetVMNetworkInterfaces gets information about all network interfaces in a virtual machine in
 // a virtual machine scale set.
 //
-// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual
-// machine scale set. virtualmachineIndex is the virtual machine index.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (result InterfaceListResultPage, err error) {
-	result.fn = client.listVirtualMachineScaleSetVMNetworkInterfacesNextResults
-	req, err := client.ListVirtualMachineScaleSetVMNetworkInterfacesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
+// resourceGroupName is the name of the resource group. virtualMachineScaleSetName is the name of the virtual machine
+// scale set. virtualmachineIndex is the virtual machine index.
+func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (*InterfaceListResult, error) {
+	req, err := client.listVirtualMachineScaleSetVMNetworkInterfacesPreparer(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	resp, err := client.ListVirtualMachineScaleSetVMNetworkInterfacesSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.listVirtualMachineScaleSetVMNetworkInterfacesResponder}, req)
 	if err != nil {
-		result.ilr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", resp, "Failure sending request")
-		return
+		return nil, err
 	}
-
-	result.ilr, err = client.ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", resp, "Failure responding to request")
-	}
-
-	return
+	return resp.(*InterfaceListResult), err
 }
 
-// ListVirtualMachineScaleSetVMNetworkInterfacesPreparer prepares the ListVirtualMachineScaleSetVMNetworkInterfaces request.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesPreparer(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
-		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
-		"virtualmachineIndex":        autorest.Encode("path", virtualmachineIndex),
-		"virtualMachineScaleSetName": autorest.Encode("path", virtualMachineScaleSetName),
-	}
-
-	const APIVersion = "2017-03-30"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListVirtualMachineScaleSetVMNetworkInterfacesSender sends the ListVirtualMachineScaleSetVMNetworkInterfaces request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListVirtualMachineScaleSetVMNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetVMNetworkInterfaces request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp *http.Response) (result InterfaceListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listVirtualMachineScaleSetVMNetworkInterfacesNextResults retrieves the next set of results, if any.
-func (client InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesNextResults(lastResults InterfaceListResult) (result InterfaceListResult, err error) {
-	req, err := lastResults.interfaceListResultPreparer()
+// listVirtualMachineScaleSetVMNetworkInterfacesPreparer prepares the ListVirtualMachineScaleSetVMNetworkInterfaces request.
+func (client InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesPreparer(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces"
+	req, err := pipeline.NewRequest("GET", u, nil)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetVMNetworkInterfacesNextResults", nil, "Failure preparing next results request")
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListVirtualMachineScaleSetVMNetworkInterfacesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetVMNetworkInterfacesNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListVirtualMachineScaleSetVMNetworkInterfacesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "listVirtualMachineScaleSetVMNetworkInterfacesNextResults", resp, "Failure responding to next results request")
-	}
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2017-03-30")
+	req.URL.RawQuery = params.Encode()
+	return req, nil
 }
 
-// ListVirtualMachineScaleSetVMNetworkInterfacesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfacesComplete(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string) (result InterfaceListResultIterator, err error) {
-	result.page, err = client.ListVirtualMachineScaleSetVMNetworkInterfaces(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
-	return
+// listVirtualMachineScaleSetVMNetworkInterfacesResponder handles the response to the ListVirtualMachineScaleSetVMNetworkInterfaces request.
+func (client InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &InterfaceListResult{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }
 
-// UpdateTags updates a network interface tags.
+// UpdateTags updates a network interface tags. This method may poll for completion. Polling can be canceled by passing
+// the cancel channel argument. The channel will be used to cancel polling and any outstanding HTTP requests.
 //
 // resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 // parameters is parameters supplied to update network interface tags.
-func (client InterfacesClient) UpdateTags(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters TagsObject) (result InterfacesUpdateTagsFuture, err error) {
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, networkInterfaceName, parameters)
+func (client InterfacesClient) UpdateTags(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters TagsObject) (*Interface, error) {
+	req, err := client.updateTagsPreparer(resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", nil, "Failure preparing request")
-		return
+		return nil, err
 	}
-
-	result, err = client.UpdateTagsSender(req)
+	resp, err := client.Pipeline().Do(ctx, responderPolicyFactory{responder: client.updateTagsResponder}, req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", result.Response(), "Failure sending request")
-		return
+		return nil, err
 	}
-
-	return
+	return resp.(*Interface), err
 }
 
-// UpdateTagsPreparer prepares the UpdateTags request.
-func (client InterfacesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters TagsObject) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"networkInterfaceName": autorest.Encode("path", networkInterfaceName),
-		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateTagsSender sends the UpdateTags request. The method will close the
-// http.Response Body if it receives an error.
-func (client InterfacesClient) UpdateTagsSender(req *http.Request) (future InterfacesUpdateTagsFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+// updateTagsPreparer prepares the UpdateTags request.
+func (client InterfacesClient) updateTagsPreparer(resourceGroupName string, networkInterfaceName string, parameters TagsObject) (pipeline.Request, error) {
+	u := client.url
+	u.Path = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
+	req, err := pipeline.NewRequest("PATCH", u, nil)
 	if err != nil {
-		return
+		return req, pipeline.NewError(err, "failed to create request")
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
-	return
+	params := req.URL.Query()
+	params.Set("api-version", "2018-01-01")
+	req.URL.RawQuery = params.Encode()
+	b, err := json.Marshal(parameters)
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to marshal request body")
+	}
+	req.Header.Set("Content-Type", "application/json")
+	err = req.SetBody(bytes.NewReader(b))
+	if err != nil {
+		return req, pipeline.NewError(err, "failed to set request body")
+	}
+	return req, nil
 }
 
-// UpdateTagsResponder handles the response to the UpdateTags request. The method always
-// closes the http.Response Body.
-func (client InterfacesClient) UpdateTagsResponder(resp *http.Response) (result Interface, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
+// updateTagsResponder handles the response to the UpdateTags request.
+func (client InterfacesClient) updateTagsResponder(resp pipeline.Response) (pipeline.Response, error) {
+	err := validateResponse(resp, http.StatusOK)
+	if resp == nil {
+		return nil, err
+	}
+	result := &Interface{rawResponse: resp.Response()}
+	if err != nil {
+		return result, err
+	}
+	defer resp.Response().Body.Close()
+	b, err := ioutil.ReadAll(resp.Response().Body)
+	if err != nil {
+		return result, NewResponseError(err, resp.Response(), "failed to read response body")
+	}
+	if len(b) > 0 {
+		err = json.Unmarshal(b, result)
+		if err != nil {
+			return result, NewResponseError(err, resp.Response(), "failed to unmarshal response body")
+		}
+	}
+	return result, nil
 }

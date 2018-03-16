@@ -79,7 +79,7 @@ const (
 	X12          AgreementType = original.X12
 )
 
-func PossibleAgreementTypeValues() [4]AgreementType {
+func PossibleAgreementTypeValues() []AgreementType {
 	return original.PossibleAgreementTypeValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() [7]DayOfWeek {
+func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
 
@@ -111,7 +111,7 @@ const (
 	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
-func PossibleDaysOfWeekValues() [7]DaysOfWeek {
+func PossibleDaysOfWeekValues() []DaysOfWeek {
 	return original.PossibleDaysOfWeekValues()
 }
 
@@ -135,7 +135,7 @@ const (
 	EdifactCharacterSetUNOY         EdifactCharacterSet = original.EdifactCharacterSetUNOY
 )
 
-func PossibleEdifactCharacterSetValues() [15]EdifactCharacterSet {
+func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
 	return original.PossibleEdifactCharacterSetValues()
 }
 
@@ -147,7 +147,7 @@ const (
 	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = original.EdifactDecimalIndicatorNotSpecified
 )
 
-func PossibleEdifactDecimalIndicatorValues() [3]EdifactDecimalIndicator {
+func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
 	return original.PossibleEdifactDecimalIndicatorValues()
 }
 
@@ -163,7 +163,7 @@ const (
 	EncryptionAlgorithmRC2          EncryptionAlgorithm = original.EncryptionAlgorithmRC2
 )
 
-func PossibleEncryptionAlgorithmValues() [7]EncryptionAlgorithm {
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	return original.PossibleEncryptionAlgorithmValues()
 }
 
@@ -179,7 +179,7 @@ const (
 	HashingAlgorithmSHA2512      HashingAlgorithm = original.HashingAlgorithmSHA2512
 )
 
-func PossibleHashingAlgorithmValues() [7]HashingAlgorithm {
+func PossibleHashingAlgorithmValues() []HashingAlgorithm {
 	return original.PossibleHashingAlgorithmValues()
 }
 
@@ -191,7 +191,7 @@ const (
 	IntegrationAccountSkuNameStandard     IntegrationAccountSkuName = original.IntegrationAccountSkuNameStandard
 )
 
-func PossibleIntegrationAccountSkuNameValues() [3]IntegrationAccountSkuName {
+func PossibleIntegrationAccountSkuNameValues() []IntegrationAccountSkuName {
 	return original.PossibleIntegrationAccountSkuNameValues()
 }
 
@@ -203,7 +203,7 @@ const (
 	KeyTypeSecondary    KeyType = original.KeyTypeSecondary
 )
 
-func PossibleKeyTypeValues() [3]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -214,7 +214,7 @@ const (
 	MapTypeXslt         MapType = original.MapTypeXslt
 )
 
-func PossibleMapTypeValues() [2]MapType {
+func PossibleMapTypeValues() []MapType {
 	return original.PossibleMapTypeValues()
 }
 
@@ -226,7 +226,7 @@ const (
 	MessageFilterTypeNotSpecified MessageFilterType = original.MessageFilterTypeNotSpecified
 )
 
-func PossibleMessageFilterTypeValues() [3]MessageFilterType {
+func PossibleMessageFilterTypeValues() []MessageFilterType {
 	return original.PossibleMessageFilterTypeValues()
 }
 
@@ -244,7 +244,7 @@ const (
 	ParameterTypeString       ParameterType = original.ParameterTypeString
 )
 
-func PossibleParameterTypeValues() [9]ParameterType {
+func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()
 }
 
@@ -255,7 +255,7 @@ const (
 	PartnerTypeNotSpecified PartnerType = original.PartnerTypeNotSpecified
 )
 
-func PossiblePartnerTypeValues() [2]PartnerType {
+func PossiblePartnerTypeValues() []PartnerType {
 	return original.PossiblePartnerTypeValues()
 }
 
@@ -272,7 +272,7 @@ const (
 	RecurrenceFrequencyYear         RecurrenceFrequency = original.RecurrenceFrequencyYear
 )
 
-func PossibleRecurrenceFrequencyValues() [8]RecurrenceFrequency {
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
 }
 
@@ -283,7 +283,7 @@ const (
 	SchemaTypeXML          SchemaType = original.SchemaTypeXML
 )
 
-func PossibleSchemaTypeValues() [2]SchemaType {
+func PossibleSchemaTypeValues() []SchemaType {
 	return original.PossibleSchemaTypeValues()
 }
 
@@ -297,7 +297,7 @@ const (
 	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNotSpecified
 )
 
-func PossibleSegmentTerminatorSuffixValues() [5]SegmentTerminatorSuffix {
+func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
 	return original.PossibleSegmentTerminatorSuffixValues()
 }
 
@@ -312,7 +312,7 @@ const (
 	SigningAlgorithmSHA2512      SigningAlgorithm = original.SigningAlgorithmSHA2512
 )
 
-func PossibleSigningAlgorithmValues() [6]SigningAlgorithm {
+func PossibleSigningAlgorithmValues() []SigningAlgorithm {
 	return original.PossibleSigningAlgorithmValues()
 }
 
@@ -327,7 +327,7 @@ const (
 	SkuNameStandard     SkuName = original.SkuNameStandard
 )
 
-func PossibleSkuNameValues() [6]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -340,7 +340,7 @@ const (
 	TrailingSeparatorPolicyOptional     TrailingSeparatorPolicy = original.TrailingSeparatorPolicyOptional
 )
 
-func PossibleTrailingSeparatorPolicyValues() [4]TrailingSeparatorPolicy {
+func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
 	return original.PossibleTrailingSeparatorPolicyValues()
 }
 
@@ -353,7 +353,7 @@ const (
 	UsageIndicatorTest         UsageIndicator = original.UsageIndicatorTest
 )
 
-func PossibleUsageIndicatorValues() [4]UsageIndicator {
+func PossibleUsageIndicatorValues() []UsageIndicator {
 	return original.PossibleUsageIndicatorValues()
 }
 
@@ -380,7 +380,7 @@ const (
 	WorkflowProvisioningStateUpdating      WorkflowProvisioningState = original.WorkflowProvisioningStateUpdating
 )
 
-func PossibleWorkflowProvisioningStateValues() [18]WorkflowProvisioningState {
+func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
 	return original.PossibleWorkflowProvisioningStateValues()
 }
 
@@ -395,7 +395,7 @@ const (
 	WorkflowStateSuspended    WorkflowState = original.WorkflowStateSuspended
 )
 
-func PossibleWorkflowStateValues() [6]WorkflowState {
+func PossibleWorkflowStateValues() []WorkflowState {
 	return original.PossibleWorkflowStateValues()
 }
 
@@ -417,7 +417,7 @@ const (
 	WorkflowStatusWaiting      WorkflowStatus = original.WorkflowStatusWaiting
 )
 
-func PossibleWorkflowStatusValues() [13]WorkflowStatus {
+func PossibleWorkflowStatusValues() []WorkflowStatus {
 	return original.PossibleWorkflowStatusValues()
 }
 
@@ -444,7 +444,7 @@ const (
 	WorkflowTriggerProvisioningStateUpdating      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUpdating
 )
 
-func PossibleWorkflowTriggerProvisioningStateValues() [18]WorkflowTriggerProvisioningState {
+func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
 	return original.PossibleWorkflowTriggerProvisioningStateValues()
 }
 
@@ -457,7 +457,7 @@ const (
 	X12CharacterSetUTF8         X12CharacterSet = original.X12CharacterSetUTF8
 )
 
-func PossibleX12CharacterSetValues() [4]X12CharacterSet {
+func PossibleX12CharacterSetValues() []X12CharacterSet {
 	return original.PossibleX12CharacterSetValues()
 }
 
@@ -469,7 +469,7 @@ const (
 	X12DateFormatYYMMDD       X12DateFormat = original.X12DateFormatYYMMDD
 )
 
-func PossibleX12DateFormatValues() [3]X12DateFormat {
+func PossibleX12DateFormatValues() []X12DateFormat {
 	return original.PossibleX12DateFormatValues()
 }
 
@@ -483,7 +483,7 @@ const (
 	X12TimeFormatNotSpecified X12TimeFormat = original.X12TimeFormatNotSpecified
 )
 
-func PossibleX12TimeFormatValues() [5]X12TimeFormat {
+func PossibleX12TimeFormatValues() []X12TimeFormat {
 	return original.PossibleX12TimeFormatValues()
 }
 

@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleClusterStateValues returns an array of possible values for the ClusterState const type.
-func PossibleClusterStateValues() [10]ClusterState {
-	return [10]ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
+func PossibleClusterStateValues() []ClusterState {
+	return []ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
 }
 
 // DurabilityLevel enumerates the values for durability level.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleDurabilityLevelValues returns an array of possible values for the DurabilityLevel const type.
-func PossibleDurabilityLevelValues() [3]DurabilityLevel {
-	return [3]DurabilityLevel{Bronze, Gold, Silver}
+func PossibleDurabilityLevelValues() []DurabilityLevel {
+	return []DurabilityLevel{Bronze, Gold, Silver}
 }
 
 // Environment enumerates the values for environment.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleEnvironmentValues returns an array of possible values for the Environment const type.
-func PossibleEnvironmentValues() [2]Environment {
-	return [2]Environment{Linux, Windows}
+func PossibleEnvironmentValues() []Environment {
+	return []Environment{Linux, Windows}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -103,8 +103,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [4]ProvisioningState {
-	return [4]ProvisioningState{Canceled, Failed, Succeeded, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Canceled, Failed, Succeeded, Updating}
 }
 
 // ReliabilityLevel enumerates the values for reliability level.
@@ -120,8 +120,8 @@ const (
 )
 
 // PossibleReliabilityLevelValues returns an array of possible values for the ReliabilityLevel const type.
-func PossibleReliabilityLevelValues() [3]ReliabilityLevel {
-	return [3]ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelSilver}
+func PossibleReliabilityLevelValues() []ReliabilityLevel {
+	return []ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelSilver}
 }
 
 // ReliabilityLevel1 enumerates the values for reliability level 1.
@@ -139,8 +139,8 @@ const (
 )
 
 // PossibleReliabilityLevel1Values returns an array of possible values for the ReliabilityLevel1 const type.
-func PossibleReliabilityLevel1Values() [4]ReliabilityLevel1 {
-	return [4]ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Platinum, ReliabilityLevel1Silver}
+func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
+	return []ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Platinum, ReliabilityLevel1Silver}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -154,8 +154,8 @@ const (
 )
 
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() [2]UpgradeMode {
-	return [2]UpgradeMode{Automatic, Manual}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return []UpgradeMode{Automatic, Manual}
 }
 
 // UpgradeMode1 enumerates the values for upgrade mode 1.
@@ -169,8 +169,8 @@ const (
 )
 
 // PossibleUpgradeMode1Values returns an array of possible values for the UpgradeMode1 const type.
-func PossibleUpgradeMode1Values() [2]UpgradeMode1 {
-	return [2]UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
+func PossibleUpgradeMode1Values() []UpgradeMode1 {
+	return []UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
 }
 
 // X509StoreName enumerates the values for x509 store name.
@@ -196,8 +196,8 @@ const (
 )
 
 // PossibleX509StoreNameValues returns an array of possible values for the X509StoreName const type.
-func PossibleX509StoreNameValues() [8]X509StoreName {
-	return [8]X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
+func PossibleX509StoreNameValues() []X509StoreName {
+	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
 }
 
 // AvailableOperationDisplay operation supported by ServiceFabric resource provider

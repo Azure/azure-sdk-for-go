@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() [3]AccessRights {
-	return [3]AccessRights{Listen, Manage, Send}
+func PossibleAccessRightsValues() []AccessRights {
+	return []AccessRights{Listen, Manage, Send}
 }
 
 // EncodingCaptureDescription enumerates the values for encoding capture description.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleEncodingCaptureDescriptionValues returns an array of possible values for the EncodingCaptureDescription const type.
-func PossibleEncodingCaptureDescriptionValues() [2]EncodingCaptureDescription {
-	return [2]EncodingCaptureDescription{Avro, AvroDeflate}
+func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
+	return []EncodingCaptureDescription{Avro, AvroDeflate}
 }
 
 // EntityStatus enumerates the values for entity status.
@@ -83,8 +83,8 @@ const (
 )
 
 // PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
-func PossibleEntityStatusValues() [9]EntityStatus {
-	return [9]EntityStatus{Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown}
+func PossibleEntityStatusValues() []EntityStatus {
+	return []EntityStatus{Active, Creating, Deleting, Disabled, ReceiveDisabled, Renaming, Restoring, SendDisabled, Unknown}
 }
 
 // KeyType enumerates the values for key type.
@@ -98,8 +98,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [2]KeyType {
-	return [2]KeyType{PrimaryKey, SecondaryKey}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{PrimaryKey, SecondaryKey}
 }
 
 // ProvisioningStateDR enumerates the values for provisioning state dr.
@@ -115,8 +115,8 @@ const (
 )
 
 // PossibleProvisioningStateDRValues returns an array of possible values for the ProvisioningStateDR const type.
-func PossibleProvisioningStateDRValues() [3]ProvisioningStateDR {
-	return [3]ProvisioningStateDR{Accepted, Failed, Succeeded}
+func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
+	return []ProvisioningStateDR{Accepted, Failed, Succeeded}
 }
 
 // RoleDisasterRecovery enumerates the values for role disaster recovery.
@@ -132,8 +132,8 @@ const (
 )
 
 // PossibleRoleDisasterRecoveryValues returns an array of possible values for the RoleDisasterRecovery const type.
-func PossibleRoleDisasterRecoveryValues() [3]RoleDisasterRecovery {
-	return [3]RoleDisasterRecovery{Primary, PrimaryNotReplicating, Secondary}
+func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
+	return []RoleDisasterRecovery{Primary, PrimaryNotReplicating, Secondary}
 }
 
 // SkuName enumerates the values for sku name.
@@ -147,8 +147,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [2]SkuName {
-	return [2]SkuName{Basic, Standard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Basic, Standard}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -162,8 +162,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [2]SkuTier {
-	return [2]SkuTier{SkuTierBasic, SkuTierStandard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{SkuTierBasic, SkuTierStandard}
 }
 
 // UnavailableReason enumerates the values for unavailable reason.
@@ -185,8 +185,8 @@ const (
 )
 
 // PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
-	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+func PossibleUnavailableReasonValues() []UnavailableReason {
+	return []UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
 }
 
 // AccessKeys namespace/EventHub Connection String

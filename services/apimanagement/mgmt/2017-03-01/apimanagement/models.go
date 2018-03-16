@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleAPITypeValues returns an array of possible values for the APIType const type.
-func PossibleAPITypeValues() [2]APIType {
-	return [2]APIType{HTTP, Soap}
+func PossibleAPITypeValues() []APIType {
+	return []APIType{HTTP, Soap}
 }
 
 // AsyncOperationStatus enumerates the values for async operation status.
@@ -57,8 +57,8 @@ const (
 )
 
 // PossibleAsyncOperationStatusValues returns an array of possible values for the AsyncOperationStatus const type.
-func PossibleAsyncOperationStatusValues() [4]AsyncOperationStatus {
-	return [4]AsyncOperationStatus{Failed, InProgress, Started, Succeeded}
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
+	return []AsyncOperationStatus{Failed, InProgress, Started, Succeeded}
 }
 
 // AuthorizationMethod enumerates the values for authorization method.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleAuthorizationMethodValues returns an array of possible values for the AuthorizationMethod const type.
-func PossibleAuthorizationMethodValues() [8]AuthorizationMethod {
-	return [8]AuthorizationMethod{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
+func PossibleAuthorizationMethodValues() []AuthorizationMethod {
+	return []AuthorizationMethod{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
 }
 
 // BackendProtocol enumerates the values for backend protocol.
@@ -99,8 +99,8 @@ const (
 )
 
 // PossibleBackendProtocolValues returns an array of possible values for the BackendProtocol const type.
-func PossibleBackendProtocolValues() [2]BackendProtocol {
-	return [2]BackendProtocol{BackendProtocolHTTP, BackendProtocolSoap}
+func PossibleBackendProtocolValues() []BackendProtocol {
+	return []BackendProtocol{BackendProtocolHTTP, BackendProtocolSoap}
 }
 
 // BearerTokenSendingMethod enumerates the values for bearer token sending method.
@@ -114,8 +114,8 @@ const (
 )
 
 // PossibleBearerTokenSendingMethodValues returns an array of possible values for the BearerTokenSendingMethod const type.
-func PossibleBearerTokenSendingMethodValues() [2]BearerTokenSendingMethod {
-	return [2]BearerTokenSendingMethod{AuthorizationHeader, Query}
+func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
+	return []BearerTokenSendingMethod{AuthorizationHeader, Query}
 }
 
 // ClientAuthenticationMethod enumerates the values for client authentication method.
@@ -129,8 +129,8 @@ const (
 )
 
 // PossibleClientAuthenticationMethodValues returns an array of possible values for the ClientAuthenticationMethod const type.
-func PossibleClientAuthenticationMethodValues() [2]ClientAuthenticationMethod {
-	return [2]ClientAuthenticationMethod{Basic, Body}
+func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
+	return []ClientAuthenticationMethod{Basic, Body}
 }
 
 // Confirmation enumerates the values for confirmation.
@@ -144,8 +144,8 @@ const (
 )
 
 // PossibleConfirmationValues returns an array of possible values for the Confirmation const type.
-func PossibleConfirmationValues() [2]Confirmation {
-	return [2]Confirmation{Invite, Signup}
+func PossibleConfirmationValues() []Confirmation {
+	return []Confirmation{Invite, Signup}
 }
 
 // ConnectivityStatusType enumerates the values for connectivity status type.
@@ -161,8 +161,8 @@ const (
 )
 
 // PossibleConnectivityStatusTypeValues returns an array of possible values for the ConnectivityStatusType const type.
-func PossibleConnectivityStatusTypeValues() [3]ConnectivityStatusType {
-	return [3]ConnectivityStatusType{Failure, Initializing, Success}
+func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
+	return []ConnectivityStatusType{Failure, Initializing, Success}
 }
 
 // ContentFormat enumerates the values for content format.
@@ -184,8 +184,8 @@ const (
 )
 
 // PossibleContentFormatValues returns an array of possible values for the ContentFormat const type.
-func PossibleContentFormatValues() [6]ContentFormat {
-	return [6]ContentFormat{SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
+func PossibleContentFormatValues() []ContentFormat {
+	return []ContentFormat{SwaggerJSON, SwaggerLinkJSON, WadlLinkJSON, WadlXML, Wsdl, WsdlLink}
 }
 
 // GrantType enumerates the values for grant type.
@@ -206,8 +206,8 @@ const (
 )
 
 // PossibleGrantTypeValues returns an array of possible values for the GrantType const type.
-func PossibleGrantTypeValues() [4]GrantType {
-	return [4]GrantType{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
+func PossibleGrantTypeValues() []GrantType {
+	return []GrantType{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
 }
 
 // GroupType enumerates the values for group type.
@@ -223,8 +223,8 @@ const (
 )
 
 // PossibleGroupTypeValues returns an array of possible values for the GroupType const type.
-func PossibleGroupTypeValues() [3]GroupType {
-	return [3]GroupType{Custom, External, System}
+func PossibleGroupTypeValues() []GroupType {
+	return []GroupType{Custom, External, System}
 }
 
 // HostnameType enumerates the values for hostname type.
@@ -242,8 +242,8 @@ const (
 )
 
 // PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
-func PossibleHostnameTypeValues() [4]HostnameType {
-	return [4]HostnameType{Management, Portal, Proxy, Scm}
+func PossibleHostnameTypeValues() []HostnameType {
+	return []HostnameType{Management, Portal, Proxy, Scm}
 }
 
 // IdentityProviderType enumerates the values for identity provider type.
@@ -265,8 +265,8 @@ const (
 )
 
 // PossibleIdentityProviderTypeValues returns an array of possible values for the IdentityProviderType const type.
-func PossibleIdentityProviderTypeValues() [6]IdentityProviderType {
-	return [6]IdentityProviderType{Aad, AadB2C, Facebook, Google, Microsoft, Twitter}
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
+	return []IdentityProviderType{Aad, AadB2C, Facebook, Google, Microsoft, Twitter}
 }
 
 // KeyType enumerates the values for key type.
@@ -280,8 +280,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [2]KeyType {
-	return [2]KeyType{Primary, Secondary}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{Primary, Secondary}
 }
 
 // LoggerType enumerates the values for logger type.
@@ -295,8 +295,8 @@ const (
 )
 
 // PossibleLoggerTypeValues returns an array of possible values for the LoggerType const type.
-func PossibleLoggerTypeValues() [2]LoggerType {
-	return [2]LoggerType{ApplicationInsights, AzureEventHub}
+func PossibleLoggerTypeValues() []LoggerType {
+	return []LoggerType{ApplicationInsights, AzureEventHub}
 }
 
 // NameAvailabilityReason enumerates the values for name availability reason.
@@ -312,8 +312,8 @@ const (
 )
 
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() [3]NameAvailabilityReason {
-	return [3]NameAvailabilityReason{AlreadyExists, Invalid, Valid}
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return []NameAvailabilityReason{AlreadyExists, Invalid, Valid}
 }
 
 // NotificationName enumerates the values for notification name.
@@ -343,8 +343,8 @@ const (
 )
 
 // PossibleNotificationNameValues returns an array of possible values for the NotificationName const type.
-func PossibleNotificationNameValues() [7]NotificationName {
-	return [7]NotificationName{AccountClosedPublisher, BCC, NewApplicationNotificationMessage, NewIssuePublisherNotificationMessage, PurchasePublisherNotificationMessage, QuotaLimitApproachingPublisherNotificationMessage, RequestPublisherNotificationMessage}
+func PossibleNotificationNameValues() []NotificationName {
+	return []NotificationName{AccountClosedPublisher, BCC, NewApplicationNotificationMessage, NewIssuePublisherNotificationMessage, PurchasePublisherNotificationMessage, QuotaLimitApproachingPublisherNotificationMessage, RequestPublisherNotificationMessage}
 }
 
 // PolicyScopeContract enumerates the values for policy scope contract.
@@ -364,8 +364,8 @@ const (
 )
 
 // PossiblePolicyScopeContractValues returns an array of possible values for the PolicyScopeContract const type.
-func PossiblePolicyScopeContractValues() [5]PolicyScopeContract {
-	return [5]PolicyScopeContract{PolicyScopeContractAll, PolicyScopeContractAPI, PolicyScopeContractOperation, PolicyScopeContractProduct, PolicyScopeContractTenant}
+func PossiblePolicyScopeContractValues() []PolicyScopeContract {
+	return []PolicyScopeContract{PolicyScopeContractAll, PolicyScopeContractAPI, PolicyScopeContractOperation, PolicyScopeContractProduct, PolicyScopeContractTenant}
 }
 
 // ProductState enumerates the values for product state.
@@ -379,8 +379,8 @@ const (
 )
 
 // PossibleProductStateValues returns an array of possible values for the ProductState const type.
-func PossibleProductStateValues() [2]ProductState {
-	return [2]ProductState{NotPublished, Published}
+func PossibleProductStateValues() []ProductState {
+	return []ProductState{NotPublished, Published}
 }
 
 // Protocol enumerates the values for protocol.
@@ -394,8 +394,8 @@ const (
 )
 
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
-func PossibleProtocolValues() [2]Protocol {
-	return [2]Protocol{ProtocolHTTP, ProtocolHTTPS}
+func PossibleProtocolValues() []Protocol {
+	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
 }
 
 // SamplingType enumerates the values for sampling type.
@@ -409,8 +409,8 @@ const (
 )
 
 // PossibleSamplingTypeValues returns an array of possible values for the SamplingType const type.
-func PossibleSamplingTypeValues() [2]SamplingType {
-	return [2]SamplingType{Adaptive, Fixed}
+func PossibleSamplingTypeValues() []SamplingType {
+	return []SamplingType{Adaptive, Fixed}
 }
 
 // SkuType enumerates the values for sku type.
@@ -428,8 +428,8 @@ const (
 )
 
 // PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
-func PossibleSkuTypeValues() [4]SkuType {
-	return [4]SkuType{SkuTypeBasic, SkuTypeDeveloper, SkuTypePremium, SkuTypeStandard}
+func PossibleSkuTypeValues() []SkuType {
+	return []SkuType{SkuTypeBasic, SkuTypeDeveloper, SkuTypePremium, SkuTypeStandard}
 }
 
 // StoreName enumerates the values for store name.
@@ -443,8 +443,8 @@ const (
 )
 
 // PossibleStoreNameValues returns an array of possible values for the StoreName const type.
-func PossibleStoreNameValues() [2]StoreName {
-	return [2]StoreName{CertificateAuthority, Root}
+func PossibleStoreNameValues() []StoreName {
+	return []StoreName{CertificateAuthority, Root}
 }
 
 // SubscriptionState enumerates the values for subscription state.
@@ -466,8 +466,8 @@ const (
 )
 
 // PossibleSubscriptionStateValues returns an array of possible values for the SubscriptionState const type.
-func PossibleSubscriptionStateValues() [6]SubscriptionState {
-	return [6]SubscriptionState{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return []SubscriptionState{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
 }
 
 // TemplateName enumerates the values for template name.
@@ -505,8 +505,8 @@ const (
 )
 
 // PossibleTemplateNameValues returns an array of possible values for the TemplateName const type.
-func PossibleTemplateNameValues() [14]TemplateName {
-	return [14]TemplateName{AccountClosedDeveloper, ApplicationApprovedNotificationMessage, ConfirmSignUpIdentityDefault, EmailChangeIdentityDefault, InviteUserNotificationMessage, NewCommentNotificationMessage, NewDeveloperNotificationMessage, NewIssueNotificationMessage, PasswordResetByAdminNotificationMessage, PasswordResetIdentityDefault, PurchaseDeveloperNotificationMessage, QuotaLimitApproachingDeveloperNotificationMessage, RejectDeveloperNotificationMessage, RequestDeveloperNotificationMessage}
+func PossibleTemplateNameValues() []TemplateName {
+	return []TemplateName{AccountClosedDeveloper, ApplicationApprovedNotificationMessage, ConfirmSignUpIdentityDefault, EmailChangeIdentityDefault, InviteUserNotificationMessage, NewCommentNotificationMessage, NewDeveloperNotificationMessage, NewIssueNotificationMessage, PasswordResetByAdminNotificationMessage, PasswordResetIdentityDefault, PurchaseDeveloperNotificationMessage, QuotaLimitApproachingDeveloperNotificationMessage, RejectDeveloperNotificationMessage, RequestDeveloperNotificationMessage}
 }
 
 // UserState enumerates the values for user state.
@@ -524,8 +524,8 @@ const (
 )
 
 // PossibleUserStateValues returns an array of possible values for the UserState const type.
-func PossibleUserStateValues() [4]UserState {
-	return [4]UserState{UserStateActive, UserStateBlocked, UserStateDeleted, UserStatePending}
+func PossibleUserStateValues() []UserState {
+	return []UserState{UserStateActive, UserStateBlocked, UserStateDeleted, UserStatePending}
 }
 
 // VersioningScheme enumerates the values for versioning scheme.
@@ -541,8 +541,8 @@ const (
 )
 
 // PossibleVersioningSchemeValues returns an array of possible values for the VersioningScheme const type.
-func PossibleVersioningSchemeValues() [3]VersioningScheme {
-	return [3]VersioningScheme{VersioningSchemeHeader, VersioningSchemeQuery, VersioningSchemeSegment}
+func PossibleVersioningSchemeValues() []VersioningScheme {
+	return []VersioningScheme{VersioningSchemeHeader, VersioningSchemeQuery, VersioningSchemeSegment}
 }
 
 // VirtualNetworkType enumerates the values for virtual network type.
@@ -559,8 +559,8 @@ const (
 )
 
 // PossibleVirtualNetworkTypeValues returns an array of possible values for the VirtualNetworkType const type.
-func PossibleVirtualNetworkTypeValues() [3]VirtualNetworkType {
-	return [3]VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
+func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
+	return []VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
 }
 
 // AccessInformationContract tenant access information contract of the API Management service.

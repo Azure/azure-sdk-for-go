@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleLockLevelValues returns an array of possible values for the LockLevel const type.
-func PossibleLockLevelValues() [3]LockLevel {
-	return [3]LockLevel{CanNotDelete, NotSpecified, ReadOnly}
+func PossibleLockLevelValues() []LockLevel {
+	return []LockLevel{CanNotDelete, NotSpecified, ReadOnly}
 }
 
 // ManagementLockListResult list of management locks.

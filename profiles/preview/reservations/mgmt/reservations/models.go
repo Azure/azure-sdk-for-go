@@ -41,7 +41,7 @@ const (
 	Single AppliedScopeType = original.Single
 )
 
-func PossibleAppliedScopeTypeValues() [2]AppliedScopeType {
+func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return original.PossibleAppliedScopeTypeValues()
 }
 
@@ -52,7 +52,7 @@ const (
 	AppliedScopeType1Single AppliedScopeType1 = original.AppliedScopeType1Single
 )
 
-func PossibleAppliedScopeType1Values() [2]AppliedScopeType1 {
+func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
 	return original.PossibleAppliedScopeType1Values()
 }
 
@@ -116,7 +116,7 @@ const (
 	UnsupportedReservationTerm                    Code = original.UnsupportedReservationTerm
 )
 
-func PossibleCodeValues() [55]Code {
+func PossibleCodeValues() []Code {
 	return original.PossibleCodeValues()
 }
 
@@ -126,7 +126,7 @@ const (
 	MicrosoftCompute Kind = original.MicrosoftCompute
 )
 
-func PossibleKindValues() [1]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -159,7 +159,7 @@ const (
 	Westus2            Location = original.Westus2
 )
 
-func PossibleLocationValues() [24]Location {
+func PossibleLocationValues() []Location {
 	return original.PossibleLocationValues()
 }
 
@@ -181,7 +181,7 @@ const (
 	Succeeded             ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() [13]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -203,7 +203,7 @@ const (
 	ProvisioningState1Succeeded             ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
-func PossibleProvisioningState1Values() [13]ProvisioningState1 {
+func PossibleProvisioningState1Values() []ProvisioningState1 {
 	return original.PossibleProvisioningState1Values()
 }
 
@@ -221,7 +221,7 @@ const (
 	StatusCodeSucceeded              StatusCode = original.StatusCodeSucceeded
 )
 
-func PossibleStatusCodeValues() [9]StatusCode {
+func PossibleStatusCodeValues() []StatusCode {
 	return original.PossibleStatusCodeValues()
 }
 
@@ -232,7 +232,7 @@ const (
 	P3Y Term = original.P3Y
 )
 
-func PossibleTermValues() [2]Term {
+func PossibleTermValues() []Term {
 	return original.PossibleTermValues()
 }
 

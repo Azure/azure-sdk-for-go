@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleCostThresholdStatusValues returns an array of possible values for the CostThresholdStatus const type.
-func PossibleCostThresholdStatusValues() [2]CostThresholdStatus {
-	return [2]CostThresholdStatus{Disabled, Enabled}
+func PossibleCostThresholdStatusValues() []CostThresholdStatus {
+	return []CostThresholdStatus{Disabled, Enabled}
 }
 
 // CostType enumerates the values for cost type.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleCostTypeValues returns an array of possible values for the CostType const type.
-func PossibleCostTypeValues() [3]CostType {
-	return [3]CostType{Projected, Reported, Unavailable}
+func PossibleCostTypeValues() []CostType {
+	return []CostType{Projected, Reported, Unavailable}
 }
 
 // CustomImageOsType enumerates the values for custom image os type.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleCustomImageOsTypeValues returns an array of possible values for the CustomImageOsType const type.
-func PossibleCustomImageOsTypeValues() [3]CustomImageOsType {
-	return [3]CustomImageOsType{Linux, None, Windows}
+func PossibleCustomImageOsTypeValues() []CustomImageOsType {
+	return []CustomImageOsType{Linux, None, Windows}
 }
 
 // EnableStatus enumerates the values for enable status.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleEnableStatusValues returns an array of possible values for the EnableStatus const type.
-func PossibleEnableStatusValues() [2]EnableStatus {
-	return [2]EnableStatus{EnableStatusDisabled, EnableStatusEnabled}
+func PossibleEnableStatusValues() []EnableStatus {
+	return []EnableStatus{EnableStatusDisabled, EnableStatusEnabled}
 }
 
 // FileUploadOptions enumerates the values for file upload options.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleFileUploadOptionsValues returns an array of possible values for the FileUploadOptions const type.
-func PossibleFileUploadOptionsValues() [2]FileUploadOptions {
-	return [2]FileUploadOptions{FileUploadOptionsNone, FileUploadOptionsUploadFilesAndGenerateSasTokens}
+func PossibleFileUploadOptionsValues() []FileUploadOptions {
+	return []FileUploadOptions{FileUploadOptionsNone, FileUploadOptionsUploadFilesAndGenerateSasTokens}
 }
 
 // HostCachingOptions enumerates the values for host caching options.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleHostCachingOptionsValues returns an array of possible values for the HostCachingOptions const type.
-func PossibleHostCachingOptionsValues() [3]HostCachingOptions {
-	return [3]HostCachingOptions{HostCachingOptionsNone, HostCachingOptionsReadOnly, HostCachingOptionsReadWrite}
+func PossibleHostCachingOptionsValues() []HostCachingOptions {
+	return []HostCachingOptions{HostCachingOptionsNone, HostCachingOptionsReadOnly, HostCachingOptionsReadWrite}
 }
 
 // HTTPStatusCode enumerates the values for http status code.
@@ -213,8 +213,8 @@ const (
 )
 
 // PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() [42]HTTPStatusCode {
-	return [42]HTTPStatusCode{Accepted, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return []HTTPStatusCode{Accepted, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
 }
 
 // LinuxOsState enumerates the values for linux os state.
@@ -230,8 +230,8 @@ const (
 )
 
 // PossibleLinuxOsStateValues returns an array of possible values for the LinuxOsState const type.
-func PossibleLinuxOsStateValues() [3]LinuxOsState {
-	return [3]LinuxOsState{DeprovisionApplied, DeprovisionRequested, NonDeprovisioned}
+func PossibleLinuxOsStateValues() []LinuxOsState {
+	return []LinuxOsState{DeprovisionApplied, DeprovisionRequested, NonDeprovisioned}
 }
 
 // NotificationChannelEventType enumerates the values for notification channel event type.
@@ -245,8 +245,8 @@ const (
 )
 
 // PossibleNotificationChannelEventTypeValues returns an array of possible values for the NotificationChannelEventType const type.
-func PossibleNotificationChannelEventTypeValues() [2]NotificationChannelEventType {
-	return [2]NotificationChannelEventType{AutoShutdown, Cost}
+func PossibleNotificationChannelEventTypeValues() []NotificationChannelEventType {
+	return []NotificationChannelEventType{AutoShutdown, Cost}
 }
 
 // NotificationStatus enumerates the values for notification status.
@@ -260,8 +260,8 @@ const (
 )
 
 // PossibleNotificationStatusValues returns an array of possible values for the NotificationStatus const type.
-func PossibleNotificationStatusValues() [2]NotificationStatus {
-	return [2]NotificationStatus{NotificationStatusDisabled, NotificationStatusEnabled}
+func PossibleNotificationStatusValues() []NotificationStatus {
+	return []NotificationStatus{NotificationStatusDisabled, NotificationStatusEnabled}
 }
 
 // PolicyEvaluatorType enumerates the values for policy evaluator type.
@@ -275,8 +275,8 @@ const (
 )
 
 // PossiblePolicyEvaluatorTypeValues returns an array of possible values for the PolicyEvaluatorType const type.
-func PossiblePolicyEvaluatorTypeValues() [2]PolicyEvaluatorType {
-	return [2]PolicyEvaluatorType{AllowedValuesPolicy, MaxValuePolicy}
+func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
+	return []PolicyEvaluatorType{AllowedValuesPolicy, MaxValuePolicy}
 }
 
 // PolicyFactName enumerates the values for policy fact name.
@@ -302,8 +302,8 @@ const (
 )
 
 // PossiblePolicyFactNameValues returns an array of possible values for the PolicyFactName const type.
-func PossiblePolicyFactNameValues() [8]PolicyFactName {
-	return [8]PolicyFactName{PolicyFactNameGalleryImage, PolicyFactNameLabPremiumVMCount, PolicyFactNameLabTargetCost, PolicyFactNameLabVMCount, PolicyFactNameLabVMSize, PolicyFactNameUserOwnedLabPremiumVMCount, PolicyFactNameUserOwnedLabVMCount, PolicyFactNameUserOwnedLabVMCountInSubnet}
+func PossiblePolicyFactNameValues() []PolicyFactName {
+	return []PolicyFactName{PolicyFactNameGalleryImage, PolicyFactNameLabPremiumVMCount, PolicyFactNameLabTargetCost, PolicyFactNameLabVMCount, PolicyFactNameLabVMSize, PolicyFactNameUserOwnedLabPremiumVMCount, PolicyFactNameUserOwnedLabVMCount, PolicyFactNameUserOwnedLabVMCountInSubnet}
 }
 
 // PolicyStatus enumerates the values for policy status.
@@ -317,8 +317,8 @@ const (
 )
 
 // PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() [2]PolicyStatus {
-	return [2]PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
+func PossiblePolicyStatusValues() []PolicyStatus {
+	return []PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
 }
 
 // PremiumDataDisk enumerates the values for premium data disk.
@@ -332,8 +332,8 @@ const (
 )
 
 // PossiblePremiumDataDiskValues returns an array of possible values for the PremiumDataDisk const type.
-func PossiblePremiumDataDiskValues() [2]PremiumDataDisk {
-	return [2]PremiumDataDisk{PremiumDataDiskDisabled, PremiumDataDiskEnabled}
+func PossiblePremiumDataDiskValues() []PremiumDataDisk {
+	return []PremiumDataDisk{PremiumDataDiskDisabled, PremiumDataDiskEnabled}
 }
 
 // ReportingCycleType enumerates the values for reporting cycle type.
@@ -347,8 +347,8 @@ const (
 )
 
 // PossibleReportingCycleTypeValues returns an array of possible values for the ReportingCycleType const type.
-func PossibleReportingCycleTypeValues() [2]ReportingCycleType {
-	return [2]ReportingCycleType{CalendarMonth, Custom}
+func PossibleReportingCycleTypeValues() []ReportingCycleType {
+	return []ReportingCycleType{CalendarMonth, Custom}
 }
 
 // SourceControlType enumerates the values for source control type.
@@ -362,8 +362,8 @@ const (
 )
 
 // PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
-func PossibleSourceControlTypeValues() [2]SourceControlType {
-	return [2]SourceControlType{GitHub, VsoGit}
+func PossibleSourceControlTypeValues() []SourceControlType {
+	return []SourceControlType{GitHub, VsoGit}
 }
 
 // StorageType enumerates the values for storage type.
@@ -377,8 +377,8 @@ const (
 )
 
 // PossibleStorageTypeValues returns an array of possible values for the StorageType const type.
-func PossibleStorageTypeValues() [2]StorageType {
-	return [2]StorageType{Premium, Standard}
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{Premium, Standard}
 }
 
 // TargetCostStatus enumerates the values for target cost status.
@@ -392,8 +392,8 @@ const (
 )
 
 // PossibleTargetCostStatusValues returns an array of possible values for the TargetCostStatus const type.
-func PossibleTargetCostStatusValues() [2]TargetCostStatus {
-	return [2]TargetCostStatus{TargetCostStatusDisabled, TargetCostStatusEnabled}
+func PossibleTargetCostStatusValues() []TargetCostStatus {
+	return []TargetCostStatus{TargetCostStatusDisabled, TargetCostStatusEnabled}
 }
 
 // TransportProtocol enumerates the values for transport protocol.
@@ -407,8 +407,8 @@ const (
 )
 
 // PossibleTransportProtocolValues returns an array of possible values for the TransportProtocol const type.
-func PossibleTransportProtocolValues() [2]TransportProtocol {
-	return [2]TransportProtocol{TCP, UDP}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return []TransportProtocol{TCP, UDP}
 }
 
 // UsagePermissionType enumerates the values for usage permission type.
@@ -424,8 +424,8 @@ const (
 )
 
 // PossibleUsagePermissionTypeValues returns an array of possible values for the UsagePermissionType const type.
-func PossibleUsagePermissionTypeValues() [3]UsagePermissionType {
-	return [3]UsagePermissionType{Allow, Default, Deny}
+func PossibleUsagePermissionTypeValues() []UsagePermissionType {
+	return []UsagePermissionType{Allow, Default, Deny}
 }
 
 // VirtualMachineCreationSource enumerates the values for virtual machine creation source.
@@ -439,8 +439,8 @@ const (
 )
 
 // PossibleVirtualMachineCreationSourceValues returns an array of possible values for the VirtualMachineCreationSource const type.
-func PossibleVirtualMachineCreationSourceValues() [2]VirtualMachineCreationSource {
-	return [2]VirtualMachineCreationSource{FromCustomImage, FromGalleryImage}
+func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource {
+	return []VirtualMachineCreationSource{FromCustomImage, FromGalleryImage}
 }
 
 // WindowsOsState enumerates the values for windows os state.
@@ -456,8 +456,8 @@ const (
 )
 
 // PossibleWindowsOsStateValues returns an array of possible values for the WindowsOsState const type.
-func PossibleWindowsOsStateValues() [3]WindowsOsState {
-	return [3]WindowsOsState{NonSysprepped, SysprepApplied, SysprepRequested}
+func PossibleWindowsOsStateValues() []WindowsOsState {
+	return []WindowsOsState{NonSysprepped, SysprepApplied, SysprepRequested}
 }
 
 // ApplicableSchedule schedules applicable to a virtual machine. The schedules may have been defined on a VM or on

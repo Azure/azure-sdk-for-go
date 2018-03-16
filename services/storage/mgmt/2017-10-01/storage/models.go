@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleAccessTierValues returns an array of possible values for the AccessTier const type.
-func PossibleAccessTierValues() [2]AccessTier {
-	return [2]AccessTier{Cool, Hot}
+func PossibleAccessTierValues() []AccessTier {
+	return []AccessTier{Cool, Hot}
 }
 
 // AccountStatus enumerates the values for account status.
@@ -51,8 +51,8 @@ const (
 )
 
 // PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
-func PossibleAccountStatusValues() [2]AccountStatus {
-	return [2]AccountStatus{Available, Unavailable}
+func PossibleAccountStatusValues() []AccountStatus {
+	return []AccountStatus{Available, Unavailable}
 }
 
 // Action enumerates the values for action.
@@ -64,8 +64,8 @@ const (
 )
 
 // PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() [1]Action {
-	return [1]Action{Allow}
+func PossibleActionValues() []Action {
+	return []Action{Allow}
 }
 
 // Bypass enumerates the values for bypass.
@@ -83,8 +83,8 @@ const (
 )
 
 // PossibleBypassValues returns an array of possible values for the Bypass const type.
-func PossibleBypassValues() [4]Bypass {
-	return [4]Bypass{AzureServices, Logging, Metrics, None}
+func PossibleBypassValues() []Bypass {
+	return []Bypass{AzureServices, Logging, Metrics, None}
 }
 
 // DefaultAction enumerates the values for default action.
@@ -98,8 +98,8 @@ const (
 )
 
 // PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
-func PossibleDefaultActionValues() [2]DefaultAction {
-	return [2]DefaultAction{DefaultActionAllow, DefaultActionDeny}
+func PossibleDefaultActionValues() []DefaultAction {
+	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
 }
 
 // HTTPProtocol enumerates the values for http protocol.
@@ -113,8 +113,8 @@ const (
 )
 
 // PossibleHTTPProtocolValues returns an array of possible values for the HTTPProtocol const type.
-func PossibleHTTPProtocolValues() [2]HTTPProtocol {
-	return [2]HTTPProtocol{HTTPS, Httpshttp}
+func PossibleHTTPProtocolValues() []HTTPProtocol {
+	return []HTTPProtocol{HTTPS, Httpshttp}
 }
 
 // KeyPermission enumerates the values for key permission.
@@ -128,8 +128,8 @@ const (
 )
 
 // PossibleKeyPermissionValues returns an array of possible values for the KeyPermission const type.
-func PossibleKeyPermissionValues() [2]KeyPermission {
-	return [2]KeyPermission{Full, Read}
+func PossibleKeyPermissionValues() []KeyPermission {
+	return []KeyPermission{Full, Read}
 }
 
 // KeySource enumerates the values for key source.
@@ -143,8 +143,8 @@ const (
 )
 
 // PossibleKeySourceValues returns an array of possible values for the KeySource const type.
-func PossibleKeySourceValues() [2]KeySource {
-	return [2]KeySource{MicrosoftKeyvault, MicrosoftStorage}
+func PossibleKeySourceValues() []KeySource {
+	return []KeySource{MicrosoftKeyvault, MicrosoftStorage}
 }
 
 // Kind enumerates the values for kind.
@@ -160,8 +160,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [3]Kind {
-	return [3]Kind{BlobStorage, Storage, StorageV2}
+func PossibleKindValues() []Kind {
+	return []Kind{BlobStorage, Storage, StorageV2}
 }
 
 // Permissions enumerates the values for permissions.
@@ -187,8 +187,8 @@ const (
 )
 
 // PossiblePermissionsValues returns an array of possible values for the Permissions const type.
-func PossiblePermissionsValues() [8]Permissions {
-	return [8]Permissions{A, C, D, L, P, R, U, W}
+func PossiblePermissionsValues() []Permissions {
+	return []Permissions{A, C, D, L, P, R, U, W}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -204,8 +204,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [3]ProvisioningState {
-	return [3]ProvisioningState{Creating, ResolvingDNS, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
 }
 
 // Reason enumerates the values for reason.
@@ -219,8 +219,8 @@ const (
 )
 
 // PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() [2]Reason {
-	return [2]Reason{AccountNameInvalid, AlreadyExists}
+func PossibleReasonValues() []Reason {
+	return []Reason{AccountNameInvalid, AlreadyExists}
 }
 
 // ReasonCode enumerates the values for reason code.
@@ -234,8 +234,8 @@ const (
 )
 
 // PossibleReasonCodeValues returns an array of possible values for the ReasonCode const type.
-func PossibleReasonCodeValues() [2]ReasonCode {
-	return [2]ReasonCode{NotAvailableForSubscription, QuotaID}
+func PossibleReasonCodeValues() []ReasonCode {
+	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
 // Services enumerates the values for services.
@@ -253,8 +253,8 @@ const (
 )
 
 // PossibleServicesValues returns an array of possible values for the Services const type.
-func PossibleServicesValues() [4]Services {
-	return [4]Services{B, F, Q, T}
+func PossibleServicesValues() []Services {
+	return []Services{B, F, Q, T}
 }
 
 // SignedResource enumerates the values for signed resource.
@@ -272,8 +272,8 @@ const (
 )
 
 // PossibleSignedResourceValues returns an array of possible values for the SignedResource const type.
-func PossibleSignedResourceValues() [4]SignedResource {
-	return [4]SignedResource{SignedResourceB, SignedResourceC, SignedResourceF, SignedResourceS}
+func PossibleSignedResourceValues() []SignedResource {
+	return []SignedResource{SignedResourceB, SignedResourceC, SignedResourceF, SignedResourceS}
 }
 
 // SignedResourceTypes enumerates the values for signed resource types.
@@ -289,8 +289,8 @@ const (
 )
 
 // PossibleSignedResourceTypesValues returns an array of possible values for the SignedResourceTypes const type.
-func PossibleSignedResourceTypesValues() [3]SignedResourceTypes {
-	return [3]SignedResourceTypes{SignedResourceTypesC, SignedResourceTypesO, SignedResourceTypesS}
+func PossibleSignedResourceTypesValues() []SignedResourceTypes {
+	return []SignedResourceTypes{SignedResourceTypesC, SignedResourceTypesO, SignedResourceTypesS}
 }
 
 // SkuName enumerates the values for sku name.
@@ -310,8 +310,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [5]SkuName {
-	return [5]SkuName{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -325,8 +325,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [2]SkuTier {
-	return [2]SkuTier{Premium, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Premium, Standard}
 }
 
 // State enumerates the values for state.
@@ -346,8 +346,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [5]State {
-	return [5]State{StateDeprovisioning, StateFailed, StateNetworkSourceDeleted, StateProvisioning, StateSucceeded}
+func PossibleStateValues() []State {
+	return []State{StateDeprovisioning, StateFailed, StateNetworkSourceDeleted, StateProvisioning, StateSucceeded}
 }
 
 // UsageUnit enumerates the values for usage unit.
@@ -369,8 +369,8 @@ const (
 )
 
 // PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() [6]UsageUnit {
-	return [6]UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
+func PossibleUsageUnitValues() []UsageUnit {
+	return []UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
 }
 
 // Account the storage account.

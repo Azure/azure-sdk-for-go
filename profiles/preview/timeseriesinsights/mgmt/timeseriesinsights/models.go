@@ -68,7 +68,7 @@ const (
 	Reader      AccessPolicyRole = original.Reader
 )
 
-func PossibleAccessPolicyRoleValues() [2]AccessPolicyRole {
+func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return original.PossibleAccessPolicyRoleValues()
 }
 
@@ -82,7 +82,7 @@ const (
 	Unknown  IngressState = original.Unknown
 )
 
-func PossibleIngressStateValues() [5]IngressState {
+func PossibleIngressStateValues() []IngressState {
 	return original.PossibleIngressStateValues()
 }
 
@@ -94,7 +94,7 @@ const (
 	KindMicrosoftIoTHub                     Kind = original.KindMicrosoftIoTHub
 )
 
-func PossibleKindValues() [3]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	KindBasicEventSourceResourceKindMicrosoftIotHub     KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftIotHub
 )
 
-func PossibleKindBasicEventSourceResourceValues() [3]KindBasicEventSourceResource {
+func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
 	return original.PossibleKindBasicEventSourceResourceValues()
 }
 
@@ -118,7 +118,7 @@ const (
 	TimeSpan LocalTimestampFormat = original.TimeSpan
 )
 
-func PossibleLocalTimestampFormatValues() [3]LocalTimestampFormat {
+func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
 	return original.PossibleLocalTimestampFormatValues()
 }
 
@@ -133,7 +133,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [6]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -146,7 +146,7 @@ const (
 	String   ReferenceDataKeyPropertyType = original.String
 )
 
-func PossibleReferenceDataKeyPropertyTypeValues() [4]ReferenceDataKeyPropertyType {
+func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
 	return original.PossibleReferenceDataKeyPropertyTypeValues()
 }
 
@@ -157,7 +157,7 @@ const (
 	S2 SkuName = original.S2
 )
 
-func PossibleSkuNameValues() [2]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -168,7 +168,7 @@ const (
 	PurgeOldData StorageLimitExceededBehavior = original.PurgeOldData
 )
 
-func PossibleStorageLimitExceededBehaviorValues() [2]StorageLimitExceededBehavior {
+func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return original.PossibleStorageLimitExceededBehaviorValues()
 }
 

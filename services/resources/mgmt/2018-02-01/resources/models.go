@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() [2]DeploymentMode {
-	return [2]DeploymentMode{Complete, Incremental}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return []DeploymentMode{Complete, Incremental}
 }
 
 // OnErrorDeploymentType enumerates the values for on error deployment type.
@@ -52,21 +52,27 @@ const (
 )
 
 // PossibleOnErrorDeploymentTypeValues returns an array of possible values for the OnErrorDeploymentType const type.
-func PossibleOnErrorDeploymentTypeValues() [2]OnErrorDeploymentType {
-	return [2]OnErrorDeploymentType{LastSuccessful, SpecificDeployment}
+func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
+	return []OnErrorDeploymentType{LastSuccessful, SpecificDeployment}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
 const (
+	// None ...
+	None ResourceIdentityType = "None"
 	// SystemAssigned ...
 	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	// UserAssigned ...
+	UserAssigned ResourceIdentityType = "UserAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
-	return [1]ResourceIdentityType{SystemAssigned}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
 }
 
 // AliasPathType the type of the paths for alias.
@@ -1060,7 +1066,7 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type. Possible values include: 'SystemAssigned'
+	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 

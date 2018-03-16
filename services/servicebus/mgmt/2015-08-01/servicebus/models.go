@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() [3]AccessRights {
-	return [3]AccessRights{Listen, Manage, Send}
+func PossibleAccessRightsValues() []AccessRights {
+	return []AccessRights{Listen, Manage, Send}
 }
 
 // EntityAvailabilityStatus enumerates the values for entity availability status.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleEntityAvailabilityStatusValues returns an array of possible values for the EntityAvailabilityStatus const type.
-func PossibleEntityAvailabilityStatusValues() [5]EntityAvailabilityStatus {
-	return [5]EntityAvailabilityStatus{Available, Limited, Renaming, Restoring, Unknown}
+func PossibleEntityAvailabilityStatusValues() []EntityAvailabilityStatus {
+	return []EntityAvailabilityStatus{Available, Limited, Renaming, Restoring, Unknown}
 }
 
 // EntityStatus enumerates the values for entity status.
@@ -89,8 +89,8 @@ const (
 )
 
 // PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
-func PossibleEntityStatusValues() [9]EntityStatus {
-	return [9]EntityStatus{EntityStatusActive, EntityStatusCreating, EntityStatusDeleting, EntityStatusDisabled, EntityStatusReceiveDisabled, EntityStatusRenaming, EntityStatusRestoring, EntityStatusSendDisabled, EntityStatusUnknown}
+func PossibleEntityStatusValues() []EntityStatus {
+	return []EntityStatus{EntityStatusActive, EntityStatusCreating, EntityStatusDeleting, EntityStatusDisabled, EntityStatusReceiveDisabled, EntityStatusRenaming, EntityStatusRestoring, EntityStatusSendDisabled, EntityStatusUnknown}
 }
 
 // NamespaceState enumerates the values for namespace state.
@@ -126,8 +126,8 @@ const (
 )
 
 // PossibleNamespaceStateValues returns an array of possible values for the NamespaceState const type.
-func PossibleNamespaceStateValues() [13]NamespaceState {
-	return [13]NamespaceState{NamespaceStateActivating, NamespaceStateActive, NamespaceStateCreated, NamespaceStateCreating, NamespaceStateDisabled, NamespaceStateDisabling, NamespaceStateEnabling, NamespaceStateFailed, NamespaceStateRemoved, NamespaceStateRemoving, NamespaceStateSoftDeleted, NamespaceStateSoftDeleting, NamespaceStateUnknown}
+func PossibleNamespaceStateValues() []NamespaceState {
+	return []NamespaceState{NamespaceStateActivating, NamespaceStateActive, NamespaceStateCreated, NamespaceStateCreating, NamespaceStateDisabled, NamespaceStateDisabling, NamespaceStateEnabling, NamespaceStateFailed, NamespaceStateRemoved, NamespaceStateRemoving, NamespaceStateSoftDeleted, NamespaceStateSoftDeleting, NamespaceStateUnknown}
 }
 
 // Policykey enumerates the values for policykey.
@@ -141,8 +141,8 @@ const (
 )
 
 // PossiblePolicykeyValues returns an array of possible values for the Policykey const type.
-func PossiblePolicykeyValues() [2]Policykey {
-	return [2]Policykey{PrimaryKey, SecondaryKey}
+func PossiblePolicykeyValues() []Policykey {
+	return []Policykey{PrimaryKey, SecondaryKey}
 }
 
 // SkuName enumerates the values for sku name.
@@ -158,8 +158,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [3]SkuName {
-	return [3]SkuName{Basic, Premium, Standard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Basic, Premium, Standard}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -175,8 +175,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [3]SkuTier {
-	return [3]SkuTier{SkuTierBasic, SkuTierPremium, SkuTierStandard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{SkuTierBasic, SkuTierPremium, SkuTierStandard}
 }
 
 // UnavailableReason enumerates the values for unavailable reason.
@@ -198,8 +198,8 @@ const (
 )
 
 // PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
-	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+func PossibleUnavailableReasonValues() []UnavailableReason {
+	return []UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
 }
 
 // CheckNameAvailability description of a Check Name availability request properties.

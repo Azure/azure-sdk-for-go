@@ -209,7 +209,7 @@ const (
 	ZMW Currency = original.ZMW
 )
 
-func PossibleCurrencyValues() [161]Currency {
+func PossibleCurrencyValues() []Currency {
 	return original.PossibleCurrencyValues()
 }
 
@@ -224,7 +224,7 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
-func PossibleErrorCodeValues() [6]ErrorCode {
+func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
 }
 
@@ -244,7 +244,7 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+func PossibleErrorSubCodeValues() []ErrorSubCode {
 	return original.PossibleErrorSubCodeValues()
 }
 
@@ -256,7 +256,7 @@ const (
 	Week  Freshness = original.Week
 )
 
-func PossibleFreshnessValues() [3]Freshness {
+func PossibleFreshnessValues() []Freshness {
 	return original.PossibleFreshnessValues()
 }
 
@@ -269,7 +269,7 @@ const (
 	Wide   ImageAspect = original.Wide
 )
 
-func PossibleImageAspectValues() [4]ImageAspect {
+func PossibleImageAspectValues() []ImageAspect {
 	return original.PossibleImageAspectValues()
 }
 
@@ -292,7 +292,7 @@ const (
 	Yellow     ImageColor = original.Yellow
 )
 
-func PossibleImageColorValues() [14]ImageColor {
+func PossibleImageColorValues() []ImageColor {
 	return original.PossibleImageColorValues()
 }
 
@@ -303,7 +303,7 @@ const (
 	Portrait ImageContent = original.Portrait
 )
 
-func PossibleImageContentValues() [2]ImageContent {
+func PossibleImageContentValues() []ImageContent {
 	return original.PossibleImageContentValues()
 }
 
@@ -313,7 +313,7 @@ const (
 	Rectangular ImageCropType = original.Rectangular
 )
 
-func PossibleImageCropTypeValues() [1]ImageCropType {
+func PossibleImageCropTypeValues() []ImageCropType {
 	return original.PossibleImageCropTypeValues()
 }
 
@@ -334,7 +334,7 @@ const (
 	ImageInsightModuleTags               ImageInsightModule = original.ImageInsightModuleTags
 )
 
-func PossibleImageInsightModuleValues() [12]ImageInsightModule {
+func PossibleImageInsightModuleValues() []ImageInsightModule {
 	return original.PossibleImageInsightModuleValues()
 }
 
@@ -350,7 +350,7 @@ const (
 	ImageLicenseShareCommercially  ImageLicense = original.ImageLicenseShareCommercially
 )
 
-func PossibleImageLicenseValues() [7]ImageLicense {
+func PossibleImageLicenseValues() []ImageLicense {
 	return original.PossibleImageLicenseValues()
 }
 
@@ -364,7 +364,7 @@ const (
 	ImageSizeWallpaper ImageSize = original.ImageSizeWallpaper
 )
 
-func PossibleImageSizeValues() [5]ImageSize {
+func PossibleImageSizeValues() []ImageSize {
 	return original.PossibleImageSizeValues()
 }
 
@@ -379,7 +379,7 @@ const (
 	Transparent ImageType = original.Transparent
 )
 
-func PossibleImageTypeValues() [6]ImageType {
+func PossibleImageTypeValues() []ImageType {
 	return original.PossibleImageTypeValues()
 }
 
@@ -396,7 +396,7 @@ const (
 	SoldOut             ItemAvailability = original.SoldOut
 )
 
-func PossibleItemAvailabilityValues() [8]ItemAvailability {
+func PossibleItemAvailabilityValues() []ItemAvailability {
 	return original.PossibleItemAvailabilityValues()
 }
 
@@ -408,7 +408,7 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
-func PossibleSafeSearchValues() [3]SafeSearch {
+func PossibleSafeSearchValues() []SafeSearch {
 	return original.PossibleSafeSearchValues()
 }
 
@@ -420,7 +420,7 @@ const (
 	TypeRating          Type = original.TypeRating
 )
 
-func PossibleTypeValues() [3]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -455,7 +455,7 @@ const (
 	TypeWebPage                TypeBasicResponseBase = original.TypeWebPage
 )
 
-func PossibleTypeBasicResponseBaseValues() [26]TypeBasicResponseBase {
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
 	return original.PossibleTypeBasicResponseBaseValues()
 }
 

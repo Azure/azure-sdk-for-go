@@ -37,8 +37,8 @@ const (
 )
 
 // PossiblePasswordNameValues returns an array of possible values for the PasswordName const type.
-func PossiblePasswordNameValues() [2]PasswordName {
-	return [2]PasswordName{Password, Password2}
+func PossiblePasswordNameValues() []PasswordName {
+	return []PasswordName{Password, Password2}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [6]ProvisioningState {
-	return [6]ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // RegistryUsageUnit enumerates the values for registry usage unit.
@@ -75,8 +75,8 @@ const (
 )
 
 // PossibleRegistryUsageUnitValues returns an array of possible values for the RegistryUsageUnit const type.
-func PossibleRegistryUsageUnitValues() [2]RegistryUsageUnit {
-	return [2]RegistryUsageUnit{Bytes, Count}
+func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
+	return []RegistryUsageUnit{Bytes, Count}
 }
 
 // SkuName enumerates the values for sku name.
@@ -94,8 +94,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [4]SkuName {
-	return [4]SkuName{Basic, ManagedBasic, ManagedPremium, ManagedStandard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Basic, ManagedBasic, ManagedPremium, ManagedStandard}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -109,8 +109,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [2]SkuTier {
-	return [2]SkuTier{SkuTierBasic, SkuTierManaged}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{SkuTierBasic, SkuTierManaged}
 }
 
 // WebhookAction enumerates the values for webhook action.
@@ -124,8 +124,8 @@ const (
 )
 
 // PossibleWebhookActionValues returns an array of possible values for the WebhookAction const type.
-func PossibleWebhookActionValues() [2]WebhookAction {
-	return [2]WebhookAction{Delete, Push}
+func PossibleWebhookActionValues() []WebhookAction {
+	return []WebhookAction{Delete, Push}
 }
 
 // WebhookStatus enumerates the values for webhook status.
@@ -139,8 +139,8 @@ const (
 )
 
 // PossibleWebhookStatusValues returns an array of possible values for the WebhookStatus const type.
-func PossibleWebhookStatusValues() [2]WebhookStatus {
-	return [2]WebhookStatus{Disabled, Enabled}
+func PossibleWebhookStatusValues() []WebhookStatus {
+	return []WebhookStatus{Disabled, Enabled}
 }
 
 // Actor the agent that initiated the event. For most situations, this could be from the authorization context of

@@ -72,7 +72,7 @@ const (
 	Stopped          EndpointMonitorStatus = original.Stopped
 )
 
-func PossibleEndpointMonitorStatusValues() [6]EndpointMonitorStatus {
+func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 	return original.PossibleEndpointMonitorStatusValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	EndpointStatusEnabled  EndpointStatus = original.EndpointStatusEnabled
 )
 
-func PossibleEndpointStatusValues() [2]EndpointStatus {
+func PossibleEndpointStatusValues() []EndpointStatus {
 	return original.PossibleEndpointStatusValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	TCP   MonitorProtocol = original.TCP
 )
 
-func PossibleMonitorProtocolValues() [3]MonitorProtocol {
+func PossibleMonitorProtocolValues() []MonitorProtocol {
 	return original.PossibleMonitorProtocolValues()
 }
 
@@ -109,7 +109,7 @@ const (
 	ProfileMonitorStatusOnline            ProfileMonitorStatus = original.ProfileMonitorStatusOnline
 )
 
-func PossibleProfileMonitorStatusValues() [5]ProfileMonitorStatus {
+func PossibleProfileMonitorStatusValues() []ProfileMonitorStatus {
 	return original.PossibleProfileMonitorStatusValues()
 }
 
@@ -120,7 +120,7 @@ const (
 	ProfileStatusEnabled  ProfileStatus = original.ProfileStatusEnabled
 )
 
-func PossibleProfileStatusValues() [2]ProfileStatus {
+func PossibleProfileStatusValues() []ProfileStatus {
 	return original.PossibleProfileStatusValues()
 }
 
@@ -133,7 +133,7 @@ const (
 	Weighted    TrafficRoutingMethod = original.Weighted
 )
 
-func PossibleTrafficRoutingMethodValues() [4]TrafficRoutingMethod {
+func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	return original.PossibleTrafficRoutingMethodValues()
 }
 

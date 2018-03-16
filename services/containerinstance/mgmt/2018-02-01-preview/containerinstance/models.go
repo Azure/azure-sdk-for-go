@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
-func PossibleContainerGroupNetworkProtocolValues() [2]ContainerGroupNetworkProtocol {
-	return [2]ContainerGroupNetworkProtocol{TCP, UDP}
+func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
+	return []ContainerGroupNetworkProtocol{TCP, UDP}
 }
 
 // ContainerGroupRestartPolicy enumerates the values for container group restart policy.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
-func PossibleContainerGroupRestartPolicyValues() [3]ContainerGroupRestartPolicy {
-	return [3]ContainerGroupRestartPolicy{Always, Never, OnFailure}
+func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
+	return []ContainerGroupRestartPolicy{Always, Never, OnFailure}
 }
 
 // ContainerNetworkProtocol enumerates the values for container network protocol.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
-func PossibleContainerNetworkProtocolValues() [2]ContainerNetworkProtocol {
-	return [2]ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
+func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
+	return []ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
 }
 
 // OperatingSystemTypes enumerates the values for operating system types.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
-	return [2]OperatingSystemTypes{Linux, Windows}
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return []OperatingSystemTypes{Linux, Windows}
 }
 
 // OperationsOrigin enumerates the values for operations origin.
@@ -99,8 +99,8 @@ const (
 )
 
 // PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
-func PossibleOperationsOriginValues() [2]OperationsOrigin {
-	return [2]OperationsOrigin{System, User}
+func PossibleOperationsOriginValues() []OperationsOrigin {
+	return []OperationsOrigin{System, User}
 }
 
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.

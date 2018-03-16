@@ -32,8 +32,8 @@ const (
 )
 
 // PossibleFilterValues returns an array of possible values for the Filter const type.
-func PossibleFilterValues() [1]Filter {
-	return [1]Filter{AtScope}
+func PossibleFilterValues() []Filter {
+	return []Filter{AtScope}
 }
 
 // ResourceLink the resource link.

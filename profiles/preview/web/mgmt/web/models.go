@@ -131,7 +131,7 @@ const (
 	Permit AccessControlEntryAction = original.Permit
 )
 
-func PossibleAccessControlEntryActionValues() [2]AccessControlEntryAction {
+func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
 	return original.PossibleAccessControlEntryActionValues()
 }
 
@@ -146,7 +146,7 @@ const (
 	Standard AppServicePlanRestrictions = original.Standard
 )
 
-func PossibleAppServicePlanRestrictionsValues() [6]AppServicePlanRestrictions {
+func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
 	return original.PossibleAppServicePlanRestrictionsValues()
 }
 
@@ -158,7 +158,7 @@ const (
 	Recycle      AutoHealActionType = original.Recycle
 )
 
-func PossibleAutoHealActionTypeValues() [3]AutoHealActionType {
+func PossibleAutoHealActionTypeValues() []AutoHealActionType {
 	return original.PossibleAutoHealActionTypeValues()
 }
 
@@ -169,7 +169,7 @@ const (
 	Website        AzureResourceType = original.Website
 )
 
-func PossibleAzureResourceTypeValues() [2]AzureResourceType {
+func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return original.PossibleAzureResourceTypeValues()
 }
 
@@ -188,7 +188,7 @@ const (
 	TimedOut           BackupItemStatus = original.TimedOut
 )
 
-func PossibleBackupItemStatusValues() [10]BackupItemStatus {
+func PossibleBackupItemStatusValues() []BackupItemStatus {
 	return original.PossibleBackupItemStatusValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
 )
 
-func PossibleBackupRestoreOperationTypeValues() [4]BackupRestoreOperationType {
+func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
 	return original.PossibleBackupRestoreOperationTypeValues()
 }
 
@@ -215,7 +215,7 @@ const (
 	Twitter              BuiltInAuthenticationProvider = original.Twitter
 )
 
-func PossibleBuiltInAuthenticationProviderValues() [5]BuiltInAuthenticationProvider {
+func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
 	return original.PossibleBuiltInAuthenticationProviderValues()
 }
 
@@ -238,7 +238,7 @@ const (
 	Unknown                      CertificateOrderActionType = original.Unknown
 )
 
-func PossibleCertificateOrderActionTypeValues() [14]CertificateOrderActionType {
+func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
 	return original.PossibleCertificateOrderActionTypeValues()
 }
 
@@ -257,7 +257,7 @@ const (
 	Unused            CertificateOrderStatus = original.Unused
 )
 
-func PossibleCertificateOrderStatusValues() [10]CertificateOrderStatus {
+func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
 	return original.PossibleCertificateOrderStatusValues()
 }
 
@@ -268,7 +268,7 @@ const (
 	StandardDomainValidatedWildCardSsl CertificateProductType = original.StandardDomainValidatedWildCardSsl
 )
 
-func PossibleCertificateProductTypeValues() [2]CertificateProductType {
+func PossibleCertificateProductTypeValues() []CertificateProductType {
 	return original.PossibleCertificateProductTypeValues()
 }
 
@@ -282,7 +282,7 @@ const (
 	Webhook      Channels = original.Webhook
 )
 
-func PossibleChannelsValues() [5]Channels {
+func PossibleChannelsValues() []Channels {
 	return original.PossibleChannelsValues()
 }
 
@@ -299,7 +299,7 @@ const (
 	CheckNameResourceTypesSlot                            CheckNameResourceTypes = original.CheckNameResourceTypesSlot
 )
 
-func PossibleCheckNameResourceTypesValues() [8]CheckNameResourceTypes {
+func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return original.PossibleCheckNameResourceTypesValues()
 }
 
@@ -311,7 +311,7 @@ const (
 	PartiallyCloneable CloneAbilityResult = original.PartiallyCloneable
 )
 
-func PossibleCloneAbilityResultValues() [3]CloneAbilityResult {
+func PossibleCloneAbilityResultValues() []CloneAbilityResult {
 	return original.PossibleCloneAbilityResultValues()
 }
 
@@ -323,7 +323,7 @@ const (
 	ComputeModeOptionsShared    ComputeModeOptions = original.ComputeModeOptionsShared
 )
 
-func PossibleComputeModeOptionsValues() [3]ComputeModeOptions {
+func PossibleComputeModeOptionsValues() []ComputeModeOptions {
 	return original.PossibleComputeModeOptionsValues()
 }
 
@@ -343,7 +343,7 @@ const (
 	SQLServer       ConnectionStringType = original.SQLServer
 )
 
-func PossibleConnectionStringTypeValues() [11]ConnectionStringType {
+func PossibleConnectionStringTypeValues() []ConnectionStringType {
 	return original.PossibleConnectionStringTypeValues()
 }
 
@@ -357,7 +357,7 @@ const (
 	Stopped        ContinuousWebJobStatus = original.Stopped
 )
 
-func PossibleContinuousWebJobStatusValues() [5]ContinuousWebJobStatus {
+func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
 	return original.PossibleContinuousWebJobStatusValues()
 }
 
@@ -368,7 +368,7 @@ const (
 	CName CustomHostNameDNSRecordType = original.CName
 )
 
-func PossibleCustomHostNameDNSRecordTypeValues() [2]CustomHostNameDNSRecordType {
+func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
 	return original.PossibleCustomHostNameDNSRecordTypeValues()
 }
 
@@ -381,7 +381,7 @@ const (
 	DatabaseTypeSQLAzure   DatabaseType = original.DatabaseTypeSQLAzure
 )
 
-func PossibleDatabaseTypeValues() [4]DatabaseType {
+func PossibleDatabaseTypeValues() []DatabaseType {
 	return original.PossibleDatabaseTypeValues()
 }
 
@@ -392,7 +392,7 @@ const (
 	DefaultDomainRegistrarDNS DNSType = original.DefaultDomainRegistrarDNS
 )
 
-func PossibleDNSTypeValues() [2]DNSType {
+func PossibleDNSTypeValues() []DNSType {
 	return original.PossibleDNSTypeValues()
 }
 
@@ -404,7 +404,7 @@ const (
 	DNSVerificationTestResultSkipped DNSVerificationTestResult = original.DNSVerificationTestResultSkipped
 )
 
-func PossibleDNSVerificationTestResultValues() [3]DNSVerificationTestResult {
+func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 	return original.PossibleDNSVerificationTestResultValues()
 }
 
@@ -434,7 +434,7 @@ const (
 	DomainStatusUpdated             DomainStatus = original.DomainStatusUpdated
 )
 
-func PossibleDomainStatusValues() [21]DomainStatus {
+func PossibleDomainStatusValues() []DomainStatus {
 	return original.PossibleDomainStatusValues()
 }
 
@@ -445,7 +445,7 @@ const (
 	SoftDeleted DomainType = original.SoftDeleted
 )
 
-func PossibleDomainTypeValues() [2]DomainType {
+func PossibleDomainTypeValues() []DomainType {
 	return original.PossibleDomainTypeValues()
 }
 
@@ -456,7 +456,7 @@ const (
 	Hour FrequencyUnit = original.Hour
 )
 
-func PossibleFrequencyUnitValues() [2]FrequencyUnit {
+func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return original.PossibleFrequencyUnitValues()
 }
 
@@ -469,7 +469,7 @@ const (
 	Scaling   HostingEnvironmentStatus = original.Scaling
 )
 
-func PossibleHostingEnvironmentStatusValues() [4]HostingEnvironmentStatus {
+func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
 	return original.PossibleHostingEnvironmentStatusValues()
 }
 
@@ -480,7 +480,7 @@ const (
 	Verified HostNameType = original.Verified
 )
 
-func PossibleHostNameTypeValues() [2]HostNameType {
+func PossibleHostNameTypeValues() []HostNameType {
 	return original.PossibleHostNameTypeValues()
 }
 
@@ -491,7 +491,7 @@ const (
 	HostTypeStandard   HostType = original.HostTypeStandard
 )
 
-func PossibleHostTypeValues() [2]HostType {
+func PossibleHostTypeValues() []HostType {
 	return original.PossibleHostTypeValues()
 }
 
@@ -502,7 +502,7 @@ const (
 	Invalid       InAvailabilityReasonType = original.Invalid
 )
 
-func PossibleInAvailabilityReasonTypeValues() [2]InAvailabilityReasonType {
+func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
 }
 
@@ -514,7 +514,7 @@ const (
 	InternalLoadBalancingModeWeb        InternalLoadBalancingMode = original.InternalLoadBalancingModeWeb
 )
 
-func PossibleInternalLoadBalancingModeValues() [3]InternalLoadBalancingMode {
+func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
 	return original.PossibleInternalLoadBalancingModeValues()
 }
 
@@ -531,7 +531,7 @@ const (
 	UserIssue            IssueType = original.UserIssue
 )
 
-func PossibleIssueTypeValues() [8]IssueType {
+func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
 }
 
@@ -542,7 +542,7 @@ const (
 	Triggered  JobType = original.Triggered
 )
 
-func PossibleJobTypeValues() [2]JobType {
+func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
 
@@ -562,7 +562,7 @@ const (
 	KeyVaultSecretStatusWaitingOnCertificateOrder                KeyVaultSecretStatus = original.KeyVaultSecretStatusWaitingOnCertificateOrder
 )
 
-func PossibleKeyVaultSecretStatusValues() [11]KeyVaultSecretStatus {
+func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
 	return original.PossibleKeyVaultSecretStatusValues()
 }
 
@@ -576,7 +576,7 @@ const (
 	Warning     LogLevel = original.Warning
 )
 
-func PossibleLogLevelValues() [5]LogLevel {
+func PossibleLogLevelValues() []LogLevel {
 	return original.PossibleLogLevelValues()
 }
 
@@ -587,7 +587,7 @@ const (
 	Integrated ManagedPipelineMode = original.Integrated
 )
 
-func PossibleManagedPipelineModeValues() [2]ManagedPipelineMode {
+func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
 	return original.PossibleManagedPipelineModeValues()
 }
 
@@ -597,7 +597,7 @@ const (
 	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
 )
 
-func PossibleManagedServiceIdentityTypeValues() [1]ManagedServiceIdentityType {
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return original.PossibleManagedServiceIdentityTypeValues()
 }
 
@@ -609,7 +609,7 @@ const (
 	MSDeployLogEntryTypeWarning MSDeployLogEntryType = original.MSDeployLogEntryTypeWarning
 )
 
-func PossibleMSDeployLogEntryTypeValues() [3]MSDeployLogEntryType {
+func PossibleMSDeployLogEntryTypeValues() []MSDeployLogEntryType {
 	return original.PossibleMSDeployLogEntryTypeValues()
 }
 
@@ -623,7 +623,7 @@ const (
 	MSDeployProvisioningStateSucceeded MSDeployProvisioningState = original.MSDeployProvisioningStateSucceeded
 )
 
-func PossibleMSDeployProvisioningStateValues() [5]MSDeployProvisioningState {
+func PossibleMSDeployProvisioningStateValues() []MSDeployProvisioningState {
 	return original.PossibleMSDeployProvisioningStateValues()
 }
 
@@ -634,7 +634,7 @@ const (
 	RemoteToLocal MySQLMigrationType = original.RemoteToLocal
 )
 
-func PossibleMySQLMigrationTypeValues() [2]MySQLMigrationType {
+func PossibleMySQLMigrationTypeValues() []MySQLMigrationType {
 	return original.PossibleMySQLMigrationTypeValues()
 }
 
@@ -647,7 +647,7 @@ const (
 	NotificationLevelWarning             NotificationLevel = original.NotificationLevelWarning
 )
 
-func PossibleNotificationLevelValues() [4]NotificationLevel {
+func PossibleNotificationLevelValues() []NotificationLevel {
 	return original.PossibleNotificationLevelValues()
 }
 
@@ -661,7 +661,7 @@ const (
 	OperationStatusTimedOut   OperationStatus = original.OperationStatusTimedOut
 )
 
-func PossibleOperationStatusValues() [5]OperationStatus {
+func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
 }
 
@@ -675,7 +675,7 @@ const (
 	ProvisioningStateSucceeded  ProvisioningState = original.ProvisioningStateSucceeded
 )
 
-func PossibleProvisioningStateValues() [5]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -687,7 +687,7 @@ const (
 	PublicCertificateLocationUnknown        PublicCertificateLocation = original.PublicCertificateLocationUnknown
 )
 
-func PossiblePublicCertificateLocationValues() [3]PublicCertificateLocation {
+func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 	return original.PossiblePublicCertificateLocationValues()
 }
 
@@ -699,7 +699,7 @@ const (
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
-func PossiblePublishingProfileFormatValues() [3]PublishingProfileFormat {
+func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
 }
 
@@ -711,7 +711,7 @@ const (
 	WebSite      ResourceScopeType = original.WebSite
 )
 
-func PossibleResourceScopeTypeValues() [3]ResourceScopeType {
+func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()
 }
 
@@ -723,7 +723,7 @@ const (
 	STATIC    RouteType = original.STATIC
 )
 
-func PossibleRouteTypeValues() [3]RouteType {
+func PossibleRouteTypeValues() []RouteType {
 	return original.PossibleRouteTypeValues()
 }
 
@@ -745,7 +745,7 @@ const (
 	ScmTypeVSO          ScmType = original.ScmTypeVSO
 )
 
-func PossibleScmTypeValues() [13]ScmType {
+func PossibleScmTypeValues() []ScmType {
 	return original.PossibleScmTypeValues()
 }
 
@@ -757,7 +757,7 @@ const (
 	Normal               SiteAvailabilityState = original.Normal
 )
 
-func PossibleSiteAvailabilityStateValues() [3]SiteAvailabilityState {
+func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
 	return original.PossibleSiteAvailabilityStateValues()
 }
 
@@ -768,7 +768,7 @@ const (
 	WebRoot SiteExtensionType = original.WebRoot
 )
 
-func PossibleSiteExtensionTypeValues() [2]SiteExtensionType {
+func PossibleSiteExtensionTypeValues() []SiteExtensionType {
 	return original.PossibleSiteExtensionTypeValues()
 }
 
@@ -782,7 +782,7 @@ const (
 	WeightedTotalTraffic SiteLoadBalancing = original.WeightedTotalTraffic
 )
 
-func PossibleSiteLoadBalancingValues() [5]SiteLoadBalancing {
+func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
 	return original.PossibleSiteLoadBalancingValues()
 }
 
@@ -799,7 +799,7 @@ const (
 	SkuNameStandard  SkuName = original.SkuNameStandard
 )
 
-func PossibleSkuNameValues() [8]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -811,7 +811,7 @@ const (
 	QuickSolution     SolutionType = original.QuickSolution
 )
 
-func PossibleSolutionTypeValues() [3]SolutionType {
+func PossibleSolutionTypeValues() []SolutionType {
 	return original.PossibleSolutionTypeValues()
 }
 
@@ -823,7 +823,7 @@ const (
 	SniEnabled     SslState = original.SniEnabled
 )
 
-func PossibleSslStateValues() [3]SslState {
+func PossibleSslStateValues() []SslState {
 	return original.PossibleSslStateValues()
 }
 
@@ -835,7 +835,7 @@ const (
 	StatusOptionsReady    StatusOptions = original.StatusOptionsReady
 )
 
-func PossibleStatusOptionsValues() [3]StatusOptions {
+func PossibleStatusOptionsValues() []StatusOptions {
 	return original.PossibleStatusOptionsValues()
 }
 
@@ -847,7 +847,7 @@ const (
 	OneFullStopZero SupportedTLSVersions = original.OneFullStopZero
 )
 
-func PossibleSupportedTLSVersionsValues() [3]SupportedTLSVersions {
+func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
 	return original.PossibleSupportedTLSVersionsValues()
 }
 
@@ -859,7 +859,7 @@ const (
 	TriggeredWebJobStatusSuccess TriggeredWebJobStatus = original.TriggeredWebJobStatusSuccess
 )
 
-func PossibleTriggeredWebJobStatusValues() [3]TriggeredWebJobStatus {
+func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
 	return original.PossibleTriggeredWebJobStatusValues()
 }
 
@@ -870,7 +870,7 @@ const (
 	RedirectToLoginPage UnauthenticatedClientAction = original.RedirectToLoginPage
 )
 
-func PossibleUnauthenticatedClientActionValues() [2]UnauthenticatedClientAction {
+func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
 	return original.PossibleUnauthenticatedClientActionValues()
 }
 
@@ -881,7 +881,7 @@ const (
 	UsageStateNormal   UsageState = original.UsageStateNormal
 )
 
-func PossibleUsageStateValues() [2]UsageState {
+func PossibleUsageStateValues() []UsageState {
 	return original.PossibleUsageStateValues()
 }
 
@@ -892,7 +892,7 @@ const (
 	ValidateResourceTypesSite       ValidateResourceTypes = original.ValidateResourceTypesSite
 )
 
-func PossibleValidateResourceTypesValues() [2]ValidateResourceTypes {
+func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
 	return original.PossibleValidateResourceTypesValues()
 }
 
@@ -908,7 +908,7 @@ const (
 	Small   WorkerSizeOptions = original.Small
 )
 
-func PossibleWorkerSizeOptionsValues() [7]WorkerSizeOptions {
+func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
 	return original.PossibleWorkerSizeOptionsValues()
 }
 

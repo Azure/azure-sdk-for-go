@@ -44,8 +44,8 @@ const (
 )
 
 // PossibleCalculationWindowTypesValues returns an array of possible values for the CalculationWindowTypes const type.
-func PossibleCalculationWindowTypesValues() [5]CalculationWindowTypes {
-	return [5]CalculationWindowTypes{Day, Hour, Lifetime, Month, Week}
+func PossibleCalculationWindowTypesValues() []CalculationWindowTypes {
+	return []CalculationWindowTypes{Day, Hour, Lifetime, Month, Week}
 }
 
 // CanonicalPropertyValueType enumerates the values for canonical property value type.
@@ -63,8 +63,8 @@ const (
 )
 
 // PossibleCanonicalPropertyValueTypeValues returns an array of possible values for the CanonicalPropertyValueType const type.
-func PossibleCanonicalPropertyValueTypeValues() [4]CanonicalPropertyValueType {
-	return [4]CanonicalPropertyValueType{Categorical, DerivedCategorical, DerivedNumeric, Numeric}
+func PossibleCanonicalPropertyValueTypeValues() []CanonicalPropertyValueType {
+	return []CanonicalPropertyValueType{Categorical, DerivedCategorical, DerivedNumeric, Numeric}
 }
 
 // CardinalityTypes enumerates the values for cardinality types.
@@ -80,8 +80,8 @@ const (
 )
 
 // PossibleCardinalityTypesValues returns an array of possible values for the CardinalityTypes const type.
-func PossibleCardinalityTypesValues() [3]CardinalityTypes {
-	return [3]CardinalityTypes{ManyToMany, OneToMany, OneToOne}
+func PossibleCardinalityTypesValues() []CardinalityTypes {
+	return []CardinalityTypes{ManyToMany, OneToMany, OneToOne}
 }
 
 // CompletionOperationTypes enumerates the values for completion operation types.
@@ -97,8 +97,8 @@ const (
 )
 
 // PossibleCompletionOperationTypesValues returns an array of possible values for the CompletionOperationTypes const type.
-func PossibleCompletionOperationTypesValues() [3]CompletionOperationTypes {
-	return [3]CompletionOperationTypes{DeleteFile, DoNothing, MoveFile}
+func PossibleCompletionOperationTypesValues() []CompletionOperationTypes {
+	return []CompletionOperationTypes{DeleteFile, DoNothing, MoveFile}
 }
 
 // ConnectorMappingStates enumerates the values for connector mapping states.
@@ -122,8 +122,8 @@ const (
 )
 
 // PossibleConnectorMappingStatesValues returns an array of possible values for the ConnectorMappingStates const type.
-func PossibleConnectorMappingStatesValues() [7]ConnectorMappingStates {
-	return [7]ConnectorMappingStates{Created, Creating, Expiring, Failed, Ready, Running, Stopped}
+func PossibleConnectorMappingStatesValues() []ConnectorMappingStates {
+	return []ConnectorMappingStates{Created, Creating, Expiring, Failed, Ready, Running, Stopped}
 }
 
 // ConnectorStates enumerates the values for connector states.
@@ -145,8 +145,8 @@ const (
 )
 
 // PossibleConnectorStatesValues returns an array of possible values for the ConnectorStates const type.
-func PossibleConnectorStatesValues() [6]ConnectorStates {
-	return [6]ConnectorStates{ConnectorStatesCreated, ConnectorStatesCreating, ConnectorStatesDeleting, ConnectorStatesExpiring, ConnectorStatesFailed, ConnectorStatesReady}
+func PossibleConnectorStatesValues() []ConnectorStates {
+	return []ConnectorStates{ConnectorStatesCreated, ConnectorStatesCreating, ConnectorStatesDeleting, ConnectorStatesExpiring, ConnectorStatesFailed, ConnectorStatesReady}
 }
 
 // ConnectorTypes enumerates the values for connector types.
@@ -168,8 +168,8 @@ const (
 )
 
 // PossibleConnectorTypesValues returns an array of possible values for the ConnectorTypes const type.
-func PossibleConnectorTypesValues() [6]ConnectorTypes {
-	return [6]ConnectorTypes{AzureBlob, CRM, ExchangeOnline, None, Outbound, Salesforce}
+func PossibleConnectorTypesValues() []ConnectorTypes {
+	return []ConnectorTypes{AzureBlob, CRM, ExchangeOnline, None, Outbound, Salesforce}
 }
 
 // DataSourceType enumerates the values for data source type.
@@ -185,8 +185,8 @@ const (
 )
 
 // PossibleDataSourceTypeValues returns an array of possible values for the DataSourceType const type.
-func PossibleDataSourceTypeValues() [3]DataSourceType {
-	return [3]DataSourceType{DataSourceTypeConnector, DataSourceTypeLinkInteraction, DataSourceTypeSystemDefault}
+func PossibleDataSourceTypeValues() []DataSourceType {
+	return []DataSourceType{DataSourceTypeConnector, DataSourceTypeLinkInteraction, DataSourceTypeSystemDefault}
 }
 
 // EntityType enumerates the values for entity type.
@@ -204,8 +204,8 @@ const (
 )
 
 // PossibleEntityTypeValues returns an array of possible values for the EntityType const type.
-func PossibleEntityTypeValues() [4]EntityType {
-	return [4]EntityType{EntityTypeInteraction, EntityTypeNone, EntityTypeProfile, EntityTypeRelationship}
+func PossibleEntityTypeValues() []EntityType {
+	return []EntityType{EntityTypeInteraction, EntityTypeNone, EntityTypeProfile, EntityTypeRelationship}
 }
 
 // EntityTypes enumerates the values for entity types.
@@ -223,8 +223,8 @@ const (
 )
 
 // PossibleEntityTypesValues returns an array of possible values for the EntityTypes const type.
-func PossibleEntityTypesValues() [4]EntityTypes {
-	return [4]EntityTypes{EntityTypesInteraction, EntityTypesNone, EntityTypesProfile, EntityTypesRelationship}
+func PossibleEntityTypesValues() []EntityTypes {
+	return []EntityTypes{EntityTypesInteraction, EntityTypesNone, EntityTypesProfile, EntityTypesRelationship}
 }
 
 // ErrorManagementTypes enumerates the values for error management types.
@@ -240,8 +240,8 @@ const (
 )
 
 // PossibleErrorManagementTypesValues returns an array of possible values for the ErrorManagementTypes const type.
-func PossibleErrorManagementTypesValues() [3]ErrorManagementTypes {
-	return [3]ErrorManagementTypes{RejectAndContinue, RejectUntilLimit, StopImport}
+func PossibleErrorManagementTypesValues() []ErrorManagementTypes {
+	return []ErrorManagementTypes{RejectAndContinue, RejectUntilLimit, StopImport}
 }
 
 // FrequencyTypes enumerates the values for frequency types.
@@ -261,8 +261,8 @@ const (
 )
 
 // PossibleFrequencyTypesValues returns an array of possible values for the FrequencyTypes const type.
-func PossibleFrequencyTypesValues() [5]FrequencyTypes {
-	return [5]FrequencyTypes{FrequencyTypesDay, FrequencyTypesHour, FrequencyTypesMinute, FrequencyTypesMonth, FrequencyTypesWeek}
+func PossibleFrequencyTypesValues() []FrequencyTypes {
+	return []FrequencyTypes{FrequencyTypesDay, FrequencyTypesHour, FrequencyTypesMinute, FrequencyTypesMonth, FrequencyTypesWeek}
 }
 
 // InstanceOperationType enumerates the values for instance operation type.
@@ -276,8 +276,8 @@ const (
 )
 
 // PossibleInstanceOperationTypeValues returns an array of possible values for the InstanceOperationType const type.
-func PossibleInstanceOperationTypeValues() [2]InstanceOperationType {
-	return [2]InstanceOperationType{Delete, Upsert}
+func PossibleInstanceOperationTypeValues() []InstanceOperationType {
+	return []InstanceOperationType{Delete, Upsert}
 }
 
 // KpiFunctions enumerates the values for kpi functions.
@@ -303,8 +303,8 @@ const (
 )
 
 // PossibleKpiFunctionsValues returns an array of possible values for the KpiFunctions const type.
-func PossibleKpiFunctionsValues() [8]KpiFunctions {
-	return [8]KpiFunctions{KpiFunctionsAvg, KpiFunctionsCount, KpiFunctionsCountDistinct, KpiFunctionsLast, KpiFunctionsMax, KpiFunctionsMin, KpiFunctionsNone, KpiFunctionsSum}
+func PossibleKpiFunctionsValues() []KpiFunctions {
+	return []KpiFunctions{KpiFunctionsAvg, KpiFunctionsCount, KpiFunctionsCountDistinct, KpiFunctionsLast, KpiFunctionsMax, KpiFunctionsMin, KpiFunctionsNone, KpiFunctionsSum}
 }
 
 // LinkTypes enumerates the values for link types.
@@ -318,8 +318,8 @@ const (
 )
 
 // PossibleLinkTypesValues returns an array of possible values for the LinkTypes const type.
-func PossibleLinkTypesValues() [2]LinkTypes {
-	return [2]LinkTypes{CopyIfNull, UpdateAlways}
+func PossibleLinkTypesValues() []LinkTypes {
+	return []LinkTypes{CopyIfNull, UpdateAlways}
 }
 
 // PermissionTypes enumerates the values for permission types.
@@ -335,8 +335,8 @@ const (
 )
 
 // PossiblePermissionTypesValues returns an array of possible values for the PermissionTypes const type.
-func PossiblePermissionTypesValues() [3]PermissionTypes {
-	return [3]PermissionTypes{Manage, Read, Write}
+func PossiblePermissionTypesValues() []PermissionTypes {
+	return []PermissionTypes{Manage, Read, Write}
 }
 
 // PredictionModelLifeCycle enumerates the values for prediction model life cycle.
@@ -382,8 +382,8 @@ const (
 )
 
 // PossiblePredictionModelLifeCycleValues returns an array of possible values for the PredictionModelLifeCycle const type.
-func PossiblePredictionModelLifeCycleValues() [18]PredictionModelLifeCycle {
-	return [18]PredictionModelLifeCycle{PredictionModelLifeCycleActive, PredictionModelLifeCycleDeleted, PredictionModelLifeCycleDiscovering, PredictionModelLifeCycleEvaluating, PredictionModelLifeCycleEvaluatingFailed, PredictionModelLifeCycleFailed, PredictionModelLifeCycleFeaturing, PredictionModelLifeCycleFeaturingFailed, PredictionModelLifeCycleHumanIntervention, PredictionModelLifeCycleNew, PredictionModelLifeCyclePendingDiscovering, PredictionModelLifeCyclePendingFeaturing, PredictionModelLifeCyclePendingModelConfirmation, PredictionModelLifeCyclePendingTraining, PredictionModelLifeCycleProvisioning, PredictionModelLifeCycleProvisioningFailed, PredictionModelLifeCycleTraining, PredictionModelLifeCycleTrainingFailed}
+func PossiblePredictionModelLifeCycleValues() []PredictionModelLifeCycle {
+	return []PredictionModelLifeCycle{PredictionModelLifeCycleActive, PredictionModelLifeCycleDeleted, PredictionModelLifeCycleDiscovering, PredictionModelLifeCycleEvaluating, PredictionModelLifeCycleEvaluatingFailed, PredictionModelLifeCycleFailed, PredictionModelLifeCycleFeaturing, PredictionModelLifeCycleFeaturingFailed, PredictionModelLifeCycleHumanIntervention, PredictionModelLifeCycleNew, PredictionModelLifeCyclePendingDiscovering, PredictionModelLifeCyclePendingFeaturing, PredictionModelLifeCyclePendingModelConfirmation, PredictionModelLifeCyclePendingTraining, PredictionModelLifeCycleProvisioning, PredictionModelLifeCycleProvisioningFailed, PredictionModelLifeCycleTraining, PredictionModelLifeCycleTrainingFailed}
 }
 
 // ProvisioningStates enumerates the values for provisioning states.
@@ -405,8 +405,8 @@ const (
 )
 
 // PossibleProvisioningStatesValues returns an array of possible values for the ProvisioningStates const type.
-func PossibleProvisioningStatesValues() [6]ProvisioningStates {
-	return [6]ProvisioningStates{ProvisioningStatesDeleting, ProvisioningStatesExpiring, ProvisioningStatesFailed, ProvisioningStatesHumanIntervention, ProvisioningStatesProvisioning, ProvisioningStatesSucceeded}
+func PossibleProvisioningStatesValues() []ProvisioningStates {
+	return []ProvisioningStates{ProvisioningStatesDeleting, ProvisioningStatesExpiring, ProvisioningStatesFailed, ProvisioningStatesHumanIntervention, ProvisioningStatesProvisioning, ProvisioningStatesSucceeded}
 }
 
 // RoleTypes enumerates the values for role types.
@@ -428,8 +428,8 @@ const (
 )
 
 // PossibleRoleTypesValues returns an array of possible values for the RoleTypes const type.
-func PossibleRoleTypesValues() [6]RoleTypes {
-	return [6]RoleTypes{Admin, DataAdmin, DataReader, ManageAdmin, ManageReader, Reader}
+func PossibleRoleTypesValues() []RoleTypes {
+	return []RoleTypes{Admin, DataAdmin, DataReader, ManageAdmin, ManageReader, Reader}
 }
 
 // Status enumerates the values for status.
@@ -445,8 +445,8 @@ const (
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() [3]Status {
-	return [3]Status{StatusActive, StatusDeleted, StatusNone}
+func PossibleStatusValues() []Status {
+	return []Status{StatusActive, StatusDeleted, StatusNone}
 }
 
 // AssignmentPrincipal the AssignmentPrincipal

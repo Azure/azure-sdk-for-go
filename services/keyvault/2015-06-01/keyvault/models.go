@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleActionTypeValues returns an array of possible values for the ActionType const type.
-func PossibleActionTypeValues() [2]ActionType {
-	return [2]ActionType{AutoRenew, EmailContacts}
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{AutoRenew, EmailContacts}
 }
 
 // JSONWebKeyEncryptionAlgorithm enumerates the values for json web key encryption algorithm.
@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleJSONWebKeyEncryptionAlgorithmValues returns an array of possible values for the JSONWebKeyEncryptionAlgorithm const type.
-func PossibleJSONWebKeyEncryptionAlgorithmValues() [3]JSONWebKeyEncryptionAlgorithm {
-	return [3]JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return []JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
 }
 
 // JSONWebKeyOperation enumerates the values for json web key operation.
@@ -76,8 +76,8 @@ const (
 )
 
 // PossibleJSONWebKeyOperationValues returns an array of possible values for the JSONWebKeyOperation const type.
-func PossibleJSONWebKeyOperationValues() [6]JSONWebKeyOperation {
-	return [6]JSONWebKeyOperation{Decrypt, Encrypt, Sign, UnwrapKey, Verify, WrapKey}
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return []JSONWebKeyOperation{Decrypt, Encrypt, Sign, UnwrapKey, Verify, WrapKey}
 }
 
 // JSONWebKeySignatureAlgorithm enumerates the values for json web key signature algorithm.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleJSONWebKeySignatureAlgorithmValues returns an array of possible values for the JSONWebKeySignatureAlgorithm const type.
-func PossibleJSONWebKeySignatureAlgorithmValues() [7]JSONWebKeySignatureAlgorithm {
-	return [7]JSONWebKeySignatureAlgorithm{PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
+func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
+	return []JSONWebKeySignatureAlgorithm{PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
 }
 
 // JSONWebKeyType enumerates the values for json web key type.
@@ -120,8 +120,8 @@ const (
 )
 
 // PossibleJSONWebKeyTypeValues returns an array of possible values for the JSONWebKeyType const type.
-func PossibleJSONWebKeyTypeValues() [4]JSONWebKeyType {
-	return [4]JSONWebKeyType{EC, Oct, RSA, RSAHSM}
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return []JSONWebKeyType{EC, Oct, RSA, RSAHSM}
 }
 
 // KeyUsageType enumerates the values for key usage type.
@@ -149,8 +149,8 @@ const (
 )
 
 // PossibleKeyUsageTypeValues returns an array of possible values for the KeyUsageType const type.
-func PossibleKeyUsageTypeValues() [9]KeyUsageType {
-	return [9]KeyUsageType{CRLSign, DataEncipherment, DecipherOnly, DigitalSignature, EncipherOnly, KeyAgreement, KeyCertSign, KeyEncipherment, NonRepudiation}
+func PossibleKeyUsageTypeValues() []KeyUsageType {
+	return []KeyUsageType{CRLSign, DataEncipherment, DecipherOnly, DigitalSignature, EncipherOnly, KeyAgreement, KeyCertSign, KeyEncipherment, NonRepudiation}
 }
 
 // Action the action that will be executed.

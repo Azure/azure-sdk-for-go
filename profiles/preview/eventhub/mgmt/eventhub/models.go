@@ -78,7 +78,7 @@ const (
 	Send   AccessRights = original.Send
 )
 
-func PossibleAccessRightsValues() [3]AccessRights {
+func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
 
@@ -89,7 +89,7 @@ const (
 	AvroDeflate EncodingCaptureDescription = original.AvroDeflate
 )
 
-func PossibleEncodingCaptureDescriptionValues() [2]EncodingCaptureDescription {
+func PossibleEncodingCaptureDescriptionValues() []EncodingCaptureDescription {
 	return original.PossibleEncodingCaptureDescriptionValues()
 }
 
@@ -107,7 +107,7 @@ const (
 	Unknown         EntityStatus = original.Unknown
 )
 
-func PossibleEntityStatusValues() [9]EntityStatus {
+func PossibleEntityStatusValues() []EntityStatus {
 	return original.PossibleEntityStatusValues()
 }
 
@@ -118,7 +118,7 @@ const (
 	SecondaryKey KeyType = original.SecondaryKey
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -130,7 +130,7 @@ const (
 	Succeeded ProvisioningStateDR = original.Succeeded
 )
 
-func PossibleProvisioningStateDRValues() [3]ProvisioningStateDR {
+func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()
 }
 
@@ -142,7 +142,7 @@ const (
 	Secondary             RoleDisasterRecovery = original.Secondary
 )
 
-func PossibleRoleDisasterRecoveryValues() [3]RoleDisasterRecovery {
+func PossibleRoleDisasterRecoveryValues() []RoleDisasterRecovery {
 	return original.PossibleRoleDisasterRecoveryValues()
 }
 
@@ -153,7 +153,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [2]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -164,7 +164,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
-func PossibleSkuTierValues() [2]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -179,7 +179,7 @@ const (
 	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
 
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
+func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()
 }
 

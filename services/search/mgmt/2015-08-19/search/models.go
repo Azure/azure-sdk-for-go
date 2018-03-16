@@ -35,8 +35,8 @@ const (
 )
 
 // PossibleAdminKeyKindValues returns an array of possible values for the AdminKeyKind const type.
-func PossibleAdminKeyKindValues() [2]AdminKeyKind {
-	return [2]AdminKeyKind{Primary, Secondary}
+func PossibleAdminKeyKindValues() []AdminKeyKind {
+	return []AdminKeyKind{Primary, Secondary}
 }
 
 // HostingMode enumerates the values for hosting mode.
@@ -50,8 +50,8 @@ const (
 )
 
 // PossibleHostingModeValues returns an array of possible values for the HostingMode const type.
-func PossibleHostingModeValues() [2]HostingMode {
-	return [2]HostingMode{Default, HighDensity}
+func PossibleHostingModeValues() []HostingMode {
+	return []HostingMode{Default, HighDensity}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -67,8 +67,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [3]ProvisioningState {
-	return [3]ProvisioningState{Failed, Provisioning, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Failed, Provisioning, Succeeded}
 }
 
 // ServiceStatus enumerates the values for service status.
@@ -90,8 +90,8 @@ const (
 )
 
 // PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() [6]ServiceStatus {
-	return [6]ServiceStatus{ServiceStatusDegraded, ServiceStatusDeleting, ServiceStatusDisabled, ServiceStatusError, ServiceStatusProvisioning, ServiceStatusRunning}
+func PossibleServiceStatusValues() []ServiceStatus {
+	return []ServiceStatus{ServiceStatusDegraded, ServiceStatusDeleting, ServiceStatusDisabled, ServiceStatusError, ServiceStatusProvisioning, ServiceStatusRunning}
 }
 
 // SkuName enumerates the values for sku name.
@@ -111,8 +111,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [5]SkuName {
-	return [5]SkuName{Basic, Free, Standard, Standard2, Standard3}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Basic, Free, Standard, Standard2, Standard3}
 }
 
 // UnavailableNameReason enumerates the values for unavailable name reason.
@@ -126,8 +126,8 @@ const (
 )
 
 // PossibleUnavailableNameReasonValues returns an array of possible values for the UnavailableNameReason const type.
-func PossibleUnavailableNameReasonValues() [2]UnavailableNameReason {
-	return [2]UnavailableNameReason{AlreadyExists, Invalid}
+func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
+	return []UnavailableNameReason{AlreadyExists, Invalid}
 }
 
 // AdminKeyResult response containing the primary and secondary admin API keys for a given Azure Search service.

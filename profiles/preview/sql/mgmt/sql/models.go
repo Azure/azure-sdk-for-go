@@ -63,7 +63,7 @@ const (
 	Succeeded        ManagementOperationState = original.Succeeded
 )
 
-func PossibleManagementOperationStateValues() [6]ManagementOperationState {
+func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
 }
 

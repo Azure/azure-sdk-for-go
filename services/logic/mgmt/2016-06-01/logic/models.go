@@ -40,8 +40,8 @@ const (
 )
 
 // PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
-func PossibleAgreementTypeValues() [4]AgreementType {
-	return [4]AgreementType{AS2, Edifact, NotSpecified, X12}
+func PossibleAgreementTypeValues() []AgreementType {
+	return []AgreementType{AS2, Edifact, NotSpecified, X12}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -65,8 +65,8 @@ const (
 )
 
 // PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() [7]DayOfWeek {
-	return [7]DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // DaysOfWeek enumerates the values for days of week.
@@ -90,8 +90,8 @@ const (
 )
 
 // PossibleDaysOfWeekValues returns an array of possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() [7]DaysOfWeek {
-	return [7]DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return []DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
 }
 
 // EdifactCharacterSet enumerates the values for edifact character set.
@@ -131,8 +131,8 @@ const (
 )
 
 // PossibleEdifactCharacterSetValues returns an array of possible values for the EdifactCharacterSet const type.
-func PossibleEdifactCharacterSetValues() [15]EdifactCharacterSet {
-	return [15]EdifactCharacterSet{EdifactCharacterSetKECA, EdifactCharacterSetNotSpecified, EdifactCharacterSetUNOA, EdifactCharacterSetUNOB, EdifactCharacterSetUNOC, EdifactCharacterSetUNOD, EdifactCharacterSetUNOE, EdifactCharacterSetUNOF, EdifactCharacterSetUNOG, EdifactCharacterSetUNOH, EdifactCharacterSetUNOI, EdifactCharacterSetUNOJ, EdifactCharacterSetUNOK, EdifactCharacterSetUNOX, EdifactCharacterSetUNOY}
+func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
+	return []EdifactCharacterSet{EdifactCharacterSetKECA, EdifactCharacterSetNotSpecified, EdifactCharacterSetUNOA, EdifactCharacterSetUNOB, EdifactCharacterSetUNOC, EdifactCharacterSetUNOD, EdifactCharacterSetUNOE, EdifactCharacterSetUNOF, EdifactCharacterSetUNOG, EdifactCharacterSetUNOH, EdifactCharacterSetUNOI, EdifactCharacterSetUNOJ, EdifactCharacterSetUNOK, EdifactCharacterSetUNOX, EdifactCharacterSetUNOY}
 }
 
 // EdifactDecimalIndicator enumerates the values for edifact decimal indicator.
@@ -148,8 +148,8 @@ const (
 )
 
 // PossibleEdifactDecimalIndicatorValues returns an array of possible values for the EdifactDecimalIndicator const type.
-func PossibleEdifactDecimalIndicatorValues() [3]EdifactDecimalIndicator {
-	return [3]EdifactDecimalIndicator{EdifactDecimalIndicatorComma, EdifactDecimalIndicatorDecimal, EdifactDecimalIndicatorNotSpecified}
+func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
+	return []EdifactDecimalIndicator{EdifactDecimalIndicatorComma, EdifactDecimalIndicatorDecimal, EdifactDecimalIndicatorNotSpecified}
 }
 
 // EncryptionAlgorithm enumerates the values for encryption algorithm.
@@ -173,8 +173,8 @@ const (
 )
 
 // PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() [7]EncryptionAlgorithm {
-	return [7]EncryptionAlgorithm{EncryptionAlgorithmAES128, EncryptionAlgorithmAES192, EncryptionAlgorithmAES256, EncryptionAlgorithmDES3, EncryptionAlgorithmNone, EncryptionAlgorithmNotSpecified, EncryptionAlgorithmRC2}
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return []EncryptionAlgorithm{EncryptionAlgorithmAES128, EncryptionAlgorithmAES192, EncryptionAlgorithmAES256, EncryptionAlgorithmDES3, EncryptionAlgorithmNone, EncryptionAlgorithmNotSpecified, EncryptionAlgorithmRC2}
 }
 
 // HashingAlgorithm enumerates the values for hashing algorithm.
@@ -198,8 +198,8 @@ const (
 )
 
 // PossibleHashingAlgorithmValues returns an array of possible values for the HashingAlgorithm const type.
-func PossibleHashingAlgorithmValues() [7]HashingAlgorithm {
-	return [7]HashingAlgorithm{HashingAlgorithmMD5, HashingAlgorithmNone, HashingAlgorithmNotSpecified, HashingAlgorithmSHA1, HashingAlgorithmSHA2256, HashingAlgorithmSHA2384, HashingAlgorithmSHA2512}
+func PossibleHashingAlgorithmValues() []HashingAlgorithm {
+	return []HashingAlgorithm{HashingAlgorithmMD5, HashingAlgorithmNone, HashingAlgorithmNotSpecified, HashingAlgorithmSHA1, HashingAlgorithmSHA2256, HashingAlgorithmSHA2384, HashingAlgorithmSHA2512}
 }
 
 // IntegrationAccountSkuName enumerates the values for integration account sku name.
@@ -215,8 +215,8 @@ const (
 )
 
 // PossibleIntegrationAccountSkuNameValues returns an array of possible values for the IntegrationAccountSkuName const type.
-func PossibleIntegrationAccountSkuNameValues() [3]IntegrationAccountSkuName {
-	return [3]IntegrationAccountSkuName{IntegrationAccountSkuNameFree, IntegrationAccountSkuNameNotSpecified, IntegrationAccountSkuNameStandard}
+func PossibleIntegrationAccountSkuNameValues() []IntegrationAccountSkuName {
+	return []IntegrationAccountSkuName{IntegrationAccountSkuNameFree, IntegrationAccountSkuNameNotSpecified, IntegrationAccountSkuNameStandard}
 }
 
 // KeyType enumerates the values for key type.
@@ -232,8 +232,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [3]KeyType {
-	return [3]KeyType{KeyTypeNotSpecified, KeyTypePrimary, KeyTypeSecondary}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{KeyTypeNotSpecified, KeyTypePrimary, KeyTypeSecondary}
 }
 
 // MapType enumerates the values for map type.
@@ -247,8 +247,8 @@ const (
 )
 
 // PossibleMapTypeValues returns an array of possible values for the MapType const type.
-func PossibleMapTypeValues() [2]MapType {
-	return [2]MapType{MapTypeNotSpecified, MapTypeXslt}
+func PossibleMapTypeValues() []MapType {
+	return []MapType{MapTypeNotSpecified, MapTypeXslt}
 }
 
 // MessageFilterType enumerates the values for message filter type.
@@ -264,8 +264,8 @@ const (
 )
 
 // PossibleMessageFilterTypeValues returns an array of possible values for the MessageFilterType const type.
-func PossibleMessageFilterTypeValues() [3]MessageFilterType {
-	return [3]MessageFilterType{MessageFilterTypeExclude, MessageFilterTypeInclude, MessageFilterTypeNotSpecified}
+func PossibleMessageFilterTypeValues() []MessageFilterType {
+	return []MessageFilterType{MessageFilterTypeExclude, MessageFilterTypeInclude, MessageFilterTypeNotSpecified}
 }
 
 // ParameterType enumerates the values for parameter type.
@@ -293,8 +293,8 @@ const (
 )
 
 // PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() [9]ParameterType {
-	return [9]ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
 }
 
 // PartnerType enumerates the values for partner type.
@@ -308,8 +308,8 @@ const (
 )
 
 // PossiblePartnerTypeValues returns an array of possible values for the PartnerType const type.
-func PossiblePartnerTypeValues() [2]PartnerType {
-	return [2]PartnerType{PartnerTypeB2B, PartnerTypeNotSpecified}
+func PossiblePartnerTypeValues() []PartnerType {
+	return []PartnerType{PartnerTypeB2B, PartnerTypeNotSpecified}
 }
 
 // RecurrenceFrequency enumerates the values for recurrence frequency.
@@ -335,8 +335,8 @@ const (
 )
 
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() [8]RecurrenceFrequency {
-	return [8]RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNotSpecified, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNotSpecified, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
 }
 
 // SchemaType enumerates the values for schema type.
@@ -350,8 +350,8 @@ const (
 )
 
 // PossibleSchemaTypeValues returns an array of possible values for the SchemaType const type.
-func PossibleSchemaTypeValues() [2]SchemaType {
-	return [2]SchemaType{SchemaTypeNotSpecified, SchemaTypeXML}
+func PossibleSchemaTypeValues() []SchemaType {
+	return []SchemaType{SchemaTypeNotSpecified, SchemaTypeXML}
 }
 
 // SegmentTerminatorSuffix enumerates the values for segment terminator suffix.
@@ -371,8 +371,8 @@ const (
 )
 
 // PossibleSegmentTerminatorSuffixValues returns an array of possible values for the SegmentTerminatorSuffix const type.
-func PossibleSegmentTerminatorSuffixValues() [5]SegmentTerminatorSuffix {
-	return [5]SegmentTerminatorSuffix{SegmentTerminatorSuffixCR, SegmentTerminatorSuffixCRLF, SegmentTerminatorSuffixLF, SegmentTerminatorSuffixNone, SegmentTerminatorSuffixNotSpecified}
+func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
+	return []SegmentTerminatorSuffix{SegmentTerminatorSuffixCR, SegmentTerminatorSuffixCRLF, SegmentTerminatorSuffixLF, SegmentTerminatorSuffixNone, SegmentTerminatorSuffixNotSpecified}
 }
 
 // SigningAlgorithm enumerates the values for signing algorithm.
@@ -394,8 +394,8 @@ const (
 )
 
 // PossibleSigningAlgorithmValues returns an array of possible values for the SigningAlgorithm const type.
-func PossibleSigningAlgorithmValues() [6]SigningAlgorithm {
-	return [6]SigningAlgorithm{SigningAlgorithmDefault, SigningAlgorithmNotSpecified, SigningAlgorithmSHA1, SigningAlgorithmSHA2256, SigningAlgorithmSHA2384, SigningAlgorithmSHA2512}
+func PossibleSigningAlgorithmValues() []SigningAlgorithm {
+	return []SigningAlgorithm{SigningAlgorithmDefault, SigningAlgorithmNotSpecified, SigningAlgorithmSHA1, SigningAlgorithmSHA2256, SigningAlgorithmSHA2384, SigningAlgorithmSHA2512}
 }
 
 // SkuName enumerates the values for sku name.
@@ -417,8 +417,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [6]SkuName {
-	return [6]SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
 }
 
 // TrailingSeparatorPolicy enumerates the values for trailing separator policy.
@@ -436,8 +436,8 @@ const (
 )
 
 // PossibleTrailingSeparatorPolicyValues returns an array of possible values for the TrailingSeparatorPolicy const type.
-func PossibleTrailingSeparatorPolicyValues() [4]TrailingSeparatorPolicy {
-	return [4]TrailingSeparatorPolicy{TrailingSeparatorPolicyMandatory, TrailingSeparatorPolicyNotAllowed, TrailingSeparatorPolicyNotSpecified, TrailingSeparatorPolicyOptional}
+func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
+	return []TrailingSeparatorPolicy{TrailingSeparatorPolicyMandatory, TrailingSeparatorPolicyNotAllowed, TrailingSeparatorPolicyNotSpecified, TrailingSeparatorPolicyOptional}
 }
 
 // UsageIndicator enumerates the values for usage indicator.
@@ -455,8 +455,8 @@ const (
 )
 
 // PossibleUsageIndicatorValues returns an array of possible values for the UsageIndicator const type.
-func PossibleUsageIndicatorValues() [4]UsageIndicator {
-	return [4]UsageIndicator{UsageIndicatorInformation, UsageIndicatorNotSpecified, UsageIndicatorProduction, UsageIndicatorTest}
+func PossibleUsageIndicatorValues() []UsageIndicator {
+	return []UsageIndicator{UsageIndicatorInformation, UsageIndicatorNotSpecified, UsageIndicatorProduction, UsageIndicatorTest}
 }
 
 // WorkflowProvisioningState enumerates the values for workflow provisioning state.
@@ -502,8 +502,8 @@ const (
 )
 
 // PossibleWorkflowProvisioningStateValues returns an array of possible values for the WorkflowProvisioningState const type.
-func PossibleWorkflowProvisioningStateValues() [18]WorkflowProvisioningState {
-	return [18]WorkflowProvisioningState{WorkflowProvisioningStateAccepted, WorkflowProvisioningStateCanceled, WorkflowProvisioningStateCompleted, WorkflowProvisioningStateCreated, WorkflowProvisioningStateCreating, WorkflowProvisioningStateDeleted, WorkflowProvisioningStateDeleting, WorkflowProvisioningStateFailed, WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateReady, WorkflowProvisioningStateRegistered, WorkflowProvisioningStateRegistering, WorkflowProvisioningStateRunning, WorkflowProvisioningStateSucceeded, WorkflowProvisioningStateUnregistered, WorkflowProvisioningStateUnregistering, WorkflowProvisioningStateUpdating}
+func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
+	return []WorkflowProvisioningState{WorkflowProvisioningStateAccepted, WorkflowProvisioningStateCanceled, WorkflowProvisioningStateCompleted, WorkflowProvisioningStateCreated, WorkflowProvisioningStateCreating, WorkflowProvisioningStateDeleted, WorkflowProvisioningStateDeleting, WorkflowProvisioningStateFailed, WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateReady, WorkflowProvisioningStateRegistered, WorkflowProvisioningStateRegistering, WorkflowProvisioningStateRunning, WorkflowProvisioningStateSucceeded, WorkflowProvisioningStateUnregistered, WorkflowProvisioningStateUnregistering, WorkflowProvisioningStateUpdating}
 }
 
 // WorkflowState enumerates the values for workflow state.
@@ -525,8 +525,8 @@ const (
 )
 
 // PossibleWorkflowStateValues returns an array of possible values for the WorkflowState const type.
-func PossibleWorkflowStateValues() [6]WorkflowState {
-	return [6]WorkflowState{WorkflowStateCompleted, WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
+func PossibleWorkflowStateValues() []WorkflowState {
+	return []WorkflowState{WorkflowStateCompleted, WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
 }
 
 // WorkflowStatus enumerates the values for workflow status.
@@ -562,8 +562,8 @@ const (
 )
 
 // PossibleWorkflowStatusValues returns an array of possible values for the WorkflowStatus const type.
-func PossibleWorkflowStatusValues() [13]WorkflowStatus {
-	return [13]WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusIgnored, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
+func PossibleWorkflowStatusValues() []WorkflowStatus {
+	return []WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusIgnored, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
 }
 
 // WorkflowTriggerProvisioningState enumerates the values for workflow trigger provisioning state.
@@ -609,8 +609,8 @@ const (
 )
 
 // PossibleWorkflowTriggerProvisioningStateValues returns an array of possible values for the WorkflowTriggerProvisioningState const type.
-func PossibleWorkflowTriggerProvisioningStateValues() [18]WorkflowTriggerProvisioningState {
-	return [18]WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateAccepted, WorkflowTriggerProvisioningStateCanceled, WorkflowTriggerProvisioningStateCompleted, WorkflowTriggerProvisioningStateCreated, WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateDeleted, WorkflowTriggerProvisioningStateDeleting, WorkflowTriggerProvisioningStateFailed, WorkflowTriggerProvisioningStateMoving, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateReady, WorkflowTriggerProvisioningStateRegistered, WorkflowTriggerProvisioningStateRegistering, WorkflowTriggerProvisioningStateRunning, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUnregistered, WorkflowTriggerProvisioningStateUnregistering, WorkflowTriggerProvisioningStateUpdating}
+func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
+	return []WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateAccepted, WorkflowTriggerProvisioningStateCanceled, WorkflowTriggerProvisioningStateCompleted, WorkflowTriggerProvisioningStateCreated, WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateDeleted, WorkflowTriggerProvisioningStateDeleting, WorkflowTriggerProvisioningStateFailed, WorkflowTriggerProvisioningStateMoving, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateReady, WorkflowTriggerProvisioningStateRegistered, WorkflowTriggerProvisioningStateRegistering, WorkflowTriggerProvisioningStateRunning, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUnregistered, WorkflowTriggerProvisioningStateUnregistering, WorkflowTriggerProvisioningStateUpdating}
 }
 
 // X12CharacterSet enumerates the values for x12 character set.
@@ -628,8 +628,8 @@ const (
 )
 
 // PossibleX12CharacterSetValues returns an array of possible values for the X12CharacterSet const type.
-func PossibleX12CharacterSetValues() [4]X12CharacterSet {
-	return [4]X12CharacterSet{X12CharacterSetBasic, X12CharacterSetExtended, X12CharacterSetNotSpecified, X12CharacterSetUTF8}
+func PossibleX12CharacterSetValues() []X12CharacterSet {
+	return []X12CharacterSet{X12CharacterSetBasic, X12CharacterSetExtended, X12CharacterSetNotSpecified, X12CharacterSetUTF8}
 }
 
 // X12DateFormat enumerates the values for x12 date format.
@@ -645,8 +645,8 @@ const (
 )
 
 // PossibleX12DateFormatValues returns an array of possible values for the X12DateFormat const type.
-func PossibleX12DateFormatValues() [3]X12DateFormat {
-	return [3]X12DateFormat{X12DateFormatCCYYMMDD, X12DateFormatNotSpecified, X12DateFormatYYMMDD}
+func PossibleX12DateFormatValues() []X12DateFormat {
+	return []X12DateFormat{X12DateFormatCCYYMMDD, X12DateFormatNotSpecified, X12DateFormatYYMMDD}
 }
 
 // X12TimeFormat enumerates the values for x12 time format.
@@ -666,8 +666,8 @@ const (
 )
 
 // PossibleX12TimeFormatValues returns an array of possible values for the X12TimeFormat const type.
-func PossibleX12TimeFormatValues() [5]X12TimeFormat {
-	return [5]X12TimeFormat{X12TimeFormatHHMM, X12TimeFormatHHMMSS, X12TimeFormatHHMMSSd, X12TimeFormatHHMMSSdd, X12TimeFormatNotSpecified}
+func PossibleX12TimeFormatValues() []X12TimeFormat {
+	return []X12TimeFormat{X12TimeFormatHHMM, X12TimeFormatHHMMSS, X12TimeFormatHHMMSSd, X12TimeFormatHHMMSSdd, X12TimeFormatNotSpecified}
 }
 
 // AgreementContent the integration account agreement content.

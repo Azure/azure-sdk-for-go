@@ -50,7 +50,7 @@ const (
 	Hot  AccessTier = original.Hot
 )
 
-func PossibleAccessTierValues() [2]AccessTier {
+func PossibleAccessTierValues() []AccessTier {
 	return original.PossibleAccessTierValues()
 }
 
@@ -61,7 +61,7 @@ const (
 	Unavailable AccountStatus = original.Unavailable
 )
 
-func PossibleAccountStatusValues() [2]AccountStatus {
+func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
 }
 
@@ -71,7 +71,7 @@ const (
 	Allow Action = original.Allow
 )
 
-func PossibleActionValues() [1]Action {
+func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
 
@@ -84,7 +84,7 @@ const (
 	None          Bypass = original.None
 )
 
-func PossibleBypassValues() [4]Bypass {
+func PossibleBypassValues() []Bypass {
 	return original.PossibleBypassValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
-func PossibleDefaultActionValues() [2]DefaultAction {
+func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	Httpshttp HTTPProtocol = original.Httpshttp
 )
 
-func PossibleHTTPProtocolValues() [2]HTTPProtocol {
+func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
 }
 
@@ -117,7 +117,7 @@ const (
 	Read KeyPermission = original.Read
 )
 
-func PossibleKeyPermissionValues() [2]KeyPermission {
+func PossibleKeyPermissionValues() []KeyPermission {
 	return original.PossibleKeyPermissionValues()
 }
 
@@ -128,7 +128,7 @@ const (
 	MicrosoftStorage  KeySource = original.MicrosoftStorage
 )
 
-func PossibleKeySourceValues() [2]KeySource {
+func PossibleKeySourceValues() []KeySource {
 	return original.PossibleKeySourceValues()
 }
 
@@ -140,7 +140,7 @@ const (
 	StorageV2   Kind = original.StorageV2
 )
 
-func PossibleKindValues() [3]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -157,7 +157,7 @@ const (
 	W Permissions = original.W
 )
 
-func PossiblePermissionsValues() [8]Permissions {
+func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
 
@@ -169,7 +169,7 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() [3]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -180,7 +180,7 @@ const (
 	AlreadyExists      Reason = original.AlreadyExists
 )
 
-func PossibleReasonValues() [2]Reason {
+func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
 
@@ -191,7 +191,7 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
-func PossibleReasonCodeValues() [2]ReasonCode {
+func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
 }
 
@@ -204,7 +204,7 @@ const (
 	T Services = original.T
 )
 
-func PossibleServicesValues() [4]Services {
+func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()
 }
 
@@ -217,7 +217,7 @@ const (
 	SignedResourceS SignedResource = original.SignedResourceS
 )
 
-func PossibleSignedResourceValues() [4]SignedResource {
+func PossibleSignedResourceValues() []SignedResource {
 	return original.PossibleSignedResourceValues()
 }
 
@@ -229,7 +229,7 @@ const (
 	SignedResourceTypesS SignedResourceTypes = original.SignedResourceTypesS
 )
 
-func PossibleSignedResourceTypesValues() [3]SignedResourceTypes {
+func PossibleSignedResourceTypesValues() []SignedResourceTypes {
 	return original.PossibleSignedResourceTypesValues()
 }
 
@@ -243,7 +243,7 @@ const (
 	StandardZRS   SkuName = original.StandardZRS
 )
 
-func PossibleSkuNameValues() [5]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -254,7 +254,7 @@ const (
 	Standard SkuTier = original.Standard
 )
 
-func PossibleSkuTierValues() [2]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -268,7 +268,7 @@ const (
 	StateSucceeded            State = original.StateSucceeded
 )
 
-func PossibleStateValues() [5]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 
@@ -283,7 +283,7 @@ const (
 	Seconds         UsageUnit = original.Seconds
 )
 
-func PossibleUsageUnitValues() [6]UsageUnit {
+func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()
 }
 

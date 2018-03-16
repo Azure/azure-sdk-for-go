@@ -49,7 +49,7 @@ const (
 	RsaEncrypted CredentialDataFormat = original.RsaEncrypted
 )
 
-func PossibleCredentialDataFormatValues() [1]CredentialDataFormat {
+func PossibleCredentialDataFormatValues() []CredentialDataFormat {
 	return original.PossibleCredentialDataFormatValues()
 }
 
@@ -60,7 +60,7 @@ const (
 	Status   GatewayExpandOption = original.Status
 )
 
-func PossibleGatewayExpandOptionValues() [2]GatewayExpandOption {
+func PossibleGatewayExpandOptionValues() []GatewayExpandOption {
 	return original.PossibleGatewayExpandOptionValues()
 }
 
@@ -70,7 +70,7 @@ const (
 	Output PowerShellExpandOption = original.Output
 )
 
-func PossiblePowerShellExpandOptionValues() [1]PowerShellExpandOption {
+func PossiblePowerShellExpandOptionValues() []PowerShellExpandOption {
 	return original.PossiblePowerShellExpandOptionValues()
 }
 
@@ -82,7 +82,7 @@ const (
 	String       PromptFieldType = original.String
 )
 
-func PossiblePromptFieldTypeValues() [3]PromptFieldType {
+func PossiblePromptFieldTypeValues() []PromptFieldType {
 	return original.PossiblePromptFieldTypeValues()
 }
 
@@ -93,7 +93,7 @@ const (
 	Session    RetentionPeriod = original.Session
 )
 
-func PossibleRetentionPeriodValues() [2]RetentionPeriod {
+func PossibleRetentionPeriodValues() []RetentionPeriod {
 	return original.PossibleRetentionPeriodValues()
 }
 
@@ -104,7 +104,7 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
-func PossibleUpgradeModeValues() [2]UpgradeMode {
+func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
 

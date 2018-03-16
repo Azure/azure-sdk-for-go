@@ -45,8 +45,8 @@ const (
 )
 
 // PossibleAnswerTypeValues returns an array of possible values for the AnswerType const type.
-func PossibleAnswerTypeValues() [8]AnswerType {
-	return [8]AnswerType{AnswerTypeComputation, AnswerTypeImages, AnswerTypeNews, AnswerTypeRelatedSearches, AnswerTypeSpellSuggestions, AnswerTypeTimeZone, AnswerTypeVideos, AnswerTypeWebPages}
+func PossibleAnswerTypeValues() []AnswerType {
+	return []AnswerType{AnswerTypeComputation, AnswerTypeImages, AnswerTypeNews, AnswerTypeRelatedSearches, AnswerTypeSpellSuggestions, AnswerTypeTimeZone, AnswerTypeVideos, AnswerTypeWebPages}
 }
 
 // ErrorCode enumerates the values for error code.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // Freshness enumerates the values for freshness.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleFreshnessValues returns an array of possible values for the Freshness const type.
-func PossibleFreshnessValues() [3]Freshness {
-	return [3]Freshness{Day, Month, Week}
+func PossibleFreshnessValues() []Freshness {
+	return []Freshness{Day, Month, Week}
 }
 
 // SafeSearch enumerates the values for safe search.
@@ -135,8 +135,8 @@ const (
 )
 
 // PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() [3]SafeSearch {
-	return [3]SafeSearch{Moderate, Off, Strict}
+func PossibleSafeSearchValues() []SafeSearch {
+	return []SafeSearch{Moderate, Off, Strict}
 }
 
 // TextFormat enumerates the values for text format.
@@ -150,8 +150,8 @@ const (
 )
 
 // PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() [2]TextFormat {
-	return [2]TextFormat{HTML, Raw}
+func PossibleTextFormatValues() []TextFormat {
+	return []TextFormat{HTML, Raw}
 }
 
 // Type enumerates the values for type.
@@ -163,8 +163,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [1]Type {
-	return [1]Type{TypeWebWebGrouping}
+func PossibleTypeValues() []Type {
+	return []Type{TypeWebWebGrouping}
 }
 
 // TypeBasicResponseBase enumerates the values for type basic response base.
@@ -226,8 +226,8 @@ const (
 )
 
 // PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
-func PossibleTypeBasicResponseBaseValues() [26]TypeBasicResponseBase {
-	return [26]TypeBasicResponseBase{TypeAnswer, TypeArticle, TypeComputation, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeImages, TypeIntangible, TypeMediaObject, TypeNews, TypeNewsArticle, TypePlaces, TypeRelatedSearchesRelatedSearchAnswer, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeSpellSuggestions, TypeStructuredValue, TypeThing, TypeTimeZone, TypeVideoObject, TypeVideos, TypeWebPage, TypeWebWebAnswer}
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return []TypeBasicResponseBase{TypeAnswer, TypeArticle, TypeComputation, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeImages, TypeIntangible, TypeMediaObject, TypeNews, TypeNewsArticle, TypePlaces, TypeRelatedSearchesRelatedSearchAnswer, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeSpellSuggestions, TypeStructuredValue, TypeThing, TypeTimeZone, TypeVideoObject, TypeVideos, TypeWebPage, TypeWebWebAnswer}
 }
 
 // BasicAnswer ...

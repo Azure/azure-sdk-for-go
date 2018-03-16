@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAssetTypeValues returns an array of possible values for the AssetType const type.
-func PossibleAssetTypeValues() [2]AssetType {
-	return [2]AssetType{AssetTypeModule, AssetTypeResource}
+func PossibleAssetTypeValues() []AssetType {
+	return []AssetType{AssetTypeModule, AssetTypeResource}
 }
 
 // ColumnFormat enumerates the values for column format.
@@ -82,8 +82,8 @@ const (
 )
 
 // PossibleColumnFormatValues returns an array of possible values for the ColumnFormat const type.
-func PossibleColumnFormatValues() [17]ColumnFormat {
-	return [17]ColumnFormat{Byte, Char, Complex128, Complex64, DateTime, DateTimeOffset, Double, Duration, Float, Int16, Int32, Int64, Int8, Uint16, Uint32, Uint64, Uint8}
+func PossibleColumnFormatValues() []ColumnFormat {
+	return []ColumnFormat{Byte, Char, Complex128, Complex64, DateTime, DateTimeOffset, Double, Duration, Float, Int16, Int32, Int64, Int8, Uint16, Uint32, Uint64, Uint8}
 }
 
 // ColumnType enumerates the values for column type.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleColumnTypeValues returns an array of possible values for the ColumnType const type.
-func PossibleColumnTypeValues() [4]ColumnType {
-	return [4]ColumnType{Boolean, Integer, Number, String}
+func PossibleColumnTypeValues() []ColumnType {
+	return []ColumnType{Boolean, Integer, Number, String}
 }
 
 // DiagnosticsLevel enumerates the values for diagnostics level.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleDiagnosticsLevelValues returns an array of possible values for the DiagnosticsLevel const type.
-func PossibleDiagnosticsLevelValues() [3]DiagnosticsLevel {
-	return [3]DiagnosticsLevel{All, Error, None}
+func PossibleDiagnosticsLevelValues() []DiagnosticsLevel {
+	return []DiagnosticsLevel{All, Error, None}
 }
 
 // InputPortType enumerates the values for input port type.
@@ -131,8 +131,8 @@ const (
 )
 
 // PossibleInputPortTypeValues returns an array of possible values for the InputPortType const type.
-func PossibleInputPortTypeValues() [1]InputPortType {
-	return [1]InputPortType{Dataset}
+func PossibleInputPortTypeValues() []InputPortType {
+	return []InputPortType{Dataset}
 }
 
 // OutputPortType enumerates the values for output port type.
@@ -144,8 +144,8 @@ const (
 )
 
 // PossibleOutputPortTypeValues returns an array of possible values for the OutputPortType const type.
-func PossibleOutputPortTypeValues() [1]OutputPortType {
-	return [1]OutputPortType{OutputPortTypeDataset}
+func PossibleOutputPortTypeValues() []OutputPortType {
+	return []OutputPortType{OutputPortTypeDataset}
 }
 
 // PackageType enumerates the values for package type.
@@ -159,8 +159,8 @@ const (
 )
 
 // PossiblePackageTypeValues returns an array of possible values for the PackageType const type.
-func PossiblePackageTypeValues() [2]PackageType {
-	return [2]PackageType{PackageTypeGraph, PackageTypeWebServiceProperties}
+func PossiblePackageTypeValues() []PackageType {
+	return []PackageType{PackageTypeGraph, PackageTypeWebServiceProperties}
 }
 
 // ParameterType enumerates the values for parameter type.
@@ -194,8 +194,8 @@ const (
 )
 
 // PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() [12]ParameterType {
-	return [12]ParameterType{ParameterTypeBoolean, ParameterTypeColumnPicker, ParameterTypeCredential, ParameterTypeDataGatewayName, ParameterTypeDouble, ParameterTypeEnumerated, ParameterTypeFloat, ParameterTypeInt, ParameterTypeMode, ParameterTypeParameterRange, ParameterTypeScript, ParameterTypeString}
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{ParameterTypeBoolean, ParameterTypeColumnPicker, ParameterTypeCredential, ParameterTypeDataGatewayName, ParameterTypeDouble, ParameterTypeEnumerated, ParameterTypeFloat, ParameterTypeInt, ParameterTypeMode, ParameterTypeParameterRange, ParameterTypeScript, ParameterTypeString}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -213,8 +213,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [4]ProvisioningState {
-	return [4]ProvisioningState{Failed, Provisioning, Succeeded, Unknown}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Failed, Provisioning, Succeeded, Unknown}
 }
 
 // AssetItem information about an asset associated with the web service.

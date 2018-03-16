@@ -41,7 +41,7 @@ const (
 	AssetTypeResource AssetType = original.AssetTypeResource
 )
 
-func PossibleAssetTypeValues() [2]AssetType {
+func PossibleAssetTypeValues() []AssetType {
 	return original.PossibleAssetTypeValues()
 }
 
@@ -67,7 +67,7 @@ const (
 	Uint8          ColumnFormat = original.Uint8
 )
 
-func PossibleColumnFormatValues() [17]ColumnFormat {
+func PossibleColumnFormatValues() []ColumnFormat {
 	return original.PossibleColumnFormatValues()
 }
 
@@ -80,7 +80,7 @@ const (
 	String  ColumnType = original.String
 )
 
-func PossibleColumnTypeValues() [4]ColumnType {
+func PossibleColumnTypeValues() []ColumnType {
 	return original.PossibleColumnTypeValues()
 }
 
@@ -92,7 +92,7 @@ const (
 	None  DiagnosticsLevel = original.None
 )
 
-func PossibleDiagnosticsLevelValues() [3]DiagnosticsLevel {
+func PossibleDiagnosticsLevelValues() []DiagnosticsLevel {
 	return original.PossibleDiagnosticsLevelValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Dataset InputPortType = original.Dataset
 )
 
-func PossibleInputPortTypeValues() [1]InputPortType {
+func PossibleInputPortTypeValues() []InputPortType {
 	return original.PossibleInputPortTypeValues()
 }
 
@@ -112,7 +112,7 @@ const (
 	OutputPortTypeDataset OutputPortType = original.OutputPortTypeDataset
 )
 
-func PossibleOutputPortTypeValues() [1]OutputPortType {
+func PossibleOutputPortTypeValues() []OutputPortType {
 	return original.PossibleOutputPortTypeValues()
 }
 
@@ -123,7 +123,7 @@ const (
 	PackageTypeWebServiceProperties PackageType = original.PackageTypeWebServiceProperties
 )
 
-func PossiblePackageTypeValues() [2]PackageType {
+func PossiblePackageTypeValues() []PackageType {
 	return original.PossiblePackageTypeValues()
 }
 
@@ -144,7 +144,7 @@ const (
 	ParameterTypeString          ParameterType = original.ParameterTypeString
 )
 
-func PossibleParameterTypeValues() [12]ParameterType {
+func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()
 }
 
@@ -157,7 +157,7 @@ const (
 	Unknown      ProvisioningState = original.Unknown
 )
 
-func PossibleProvisioningStateValues() [4]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 

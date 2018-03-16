@@ -44,8 +44,8 @@ const (
 )
 
 // PossibleAggregationTypeValues returns an array of possible values for the AggregationType const type.
-func PossibleAggregationTypeValues() [6]AggregationType {
-	return [6]AggregationType{Average, Count, Maximum, Minimum, None, Total}
+func PossibleAggregationTypeValues() []AggregationType {
+	return []AggregationType{Average, Count, Maximum, Minimum, None, Total}
 }
 
 // CategoryType enumerates the values for category type.
@@ -59,8 +59,8 @@ const (
 )
 
 // PossibleCategoryTypeValues returns an array of possible values for the CategoryType const type.
-func PossibleCategoryTypeValues() [2]CategoryType {
-	return [2]CategoryType{Logs, Metrics}
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{Logs, Metrics}
 }
 
 // ComparisonOperationType enumerates the values for comparison operation type.
@@ -82,8 +82,8 @@ const (
 )
 
 // PossibleComparisonOperationTypeValues returns an array of possible values for the ComparisonOperationType const type.
-func PossibleComparisonOperationTypeValues() [6]ComparisonOperationType {
-	return [6]ComparisonOperationType{Equals, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotEquals}
+func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
+	return []ComparisonOperationType{Equals, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotEquals}
 }
 
 // ConditionOperator enumerates the values for condition operator.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleConditionOperatorValues returns an array of possible values for the ConditionOperator const type.
-func PossibleConditionOperatorValues() [4]ConditionOperator {
-	return [4]ConditionOperator{ConditionOperatorGreaterThan, ConditionOperatorGreaterThanOrEqual, ConditionOperatorLessThan, ConditionOperatorLessThanOrEqual}
+func PossibleConditionOperatorValues() []ConditionOperator {
+	return []ConditionOperator{ConditionOperatorGreaterThan, ConditionOperatorGreaterThanOrEqual, ConditionOperatorLessThan, ConditionOperatorLessThanOrEqual}
 }
 
 // EventLevel enumerates the values for event level.
@@ -122,8 +122,8 @@ const (
 )
 
 // PossibleEventLevelValues returns an array of possible values for the EventLevel const type.
-func PossibleEventLevelValues() [5]EventLevel {
-	return [5]EventLevel{Critical, Error, Informational, Verbose, Warning}
+func PossibleEventLevelValues() []EventLevel {
+	return []EventLevel{Critical, Error, Informational, Verbose, Warning}
 }
 
 // MetricStatisticType enumerates the values for metric statistic type.
@@ -141,8 +141,8 @@ const (
 )
 
 // PossibleMetricStatisticTypeValues returns an array of possible values for the MetricStatisticType const type.
-func PossibleMetricStatisticTypeValues() [4]MetricStatisticType {
-	return [4]MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
+func PossibleMetricStatisticTypeValues() []MetricStatisticType {
+	return []MetricStatisticType{MetricStatisticTypeAverage, MetricStatisticTypeMax, MetricStatisticTypeMin, MetricStatisticTypeSum}
 }
 
 // OdataType enumerates the values for odata type.
@@ -158,8 +158,8 @@ const (
 )
 
 // PossibleOdataTypeValues returns an array of possible values for the OdataType const type.
-func PossibleOdataTypeValues() [3]OdataType {
-	return [3]OdataType{OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource, OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource, OdataTypeRuleDataSource}
+func PossibleOdataTypeValues() []OdataType {
+	return []OdataType{OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource, OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource, OdataTypeRuleDataSource}
 }
 
 // OdataTypeBasicRuleAction enumerates the values for odata type basic rule action.
@@ -175,8 +175,8 @@ const (
 )
 
 // PossibleOdataTypeBasicRuleActionValues returns an array of possible values for the OdataTypeBasicRuleAction const type.
-func PossibleOdataTypeBasicRuleActionValues() [3]OdataTypeBasicRuleAction {
-	return [3]OdataTypeBasicRuleAction{OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction, OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction, OdataTypeRuleAction}
+func PossibleOdataTypeBasicRuleActionValues() []OdataTypeBasicRuleAction {
+	return []OdataTypeBasicRuleAction{OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction, OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction, OdataTypeRuleAction}
 }
 
 // OdataTypeBasicRuleCondition enumerates the values for odata type basic rule condition.
@@ -194,8 +194,8 @@ const (
 )
 
 // PossibleOdataTypeBasicRuleConditionValues returns an array of possible values for the OdataTypeBasicRuleCondition const type.
-func PossibleOdataTypeBasicRuleConditionValues() [4]OdataTypeBasicRuleCondition {
-	return [4]OdataTypeBasicRuleCondition{OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition, OdataTypeRuleCondition}
+func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
+	return []OdataTypeBasicRuleCondition{OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition, OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition, OdataTypeRuleCondition}
 }
 
 // ReceiverStatus enumerates the values for receiver status.
@@ -211,8 +211,8 @@ const (
 )
 
 // PossibleReceiverStatusValues returns an array of possible values for the ReceiverStatus const type.
-func PossibleReceiverStatusValues() [3]ReceiverStatus {
-	return [3]ReceiverStatus{Disabled, Enabled, NotSpecified}
+func PossibleReceiverStatusValues() []ReceiverStatus {
+	return []ReceiverStatus{Disabled, Enabled, NotSpecified}
 }
 
 // RecurrenceFrequency enumerates the values for recurrence frequency.
@@ -238,8 +238,8 @@ const (
 )
 
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() [8]RecurrenceFrequency {
-	return [8]RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNone, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNone, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
 }
 
 // ResultType enumerates the values for result type.
@@ -253,8 +253,8 @@ const (
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
-func PossibleResultTypeValues() [2]ResultType {
-	return [2]ResultType{Data, Metadata}
+func PossibleResultTypeValues() []ResultType {
+	return []ResultType{Data, Metadata}
 }
 
 // ScaleDirection enumerates the values for scale direction.
@@ -270,8 +270,8 @@ const (
 )
 
 // PossibleScaleDirectionValues returns an array of possible values for the ScaleDirection const type.
-func PossibleScaleDirectionValues() [3]ScaleDirection {
-	return [3]ScaleDirection{ScaleDirectionDecrease, ScaleDirectionIncrease, ScaleDirectionNone}
+func PossibleScaleDirectionValues() []ScaleDirection {
+	return []ScaleDirection{ScaleDirectionDecrease, ScaleDirectionIncrease, ScaleDirectionNone}
 }
 
 // ScaleType enumerates the values for scale type.
@@ -287,8 +287,8 @@ const (
 )
 
 // PossibleScaleTypeValues returns an array of possible values for the ScaleType const type.
-func PossibleScaleTypeValues() [3]ScaleType {
-	return [3]ScaleType{ChangeCount, ExactCount, PercentChangeCount}
+func PossibleScaleTypeValues() []ScaleType {
+	return []ScaleType{ChangeCount, ExactCount, PercentChangeCount}
 }
 
 // Sensitivity enumerates the values for sensitivity.
@@ -304,8 +304,8 @@ const (
 )
 
 // PossibleSensitivityValues returns an array of possible values for the Sensitivity const type.
-func PossibleSensitivityValues() [3]Sensitivity {
-	return [3]Sensitivity{High, Low, Medium}
+func PossibleSensitivityValues() []Sensitivity {
+	return []Sensitivity{High, Low, Medium}
 }
 
 // TimeAggregationOperator enumerates the values for time aggregation operator.
@@ -325,8 +325,8 @@ const (
 )
 
 // PossibleTimeAggregationOperatorValues returns an array of possible values for the TimeAggregationOperator const type.
-func PossibleTimeAggregationOperatorValues() [5]TimeAggregationOperator {
-	return [5]TimeAggregationOperator{TimeAggregationOperatorAverage, TimeAggregationOperatorLast, TimeAggregationOperatorMaximum, TimeAggregationOperatorMinimum, TimeAggregationOperatorTotal}
+func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
+	return []TimeAggregationOperator{TimeAggregationOperatorAverage, TimeAggregationOperatorLast, TimeAggregationOperatorMaximum, TimeAggregationOperatorMinimum, TimeAggregationOperatorTotal}
 }
 
 // TimeAggregationType enumerates the values for time aggregation type.
@@ -346,8 +346,8 @@ const (
 )
 
 // PossibleTimeAggregationTypeValues returns an array of possible values for the TimeAggregationType const type.
-func PossibleTimeAggregationTypeValues() [5]TimeAggregationType {
-	return [5]TimeAggregationType{TimeAggregationTypeAverage, TimeAggregationTypeCount, TimeAggregationTypeMaximum, TimeAggregationTypeMinimum, TimeAggregationTypeTotal}
+func PossibleTimeAggregationTypeValues() []TimeAggregationType {
+	return []TimeAggregationType{TimeAggregationTypeAverage, TimeAggregationTypeCount, TimeAggregationTypeMaximum, TimeAggregationTypeMinimum, TimeAggregationTypeTotal}
 }
 
 // Unit enumerates the values for unit.
@@ -375,8 +375,8 @@ const (
 )
 
 // PossibleUnitValues returns an array of possible values for the Unit const type.
-func PossibleUnitValues() [9]Unit {
-	return [9]Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
+func PossibleUnitValues() []Unit {
+	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
 }
 
 // ActionGroup an Azure action group.
@@ -401,6 +401,8 @@ type ActionGroup struct {
 	VoiceReceivers *[]VoiceReceiver `json:"voiceReceivers,omitempty"`
 	// LogicAppReceivers - The list of logic app receivers that are part of this action group.
 	LogicAppReceivers *[]LogicAppReceiver `json:"logicAppReceivers,omitempty"`
+	// AzureFunctionReceivers - The list of azure function receivers that are part of this action group.
+	AzureFunctionReceivers *[]AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
 }
 
 // ActionGroupList a list of action groups.
@@ -1394,6 +1396,18 @@ type AzureAppPushReceiver struct {
 	Name *string `json:"name,omitempty"`
 	// EmailAddress - The email address registered for the Azure mobile app.
 	EmailAddress *string `json:"emailAddress,omitempty"`
+}
+
+// AzureFunctionReceiver an azure function receiver.
+type AzureFunctionReceiver struct {
+	// Name - The name of the azure function receiver. Names must be unique across all receivers within an action group.
+	Name *string `json:"name,omitempty"`
+	// FunctionAppResourceID - The azure resource id of the function app.
+	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
+	// FunctionName - The function name in the function app.
+	FunctionName *string `json:"functionName,omitempty"`
+	// HTTPTriggerURL - The http trigger url where http request sent to.
+	HTTPTriggerURL *string `json:"httpTriggerUrl,omitempty"`
 }
 
 // Baseline the baseline values for a single sensitivity value.

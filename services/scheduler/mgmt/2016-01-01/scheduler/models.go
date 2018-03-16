@@ -46,8 +46,8 @@ const (
 )
 
 // PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() [7]DayOfWeek {
-	return [7]DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // HTTPAuthenticationType enumerates the values for http authentication type.
@@ -65,8 +65,8 @@ const (
 )
 
 // PossibleHTTPAuthenticationTypeValues returns an array of possible values for the HTTPAuthenticationType const type.
-func PossibleHTTPAuthenticationTypeValues() [4]HTTPAuthenticationType {
-	return [4]HTTPAuthenticationType{ActiveDirectoryOAuth, Basic, ClientCertificate, NotSpecified}
+func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
+	return []HTTPAuthenticationType{ActiveDirectoryOAuth, Basic, ClientCertificate, NotSpecified}
 }
 
 // JobActionType enumerates the values for job action type.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleJobActionTypeValues returns an array of possible values for the JobActionType const type.
-func PossibleJobActionTypeValues() [5]JobActionType {
-	return [5]JobActionType{HTTP, HTTPS, ServiceBusQueue, ServiceBusTopic, StorageQueue}
+func PossibleJobActionTypeValues() []JobActionType {
+	return []JobActionType{HTTP, HTTPS, ServiceBusQueue, ServiceBusTopic, StorageQueue}
 }
 
 // JobCollectionState enumerates the values for job collection state.
@@ -105,8 +105,8 @@ const (
 )
 
 // PossibleJobCollectionStateValues returns an array of possible values for the JobCollectionState const type.
-func PossibleJobCollectionStateValues() [4]JobCollectionState {
-	return [4]JobCollectionState{Deleted, Disabled, Enabled, Suspended}
+func PossibleJobCollectionStateValues() []JobCollectionState {
+	return []JobCollectionState{Deleted, Disabled, Enabled, Suspended}
 }
 
 // JobExecutionStatus enumerates the values for job execution status.
@@ -122,8 +122,8 @@ const (
 )
 
 // PossibleJobExecutionStatusValues returns an array of possible values for the JobExecutionStatus const type.
-func PossibleJobExecutionStatusValues() [3]JobExecutionStatus {
-	return [3]JobExecutionStatus{Completed, Failed, Postponed}
+func PossibleJobExecutionStatusValues() []JobExecutionStatus {
+	return []JobExecutionStatus{Completed, Failed, Postponed}
 }
 
 // JobHistoryActionName enumerates the values for job history action name.
@@ -137,8 +137,8 @@ const (
 )
 
 // PossibleJobHistoryActionNameValues returns an array of possible values for the JobHistoryActionName const type.
-func PossibleJobHistoryActionNameValues() [2]JobHistoryActionName {
-	return [2]JobHistoryActionName{ErrorAction, MainAction}
+func PossibleJobHistoryActionNameValues() []JobHistoryActionName {
+	return []JobHistoryActionName{ErrorAction, MainAction}
 }
 
 // JobScheduleDay enumerates the values for job schedule day.
@@ -162,8 +162,8 @@ const (
 )
 
 // PossibleJobScheduleDayValues returns an array of possible values for the JobScheduleDay const type.
-func PossibleJobScheduleDayValues() [7]JobScheduleDay {
-	return [7]JobScheduleDay{JobScheduleDayFriday, JobScheduleDayMonday, JobScheduleDaySaturday, JobScheduleDaySunday, JobScheduleDayThursday, JobScheduleDayTuesday, JobScheduleDayWednesday}
+func PossibleJobScheduleDayValues() []JobScheduleDay {
+	return []JobScheduleDay{JobScheduleDayFriday, JobScheduleDayMonday, JobScheduleDaySaturday, JobScheduleDaySunday, JobScheduleDayThursday, JobScheduleDayTuesday, JobScheduleDayWednesday}
 }
 
 // JobState enumerates the values for job state.
@@ -181,8 +181,8 @@ const (
 )
 
 // PossibleJobStateValues returns an array of possible values for the JobState const type.
-func PossibleJobStateValues() [4]JobState {
-	return [4]JobState{JobStateCompleted, JobStateDisabled, JobStateEnabled, JobStateFaulted}
+func PossibleJobStateValues() []JobState {
+	return []JobState{JobStateCompleted, JobStateDisabled, JobStateEnabled, JobStateFaulted}
 }
 
 // RecurrenceFrequency enumerates the values for recurrence frequency.
@@ -202,8 +202,8 @@ const (
 )
 
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() [5]RecurrenceFrequency {
-	return [5]RecurrenceFrequency{Day, Hour, Minute, Month, Week}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return []RecurrenceFrequency{Day, Hour, Minute, Month, Week}
 }
 
 // RetryType enumerates the values for retry type.
@@ -217,8 +217,8 @@ const (
 )
 
 // PossibleRetryTypeValues returns an array of possible values for the RetryType const type.
-func PossibleRetryTypeValues() [2]RetryType {
-	return [2]RetryType{Fixed, None}
+func PossibleRetryTypeValues() []RetryType {
+	return []RetryType{Fixed, None}
 }
 
 // ServiceBusAuthenticationType enumerates the values for service bus authentication type.
@@ -232,8 +232,8 @@ const (
 )
 
 // PossibleServiceBusAuthenticationTypeValues returns an array of possible values for the ServiceBusAuthenticationType const type.
-func PossibleServiceBusAuthenticationTypeValues() [2]ServiceBusAuthenticationType {
-	return [2]ServiceBusAuthenticationType{ServiceBusAuthenticationTypeNotSpecified, ServiceBusAuthenticationTypeSharedAccessKey}
+func PossibleServiceBusAuthenticationTypeValues() []ServiceBusAuthenticationType {
+	return []ServiceBusAuthenticationType{ServiceBusAuthenticationTypeNotSpecified, ServiceBusAuthenticationTypeSharedAccessKey}
 }
 
 // ServiceBusTransportType enumerates the values for service bus transport type.
@@ -249,8 +249,8 @@ const (
 )
 
 // PossibleServiceBusTransportTypeValues returns an array of possible values for the ServiceBusTransportType const type.
-func PossibleServiceBusTransportTypeValues() [3]ServiceBusTransportType {
-	return [3]ServiceBusTransportType{ServiceBusTransportTypeAMQP, ServiceBusTransportTypeNetMessaging, ServiceBusTransportTypeNotSpecified}
+func PossibleServiceBusTransportTypeValues() []ServiceBusTransportType {
+	return []ServiceBusTransportType{ServiceBusTransportTypeAMQP, ServiceBusTransportTypeNetMessaging, ServiceBusTransportTypeNotSpecified}
 }
 
 // SkuDefinition enumerates the values for sku definition.
@@ -266,8 +266,8 @@ const (
 )
 
 // PossibleSkuDefinitionValues returns an array of possible values for the SkuDefinition const type.
-func PossibleSkuDefinitionValues() [3]SkuDefinition {
-	return [3]SkuDefinition{Free, Premium, Standard}
+func PossibleSkuDefinitionValues() []SkuDefinition {
+	return []SkuDefinition{Free, Premium, Standard}
 }
 
 // BasicAuthentication ...

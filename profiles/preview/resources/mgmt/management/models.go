@@ -61,7 +61,7 @@ const (
 	View     Permissions = original.View
 )
 
-func PossiblePermissionsValues() [4]Permissions {
+func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
 
@@ -74,7 +74,7 @@ const (
 	Permissions1View     Permissions1 = original.Permissions1View
 )
 
-func PossiblePermissions1Values() [4]Permissions1 {
+func PossiblePermissions1Values() []Permissions1 {
 	return original.PossiblePermissions1Values()
 }
 
@@ -84,7 +84,7 @@ const (
 	Updating ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [1]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	Invalid       Reason = original.Invalid
 )
 
-func PossibleReasonValues() [2]Reason {
+func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
 
@@ -105,7 +105,7 @@ const (
 	ProvidersMicrosoftManagementmanagementGroup Type = original.ProvidersMicrosoftManagementmanagementGroup
 )
 
-func PossibleTypeValues() [1]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -116,7 +116,7 @@ const (
 	Subscriptions                                Type1 = original.Subscriptions
 )
 
-func PossibleType1Values() [2]Type1 {
+func PossibleType1Values() []Type1 {
 	return original.PossibleType1Values()
 }
 
@@ -127,7 +127,7 @@ const (
 	Type2Subscriptions                                Type2 = original.Type2Subscriptions
 )
 
-func PossibleType2Values() [2]Type2 {
+func PossibleType2Values() []Type2 {
 	return original.PossibleType2Values()
 }
 

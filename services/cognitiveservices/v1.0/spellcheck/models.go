@@ -33,8 +33,8 @@ const (
 )
 
 // PossibleActionTypeValues returns an array of possible values for the ActionType const type.
-func PossibleActionTypeValues() [2]ActionType {
-	return [2]ActionType{Edit, Load}
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{Edit, Load}
 }
 
 // ErrorCode enumerates the values for error code.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -89,8 +89,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // ErrorType enumerates the values for error type.
@@ -104,8 +104,8 @@ const (
 )
 
 // PossibleErrorTypeValues returns an array of possible values for the ErrorType const type.
-func PossibleErrorTypeValues() [2]ErrorType {
-	return [2]ErrorType{RepeatedToken, UnknownToken}
+func PossibleErrorTypeValues() []ErrorType {
+	return []ErrorType{RepeatedToken, UnknownToken}
 }
 
 // Type enumerates the values for type.
@@ -127,8 +127,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [6]Type {
-	return [6]Type{TypeAnswer, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSpellCheck}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAnswer, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSpellCheck}
 }
 
 // BasicAnswer ...

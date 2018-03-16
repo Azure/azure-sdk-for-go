@@ -60,7 +60,7 @@ const (
 	NotSpecified Mode = original.NotSpecified
 )
 
-func PossibleModeValues() [3]Mode {
+func PossibleModeValues() []Mode {
 	return original.PossibleModeValues()
 }
 
@@ -72,7 +72,7 @@ const (
 	TypeNotSpecified Type = original.TypeNotSpecified
 )
 
-func PossibleTypeValues() [3]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 

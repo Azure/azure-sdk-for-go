@@ -113,7 +113,7 @@ const (
 	Enabled  ApplicationGatewayCookieBasedAffinity = original.Enabled
 )
 
-func PossibleApplicationGatewayCookieBasedAffinityValues() [2]ApplicationGatewayCookieBasedAffinity {
+func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
 }
 
@@ -126,7 +126,7 @@ const (
 	Stopping ApplicationGatewayOperationalState = original.Stopping
 )
 
-func PossibleApplicationGatewayOperationalStateValues() [4]ApplicationGatewayOperationalState {
+func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOperationalState {
 	return original.PossibleApplicationGatewayOperationalStateValues()
 }
 
@@ -137,7 +137,7 @@ const (
 	HTTPS ApplicationGatewayProtocol = original.HTTPS
 )
 
-func PossibleApplicationGatewayProtocolValues() [2]ApplicationGatewayProtocol {
+func PossibleApplicationGatewayProtocolValues() []ApplicationGatewayProtocol {
 	return original.PossibleApplicationGatewayProtocolValues()
 }
 
@@ -148,7 +148,7 @@ const (
 	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = original.PathBasedRouting
 )
 
-func PossibleApplicationGatewayRequestRoutingRuleTypeValues() [2]ApplicationGatewayRequestRoutingRuleType {
+func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
 	return original.PossibleApplicationGatewayRequestRoutingRuleTypeValues()
 }
 
@@ -160,7 +160,7 @@ const (
 	StandardSmall  ApplicationGatewaySkuName = original.StandardSmall
 )
 
-func PossibleApplicationGatewaySkuNameValues() [3]ApplicationGatewaySkuName {
+func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
 	return original.PossibleApplicationGatewaySkuNameValues()
 }
 
@@ -170,7 +170,7 @@ const (
 	Standard ApplicationGatewayTier = original.Standard
 )
 
-func PossibleApplicationGatewayTierValues() [1]ApplicationGatewayTier {
+func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 	return original.PossibleApplicationGatewayTierValues()
 }
 
@@ -181,7 +181,7 @@ const (
 	InUse     AuthorizationUseStatus = original.InUse
 )
 
-func PossibleAuthorizationUseStatusValues() [2]AuthorizationUseStatus {
+func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
 	return original.PossibleAuthorizationUseStatusValues()
 }
 
@@ -194,7 +194,7 @@ const (
 	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ValidationNeeded
 )
 
-func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() [4]ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
+func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
 	return original.PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues()
 }
 
@@ -205,7 +205,7 @@ const (
 	ExpressRouteCircuitPeeringStateEnabled  ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringStateEnabled
 )
 
-func PossibleExpressRouteCircuitPeeringStateValues() [2]ExpressRouteCircuitPeeringState {
+func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeeringState {
 	return original.PossibleExpressRouteCircuitPeeringStateValues()
 }
 
@@ -217,7 +217,7 @@ const (
 	MicrosoftPeering    ExpressRouteCircuitPeeringType = original.MicrosoftPeering
 )
 
-func PossibleExpressRouteCircuitPeeringTypeValues() [3]ExpressRouteCircuitPeeringType {
+func PossibleExpressRouteCircuitPeeringTypeValues() []ExpressRouteCircuitPeeringType {
 	return original.PossibleExpressRouteCircuitPeeringTypeValues()
 }
 
@@ -228,7 +228,7 @@ const (
 	UnlimitedData ExpressRouteCircuitSkuFamily = original.UnlimitedData
 )
 
-func PossibleExpressRouteCircuitSkuFamilyValues() [2]ExpressRouteCircuitSkuFamily {
+func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily {
 	return original.PossibleExpressRouteCircuitSkuFamilyValues()
 }
 
@@ -239,7 +239,7 @@ const (
 	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )
 
-func PossibleExpressRouteCircuitSkuTierValues() [2]ExpressRouteCircuitSkuTier {
+func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
 	return original.PossibleExpressRouteCircuitSkuTierValues()
 }
 
@@ -250,7 +250,7 @@ const (
 	Static  IPAllocationMethod = original.Static
 )
 
-func PossibleIPAllocationMethodValues() [2]IPAllocationMethod {
+func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 	return original.PossibleIPAllocationMethodValues()
 }
 
@@ -262,7 +262,7 @@ const (
 	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
 )
 
-func PossibleLoadDistributionValues() [3]LoadDistribution {
+func PossibleLoadDistributionValues() []LoadDistribution {
 	return original.PossibleLoadDistributionValues()
 }
 
@@ -274,7 +274,7 @@ const (
 	Succeeded  OperationStatus = original.Succeeded
 )
 
-func PossibleOperationStatusValues() [3]OperationStatus {
+func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
 }
 
@@ -285,7 +285,7 @@ const (
 	ProbeProtocolTCP  ProbeProtocol = original.ProbeProtocolTCP
 )
 
-func PossibleProbeProtocolValues() [2]ProbeProtocol {
+func PossibleProbeProtocolValues() []ProbeProtocol {
 	return original.PossibleProbeProtocolValues()
 }
 
@@ -296,7 +296,7 @@ const (
 	X86   ProcessorArchitecture = original.X86
 )
 
-func PossibleProcessorArchitectureValues() [2]ProcessorArchitecture {
+func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 	return original.PossibleProcessorArchitectureValues()
 }
 
@@ -310,7 +310,7 @@ const (
 	RouteNextHopTypeVnetLocal             RouteNextHopType = original.RouteNextHopTypeVnetLocal
 )
 
-func PossibleRouteNextHopTypeValues() [5]RouteNextHopType {
+func PossibleRouteNextHopTypeValues() []RouteNextHopType {
 	return original.PossibleRouteNextHopTypeValues()
 }
 
@@ -321,7 +321,7 @@ const (
 	Deny  SecurityRuleAccess = original.Deny
 )
 
-func PossibleSecurityRuleAccessValues() [2]SecurityRuleAccess {
+func PossibleSecurityRuleAccessValues() []SecurityRuleAccess {
 	return original.PossibleSecurityRuleAccessValues()
 }
 
@@ -332,7 +332,7 @@ const (
 	Outbound SecurityRuleDirection = original.Outbound
 )
 
-func PossibleSecurityRuleDirectionValues() [2]SecurityRuleDirection {
+func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
 	return original.PossibleSecurityRuleDirectionValues()
 }
 
@@ -344,7 +344,7 @@ const (
 	UDP      SecurityRuleProtocol = original.UDP
 )
 
-func PossibleSecurityRuleProtocolValues() [3]SecurityRuleProtocol {
+func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
 	return original.PossibleSecurityRuleProtocolValues()
 }
 
@@ -357,7 +357,7 @@ const (
 	Provisioning   ServiceProviderProvisioningState = original.Provisioning
 )
 
-func PossibleServiceProviderProvisioningStateValues() [4]ServiceProviderProvisioningState {
+func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvisioningState {
 	return original.PossibleServiceProviderProvisioningStateValues()
 }
 
@@ -368,7 +368,7 @@ const (
 	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
 )
 
-func PossibleTransportProtocolValues() [2]TransportProtocol {
+func PossibleTransportProtocolValues() []TransportProtocol {
 	return original.PossibleTransportProtocolValues()
 }
 
@@ -381,7 +381,7 @@ const (
 	Unknown      VirtualNetworkGatewayConnectionStatus = original.Unknown
 )
 
-func PossibleVirtualNetworkGatewayConnectionStatusValues() [4]VirtualNetworkGatewayConnectionStatus {
+func PossibleVirtualNetworkGatewayConnectionStatusValues() []VirtualNetworkGatewayConnectionStatus {
 	return original.PossibleVirtualNetworkGatewayConnectionStatusValues()
 }
 
@@ -394,7 +394,7 @@ const (
 	VPNClient    VirtualNetworkGatewayConnectionType = original.VPNClient
 )
 
-func PossibleVirtualNetworkGatewayConnectionTypeValues() [4]VirtualNetworkGatewayConnectionType {
+func PossibleVirtualNetworkGatewayConnectionTypeValues() []VirtualNetworkGatewayConnectionType {
 	return original.PossibleVirtualNetworkGatewayConnectionTypeValues()
 }
 
@@ -406,7 +406,7 @@ const (
 	VirtualNetworkGatewaySkuNameStandard        VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameStandard
 )
 
-func PossibleVirtualNetworkGatewaySkuNameValues() [3]VirtualNetworkGatewaySkuName {
+func PossibleVirtualNetworkGatewaySkuNameValues() []VirtualNetworkGatewaySkuName {
 	return original.PossibleVirtualNetworkGatewaySkuNameValues()
 }
 
@@ -418,7 +418,7 @@ const (
 	VirtualNetworkGatewaySkuTierStandard        VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTierStandard
 )
 
-func PossibleVirtualNetworkGatewaySkuTierValues() [3]VirtualNetworkGatewaySkuTier {
+func PossibleVirtualNetworkGatewaySkuTierValues() []VirtualNetworkGatewaySkuTier {
 	return original.PossibleVirtualNetworkGatewaySkuTierValues()
 }
 
@@ -429,7 +429,7 @@ const (
 	VirtualNetworkGatewayTypeVpn          VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeVpn
 )
 
-func PossibleVirtualNetworkGatewayTypeValues() [2]VirtualNetworkGatewayType {
+func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
 	return original.PossibleVirtualNetworkGatewayTypeValues()
 }
 
@@ -440,7 +440,7 @@ const (
 	RouteBased  VpnType = original.RouteBased
 )
 
-func PossibleVpnTypeValues() [2]VpnType {
+func PossibleVpnTypeValues() []VpnType {
 	return original.PossibleVpnTypeValues()
 }
 

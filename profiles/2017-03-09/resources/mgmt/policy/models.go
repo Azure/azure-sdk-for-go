@@ -60,7 +60,7 @@ const (
 	NotSpecified Type = original.NotSpecified
 )
 
-func PossibleTypeValues() [3]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 

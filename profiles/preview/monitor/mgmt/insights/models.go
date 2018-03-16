@@ -162,7 +162,7 @@ const (
 	Total   AggregationType = original.Total
 )
 
-func PossibleAggregationTypeValues() [6]AggregationType {
+func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()
 }
 
@@ -173,7 +173,7 @@ const (
 	Metrics CategoryType = original.Metrics
 )
 
-func PossibleCategoryTypeValues() [2]CategoryType {
+func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
 }
 
@@ -188,7 +188,7 @@ const (
 	NotEquals          ComparisonOperationType = original.NotEquals
 )
 
-func PossibleComparisonOperationTypeValues() [6]ComparisonOperationType {
+func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
 	return original.PossibleComparisonOperationTypeValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	ConditionOperatorLessThanOrEqual    ConditionOperator = original.ConditionOperatorLessThanOrEqual
 )
 
-func PossibleConditionOperatorValues() [4]ConditionOperator {
+func PossibleConditionOperatorValues() []ConditionOperator {
 	return original.PossibleConditionOperatorValues()
 }
 
@@ -215,7 +215,7 @@ const (
 	Warning       EventLevel = original.Warning
 )
 
-func PossibleEventLevelValues() [5]EventLevel {
+func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
 }
 
@@ -228,7 +228,7 @@ const (
 	MetricStatisticTypeSum     MetricStatisticType = original.MetricStatisticTypeSum
 )
 
-func PossibleMetricStatisticTypeValues() [4]MetricStatisticType {
+func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()
 }
 
@@ -240,7 +240,7 @@ const (
 	OdataTypeRuleDataSource                                                      OdataType = original.OdataTypeRuleDataSource
 )
 
-func PossibleOdataTypeValues() [3]OdataType {
+func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
 }
 
@@ -252,7 +252,7 @@ const (
 	OdataTypeRuleAction                                              OdataTypeBasicRuleAction = original.OdataTypeRuleAction
 )
 
-func PossibleOdataTypeBasicRuleActionValues() [3]OdataTypeBasicRuleAction {
+func PossibleOdataTypeBasicRuleActionValues() []OdataTypeBasicRuleAction {
 	return original.PossibleOdataTypeBasicRuleActionValues()
 }
 
@@ -265,7 +265,7 @@ const (
 	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
 )
 
-func PossibleOdataTypeBasicRuleConditionValues() [4]OdataTypeBasicRuleCondition {
+func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 	return original.PossibleOdataTypeBasicRuleConditionValues()
 }
 
@@ -277,7 +277,7 @@ const (
 	NotSpecified ReceiverStatus = original.NotSpecified
 )
 
-func PossibleReceiverStatusValues() [3]ReceiverStatus {
+func PossibleReceiverStatusValues() []ReceiverStatus {
 	return original.PossibleReceiverStatusValues()
 }
 
@@ -294,7 +294,7 @@ const (
 	RecurrenceFrequencyYear   RecurrenceFrequency = original.RecurrenceFrequencyYear
 )
 
-func PossibleRecurrenceFrequencyValues() [8]RecurrenceFrequency {
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
 }
 
@@ -305,7 +305,7 @@ const (
 	Metadata ResultType = original.Metadata
 )
 
-func PossibleResultTypeValues() [2]ResultType {
+func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()
 }
 
@@ -317,7 +317,7 @@ const (
 	ScaleDirectionNone     ScaleDirection = original.ScaleDirectionNone
 )
 
-func PossibleScaleDirectionValues() [3]ScaleDirection {
+func PossibleScaleDirectionValues() []ScaleDirection {
 	return original.PossibleScaleDirectionValues()
 }
 
@@ -329,7 +329,7 @@ const (
 	PercentChangeCount ScaleType = original.PercentChangeCount
 )
 
-func PossibleScaleTypeValues() [3]ScaleType {
+func PossibleScaleTypeValues() []ScaleType {
 	return original.PossibleScaleTypeValues()
 }
 
@@ -341,7 +341,7 @@ const (
 	Medium Sensitivity = original.Medium
 )
 
-func PossibleSensitivityValues() [3]Sensitivity {
+func PossibleSensitivityValues() []Sensitivity {
 	return original.PossibleSensitivityValues()
 }
 
@@ -355,7 +355,7 @@ const (
 	TimeAggregationOperatorTotal   TimeAggregationOperator = original.TimeAggregationOperatorTotal
 )
 
-func PossibleTimeAggregationOperatorValues() [5]TimeAggregationOperator {
+func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
 	return original.PossibleTimeAggregationOperatorValues()
 }
 
@@ -369,7 +369,7 @@ const (
 	TimeAggregationTypeTotal   TimeAggregationType = original.TimeAggregationTypeTotal
 )
 
-func PossibleTimeAggregationTypeValues() [5]TimeAggregationType {
+func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 	return original.PossibleTimeAggregationTypeValues()
 }
 
@@ -387,7 +387,7 @@ const (
 	UnitUnspecified    Unit = original.UnitUnspecified
 )
 
-func PossibleUnitValues() [9]Unit {
+func PossibleUnitValues() []Unit {
 	return original.PossibleUnitValues()
 }
 
@@ -419,6 +419,7 @@ type AutoscaleSettingResourceCollectionIterator = original.AutoscaleSettingResou
 type AutoscaleSettingResourceCollectionPage = original.AutoscaleSettingResourceCollectionPage
 type AutoscaleSettingResourcePatch = original.AutoscaleSettingResourcePatch
 type AzureAppPushReceiver = original.AzureAppPushReceiver
+type AzureFunctionReceiver = original.AzureFunctionReceiver
 type Baseline = original.Baseline
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties

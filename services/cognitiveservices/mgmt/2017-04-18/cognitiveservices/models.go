@@ -35,8 +35,8 @@ const (
 )
 
 // PossibleKeyNameValues returns an array of possible values for the KeyName const type.
-func PossibleKeyNameValues() [2]KeyName {
-	return [2]KeyName{Key1, Key2}
+func PossibleKeyNameValues() []KeyName {
+	return []KeyName{Key1, Key2}
 }
 
 // Kind enumerates the values for kind.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [19]Kind {
-	return [19]Kind{BingAutosuggestv7, BingCustomSearch, BingSearchv7, BingSpeech, BingSpellCheckv7, ComputerVision, ContentModerator, CustomSpeech, CustomVisionPrediction, CustomVisionTraining, Emotion, Face, LUIS, QnAMaker, SpeakerRecognition, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
+func PossibleKindValues() []Kind {
+	return []Kind{BingAutosuggestv7, BingCustomSearch, BingSearchv7, BingSpeech, BingSpellCheckv7, ComputerVision, ContentModerator, CustomSpeech, CustomVisionPrediction, CustomVisionTraining, Emotion, Face, LUIS, QnAMaker, SpeakerRecognition, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -107,8 +107,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [6]ProvisioningState {
-	return [6]ProvisioningState{Creating, Deleting, Failed, Moving, ResolvingDNS, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Creating, Deleting, Failed, Moving, ResolvingDNS, Succeeded}
 }
 
 // QuotaUsageStatus enumerates the values for quota usage status.
@@ -126,8 +126,8 @@ const (
 )
 
 // PossibleQuotaUsageStatusValues returns an array of possible values for the QuotaUsageStatus const type.
-func PossibleQuotaUsageStatusValues() [4]QuotaUsageStatus {
-	return [4]QuotaUsageStatus{Blocked, Included, InOverage, Unknown}
+func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
+	return []QuotaUsageStatus{Blocked, Included, InOverage, Unknown}
 }
 
 // SkuName enumerates the values for sku name.
@@ -159,8 +159,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [11]SkuName {
-	return [11]SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -176,8 +176,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [3]SkuTier {
-	return [3]SkuTier{Free, Premium, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Free, Premium, Standard}
 }
 
 // UnitType enumerates the values for unit type.
@@ -201,8 +201,8 @@ const (
 )
 
 // PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() [7]UnitType {
-	return [7]UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
+func PossibleUnitTypeValues() []UnitType {
+	return []UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
 }
 
 // Account cognitive Services Account is an Azure resource representing the provisioned account, its type, location

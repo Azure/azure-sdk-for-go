@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleAccessoryTypeValues returns an array of possible values for the AccessoryType const type.
-func PossibleAccessoryTypeValues() [3]AccessoryType {
-	return [3]AccessoryType{Glasses, HeadWear, Mask}
+func PossibleAccessoryTypeValues() []AccessoryType {
+	return []AccessoryType{Glasses, HeadWear, Mask}
 }
 
 // AttributeType enumerates the values for attribute type.
@@ -75,8 +75,8 @@ const (
 )
 
 // PossibleAttributeTypeValues returns an array of possible values for the AttributeType const type.
-func PossibleAttributeTypeValues() [14]AttributeType {
-	return [14]AttributeType{AttributeTypeAccessories, AttributeTypeAge, AttributeTypeBlur, AttributeTypeEmotion, AttributeTypeExposure, AttributeTypeFacialHair, AttributeTypeGender, AttributeTypeGlasses, AttributeTypeHair, AttributeTypeHeadPose, AttributeTypeMakeup, AttributeTypeNoise, AttributeTypeOcclusion, AttributeTypeSmile}
+func PossibleAttributeTypeValues() []AttributeType {
+	return []AttributeType{AttributeTypeAccessories, AttributeTypeAge, AttributeTypeBlur, AttributeTypeEmotion, AttributeTypeExposure, AttributeTypeFacialHair, AttributeTypeGender, AttributeTypeGlasses, AttributeTypeHair, AttributeTypeHeadPose, AttributeTypeMakeup, AttributeTypeNoise, AttributeTypeOcclusion, AttributeTypeSmile}
 }
 
 // AzureRegions enumerates the values for azure regions.
@@ -110,8 +110,8 @@ const (
 )
 
 // PossibleAzureRegionsValues returns an array of possible values for the AzureRegions const type.
-func PossibleAzureRegionsValues() [12]AzureRegions {
-	return [12]AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return []AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
 }
 
 // BlurLevel enumerates the values for blur level.
@@ -127,8 +127,8 @@ const (
 )
 
 // PossibleBlurLevelValues returns an array of possible values for the BlurLevel const type.
-func PossibleBlurLevelValues() [3]BlurLevel {
-	return [3]BlurLevel{High, Low, Medium}
+func PossibleBlurLevelValues() []BlurLevel {
+	return []BlurLevel{High, Low, Medium}
 }
 
 // ExposureLevel enumerates the values for exposure level.
@@ -144,8 +144,8 @@ const (
 )
 
 // PossibleExposureLevelValues returns an array of possible values for the ExposureLevel const type.
-func PossibleExposureLevelValues() [3]ExposureLevel {
-	return [3]ExposureLevel{GoodExposure, OverExposure, UnderExposure}
+func PossibleExposureLevelValues() []ExposureLevel {
+	return []ExposureLevel{GoodExposure, OverExposure, UnderExposure}
 }
 
 // FindSimilarMatchMode enumerates the values for find similar match mode.
@@ -159,8 +159,8 @@ const (
 )
 
 // PossibleFindSimilarMatchModeValues returns an array of possible values for the FindSimilarMatchMode const type.
-func PossibleFindSimilarMatchModeValues() [2]FindSimilarMatchMode {
-	return [2]FindSimilarMatchMode{MatchFace, MatchPerson}
+func PossibleFindSimilarMatchModeValues() []FindSimilarMatchMode {
+	return []FindSimilarMatchMode{MatchFace, MatchPerson}
 }
 
 // Gender enumerates the values for gender.
@@ -176,8 +176,8 @@ const (
 )
 
 // PossibleGenderValues returns an array of possible values for the Gender const type.
-func PossibleGenderValues() [3]Gender {
-	return [3]Gender{Female, Genderless, Male}
+func PossibleGenderValues() []Gender {
+	return []Gender{Female, Genderless, Male}
 }
 
 // GlassesType enumerates the values for glasses type.
@@ -195,8 +195,8 @@ const (
 )
 
 // PossibleGlassesTypeValues returns an array of possible values for the GlassesType const type.
-func PossibleGlassesTypeValues() [4]GlassesType {
-	return [4]GlassesType{NoGlasses, ReadingGlasses, Sunglasses, SwimmingGoggles}
+func PossibleGlassesTypeValues() []GlassesType {
+	return []GlassesType{NoGlasses, ReadingGlasses, Sunglasses, SwimmingGoggles}
 }
 
 // HairColorType enumerates the values for hair color type.
@@ -222,8 +222,8 @@ const (
 )
 
 // PossibleHairColorTypeValues returns an array of possible values for the HairColorType const type.
-func PossibleHairColorTypeValues() [8]HairColorType {
-	return [8]HairColorType{Black, Blond, Brown, Gray, Other, Red, Unknown, White}
+func PossibleHairColorTypeValues() []HairColorType {
+	return []HairColorType{Black, Blond, Brown, Gray, Other, Red, Unknown, White}
 }
 
 // NoiseLevel enumerates the values for noise level.
@@ -239,8 +239,8 @@ const (
 )
 
 // PossibleNoiseLevelValues returns an array of possible values for the NoiseLevel const type.
-func PossibleNoiseLevelValues() [3]NoiseLevel {
-	return [3]NoiseLevel{NoiseLevelHigh, NoiseLevelLow, NoiseLevelMedium}
+func PossibleNoiseLevelValues() []NoiseLevel {
+	return []NoiseLevel{NoiseLevelHigh, NoiseLevelLow, NoiseLevelMedium}
 }
 
 // TrainingStatusType enumerates the values for training status type.
@@ -258,8 +258,8 @@ const (
 )
 
 // PossibleTrainingStatusTypeValues returns an array of possible values for the TrainingStatusType const type.
-func PossibleTrainingStatusTypeValues() [4]TrainingStatusType {
-	return [4]TrainingStatusType{Failed, Nonstarted, Running, Succeeded}
+func PossibleTrainingStatusTypeValues() []TrainingStatusType {
+	return []TrainingStatusType{Failed, Nonstarted, Running, Succeeded}
 }
 
 // Accessory accessory item and corresponding confidence level.

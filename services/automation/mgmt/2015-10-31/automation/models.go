@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleAccountStateValues returns an array of possible values for the AccountState const type.
-func PossibleAccountStateValues() [3]AccountState {
-	return [3]AccountState{Ok, Suspended, Unavailable}
+func PossibleAccountStateValues() []AccountState {
+	return []AccountState{Ok, Suspended, Unavailable}
 }
 
 // AgentRegistrationKeyName enumerates the values for agent registration key name.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleAgentRegistrationKeyNameValues returns an array of possible values for the AgentRegistrationKeyName const type.
-func PossibleAgentRegistrationKeyNameValues() [2]AgentRegistrationKeyName {
-	return [2]AgentRegistrationKeyName{Primary, Secondary}
+func PossibleAgentRegistrationKeyNameValues() []AgentRegistrationKeyName {
+	return []AgentRegistrationKeyName{Primary, Secondary}
 }
 
 // ContentSourceType enumerates the values for content source type.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleContentSourceTypeValues returns an array of possible values for the ContentSourceType const type.
-func PossibleContentSourceTypeValues() [2]ContentSourceType {
-	return [2]ContentSourceType{EmbeddedContent, URI}
+func PossibleContentSourceTypeValues() []ContentSourceType {
+	return []ContentSourceType{EmbeddedContent, URI}
 }
 
 // DscConfigurationProvisioningState enumerates the values for dsc configuration provisioning state.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleDscConfigurationProvisioningStateValues returns an array of possible values for the DscConfigurationProvisioningState const type.
-func PossibleDscConfigurationProvisioningStateValues() [1]DscConfigurationProvisioningState {
-	return [1]DscConfigurationProvisioningState{Succeeded}
+func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisioningState {
+	return []DscConfigurationProvisioningState{Succeeded}
 }
 
 // DscConfigurationState enumerates the values for dsc configuration state.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleDscConfigurationStateValues returns an array of possible values for the DscConfigurationState const type.
-func PossibleDscConfigurationStateValues() [3]DscConfigurationState {
-	return [3]DscConfigurationState{DscConfigurationStateEdit, DscConfigurationStateNew, DscConfigurationStatePublished}
+func PossibleDscConfigurationStateValues() []DscConfigurationState {
+	return []DscConfigurationState{DscConfigurationStateEdit, DscConfigurationStateNew, DscConfigurationStatePublished}
 }
 
 // HTTPStatusCode enumerates the values for http status code.
@@ -206,8 +206,8 @@ const (
 )
 
 // PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
-	return [47]HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return []HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
 }
 
 // JobProvisioningState enumerates the values for job provisioning state.
@@ -225,8 +225,8 @@ const (
 )
 
 // PossibleJobProvisioningStateValues returns an array of possible values for the JobProvisioningState const type.
-func PossibleJobProvisioningStateValues() [4]JobProvisioningState {
-	return [4]JobProvisioningState{JobProvisioningStateFailed, JobProvisioningStateProcessing, JobProvisioningStateSucceeded, JobProvisioningStateSuspended}
+func PossibleJobProvisioningStateValues() []JobProvisioningState {
+	return []JobProvisioningState{JobProvisioningStateFailed, JobProvisioningStateProcessing, JobProvisioningStateSucceeded, JobProvisioningStateSuspended}
 }
 
 // JobStatus enumerates the values for job status.
@@ -262,8 +262,8 @@ const (
 )
 
 // PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() [13]JobStatus {
-	return [13]JobStatus{JobStatusActivating, JobStatusBlocked, JobStatusCompleted, JobStatusDisconnected, JobStatusFailed, JobStatusNew, JobStatusRemoving, JobStatusResuming, JobStatusRunning, JobStatusStopped, JobStatusStopping, JobStatusSuspended, JobStatusSuspending}
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{JobStatusActivating, JobStatusBlocked, JobStatusCompleted, JobStatusDisconnected, JobStatusFailed, JobStatusNew, JobStatusRemoving, JobStatusResuming, JobStatusRunning, JobStatusStopped, JobStatusStopping, JobStatusSuspended, JobStatusSuspending}
 }
 
 // JobStreamType enumerates the values for job stream type.
@@ -287,8 +287,8 @@ const (
 )
 
 // PossibleJobStreamTypeValues returns an array of possible values for the JobStreamType const type.
-func PossibleJobStreamTypeValues() [7]JobStreamType {
-	return [7]JobStreamType{Any, Debug, Error, Output, Progress, Verbose, Warning}
+func PossibleJobStreamTypeValues() []JobStreamType {
+	return []JobStreamType{Any, Debug, Error, Output, Progress, Verbose, Warning}
 }
 
 // ModuleProvisioningState enumerates the values for module provisioning state.
@@ -330,8 +330,8 @@ const (
 )
 
 // PossibleModuleProvisioningStateValues returns an array of possible values for the ModuleProvisioningState const type.
-func PossibleModuleProvisioningStateValues() [16]ModuleProvisioningState {
-	return [16]ModuleProvisioningState{ModuleProvisioningStateActivitiesStored, ModuleProvisioningStateCancelled, ModuleProvisioningStateConnectionTypeImported, ModuleProvisioningStateContentDownloaded, ModuleProvisioningStateContentRetrieved, ModuleProvisioningStateContentStored, ModuleProvisioningStateContentValidated, ModuleProvisioningStateCreated, ModuleProvisioningStateCreating, ModuleProvisioningStateFailed, ModuleProvisioningStateModuleDataStored, ModuleProvisioningStateModuleImportRunbookComplete, ModuleProvisioningStateRunningImportModuleRunbook, ModuleProvisioningStateStartingImportModuleRunbook, ModuleProvisioningStateSucceeded, ModuleProvisioningStateUpdating}
+func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
+	return []ModuleProvisioningState{ModuleProvisioningStateActivitiesStored, ModuleProvisioningStateCancelled, ModuleProvisioningStateConnectionTypeImported, ModuleProvisioningStateContentDownloaded, ModuleProvisioningStateContentRetrieved, ModuleProvisioningStateContentStored, ModuleProvisioningStateContentValidated, ModuleProvisioningStateCreated, ModuleProvisioningStateCreating, ModuleProvisioningStateFailed, ModuleProvisioningStateModuleDataStored, ModuleProvisioningStateModuleImportRunbookComplete, ModuleProvisioningStateRunningImportModuleRunbook, ModuleProvisioningStateStartingImportModuleRunbook, ModuleProvisioningStateSucceeded, ModuleProvisioningStateUpdating}
 }
 
 // RunbookProvisioningState enumerates the values for runbook provisioning state.
@@ -343,8 +343,8 @@ const (
 )
 
 // PossibleRunbookProvisioningStateValues returns an array of possible values for the RunbookProvisioningState const type.
-func PossibleRunbookProvisioningStateValues() [1]RunbookProvisioningState {
-	return [1]RunbookProvisioningState{RunbookProvisioningStateSucceeded}
+func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
+	return []RunbookProvisioningState{RunbookProvisioningStateSucceeded}
 }
 
 // RunbookState enumerates the values for runbook state.
@@ -360,8 +360,8 @@ const (
 )
 
 // PossibleRunbookStateValues returns an array of possible values for the RunbookState const type.
-func PossibleRunbookStateValues() [3]RunbookState {
-	return [3]RunbookState{RunbookStateEdit, RunbookStateNew, RunbookStatePublished}
+func PossibleRunbookStateValues() []RunbookState {
+	return []RunbookState{RunbookStateEdit, RunbookStateNew, RunbookStatePublished}
 }
 
 // RunbookTypeEnum enumerates the values for runbook type enum.
@@ -383,8 +383,8 @@ const (
 )
 
 // PossibleRunbookTypeEnumValues returns an array of possible values for the RunbookTypeEnum const type.
-func PossibleRunbookTypeEnumValues() [6]RunbookTypeEnum {
-	return [6]RunbookTypeEnum{Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow, Script}
+func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
+	return []RunbookTypeEnum{Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow, Script}
 }
 
 // ScheduleDay enumerates the values for schedule day.
@@ -408,8 +408,8 @@ const (
 )
 
 // PossibleScheduleDayValues returns an array of possible values for the ScheduleDay const type.
-func PossibleScheduleDayValues() [7]ScheduleDay {
-	return [7]ScheduleDay{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+func PossibleScheduleDayValues() []ScheduleDay {
+	return []ScheduleDay{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // ScheduleFrequency enumerates the values for schedule frequency.
@@ -429,8 +429,8 @@ const (
 )
 
 // PossibleScheduleFrequencyValues returns an array of possible values for the ScheduleFrequency const type.
-func PossibleScheduleFrequencyValues() [5]ScheduleFrequency {
-	return [5]ScheduleFrequency{Day, Hour, Month, OneTime, Week}
+func PossibleScheduleFrequencyValues() []ScheduleFrequency {
+	return []ScheduleFrequency{Day, Hour, Month, OneTime, Week}
 }
 
 // SkuNameEnum enumerates the values for sku name enum.
@@ -444,8 +444,8 @@ const (
 )
 
 // PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
-func PossibleSkuNameEnumValues() [2]SkuNameEnum {
-	return [2]SkuNameEnum{Basic, Free}
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return []SkuNameEnum{Basic, Free}
 }
 
 // Account definition of the automation account type.

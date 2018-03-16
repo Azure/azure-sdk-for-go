@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleCategoryTypeValues returns an array of possible values for the CategoryType const type.
-func PossibleCategoryTypeValues() [2]CategoryType {
-	return [2]CategoryType{Cost, Usage}
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{Cost, Usage}
 }
 
 // Datagrain enumerates the values for datagrain.
@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleDatagrainValues returns an array of possible values for the Datagrain const type.
-func PossibleDatagrainValues() [2]Datagrain {
-	return [2]Datagrain{DailyGrain, MonthlyGrain}
+func PossibleDatagrainValues() []Datagrain {
+	return []Datagrain{DailyGrain, MonthlyGrain}
 }
 
 // OperatorType enumerates the values for operator type.
@@ -70,8 +70,8 @@ const (
 )
 
 // PossibleOperatorTypeValues returns an array of possible values for the OperatorType const type.
-func PossibleOperatorTypeValues() [3]OperatorType {
-	return [3]OperatorType{EqualTo, GreaterThan, GreaterThanOrEqualTo}
+func PossibleOperatorTypeValues() []OperatorType {
+	return []OperatorType{EqualTo, GreaterThan, GreaterThanOrEqualTo}
 }
 
 // TimeGrainType enumerates the values for time grain type.
@@ -87,8 +87,8 @@ const (
 )
 
 // PossibleTimeGrainTypeValues returns an array of possible values for the TimeGrainType const type.
-func PossibleTimeGrainTypeValues() [3]TimeGrainType {
-	return [3]TimeGrainType{Annually, Monthly, Quarterly}
+func PossibleTimeGrainTypeValues() []TimeGrainType {
+	return []TimeGrainType{Annually, Monthly, Quarterly}
 }
 
 // Budget a budget resource.

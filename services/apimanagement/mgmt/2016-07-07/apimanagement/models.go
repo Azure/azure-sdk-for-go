@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAPIProtocolContractValues returns an array of possible values for the APIProtocolContract const type.
-func PossibleAPIProtocolContractValues() [2]APIProtocolContract {
-	return [2]APIProtocolContract{HTTP, HTTPS}
+func PossibleAPIProtocolContractValues() []APIProtocolContract {
+	return []APIProtocolContract{HTTP, HTTPS}
 }
 
 // APITypeContract enumerates the values for api type contract.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleAPITypeContractValues returns an array of possible values for the APITypeContract const type.
-func PossibleAPITypeContractValues() [2]APITypeContract {
-	return [2]APITypeContract{APITypeContractHTTP, APITypeContractSoap}
+func PossibleAPITypeContractValues() []APITypeContract {
+	return []APITypeContract{APITypeContractHTTP, APITypeContractSoap}
 }
 
 // AsyncOperationState enumerates the values for async operation state.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleAsyncOperationStateValues returns an array of possible values for the AsyncOperationState const type.
-func PossibleAsyncOperationStateValues() [4]AsyncOperationState {
-	return [4]AsyncOperationState{Failed, InProgress, Started, Succeeded}
+func PossibleAsyncOperationStateValues() []AsyncOperationState {
+	return []AsyncOperationState{Failed, InProgress, Started, Succeeded}
 }
 
 // BearerTokenSendingMethodsContract enumerates the values for bearer token sending methods contract.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleBearerTokenSendingMethodsContractValues returns an array of possible values for the BearerTokenSendingMethodsContract const type.
-func PossibleBearerTokenSendingMethodsContractValues() [2]BearerTokenSendingMethodsContract {
-	return [2]BearerTokenSendingMethodsContract{AuthorizationHeader, Query}
+func PossibleBearerTokenSendingMethodsContractValues() []BearerTokenSendingMethodsContract {
+	return []BearerTokenSendingMethodsContract{AuthorizationHeader, Query}
 }
 
 // ClientAuthenticationMethodContract enumerates the values for client authentication method contract.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleClientAuthenticationMethodContractValues returns an array of possible values for the ClientAuthenticationMethodContract const type.
-func PossibleClientAuthenticationMethodContractValues() [2]ClientAuthenticationMethodContract {
-	return [2]ClientAuthenticationMethodContract{Basic, Body}
+func PossibleClientAuthenticationMethodContractValues() []ClientAuthenticationMethodContract {
+	return []ClientAuthenticationMethodContract{Basic, Body}
 }
 
 // GrantTypesContract enumerates the values for grant types contract.
@@ -120,8 +120,8 @@ const (
 )
 
 // PossibleGrantTypesContractValues returns an array of possible values for the GrantTypesContract const type.
-func PossibleGrantTypesContractValues() [4]GrantTypesContract {
-	return [4]GrantTypesContract{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
+func PossibleGrantTypesContractValues() []GrantTypesContract {
+	return []GrantTypesContract{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
 }
 
 // GroupTypeContract enumerates the values for group type contract.
@@ -137,8 +137,8 @@ const (
 )
 
 // PossibleGroupTypeContractValues returns an array of possible values for the GroupTypeContract const type.
-func PossibleGroupTypeContractValues() [3]GroupTypeContract {
-	return [3]GroupTypeContract{Custom, External, System}
+func PossibleGroupTypeContractValues() []GroupTypeContract {
+	return []GroupTypeContract{Custom, External, System}
 }
 
 // HostnameType enumerates the values for hostname type.
@@ -156,8 +156,8 @@ const (
 )
 
 // PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
-func PossibleHostnameTypeValues() [4]HostnameType {
-	return [4]HostnameType{Management, Portal, Proxy, Scm}
+func PossibleHostnameTypeValues() []HostnameType {
+	return []HostnameType{Management, Portal, Proxy, Scm}
 }
 
 // HTTPStatusCode enumerates the values for http status code.
@@ -179,8 +179,8 @@ const (
 )
 
 // PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() [6]HTTPStatusCode {
-	return [6]HTTPStatusCode{Accepted, Conflict, Continue, Created, NotFound, OK}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return []HTTPStatusCode{Accepted, Conflict, Continue, Created, NotFound, OK}
 }
 
 // IdentityProviderNameType enumerates the values for identity provider name type.
@@ -200,8 +200,8 @@ const (
 )
 
 // PossibleIdentityProviderNameTypeValues returns an array of possible values for the IdentityProviderNameType const type.
-func PossibleIdentityProviderNameTypeValues() [5]IdentityProviderNameType {
-	return [5]IdentityProviderNameType{Aad, Facebook, Google, Microsoft, Twitter}
+func PossibleIdentityProviderNameTypeValues() []IdentityProviderNameType {
+	return []IdentityProviderNameType{Aad, Facebook, Google, Microsoft, Twitter}
 }
 
 // MethodContract enumerates the values for method contract.
@@ -227,8 +227,8 @@ const (
 )
 
 // PossibleMethodContractValues returns an array of possible values for the MethodContract const type.
-func PossibleMethodContractValues() [8]MethodContract {
-	return [8]MethodContract{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
+func PossibleMethodContractValues() []MethodContract {
+	return []MethodContract{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
 }
 
 // NameAvailabilityReason enumerates the values for name availability reason.
@@ -244,8 +244,8 @@ const (
 )
 
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() [3]NameAvailabilityReason {
-	return [3]NameAvailabilityReason{AlreadyExists, Invalid, Valid}
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return []NameAvailabilityReason{AlreadyExists, Invalid, Valid}
 }
 
 // OperationStatus enumerates the values for operation status.
@@ -261,8 +261,8 @@ const (
 )
 
 // PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() [3]OperationStatus {
-	return [3]OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
+func PossibleOperationStatusValues() []OperationStatus {
+	return []OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
 }
 
 // PolicyScopeContract enumerates the values for policy scope contract.
@@ -282,8 +282,8 @@ const (
 )
 
 // PossiblePolicyScopeContractValues returns an array of possible values for the PolicyScopeContract const type.
-func PossiblePolicyScopeContractValues() [5]PolicyScopeContract {
-	return [5]PolicyScopeContract{All, API, Operation, Product, Tenant}
+func PossiblePolicyScopeContractValues() []PolicyScopeContract {
+	return []PolicyScopeContract{All, API, Operation, Product, Tenant}
 }
 
 // ProductStateContract enumerates the values for product state contract.
@@ -297,8 +297,8 @@ const (
 )
 
 // PossibleProductStateContractValues returns an array of possible values for the ProductStateContract const type.
-func PossibleProductStateContractValues() [2]ProductStateContract {
-	return [2]ProductStateContract{NotPublished, Published}
+func PossibleProductStateContractValues() []ProductStateContract {
+	return []ProductStateContract{NotPublished, Published}
 }
 
 // ReportsAggregation enumerates the values for reports aggregation.
@@ -322,8 +322,8 @@ const (
 )
 
 // PossibleReportsAggregationValues returns an array of possible values for the ReportsAggregation const type.
-func PossibleReportsAggregationValues() [7]ReportsAggregation {
-	return [7]ReportsAggregation{ByAPI, ByGeo, ByOperation, ByProduct, BySubscription, ByTime, ByUser}
+func PossibleReportsAggregationValues() []ReportsAggregation {
+	return []ReportsAggregation{ByAPI, ByGeo, ByOperation, ByProduct, BySubscription, ByTime, ByUser}
 }
 
 // SkuType enumerates the values for sku type.
@@ -339,8 +339,8 @@ const (
 )
 
 // PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
-func PossibleSkuTypeValues() [3]SkuType {
-	return [3]SkuType{Developer, Premium, Standard}
+func PossibleSkuTypeValues() []SkuType {
+	return []SkuType{Developer, Premium, Standard}
 }
 
 // SubscriptionStateContract enumerates the values for subscription state contract.
@@ -362,8 +362,8 @@ const (
 )
 
 // PossibleSubscriptionStateContractValues returns an array of possible values for the SubscriptionStateContract const type.
-func PossibleSubscriptionStateContractValues() [6]SubscriptionStateContract {
-	return [6]SubscriptionStateContract{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
+func PossibleSubscriptionStateContractValues() []SubscriptionStateContract {
+	return []SubscriptionStateContract{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
 }
 
 // UserStateContract enumerates the values for user state contract.
@@ -377,8 +377,8 @@ const (
 )
 
 // PossibleUserStateContractValues returns an array of possible values for the UserStateContract const type.
-func PossibleUserStateContractValues() [2]UserStateContract {
-	return [2]UserStateContract{UserStateContractActive, UserStateContractBlocked}
+func PossibleUserStateContractValues() []UserStateContract {
+	return []UserStateContract{UserStateContractActive, UserStateContractBlocked}
 }
 
 // VirtualNetworkType enumerates the values for virtual network type.
@@ -394,8 +394,8 @@ const (
 )
 
 // PossibleVirtualNetworkTypeValues returns an array of possible values for the VirtualNetworkType const type.
-func PossibleVirtualNetworkTypeValues() [3]VirtualNetworkType {
-	return [3]VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
+func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
+	return []VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
 }
 
 // AccessInformationContract tenant access information contract of the API Management service.

@@ -59,7 +59,7 @@ const (
 	Template ApplianceArtifactType = original.Template
 )
 
-func PossibleApplianceArtifactTypeValues() [2]ApplianceArtifactType {
+func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
 	return original.PossibleApplianceArtifactTypeValues()
 }
 
@@ -71,7 +71,7 @@ const (
 	ReadOnly     ApplianceLockLevel = original.ReadOnly
 )
 
-func PossibleApplianceLockLevelValues() [3]ApplianceLockLevel {
+func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
 	return original.PossibleApplianceLockLevelValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [11]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -101,7 +101,7 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 

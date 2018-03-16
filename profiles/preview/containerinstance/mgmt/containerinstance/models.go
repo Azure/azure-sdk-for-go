@@ -68,7 +68,7 @@ const (
 	UDP ContainerGroupNetworkProtocol = original.UDP
 )
 
-func PossibleContainerGroupNetworkProtocolValues() [2]ContainerGroupNetworkProtocol {
+func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
 	return original.PossibleContainerGroupNetworkProtocolValues()
 }
 
@@ -80,7 +80,7 @@ const (
 	OnFailure ContainerGroupRestartPolicy = original.OnFailure
 )
 
-func PossibleContainerGroupRestartPolicyValues() [3]ContainerGroupRestartPolicy {
+func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
 	return original.PossibleContainerGroupRestartPolicyValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = original.ContainerNetworkProtocolUDP
 )
 
-func PossibleContainerNetworkProtocolValues() [2]ContainerNetworkProtocol {
+func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
 	return original.PossibleContainerNetworkProtocolValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
-func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
 }
 
@@ -113,7 +113,7 @@ const (
 	User   OperationsOrigin = original.User
 )
 
-func PossibleOperationsOriginValues() [2]OperationsOrigin {
+func PossibleOperationsOriginValues() []OperationsOrigin {
 	return original.PossibleOperationsOriginValues()
 }
 

@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
-func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
-	return [2]ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
 // ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
@@ -51,8 +51,8 @@ const (
 )
 
 // PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
-func PossibleResourceSkuRestrictionsTypeValues() [2]ResourceSkuRestrictionsType {
-	return [2]ResourceSkuRestrictionsType{Location, Zone}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return []ResourceSkuRestrictionsType{Location, Zone}
 }
 
 // SkuCapacityScaleType enumerates the values for sku capacity scale type.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleSkuCapacityScaleTypeValues returns an array of possible values for the SkuCapacityScaleType const type.
-func PossibleSkuCapacityScaleTypeValues() [3]SkuCapacityScaleType {
-	return [3]SkuCapacityScaleType{Automatic, Manual, None}
+func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
+	return []SkuCapacityScaleType{Automatic, Manual, None}
 }
 
 // CatalogSku details of a commitment plan SKU.

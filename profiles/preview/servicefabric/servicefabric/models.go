@@ -42,7 +42,7 @@ const (
 	ServiceFabricApplicationDescription ApplicationDefinitionKind = original.ServiceFabricApplicationDescription
 )
 
-func PossibleApplicationDefinitionKindValues() [3]ApplicationDefinitionKind {
+func PossibleApplicationDefinitionKindValues() []ApplicationDefinitionKind {
 	return original.PossibleApplicationDefinitionKindValues()
 }
 
@@ -57,7 +57,7 @@ const (
 	ApplicationStatusUpgrading ApplicationStatus = original.ApplicationStatusUpgrading
 )
 
-func PossibleApplicationStatusValues() [6]ApplicationStatus {
+func PossibleApplicationStatusValues() []ApplicationStatus {
 	return original.PossibleApplicationStatusValues()
 }
 
@@ -69,7 +69,7 @@ const (
 	ApplicationTypeDefinitionKindServiceFabricApplicationPackage ApplicationTypeDefinitionKind = original.ApplicationTypeDefinitionKindServiceFabricApplicationPackage
 )
 
-func PossibleApplicationTypeDefinitionKindValues() [3]ApplicationTypeDefinitionKind {
+func PossibleApplicationTypeDefinitionKindValues() []ApplicationTypeDefinitionKind {
 	return original.PossibleApplicationTypeDefinitionKindValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	ApplicationTypeStatusUnprovisioning ApplicationTypeStatus = original.ApplicationTypeStatusUnprovisioning
 )
 
-func PossibleApplicationTypeStatusValues() [5]ApplicationTypeStatus {
+func PossibleApplicationTypeStatusValues() []ApplicationTypeStatus {
 	return original.PossibleApplicationTypeStatusValues()
 }
 
@@ -99,7 +99,7 @@ const (
 	ChaosEventKindWaiting          ChaosEventKind = original.ChaosEventKindWaiting
 )
 
-func PossibleChaosEventKindValues() [7]ChaosEventKind {
+func PossibleChaosEventKindValues() []ChaosEventKind {
 	return original.PossibleChaosEventKindValues()
 }
 
@@ -174,7 +174,7 @@ const (
 	FABRICEVALUETOOLARGE                      Code = original.FABRICEVALUETOOLARGE
 )
 
-func PossibleCodeValues() [66]Code {
+func PossibleCodeValues() []Code {
 	return original.PossibleCodeValues()
 }
 
@@ -191,7 +191,7 @@ const (
 	ComposeDeploymentStatusUpgrading      ComposeDeploymentStatus = original.ComposeDeploymentStatusUpgrading
 )
 
-func PossibleComposeDeploymentStatusValues() [8]ComposeDeploymentStatus {
+func PossibleComposeDeploymentStatusValues() []ComposeDeploymentStatus {
 	return original.PossibleComposeDeploymentStatusValues()
 }
 
@@ -210,7 +210,7 @@ const (
 	ComposeDeploymentUpgradeStateUnprovisioningTarget     ComposeDeploymentUpgradeState = original.ComposeDeploymentUpgradeStateUnprovisioningTarget
 )
 
-func PossibleComposeDeploymentUpgradeStateValues() [10]ComposeDeploymentUpgradeState {
+func PossibleComposeDeploymentUpgradeStateValues() []ComposeDeploymentUpgradeState {
 	return original.PossibleComposeDeploymentUpgradeStateValues()
 }
 
@@ -221,7 +221,7 @@ const (
 	True  CreateFabricDump = original.True
 )
 
-func PossibleCreateFabricDumpValues() [2]CreateFabricDump {
+func PossibleCreateFabricDumpValues() []CreateFabricDump {
 	return original.PossibleCreateFabricDumpValues()
 }
 
@@ -233,7 +233,7 @@ const (
 	DataLossModeRequiredQueryParamPartialDataLoss DataLossModeRequiredQueryParam = original.DataLossModeRequiredQueryParamPartialDataLoss
 )
 
-func PossibleDataLossModeRequiredQueryParamValues() [3]DataLossModeRequiredQueryParam {
+func PossibleDataLossModeRequiredQueryParamValues() []DataLossModeRequiredQueryParam {
 	return original.PossibleDataLossModeRequiredQueryParamValues()
 }
 
@@ -245,7 +245,7 @@ const (
 	Restart    DeactivationIntent = original.Restart
 )
 
-func PossibleDeactivationIntentValues() [3]DeactivationIntent {
+func PossibleDeactivationIntentValues() []DeactivationIntent {
 	return original.PossibleDeactivationIntentValues()
 }
 
@@ -260,7 +260,7 @@ const (
 	DeployedApplicationStatusUpgrading    DeployedApplicationStatus = original.DeployedApplicationStatusUpgrading
 )
 
-func PossibleDeployedApplicationStatusValues() [6]DeployedApplicationStatus {
+func PossibleDeployedApplicationStatusValues() []DeployedApplicationStatus {
 	return original.PossibleDeployedApplicationStatusValues()
 }
 
@@ -275,7 +275,7 @@ const (
 	DeploymentStatusUpgrading    DeploymentStatus = original.DeploymentStatusUpgrading
 )
 
-func PossibleDeploymentStatusValues() [6]DeploymentStatus {
+func PossibleDeploymentStatusValues() []DeploymentStatus {
 	return original.PossibleDeploymentStatusValues()
 }
 
@@ -293,7 +293,7 @@ const (
 	EntityKindService                EntityKind = original.EntityKindService
 )
 
-func PossibleEntityKindValues() [9]EntityKind {
+func PossibleEntityKindValues() []EntityKind {
 	return original.PossibleEntityKindValues()
 }
 
@@ -308,7 +308,7 @@ const (
 	EntryPointStatusStopping EntryPointStatus = original.EntryPointStatusStopping
 )
 
-func PossibleEntryPointStatusValues() [6]EntryPointStatus {
+func PossibleEntryPointStatusValues() []EntryPointStatus {
 	return original.PossibleEntryPointStatusValues()
 }
 
@@ -320,7 +320,7 @@ const (
 	FabricReplicaStatusUp      FabricReplicaStatus = original.FabricReplicaStatusUp
 )
 
-func PossibleFabricReplicaStatusValues() [3]FabricReplicaStatus {
+func PossibleFabricReplicaStatusValues() []FabricReplicaStatus {
 	return original.PossibleFabricReplicaStatusValues()
 }
 
@@ -332,7 +332,7 @@ const (
 	FailureActionRollback FailureAction = original.FailureActionRollback
 )
 
-func PossibleFailureActionValues() [3]FailureAction {
+func PossibleFailureActionValues() []FailureAction {
 	return original.PossibleFailureActionValues()
 }
 
@@ -346,7 +346,7 @@ const (
 	UpgradeDomainTimeout  FailureReason = original.UpgradeDomainTimeout
 )
 
-func PossibleFailureReasonValues() [5]FailureReason {
+func PossibleFailureReasonValues() []FailureReason {
 	return original.PossibleFailureReasonValues()
 }
 
@@ -377,7 +377,7 @@ const (
 	HealthEvaluationKindUpgradeDomainNodes                HealthEvaluationKind = original.HealthEvaluationKindUpgradeDomainNodes
 )
 
-func PossibleHealthEvaluationKindValues() [22]HealthEvaluationKind {
+func PossibleHealthEvaluationKindValues() []HealthEvaluationKind {
 	return original.PossibleHealthEvaluationKindValues()
 }
 
@@ -391,7 +391,7 @@ const (
 	HealthStateWarning HealthState = original.HealthStateWarning
 )
 
-func PossibleHealthStateValues() [5]HealthState {
+func PossibleHealthStateValues() []HealthState {
 	return original.PossibleHealthStateValues()
 }
 
@@ -403,7 +403,7 @@ const (
 	HostIsolationModeProcess HostIsolationMode = original.HostIsolationModeProcess
 )
 
-func PossibleHostIsolationModeValues() [3]HostIsolationMode {
+func PossibleHostIsolationModeValues() []HostIsolationMode {
 	return original.PossibleHostIsolationModeValues()
 }
 
@@ -415,7 +415,7 @@ const (
 	HostTypeInvalid       HostType = original.HostTypeInvalid
 )
 
-func PossibleHostTypeValues() [3]HostType {
+func PossibleHostTypeValues() []HostType {
 	return original.PossibleHostTypeValues()
 }
 
@@ -429,7 +429,7 @@ const (
 	ImpactLevelRestart    ImpactLevel = original.ImpactLevelRestart
 )
 
-func PossibleImpactLevelValues() [5]ImpactLevel {
+func PossibleImpactLevelValues() []ImpactLevel {
 	return original.PossibleImpactLevelValues()
 }
 
@@ -459,7 +459,7 @@ const (
 	KindUpgradeDomainNodes           Kind = original.KindUpgradeDomainNodes
 )
 
-func PossibleKindValues() [21]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -475,7 +475,7 @@ const (
 	KindWaiting          KindBasicChaosEvent = original.KindWaiting
 )
 
-func PossibleKindBasicChaosEventValues() [7]KindBasicChaosEvent {
+func PossibleKindBasicChaosEventValues() []KindBasicChaosEvent {
 	return original.PossibleKindBasicChaosEventValues()
 }
 
@@ -487,7 +487,7 @@ const (
 	KindSuccessful        KindBasicPropertyBatchInfo = original.KindSuccessful
 )
 
-func PossibleKindBasicPropertyBatchInfoValues() [3]KindBasicPropertyBatchInfo {
+func PossibleKindBasicPropertyBatchInfoValues() []KindBasicPropertyBatchInfo {
 	return original.PossibleKindBasicPropertyBatchInfoValues()
 }
 
@@ -503,7 +503,7 @@ const (
 	KindPut                    KindBasicPropertyBatchOperation = original.KindPut
 )
 
-func PossibleKindBasicPropertyBatchOperationValues() [7]KindBasicPropertyBatchOperation {
+func PossibleKindBasicPropertyBatchOperationValues() []KindBasicPropertyBatchOperation {
 	return original.PossibleKindBasicPropertyBatchOperationValues()
 }
 
@@ -518,7 +518,7 @@ const (
 	KindString        KindBasicPropertyValue = original.KindString
 )
 
-func PossibleKindBasicPropertyValueValues() [6]KindBasicPropertyValue {
+func PossibleKindBasicPropertyValueValues() []KindBasicPropertyValue {
 	return original.PossibleKindBasicPropertyValueValues()
 }
 
@@ -530,7 +530,7 @@ const (
 	KindProvisionApplicationTypeDescriptionBase KindBasicProvisionApplicationTypeDescriptionBase = original.KindProvisionApplicationTypeDescriptionBase
 )
 
-func PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues() [3]KindBasicProvisionApplicationTypeDescriptionBase {
+func PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues() []KindBasicProvisionApplicationTypeDescriptionBase {
 	return original.PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues()
 }
 
@@ -541,7 +541,7 @@ const (
 	KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase KindBasicRepairImpactDescriptionBase = original.KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase
 )
 
-func PossibleKindBasicRepairImpactDescriptionBaseValues() [2]KindBasicRepairImpactDescriptionBase {
+func PossibleKindBasicRepairImpactDescriptionBaseValues() []KindBasicRepairImpactDescriptionBase {
 	return original.PossibleKindBasicRepairImpactDescriptionBaseValues()
 }
 
@@ -552,7 +552,7 @@ const (
 	KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase KindBasicRepairTargetDescriptionBase = original.KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase
 )
 
-func PossibleKindBasicRepairTargetDescriptionBaseValues() [2]KindBasicRepairTargetDescriptionBase {
+func PossibleKindBasicRepairTargetDescriptionBaseValues() []KindBasicRepairTargetDescriptionBase {
 	return original.PossibleKindBasicRepairTargetDescriptionBaseValues()
 }
 
@@ -563,7 +563,7 @@ const (
 	KindReplicaStatusBase KindBasicReplicaStatusBase = original.KindReplicaStatusBase
 )
 
-func PossibleKindBasicReplicaStatusBaseValues() [2]KindBasicReplicaStatusBase {
+func PossibleKindBasicReplicaStatusBaseValues() []KindBasicReplicaStatusBase {
 	return original.PossibleKindBasicReplicaStatusBaseValues()
 }
 
@@ -577,7 +577,7 @@ const (
 	KindSecondaryReplicatorStatus KindBasicReplicatorStatus = original.KindSecondaryReplicatorStatus
 )
 
-func PossibleKindBasicReplicatorStatusValues() [5]KindBasicReplicatorStatus {
+func PossibleKindBasicReplicatorStatusValues() []KindBasicReplicatorStatus {
 	return original.PossibleKindBasicReplicatorStatusValues()
 }
 
@@ -595,7 +595,7 @@ const (
 	KindWaitForReconfiguration  KindBasicSafetyCheck = original.KindWaitForReconfiguration
 )
 
-func PossibleKindBasicSafetyCheckValues() [9]KindBasicSafetyCheck {
+func PossibleKindBasicSafetyCheckValues() []KindBasicSafetyCheck {
 	return original.PossibleKindBasicSafetyCheckValues()
 }
 
@@ -607,7 +607,7 @@ const (
 	KindStateless              KindBasicServiceTypeDescription = original.KindStateless
 )
 
-func PossibleKindBasicServiceTypeDescriptionValues() [3]KindBasicServiceTypeDescription {
+func PossibleKindBasicServiceTypeDescriptionValues() []KindBasicServiceTypeDescription {
 	return original.PossibleKindBasicServiceTypeDescriptionValues()
 }
 
@@ -620,7 +620,7 @@ const (
 	Zero   MoveCost = original.Zero
 )
 
-func PossibleMoveCostValues() [4]MoveCost {
+func PossibleMoveCostValues() []MoveCost {
 	return original.PossibleMoveCostValues()
 }
 
@@ -634,7 +634,7 @@ const (
 	NodeDeactivationIntentRestart    NodeDeactivationIntent = original.NodeDeactivationIntentRestart
 )
 
-func PossibleNodeDeactivationIntentValues() [5]NodeDeactivationIntent {
+func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
 	return original.PossibleNodeDeactivationIntentValues()
 }
 
@@ -647,7 +647,7 @@ const (
 	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckInProgress
 )
 
-func PossibleNodeDeactivationStatusValues() [4]NodeDeactivationStatus {
+func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
 	return original.PossibleNodeDeactivationStatusValues()
 }
 
@@ -660,7 +660,7 @@ const (
 	NodeDeactivationTaskTypeRepair         NodeDeactivationTaskType = original.NodeDeactivationTaskTypeRepair
 )
 
-func PossibleNodeDeactivationTaskTypeValues() [4]NodeDeactivationTaskType {
+func PossibleNodeDeactivationTaskTypeValues() []NodeDeactivationTaskType {
 	return original.PossibleNodeDeactivationTaskTypeValues()
 }
 
@@ -677,7 +677,7 @@ const (
 	NodeStatusUp        NodeStatus = original.NodeStatusUp
 )
 
-func PossibleNodeStatusValues() [8]NodeStatus {
+func PossibleNodeStatusValues() []NodeStatus {
 	return original.PossibleNodeStatusValues()
 }
 
@@ -695,7 +695,7 @@ const (
 	Up        NodeStatusFilterOptionalQueryParam = original.Up
 )
 
-func PossibleNodeStatusFilterOptionalQueryParamValues() [9]NodeStatusFilterOptionalQueryParam {
+func PossibleNodeStatusFilterOptionalQueryParamValues() []NodeStatusFilterOptionalQueryParam {
 	return original.PossibleNodeStatusFilterOptionalQueryParamValues()
 }
 
@@ -707,7 +707,7 @@ const (
 	NodeTransitionTypeRequiredQueryParamStop    NodeTransitionTypeRequiredQueryParam = original.NodeTransitionTypeRequiredQueryParamStop
 )
 
-func PossibleNodeTransitionTypeRequiredQueryParamValues() [3]NodeTransitionTypeRequiredQueryParam {
+func PossibleNodeTransitionTypeRequiredQueryParamValues() []NodeTransitionTypeRequiredQueryParam {
 	return original.PossibleNodeTransitionTypeRequiredQueryParamValues()
 }
 
@@ -720,7 +720,7 @@ const (
 	NodeUpgradePhaseUpgrading              NodeUpgradePhase = original.NodeUpgradePhaseUpgrading
 )
 
-func PossibleNodeUpgradePhaseValues() [4]NodeUpgradePhase {
+func PossibleNodeUpgradePhaseValues() []NodeUpgradePhase {
 	return original.PossibleNodeUpgradePhaseValues()
 }
 
@@ -736,7 +736,7 @@ const (
 	OperationStateRunning        OperationState = original.OperationStateRunning
 )
 
-func PossibleOperationStateValues() [7]OperationState {
+func PossibleOperationStateValues() []OperationState {
 	return original.PossibleOperationStateValues()
 }
 
@@ -750,7 +750,7 @@ const (
 	OperationTypePartitionRestart    OperationType = original.OperationTypePartitionRestart
 )
 
-func PossibleOperationTypeValues() [5]OperationType {
+func PossibleOperationTypeValues() []OperationType {
 	return original.PossibleOperationTypeValues()
 }
 
@@ -764,7 +764,7 @@ const (
 	PackageSharingPolicyScopeNone   PackageSharingPolicyScope = original.PackageSharingPolicyScopeNone
 )
 
-func PossiblePackageSharingPolicyScopeValues() [5]PackageSharingPolicyScope {
+func PossiblePackageSharingPolicyScopeValues() []PackageSharingPolicyScope {
 	return original.PossiblePackageSharingPolicyScopeValues()
 }
 
@@ -778,7 +778,7 @@ const (
 	PartitionAccessStatusReconfigurationPending PartitionAccessStatus = original.PartitionAccessStatusReconfigurationPending
 )
 
-func PossiblePartitionAccessStatusValues() [5]PartitionAccessStatus {
+func PossiblePartitionAccessStatusValues() []PartitionAccessStatus {
 	return original.PossiblePartitionAccessStatusValues()
 }
 
@@ -791,7 +791,7 @@ const (
 	PartitionSchemeUniformInt64Range PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
-func PossiblePartitionSchemeValues() [4]PartitionScheme {
+func PossiblePartitionSchemeValues() []PartitionScheme {
 	return original.PossiblePartitionSchemeValues()
 }
 
@@ -804,7 +804,7 @@ const (
 	PartitionSchemeUniformInt64Range1         PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeUniformInt64Range1
 )
 
-func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() [4]PartitionSchemeBasicPartitionSchemeDescription {
+func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
 	return original.PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues()
 }
 
@@ -816,7 +816,7 @@ const (
 	PropertyBatchInfoKindSuccessful PropertyBatchInfoKind = original.PropertyBatchInfoKindSuccessful
 )
 
-func PossiblePropertyBatchInfoKindValues() [3]PropertyBatchInfoKind {
+func PossiblePropertyBatchInfoKindValues() []PropertyBatchInfoKind {
 	return original.PossiblePropertyBatchInfoKindValues()
 }
 
@@ -832,7 +832,7 @@ const (
 	PropertyBatchOperationKindPut           PropertyBatchOperationKind = original.PropertyBatchOperationKindPut
 )
 
-func PossiblePropertyBatchOperationKindValues() [7]PropertyBatchOperationKind {
+func PossiblePropertyBatchOperationKindValues() []PropertyBatchOperationKind {
 	return original.PossiblePropertyBatchOperationKindValues()
 }
 
@@ -847,7 +847,7 @@ const (
 	PropertyValueKindString  PropertyValueKind = original.PropertyValueKindString
 )
 
-func PossiblePropertyValueKindValues() [6]PropertyValueKind {
+func PossiblePropertyValueKindValues() []PropertyValueKind {
 	return original.PossiblePropertyValueKindValues()
 }
 
@@ -859,7 +859,7 @@ const (
 	ProvisionApplicationTypeKindInvalid        ProvisionApplicationTypeKind = original.ProvisionApplicationTypeKindInvalid
 )
 
-func PossibleProvisionApplicationTypeKindValues() [3]ProvisionApplicationTypeKind {
+func PossibleProvisionApplicationTypeKindValues() []ProvisionApplicationTypeKind {
 	return original.PossibleProvisionApplicationTypeKindValues()
 }
 
@@ -871,7 +871,7 @@ const (
 	QuorumLossModeRequiredQueryParamQuorumReplicas QuorumLossModeRequiredQueryParam = original.QuorumLossModeRequiredQueryParamQuorumReplicas
 )
 
-func PossibleQuorumLossModeRequiredQueryParamValues() [3]QuorumLossModeRequiredQueryParam {
+func PossibleQuorumLossModeRequiredQueryParamValues() []QuorumLossModeRequiredQueryParam {
 	return original.PossibleQuorumLossModeRequiredQueryParamValues()
 }
 
@@ -888,7 +888,7 @@ const (
 	ReconfigurationPhaseUnknown        ReconfigurationPhase = original.ReconfigurationPhaseUnknown
 )
 
-func PossibleReconfigurationPhaseValues() [8]ReconfigurationPhase {
+func PossibleReconfigurationPhaseValues() []ReconfigurationPhase {
 	return original.PossibleReconfigurationPhaseValues()
 }
 
@@ -901,7 +901,7 @@ const (
 	ReconfigurationTypeUnknown     ReconfigurationType = original.ReconfigurationTypeUnknown
 )
 
-func PossibleReconfigurationTypeValues() [4]ReconfigurationType {
+func PossibleReconfigurationTypeValues() []ReconfigurationType {
 	return original.PossibleReconfigurationTypeValues()
 }
 
@@ -912,7 +912,7 @@ const (
 	RepairImpactKindNode    RepairImpactKind = original.RepairImpactKindNode
 )
 
-func PossibleRepairImpactKindValues() [2]RepairImpactKind {
+func PossibleRepairImpactKindValues() []RepairImpactKind {
 	return original.PossibleRepairImpactKindValues()
 }
 
@@ -923,7 +923,7 @@ const (
 	RepairTargetKindNode    RepairTargetKind = original.RepairTargetKindNode
 )
 
-func PossibleRepairTargetKindValues() [2]RepairTargetKind {
+func PossibleRepairTargetKindValues() []RepairTargetKind {
 	return original.PossibleRepairTargetKindValues()
 }
 
@@ -937,7 +937,7 @@ const (
 	TimedOut   RepairTaskHealthCheckState = original.TimedOut
 )
 
-func PossibleRepairTaskHealthCheckStateValues() [5]RepairTaskHealthCheckState {
+func PossibleRepairTaskHealthCheckStateValues() []RepairTaskHealthCheckState {
 	return original.PossibleRepairTaskHealthCheckStateValues()
 }
 
@@ -948,7 +948,7 @@ const (
 	Stateless ReplicaHealthReportServiceKindRequiredQueryParam = original.Stateless
 )
 
-func PossibleReplicaHealthReportServiceKindRequiredQueryParamValues() [2]ReplicaHealthReportServiceKindRequiredQueryParam {
+func PossibleReplicaHealthReportServiceKindRequiredQueryParamValues() []ReplicaHealthReportServiceKindRequiredQueryParam {
 	return original.PossibleReplicaHealthReportServiceKindRequiredQueryParamValues()
 }
 
@@ -959,7 +959,7 @@ const (
 	ReplicaKindKeyValueStore ReplicaKind = original.ReplicaKindKeyValueStore
 )
 
-func PossibleReplicaKindValues() [2]ReplicaKind {
+func PossibleReplicaKindValues() []ReplicaKind {
 	return original.PossibleReplicaKindValues()
 }
 
@@ -973,7 +973,7 @@ const (
 	ReplicaRoleUnknown         ReplicaRole = original.ReplicaRoleUnknown
 )
 
-func PossibleReplicaRoleValues() [5]ReplicaRole {
+func PossibleReplicaRoleValues() []ReplicaRole {
 	return original.PossibleReplicaRoleValues()
 }
 
@@ -988,7 +988,7 @@ const (
 	ReplicaStatusStandby ReplicaStatus = original.ReplicaStatusStandby
 )
 
-func PossibleReplicaStatusValues() [6]ReplicaStatus {
+func PossibleReplicaStatusValues() []ReplicaStatus {
 	return original.PossibleReplicaStatusValues()
 }
 
@@ -1003,7 +1003,7 @@ const (
 	ReplicaStatus1Standby ReplicaStatus1 = original.ReplicaStatus1Standby
 )
 
-func PossibleReplicaStatus1Values() [6]ReplicaStatus1 {
+func PossibleReplicaStatus1Values() []ReplicaStatus1 {
 	return original.PossibleReplicaStatus1Values()
 }
 
@@ -1022,7 +1022,7 @@ const (
 	ReplicatorOperationNameWaitForCatchup ReplicatorOperationName = original.ReplicatorOperationNameWaitForCatchup
 )
 
-func PossibleReplicatorOperationNameValues() [10]ReplicatorOperationName {
+func PossibleReplicatorOperationNameValues() []ReplicatorOperationName {
 	return original.PossibleReplicatorOperationNameValues()
 }
 
@@ -1034,7 +1034,7 @@ const (
 	RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries  RestartPartitionModeRequiredQueryParam = original.RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries
 )
 
-func PossibleRestartPartitionModeRequiredQueryParamValues() [3]RestartPartitionModeRequiredQueryParam {
+func PossibleRestartPartitionModeRequiredQueryParamValues() []RestartPartitionModeRequiredQueryParam {
 	return original.PossibleRestartPartitionModeRequiredQueryParamValues()
 }
 
@@ -1049,7 +1049,7 @@ const (
 	ResultStatusSucceeded   ResultStatus = original.ResultStatusSucceeded
 )
 
-func PossibleResultStatusValues() [6]ResultStatus {
+func PossibleResultStatusValues() []ResultStatus {
 	return original.PossibleResultStatusValues()
 }
 
@@ -1066,7 +1066,7 @@ const (
 	SafetyCheckKindWaitForReconfiguration  SafetyCheckKind = original.SafetyCheckKindWaitForReconfiguration
 )
 
-func PossibleSafetyCheckKindValues() [8]SafetyCheckKind {
+func PossibleSafetyCheckKindValues() []SafetyCheckKind {
 	return original.PossibleSafetyCheckKindValues()
 }
 
@@ -1079,7 +1079,7 @@ const (
 	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = original.ServiceCorrelationSchemeNonAlignedAffinity
 )
 
-func PossibleServiceCorrelationSchemeValues() [4]ServiceCorrelationScheme {
+func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 	return original.PossibleServiceCorrelationSchemeValues()
 }
 
@@ -1092,7 +1092,7 @@ const (
 	ServiceEndpointRoleStateless         ServiceEndpointRole = original.ServiceEndpointRoleStateless
 )
 
-func PossibleServiceEndpointRoleValues() [4]ServiceEndpointRole {
+func PossibleServiceEndpointRoleValues() []ServiceEndpointRole {
 	return original.PossibleServiceEndpointRoleValues()
 }
 
@@ -1104,7 +1104,7 @@ const (
 	ServiceKindStateless ServiceKind = original.ServiceKindStateless
 )
 
-func PossibleServiceKindValues() [3]ServiceKind {
+func PossibleServiceKindValues() []ServiceKind {
 	return original.PossibleServiceKindValues()
 }
 
@@ -1116,7 +1116,7 @@ const (
 	ServiceKindStateless1                       ServiceKindBasicDeployedServiceReplicaDetailInfo = original.ServiceKindStateless1
 )
 
-func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() [3]ServiceKindBasicDeployedServiceReplicaDetailInfo {
+func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() []ServiceKindBasicDeployedServiceReplicaDetailInfo {
 	return original.PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues()
 }
 
@@ -1128,7 +1128,7 @@ const (
 	ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless                  ServiceKindBasicDeployedServiceReplicaInfo = original.ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless
 )
 
-func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() [3]ServiceKindBasicDeployedServiceReplicaInfo {
+func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() []ServiceKindBasicDeployedServiceReplicaInfo {
 	return original.PossibleServiceKindBasicDeployedServiceReplicaInfoValues()
 }
 
@@ -1140,7 +1140,7 @@ const (
 	ServiceKindBasicReplicaHealthServiceKindStateless     ServiceKindBasicReplicaHealth = original.ServiceKindBasicReplicaHealthServiceKindStateless
 )
 
-func PossibleServiceKindBasicReplicaHealthValues() [3]ServiceKindBasicReplicaHealth {
+func PossibleServiceKindBasicReplicaHealthValues() []ServiceKindBasicReplicaHealth {
 	return original.PossibleServiceKindBasicReplicaHealthValues()
 }
 
@@ -1152,7 +1152,7 @@ const (
 	ServiceKindBasicReplicaHealthStateServiceKindStateless          ServiceKindBasicReplicaHealthState = original.ServiceKindBasicReplicaHealthStateServiceKindStateless
 )
 
-func PossibleServiceKindBasicReplicaHealthStateValues() [3]ServiceKindBasicReplicaHealthState {
+func PossibleServiceKindBasicReplicaHealthStateValues() []ServiceKindBasicReplicaHealthState {
 	return original.PossibleServiceKindBasicReplicaHealthStateValues()
 }
 
@@ -1164,7 +1164,7 @@ const (
 	ServiceKindBasicReplicaInfoServiceKindStateless   ServiceKindBasicReplicaInfo = original.ServiceKindBasicReplicaInfoServiceKindStateless
 )
 
-func PossibleServiceKindBasicReplicaInfoValues() [3]ServiceKindBasicReplicaInfo {
+func PossibleServiceKindBasicReplicaInfoValues() []ServiceKindBasicReplicaInfo {
 	return original.PossibleServiceKindBasicReplicaInfoValues()
 }
 
@@ -1176,7 +1176,7 @@ const (
 	ServiceKindBasicServiceDescriptionServiceKindStateless          ServiceKindBasicServiceDescription = original.ServiceKindBasicServiceDescriptionServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceDescriptionValues() [3]ServiceKindBasicServiceDescription {
+func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
 	return original.PossibleServiceKindBasicServiceDescriptionValues()
 }
 
@@ -1188,7 +1188,7 @@ const (
 	ServiceKindBasicServiceInfoServiceKindStateless   ServiceKindBasicServiceInfo = original.ServiceKindBasicServiceInfoServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceInfoValues() [3]ServiceKindBasicServiceInfo {
+func PossibleServiceKindBasicServiceInfoValues() []ServiceKindBasicServiceInfo {
 	return original.PossibleServiceKindBasicServiceInfoValues()
 }
 
@@ -1200,7 +1200,7 @@ const (
 	ServiceKindBasicServicePartitionInfoServiceKindStateless            ServiceKindBasicServicePartitionInfo = original.ServiceKindBasicServicePartitionInfoServiceKindStateless
 )
 
-func PossibleServiceKindBasicServicePartitionInfoValues() [3]ServiceKindBasicServicePartitionInfo {
+func PossibleServiceKindBasicServicePartitionInfoValues() []ServiceKindBasicServicePartitionInfo {
 	return original.PossibleServiceKindBasicServicePartitionInfoValues()
 }
 
@@ -1212,7 +1212,7 @@ const (
 	ServiceKindBasicServiceUpdateDescriptionServiceKindStateless                ServiceKindBasicServiceUpdateDescription = original.ServiceKindBasicServiceUpdateDescriptionServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceUpdateDescriptionValues() [3]ServiceKindBasicServiceUpdateDescription {
+func PossibleServiceKindBasicServiceUpdateDescriptionValues() []ServiceKindBasicServiceUpdateDescription {
 	return original.PossibleServiceKindBasicServiceUpdateDescriptionValues()
 }
 
@@ -1225,7 +1225,7 @@ const (
 	ServiceLoadMetricWeightZero   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightZero
 )
 
-func PossibleServiceLoadMetricWeightValues() [4]ServiceLoadMetricWeight {
+func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 	return original.PossibleServiceLoadMetricWeightValues()
 }
 
@@ -1240,7 +1240,7 @@ const (
 	ServiceOperationNameUnknown    ServiceOperationName = original.ServiceOperationNameUnknown
 )
 
-func PossibleServiceOperationNameValues() [6]ServiceOperationName {
+func PossibleServiceOperationNameValues() []ServiceOperationName {
 	return original.PossibleServiceOperationNameValues()
 }
 
@@ -1251,7 +1251,7 @@ const (
 	SharedProcess    ServicePackageActivationMode = original.SharedProcess
 )
 
-func PossibleServicePackageActivationModeValues() [2]ServicePackageActivationMode {
+func PossibleServicePackageActivationModeValues() []ServicePackageActivationMode {
 	return original.PossibleServicePackageActivationModeValues()
 }
 
@@ -1264,7 +1264,7 @@ const (
 	ServicePartitionKindSingleton            ServicePartitionKind = original.ServicePartitionKindSingleton
 )
 
-func PossibleServicePartitionKindValues() [4]ServicePartitionKind {
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
 	return original.PossibleServicePartitionKindValues()
 }
 
@@ -1279,7 +1279,7 @@ const (
 	ServicePartitionStatusReconfiguring ServicePartitionStatus = original.ServicePartitionStatusReconfiguring
 )
 
-func PossibleServicePartitionStatusValues() [6]ServicePartitionStatus {
+func PossibleServicePartitionStatusValues() []ServicePartitionStatus {
 	return original.PossibleServicePartitionStatusValues()
 }
 
@@ -1294,7 +1294,7 @@ const (
 	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomainDistribution
 )
 
-func PossibleServicePlacementPolicyTypeValues() [6]ServicePlacementPolicyType {
+func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
 	return original.PossibleServicePlacementPolicyTypeValues()
 }
 
@@ -1309,7 +1309,7 @@ const (
 	ServiceStatusUpgrading ServiceStatus = original.ServiceStatusUpgrading
 )
 
-func PossibleServiceStatusValues() [6]ServiceStatus {
+func PossibleServiceStatusValues() []ServiceStatus {
 	return original.PossibleServiceStatusValues()
 }
 
@@ -1322,7 +1322,7 @@ const (
 	ServiceTypeRegistrationStatusRegistered ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusRegistered
 )
 
-func PossibleServiceTypeRegistrationStatusValues() [4]ServiceTypeRegistrationStatus {
+func PossibleServiceTypeRegistrationStatusValues() []ServiceTypeRegistrationStatus {
 	return original.PossibleServiceTypeRegistrationStatusValues()
 }
 
@@ -1339,7 +1339,7 @@ const (
 	StateRestoring State = original.StateRestoring
 )
 
-func PossibleStateValues() [8]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 
@@ -1351,7 +1351,7 @@ const (
 	StatusStopped Status = original.StatusStopped
 )
 
-func PossibleStatusValues() [3]Status {
+func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
 
@@ -1366,7 +1366,7 @@ const (
 	TypeServicePlacementPolicyDescription Type = original.TypeServicePlacementPolicyDescription
 )
 
-func PossibleTypeValues() [6]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -1379,7 +1379,7 @@ const (
 	UpgradeDomainStatePending    UpgradeDomainState = original.UpgradeDomainStatePending
 )
 
-func PossibleUpgradeDomainStateValues() [4]UpgradeDomainState {
+func PossibleUpgradeDomainStateValues() []UpgradeDomainState {
 	return original.PossibleUpgradeDomainStateValues()
 }
 
@@ -1390,7 +1390,7 @@ const (
 	UpgradeKindRolling UpgradeKind = original.UpgradeKindRolling
 )
 
-func PossibleUpgradeKindValues() [2]UpgradeKind {
+func PossibleUpgradeKindValues() []UpgradeKind {
 	return original.PossibleUpgradeKindValues()
 }
 
@@ -1403,7 +1403,7 @@ const (
 	UpgradeModeUnmonitoredManual UpgradeMode = original.UpgradeModeUnmonitoredManual
 )
 
-func PossibleUpgradeModeValues() [4]UpgradeMode {
+func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
 
@@ -1419,7 +1419,7 @@ const (
 	UpgradeStateRollingForwardPending    UpgradeState = original.UpgradeStateRollingForwardPending
 )
 
-func PossibleUpgradeStateValues() [7]UpgradeState {
+func PossibleUpgradeStateValues() []UpgradeState {
 	return original.PossibleUpgradeStateValues()
 }
 
@@ -1431,7 +1431,7 @@ const (
 	UpgradeTypeRollingForceRestart UpgradeType = original.UpgradeTypeRollingForceRestart
 )
 
-func PossibleUpgradeTypeValues() [3]UpgradeType {
+func PossibleUpgradeTypeValues() []UpgradeType {
 	return original.PossibleUpgradeTypeValues()
 }
 

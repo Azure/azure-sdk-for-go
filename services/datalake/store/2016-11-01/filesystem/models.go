@@ -32,8 +32,8 @@ const (
 )
 
 // PossibleAppendModeTypeValues returns an array of possible values for the AppendModeType const type.
-func PossibleAppendModeTypeValues() [1]AppendModeType {
-	return [1]AppendModeType{Autocreate}
+func PossibleAppendModeTypeValues() []AppendModeType {
+	return []AppendModeType{Autocreate}
 }
 
 // Exception enumerates the values for exception.
@@ -65,8 +65,8 @@ const (
 )
 
 // PossibleExceptionValues returns an array of possible values for the Exception const type.
-func PossibleExceptionValues() [11]Exception {
-	return [11]Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionThrottledException, ExceptionUnsupportedOperationException}
+func PossibleExceptionValues() []Exception {
+	return []Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionThrottledException, ExceptionUnsupportedOperationException}
 }
 
 // ExpiryOptionType enumerates the values for expiry option type.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleExpiryOptionTypeValues returns an array of possible values for the ExpiryOptionType const type.
-func PossibleExpiryOptionTypeValues() [4]ExpiryOptionType {
-	return [4]ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
+func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
+	return []ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
 }
 
 // FileType enumerates the values for file type.
@@ -99,8 +99,8 @@ const (
 )
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() [2]FileType {
-	return [2]FileType{DIRECTORY, FILE}
+func PossibleFileTypeValues() []FileType {
+	return []FileType{DIRECTORY, FILE}
 }
 
 // SyncFlag enumerates the values for sync flag.
@@ -116,8 +116,8 @@ const (
 )
 
 // PossibleSyncFlagValues returns an array of possible values for the SyncFlag const type.
-func PossibleSyncFlagValues() [3]SyncFlag {
-	return [3]SyncFlag{CLOSE, DATA, METADATA}
+func PossibleSyncFlagValues() []SyncFlag {
+	return []SyncFlag{CLOSE, DATA, METADATA}
 }
 
 // ACLStatus data Lake Store file or directory Access Control List information.

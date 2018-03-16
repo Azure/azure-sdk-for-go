@@ -36,7 +36,7 @@ github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job
 github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account
 github.com/Azure/azure-sdk-for-go/services/datalake/store/2016-11-01/filesystem
 github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account
-github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2017-11-15/iothub
+github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub
 github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl
 github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns
 github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad

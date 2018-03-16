@@ -50,7 +50,7 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 

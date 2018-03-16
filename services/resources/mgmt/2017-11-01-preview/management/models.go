@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleChildTypeValues returns an array of possible values for the ChildType const type.
-func PossibleChildTypeValues() [2]ChildType {
-	return [2]ChildType{ChildTypeManagementGroup, ChildTypeSubscription}
+func PossibleChildTypeValues() []ChildType {
+	return []ChildType{ChildTypeManagementGroup, ChildTypeSubscription}
 }
 
 // ChildInfo the child information of a management group.

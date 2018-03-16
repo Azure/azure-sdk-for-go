@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -74,8 +74,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // SafeSearch enumerates the values for safe search.
@@ -91,8 +91,8 @@ const (
 )
 
 // PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() [3]SafeSearch {
-	return [3]SafeSearch{Moderate, Off, Strict}
+func PossibleSafeSearchValues() []SafeSearch {
+	return []SafeSearch{Moderate, Off, Strict}
 }
 
 // TextFormat enumerates the values for text format.
@@ -106,8 +106,8 @@ const (
 )
 
 // PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() [2]TextFormat {
-	return [2]TextFormat{HTML, Raw}
+func PossibleTextFormatValues() []TextFormat {
+	return []TextFormat{HTML, Raw}
 }
 
 // Type enumerates the values for type.
@@ -139,8 +139,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [11]Type {
-	return [11]Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeThing, TypeWebPage, TypeWebWebAnswer}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeThing, TypeWebPage, TypeWebWebAnswer}
 }
 
 // BasicAnswer ...

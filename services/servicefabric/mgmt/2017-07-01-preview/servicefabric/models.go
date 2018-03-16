@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleClusterStateValues returns an array of possible values for the ClusterState const type.
-func PossibleClusterStateValues() [10]ClusterState {
-	return [10]ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
+func PossibleClusterStateValues() []ClusterState {
+	return []ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
 }
 
 // DefaultMoveCost enumerates the values for default move cost.
@@ -72,8 +72,8 @@ const (
 )
 
 // PossibleDefaultMoveCostValues returns an array of possible values for the DefaultMoveCost const type.
-func PossibleDefaultMoveCostValues() [4]DefaultMoveCost {
-	return [4]DefaultMoveCost{High, Low, Medium, Zero}
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
+	return []DefaultMoveCost{High, Low, Medium, Zero}
 }
 
 // DurabilityLevel enumerates the values for durability level.
@@ -89,8 +89,8 @@ const (
 )
 
 // PossibleDurabilityLevelValues returns an array of possible values for the DurabilityLevel const type.
-func PossibleDurabilityLevelValues() [3]DurabilityLevel {
-	return [3]DurabilityLevel{Bronze, Gold, Silver}
+func PossibleDurabilityLevelValues() []DurabilityLevel {
+	return []DurabilityLevel{Bronze, Gold, Silver}
 }
 
 // Environment enumerates the values for environment.
@@ -104,8 +104,8 @@ const (
 )
 
 // PossibleEnvironmentValues returns an array of possible values for the Environment const type.
-func PossibleEnvironmentValues() [2]Environment {
-	return [2]Environment{Linux, Windows}
+func PossibleEnvironmentValues() []Environment {
+	return []Environment{Linux, Windows}
 }
 
 // PartitionScheme enumerates the values for partition scheme.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
-func PossiblePartitionSchemeValues() [4]PartitionScheme {
-	return [4]PartitionScheme{PartitionSchemeNamed, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return []PartitionScheme{PartitionSchemeNamed, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -142,8 +142,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [4]ProvisioningState {
-	return [4]ProvisioningState{Canceled, Failed, Succeeded, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Canceled, Failed, Succeeded, Updating}
 }
 
 // ReliabilityLevel enumerates the values for reliability level.
@@ -163,8 +163,8 @@ const (
 )
 
 // PossibleReliabilityLevelValues returns an array of possible values for the ReliabilityLevel const type.
-func PossibleReliabilityLevelValues() [5]ReliabilityLevel {
-	return [5]ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelNone, ReliabilityLevelPlatinum, ReliabilityLevelSilver}
+func PossibleReliabilityLevelValues() []ReliabilityLevel {
+	return []ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelNone, ReliabilityLevelPlatinum, ReliabilityLevelSilver}
 }
 
 // ReliabilityLevel1 enumerates the values for reliability level 1.
@@ -180,8 +180,8 @@ const (
 )
 
 // PossibleReliabilityLevel1Values returns an array of possible values for the ReliabilityLevel1 const type.
-func PossibleReliabilityLevel1Values() [3]ReliabilityLevel1 {
-	return [3]ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Silver}
+func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
+	return []ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Silver}
 }
 
 // Scheme enumerates the values for scheme.
@@ -199,8 +199,8 @@ const (
 )
 
 // PossibleSchemeValues returns an array of possible values for the Scheme const type.
-func PossibleSchemeValues() [4]Scheme {
-	return [4]Scheme{Affinity, AlignedAffinity, Invalid, NonAlignedAffinity}
+func PossibleSchemeValues() []Scheme {
+	return []Scheme{Affinity, AlignedAffinity, Invalid, NonAlignedAffinity}
 }
 
 // ServiceKind enumerates the values for service kind.
@@ -216,8 +216,8 @@ const (
 )
 
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() [3]ServiceKind {
-	return [3]ServiceKind{ServiceKindServiceProperties, ServiceKindStateful, ServiceKindStateless}
+func PossibleServiceKindValues() []ServiceKind {
+	return []ServiceKind{ServiceKindServiceProperties, ServiceKindStateful, ServiceKindStateless}
 }
 
 // ServiceKindBasicServiceUpdateProperties enumerates the values for service kind basic service update
@@ -234,8 +234,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceUpdatePropertiesValues returns an array of possible values for the ServiceKindBasicServiceUpdateProperties const type.
-func PossibleServiceKindBasicServiceUpdatePropertiesValues() [3]ServiceKindBasicServiceUpdateProperties {
-	return [3]ServiceKindBasicServiceUpdateProperties{ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties, ServiceKindBasicServiceUpdatePropertiesServiceKindStateful, ServiceKindBasicServiceUpdatePropertiesServiceKindStateless}
+func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
+	return []ServiceKindBasicServiceUpdateProperties{ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties, ServiceKindBasicServiceUpdatePropertiesServiceKindStateful, ServiceKindBasicServiceUpdatePropertiesServiceKindStateless}
 }
 
 // Type enumerates the values for type.
@@ -247,8 +247,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [1]Type {
-	return [1]Type{TypeServicePlacementPolicyDescription}
+func PossibleTypeValues() []Type {
+	return []Type{TypeServicePlacementPolicyDescription}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -262,8 +262,8 @@ const (
 )
 
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() [2]UpgradeMode {
-	return [2]UpgradeMode{Automatic, Manual}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return []UpgradeMode{Automatic, Manual}
 }
 
 // UpgradeMode1 enumerates the values for upgrade mode 1.
@@ -277,8 +277,8 @@ const (
 )
 
 // PossibleUpgradeMode1Values returns an array of possible values for the UpgradeMode1 const type.
-func PossibleUpgradeMode1Values() [2]UpgradeMode1 {
-	return [2]UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
+func PossibleUpgradeMode1Values() []UpgradeMode1 {
+	return []UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
 }
 
 // Weight enumerates the values for weight.
@@ -296,8 +296,8 @@ const (
 )
 
 // PossibleWeightValues returns an array of possible values for the Weight const type.
-func PossibleWeightValues() [4]Weight {
-	return [4]Weight{WeightHigh, WeightLow, WeightMedium, WeightZero}
+func PossibleWeightValues() []Weight {
+	return []Weight{WeightHigh, WeightLow, WeightMedium, WeightZero}
 }
 
 // X509StoreName enumerates the values for x509 store name.
@@ -323,8 +323,8 @@ const (
 )
 
 // PossibleX509StoreNameValues returns an array of possible values for the X509StoreName const type.
-func PossibleX509StoreNameValues() [8]X509StoreName {
-	return [8]X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
+func PossibleX509StoreNameValues() []X509StoreName {
+	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
 }
 
 // ApplicationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.

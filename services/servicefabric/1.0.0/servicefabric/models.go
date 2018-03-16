@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleAggregatedHealthStateValues returns an array of possible values for the AggregatedHealthState const type.
-func PossibleAggregatedHealthStateValues() [5]AggregatedHealthState {
-	return [5]AggregatedHealthState{Error, Invalid, Ok, Unknown, Warning}
+func PossibleAggregatedHealthStateValues() []AggregatedHealthState {
+	return []AggregatedHealthState{Error, Invalid, Ok, Unknown, Warning}
 }
 
 // AggregatedHealthState1 enumerates the values for aggregated health state 1.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleAggregatedHealthState1Values returns an array of possible values for the AggregatedHealthState1 const type.
-func PossibleAggregatedHealthState1Values() [5]AggregatedHealthState1 {
-	return [5]AggregatedHealthState1{AggregatedHealthState1Error, AggregatedHealthState1Invalid, AggregatedHealthState1Ok, AggregatedHealthState1Unknown, AggregatedHealthState1Warning}
+func PossibleAggregatedHealthState1Values() []AggregatedHealthState1 {
+	return []AggregatedHealthState1{AggregatedHealthState1Error, AggregatedHealthState1Invalid, AggregatedHealthState1Ok, AggregatedHealthState1Unknown, AggregatedHealthState1Warning}
 }
 
 // AggregatedHealthState10 enumerates the values for aggregated health state 10.
@@ -81,8 +81,8 @@ const (
 )
 
 // PossibleAggregatedHealthState10Values returns an array of possible values for the AggregatedHealthState10 const type.
-func PossibleAggregatedHealthState10Values() [5]AggregatedHealthState10 {
-	return [5]AggregatedHealthState10{AggregatedHealthState10Error, AggregatedHealthState10Invalid, AggregatedHealthState10Ok, AggregatedHealthState10Unknown, AggregatedHealthState10Warning}
+func PossibleAggregatedHealthState10Values() []AggregatedHealthState10 {
+	return []AggregatedHealthState10{AggregatedHealthState10Error, AggregatedHealthState10Invalid, AggregatedHealthState10Ok, AggregatedHealthState10Unknown, AggregatedHealthState10Warning}
 }
 
 // AggregatedHealthState11 enumerates the values for aggregated health state 11.
@@ -102,8 +102,8 @@ const (
 )
 
 // PossibleAggregatedHealthState11Values returns an array of possible values for the AggregatedHealthState11 const type.
-func PossibleAggregatedHealthState11Values() [5]AggregatedHealthState11 {
-	return [5]AggregatedHealthState11{AggregatedHealthState11Error, AggregatedHealthState11Invalid, AggregatedHealthState11Ok, AggregatedHealthState11Unknown, AggregatedHealthState11Warning}
+func PossibleAggregatedHealthState11Values() []AggregatedHealthState11 {
+	return []AggregatedHealthState11{AggregatedHealthState11Error, AggregatedHealthState11Invalid, AggregatedHealthState11Ok, AggregatedHealthState11Unknown, AggregatedHealthState11Warning}
 }
 
 // AggregatedHealthState12 enumerates the values for aggregated health state 12.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossibleAggregatedHealthState12Values returns an array of possible values for the AggregatedHealthState12 const type.
-func PossibleAggregatedHealthState12Values() [5]AggregatedHealthState12 {
-	return [5]AggregatedHealthState12{AggregatedHealthState12Error, AggregatedHealthState12Invalid, AggregatedHealthState12Ok, AggregatedHealthState12Unknown, AggregatedHealthState12Warning}
+func PossibleAggregatedHealthState12Values() []AggregatedHealthState12 {
+	return []AggregatedHealthState12{AggregatedHealthState12Error, AggregatedHealthState12Invalid, AggregatedHealthState12Ok, AggregatedHealthState12Unknown, AggregatedHealthState12Warning}
 }
 
 // AggregatedHealthState13 enumerates the values for aggregated health state 13.
@@ -144,8 +144,8 @@ const (
 )
 
 // PossibleAggregatedHealthState13Values returns an array of possible values for the AggregatedHealthState13 const type.
-func PossibleAggregatedHealthState13Values() [5]AggregatedHealthState13 {
-	return [5]AggregatedHealthState13{AggregatedHealthState13Error, AggregatedHealthState13Invalid, AggregatedHealthState13Ok, AggregatedHealthState13Unknown, AggregatedHealthState13Warning}
+func PossibleAggregatedHealthState13Values() []AggregatedHealthState13 {
+	return []AggregatedHealthState13{AggregatedHealthState13Error, AggregatedHealthState13Invalid, AggregatedHealthState13Ok, AggregatedHealthState13Unknown, AggregatedHealthState13Warning}
 }
 
 // AggregatedHealthState14 enumerates the values for aggregated health state 14.
@@ -165,8 +165,8 @@ const (
 )
 
 // PossibleAggregatedHealthState14Values returns an array of possible values for the AggregatedHealthState14 const type.
-func PossibleAggregatedHealthState14Values() [5]AggregatedHealthState14 {
-	return [5]AggregatedHealthState14{AggregatedHealthState14Error, AggregatedHealthState14Invalid, AggregatedHealthState14Ok, AggregatedHealthState14Unknown, AggregatedHealthState14Warning}
+func PossibleAggregatedHealthState14Values() []AggregatedHealthState14 {
+	return []AggregatedHealthState14{AggregatedHealthState14Error, AggregatedHealthState14Invalid, AggregatedHealthState14Ok, AggregatedHealthState14Unknown, AggregatedHealthState14Warning}
 }
 
 // AggregatedHealthState15 enumerates the values for aggregated health state 15.
@@ -186,8 +186,8 @@ const (
 )
 
 // PossibleAggregatedHealthState15Values returns an array of possible values for the AggregatedHealthState15 const type.
-func PossibleAggregatedHealthState15Values() [5]AggregatedHealthState15 {
-	return [5]AggregatedHealthState15{AggregatedHealthState15Error, AggregatedHealthState15Invalid, AggregatedHealthState15Ok, AggregatedHealthState15Unknown, AggregatedHealthState15Warning}
+func PossibleAggregatedHealthState15Values() []AggregatedHealthState15 {
+	return []AggregatedHealthState15{AggregatedHealthState15Error, AggregatedHealthState15Invalid, AggregatedHealthState15Ok, AggregatedHealthState15Unknown, AggregatedHealthState15Warning}
 }
 
 // AggregatedHealthState2 enumerates the values for aggregated health state 2.
@@ -207,8 +207,8 @@ const (
 )
 
 // PossibleAggregatedHealthState2Values returns an array of possible values for the AggregatedHealthState2 const type.
-func PossibleAggregatedHealthState2Values() [5]AggregatedHealthState2 {
-	return [5]AggregatedHealthState2{AggregatedHealthState2Error, AggregatedHealthState2Invalid, AggregatedHealthState2Ok, AggregatedHealthState2Unknown, AggregatedHealthState2Warning}
+func PossibleAggregatedHealthState2Values() []AggregatedHealthState2 {
+	return []AggregatedHealthState2{AggregatedHealthState2Error, AggregatedHealthState2Invalid, AggregatedHealthState2Ok, AggregatedHealthState2Unknown, AggregatedHealthState2Warning}
 }
 
 // AggregatedHealthState3 enumerates the values for aggregated health state 3.
@@ -228,8 +228,8 @@ const (
 )
 
 // PossibleAggregatedHealthState3Values returns an array of possible values for the AggregatedHealthState3 const type.
-func PossibleAggregatedHealthState3Values() [5]AggregatedHealthState3 {
-	return [5]AggregatedHealthState3{AggregatedHealthState3Error, AggregatedHealthState3Invalid, AggregatedHealthState3Ok, AggregatedHealthState3Unknown, AggregatedHealthState3Warning}
+func PossibleAggregatedHealthState3Values() []AggregatedHealthState3 {
+	return []AggregatedHealthState3{AggregatedHealthState3Error, AggregatedHealthState3Invalid, AggregatedHealthState3Ok, AggregatedHealthState3Unknown, AggregatedHealthState3Warning}
 }
 
 // AggregatedHealthState4 enumerates the values for aggregated health state 4.
@@ -249,8 +249,8 @@ const (
 )
 
 // PossibleAggregatedHealthState4Values returns an array of possible values for the AggregatedHealthState4 const type.
-func PossibleAggregatedHealthState4Values() [5]AggregatedHealthState4 {
-	return [5]AggregatedHealthState4{AggregatedHealthState4Error, AggregatedHealthState4Invalid, AggregatedHealthState4Ok, AggregatedHealthState4Unknown, AggregatedHealthState4Warning}
+func PossibleAggregatedHealthState4Values() []AggregatedHealthState4 {
+	return []AggregatedHealthState4{AggregatedHealthState4Error, AggregatedHealthState4Invalid, AggregatedHealthState4Ok, AggregatedHealthState4Unknown, AggregatedHealthState4Warning}
 }
 
 // AggregatedHealthState5 enumerates the values for aggregated health state 5.
@@ -270,8 +270,8 @@ const (
 )
 
 // PossibleAggregatedHealthState5Values returns an array of possible values for the AggregatedHealthState5 const type.
-func PossibleAggregatedHealthState5Values() [5]AggregatedHealthState5 {
-	return [5]AggregatedHealthState5{AggregatedHealthState5Error, AggregatedHealthState5Invalid, AggregatedHealthState5Ok, AggregatedHealthState5Unknown, AggregatedHealthState5Warning}
+func PossibleAggregatedHealthState5Values() []AggregatedHealthState5 {
+	return []AggregatedHealthState5{AggregatedHealthState5Error, AggregatedHealthState5Invalid, AggregatedHealthState5Ok, AggregatedHealthState5Unknown, AggregatedHealthState5Warning}
 }
 
 // AggregatedHealthState6 enumerates the values for aggregated health state 6.
@@ -291,8 +291,8 @@ const (
 )
 
 // PossibleAggregatedHealthState6Values returns an array of possible values for the AggregatedHealthState6 const type.
-func PossibleAggregatedHealthState6Values() [5]AggregatedHealthState6 {
-	return [5]AggregatedHealthState6{AggregatedHealthState6Error, AggregatedHealthState6Invalid, AggregatedHealthState6Ok, AggregatedHealthState6Unknown, AggregatedHealthState6Warning}
+func PossibleAggregatedHealthState6Values() []AggregatedHealthState6 {
+	return []AggregatedHealthState6{AggregatedHealthState6Error, AggregatedHealthState6Invalid, AggregatedHealthState6Ok, AggregatedHealthState6Unknown, AggregatedHealthState6Warning}
 }
 
 // AggregatedHealthState7 enumerates the values for aggregated health state 7.
@@ -312,8 +312,8 @@ const (
 )
 
 // PossibleAggregatedHealthState7Values returns an array of possible values for the AggregatedHealthState7 const type.
-func PossibleAggregatedHealthState7Values() [5]AggregatedHealthState7 {
-	return [5]AggregatedHealthState7{AggregatedHealthState7Error, AggregatedHealthState7Invalid, AggregatedHealthState7Ok, AggregatedHealthState7Unknown, AggregatedHealthState7Warning}
+func PossibleAggregatedHealthState7Values() []AggregatedHealthState7 {
+	return []AggregatedHealthState7{AggregatedHealthState7Error, AggregatedHealthState7Invalid, AggregatedHealthState7Ok, AggregatedHealthState7Unknown, AggregatedHealthState7Warning}
 }
 
 // AggregatedHealthState8 enumerates the values for aggregated health state 8.
@@ -333,8 +333,8 @@ const (
 )
 
 // PossibleAggregatedHealthState8Values returns an array of possible values for the AggregatedHealthState8 const type.
-func PossibleAggregatedHealthState8Values() [5]AggregatedHealthState8 {
-	return [5]AggregatedHealthState8{AggregatedHealthState8Error, AggregatedHealthState8Invalid, AggregatedHealthState8Ok, AggregatedHealthState8Unknown, AggregatedHealthState8Warning}
+func PossibleAggregatedHealthState8Values() []AggregatedHealthState8 {
+	return []AggregatedHealthState8{AggregatedHealthState8Error, AggregatedHealthState8Invalid, AggregatedHealthState8Ok, AggregatedHealthState8Unknown, AggregatedHealthState8Warning}
 }
 
 // AggregatedHealthState9 enumerates the values for aggregated health state 9.
@@ -354,8 +354,8 @@ const (
 )
 
 // PossibleAggregatedHealthState9Values returns an array of possible values for the AggregatedHealthState9 const type.
-func PossibleAggregatedHealthState9Values() [5]AggregatedHealthState9 {
-	return [5]AggregatedHealthState9{AggregatedHealthState9Error, AggregatedHealthState9Invalid, AggregatedHealthState9Ok, AggregatedHealthState9Unknown, AggregatedHealthState9Warning}
+func PossibleAggregatedHealthState9Values() []AggregatedHealthState9 {
+	return []AggregatedHealthState9{AggregatedHealthState9Error, AggregatedHealthState9Invalid, AggregatedHealthState9Ok, AggregatedHealthState9Unknown, AggregatedHealthState9Warning}
 }
 
 // DeactivationIntent enumerates the values for deactivation intent.
@@ -373,8 +373,8 @@ const (
 )
 
 // PossibleDeactivationIntentValues returns an array of possible values for the DeactivationIntent const type.
-func PossibleDeactivationIntentValues() [4]DeactivationIntent {
-	return [4]DeactivationIntent{Pause, RemoveData, RemoveNode, Restart}
+func PossibleDeactivationIntentValues() []DeactivationIntent {
+	return []DeactivationIntent{Pause, RemoveData, RemoveNode, Restart}
 }
 
 // DefaultMoveCost enumerates the values for default move cost.
@@ -392,8 +392,8 @@ const (
 )
 
 // PossibleDefaultMoveCostValues returns an array of possible values for the DefaultMoveCost const type.
-func PossibleDefaultMoveCostValues() [4]DefaultMoveCost {
-	return [4]DefaultMoveCost{High, Low, Medium, Zero}
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
+	return []DefaultMoveCost{High, Low, Medium, Zero}
 }
 
 // DefaultMoveCost1 enumerates the values for default move cost 1.
@@ -411,8 +411,8 @@ const (
 )
 
 // PossibleDefaultMoveCost1Values returns an array of possible values for the DefaultMoveCost1 const type.
-func PossibleDefaultMoveCost1Values() [4]DefaultMoveCost1 {
-	return [4]DefaultMoveCost1{DefaultMoveCost1High, DefaultMoveCost1Low, DefaultMoveCost1Medium, DefaultMoveCost1Zero}
+func PossibleDefaultMoveCost1Values() []DefaultMoveCost1 {
+	return []DefaultMoveCost1{DefaultMoveCost1High, DefaultMoveCost1Low, DefaultMoveCost1Medium, DefaultMoveCost1Zero}
 }
 
 // DefaultMoveCost2 enumerates the values for default move cost 2.
@@ -430,8 +430,8 @@ const (
 )
 
 // PossibleDefaultMoveCost2Values returns an array of possible values for the DefaultMoveCost2 const type.
-func PossibleDefaultMoveCost2Values() [4]DefaultMoveCost2 {
-	return [4]DefaultMoveCost2{DefaultMoveCost2High, DefaultMoveCost2Low, DefaultMoveCost2Medium, DefaultMoveCost2Zero}
+func PossibleDefaultMoveCost2Values() []DefaultMoveCost2 {
+	return []DefaultMoveCost2{DefaultMoveCost2High, DefaultMoveCost2Low, DefaultMoveCost2Medium, DefaultMoveCost2Zero}
 }
 
 // DefaultMoveCost3 enumerates the values for default move cost 3.
@@ -449,8 +449,8 @@ const (
 )
 
 // PossibleDefaultMoveCost3Values returns an array of possible values for the DefaultMoveCost3 const type.
-func PossibleDefaultMoveCost3Values() [4]DefaultMoveCost3 {
-	return [4]DefaultMoveCost3{DefaultMoveCost3High, DefaultMoveCost3Low, DefaultMoveCost3Medium, DefaultMoveCost3Zero}
+func PossibleDefaultMoveCost3Values() []DefaultMoveCost3 {
+	return []DefaultMoveCost3{DefaultMoveCost3High, DefaultMoveCost3Low, DefaultMoveCost3Medium, DefaultMoveCost3Zero}
 }
 
 // FailureReason enumerates the values for failure reason.
@@ -470,8 +470,8 @@ const (
 )
 
 // PossibleFailureReasonValues returns an array of possible values for the FailureReason const type.
-func PossibleFailureReasonValues() [5]FailureReason {
-	return [5]FailureReason{FailureReasonHealthCheck, FailureReasonInterrupted, FailureReasonInvalid, FailureReasonOverallUpgradeTimeout, FailureReasonUpgradeDomainTimeout}
+func PossibleFailureReasonValues() []FailureReason {
+	return []FailureReason{FailureReasonHealthCheck, FailureReasonInterrupted, FailureReasonInvalid, FailureReasonOverallUpgradeTimeout, FailureReasonUpgradeDomainTimeout}
 }
 
 // FailureReason1 enumerates the values for failure reason 1.
@@ -491,8 +491,8 @@ const (
 )
 
 // PossibleFailureReason1Values returns an array of possible values for the FailureReason1 const type.
-func PossibleFailureReason1Values() [5]FailureReason1 {
-	return [5]FailureReason1{FailureReason1HealthCheck, FailureReason1Interrupted, FailureReason1Invalid, FailureReason1OverallUpgradeTimeout, FailureReason1UpgradeDomainTimeout}
+func PossibleFailureReason1Values() []FailureReason1 {
+	return []FailureReason1{FailureReason1HealthCheck, FailureReason1Interrupted, FailureReason1Invalid, FailureReason1OverallUpgradeTimeout, FailureReason1UpgradeDomainTimeout}
 }
 
 // HealthState enumerates the values for health state.
@@ -512,8 +512,8 @@ const (
 )
 
 // PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() [5]HealthState {
-	return [5]HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
+func PossibleHealthStateValues() []HealthState {
+	return []HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
 }
 
 // HealthState1 enumerates the values for health state 1.
@@ -533,8 +533,8 @@ const (
 )
 
 // PossibleHealthState1Values returns an array of possible values for the HealthState1 const type.
-func PossibleHealthState1Values() [5]HealthState1 {
-	return [5]HealthState1{HealthState1Error, HealthState1Invalid, HealthState1Ok, HealthState1Unknown, HealthState1Warning}
+func PossibleHealthState1Values() []HealthState1 {
+	return []HealthState1{HealthState1Error, HealthState1Invalid, HealthState1Ok, HealthState1Unknown, HealthState1Warning}
 }
 
 // HealthState2 enumerates the values for health state 2.
@@ -554,8 +554,8 @@ const (
 )
 
 // PossibleHealthState2Values returns an array of possible values for the HealthState2 const type.
-func PossibleHealthState2Values() [5]HealthState2 {
-	return [5]HealthState2{HealthState2Error, HealthState2Invalid, HealthState2Ok, HealthState2Unknown, HealthState2Warning}
+func PossibleHealthState2Values() []HealthState2 {
+	return []HealthState2{HealthState2Error, HealthState2Invalid, HealthState2Ok, HealthState2Unknown, HealthState2Warning}
 }
 
 // HealthState3 enumerates the values for health state 3.
@@ -575,8 +575,8 @@ const (
 )
 
 // PossibleHealthState3Values returns an array of possible values for the HealthState3 const type.
-func PossibleHealthState3Values() [5]HealthState3 {
-	return [5]HealthState3{HealthState3Error, HealthState3Invalid, HealthState3Ok, HealthState3Unknown, HealthState3Warning}
+func PossibleHealthState3Values() []HealthState3 {
+	return []HealthState3{HealthState3Error, HealthState3Invalid, HealthState3Ok, HealthState3Unknown, HealthState3Warning}
 }
 
 // HealthState4 enumerates the values for health state 4.
@@ -596,8 +596,8 @@ const (
 )
 
 // PossibleHealthState4Values returns an array of possible values for the HealthState4 const type.
-func PossibleHealthState4Values() [5]HealthState4 {
-	return [5]HealthState4{HealthState4Error, HealthState4Invalid, HealthState4Ok, HealthState4Unknown, HealthState4Warning}
+func PossibleHealthState4Values() []HealthState4 {
+	return []HealthState4{HealthState4Error, HealthState4Invalid, HealthState4Ok, HealthState4Unknown, HealthState4Warning}
 }
 
 // HealthState5 enumerates the values for health state 5.
@@ -617,8 +617,8 @@ const (
 )
 
 // PossibleHealthState5Values returns an array of possible values for the HealthState5 const type.
-func PossibleHealthState5Values() [5]HealthState5 {
-	return [5]HealthState5{HealthState5Error, HealthState5Invalid, HealthState5Ok, HealthState5Unknown, HealthState5Warning}
+func PossibleHealthState5Values() []HealthState5 {
+	return []HealthState5{HealthState5Error, HealthState5Invalid, HealthState5Ok, HealthState5Unknown, HealthState5Warning}
 }
 
 // HealthState6 enumerates the values for health state 6.
@@ -638,8 +638,8 @@ const (
 )
 
 // PossibleHealthState6Values returns an array of possible values for the HealthState6 const type.
-func PossibleHealthState6Values() [5]HealthState6 {
-	return [5]HealthState6{HealthState6Error, HealthState6Invalid, HealthState6Ok, HealthState6Unknown, HealthState6Warning}
+func PossibleHealthState6Values() []HealthState6 {
+	return []HealthState6{HealthState6Error, HealthState6Invalid, HealthState6Ok, HealthState6Unknown, HealthState6Warning}
 }
 
 // Kind enumerates the values for kind.
@@ -693,8 +693,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [22]Kind {
-	return [22]Kind{KindApplication, KindApplications, KindApplicationType, KindDeltaNodesCheck, KindDeployedApplication, KindDeployedApplications, KindDeployedServicePackage, KindDeployedServicePackages, KindEvent, KindHealthEvaluation, KindNode, KindNodes, KindPartition, KindPartitions, KindReplica, KindReplicas, KindService, KindServices, KindSystemApplication, KindUpgradeDomainDeltaNodesCheck, KindUpgradeDomainDeployedApplications, KindUpgradeDomainNodes}
+func PossibleKindValues() []Kind {
+	return []Kind{KindApplication, KindApplications, KindApplicationType, KindDeltaNodesCheck, KindDeployedApplication, KindDeployedApplications, KindDeployedServicePackage, KindDeployedServicePackages, KindEvent, KindHealthEvaluation, KindNode, KindNodes, KindPartition, KindPartitions, KindReplica, KindReplicas, KindService, KindServices, KindSystemApplication, KindUpgradeDomainDeltaNodesCheck, KindUpgradeDomainDeployedApplications, KindUpgradeDomainNodes}
 }
 
 // NodeDeactivationIntent enumerates the values for node deactivation intent.
@@ -712,8 +712,8 @@ const (
 )
 
 // PossibleNodeDeactivationIntentValues returns an array of possible values for the NodeDeactivationIntent const type.
-func PossibleNodeDeactivationIntentValues() [4]NodeDeactivationIntent {
-	return [4]NodeDeactivationIntent{NodeDeactivationIntentInvalid, NodeDeactivationIntentPause, NodeDeactivationIntentRemoveData, NodeDeactivationIntentRestart}
+func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
+	return []NodeDeactivationIntent{NodeDeactivationIntentInvalid, NodeDeactivationIntentPause, NodeDeactivationIntentRemoveData, NodeDeactivationIntentRestart}
 }
 
 // NodeDeactivationStatus enumerates the values for node deactivation status.
@@ -731,8 +731,8 @@ const (
 )
 
 // PossibleNodeDeactivationStatusValues returns an array of possible values for the NodeDeactivationStatus const type.
-func PossibleNodeDeactivationStatusValues() [4]NodeDeactivationStatus {
-	return [4]NodeDeactivationStatus{NodeDeactivationStatusCompleted, NodeDeactivationStatusInvalid, NodeDeactivationStatusSafetyCheckComplete, NodeDeactivationStatusSafetyCheckInProgress}
+func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
+	return []NodeDeactivationStatus{NodeDeactivationStatusCompleted, NodeDeactivationStatusInvalid, NodeDeactivationStatusSafetyCheckComplete, NodeDeactivationStatusSafetyCheckInProgress}
 }
 
 // NodeStatus enumerates the values for node status.
@@ -758,8 +758,8 @@ const (
 )
 
 // PossibleNodeStatusValues returns an array of possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() [8]NodeStatus {
-	return [8]NodeStatus{NodeStatusDisabled, NodeStatusDisabling, NodeStatusDown, NodeStatusEnabling, NodeStatusInvalid, NodeStatusRemoved, NodeStatusUnknown, NodeStatusUp}
+func PossibleNodeStatusValues() []NodeStatus {
+	return []NodeStatus{NodeStatusDisabled, NodeStatusDisabling, NodeStatusDown, NodeStatusEnabling, NodeStatusInvalid, NodeStatusRemoved, NodeStatusUnknown, NodeStatusUp}
 }
 
 // PartitionScheme enumerates the values for partition scheme.
@@ -777,8 +777,8 @@ const (
 )
 
 // PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
-func PossiblePartitionSchemeValues() [4]PartitionScheme {
-	return [4]PartitionScheme{PartitionSchemeInvalid, PartitionSchemeNamed, PartitionSchemeSingleton, PartitionSchemeUniformInt64}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return []PartitionScheme{PartitionSchemeInvalid, PartitionSchemeNamed, PartitionSchemeSingleton, PartitionSchemeUniformInt64}
 }
 
 // PartitionStatus enumerates the values for partition status.
@@ -800,8 +800,8 @@ const (
 )
 
 // PossiblePartitionStatusValues returns an array of possible values for the PartitionStatus const type.
-func PossiblePartitionStatusValues() [6]PartitionStatus {
-	return [6]PartitionStatus{PartitionStatusDeleting, PartitionStatusInQuorumLoss, PartitionStatusInvalid, PartitionStatusNotReady, PartitionStatusReady, PartitionStatusReconfiguring}
+func PossiblePartitionStatusValues() []PartitionStatus {
+	return []PartitionStatus{PartitionStatusDeleting, PartitionStatusInQuorumLoss, PartitionStatusInvalid, PartitionStatusNotReady, PartitionStatusReady, PartitionStatusReconfiguring}
 }
 
 // ReplicaRole enumerates the values for replica role.
@@ -821,8 +821,8 @@ const (
 )
 
 // PossibleReplicaRoleValues returns an array of possible values for the ReplicaRole const type.
-func PossibleReplicaRoleValues() [5]ReplicaRole {
-	return [5]ReplicaRole{ReplicaRoleActiveSecondary, ReplicaRoleIdleSecondary, ReplicaRoleInvalid, ReplicaRoleNone, ReplicaRolePrimary}
+func PossibleReplicaRoleValues() []ReplicaRole {
+	return []ReplicaRole{ReplicaRoleActiveSecondary, ReplicaRoleIdleSecondary, ReplicaRoleInvalid, ReplicaRoleNone, ReplicaRolePrimary}
 }
 
 // ReplicaRole1 enumerates the values for replica role 1.
@@ -842,8 +842,8 @@ const (
 )
 
 // PossibleReplicaRole1Values returns an array of possible values for the ReplicaRole1 const type.
-func PossibleReplicaRole1Values() [5]ReplicaRole1 {
-	return [5]ReplicaRole1{ReplicaRole1ActiveSecondary, ReplicaRole1IdleSecondary, ReplicaRole1Invalid, ReplicaRole1None, ReplicaRole1Primary}
+func PossibleReplicaRole1Values() []ReplicaRole1 {
+	return []ReplicaRole1{ReplicaRole1ActiveSecondary, ReplicaRole1IdleSecondary, ReplicaRole1Invalid, ReplicaRole1None, ReplicaRole1Primary}
 }
 
 // ReplicaStatus enumerates the values for replica status.
@@ -865,8 +865,8 @@ const (
 )
 
 // PossibleReplicaStatusValues returns an array of possible values for the ReplicaStatus const type.
-func PossibleReplicaStatusValues() [6]ReplicaStatus {
-	return [6]ReplicaStatus{ReplicaStatusDown, ReplicaStatusDropped, ReplicaStatusInBuild, ReplicaStatusInvalid, ReplicaStatusReady, ReplicaStatusStandby}
+func PossibleReplicaStatusValues() []ReplicaStatus {
+	return []ReplicaStatus{ReplicaStatusDown, ReplicaStatusDropped, ReplicaStatusInBuild, ReplicaStatusInvalid, ReplicaStatusReady, ReplicaStatusStandby}
 }
 
 // ReplicaStatus1 enumerates the values for replica status 1.
@@ -888,8 +888,8 @@ const (
 )
 
 // PossibleReplicaStatus1Values returns an array of possible values for the ReplicaStatus1 const type.
-func PossibleReplicaStatus1Values() [6]ReplicaStatus1 {
-	return [6]ReplicaStatus1{ReplicaStatus1Down, ReplicaStatus1Dropped, ReplicaStatus1InBuild, ReplicaStatus1Invalid, ReplicaStatus1Ready, ReplicaStatus1Standby}
+func PossibleReplicaStatus1Values() []ReplicaStatus1 {
+	return []ReplicaStatus1{ReplicaStatus1Down, ReplicaStatus1Dropped, ReplicaStatus1InBuild, ReplicaStatus1Invalid, ReplicaStatus1Ready, ReplicaStatus1Standby}
 }
 
 // RollingUpgradeMode enumerates the values for rolling upgrade mode.
@@ -907,8 +907,8 @@ const (
 )
 
 // PossibleRollingUpgradeModeValues returns an array of possible values for the RollingUpgradeMode const type.
-func PossibleRollingUpgradeModeValues() [4]RollingUpgradeMode {
-	return [4]RollingUpgradeMode{RollingUpgradeModeInvalid, RollingUpgradeModeMonitored, RollingUpgradeModeUnmonitoredAuto, RollingUpgradeModeUnmonitoredManual}
+func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
+	return []RollingUpgradeMode{RollingUpgradeModeInvalid, RollingUpgradeModeMonitored, RollingUpgradeModeUnmonitoredAuto, RollingUpgradeModeUnmonitoredManual}
 }
 
 // RollingUpgradeMode1 enumerates the values for rolling upgrade mode 1.
@@ -926,8 +926,8 @@ const (
 )
 
 // PossibleRollingUpgradeMode1Values returns an array of possible values for the RollingUpgradeMode1 const type.
-func PossibleRollingUpgradeMode1Values() [4]RollingUpgradeMode1 {
-	return [4]RollingUpgradeMode1{RollingUpgradeMode1Invalid, RollingUpgradeMode1Monitored, RollingUpgradeMode1UnmonitoredAuto, RollingUpgradeMode1UnmonitoredManual}
+func PossibleRollingUpgradeMode1Values() []RollingUpgradeMode1 {
+	return []RollingUpgradeMode1{RollingUpgradeMode1Invalid, RollingUpgradeMode1Monitored, RollingUpgradeMode1UnmonitoredAuto, RollingUpgradeMode1UnmonitoredManual}
 }
 
 // RollingUpgradeMode2 enumerates the values for rolling upgrade mode 2.
@@ -945,8 +945,8 @@ const (
 )
 
 // PossibleRollingUpgradeMode2Values returns an array of possible values for the RollingUpgradeMode2 const type.
-func PossibleRollingUpgradeMode2Values() [4]RollingUpgradeMode2 {
-	return [4]RollingUpgradeMode2{RollingUpgradeMode2Invalid, RollingUpgradeMode2Monitored, RollingUpgradeMode2UnmonitoredAuto, RollingUpgradeMode2UnmonitoredManual}
+func PossibleRollingUpgradeMode2Values() []RollingUpgradeMode2 {
+	return []RollingUpgradeMode2{RollingUpgradeMode2Invalid, RollingUpgradeMode2Monitored, RollingUpgradeMode2UnmonitoredAuto, RollingUpgradeMode2UnmonitoredManual}
 }
 
 // RollingUpgradeMode3 enumerates the values for rolling upgrade mode 3.
@@ -964,8 +964,8 @@ const (
 )
 
 // PossibleRollingUpgradeMode3Values returns an array of possible values for the RollingUpgradeMode3 const type.
-func PossibleRollingUpgradeMode3Values() [4]RollingUpgradeMode3 {
-	return [4]RollingUpgradeMode3{RollingUpgradeMode3Invalid, RollingUpgradeMode3Monitored, RollingUpgradeMode3UnmonitoredAuto, RollingUpgradeMode3UnmonitoredManual}
+func PossibleRollingUpgradeMode3Values() []RollingUpgradeMode3 {
+	return []RollingUpgradeMode3{RollingUpgradeMode3Invalid, RollingUpgradeMode3Monitored, RollingUpgradeMode3UnmonitoredAuto, RollingUpgradeMode3UnmonitoredManual}
 }
 
 // RollingUpgradeMode4 enumerates the values for rolling upgrade mode 4.
@@ -983,8 +983,8 @@ const (
 )
 
 // PossibleRollingUpgradeMode4Values returns an array of possible values for the RollingUpgradeMode4 const type.
-func PossibleRollingUpgradeMode4Values() [4]RollingUpgradeMode4 {
-	return [4]RollingUpgradeMode4{RollingUpgradeMode4Invalid, RollingUpgradeMode4Monitored, RollingUpgradeMode4UnmonitoredAuto, RollingUpgradeMode4UnmonitoredManual}
+func PossibleRollingUpgradeMode4Values() []RollingUpgradeMode4 {
+	return []RollingUpgradeMode4{RollingUpgradeMode4Invalid, RollingUpgradeMode4Monitored, RollingUpgradeMode4UnmonitoredAuto, RollingUpgradeMode4UnmonitoredManual}
 }
 
 // RollingUpgradeMode5 enumerates the values for rolling upgrade mode 5.
@@ -1002,8 +1002,8 @@ const (
 )
 
 // PossibleRollingUpgradeMode5Values returns an array of possible values for the RollingUpgradeMode5 const type.
-func PossibleRollingUpgradeMode5Values() [4]RollingUpgradeMode5 {
-	return [4]RollingUpgradeMode5{RollingUpgradeMode5Invalid, RollingUpgradeMode5Monitored, RollingUpgradeMode5UnmonitoredAuto, RollingUpgradeMode5UnmonitoredManual}
+func PossibleRollingUpgradeMode5Values() []RollingUpgradeMode5 {
+	return []RollingUpgradeMode5{RollingUpgradeMode5Invalid, RollingUpgradeMode5Monitored, RollingUpgradeMode5UnmonitoredAuto, RollingUpgradeMode5UnmonitoredManual}
 }
 
 // ServiceCorrelationScheme enumerates the values for service correlation scheme.
@@ -1021,8 +1021,8 @@ const (
 )
 
 // PossibleServiceCorrelationSchemeValues returns an array of possible values for the ServiceCorrelationScheme const type.
-func PossibleServiceCorrelationSchemeValues() [4]ServiceCorrelationScheme {
-	return [4]ServiceCorrelationScheme{ServiceCorrelationSchemeAffinity, ServiceCorrelationSchemeAlignedAffinity, ServiceCorrelationSchemeInvalid, ServiceCorrelationSchemeNonAlignedAffinity}
+func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
+	return []ServiceCorrelationScheme{ServiceCorrelationSchemeAffinity, ServiceCorrelationSchemeAlignedAffinity, ServiceCorrelationSchemeInvalid, ServiceCorrelationSchemeNonAlignedAffinity}
 }
 
 // ServiceKind enumerates the values for service kind.
@@ -1038,8 +1038,8 @@ const (
 )
 
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() [3]ServiceKind {
-	return [3]ServiceKind{ServiceKindInvalid, ServiceKindStateful, ServiceKindStateless}
+func PossibleServiceKindValues() []ServiceKind {
+	return []ServiceKind{ServiceKindInvalid, ServiceKindStateful, ServiceKindStateless}
 }
 
 // ServiceKind1 enumerates the values for service kind 1.
@@ -1055,8 +1055,8 @@ const (
 )
 
 // PossibleServiceKind1Values returns an array of possible values for the ServiceKind1 const type.
-func PossibleServiceKind1Values() [3]ServiceKind1 {
-	return [3]ServiceKind1{ServiceKind1Invalid, ServiceKind1Stateful, ServiceKind1Stateless}
+func PossibleServiceKind1Values() []ServiceKind1 {
+	return []ServiceKind1{ServiceKind1Invalid, ServiceKind1Stateful, ServiceKind1Stateless}
 }
 
 // ServiceKind2 enumerates the values for service kind 2.
@@ -1072,8 +1072,8 @@ const (
 )
 
 // PossibleServiceKind2Values returns an array of possible values for the ServiceKind2 const type.
-func PossibleServiceKind2Values() [3]ServiceKind2 {
-	return [3]ServiceKind2{ServiceKind2Invalid, ServiceKind2Stateful, ServiceKind2Stateless}
+func PossibleServiceKind2Values() []ServiceKind2 {
+	return []ServiceKind2{ServiceKind2Invalid, ServiceKind2Stateful, ServiceKind2Stateless}
 }
 
 // ServiceKind3 enumerates the values for service kind 3.
@@ -1089,8 +1089,8 @@ const (
 )
 
 // PossibleServiceKind3Values returns an array of possible values for the ServiceKind3 const type.
-func PossibleServiceKind3Values() [3]ServiceKind3 {
-	return [3]ServiceKind3{ServiceKind3Invalid, ServiceKind3Stateful, ServiceKind3Stateless}
+func PossibleServiceKind3Values() []ServiceKind3 {
+	return []ServiceKind3{ServiceKind3Invalid, ServiceKind3Stateful, ServiceKind3Stateless}
 }
 
 // ServiceKind4 enumerates the values for service kind 4.
@@ -1106,8 +1106,8 @@ const (
 )
 
 // PossibleServiceKind4Values returns an array of possible values for the ServiceKind4 const type.
-func PossibleServiceKind4Values() [3]ServiceKind4 {
-	return [3]ServiceKind4{ServiceKind4Invalid, ServiceKind4Stateful, ServiceKind4Stateless}
+func PossibleServiceKind4Values() []ServiceKind4 {
+	return []ServiceKind4{ServiceKind4Invalid, ServiceKind4Stateful, ServiceKind4Stateless}
 }
 
 // ServiceKind5 enumerates the values for service kind 5.
@@ -1123,8 +1123,8 @@ const (
 )
 
 // PossibleServiceKind5Values returns an array of possible values for the ServiceKind5 const type.
-func PossibleServiceKind5Values() [3]ServiceKind5 {
-	return [3]ServiceKind5{ServiceKind5Invalid, ServiceKind5Stateful, ServiceKind5Stateless}
+func PossibleServiceKind5Values() []ServiceKind5 {
+	return []ServiceKind5{ServiceKind5Invalid, ServiceKind5Stateful, ServiceKind5Stateless}
 }
 
 // ServiceKind6 enumerates the values for service kind 6.
@@ -1140,8 +1140,8 @@ const (
 )
 
 // PossibleServiceKind6Values returns an array of possible values for the ServiceKind6 const type.
-func PossibleServiceKind6Values() [3]ServiceKind6 {
-	return [3]ServiceKind6{ServiceKind6Invalid, ServiceKind6Stateful, ServiceKind6Stateless}
+func PossibleServiceKind6Values() []ServiceKind6 {
+	return []ServiceKind6{ServiceKind6Invalid, ServiceKind6Stateful, ServiceKind6Stateless}
 }
 
 // ServiceKindBasicCreateServiceDescription enumerates the values for service kind basic create service
@@ -1158,8 +1158,8 @@ const (
 )
 
 // PossibleServiceKindBasicCreateServiceDescriptionValues returns an array of possible values for the ServiceKindBasicCreateServiceDescription const type.
-func PossibleServiceKindBasicCreateServiceDescriptionValues() [3]ServiceKindBasicCreateServiceDescription {
-	return [3]ServiceKindBasicCreateServiceDescription{ServiceKindCreateServiceDescription, ServiceKindStateful1, ServiceKindStateless1}
+func PossibleServiceKindBasicCreateServiceDescriptionValues() []ServiceKindBasicCreateServiceDescription {
+	return []ServiceKindBasicCreateServiceDescription{ServiceKindCreateServiceDescription, ServiceKindStateful1, ServiceKindStateless1}
 }
 
 // ServiceKindBasicCreateServiceGroupDescription enumerates the values for service kind basic create service
@@ -1176,8 +1176,8 @@ const (
 )
 
 // PossibleServiceKindBasicCreateServiceGroupDescriptionValues returns an array of possible values for the ServiceKindBasicCreateServiceGroupDescription const type.
-func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() [3]ServiceKindBasicCreateServiceGroupDescription {
-	return [3]ServiceKindBasicCreateServiceGroupDescription{ServiceKindBasicCreateServiceGroupDescriptionServiceKindCreateServiceGroupDescription, ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateful, ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless}
+func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() []ServiceKindBasicCreateServiceGroupDescription {
+	return []ServiceKindBasicCreateServiceGroupDescription{ServiceKindBasicCreateServiceGroupDescriptionServiceKindCreateServiceGroupDescription, ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateful, ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless}
 }
 
 // ServiceKindBasicServiceDescription enumerates the values for service kind basic service description.
@@ -1193,8 +1193,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceDescriptionValues returns an array of possible values for the ServiceKindBasicServiceDescription const type.
-func PossibleServiceKindBasicServiceDescriptionValues() [3]ServiceKindBasicServiceDescription {
-	return [3]ServiceKindBasicServiceDescription{ServiceKindBasicServiceDescriptionServiceKindServiceDescription, ServiceKindBasicServiceDescriptionServiceKindStateful, ServiceKindBasicServiceDescriptionServiceKindStateless}
+func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
+	return []ServiceKindBasicServiceDescription{ServiceKindBasicServiceDescriptionServiceKindServiceDescription, ServiceKindBasicServiceDescriptionServiceKindStateful, ServiceKindBasicServiceDescriptionServiceKindStateless}
 }
 
 // ServiceKindBasicServiceGroupDescription enumerates the values for service kind basic service group
@@ -1211,8 +1211,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceGroupDescriptionValues returns an array of possible values for the ServiceKindBasicServiceGroupDescription const type.
-func PossibleServiceKindBasicServiceGroupDescriptionValues() [3]ServiceKindBasicServiceGroupDescription {
-	return [3]ServiceKindBasicServiceGroupDescription{ServiceKindBasicServiceGroupDescriptionServiceKindServiceGroupDescription, ServiceKindBasicServiceGroupDescriptionServiceKindStateful, ServiceKindBasicServiceGroupDescriptionServiceKindStateless}
+func PossibleServiceKindBasicServiceGroupDescriptionValues() []ServiceKindBasicServiceGroupDescription {
+	return []ServiceKindBasicServiceGroupDescription{ServiceKindBasicServiceGroupDescriptionServiceKindServiceGroupDescription, ServiceKindBasicServiceGroupDescriptionServiceKindStateful, ServiceKindBasicServiceGroupDescriptionServiceKindStateless}
 }
 
 // ServiceKindBasicUpdateServiceDescription enumerates the values for service kind basic update service
@@ -1229,8 +1229,8 @@ const (
 )
 
 // PossibleServiceKindBasicUpdateServiceDescriptionValues returns an array of possible values for the ServiceKindBasicUpdateServiceDescription const type.
-func PossibleServiceKindBasicUpdateServiceDescriptionValues() [3]ServiceKindBasicUpdateServiceDescription {
-	return [3]ServiceKindBasicUpdateServiceDescription{ServiceKindBasicUpdateServiceDescriptionServiceKindStateful, ServiceKindBasicUpdateServiceDescriptionServiceKindStateless, ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription}
+func PossibleServiceKindBasicUpdateServiceDescriptionValues() []ServiceKindBasicUpdateServiceDescription {
+	return []ServiceKindBasicUpdateServiceDescription{ServiceKindBasicUpdateServiceDescriptionServiceKindStateful, ServiceKindBasicUpdateServiceDescriptionServiceKindStateless, ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription}
 }
 
 // ServiceKindBasicUpdateServiceGroupDescription enumerates the values for service kind basic update service
@@ -1247,8 +1247,8 @@ const (
 )
 
 // PossibleServiceKindBasicUpdateServiceGroupDescriptionValues returns an array of possible values for the ServiceKindBasicUpdateServiceGroupDescription const type.
-func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() [3]ServiceKindBasicUpdateServiceGroupDescription {
-	return [3]ServiceKindBasicUpdateServiceGroupDescription{ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateful, ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateless, ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription}
+func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() []ServiceKindBasicUpdateServiceGroupDescription {
+	return []ServiceKindBasicUpdateServiceGroupDescription{ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateful, ServiceKindBasicUpdateServiceGroupDescriptionServiceKindStateless, ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription}
 }
 
 // ServiceLoadMetricWeight enumerates the values for service load metric weight.
@@ -1266,8 +1266,8 @@ const (
 )
 
 // PossibleServiceLoadMetricWeightValues returns an array of possible values for the ServiceLoadMetricWeight const type.
-func PossibleServiceLoadMetricWeightValues() [4]ServiceLoadMetricWeight {
-	return [4]ServiceLoadMetricWeight{ServiceLoadMetricWeightHigh, ServiceLoadMetricWeightLow, ServiceLoadMetricWeightMedium, ServiceLoadMetricWeightZero}
+func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
+	return []ServiceLoadMetricWeight{ServiceLoadMetricWeightHigh, ServiceLoadMetricWeightLow, ServiceLoadMetricWeightMedium, ServiceLoadMetricWeightZero}
 }
 
 // ServicePartitionKind enumerates the values for service partition kind.
@@ -1285,8 +1285,8 @@ const (
 )
 
 // PossibleServicePartitionKindValues returns an array of possible values for the ServicePartitionKind const type.
-func PossibleServicePartitionKindValues() [4]ServicePartitionKind {
-	return [4]ServicePartitionKind{ServicePartitionKindInt64Range, ServicePartitionKindInvalid, ServicePartitionKindNamed, ServicePartitionKindSingleton}
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
+	return []ServicePartitionKind{ServicePartitionKindInt64Range, ServicePartitionKindInvalid, ServicePartitionKindNamed, ServicePartitionKindSingleton}
 }
 
 // ServiceStatus enumerates the values for service status.
@@ -1308,8 +1308,8 @@ const (
 )
 
 // PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() [6]ServiceStatus {
-	return [6]ServiceStatus{ServiceStatusActive, ServiceStatusCreating, ServiceStatusDeleting, ServiceStatusFaile, ServiceStatusInvalid, ServiceStatusUpgrading}
+func PossibleServiceStatusValues() []ServiceStatus {
+	return []ServiceStatus{ServiceStatusActive, ServiceStatusCreating, ServiceStatusDeleting, ServiceStatusFaile, ServiceStatusInvalid, ServiceStatusUpgrading}
 }
 
 // UpgradeKind enumerates the values for upgrade kind.
@@ -1323,8 +1323,8 @@ const (
 )
 
 // PossibleUpgradeKindValues returns an array of possible values for the UpgradeKind const type.
-func PossibleUpgradeKindValues() [2]UpgradeKind {
-	return [2]UpgradeKind{UpgradeKindInvalid, UpgradeKindRolling}
+func PossibleUpgradeKindValues() []UpgradeKind {
+	return []UpgradeKind{UpgradeKindInvalid, UpgradeKindRolling}
 }
 
 // UpgradeState enumerates the values for upgrade state.
@@ -1346,8 +1346,8 @@ const (
 )
 
 // PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
-func PossibleUpgradeStateValues() [6]UpgradeState {
-	return [6]UpgradeState{UpgradeStateInvalid, UpgradeStateRollingBackCompleted, UpgradeStateRollingBackInProgress, UpgradeStateRollingForwardCompleted, UpgradeStateRollingForwardInProgress, UpgradeStateRollingForwardPending}
+func PossibleUpgradeStateValues() []UpgradeState {
+	return []UpgradeState{UpgradeStateInvalid, UpgradeStateRollingBackCompleted, UpgradeStateRollingBackInProgress, UpgradeStateRollingForwardCompleted, UpgradeStateRollingForwardInProgress, UpgradeStateRollingForwardPending}
 }
 
 // UpgradeState1 enumerates the values for upgrade state 1.
@@ -1369,8 +1369,8 @@ const (
 )
 
 // PossibleUpgradeState1Values returns an array of possible values for the UpgradeState1 const type.
-func PossibleUpgradeState1Values() [6]UpgradeState1 {
-	return [6]UpgradeState1{UpgradeState1Invalid, UpgradeState1RollingBackCompleted, UpgradeState1RollingBackInProgress, UpgradeState1RollingForwardCompleted, UpgradeState1RollingForwardInProgress, UpgradeState1RollingForwardPending}
+func PossibleUpgradeState1Values() []UpgradeState1 {
+	return []UpgradeState1{UpgradeState1Invalid, UpgradeState1RollingBackCompleted, UpgradeState1RollingBackInProgress, UpgradeState1RollingForwardCompleted, UpgradeState1RollingForwardInProgress, UpgradeState1RollingForwardPending}
 }
 
 // Application the application

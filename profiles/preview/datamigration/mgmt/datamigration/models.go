@@ -44,7 +44,7 @@ const (
 	WindowsAuthentication     AuthenticationType = original.WindowsAuthentication
 )
 
-func PossibleAuthenticationTypeValues() [5]AuthenticationType {
+func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
 
@@ -60,7 +60,7 @@ const (
 	CompatLevel90  DatabaseCompatLevel = original.CompatLevel90
 )
 
-func PossibleDatabaseCompatLevelValues() [7]DatabaseCompatLevel {
+func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
 	return original.PossibleDatabaseCompatLevelValues()
 }
 
@@ -74,7 +74,7 @@ const (
 	Rows         DatabaseFileType = original.Rows
 )
 
-func PossibleDatabaseFileTypeValues() [5]DatabaseFileType {
+func PossibleDatabaseFileTypeValues() []DatabaseFileType {
 	return original.PossibleDatabaseFileTypeValues()
 }
 
@@ -89,7 +89,7 @@ const (
 	DatabaseMigrationStageRestore    DatabaseMigrationStage = original.DatabaseMigrationStageRestore
 )
 
-func PossibleDatabaseMigrationStageValues() [6]DatabaseMigrationStage {
+func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
 	return original.PossibleDatabaseMigrationStageValues()
 }
 
@@ -107,7 +107,7 @@ const (
 	Suspect          DatabaseState = original.Suspect
 )
 
-func PossibleDatabaseStateValues() [9]DatabaseState {
+func PossibleDatabaseStateValues() []DatabaseState {
 	return original.PossibleDatabaseStateValues()
 }
 
@@ -119,7 +119,7 @@ const (
 	ErrorTypeWarning ErrorType = original.ErrorTypeWarning
 )
 
-func PossibleErrorTypeValues() [3]ErrorType {
+func PossibleErrorTypeValues() []ErrorType {
 	return original.PossibleErrorTypeValues()
 }
 
@@ -135,7 +135,7 @@ const (
 	MigrationStateWarning    MigrationState = original.MigrationStateWarning
 )
 
-func PossibleMigrationStateValues() [7]MigrationState {
+func PossibleMigrationStateValues() []MigrationState {
 	return original.PossibleMigrationStateValues()
 }
 
@@ -154,7 +154,7 @@ const (
 	MigrationStatusStopped                 MigrationStatus = original.MigrationStatusStopped
 )
 
-func PossibleMigrationStatusValues() [10]MigrationStatus {
+func PossibleMigrationStatusValues() []MigrationStatus {
 	return original.PossibleMigrationStatusValues()
 }
 
@@ -165,7 +165,7 @@ const (
 	Invalid       NameCheckFailureReason = original.Invalid
 )
 
-func PossibleNameCheckFailureReasonValues() [2]NameCheckFailureReason {
+func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
 	return original.PossibleNameCheckFailureReasonValues()
 }
 
@@ -179,7 +179,7 @@ const (
 	View             ObjectType = original.View
 )
 
-func PossibleObjectTypeValues() [5]ObjectType {
+func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()
 }
 
@@ -190,7 +190,7 @@ const (
 	Succeeded ProjectProvisioningState = original.Succeeded
 )
 
-func PossibleProjectProvisioningStateValues() [2]ProjectProvisioningState {
+func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
 	return original.PossibleProjectProvisioningStateValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	Unknown ProjectSourcePlatform = original.Unknown
 )
 
-func PossibleProjectSourcePlatformValues() [2]ProjectSourcePlatform {
+func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
 	return original.PossibleProjectSourcePlatformValues()
 }
 
@@ -212,7 +212,7 @@ const (
 	ProjectTargetPlatformUnknown ProjectTargetPlatform = original.ProjectTargetPlatformUnknown
 )
 
-func PossibleProjectTargetPlatformValues() [2]ProjectTargetPlatform {
+func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
 	return original.PossibleProjectTargetPlatformValues()
 }
 
@@ -224,7 +224,7 @@ const (
 	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
-func PossibleResourceSkuCapacityScaleTypeValues() [3]ResourceSkuCapacityScaleType {
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
 	return original.PossibleResourceSkuCapacityScaleTypeValues()
 }
 
@@ -235,7 +235,7 @@ const (
 	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
 )
 
-func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
 	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
 }
 
@@ -245,7 +245,7 @@ const (
 	Location ResourceSkuRestrictionsType = original.Location
 )
 
-func PossibleResourceSkuRestrictionsTypeValues() [1]ResourceSkuRestrictionsType {
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
 
@@ -259,7 +259,7 @@ const (
 	ResultTypeTableLevelOutput                ResultType = original.ResultTypeTableLevelOutput
 )
 
-func PossibleResultTypeValues() [5]ResultType {
+func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()
 }
 
@@ -271,7 +271,7 @@ const (
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 )
 
-func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() [3]ResultTypeBasicConnectToSourceSQLServerTaskOutput {
+func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
 }
 
@@ -282,7 +282,7 @@ const (
 	MigrationFromSQLServerToAzureDB ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureDB
 )
 
-func PossibleServerLevelPermissionsGroupValues() [2]ServerLevelPermissionsGroup {
+func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
 	return original.PossibleServerLevelPermissionsGroupValues()
 }
 
@@ -301,7 +301,7 @@ const (
 	ServiceProvisioningStateSucceeded     ServiceProvisioningState = original.ServiceProvisioningStateSucceeded
 )
 
-func PossibleServiceProvisioningStateValues() [10]ServiceProvisioningState {
+func PossibleServiceProvisioningStateValues() []ServiceProvisioningState {
 	return original.PossibleServiceProvisioningStateValues()
 }
 
@@ -313,7 +313,7 @@ const (
 	ServiceScalabilityNone      ServiceScalability = original.ServiceScalabilityNone
 )
 
-func PossibleServiceScalabilityValues() [3]ServiceScalability {
+func PossibleServiceScalabilityValues() []ServiceScalability {
 	return original.PossibleServiceScalabilityValues()
 }
 
@@ -325,7 +325,7 @@ const (
 	SeverityWarning Severity = original.SeverityWarning
 )
 
-func PossibleSeverityValues() [3]Severity {
+func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
 }
 
@@ -342,7 +342,7 @@ const (
 	TaskStateUnknown               TaskState = original.TaskStateUnknown
 )
 
-func PossibleTaskStateValues() [8]TaskState {
+func PossibleTaskStateValues() []TaskState {
 	return original.PossibleTaskStateValues()
 }
 
@@ -356,7 +356,7 @@ const (
 	TaskTypeUnknown                  TaskType = original.TaskTypeUnknown
 )
 
-func PossibleTaskTypeValues() [5]TaskType {
+func PossibleTaskTypeValues() []TaskType {
 	return original.PossibleTaskTypeValues()
 }
 
@@ -367,7 +367,7 @@ const (
 	TypeUnknown           Type = original.TypeUnknown
 )
 
-func PossibleTypeValues() [2]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -379,7 +379,7 @@ const (
 	DeletedOnTarget UpdateActionType = original.DeletedOnTarget
 )
 
-func PossibleUpdateActionTypeValues() [3]UpdateActionType {
+func PossibleUpdateActionTypeValues() []UpdateActionType {
 	return original.PossibleUpdateActionTypeValues()
 }
 
@@ -396,7 +396,7 @@ const (
 	ValidationStatusStopped             ValidationStatus = original.ValidationStatusStopped
 )
 
-func PossibleValidationStatusValues() [8]ValidationStatus {
+func PossibleValidationStatusValues() []ValidationStatus {
 	return original.PossibleValidationStatusValues()
 }
 

@@ -43,15 +43,6 @@ func NewDpsCertificateClientWithBaseURI(baseURI string, subscriptionID string) D
 	return original.NewDpsCertificateClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type DpsCertificatesClient = original.DpsCertificatesClient
-
-func NewDpsCertificatesClient(subscriptionID string) DpsCertificatesClient {
-	return original.NewDpsCertificatesClient(subscriptionID)
-}
-func NewDpsCertificatesClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificatesClient {
-	return original.NewDpsCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type IotDpsResourceClient = original.IotDpsResourceClient
 
 func NewIotDpsResourceClient(subscriptionID string) IotDpsResourceClient {

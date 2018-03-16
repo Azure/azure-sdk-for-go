@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAccessLevelValues returns an array of possible values for the AccessLevel const type.
-func PossibleAccessLevelValues() [2]AccessLevel {
-	return [2]AccessLevel{None, Read}
+func PossibleAccessLevelValues() []AccessLevel {
+	return []AccessLevel{None, Read}
 }
 
 // DiskCreateOption enumerates the values for disk create option.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleDiskCreateOptionValues returns an array of possible values for the DiskCreateOption const type.
-func PossibleDiskCreateOptionValues() [6]DiskCreateOption {
-	return [6]DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore}
+func PossibleDiskCreateOptionValues() []DiskCreateOption {
+	return []DiskCreateOption{Attach, Copy, Empty, FromImage, Import, Restore}
 }
 
 // OperatingSystemTypes enumerates the values for operating system types.
@@ -75,8 +75,8 @@ const (
 )
 
 // PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
-	return [2]OperatingSystemTypes{Linux, Windows}
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return []OperatingSystemTypes{Linux, Windows}
 }
 
 // SnapshotStorageAccountTypes enumerates the values for snapshot storage account types.
@@ -92,8 +92,8 @@ const (
 )
 
 // PossibleSnapshotStorageAccountTypesValues returns an array of possible values for the SnapshotStorageAccountTypes const type.
-func PossibleSnapshotStorageAccountTypesValues() [3]SnapshotStorageAccountTypes {
-	return [3]SnapshotStorageAccountTypes{PremiumLRS, StandardLRS, StandardZRS}
+func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
+	return []SnapshotStorageAccountTypes{PremiumLRS, StandardLRS, StandardZRS}
 }
 
 // StorageAccountTypes enumerates the values for storage account types.
@@ -107,8 +107,8 @@ const (
 )
 
 // PossibleStorageAccountTypesValues returns an array of possible values for the StorageAccountTypes const type.
-func PossibleStorageAccountTypesValues() [2]StorageAccountTypes {
-	return [2]StorageAccountTypes{StorageAccountTypesPremiumLRS, StorageAccountTypesStandardLRS}
+func PossibleStorageAccountTypesValues() []StorageAccountTypes {
+	return []StorageAccountTypes{StorageAccountTypesPremiumLRS, StorageAccountTypesStandardLRS}
 }
 
 // AccessURI a disk access SAS uri.

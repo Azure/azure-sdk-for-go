@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleAggregationGranularityValues returns an array of possible values for the AggregationGranularity const type.
-func PossibleAggregationGranularityValues() [2]AggregationGranularity {
-	return [2]AggregationGranularity{Daily, Hourly}
+func PossibleAggregationGranularityValues() []AggregationGranularity {
+	return []AggregationGranularity{Daily, Hourly}
 }
 
 // Name enumerates the values for name.
@@ -57,8 +57,8 @@ const (
 )
 
 // PossibleNameValues returns an array of possible values for the Name const type.
-func PossibleNameValues() [4]Name {
-	return [4]Name{NameMonetaryCommitment, NameMonetaryCredit, NameOfferTermInfo, NameRecurringCharge}
+func PossibleNameValues() []Name {
+	return []Name{NameMonetaryCommitment, NameMonetaryCredit, NameOfferTermInfo, NameRecurringCharge}
 }
 
 // ErrorResponse describes the format of Error response.

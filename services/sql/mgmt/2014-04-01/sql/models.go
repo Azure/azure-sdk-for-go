@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() [2]AuthenticationType {
-	return [2]AuthenticationType{ADPassword, SQL}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{ADPassword, SQL}
 }
 
 // CheckNameAvailabilityReason enumerates the values for check name availability reason.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() [2]CheckNameAvailabilityReason {
-	return [2]CheckNameAvailabilityReason{AlreadyExists, Invalid}
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
 }
 
 // CreateMode enumerates the values for create mode.
@@ -79,8 +79,8 @@ const (
 )
 
 // PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() [8]CreateMode {
-	return [8]CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
 }
 
 // DatabaseEdition enumerates the values for database edition.
@@ -112,8 +112,8 @@ const (
 )
 
 // PossibleDatabaseEditionValues returns an array of possible values for the DatabaseEdition const type.
-func PossibleDatabaseEditionValues() [11]DatabaseEdition {
-	return [11]DatabaseEdition{Basic, Business, DataWarehouse, Free, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
+func PossibleDatabaseEditionValues() []DatabaseEdition {
+	return []DatabaseEdition{Basic, Business, DataWarehouse, Free, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
 }
 
 // ElasticPoolEdition enumerates the values for elastic pool edition.
@@ -129,8 +129,8 @@ const (
 )
 
 // PossibleElasticPoolEditionValues returns an array of possible values for the ElasticPoolEdition const type.
-func PossibleElasticPoolEditionValues() [3]ElasticPoolEdition {
-	return [3]ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
+func PossibleElasticPoolEditionValues() []ElasticPoolEdition {
+	return []ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
 }
 
 // ElasticPoolState enumerates the values for elastic pool state.
@@ -146,8 +146,8 @@ const (
 )
 
 // PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
-func PossibleElasticPoolStateValues() [3]ElasticPoolState {
-	return [3]ElasticPoolState{Creating, Disabled, Ready}
+func PossibleElasticPoolStateValues() []ElasticPoolState {
+	return []ElasticPoolState{Creating, Disabled, Ready}
 }
 
 // ReadScale enumerates the values for read scale.
@@ -161,8 +161,8 @@ const (
 )
 
 // PossibleReadScaleValues returns an array of possible values for the ReadScale const type.
-func PossibleReadScaleValues() [2]ReadScale {
-	return [2]ReadScale{ReadScaleDisabled, ReadScaleEnabled}
+func PossibleReadScaleValues() []ReadScale {
+	return []ReadScale{ReadScaleDisabled, ReadScaleEnabled}
 }
 
 // RecommendedIndexAction enumerates the values for recommended index action.
@@ -178,8 +178,8 @@ const (
 )
 
 // PossibleRecommendedIndexActionValues returns an array of possible values for the RecommendedIndexAction const type.
-func PossibleRecommendedIndexActionValues() [3]RecommendedIndexAction {
-	return [3]RecommendedIndexAction{Create, Drop, Rebuild}
+func PossibleRecommendedIndexActionValues() []RecommendedIndexAction {
+	return []RecommendedIndexAction{Create, Drop, Rebuild}
 }
 
 // RecommendedIndexState enumerates the values for recommended index state.
@@ -211,8 +211,8 @@ const (
 )
 
 // PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
-func PossibleRecommendedIndexStateValues() [11]RecommendedIndexState {
-	return [11]RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
+func PossibleRecommendedIndexStateValues() []RecommendedIndexState {
+	return []RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
 }
 
 // RecommendedIndexType enumerates the values for recommended index type.
@@ -230,8 +230,8 @@ const (
 )
 
 // PossibleRecommendedIndexTypeValues returns an array of possible values for the RecommendedIndexType const type.
-func PossibleRecommendedIndexTypeValues() [4]RecommendedIndexType {
-	return [4]RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
+func PossibleRecommendedIndexTypeValues() []RecommendedIndexType {
+	return []RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
 }
 
 // ReplicationRole enumerates the values for replication role.
@@ -251,8 +251,8 @@ const (
 )
 
 // PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
-func PossibleReplicationRoleValues() [5]ReplicationRole {
-	return [5]ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return []ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
 }
 
 // ReplicationState enumerates the values for replication state.
@@ -270,8 +270,8 @@ const (
 )
 
 // PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
-func PossibleReplicationStateValues() [4]ReplicationState {
-	return [4]ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
+func PossibleReplicationStateValues() []ReplicationState {
+	return []ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
 }
 
 // SampleName enumerates the values for sample name.
@@ -283,8 +283,8 @@ const (
 )
 
 // PossibleSampleNameValues returns an array of possible values for the SampleName const type.
-func PossibleSampleNameValues() [1]SampleName {
-	return [1]SampleName{AdventureWorksLT}
+func PossibleSampleNameValues() []SampleName {
+	return []SampleName{AdventureWorksLT}
 }
 
 // SecurityAlertPolicyEmailAccountAdmins enumerates the values for security alert policy email account admins.
@@ -298,8 +298,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyEmailAccountAdminsValues returns an array of possible values for the SecurityAlertPolicyEmailAccountAdmins const type.
-func PossibleSecurityAlertPolicyEmailAccountAdminsValues() [2]SecurityAlertPolicyEmailAccountAdmins {
-	return [2]SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
+func PossibleSecurityAlertPolicyEmailAccountAdminsValues() []SecurityAlertPolicyEmailAccountAdmins {
+	return []SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
 }
 
 // SecurityAlertPolicyState enumerates the values for security alert policy state.
@@ -315,8 +315,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
-func PossibleSecurityAlertPolicyStateValues() [3]SecurityAlertPolicyState {
-	return [3]SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
+	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
 }
 
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
@@ -330,8 +330,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyUseServerDefaultValues returns an array of possible values for the SecurityAlertPolicyUseServerDefault const type.
-func PossibleSecurityAlertPolicyUseServerDefaultValues() [2]SecurityAlertPolicyUseServerDefault {
-	return [2]SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
+func PossibleSecurityAlertPolicyUseServerDefaultValues() []SecurityAlertPolicyUseServerDefault {
+	return []SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
 }
 
 // ServiceObjectiveName enumerates the values for service objective name.
@@ -471,8 +471,8 @@ const (
 )
 
 // PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
-func PossibleServiceObjectiveNameValues() [65]ServiceObjectiveName {
-	return [65]ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
+func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
+	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
 }
 
 // StorageKeyType enumerates the values for storage key type.
@@ -486,8 +486,8 @@ const (
 )
 
 // PossibleStorageKeyTypeValues returns an array of possible values for the StorageKeyType const type.
-func PossibleStorageKeyTypeValues() [2]StorageKeyType {
-	return [2]StorageKeyType{SharedAccessKey, StorageAccessKey}
+func PossibleStorageKeyTypeValues() []StorageKeyType {
+	return []StorageKeyType{SharedAccessKey, StorageAccessKey}
 }
 
 // TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
@@ -502,8 +502,8 @@ const (
 )
 
 // PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
-func PossibleTransparentDataEncryptionActivityStatusValues() [2]TransparentDataEncryptionActivityStatus {
-	return [2]TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
+func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEncryptionActivityStatus {
+	return []TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
 }
 
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
@@ -517,8 +517,8 @@ const (
 )
 
 // PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
-func PossibleTransparentDataEncryptionStatusValues() [2]TransparentDataEncryptionStatus {
-	return [2]TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
+func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
+	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
 }
 
 // CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.

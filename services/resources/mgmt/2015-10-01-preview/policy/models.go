@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [3]Type {
-	return [3]Type{BuiltIn, Custom, NotSpecified}
+func PossibleTypeValues() []Type {
+	return []Type{BuiltIn, Custom, NotSpecified}
 }
 
 // Assignment the policy assignment.

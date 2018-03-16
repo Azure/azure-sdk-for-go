@@ -51,7 +51,7 @@ const (
 	Unknown     AvailabilityStateValues = original.Unknown
 )
 
-func PossibleAvailabilityStateValuesValues() [3]AvailabilityStateValues {
+func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 	return original.PossibleAvailabilityStateValuesValues()
 }
 
@@ -62,7 +62,7 @@ const (
 	Transient  ReasonChronicityTypes = original.Transient
 )
 
-func PossibleReasonChronicityTypesValues() [2]ReasonChronicityTypes {
+func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
 	return original.PossibleReasonChronicityTypesValues()
 }
 

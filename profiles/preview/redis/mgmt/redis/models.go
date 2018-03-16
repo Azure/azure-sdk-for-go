@@ -66,7 +66,7 @@ const (
 	Weekend   DayOfWeek = original.Weekend
 )
 
-func PossibleDayOfWeekValues() [9]DayOfWeek {
+func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
 
@@ -77,7 +77,7 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -89,7 +89,7 @@ const (
 	SecondaryNode RebootType = original.SecondaryNode
 )
 
-func PossibleRebootTypeValues() [3]RebootType {
+func PossibleRebootTypeValues() []RebootType {
 	return original.PossibleRebootTypeValues()
 }
 
@@ -100,7 +100,7 @@ const (
 	ReplicationRoleSecondary ReplicationRole = original.ReplicationRoleSecondary
 )
 
-func PossibleReplicationRoleValues() [2]ReplicationRole {
+func PossibleReplicationRoleValues() []ReplicationRole {
 	return original.PossibleReplicationRoleValues()
 }
 
@@ -111,7 +111,7 @@ const (
 	P SkuFamily = original.P
 )
 
-func PossibleSkuFamilyValues() [2]SkuFamily {
+func PossibleSkuFamilyValues() []SkuFamily {
 	return original.PossibleSkuFamilyValues()
 }
 
@@ -123,7 +123,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [3]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 

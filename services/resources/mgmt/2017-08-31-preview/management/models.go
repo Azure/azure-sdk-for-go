@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleChildTypeValues returns an array of possible values for the ChildType const type.
-func PossibleChildTypeValues() [4]ChildType {
-	return [4]ChildType{Account, Department, Enrollment, Subscription}
+func PossibleChildTypeValues() []ChildType {
+	return []ChildType{Account, Department, Enrollment, Subscription}
 }
 
 // ChildType1 enumerates the values for child type 1.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleChildType1Values returns an array of possible values for the ChildType1 const type.
-func PossibleChildType1Values() [4]ChildType1 {
-	return [4]ChildType1{ChildType1Account, ChildType1Department, ChildType1Enrollment, ChildType1Subscription}
+func PossibleChildType1Values() []ChildType1 {
+	return []ChildType1{ChildType1Account, ChildType1Department, ChildType1Enrollment, ChildType1Subscription}
 }
 
 // ManagementGroupType enumerates the values for management group type.
@@ -79,8 +79,8 @@ const (
 )
 
 // PossibleManagementGroupTypeValues returns an array of possible values for the ManagementGroupType const type.
-func PossibleManagementGroupTypeValues() [4]ManagementGroupType {
-	return [4]ManagementGroupType{ManagementGroupTypeAccount, ManagementGroupTypeDepartment, ManagementGroupTypeEnrollment, ManagementGroupTypeSubscription}
+func PossibleManagementGroupTypeValues() []ManagementGroupType {
+	return []ManagementGroupType{ManagementGroupTypeAccount, ManagementGroupTypeDepartment, ManagementGroupTypeEnrollment, ManagementGroupTypeSubscription}
 }
 
 // ChildInfo the unique identifier (ID) of a management group.

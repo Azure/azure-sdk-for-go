@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleApplicationDefinitionKindValues returns an array of possible values for the ApplicationDefinitionKind const type.
-func PossibleApplicationDefinitionKindValues() [3]ApplicationDefinitionKind {
-	return [3]ApplicationDefinitionKind{Compose, Invalid, ServiceFabricApplicationDescription}
+func PossibleApplicationDefinitionKindValues() []ApplicationDefinitionKind {
+	return []ApplicationDefinitionKind{Compose, Invalid, ServiceFabricApplicationDescription}
 }
 
 // ApplicationStatus enumerates the values for application status.
@@ -65,8 +65,8 @@ const (
 )
 
 // PossibleApplicationStatusValues returns an array of possible values for the ApplicationStatus const type.
-func PossibleApplicationStatusValues() [6]ApplicationStatus {
-	return [6]ApplicationStatus{ApplicationStatusCreating, ApplicationStatusDeleting, ApplicationStatusFailed, ApplicationStatusInvalid, ApplicationStatusReady, ApplicationStatusUpgrading}
+func PossibleApplicationStatusValues() []ApplicationStatus {
+	return []ApplicationStatus{ApplicationStatusCreating, ApplicationStatusDeleting, ApplicationStatusFailed, ApplicationStatusInvalid, ApplicationStatusReady, ApplicationStatusUpgrading}
 }
 
 // ApplicationTypeDefinitionKind enumerates the values for application type definition kind.
@@ -85,8 +85,8 @@ const (
 )
 
 // PossibleApplicationTypeDefinitionKindValues returns an array of possible values for the ApplicationTypeDefinitionKind const type.
-func PossibleApplicationTypeDefinitionKindValues() [3]ApplicationTypeDefinitionKind {
-	return [3]ApplicationTypeDefinitionKind{ApplicationTypeDefinitionKindCompose, ApplicationTypeDefinitionKindInvalid, ApplicationTypeDefinitionKindServiceFabricApplicationPackage}
+func PossibleApplicationTypeDefinitionKindValues() []ApplicationTypeDefinitionKind {
+	return []ApplicationTypeDefinitionKind{ApplicationTypeDefinitionKindCompose, ApplicationTypeDefinitionKindInvalid, ApplicationTypeDefinitionKindServiceFabricApplicationPackage}
 }
 
 // ApplicationTypeStatus enumerates the values for application type status.
@@ -113,8 +113,8 @@ const (
 )
 
 // PossibleApplicationTypeStatusValues returns an array of possible values for the ApplicationTypeStatus const type.
-func PossibleApplicationTypeStatusValues() [5]ApplicationTypeStatus {
-	return [5]ApplicationTypeStatus{ApplicationTypeStatusAvailable, ApplicationTypeStatusFailed, ApplicationTypeStatusInvalid, ApplicationTypeStatusProvisioning, ApplicationTypeStatusUnprovisioning}
+func PossibleApplicationTypeStatusValues() []ApplicationTypeStatus {
+	return []ApplicationTypeStatus{ApplicationTypeStatusAvailable, ApplicationTypeStatusFailed, ApplicationTypeStatusInvalid, ApplicationTypeStatusProvisioning, ApplicationTypeStatusUnprovisioning}
 }
 
 // ChaosEventKind enumerates the values for chaos event kind.
@@ -145,8 +145,8 @@ const (
 )
 
 // PossibleChaosEventKindValues returns an array of possible values for the ChaosEventKind const type.
-func PossibleChaosEventKindValues() [7]ChaosEventKind {
-	return [7]ChaosEventKind{ChaosEventKindExecutingFaults, ChaosEventKindInvalid, ChaosEventKindStarted, ChaosEventKindStopped, ChaosEventKindTestError, ChaosEventKindValidationFailed, ChaosEventKindWaiting}
+func PossibleChaosEventKindValues() []ChaosEventKind {
+	return []ChaosEventKind{ChaosEventKindExecutingFaults, ChaosEventKindInvalid, ChaosEventKindStarted, ChaosEventKindStopped, ChaosEventKindTestError, ChaosEventKindValidationFailed, ChaosEventKindWaiting}
 }
 
 // Code enumerates the values for code.
@@ -288,8 +288,8 @@ const (
 )
 
 // PossibleCodeValues returns an array of possible values for the Code const type.
-func PossibleCodeValues() [66]Code {
-	return [66]Code{EABORT, FABRICEAPPLICATIONALREADYEXISTS, FABRICEAPPLICATIONALREADYINTARGETVERSION, FABRICEAPPLICATIONNOTFOUND, FABRICEAPPLICATIONNOTUPGRADING, FABRICEAPPLICATIONTYPEALREADYEXISTS, FABRICEAPPLICATIONTYPEINUSE, FABRICEAPPLICATIONTYPENOTFOUND, FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS, FABRICEAPPLICATIONUPGRADEINPROGRESS, FABRICEAPPLICATIONUPGRADEVALIDATIONERROR, FABRICECOMMUNICATIONERROR, FABRICECONFIGURATIONPARAMETERNOTFOUND, FABRICECONFIGURATIONSECTIONNOTFOUND, FABRICEDIRECTORYNOTFOUND, FABRICEENUMERATIONCOMPLETED, FABRICEFABRICALREADYINTARGETVERSION, FABRICEFABRICNOTUPGRADING, FABRICEFABRICUPGRADEINPROGRESS, FABRICEFABRICUPGRADEVALIDATIONERROR, FABRICEFABRICVERSIONALREADYEXISTS, FABRICEFABRICVERSIONINUSE, FABRICEFABRICVERSIONNOTFOUND, FABRICEFILENOTFOUND, FABRICEHEALTHENTITYNOTFOUND, FABRICEHEALTHSTALEREPORT, FABRICEIMAGEBUILDERVALIDATIONERROR, FABRICEINSTANCEIDMISMATCH, FABRICEINVALIDADDRESS, FABRICEINVALIDATOMICGROUP, FABRICEINVALIDCONFIGURATION, FABRICEINVALIDNAMEURI, FABRICEINVALIDPARTITIONKEY, FABRICEKEYNOTFOUND, FABRICEKEYTOOLARGE, FABRICENAMEALREADYEXISTS, FABRICENAMEDOESNOTEXIST, FABRICENAMENOTEMPTY, FABRICENODEHASNOTSTOPPEDYET, FABRICENODEISUP, FABRICENODENOTFOUND, FABRICENOTPRIMARY, FABRICENOTREADY, FABRICENOWRITEQUORUM, FABRICEOPERATIONNOTCOMPLETE, FABRICEPARTITIONNOTFOUND, FABRICEPATHTOOLONG, FABRICEPROPERTYCHECKFAILED, FABRICEPROPERTYDOESNOTEXIST, FABRICERECONFIGURATIONPENDING, FABRICEREPLICADOESNOTEXIST, FABRICESEQUENCENUMBERCHECKFAILED, FABRICESERVICEAFFINITYCHAINNOTSUPPORTED, FABRICESERVICEALREADYEXISTS, FABRICESERVICEDOESNOTEXIST, FABRICESERVICEGROUPALREADYEXISTS, FABRICESERVICEGROUPDOESNOTEXIST, FABRICESERVICEMANIFESTNOTFOUND, FABRICESERVICEMETADATAMISMATCH, FABRICESERVICEOFFLINE, FABRICESERVICETYPEMISMATCH, FABRICESERVICETYPENOTFOUND, FABRICESERVICETYPETEMPLATENOTFOUND, FABRICETIMEOUT, FABRICEVALUEEMPTY, FABRICEVALUETOOLARGE}
+func PossibleCodeValues() []Code {
+	return []Code{EABORT, FABRICEAPPLICATIONALREADYEXISTS, FABRICEAPPLICATIONALREADYINTARGETVERSION, FABRICEAPPLICATIONNOTFOUND, FABRICEAPPLICATIONNOTUPGRADING, FABRICEAPPLICATIONTYPEALREADYEXISTS, FABRICEAPPLICATIONTYPEINUSE, FABRICEAPPLICATIONTYPENOTFOUND, FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS, FABRICEAPPLICATIONUPGRADEINPROGRESS, FABRICEAPPLICATIONUPGRADEVALIDATIONERROR, FABRICECOMMUNICATIONERROR, FABRICECONFIGURATIONPARAMETERNOTFOUND, FABRICECONFIGURATIONSECTIONNOTFOUND, FABRICEDIRECTORYNOTFOUND, FABRICEENUMERATIONCOMPLETED, FABRICEFABRICALREADYINTARGETVERSION, FABRICEFABRICNOTUPGRADING, FABRICEFABRICUPGRADEINPROGRESS, FABRICEFABRICUPGRADEVALIDATIONERROR, FABRICEFABRICVERSIONALREADYEXISTS, FABRICEFABRICVERSIONINUSE, FABRICEFABRICVERSIONNOTFOUND, FABRICEFILENOTFOUND, FABRICEHEALTHENTITYNOTFOUND, FABRICEHEALTHSTALEREPORT, FABRICEIMAGEBUILDERVALIDATIONERROR, FABRICEINSTANCEIDMISMATCH, FABRICEINVALIDADDRESS, FABRICEINVALIDATOMICGROUP, FABRICEINVALIDCONFIGURATION, FABRICEINVALIDNAMEURI, FABRICEINVALIDPARTITIONKEY, FABRICEKEYNOTFOUND, FABRICEKEYTOOLARGE, FABRICENAMEALREADYEXISTS, FABRICENAMEDOESNOTEXIST, FABRICENAMENOTEMPTY, FABRICENODEHASNOTSTOPPEDYET, FABRICENODEISUP, FABRICENODENOTFOUND, FABRICENOTPRIMARY, FABRICENOTREADY, FABRICENOWRITEQUORUM, FABRICEOPERATIONNOTCOMPLETE, FABRICEPARTITIONNOTFOUND, FABRICEPATHTOOLONG, FABRICEPROPERTYCHECKFAILED, FABRICEPROPERTYDOESNOTEXIST, FABRICERECONFIGURATIONPENDING, FABRICEREPLICADOESNOTEXIST, FABRICESEQUENCENUMBERCHECKFAILED, FABRICESERVICEAFFINITYCHAINNOTSUPPORTED, FABRICESERVICEALREADYEXISTS, FABRICESERVICEDOESNOTEXIST, FABRICESERVICEGROUPALREADYEXISTS, FABRICESERVICEGROUPDOESNOTEXIST, FABRICESERVICEMANIFESTNOTFOUND, FABRICESERVICEMETADATAMISMATCH, FABRICESERVICEOFFLINE, FABRICESERVICETYPEMISMATCH, FABRICESERVICETYPENOTFOUND, FABRICESERVICETYPETEMPLATENOTFOUND, FABRICETIMEOUT, FABRICEVALUEEMPTY, FABRICEVALUETOOLARGE}
 }
 
 // ComposeDeploymentStatus enumerates the values for compose deployment status.
@@ -323,8 +323,8 @@ const (
 )
 
 // PossibleComposeDeploymentStatusValues returns an array of possible values for the ComposeDeploymentStatus const type.
-func PossibleComposeDeploymentStatusValues() [8]ComposeDeploymentStatus {
-	return [8]ComposeDeploymentStatus{ComposeDeploymentStatusCreating, ComposeDeploymentStatusDeleting, ComposeDeploymentStatusFailed, ComposeDeploymentStatusInvalid, ComposeDeploymentStatusProvisioning, ComposeDeploymentStatusReady, ComposeDeploymentStatusUnprovisioning, ComposeDeploymentStatusUpgrading}
+func PossibleComposeDeploymentStatusValues() []ComposeDeploymentStatus {
+	return []ComposeDeploymentStatus{ComposeDeploymentStatusCreating, ComposeDeploymentStatusDeleting, ComposeDeploymentStatusFailed, ComposeDeploymentStatusInvalid, ComposeDeploymentStatusProvisioning, ComposeDeploymentStatusReady, ComposeDeploymentStatusUnprovisioning, ComposeDeploymentStatusUpgrading}
 }
 
 // ComposeDeploymentUpgradeState enumerates the values for compose deployment upgrade state.
@@ -364,8 +364,8 @@ const (
 )
 
 // PossibleComposeDeploymentUpgradeStateValues returns an array of possible values for the ComposeDeploymentUpgradeState const type.
-func PossibleComposeDeploymentUpgradeStateValues() [10]ComposeDeploymentUpgradeState {
-	return [10]ComposeDeploymentUpgradeState{ComposeDeploymentUpgradeStateFailed, ComposeDeploymentUpgradeStateInvalid, ComposeDeploymentUpgradeStateProvisioningTarget, ComposeDeploymentUpgradeStateRollingBackCompleted, ComposeDeploymentUpgradeStateRollingBackInProgress, ComposeDeploymentUpgradeStateRollingForwardCompleted, ComposeDeploymentUpgradeStateRollingForwardInProgress, ComposeDeploymentUpgradeStateRollingForwardPending, ComposeDeploymentUpgradeStateUnprovisioningCurrent, ComposeDeploymentUpgradeStateUnprovisioningTarget}
+func PossibleComposeDeploymentUpgradeStateValues() []ComposeDeploymentUpgradeState {
+	return []ComposeDeploymentUpgradeState{ComposeDeploymentUpgradeStateFailed, ComposeDeploymentUpgradeStateInvalid, ComposeDeploymentUpgradeStateProvisioningTarget, ComposeDeploymentUpgradeStateRollingBackCompleted, ComposeDeploymentUpgradeStateRollingBackInProgress, ComposeDeploymentUpgradeStateRollingForwardCompleted, ComposeDeploymentUpgradeStateRollingForwardInProgress, ComposeDeploymentUpgradeStateRollingForwardPending, ComposeDeploymentUpgradeStateUnprovisioningCurrent, ComposeDeploymentUpgradeStateUnprovisioningTarget}
 }
 
 // CreateFabricDump enumerates the values for create fabric dump.
@@ -379,8 +379,8 @@ const (
 )
 
 // PossibleCreateFabricDumpValues returns an array of possible values for the CreateFabricDump const type.
-func PossibleCreateFabricDumpValues() [2]CreateFabricDump {
-	return [2]CreateFabricDump{False, True}
+func PossibleCreateFabricDumpValues() []CreateFabricDump {
+	return []CreateFabricDump{False, True}
 }
 
 // DataLossModeRequiredQueryParam enumerates the values for data loss mode required query param.
@@ -398,8 +398,8 @@ const (
 )
 
 // PossibleDataLossModeRequiredQueryParamValues returns an array of possible values for the DataLossModeRequiredQueryParam const type.
-func PossibleDataLossModeRequiredQueryParamValues() [3]DataLossModeRequiredQueryParam {
-	return [3]DataLossModeRequiredQueryParam{DataLossModeRequiredQueryParamFullDataLoss, DataLossModeRequiredQueryParamInvalid, DataLossModeRequiredQueryParamPartialDataLoss}
+func PossibleDataLossModeRequiredQueryParamValues() []DataLossModeRequiredQueryParam {
+	return []DataLossModeRequiredQueryParam{DataLossModeRequiredQueryParamFullDataLoss, DataLossModeRequiredQueryParamInvalid, DataLossModeRequiredQueryParamPartialDataLoss}
 }
 
 // DeactivationIntent enumerates the values for deactivation intent.
@@ -416,8 +416,8 @@ const (
 )
 
 // PossibleDeactivationIntentValues returns an array of possible values for the DeactivationIntent const type.
-func PossibleDeactivationIntentValues() [3]DeactivationIntent {
-	return [3]DeactivationIntent{Pause, RemoveData, Restart}
+func PossibleDeactivationIntentValues() []DeactivationIntent {
+	return []DeactivationIntent{Pause, RemoveData, Restart}
 }
 
 // DeployedApplicationStatus enumerates the values for deployed application status.
@@ -441,8 +441,8 @@ const (
 )
 
 // PossibleDeployedApplicationStatusValues returns an array of possible values for the DeployedApplicationStatus const type.
-func PossibleDeployedApplicationStatusValues() [6]DeployedApplicationStatus {
-	return [6]DeployedApplicationStatus{DeployedApplicationStatusActivating, DeployedApplicationStatusActive, DeployedApplicationStatusDeactivating, DeployedApplicationStatusDownloading, DeployedApplicationStatusInvalid, DeployedApplicationStatusUpgrading}
+func PossibleDeployedApplicationStatusValues() []DeployedApplicationStatus {
+	return []DeployedApplicationStatus{DeployedApplicationStatusActivating, DeployedApplicationStatusActive, DeployedApplicationStatusDeactivating, DeployedApplicationStatusDownloading, DeployedApplicationStatusInvalid, DeployedApplicationStatusUpgrading}
 }
 
 // DeploymentStatus enumerates the values for deployment status.
@@ -469,8 +469,8 @@ const (
 )
 
 // PossibleDeploymentStatusValues returns an array of possible values for the DeploymentStatus const type.
-func PossibleDeploymentStatusValues() [6]DeploymentStatus {
-	return [6]DeploymentStatus{DeploymentStatusActivating, DeploymentStatusActive, DeploymentStatusDeactivating, DeploymentStatusDownloading, DeploymentStatusInvalid, DeploymentStatusUpgrading}
+func PossibleDeploymentStatusValues() []DeploymentStatus {
+	return []DeploymentStatus{DeploymentStatusActivating, DeploymentStatusActive, DeploymentStatusDeactivating, DeploymentStatusDownloading, DeploymentStatusInvalid, DeploymentStatusUpgrading}
 }
 
 // EntityKind enumerates the values for entity kind.
@@ -501,8 +501,8 @@ const (
 )
 
 // PossibleEntityKindValues returns an array of possible values for the EntityKind const type.
-func PossibleEntityKindValues() [9]EntityKind {
-	return [9]EntityKind{EntityKindApplication, EntityKindCluster, EntityKindDeployedApplication, EntityKindDeployedServicePackage, EntityKindInvalid, EntityKindNode, EntityKindPartition, EntityKindReplica, EntityKindService}
+func PossibleEntityKindValues() []EntityKind {
+	return []EntityKind{EntityKindApplication, EntityKindCluster, EntityKindDeployedApplication, EntityKindDeployedServicePackage, EntityKindInvalid, EntityKindNode, EntityKindPartition, EntityKindReplica, EntityKindService}
 }
 
 // EntryPointStatus enumerates the values for entry point status.
@@ -525,8 +525,8 @@ const (
 )
 
 // PossibleEntryPointStatusValues returns an array of possible values for the EntryPointStatus const type.
-func PossibleEntryPointStatusValues() [6]EntryPointStatus {
-	return [6]EntryPointStatus{EntryPointStatusInvalid, EntryPointStatusPending, EntryPointStatusStarted, EntryPointStatusStarting, EntryPointStatusStopped, EntryPointStatusStopping}
+func PossibleEntryPointStatusValues() []EntryPointStatus {
+	return []EntryPointStatus{EntryPointStatusInvalid, EntryPointStatusPending, EntryPointStatusStarted, EntryPointStatusStarting, EntryPointStatusStopped, EntryPointStatusStopping}
 }
 
 // FabricReplicaStatus enumerates the values for fabric replica status.
@@ -543,8 +543,8 @@ const (
 )
 
 // PossibleFabricReplicaStatusValues returns an array of possible values for the FabricReplicaStatus const type.
-func PossibleFabricReplicaStatusValues() [3]FabricReplicaStatus {
-	return [3]FabricReplicaStatus{FabricReplicaStatusDown, FabricReplicaStatusInvalid, FabricReplicaStatusUp}
+func PossibleFabricReplicaStatusValues() []FabricReplicaStatus {
+	return []FabricReplicaStatus{FabricReplicaStatusDown, FabricReplicaStatusInvalid, FabricReplicaStatusUp}
 }
 
 // FailureAction enumerates the values for failure action.
@@ -561,8 +561,8 @@ const (
 )
 
 // PossibleFailureActionValues returns an array of possible values for the FailureAction const type.
-func PossibleFailureActionValues() [3]FailureAction {
-	return [3]FailureAction{FailureActionInvalid, FailureActionManual, FailureActionRollback}
+func PossibleFailureActionValues() []FailureAction {
+	return []FailureAction{FailureActionInvalid, FailureActionManual, FailureActionRollback}
 }
 
 // FailureReason enumerates the values for failure reason.
@@ -585,8 +585,8 @@ const (
 )
 
 // PossibleFailureReasonValues returns an array of possible values for the FailureReason const type.
-func PossibleFailureReasonValues() [5]FailureReason {
-	return [5]FailureReason{HealthCheck, Interrupted, None, OverallUpgradeTimeout, UpgradeDomainTimeout}
+func PossibleFailureReasonValues() []FailureReason {
+	return []FailureReason{HealthCheck, Interrupted, None, OverallUpgradeTimeout, UpgradeDomainTimeout}
 }
 
 // HealthEvaluationKind enumerates the values for health evaluation kind.
@@ -655,8 +655,8 @@ const (
 )
 
 // PossibleHealthEvaluationKindValues returns an array of possible values for the HealthEvaluationKind const type.
-func PossibleHealthEvaluationKindValues() [22]HealthEvaluationKind {
-	return [22]HealthEvaluationKind{HealthEvaluationKindApplication, HealthEvaluationKindApplications, HealthEvaluationKindApplicationTypeApplications, HealthEvaluationKindDeltaNodesCheck, HealthEvaluationKindDeployedApplication, HealthEvaluationKindDeployedApplications, HealthEvaluationKindDeployedServicePackage, HealthEvaluationKindDeployedServicePackages, HealthEvaluationKindEvent, HealthEvaluationKindInvalid, HealthEvaluationKindNode, HealthEvaluationKindNodes, HealthEvaluationKindPartition, HealthEvaluationKindPartitions, HealthEvaluationKindReplica, HealthEvaluationKindReplicas, HealthEvaluationKindService, HealthEvaluationKindServices, HealthEvaluationKindSystemApplication, HealthEvaluationKindUpgradeDomainDeltaNodesCheck, HealthEvaluationKindUpgradeDomainDeployedApplications, HealthEvaluationKindUpgradeDomainNodes}
+func PossibleHealthEvaluationKindValues() []HealthEvaluationKind {
+	return []HealthEvaluationKind{HealthEvaluationKindApplication, HealthEvaluationKindApplications, HealthEvaluationKindApplicationTypeApplications, HealthEvaluationKindDeltaNodesCheck, HealthEvaluationKindDeployedApplication, HealthEvaluationKindDeployedApplications, HealthEvaluationKindDeployedServicePackage, HealthEvaluationKindDeployedServicePackages, HealthEvaluationKindEvent, HealthEvaluationKindInvalid, HealthEvaluationKindNode, HealthEvaluationKindNodes, HealthEvaluationKindPartition, HealthEvaluationKindPartitions, HealthEvaluationKindReplica, HealthEvaluationKindReplicas, HealthEvaluationKindService, HealthEvaluationKindServices, HealthEvaluationKindSystemApplication, HealthEvaluationKindUpgradeDomainDeltaNodesCheck, HealthEvaluationKindUpgradeDomainDeployedApplications, HealthEvaluationKindUpgradeDomainNodes}
 }
 
 // HealthState enumerates the values for health state.
@@ -678,8 +678,8 @@ const (
 )
 
 // PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() [5]HealthState {
-	return [5]HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
+func PossibleHealthStateValues() []HealthState {
+	return []HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
 }
 
 // HostIsolationMode enumerates the values for host isolation mode.
@@ -696,8 +696,8 @@ const (
 )
 
 // PossibleHostIsolationModeValues returns an array of possible values for the HostIsolationMode const type.
-func PossibleHostIsolationModeValues() [3]HostIsolationMode {
-	return [3]HostIsolationMode{HostIsolationModeHyperV, HostIsolationModeNone, HostIsolationModeProcess}
+func PossibleHostIsolationModeValues() []HostIsolationMode {
+	return []HostIsolationMode{HostIsolationModeHyperV, HostIsolationModeNone, HostIsolationModeProcess}
 }
 
 // HostType enumerates the values for host type.
@@ -713,8 +713,8 @@ const (
 )
 
 // PossibleHostTypeValues returns an array of possible values for the HostType const type.
-func PossibleHostTypeValues() [3]HostType {
-	return [3]HostType{HostTypeContainerHost, HostTypeExeHost, HostTypeInvalid}
+func PossibleHostTypeValues() []HostType {
+	return []HostType{HostTypeContainerHost, HostTypeExeHost, HostTypeInvalid}
 }
 
 // ImpactLevel enumerates the values for impact level.
@@ -734,8 +734,8 @@ const (
 )
 
 // PossibleImpactLevelValues returns an array of possible values for the ImpactLevel const type.
-func PossibleImpactLevelValues() [5]ImpactLevel {
-	return [5]ImpactLevel{ImpactLevelInvalid, ImpactLevelNone, ImpactLevelRemoveData, ImpactLevelRemoveNode, ImpactLevelRestart}
+func PossibleImpactLevelValues() []ImpactLevel {
+	return []ImpactLevel{ImpactLevelInvalid, ImpactLevelNone, ImpactLevelRemoveData, ImpactLevelRemoveNode, ImpactLevelRestart}
 }
 
 // Kind enumerates the values for kind.
@@ -787,8 +787,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [21]Kind {
-	return [21]Kind{KindApplication, KindApplications, KindApplicationTypeApplications, KindDeltaNodesCheck, KindDeployedApplication, KindDeployedApplications, KindDeployedServicePackage, KindDeployedServicePackages, KindEvent, KindHealthEvaluation, KindNode, KindNodes, KindPartition, KindPartitions, KindReplica, KindReplicas, KindService, KindServices, KindSystemApplication, KindUpgradeDomainDeltaNodesCheck, KindUpgradeDomainNodes}
+func PossibleKindValues() []Kind {
+	return []Kind{KindApplication, KindApplications, KindApplicationTypeApplications, KindDeltaNodesCheck, KindDeployedApplication, KindDeployedApplications, KindDeployedServicePackage, KindDeployedServicePackages, KindEvent, KindHealthEvaluation, KindNode, KindNodes, KindPartition, KindPartitions, KindReplica, KindReplicas, KindService, KindServices, KindSystemApplication, KindUpgradeDomainDeltaNodesCheck, KindUpgradeDomainNodes}
 }
 
 // KindBasicChaosEvent enumerates the values for kind basic chaos event.
@@ -812,8 +812,8 @@ const (
 )
 
 // PossibleKindBasicChaosEventValues returns an array of possible values for the KindBasicChaosEvent const type.
-func PossibleKindBasicChaosEventValues() [7]KindBasicChaosEvent {
-	return [7]KindBasicChaosEvent{KindChaosEvent, KindExecutingFaults, KindStarted, KindStopped, KindTestError, KindValidationFailed, KindWaiting}
+func PossibleKindBasicChaosEventValues() []KindBasicChaosEvent {
+	return []KindBasicChaosEvent{KindChaosEvent, KindExecutingFaults, KindStarted, KindStopped, KindTestError, KindValidationFailed, KindWaiting}
 }
 
 // KindBasicPropertyBatchInfo enumerates the values for kind basic property batch info.
@@ -829,8 +829,8 @@ const (
 )
 
 // PossibleKindBasicPropertyBatchInfoValues returns an array of possible values for the KindBasicPropertyBatchInfo const type.
-func PossibleKindBasicPropertyBatchInfoValues() [3]KindBasicPropertyBatchInfo {
-	return [3]KindBasicPropertyBatchInfo{KindFailed, KindPropertyBatchInfo, KindSuccessful}
+func PossibleKindBasicPropertyBatchInfoValues() []KindBasicPropertyBatchInfo {
+	return []KindBasicPropertyBatchInfo{KindFailed, KindPropertyBatchInfo, KindSuccessful}
 }
 
 // KindBasicPropertyBatchOperation enumerates the values for kind basic property batch operation.
@@ -854,8 +854,8 @@ const (
 )
 
 // PossibleKindBasicPropertyBatchOperationValues returns an array of possible values for the KindBasicPropertyBatchOperation const type.
-func PossibleKindBasicPropertyBatchOperationValues() [7]KindBasicPropertyBatchOperation {
-	return [7]KindBasicPropertyBatchOperation{KindCheckExists, KindCheckSequence, KindCheckValue, KindDelete, KindGet, KindPropertyBatchOperation, KindPut}
+func PossibleKindBasicPropertyBatchOperationValues() []KindBasicPropertyBatchOperation {
+	return []KindBasicPropertyBatchOperation{KindCheckExists, KindCheckSequence, KindCheckValue, KindDelete, KindGet, KindPropertyBatchOperation, KindPut}
 }
 
 // KindBasicPropertyValue enumerates the values for kind basic property value.
@@ -877,8 +877,8 @@ const (
 )
 
 // PossibleKindBasicPropertyValueValues returns an array of possible values for the KindBasicPropertyValue const type.
-func PossibleKindBasicPropertyValueValues() [6]KindBasicPropertyValue {
-	return [6]KindBasicPropertyValue{KindBinary, KindDouble, KindGUID, KindInt64, KindPropertyValue, KindString}
+func PossibleKindBasicPropertyValueValues() []KindBasicPropertyValue {
+	return []KindBasicPropertyValue{KindBinary, KindDouble, KindGUID, KindInt64, KindPropertyValue, KindString}
 }
 
 // KindBasicProvisionApplicationTypeDescriptionBase enumerates the values for kind basic provision application
@@ -895,8 +895,8 @@ const (
 )
 
 // PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues returns an array of possible values for the KindBasicProvisionApplicationTypeDescriptionBase const type.
-func PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues() [3]KindBasicProvisionApplicationTypeDescriptionBase {
-	return [3]KindBasicProvisionApplicationTypeDescriptionBase{KindExternalStore, KindImageStorePath, KindProvisionApplicationTypeDescriptionBase}
+func PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues() []KindBasicProvisionApplicationTypeDescriptionBase {
+	return []KindBasicProvisionApplicationTypeDescriptionBase{KindExternalStore, KindImageStorePath, KindProvisionApplicationTypeDescriptionBase}
 }
 
 // KindBasicRepairImpactDescriptionBase enumerates the values for kind basic repair impact description base.
@@ -910,8 +910,8 @@ const (
 )
 
 // PossibleKindBasicRepairImpactDescriptionBaseValues returns an array of possible values for the KindBasicRepairImpactDescriptionBase const type.
-func PossibleKindBasicRepairImpactDescriptionBaseValues() [2]KindBasicRepairImpactDescriptionBase {
-	return [2]KindBasicRepairImpactDescriptionBase{KindBasicRepairImpactDescriptionBaseKindNode, KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase}
+func PossibleKindBasicRepairImpactDescriptionBaseValues() []KindBasicRepairImpactDescriptionBase {
+	return []KindBasicRepairImpactDescriptionBase{KindBasicRepairImpactDescriptionBaseKindNode, KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase}
 }
 
 // KindBasicRepairTargetDescriptionBase enumerates the values for kind basic repair target description base.
@@ -925,8 +925,8 @@ const (
 )
 
 // PossibleKindBasicRepairTargetDescriptionBaseValues returns an array of possible values for the KindBasicRepairTargetDescriptionBase const type.
-func PossibleKindBasicRepairTargetDescriptionBaseValues() [2]KindBasicRepairTargetDescriptionBase {
-	return [2]KindBasicRepairTargetDescriptionBase{KindBasicRepairTargetDescriptionBaseKindNode, KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase}
+func PossibleKindBasicRepairTargetDescriptionBaseValues() []KindBasicRepairTargetDescriptionBase {
+	return []KindBasicRepairTargetDescriptionBase{KindBasicRepairTargetDescriptionBaseKindNode, KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase}
 }
 
 // KindBasicReplicaStatusBase enumerates the values for kind basic replica status base.
@@ -940,8 +940,8 @@ const (
 )
 
 // PossibleKindBasicReplicaStatusBaseValues returns an array of possible values for the KindBasicReplicaStatusBase const type.
-func PossibleKindBasicReplicaStatusBaseValues() [2]KindBasicReplicaStatusBase {
-	return [2]KindBasicReplicaStatusBase{KindKeyValueStore, KindReplicaStatusBase}
+func PossibleKindBasicReplicaStatusBaseValues() []KindBasicReplicaStatusBase {
+	return []KindBasicReplicaStatusBase{KindKeyValueStore, KindReplicaStatusBase}
 }
 
 // KindBasicReplicatorStatus enumerates the values for kind basic replicator status.
@@ -961,8 +961,8 @@ const (
 )
 
 // PossibleKindBasicReplicatorStatusValues returns an array of possible values for the KindBasicReplicatorStatus const type.
-func PossibleKindBasicReplicatorStatusValues() [5]KindBasicReplicatorStatus {
-	return [5]KindBasicReplicatorStatus{KindActiveSecondary, KindIdleSecondary, KindPrimary, KindReplicatorStatus, KindSecondaryReplicatorStatus}
+func PossibleKindBasicReplicatorStatusValues() []KindBasicReplicatorStatus {
+	return []KindBasicReplicatorStatus{KindActiveSecondary, KindIdleSecondary, KindPrimary, KindReplicatorStatus, KindSecondaryReplicatorStatus}
 }
 
 // KindBasicSafetyCheck enumerates the values for kind basic safety check.
@@ -990,8 +990,8 @@ const (
 )
 
 // PossibleKindBasicSafetyCheckValues returns an array of possible values for the KindBasicSafetyCheck const type.
-func PossibleKindBasicSafetyCheckValues() [9]KindBasicSafetyCheck {
-	return [9]KindBasicSafetyCheck{KindEnsureAvailability, KindEnsurePartitionQuorum, KindEnsureSeedNodeQuorum, KindPartitionSafetyCheck, KindSafetyCheck, KindWaitForInbuildReplica, KindWaitForPrimaryPlacement, KindWaitForPrimarySwap, KindWaitForReconfiguration}
+func PossibleKindBasicSafetyCheckValues() []KindBasicSafetyCheck {
+	return []KindBasicSafetyCheck{KindEnsureAvailability, KindEnsurePartitionQuorum, KindEnsureSeedNodeQuorum, KindPartitionSafetyCheck, KindSafetyCheck, KindWaitForInbuildReplica, KindWaitForPrimaryPlacement, KindWaitForPrimarySwap, KindWaitForReconfiguration}
 }
 
 // KindBasicServiceTypeDescription enumerates the values for kind basic service type description.
@@ -1007,8 +1007,8 @@ const (
 )
 
 // PossibleKindBasicServiceTypeDescriptionValues returns an array of possible values for the KindBasicServiceTypeDescription const type.
-func PossibleKindBasicServiceTypeDescriptionValues() [3]KindBasicServiceTypeDescription {
-	return [3]KindBasicServiceTypeDescription{KindServiceTypeDescription, KindStateful, KindStateless}
+func PossibleKindBasicServiceTypeDescriptionValues() []KindBasicServiceTypeDescription {
+	return []KindBasicServiceTypeDescription{KindServiceTypeDescription, KindStateful, KindStateless}
 }
 
 // MoveCost enumerates the values for move cost.
@@ -1026,8 +1026,8 @@ const (
 )
 
 // PossibleMoveCostValues returns an array of possible values for the MoveCost const type.
-func PossibleMoveCostValues() [4]MoveCost {
-	return [4]MoveCost{High, Low, Medium, Zero}
+func PossibleMoveCostValues() []MoveCost {
+	return []MoveCost{High, Low, Medium, Zero}
 }
 
 // NodeDeactivationIntent enumerates the values for node deactivation intent.
@@ -1053,8 +1053,8 @@ const (
 )
 
 // PossibleNodeDeactivationIntentValues returns an array of possible values for the NodeDeactivationIntent const type.
-func PossibleNodeDeactivationIntentValues() [5]NodeDeactivationIntent {
-	return [5]NodeDeactivationIntent{NodeDeactivationIntentInvalid, NodeDeactivationIntentPause, NodeDeactivationIntentRemoveData, NodeDeactivationIntentRemoveNode, NodeDeactivationIntentRestart}
+func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
+	return []NodeDeactivationIntent{NodeDeactivationIntentInvalid, NodeDeactivationIntentPause, NodeDeactivationIntentRemoveData, NodeDeactivationIntentRemoveNode, NodeDeactivationIntentRestart}
 }
 
 // NodeDeactivationStatus enumerates the values for node deactivation status.
@@ -1076,8 +1076,8 @@ const (
 )
 
 // PossibleNodeDeactivationStatusValues returns an array of possible values for the NodeDeactivationStatus const type.
-func PossibleNodeDeactivationStatusValues() [4]NodeDeactivationStatus {
-	return [4]NodeDeactivationStatus{NodeDeactivationStatusCompleted, NodeDeactivationStatusNone, NodeDeactivationStatusSafetyCheckComplete, NodeDeactivationStatusSafetyCheckInProgress}
+func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
+	return []NodeDeactivationStatus{NodeDeactivationStatusCompleted, NodeDeactivationStatusNone, NodeDeactivationStatusSafetyCheckComplete, NodeDeactivationStatusSafetyCheckInProgress}
 }
 
 // NodeDeactivationTaskType enumerates the values for node deactivation task type.
@@ -1099,8 +1099,8 @@ const (
 )
 
 // PossibleNodeDeactivationTaskTypeValues returns an array of possible values for the NodeDeactivationTaskType const type.
-func PossibleNodeDeactivationTaskTypeValues() [4]NodeDeactivationTaskType {
-	return [4]NodeDeactivationTaskType{NodeDeactivationTaskTypeClient, NodeDeactivationTaskTypeInfrastructure, NodeDeactivationTaskTypeInvalid, NodeDeactivationTaskTypeRepair}
+func PossibleNodeDeactivationTaskTypeValues() []NodeDeactivationTaskType {
+	return []NodeDeactivationTaskType{NodeDeactivationTaskTypeClient, NodeDeactivationTaskTypeInfrastructure, NodeDeactivationTaskTypeInvalid, NodeDeactivationTaskTypeRepair}
 }
 
 // NodeStatus enumerates the values for node status.
@@ -1131,8 +1131,8 @@ const (
 )
 
 // PossibleNodeStatusValues returns an array of possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() [8]NodeStatus {
-	return [8]NodeStatus{NodeStatusDisabled, NodeStatusDisabling, NodeStatusDown, NodeStatusEnabling, NodeStatusInvalid, NodeStatusRemoved, NodeStatusUnknown, NodeStatusUp}
+func PossibleNodeStatusValues() []NodeStatus {
+	return []NodeStatus{NodeStatusDisabled, NodeStatusDisabling, NodeStatusDown, NodeStatusEnabling, NodeStatusInvalid, NodeStatusRemoved, NodeStatusUnknown, NodeStatusUp}
 }
 
 // NodeStatusFilterOptionalQueryParam enumerates the values for node status filter optional query param.
@@ -1166,8 +1166,8 @@ const (
 )
 
 // PossibleNodeStatusFilterOptionalQueryParamValues returns an array of possible values for the NodeStatusFilterOptionalQueryParam const type.
-func PossibleNodeStatusFilterOptionalQueryParamValues() [9]NodeStatusFilterOptionalQueryParam {
-	return [9]NodeStatusFilterOptionalQueryParam{All, Default, Disabled, Disabling, Down, Enabling, Removed, Unknown, Up}
+func PossibleNodeStatusFilterOptionalQueryParamValues() []NodeStatusFilterOptionalQueryParam {
+	return []NodeStatusFilterOptionalQueryParam{All, Default, Disabled, Disabling, Down, Enabling, Removed, Unknown, Up}
 }
 
 // NodeTransitionTypeRequiredQueryParam enumerates the values for node transition type required query param.
@@ -1183,8 +1183,8 @@ const (
 )
 
 // PossibleNodeTransitionTypeRequiredQueryParamValues returns an array of possible values for the NodeTransitionTypeRequiredQueryParam const type.
-func PossibleNodeTransitionTypeRequiredQueryParamValues() [3]NodeTransitionTypeRequiredQueryParam {
-	return [3]NodeTransitionTypeRequiredQueryParam{NodeTransitionTypeRequiredQueryParamInvalid, NodeTransitionTypeRequiredQueryParamStart, NodeTransitionTypeRequiredQueryParamStop}
+func PossibleNodeTransitionTypeRequiredQueryParamValues() []NodeTransitionTypeRequiredQueryParam {
+	return []NodeTransitionTypeRequiredQueryParam{NodeTransitionTypeRequiredQueryParamInvalid, NodeTransitionTypeRequiredQueryParamStart, NodeTransitionTypeRequiredQueryParamStop}
 }
 
 // NodeUpgradePhase enumerates the values for node upgrade phase.
@@ -1205,8 +1205,8 @@ const (
 )
 
 // PossibleNodeUpgradePhaseValues returns an array of possible values for the NodeUpgradePhase const type.
-func PossibleNodeUpgradePhaseValues() [4]NodeUpgradePhase {
-	return [4]NodeUpgradePhase{NodeUpgradePhaseInvalid, NodeUpgradePhasePostUpgradeSafetyCheck, NodeUpgradePhasePreUpgradeSafetyCheck, NodeUpgradePhaseUpgrading}
+func PossibleNodeUpgradePhaseValues() []NodeUpgradePhase {
+	return []NodeUpgradePhase{NodeUpgradePhaseInvalid, NodeUpgradePhasePostUpgradeSafetyCheck, NodeUpgradePhasePreUpgradeSafetyCheck, NodeUpgradePhaseUpgrading}
 }
 
 // OperationState enumerates the values for operation state.
@@ -1236,8 +1236,8 @@ const (
 )
 
 // PossibleOperationStateValues returns an array of possible values for the OperationState const type.
-func PossibleOperationStateValues() [7]OperationState {
-	return [7]OperationState{OperationStateCancelled, OperationStateCompleted, OperationStateFaulted, OperationStateForceCancelled, OperationStateInvalid, OperationStateRollingBack, OperationStateRunning}
+func PossibleOperationStateValues() []OperationState {
+	return []OperationState{OperationStateCancelled, OperationStateCompleted, OperationStateFaulted, OperationStateForceCancelled, OperationStateInvalid, OperationStateRollingBack, OperationStateRunning}
 }
 
 // OperationType enumerates the values for operation type.
@@ -1257,8 +1257,8 @@ const (
 )
 
 // PossibleOperationTypeValues returns an array of possible values for the OperationType const type.
-func PossibleOperationTypeValues() [5]OperationType {
-	return [5]OperationType{OperationTypeInvalid, OperationTypeNodeTransition, OperationTypePartitionDataLoss, OperationTypePartitionQuorumLoss, OperationTypePartitionRestart}
+func PossibleOperationTypeValues() []OperationType {
+	return []OperationType{OperationTypeInvalid, OperationTypeNodeTransition, OperationTypePartitionDataLoss, OperationTypePartitionQuorumLoss, OperationTypePartitionRestart}
 }
 
 // PackageSharingPolicyScope enumerates the values for package sharing policy scope.
@@ -1282,8 +1282,8 @@ const (
 )
 
 // PossiblePackageSharingPolicyScopeValues returns an array of possible values for the PackageSharingPolicyScope const type.
-func PossiblePackageSharingPolicyScopeValues() [5]PackageSharingPolicyScope {
-	return [5]PackageSharingPolicyScope{PackageSharingPolicyScopeAll, PackageSharingPolicyScopeCode, PackageSharingPolicyScopeConfig, PackageSharingPolicyScopeData, PackageSharingPolicyScopeNone}
+func PossiblePackageSharingPolicyScopeValues() []PackageSharingPolicyScope {
+	return []PackageSharingPolicyScope{PackageSharingPolicyScopeAll, PackageSharingPolicyScopeCode, PackageSharingPolicyScopeConfig, PackageSharingPolicyScopeData, PackageSharingPolicyScopeNone}
 }
 
 // PartitionAccessStatus enumerates the values for partition access status.
@@ -1308,8 +1308,8 @@ const (
 )
 
 // PossiblePartitionAccessStatusValues returns an array of possible values for the PartitionAccessStatus const type.
-func PossiblePartitionAccessStatusValues() [5]PartitionAccessStatus {
-	return [5]PartitionAccessStatus{PartitionAccessStatusGranted, PartitionAccessStatusInvalid, PartitionAccessStatusNotPrimary, PartitionAccessStatusNoWriteQuorum, PartitionAccessStatusReconfigurationPending}
+func PossiblePartitionAccessStatusValues() []PartitionAccessStatus {
+	return []PartitionAccessStatus{PartitionAccessStatusGranted, PartitionAccessStatusInvalid, PartitionAccessStatusNotPrimary, PartitionAccessStatusNoWriteQuorum, PartitionAccessStatusReconfigurationPending}
 }
 
 // PartitionScheme enumerates the values for partition scheme.
@@ -1331,8 +1331,8 @@ const (
 )
 
 // PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
-func PossiblePartitionSchemeValues() [4]PartitionScheme {
-	return [4]PartitionScheme{PartitionSchemeInvalid, PartitionSchemeNamed, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return []PartitionScheme{PartitionSchemeInvalid, PartitionSchemeNamed, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
 }
 
 // PartitionSchemeBasicPartitionSchemeDescription enumerates the values for partition scheme basic partition
@@ -1351,8 +1351,8 @@ const (
 )
 
 // PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues returns an array of possible values for the PartitionSchemeBasicPartitionSchemeDescription const type.
-func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() [4]PartitionSchemeBasicPartitionSchemeDescription {
-	return [4]PartitionSchemeBasicPartitionSchemeDescription{PartitionSchemeNamed1, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton1, PartitionSchemeUniformInt64Range1}
+func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
+	return []PartitionSchemeBasicPartitionSchemeDescription{PartitionSchemeNamed1, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton1, PartitionSchemeUniformInt64Range1}
 }
 
 // PropertyBatchInfoKind enumerates the values for property batch info kind.
@@ -1369,8 +1369,8 @@ const (
 )
 
 // PossiblePropertyBatchInfoKindValues returns an array of possible values for the PropertyBatchInfoKind const type.
-func PossiblePropertyBatchInfoKindValues() [3]PropertyBatchInfoKind {
-	return [3]PropertyBatchInfoKind{PropertyBatchInfoKindFailed, PropertyBatchInfoKindInvalid, PropertyBatchInfoKindSuccessful}
+func PossiblePropertyBatchInfoKindValues() []PropertyBatchInfoKind {
+	return []PropertyBatchInfoKind{PropertyBatchInfoKindFailed, PropertyBatchInfoKindInvalid, PropertyBatchInfoKindSuccessful}
 }
 
 // PropertyBatchOperationKind enumerates the values for property batch operation kind.
@@ -1398,8 +1398,8 @@ const (
 )
 
 // PossiblePropertyBatchOperationKindValues returns an array of possible values for the PropertyBatchOperationKind const type.
-func PossiblePropertyBatchOperationKindValues() [7]PropertyBatchOperationKind {
-	return [7]PropertyBatchOperationKind{PropertyBatchOperationKindCheckExists, PropertyBatchOperationKindCheckSequence, PropertyBatchOperationKindCheckValue, PropertyBatchOperationKindDelete, PropertyBatchOperationKindGet, PropertyBatchOperationKindInvalid, PropertyBatchOperationKindPut}
+func PossiblePropertyBatchOperationKindValues() []PropertyBatchOperationKind {
+	return []PropertyBatchOperationKind{PropertyBatchOperationKindCheckExists, PropertyBatchOperationKindCheckSequence, PropertyBatchOperationKindCheckValue, PropertyBatchOperationKindDelete, PropertyBatchOperationKindGet, PropertyBatchOperationKindInvalid, PropertyBatchOperationKindPut}
 }
 
 // PropertyValueKind enumerates the values for property value kind.
@@ -1422,8 +1422,8 @@ const (
 )
 
 // PossiblePropertyValueKindValues returns an array of possible values for the PropertyValueKind const type.
-func PossiblePropertyValueKindValues() [6]PropertyValueKind {
-	return [6]PropertyValueKind{PropertyValueKindBinary, PropertyValueKindDouble, PropertyValueKindGUID, PropertyValueKindInt64, PropertyValueKindInvalid, PropertyValueKindString}
+func PossiblePropertyValueKindValues() []PropertyValueKind {
+	return []PropertyValueKind{PropertyValueKindBinary, PropertyValueKindDouble, PropertyValueKindGUID, PropertyValueKindInt64, PropertyValueKindInvalid, PropertyValueKindString}
 }
 
 // ProvisionApplicationTypeKind enumerates the values for provision application type kind.
@@ -1443,8 +1443,8 @@ const (
 )
 
 // PossibleProvisionApplicationTypeKindValues returns an array of possible values for the ProvisionApplicationTypeKind const type.
-func PossibleProvisionApplicationTypeKindValues() [3]ProvisionApplicationTypeKind {
-	return [3]ProvisionApplicationTypeKind{ProvisionApplicationTypeKindExternalStore, ProvisionApplicationTypeKindImageStorePath, ProvisionApplicationTypeKindInvalid}
+func PossibleProvisionApplicationTypeKindValues() []ProvisionApplicationTypeKind {
+	return []ProvisionApplicationTypeKind{ProvisionApplicationTypeKindExternalStore, ProvisionApplicationTypeKindImageStorePath, ProvisionApplicationTypeKindInvalid}
 }
 
 // QuorumLossModeRequiredQueryParam enumerates the values for quorum loss mode required query param.
@@ -1461,8 +1461,8 @@ const (
 )
 
 // PossibleQuorumLossModeRequiredQueryParamValues returns an array of possible values for the QuorumLossModeRequiredQueryParam const type.
-func PossibleQuorumLossModeRequiredQueryParamValues() [3]QuorumLossModeRequiredQueryParam {
-	return [3]QuorumLossModeRequiredQueryParam{QuorumLossModeRequiredQueryParamAllReplicas, QuorumLossModeRequiredQueryParamInvalid, QuorumLossModeRequiredQueryParamQuorumReplicas}
+func PossibleQuorumLossModeRequiredQueryParamValues() []QuorumLossModeRequiredQueryParam {
+	return []QuorumLossModeRequiredQueryParam{QuorumLossModeRequiredQueryParamAllReplicas, QuorumLossModeRequiredQueryParamInvalid, QuorumLossModeRequiredQueryParamQuorumReplicas}
 }
 
 // ReconfigurationPhase enumerates the values for reconfiguration phase.
@@ -1491,8 +1491,8 @@ const (
 )
 
 // PossibleReconfigurationPhaseValues returns an array of possible values for the ReconfigurationPhase const type.
-func PossibleReconfigurationPhaseValues() [8]ReconfigurationPhase {
-	return [8]ReconfigurationPhase{ReconfigurationPhaseAbortPhaseZero, ReconfigurationPhaseNone, ReconfigurationPhasePhase0, ReconfigurationPhasePhase1, ReconfigurationPhasePhase2, ReconfigurationPhasePhase3, ReconfigurationPhasePhase4, ReconfigurationPhaseUnknown}
+func PossibleReconfigurationPhaseValues() []ReconfigurationPhase {
+	return []ReconfigurationPhase{ReconfigurationPhaseAbortPhaseZero, ReconfigurationPhaseNone, ReconfigurationPhasePhase0, ReconfigurationPhasePhase1, ReconfigurationPhasePhase2, ReconfigurationPhasePhase3, ReconfigurationPhasePhase4, ReconfigurationPhaseUnknown}
 }
 
 // ReconfigurationType enumerates the values for reconfiguration type.
@@ -1512,8 +1512,8 @@ const (
 )
 
 // PossibleReconfigurationTypeValues returns an array of possible values for the ReconfigurationType const type.
-func PossibleReconfigurationTypeValues() [4]ReconfigurationType {
-	return [4]ReconfigurationType{ReconfigurationTypeFailover, ReconfigurationTypeOther, ReconfigurationTypeSwapPrimary, ReconfigurationTypeUnknown}
+func PossibleReconfigurationTypeValues() []ReconfigurationType {
+	return []ReconfigurationType{ReconfigurationTypeFailover, ReconfigurationTypeOther, ReconfigurationTypeSwapPrimary, ReconfigurationTypeUnknown}
 }
 
 // RepairImpactKind enumerates the values for repair impact kind.
@@ -1527,8 +1527,8 @@ const (
 )
 
 // PossibleRepairImpactKindValues returns an array of possible values for the RepairImpactKind const type.
-func PossibleRepairImpactKindValues() [2]RepairImpactKind {
-	return [2]RepairImpactKind{RepairImpactKindInvalid, RepairImpactKindNode}
+func PossibleRepairImpactKindValues() []RepairImpactKind {
+	return []RepairImpactKind{RepairImpactKindInvalid, RepairImpactKindNode}
 }
 
 // RepairTargetKind enumerates the values for repair target kind.
@@ -1542,8 +1542,8 @@ const (
 )
 
 // PossibleRepairTargetKindValues returns an array of possible values for the RepairTargetKind const type.
-func PossibleRepairTargetKindValues() [2]RepairTargetKind {
-	return [2]RepairTargetKind{RepairTargetKindInvalid, RepairTargetKindNode}
+func PossibleRepairTargetKindValues() []RepairTargetKind {
+	return []RepairTargetKind{RepairTargetKindInvalid, RepairTargetKindNode}
 }
 
 // RepairTaskHealthCheckState enumerates the values for repair task health check state.
@@ -1563,8 +1563,8 @@ const (
 )
 
 // PossibleRepairTaskHealthCheckStateValues returns an array of possible values for the RepairTaskHealthCheckState const type.
-func PossibleRepairTaskHealthCheckStateValues() [5]RepairTaskHealthCheckState {
-	return [5]RepairTaskHealthCheckState{InProgress, NotStarted, Skipped, Succeeded, TimedOut}
+func PossibleRepairTaskHealthCheckStateValues() []RepairTaskHealthCheckState {
+	return []RepairTaskHealthCheckState{InProgress, NotStarted, Skipped, Succeeded, TimedOut}
 }
 
 // ReplicaHealthReportServiceKindRequiredQueryParam enumerates the values for replica health report service
@@ -1580,8 +1580,8 @@ const (
 )
 
 // PossibleReplicaHealthReportServiceKindRequiredQueryParamValues returns an array of possible values for the ReplicaHealthReportServiceKindRequiredQueryParam const type.
-func PossibleReplicaHealthReportServiceKindRequiredQueryParamValues() [2]ReplicaHealthReportServiceKindRequiredQueryParam {
-	return [2]ReplicaHealthReportServiceKindRequiredQueryParam{Stateful, Stateless}
+func PossibleReplicaHealthReportServiceKindRequiredQueryParamValues() []ReplicaHealthReportServiceKindRequiredQueryParam {
+	return []ReplicaHealthReportServiceKindRequiredQueryParam{Stateful, Stateless}
 }
 
 // ReplicaKind enumerates the values for replica kind.
@@ -1595,8 +1595,8 @@ const (
 )
 
 // PossibleReplicaKindValues returns an array of possible values for the ReplicaKind const type.
-func PossibleReplicaKindValues() [2]ReplicaKind {
-	return [2]ReplicaKind{ReplicaKindInvalid, ReplicaKindKeyValueStore}
+func PossibleReplicaKindValues() []ReplicaKind {
+	return []ReplicaKind{ReplicaKindInvalid, ReplicaKindKeyValueStore}
 }
 
 // ReplicaRole enumerates the values for replica role.
@@ -1627,8 +1627,8 @@ const (
 )
 
 // PossibleReplicaRoleValues returns an array of possible values for the ReplicaRole const type.
-func PossibleReplicaRoleValues() [5]ReplicaRole {
-	return [5]ReplicaRole{ReplicaRoleActiveSecondary, ReplicaRoleIdleSecondary, ReplicaRoleNone, ReplicaRolePrimary, ReplicaRoleUnknown}
+func PossibleReplicaRoleValues() []ReplicaRole {
+	return []ReplicaRole{ReplicaRoleActiveSecondary, ReplicaRoleIdleSecondary, ReplicaRoleNone, ReplicaRolePrimary, ReplicaRoleUnknown}
 }
 
 // ReplicaStatus enumerates the values for replica status.
@@ -1650,8 +1650,8 @@ const (
 )
 
 // PossibleReplicaStatusValues returns an array of possible values for the ReplicaStatus const type.
-func PossibleReplicaStatusValues() [6]ReplicaStatus {
-	return [6]ReplicaStatus{ReplicaStatusDown, ReplicaStatusDropped, ReplicaStatusInBuild, ReplicaStatusInvalid, ReplicaStatusReady, ReplicaStatusStandby}
+func PossibleReplicaStatusValues() []ReplicaStatus {
+	return []ReplicaStatus{ReplicaStatusDown, ReplicaStatusDropped, ReplicaStatusInBuild, ReplicaStatusInvalid, ReplicaStatusReady, ReplicaStatusStandby}
 }
 
 // ReplicaStatus1 enumerates the values for replica status 1.
@@ -1673,8 +1673,8 @@ const (
 )
 
 // PossibleReplicaStatus1Values returns an array of possible values for the ReplicaStatus1 const type.
-func PossibleReplicaStatus1Values() [6]ReplicaStatus1 {
-	return [6]ReplicaStatus1{ReplicaStatus1Down, ReplicaStatus1Dropped, ReplicaStatus1InBuild, ReplicaStatus1Invalid, ReplicaStatus1Ready, ReplicaStatus1Standby}
+func PossibleReplicaStatus1Values() []ReplicaStatus1 {
+	return []ReplicaStatus1{ReplicaStatus1Down, ReplicaStatus1Dropped, ReplicaStatus1InBuild, ReplicaStatus1Invalid, ReplicaStatus1Ready, ReplicaStatus1Standby}
 }
 
 // ReplicatorOperationName enumerates the values for replicator operation name.
@@ -1707,8 +1707,8 @@ const (
 )
 
 // PossibleReplicatorOperationNameValues returns an array of possible values for the ReplicatorOperationName const type.
-func PossibleReplicatorOperationNameValues() [10]ReplicatorOperationName {
-	return [10]ReplicatorOperationName{ReplicatorOperationNameAbort, ReplicatorOperationNameBuild, ReplicatorOperationNameChangeRole, ReplicatorOperationNameClose, ReplicatorOperationNameInvalid, ReplicatorOperationNameNone, ReplicatorOperationNameOnDataLoss, ReplicatorOperationNameOpen, ReplicatorOperationNameUpdateEpoch, ReplicatorOperationNameWaitForCatchup}
+func PossibleReplicatorOperationNameValues() []ReplicatorOperationName {
+	return []ReplicatorOperationName{ReplicatorOperationNameAbort, ReplicatorOperationNameBuild, ReplicatorOperationNameChangeRole, ReplicatorOperationNameClose, ReplicatorOperationNameInvalid, ReplicatorOperationNameNone, ReplicatorOperationNameOnDataLoss, ReplicatorOperationNameOpen, ReplicatorOperationNameUpdateEpoch, ReplicatorOperationNameWaitForCatchup}
 }
 
 // RestartPartitionModeRequiredQueryParam enumerates the values for restart partition mode required query
@@ -1726,8 +1726,8 @@ const (
 )
 
 // PossibleRestartPartitionModeRequiredQueryParamValues returns an array of possible values for the RestartPartitionModeRequiredQueryParam const type.
-func PossibleRestartPartitionModeRequiredQueryParamValues() [3]RestartPartitionModeRequiredQueryParam {
-	return [3]RestartPartitionModeRequiredQueryParam{RestartPartitionModeRequiredQueryParamAllReplicasOrInstances, RestartPartitionModeRequiredQueryParamInvalid, RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries}
+func PossibleRestartPartitionModeRequiredQueryParamValues() []RestartPartitionModeRequiredQueryParam {
+	return []RestartPartitionModeRequiredQueryParam{RestartPartitionModeRequiredQueryParamAllReplicasOrInstances, RestartPartitionModeRequiredQueryParamInvalid, RestartPartitionModeRequiredQueryParamOnlyActiveSecondaries}
 }
 
 // ResultStatus enumerates the values for result status.
@@ -1753,8 +1753,8 @@ const (
 )
 
 // PossibleResultStatusValues returns an array of possible values for the ResultStatus const type.
-func PossibleResultStatusValues() [6]ResultStatus {
-	return [6]ResultStatus{ResultStatusCancelled, ResultStatusFailed, ResultStatusInterrupted, ResultStatusInvalid, ResultStatusPending, ResultStatusSucceeded}
+func PossibleResultStatusValues() []ResultStatus {
+	return []ResultStatus{ResultStatusCancelled, ResultStatusFailed, ResultStatusInterrupted, ResultStatusInvalid, ResultStatusPending, ResultStatusSucceeded}
 }
 
 // SafetyCheckKind enumerates the values for safety check kind.
@@ -1793,8 +1793,8 @@ const (
 )
 
 // PossibleSafetyCheckKindValues returns an array of possible values for the SafetyCheckKind const type.
-func PossibleSafetyCheckKindValues() [8]SafetyCheckKind {
-	return [8]SafetyCheckKind{SafetyCheckKindEnsureAvailability, SafetyCheckKindEnsurePartitionQuorum, SafetyCheckKindEnsureSeedNodeQuorum, SafetyCheckKindInvalid, SafetyCheckKindWaitForInbuildReplica, SafetyCheckKindWaitForPrimaryPlacement, SafetyCheckKindWaitForPrimarySwap, SafetyCheckKindWaitForReconfiguration}
+func PossibleSafetyCheckKindValues() []SafetyCheckKind {
+	return []SafetyCheckKind{SafetyCheckKindEnsureAvailability, SafetyCheckKindEnsurePartitionQuorum, SafetyCheckKindEnsureSeedNodeQuorum, SafetyCheckKindInvalid, SafetyCheckKindWaitForInbuildReplica, SafetyCheckKindWaitForPrimaryPlacement, SafetyCheckKindWaitForPrimarySwap, SafetyCheckKindWaitForReconfiguration}
 }
 
 // ServiceCorrelationScheme enumerates the values for service correlation scheme.
@@ -1818,8 +1818,8 @@ const (
 )
 
 // PossibleServiceCorrelationSchemeValues returns an array of possible values for the ServiceCorrelationScheme const type.
-func PossibleServiceCorrelationSchemeValues() [4]ServiceCorrelationScheme {
-	return [4]ServiceCorrelationScheme{ServiceCorrelationSchemeAffinity, ServiceCorrelationSchemeAlignedAffinity, ServiceCorrelationSchemeInvalid, ServiceCorrelationSchemeNonAlignedAffinity}
+func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
+	return []ServiceCorrelationScheme{ServiceCorrelationSchemeAffinity, ServiceCorrelationSchemeAlignedAffinity, ServiceCorrelationSchemeInvalid, ServiceCorrelationSchemeNonAlignedAffinity}
 }
 
 // ServiceEndpointRole enumerates the values for service endpoint role.
@@ -1841,8 +1841,8 @@ const (
 )
 
 // PossibleServiceEndpointRoleValues returns an array of possible values for the ServiceEndpointRole const type.
-func PossibleServiceEndpointRoleValues() [4]ServiceEndpointRole {
-	return [4]ServiceEndpointRole{ServiceEndpointRoleInvalid, ServiceEndpointRoleStatefulPrimary, ServiceEndpointRoleStatefulSecondary, ServiceEndpointRoleStateless}
+func PossibleServiceEndpointRoleValues() []ServiceEndpointRole {
+	return []ServiceEndpointRole{ServiceEndpointRoleInvalid, ServiceEndpointRoleStatefulPrimary, ServiceEndpointRoleStatefulSecondary, ServiceEndpointRoleStateless}
 }
 
 // ServiceKind enumerates the values for service kind.
@@ -1861,8 +1861,8 @@ const (
 )
 
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() [3]ServiceKind {
-	return [3]ServiceKind{ServiceKindInvalid, ServiceKindStateful, ServiceKindStateless}
+func PossibleServiceKindValues() []ServiceKind {
+	return []ServiceKind{ServiceKindInvalid, ServiceKindStateful, ServiceKindStateless}
 }
 
 // ServiceKindBasicDeployedServiceReplicaDetailInfo enumerates the values for service kind basic deployed
@@ -1879,8 +1879,8 @@ const (
 )
 
 // PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues returns an array of possible values for the ServiceKindBasicDeployedServiceReplicaDetailInfo const type.
-func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() [3]ServiceKindBasicDeployedServiceReplicaDetailInfo {
-	return [3]ServiceKindBasicDeployedServiceReplicaDetailInfo{ServiceKindDeployedServiceReplicaDetailInfo, ServiceKindStateful1, ServiceKindStateless1}
+func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() []ServiceKindBasicDeployedServiceReplicaDetailInfo {
+	return []ServiceKindBasicDeployedServiceReplicaDetailInfo{ServiceKindDeployedServiceReplicaDetailInfo, ServiceKindStateful1, ServiceKindStateless1}
 }
 
 // ServiceKindBasicDeployedServiceReplicaInfo enumerates the values for service kind basic deployed service
@@ -1897,8 +1897,8 @@ const (
 )
 
 // PossibleServiceKindBasicDeployedServiceReplicaInfoValues returns an array of possible values for the ServiceKindBasicDeployedServiceReplicaInfo const type.
-func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() [3]ServiceKindBasicDeployedServiceReplicaInfo {
-	return [3]ServiceKindBasicDeployedServiceReplicaInfo{ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless}
+func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() []ServiceKindBasicDeployedServiceReplicaInfo {
+	return []ServiceKindBasicDeployedServiceReplicaInfo{ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless}
 }
 
 // ServiceKindBasicReplicaHealth enumerates the values for service kind basic replica health.
@@ -1914,8 +1914,8 @@ const (
 )
 
 // PossibleServiceKindBasicReplicaHealthValues returns an array of possible values for the ServiceKindBasicReplicaHealth const type.
-func PossibleServiceKindBasicReplicaHealthValues() [3]ServiceKindBasicReplicaHealth {
-	return [3]ServiceKindBasicReplicaHealth{ServiceKindBasicReplicaHealthServiceKindReplicaHealth, ServiceKindBasicReplicaHealthServiceKindStateful, ServiceKindBasicReplicaHealthServiceKindStateless}
+func PossibleServiceKindBasicReplicaHealthValues() []ServiceKindBasicReplicaHealth {
+	return []ServiceKindBasicReplicaHealth{ServiceKindBasicReplicaHealthServiceKindReplicaHealth, ServiceKindBasicReplicaHealthServiceKindStateful, ServiceKindBasicReplicaHealthServiceKindStateless}
 }
 
 // ServiceKindBasicReplicaHealthState enumerates the values for service kind basic replica health state.
@@ -1931,8 +1931,8 @@ const (
 )
 
 // PossibleServiceKindBasicReplicaHealthStateValues returns an array of possible values for the ServiceKindBasicReplicaHealthState const type.
-func PossibleServiceKindBasicReplicaHealthStateValues() [3]ServiceKindBasicReplicaHealthState {
-	return [3]ServiceKindBasicReplicaHealthState{ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState, ServiceKindBasicReplicaHealthStateServiceKindStateful, ServiceKindBasicReplicaHealthStateServiceKindStateless}
+func PossibleServiceKindBasicReplicaHealthStateValues() []ServiceKindBasicReplicaHealthState {
+	return []ServiceKindBasicReplicaHealthState{ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState, ServiceKindBasicReplicaHealthStateServiceKindStateful, ServiceKindBasicReplicaHealthStateServiceKindStateless}
 }
 
 // ServiceKindBasicReplicaInfo enumerates the values for service kind basic replica info.
@@ -1948,8 +1948,8 @@ const (
 )
 
 // PossibleServiceKindBasicReplicaInfoValues returns an array of possible values for the ServiceKindBasicReplicaInfo const type.
-func PossibleServiceKindBasicReplicaInfoValues() [3]ServiceKindBasicReplicaInfo {
-	return [3]ServiceKindBasicReplicaInfo{ServiceKindBasicReplicaInfoServiceKindReplicaInfo, ServiceKindBasicReplicaInfoServiceKindStateful, ServiceKindBasicReplicaInfoServiceKindStateless}
+func PossibleServiceKindBasicReplicaInfoValues() []ServiceKindBasicReplicaInfo {
+	return []ServiceKindBasicReplicaInfo{ServiceKindBasicReplicaInfoServiceKindReplicaInfo, ServiceKindBasicReplicaInfoServiceKindStateful, ServiceKindBasicReplicaInfoServiceKindStateless}
 }
 
 // ServiceKindBasicServiceDescription enumerates the values for service kind basic service description.
@@ -1965,8 +1965,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceDescriptionValues returns an array of possible values for the ServiceKindBasicServiceDescription const type.
-func PossibleServiceKindBasicServiceDescriptionValues() [3]ServiceKindBasicServiceDescription {
-	return [3]ServiceKindBasicServiceDescription{ServiceKindBasicServiceDescriptionServiceKindServiceDescription, ServiceKindBasicServiceDescriptionServiceKindStateful, ServiceKindBasicServiceDescriptionServiceKindStateless}
+func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
+	return []ServiceKindBasicServiceDescription{ServiceKindBasicServiceDescriptionServiceKindServiceDescription, ServiceKindBasicServiceDescriptionServiceKindStateful, ServiceKindBasicServiceDescriptionServiceKindStateless}
 }
 
 // ServiceKindBasicServiceInfo enumerates the values for service kind basic service info.
@@ -1982,8 +1982,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceInfoValues returns an array of possible values for the ServiceKindBasicServiceInfo const type.
-func PossibleServiceKindBasicServiceInfoValues() [3]ServiceKindBasicServiceInfo {
-	return [3]ServiceKindBasicServiceInfo{ServiceKindBasicServiceInfoServiceKindServiceInfo, ServiceKindBasicServiceInfoServiceKindStateful, ServiceKindBasicServiceInfoServiceKindStateless}
+func PossibleServiceKindBasicServiceInfoValues() []ServiceKindBasicServiceInfo {
+	return []ServiceKindBasicServiceInfo{ServiceKindBasicServiceInfoServiceKindServiceInfo, ServiceKindBasicServiceInfoServiceKindStateful, ServiceKindBasicServiceInfoServiceKindStateless}
 }
 
 // ServiceKindBasicServicePartitionInfo enumerates the values for service kind basic service partition info.
@@ -1999,8 +1999,8 @@ const (
 )
 
 // PossibleServiceKindBasicServicePartitionInfoValues returns an array of possible values for the ServiceKindBasicServicePartitionInfo const type.
-func PossibleServiceKindBasicServicePartitionInfoValues() [3]ServiceKindBasicServicePartitionInfo {
-	return [3]ServiceKindBasicServicePartitionInfo{ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo, ServiceKindBasicServicePartitionInfoServiceKindStateful, ServiceKindBasicServicePartitionInfoServiceKindStateless}
+func PossibleServiceKindBasicServicePartitionInfoValues() []ServiceKindBasicServicePartitionInfo {
+	return []ServiceKindBasicServicePartitionInfo{ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo, ServiceKindBasicServicePartitionInfoServiceKindStateful, ServiceKindBasicServicePartitionInfoServiceKindStateless}
 }
 
 // ServiceKindBasicServiceUpdateDescription enumerates the values for service kind basic service update
@@ -2017,8 +2017,8 @@ const (
 )
 
 // PossibleServiceKindBasicServiceUpdateDescriptionValues returns an array of possible values for the ServiceKindBasicServiceUpdateDescription const type.
-func PossibleServiceKindBasicServiceUpdateDescriptionValues() [3]ServiceKindBasicServiceUpdateDescription {
-	return [3]ServiceKindBasicServiceUpdateDescription{ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription, ServiceKindBasicServiceUpdateDescriptionServiceKindStateful, ServiceKindBasicServiceUpdateDescriptionServiceKindStateless}
+func PossibleServiceKindBasicServiceUpdateDescriptionValues() []ServiceKindBasicServiceUpdateDescription {
+	return []ServiceKindBasicServiceUpdateDescription{ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription, ServiceKindBasicServiceUpdateDescriptionServiceKindStateful, ServiceKindBasicServiceUpdateDescriptionServiceKindStateless}
 }
 
 // ServiceLoadMetricWeight enumerates the values for service load metric weight.
@@ -2036,8 +2036,8 @@ const (
 )
 
 // PossibleServiceLoadMetricWeightValues returns an array of possible values for the ServiceLoadMetricWeight const type.
-func PossibleServiceLoadMetricWeightValues() [4]ServiceLoadMetricWeight {
-	return [4]ServiceLoadMetricWeight{ServiceLoadMetricWeightHigh, ServiceLoadMetricWeightLow, ServiceLoadMetricWeightMedium, ServiceLoadMetricWeightZero}
+func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
+	return []ServiceLoadMetricWeight{ServiceLoadMetricWeightHigh, ServiceLoadMetricWeightLow, ServiceLoadMetricWeightMedium, ServiceLoadMetricWeightZero}
 }
 
 // ServiceOperationName enumerates the values for service operation name.
@@ -2059,8 +2059,8 @@ const (
 )
 
 // PossibleServiceOperationNameValues returns an array of possible values for the ServiceOperationName const type.
-func PossibleServiceOperationNameValues() [6]ServiceOperationName {
-	return [6]ServiceOperationName{ServiceOperationNameAbort, ServiceOperationNameChangeRole, ServiceOperationNameClose, ServiceOperationNameNone, ServiceOperationNameOpen, ServiceOperationNameUnknown}
+func PossibleServiceOperationNameValues() []ServiceOperationName {
+	return []ServiceOperationName{ServiceOperationNameAbort, ServiceOperationNameChangeRole, ServiceOperationNameClose, ServiceOperationNameNone, ServiceOperationNameOpen, ServiceOperationNameUnknown}
 }
 
 // ServicePackageActivationMode enumerates the values for service package activation mode.
@@ -2077,8 +2077,8 @@ const (
 )
 
 // PossibleServicePackageActivationModeValues returns an array of possible values for the ServicePackageActivationMode const type.
-func PossibleServicePackageActivationModeValues() [2]ServicePackageActivationMode {
-	return [2]ServicePackageActivationMode{ExclusiveProcess, SharedProcess}
+func PossibleServicePackageActivationModeValues() []ServicePackageActivationMode {
+	return []ServicePackageActivationMode{ExclusiveProcess, SharedProcess}
 }
 
 // ServicePartitionKind enumerates the values for service partition kind.
@@ -2096,8 +2096,8 @@ const (
 )
 
 // PossibleServicePartitionKindValues returns an array of possible values for the ServicePartitionKind const type.
-func PossibleServicePartitionKindValues() [4]ServicePartitionKind {
-	return [4]ServicePartitionKind{ServicePartitionKindInt64Range, ServicePartitionKindNamed, ServicePartitionKindPartitionInformation, ServicePartitionKindSingleton}
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
+	return []ServicePartitionKind{ServicePartitionKindInt64Range, ServicePartitionKindNamed, ServicePartitionKindPartitionInformation, ServicePartitionKindSingleton}
 }
 
 // ServicePartitionStatus enumerates the values for service partition status.
@@ -2127,8 +2127,8 @@ const (
 )
 
 // PossibleServicePartitionStatusValues returns an array of possible values for the ServicePartitionStatus const type.
-func PossibleServicePartitionStatusValues() [6]ServicePartitionStatus {
-	return [6]ServicePartitionStatus{ServicePartitionStatusDeleting, ServicePartitionStatusInQuorumLoss, ServicePartitionStatusInvalid, ServicePartitionStatusNotReady, ServicePartitionStatusReady, ServicePartitionStatusReconfiguring}
+func PossibleServicePartitionStatusValues() []ServicePartitionStatus {
+	return []ServicePartitionStatus{ServicePartitionStatusDeleting, ServicePartitionStatusInQuorumLoss, ServicePartitionStatusInvalid, ServicePartitionStatusNotReady, ServicePartitionStatusReady, ServicePartitionStatusReconfiguring}
 }
 
 // ServicePlacementPolicyType enumerates the values for service placement policy type.
@@ -2163,8 +2163,8 @@ const (
 )
 
 // PossibleServicePlacementPolicyTypeValues returns an array of possible values for the ServicePlacementPolicyType const type.
-func PossibleServicePlacementPolicyTypeValues() [6]ServicePlacementPolicyType {
-	return [6]ServicePlacementPolicyType{ServicePlacementPolicyTypeInvalid, ServicePlacementPolicyTypeInvalidDomain, ServicePlacementPolicyTypeNonPartiallyPlaceService, ServicePlacementPolicyTypePreferredPrimaryDomain, ServicePlacementPolicyTypeRequiredDomain, ServicePlacementPolicyTypeRequiredDomainDistribution}
+func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
+	return []ServicePlacementPolicyType{ServicePlacementPolicyTypeInvalid, ServicePlacementPolicyTypeInvalidDomain, ServicePlacementPolicyTypeNonPartiallyPlaceService, ServicePlacementPolicyTypePreferredPrimaryDomain, ServicePlacementPolicyTypeRequiredDomain, ServicePlacementPolicyTypeRequiredDomainDistribution}
 }
 
 // ServiceStatus enumerates the values for service status.
@@ -2187,8 +2187,8 @@ const (
 )
 
 // PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() [6]ServiceStatus {
-	return [6]ServiceStatus{ServiceStatusActive, ServiceStatusCreating, ServiceStatusDeleting, ServiceStatusFailed, ServiceStatusUnknown, ServiceStatusUpgrading}
+func PossibleServiceStatusValues() []ServiceStatus {
+	return []ServiceStatus{ServiceStatusActive, ServiceStatusCreating, ServiceStatusDeleting, ServiceStatusFailed, ServiceStatusUnknown, ServiceStatusUpgrading}
 }
 
 // ServiceTypeRegistrationStatus enumerates the values for service type registration status.
@@ -2214,8 +2214,8 @@ const (
 )
 
 // PossibleServiceTypeRegistrationStatusValues returns an array of possible values for the ServiceTypeRegistrationStatus const type.
-func PossibleServiceTypeRegistrationStatusValues() [4]ServiceTypeRegistrationStatus {
-	return [4]ServiceTypeRegistrationStatus{ServiceTypeRegistrationStatusDisabled, ServiceTypeRegistrationStatusEnabled, ServiceTypeRegistrationStatusInvalid, ServiceTypeRegistrationStatusRegistered}
+func PossibleServiceTypeRegistrationStatusValues() []ServiceTypeRegistrationStatus {
+	return []ServiceTypeRegistrationStatus{ServiceTypeRegistrationStatusDisabled, ServiceTypeRegistrationStatusEnabled, ServiceTypeRegistrationStatusInvalid, ServiceTypeRegistrationStatusRegistered}
 }
 
 // State enumerates the values for state.
@@ -2245,8 +2245,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [8]State {
-	return [8]State{StateApproved, StateClaimed, StateCompleted, StateCreated, StateExecuting, StateInvalid, StatePreparing, StateRestoring}
+func PossibleStateValues() []State {
+	return []State{StateApproved, StateClaimed, StateCompleted, StateCreated, StateExecuting, StateInvalid, StatePreparing, StateRestoring}
 }
 
 // Status enumerates the values for status.
@@ -2262,8 +2262,8 @@ const (
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() [3]Status {
-	return [3]Status{StatusInvalid, StatusRunning, StatusStopped}
+func PossibleStatusValues() []Status {
+	return []Status{StatusInvalid, StatusRunning, StatusStopped}
 }
 
 // Type enumerates the values for type.
@@ -2285,8 +2285,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [6]Type {
-	return [6]Type{TypeInvalidDomain, TypeNonPartiallyPlaceService, TypePreferPrimaryDomain, TypeRequireDomain, TypeRequireDomainDistribution, TypeServicePlacementPolicyDescription}
+func PossibleTypeValues() []Type {
+	return []Type{TypeInvalidDomain, TypeNonPartiallyPlaceService, TypePreferPrimaryDomain, TypeRequireDomain, TypeRequireDomainDistribution, TypeServicePlacementPolicyDescription}
 }
 
 // UpgradeDomainState enumerates the values for upgrade domain state.
@@ -2305,8 +2305,8 @@ const (
 )
 
 // PossibleUpgradeDomainStateValues returns an array of possible values for the UpgradeDomainState const type.
-func PossibleUpgradeDomainStateValues() [4]UpgradeDomainState {
-	return [4]UpgradeDomainState{UpgradeDomainStateCompleted, UpgradeDomainStateInProgress, UpgradeDomainStateInvalid, UpgradeDomainStatePending}
+func PossibleUpgradeDomainStateValues() []UpgradeDomainState {
+	return []UpgradeDomainState{UpgradeDomainStateCompleted, UpgradeDomainStateInProgress, UpgradeDomainStateInvalid, UpgradeDomainStatePending}
 }
 
 // UpgradeKind enumerates the values for upgrade kind.
@@ -2321,8 +2321,8 @@ const (
 )
 
 // PossibleUpgradeKindValues returns an array of possible values for the UpgradeKind const type.
-func PossibleUpgradeKindValues() [2]UpgradeKind {
-	return [2]UpgradeKind{UpgradeKindInvalid, UpgradeKindRolling}
+func PossibleUpgradeKindValues() []UpgradeKind {
+	return []UpgradeKind{UpgradeKindInvalid, UpgradeKindRolling}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -2344,8 +2344,8 @@ const (
 )
 
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() [4]UpgradeMode {
-	return [4]UpgradeMode{UpgradeModeInvalid, UpgradeModeMonitored, UpgradeModeUnmonitoredAuto, UpgradeModeUnmonitoredManual}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return []UpgradeMode{UpgradeModeInvalid, UpgradeModeMonitored, UpgradeModeUnmonitoredAuto, UpgradeModeUnmonitoredManual}
 }
 
 // UpgradeState enumerates the values for upgrade state.
@@ -2374,8 +2374,8 @@ const (
 )
 
 // PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
-func PossibleUpgradeStateValues() [7]UpgradeState {
-	return [7]UpgradeState{UpgradeStateFailed, UpgradeStateInvalid, UpgradeStateRollingBackCompleted, UpgradeStateRollingBackInProgress, UpgradeStateRollingForwardCompleted, UpgradeStateRollingForwardInProgress, UpgradeStateRollingForwardPending}
+func PossibleUpgradeStateValues() []UpgradeState {
+	return []UpgradeState{UpgradeStateFailed, UpgradeStateInvalid, UpgradeStateRollingBackCompleted, UpgradeStateRollingBackInProgress, UpgradeStateRollingForwardCompleted, UpgradeStateRollingForwardInProgress, UpgradeStateRollingForwardPending}
 }
 
 // UpgradeType enumerates the values for upgrade type.
@@ -2392,8 +2392,8 @@ const (
 )
 
 // PossibleUpgradeTypeValues returns an array of possible values for the UpgradeType const type.
-func PossibleUpgradeTypeValues() [3]UpgradeType {
-	return [3]UpgradeType{UpgradeTypeInvalid, UpgradeTypeRolling, UpgradeTypeRollingForceRestart}
+func PossibleUpgradeTypeValues() []UpgradeType {
+	return []UpgradeType{UpgradeTypeInvalid, UpgradeTypeRolling, UpgradeTypeRollingForceRestart}
 }
 
 // AadMetadata azure Active Directory metadata used for secured connection to cluster.

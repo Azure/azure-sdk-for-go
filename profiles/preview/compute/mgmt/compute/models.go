@@ -50,7 +50,7 @@ const (
 	Read AccessLevel = original.Read
 )
 
-func PossibleAccessLevelValues() [2]AccessLevel {
+func PossibleAccessLevelValues() []AccessLevel {
 	return original.PossibleAccessLevelValues()
 }
 
@@ -65,7 +65,7 @@ const (
 	Restore   DiskCreateOption = original.Restore
 )
 
-func PossibleDiskCreateOptionValues() [6]DiskCreateOption {
+func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
-func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
 }
 
@@ -88,7 +88,7 @@ const (
 	StandardZRS SnapshotStorageAccountTypes = original.StandardZRS
 )
 
-func PossibleSnapshotStorageAccountTypesValues() [3]SnapshotStorageAccountTypes {
+func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	return original.PossibleSnapshotStorageAccountTypesValues()
 }
 
@@ -99,7 +99,7 @@ const (
 	StorageAccountTypesStandardLRS StorageAccountTypes = original.StorageAccountTypesStandardLRS
 )
 
-func PossibleStorageAccountTypesValues() [2]StorageAccountTypes {
+func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	return original.PossibleStorageAccountTypesValues()
 }
 

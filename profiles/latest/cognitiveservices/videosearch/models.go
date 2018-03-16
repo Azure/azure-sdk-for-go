@@ -45,7 +45,7 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
-func PossibleErrorCodeValues() [6]ErrorCode {
+func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
 }
 
@@ -65,7 +65,7 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+func PossibleErrorSubCodeValues() []ErrorSubCode {
 	return original.PossibleErrorSubCodeValues()
 }
 
@@ -77,7 +77,7 @@ const (
 	Week  Freshness = original.Week
 )
 
-func PossibleFreshnessValues() [3]Freshness {
+func PossibleFreshnessValues() []Freshness {
 	return original.PossibleFreshnessValues()
 }
 
@@ -89,7 +89,7 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
-func PossibleSafeSearchValues() [3]SafeSearch {
+func PossibleSafeSearchValues() []SafeSearch {
 	return original.PossibleSafeSearchValues()
 }
 
@@ -100,7 +100,7 @@ const (
 	Raw  TextFormat = original.Raw
 )
 
-func PossibleTextFormatValues() [2]TextFormat {
+func PossibleTextFormatValues() []TextFormat {
 	return original.PossibleTextFormatValues()
 }
 
@@ -123,7 +123,7 @@ const (
 	TypeVideos              Type = original.TypeVideos
 )
 
-func PossibleTypeValues() [14]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -135,7 +135,7 @@ const (
 	VideoResult   VideoInsightModule = original.VideoResult
 )
 
-func PossibleVideoInsightModuleValues() [3]VideoInsightModule {
+func PossibleVideoInsightModuleValues() []VideoInsightModule {
 	return original.PossibleVideoInsightModuleValues()
 }
 
@@ -148,7 +148,7 @@ const (
 	VideoLengthShort  VideoLength = original.VideoLengthShort
 )
 
-func PossibleVideoLengthValues() [4]VideoLength {
+func PossibleVideoLengthValues() []VideoLength {
 	return original.PossibleVideoLengthValues()
 }
 
@@ -160,7 +160,7 @@ const (
 	VideoPricingPaid VideoPricing = original.VideoPricingPaid
 )
 
-func PossibleVideoPricingValues() [3]VideoPricing {
+func PossibleVideoPricingValues() []VideoPricing {
 	return original.PossibleVideoPricingValues()
 }
 
@@ -171,7 +171,7 @@ const (
 	SingleDominantVideo VideoQueryScenario = original.SingleDominantVideo
 )
 
-func PossibleVideoQueryScenarioValues() [2]VideoQueryScenario {
+func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
 	return original.PossibleVideoQueryScenarioValues()
 }
 
@@ -184,7 +184,7 @@ const (
 	VideoResolutionSD480p  VideoResolution = original.VideoResolutionSD480p
 )
 
-func PossibleVideoResolutionValues() [4]VideoResolution {
+func PossibleVideoResolutionValues() []VideoResolution {
 	return original.PossibleVideoResolutionValues()
 }
 

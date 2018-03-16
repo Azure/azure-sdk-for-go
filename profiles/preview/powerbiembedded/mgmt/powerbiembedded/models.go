@@ -41,7 +41,7 @@ const (
 	Key2 AccessKeyName = original.Key2
 )
 
-func PossibleAccessKeyNameValues() [2]AccessKeyName {
+func PossibleAccessKeyNameValues() []AccessKeyName {
 	return original.PossibleAccessKeyNameValues()
 }
 
@@ -52,7 +52,7 @@ const (
 	Unavailable CheckNameReason = original.Unavailable
 )
 
-func PossibleCheckNameReasonValues() [2]CheckNameReason {
+func PossibleCheckNameReasonValues() []CheckNameReason {
 	return original.PossibleCheckNameReasonValues()
 }
 

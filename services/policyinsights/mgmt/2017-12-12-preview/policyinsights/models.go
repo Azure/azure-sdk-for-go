@@ -34,8 +34,8 @@ const (
 )
 
 // PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
-func PossiblePolicyStatesResourceValues() [2]PolicyStatesResource {
-	return [2]PolicyStatesResource{Default, Latest}
+func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
+	return []PolicyStatesResource{Default, Latest}
 }
 
 // Operation operation definition.

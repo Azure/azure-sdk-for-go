@@ -55,8 +55,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [12]ProvisioningState {
-	return [12]ProvisioningState{Deleting, Failed, Paused, Pausing, Preparing, Provisioning, Resuming, Scaling, Succeeded, Suspended, Suspending, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Deleting, Failed, Paused, Pausing, Preparing, Provisioning, Resuming, Scaling, Succeeded, Suspended, Suspending, Updating}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -72,8 +72,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [3]SkuTier {
-	return [3]SkuTier{Basic, Development, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Basic, Development, Standard}
 }
 
 // State enumerates the values for state.
@@ -107,8 +107,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [12]State {
-	return [12]State{StateDeleting, StateFailed, StatePaused, StatePausing, StatePreparing, StateProvisioning, StateResuming, StateScaling, StateSucceeded, StateSuspended, StateSuspending, StateUpdating}
+func PossibleStateValues() []State {
+	return []State{StateDeleting, StateFailed, StatePaused, StatePausing, StatePreparing, StateProvisioning, StateResuming, StateScaling, StateSucceeded, StateSuspended, StateSuspending, StateUpdating}
 }
 
 // CheckServerNameAvailabilityParameters details of server name request body.

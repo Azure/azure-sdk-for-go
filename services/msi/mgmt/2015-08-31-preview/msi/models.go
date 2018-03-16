@@ -34,8 +34,8 @@ const (
 )
 
 // PossibleUserAssignedIdentitiesValues returns an array of possible values for the UserAssignedIdentities const type.
-func PossibleUserAssignedIdentitiesValues() [1]UserAssignedIdentities {
-	return [1]UserAssignedIdentities{MicrosoftManagedIdentityuserAssignedIdentities}
+func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
+	return []UserAssignedIdentities{MicrosoftManagedIdentityuserAssignedIdentities}
 }
 
 // CloudError an error response from the ManagedServiceIdentity service.

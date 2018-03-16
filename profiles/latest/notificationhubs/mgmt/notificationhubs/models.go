@@ -51,7 +51,7 @@ const (
 	Send   AccessRights = original.Send
 )
 
-func PossibleAccessRightsValues() [3]AccessRights {
+func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
 
@@ -62,7 +62,7 @@ const (
 	NotificationHub NamespaceType = original.NotificationHub
 )
 
-func PossibleNamespaceTypeValues() [2]NamespaceType {
+func PossibleNamespaceTypeValues() []NamespaceType {
 	return original.PossibleNamespaceTypeValues()
 }
 
@@ -74,7 +74,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [3]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 

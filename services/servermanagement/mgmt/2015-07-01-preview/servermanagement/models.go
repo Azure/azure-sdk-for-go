@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAutoUpgradeValues returns an array of possible values for the AutoUpgrade const type.
-func PossibleAutoUpgradeValues() [2]AutoUpgrade {
-	return [2]AutoUpgrade{Off, On}
+func PossibleAutoUpgradeValues() []AutoUpgrade {
+	return []AutoUpgrade{Off, On}
 }
 
 // GatewayExpandOption enumerates the values for gateway expand option.
@@ -50,8 +50,8 @@ const (
 )
 
 // PossibleGatewayExpandOptionValues returns an array of possible values for the GatewayExpandOption const type.
-func PossibleGatewayExpandOptionValues() [1]GatewayExpandOption {
-	return [1]GatewayExpandOption{Status}
+func PossibleGatewayExpandOptionValues() []GatewayExpandOption {
+	return []GatewayExpandOption{Status}
 }
 
 // PowerShellExpandOption enumerates the values for power shell expand option.
@@ -63,8 +63,8 @@ const (
 )
 
 // PossiblePowerShellExpandOptionValues returns an array of possible values for the PowerShellExpandOption const type.
-func PossiblePowerShellExpandOptionValues() [1]PowerShellExpandOption {
-	return [1]PowerShellExpandOption{Output}
+func PossiblePowerShellExpandOptionValues() []PowerShellExpandOption {
+	return []PowerShellExpandOption{Output}
 }
 
 // PromptFieldType enumerates the values for prompt field type.
@@ -80,8 +80,8 @@ const (
 )
 
 // PossiblePromptFieldTypeValues returns an array of possible values for the PromptFieldType const type.
-func PossiblePromptFieldTypeValues() [3]PromptFieldType {
-	return [3]PromptFieldType{Credential, SecureString, String}
+func PossiblePromptFieldTypeValues() []PromptFieldType {
+	return []PromptFieldType{Credential, SecureString, String}
 }
 
 // Error error message.

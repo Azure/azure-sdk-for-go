@@ -142,7 +142,7 @@ const (
 	Stopping InfraRoleInstanceState = original.Stopping
 )
 
-func PossibleInfraRoleInstanceStateValues() [4]InfraRoleInstanceState {
+func PossibleInfraRoleInstanceStateValues() []InfraRoleInstanceState {
 	return original.PossibleInfraRoleInstanceStateValues()
 }
 
@@ -155,7 +155,7 @@ const (
 	PowerStateStopping PowerState = original.PowerStateStopping
 )
 
-func PossiblePowerStateValues() [4]PowerState {
+func PossiblePowerStateValues() []PowerState {
 	return original.PossiblePowerStateValues()
 }
 
@@ -167,7 +167,7 @@ const (
 	ScaleUnitNodeStatusStopped     ScaleUnitNodeStatus = original.ScaleUnitNodeStatusStopped
 )
 
-func PossibleScaleUnitNodeStatusValues() [3]ScaleUnitNodeStatus {
+func PossibleScaleUnitNodeStatusValues() []ScaleUnitNodeStatus {
 	return original.PossibleScaleUnitNodeStatusValues()
 }
 
@@ -181,7 +181,7 @@ const (
 	ScaleUnitStateUpgrading ScaleUnitState = original.ScaleUnitStateUpgrading
 )
 
-func PossibleScaleUnitStateValues() [5]ScaleUnitState {
+func PossibleScaleUnitStateValues() []ScaleUnitState {
 	return original.PossibleScaleUnitStateValues()
 }
 
@@ -194,7 +194,7 @@ const (
 	Unknown        ScaleUnitType = original.Unknown
 )
 
-func PossibleScaleUnitTypeValues() [4]ScaleUnitType {
+func PossibleScaleUnitTypeValues() []ScaleUnitType {
 	return original.PossibleScaleUnitTypeValues()
 }
 

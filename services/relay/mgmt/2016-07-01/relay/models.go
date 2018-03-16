@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() [3]AccessRights {
-	return [3]AccessRights{Listen, Manage, Send}
+func PossibleAccessRightsValues() []AccessRights {
+	return []AccessRights{Listen, Manage, Send}
 }
 
 // PolicyKey enumerates the values for policy key.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossiblePolicyKeyValues returns an array of possible values for the PolicyKey const type.
-func PossiblePolicyKeyValues() [2]PolicyKey {
-	return [2]PolicyKey{PrimaryKey, SecondaryKey}
+func PossiblePolicyKeyValues() []PolicyKey {
+	return []PolicyKey{PrimaryKey, SecondaryKey}
 }
 
 // RelaytypeEnum enumerates the values for relaytype enum.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleRelaytypeEnumValues returns an array of possible values for the RelaytypeEnum const type.
-func PossibleRelaytypeEnumValues() [2]RelaytypeEnum {
-	return [2]RelaytypeEnum{HTTP, NetTCP}
+func PossibleRelaytypeEnumValues() []RelaytypeEnum {
+	return []RelaytypeEnum{HTTP, NetTCP}
 }
 
 // UnavailableReason enumerates the values for unavailable reason.
@@ -92,8 +92,8 @@ const (
 )
 
 // PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
-	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+func PossibleUnavailableReasonValues() []UnavailableReason {
+	return []UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
 }
 
 // AuthorizationRule description of a Namespace AuthorizationRules.

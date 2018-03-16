@@ -50,7 +50,7 @@ const (
 	Hot  AccessTier = original.Hot
 )
 
-func PossibleAccessTierValues() [2]AccessTier {
+func PossibleAccessTierValues() []AccessTier {
 	return original.PossibleAccessTierValues()
 }
 
@@ -61,7 +61,7 @@ const (
 	Unavailable AccountStatus = original.Unavailable
 )
 
-func PossibleAccountStatusValues() [2]AccountStatus {
+func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
 }
 
@@ -72,7 +72,7 @@ const (
 	READ KeyPermission = original.READ
 )
 
-func PossibleKeyPermissionValues() [2]KeyPermission {
+func PossibleKeyPermissionValues() []KeyPermission {
 	return original.PossibleKeyPermissionValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	Storage     Kind = original.Storage
 )
 
-func PossibleKindValues() [2]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() [3]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	AlreadyExists      Reason = original.AlreadyExists
 )
 
-func PossibleReasonValues() [2]Reason {
+func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
 
@@ -120,7 +120,7 @@ const (
 	StandardZRS   SkuName = original.StandardZRS
 )
 
-func PossibleSkuNameValues() [5]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -131,7 +131,7 @@ const (
 	Standard SkuTier = original.Standard
 )
 
-func PossibleSkuTierValues() [2]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -146,7 +146,7 @@ const (
 	Seconds         UsageUnit = original.Seconds
 )
 
-func PossibleUsageUnitValues() [6]UsageUnit {
+func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()
 }
 

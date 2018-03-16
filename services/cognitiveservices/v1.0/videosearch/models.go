@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -74,8 +74,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // Freshness enumerates the values for freshness.
@@ -91,8 +91,8 @@ const (
 )
 
 // PossibleFreshnessValues returns an array of possible values for the Freshness const type.
-func PossibleFreshnessValues() [3]Freshness {
-	return [3]Freshness{Day, Month, Week}
+func PossibleFreshnessValues() []Freshness {
+	return []Freshness{Day, Month, Week}
 }
 
 // SafeSearch enumerates the values for safe search.
@@ -108,8 +108,8 @@ const (
 )
 
 // PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() [3]SafeSearch {
-	return [3]SafeSearch{Moderate, Off, Strict}
+func PossibleSafeSearchValues() []SafeSearch {
+	return []SafeSearch{Moderate, Off, Strict}
 }
 
 // TextFormat enumerates the values for text format.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() [2]TextFormat {
-	return [2]TextFormat{HTML, Raw}
+func PossibleTextFormatValues() []TextFormat {
+	return []TextFormat{HTML, Raw}
 }
 
 // Type enumerates the values for type.
@@ -162,8 +162,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [14]Type {
-	return [14]Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeMediaObject, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeThing, TypeTrendingVideos, TypeVideoDetails, TypeVideoObject, TypeVideos}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeMediaObject, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeThing, TypeTrendingVideos, TypeVideoDetails, TypeVideoObject, TypeVideos}
 }
 
 // VideoInsightModule enumerates the values for video insight module.
@@ -179,8 +179,8 @@ const (
 )
 
 // PossibleVideoInsightModuleValues returns an array of possible values for the VideoInsightModule const type.
-func PossibleVideoInsightModuleValues() [3]VideoInsightModule {
-	return [3]VideoInsightModule{All, RelatedVideos, VideoResult}
+func PossibleVideoInsightModuleValues() []VideoInsightModule {
+	return []VideoInsightModule{All, RelatedVideos, VideoResult}
 }
 
 // VideoLength enumerates the values for video length.
@@ -198,8 +198,8 @@ const (
 )
 
 // PossibleVideoLengthValues returns an array of possible values for the VideoLength const type.
-func PossibleVideoLengthValues() [4]VideoLength {
-	return [4]VideoLength{VideoLengthAll, VideoLengthLong, VideoLengthMedium, VideoLengthShort}
+func PossibleVideoLengthValues() []VideoLength {
+	return []VideoLength{VideoLengthAll, VideoLengthLong, VideoLengthMedium, VideoLengthShort}
 }
 
 // VideoPricing enumerates the values for video pricing.
@@ -215,8 +215,8 @@ const (
 )
 
 // PossibleVideoPricingValues returns an array of possible values for the VideoPricing const type.
-func PossibleVideoPricingValues() [3]VideoPricing {
-	return [3]VideoPricing{VideoPricingAll, VideoPricingFree, VideoPricingPaid}
+func PossibleVideoPricingValues() []VideoPricing {
+	return []VideoPricing{VideoPricingAll, VideoPricingFree, VideoPricingPaid}
 }
 
 // VideoQueryScenario enumerates the values for video query scenario.
@@ -230,8 +230,8 @@ const (
 )
 
 // PossibleVideoQueryScenarioValues returns an array of possible values for the VideoQueryScenario const type.
-func PossibleVideoQueryScenarioValues() [2]VideoQueryScenario {
-	return [2]VideoQueryScenario{List, SingleDominantVideo}
+func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
+	return []VideoQueryScenario{List, SingleDominantVideo}
 }
 
 // VideoResolution enumerates the values for video resolution.
@@ -249,8 +249,8 @@ const (
 )
 
 // PossibleVideoResolutionValues returns an array of possible values for the VideoResolution const type.
-func PossibleVideoResolutionValues() [4]VideoResolution {
-	return [4]VideoResolution{VideoResolutionAll, VideoResolutionHD1080p, VideoResolutionHD720p, VideoResolutionSD480p}
+func PossibleVideoResolutionValues() []VideoResolution {
+	return []VideoResolution{VideoResolutionAll, VideoResolutionHD1080p, VideoResolutionHD720p, VideoResolutionSD480p}
 }
 
 // BasicAnswer ...

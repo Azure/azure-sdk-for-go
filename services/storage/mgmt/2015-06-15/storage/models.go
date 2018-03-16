@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
-func PossibleAccountStatusValues() [2]AccountStatus {
-	return [2]AccountStatus{Available, Unavailable}
+func PossibleAccountStatusValues() []AccountStatus {
+	return []AccountStatus{Available, Unavailable}
 }
 
 // AccountType enumerates the values for account type.
@@ -57,8 +57,8 @@ const (
 )
 
 // PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
-func PossibleAccountTypeValues() [5]AccountType {
-	return [5]AccountType{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
+func PossibleAccountTypeValues() []AccountType {
+	return []AccountType{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -74,8 +74,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [3]ProvisioningState {
-	return [3]ProvisioningState{Creating, ResolvingDNS, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
 }
 
 // Reason enumerates the values for reason.
@@ -89,8 +89,8 @@ const (
 )
 
 // PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() [2]Reason {
-	return [2]Reason{AccountNameInvalid, AlreadyExists}
+func PossibleReasonValues() []Reason {
+	return []Reason{AccountNameInvalid, AlreadyExists}
 }
 
 // UsageUnit enumerates the values for usage unit.
@@ -112,8 +112,8 @@ const (
 )
 
 // PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() [6]UsageUnit {
-	return [6]UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
+func PossibleUsageUnitValues() []UsageUnit {
+	return []UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
 }
 
 // Account the storage account.

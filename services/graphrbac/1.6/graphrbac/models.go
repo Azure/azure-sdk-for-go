@@ -40,8 +40,8 @@ const (
 )
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() [5]ObjectType {
-	return [5]ObjectType{ObjectTypeApplication, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeUser}
+func PossibleObjectTypeValues() []ObjectType {
+	return []ObjectType{ObjectTypeApplication, ObjectTypeDirectoryObject, ObjectTypeGroup, ObjectTypeServicePrincipal, ObjectTypeUser}
 }
 
 // UserType enumerates the values for user type.
@@ -55,8 +55,8 @@ const (
 )
 
 // PossibleUserTypeValues returns an array of possible values for the UserType const type.
-func PossibleUserTypeValues() [2]UserType {
-	return [2]UserType{Guest, Member}
+func PossibleUserTypeValues() []UserType {
+	return []UserType{Guest, Member}
 }
 
 // AADObject the properties of an Active Directory object.

@@ -105,7 +105,7 @@ const (
 	Parse            DatabaseAccountKind = original.Parse
 )
 
-func PossibleDatabaseAccountKindValues() [3]DatabaseAccountKind {
+func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
 	return original.PossibleDatabaseAccountKindValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	Standard DatabaseAccountOfferType = original.Standard
 )
 
-func PossibleDatabaseAccountOfferTypeValues() [1]DatabaseAccountOfferType {
+func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
 	return original.PossibleDatabaseAccountOfferTypeValues()
 }
 
@@ -129,7 +129,7 @@ const (
 	Strong           DefaultConsistencyLevel = original.Strong
 )
 
-func PossibleDefaultConsistencyLevelValues() [5]DefaultConsistencyLevel {
+func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	return original.PossibleDefaultConsistencyLevelValues()
 }
 
@@ -142,7 +142,7 @@ const (
 	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
 
-func PossibleKeyKindValues() [4]KeyKind {
+func PossibleKeyKindValues() []KeyKind {
 	return original.PossibleKeyKindValues()
 }
 
@@ -157,7 +157,7 @@ const (
 	Total     PrimaryAggregationType = original.Total
 )
 
-func PossiblePrimaryAggregationTypeValues() [6]PrimaryAggregationType {
+func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
 }
 
@@ -173,7 +173,7 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
-func PossibleUnitTypeValues() [7]UnitType {
+func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
 }
 

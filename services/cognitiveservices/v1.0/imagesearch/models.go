@@ -351,8 +351,8 @@ const (
 )
 
 // PossibleCurrencyValues returns an array of possible values for the Currency const type.
-func PossibleCurrencyValues() [161]Currency {
-	return [161]Currency{AED, AFN, ALL, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, BMD, BND, BOB, BOV, BRL, BSD, BTN, BWP, BYR, BZD, CAD, CDF, CHE, CHF, CHW, CLF, CLP, CNY, COP, COU, CRC, CUC, CUP, CVE, CZK, DJF, DKK, DOP, DZD, EGP, ERN, ETB, EUR, FJD, FKP, GBP, GEL, GHS, GIP, GMD, GNF, GTQ, GYD, HKD, HNL, HRK, HTG, HUF, IDR, ILS, INR, IQD, IRR, ISK, JMD, JOD, JPY, KES, KGS, KHR, KMF, KPW, KRW, KWD, KYD, KZT, LAK, LBP, LKR, LRD, LSL, LYD, MAD, MDL, MGA, MKD, MMK, MNT, MOP, MRO, MUR, MVR, MWK, MXN, MXV, MYR, MZN, NAD, NGN, NIO, NOK, NPR, NZD, OMR, PAB, PEN, PGK, PHP, PKR, PLN, PYG, QAR, RON, RSD, RUB, RWF, SAR, SBD, SCR, SDG, SEK, SGD, SHP, SLL, SOS, SRD, SSP, STD, SYP, SZL, THB, TJS, TMT, TND, TOP, TRY, TTD, TWD, TZS, UAH, UGX, USD, UYU, UZS, VEF, VND, VUV, WST, XAF, XCD, XOF, XPF, YER, ZAR, ZMW}
+func PossibleCurrencyValues() []Currency {
+	return []Currency{AED, AFN, ALL, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, BMD, BND, BOB, BOV, BRL, BSD, BTN, BWP, BYR, BZD, CAD, CDF, CHE, CHF, CHW, CLF, CLP, CNY, COP, COU, CRC, CUC, CUP, CVE, CZK, DJF, DKK, DOP, DZD, EGP, ERN, ETB, EUR, FJD, FKP, GBP, GEL, GHS, GIP, GMD, GNF, GTQ, GYD, HKD, HNL, HRK, HTG, HUF, IDR, ILS, INR, IQD, IRR, ISK, JMD, JOD, JPY, KES, KGS, KHR, KMF, KPW, KRW, KWD, KYD, KZT, LAK, LBP, LKR, LRD, LSL, LYD, MAD, MDL, MGA, MKD, MMK, MNT, MOP, MRO, MUR, MVR, MWK, MXN, MXV, MYR, MZN, NAD, NGN, NIO, NOK, NPR, NZD, OMR, PAB, PEN, PGK, PHP, PKR, PLN, PYG, QAR, RON, RSD, RUB, RWF, SAR, SBD, SCR, SDG, SEK, SGD, SHP, SLL, SOS, SRD, SSP, STD, SYP, SZL, THB, TJS, TMT, TND, TOP, TRY, TTD, TWD, TZS, UAH, UGX, USD, UYU, UZS, VEF, VND, VUV, WST, XAF, XCD, XOF, XPF, YER, ZAR, ZMW}
 }
 
 // ErrorCode enumerates the values for error code.
@@ -374,8 +374,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -407,8 +407,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // Freshness enumerates the values for freshness.
@@ -424,8 +424,8 @@ const (
 )
 
 // PossibleFreshnessValues returns an array of possible values for the Freshness const type.
-func PossibleFreshnessValues() [3]Freshness {
-	return [3]Freshness{Day, Month, Week}
+func PossibleFreshnessValues() []Freshness {
+	return []Freshness{Day, Month, Week}
 }
 
 // ImageAspect enumerates the values for image aspect.
@@ -443,8 +443,8 @@ const (
 )
 
 // PossibleImageAspectValues returns an array of possible values for the ImageAspect const type.
-func PossibleImageAspectValues() [4]ImageAspect {
-	return [4]ImageAspect{All, Square, Tall, Wide}
+func PossibleImageAspectValues() []ImageAspect {
+	return []ImageAspect{All, Square, Tall, Wide}
 }
 
 // ImageColor enumerates the values for image color.
@@ -482,8 +482,8 @@ const (
 )
 
 // PossibleImageColorValues returns an array of possible values for the ImageColor const type.
-func PossibleImageColorValues() [14]ImageColor {
-	return [14]ImageColor{Black, Blue, Brown, ColorOnly, Gray, Green, Monochrome, Orange, Pink, Purple, Red, Teal, White, Yellow}
+func PossibleImageColorValues() []ImageColor {
+	return []ImageColor{Black, Blue, Brown, ColorOnly, Gray, Green, Monochrome, Orange, Pink, Purple, Red, Teal, White, Yellow}
 }
 
 // ImageContent enumerates the values for image content.
@@ -497,8 +497,8 @@ const (
 )
 
 // PossibleImageContentValues returns an array of possible values for the ImageContent const type.
-func PossibleImageContentValues() [2]ImageContent {
-	return [2]ImageContent{Face, Portrait}
+func PossibleImageContentValues() []ImageContent {
+	return []ImageContent{Face, Portrait}
 }
 
 // ImageCropType enumerates the values for image crop type.
@@ -510,8 +510,8 @@ const (
 )
 
 // PossibleImageCropTypeValues returns an array of possible values for the ImageCropType const type.
-func PossibleImageCropTypeValues() [1]ImageCropType {
-	return [1]ImageCropType{Rectangular}
+func PossibleImageCropTypeValues() []ImageCropType {
+	return []ImageCropType{Rectangular}
 }
 
 // ImageInsightModule enumerates the values for image insight module.
@@ -545,8 +545,8 @@ const (
 )
 
 // PossibleImageInsightModuleValues returns an array of possible values for the ImageInsightModule const type.
-func PossibleImageInsightModuleValues() [12]ImageInsightModule {
-	return [12]ImageInsightModule{ImageInsightModuleAll, ImageInsightModuleBRQ, ImageInsightModuleCaption, ImageInsightModuleCollections, ImageInsightModulePagesIncluding, ImageInsightModuleRecipes, ImageInsightModuleRecognizedEntities, ImageInsightModuleRelatedSearches, ImageInsightModuleShoppingSources, ImageInsightModuleSimilarImages, ImageInsightModuleSimilarProducts, ImageInsightModuleTags}
+func PossibleImageInsightModuleValues() []ImageInsightModule {
+	return []ImageInsightModule{ImageInsightModuleAll, ImageInsightModuleBRQ, ImageInsightModuleCaption, ImageInsightModuleCollections, ImageInsightModulePagesIncluding, ImageInsightModuleRecipes, ImageInsightModuleRecognizedEntities, ImageInsightModuleRelatedSearches, ImageInsightModuleShoppingSources, ImageInsightModuleSimilarImages, ImageInsightModuleSimilarProducts, ImageInsightModuleTags}
 }
 
 // ImageLicense enumerates the values for image license.
@@ -570,8 +570,8 @@ const (
 )
 
 // PossibleImageLicenseValues returns an array of possible values for the ImageLicense const type.
-func PossibleImageLicenseValues() [7]ImageLicense {
-	return [7]ImageLicense{ImageLicenseAll, ImageLicenseAny, ImageLicenseModify, ImageLicenseModifyCommercially, ImageLicensePublic, ImageLicenseShare, ImageLicenseShareCommercially}
+func PossibleImageLicenseValues() []ImageLicense {
+	return []ImageLicense{ImageLicenseAll, ImageLicenseAny, ImageLicenseModify, ImageLicenseModifyCommercially, ImageLicensePublic, ImageLicenseShare, ImageLicenseShareCommercially}
 }
 
 // ImageSize enumerates the values for image size.
@@ -591,8 +591,8 @@ const (
 )
 
 // PossibleImageSizeValues returns an array of possible values for the ImageSize const type.
-func PossibleImageSizeValues() [5]ImageSize {
-	return [5]ImageSize{ImageSizeAll, ImageSizeLarge, ImageSizeMedium, ImageSizeSmall, ImageSizeWallpaper}
+func PossibleImageSizeValues() []ImageSize {
+	return []ImageSize{ImageSizeAll, ImageSizeLarge, ImageSizeMedium, ImageSizeSmall, ImageSizeWallpaper}
 }
 
 // ImageType enumerates the values for image type.
@@ -614,8 +614,8 @@ const (
 )
 
 // PossibleImageTypeValues returns an array of possible values for the ImageType const type.
-func PossibleImageTypeValues() [6]ImageType {
-	return [6]ImageType{AnimatedGif, Clipart, Line, Photo, Shopping, Transparent}
+func PossibleImageTypeValues() []ImageType {
+	return []ImageType{AnimatedGif, Clipart, Line, Photo, Shopping, Transparent}
 }
 
 // ItemAvailability enumerates the values for item availability.
@@ -641,8 +641,8 @@ const (
 )
 
 // PossibleItemAvailabilityValues returns an array of possible values for the ItemAvailability const type.
-func PossibleItemAvailabilityValues() [8]ItemAvailability {
-	return [8]ItemAvailability{Discontinued, InStock, InStoreOnly, LimitedAvailability, OnlineOnly, OutOfStock, PreOrder, SoldOut}
+func PossibleItemAvailabilityValues() []ItemAvailability {
+	return []ItemAvailability{Discontinued, InStock, InStoreOnly, LimitedAvailability, OnlineOnly, OutOfStock, PreOrder, SoldOut}
 }
 
 // SafeSearch enumerates the values for safe search.
@@ -658,8 +658,8 @@ const (
 )
 
 // PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() [3]SafeSearch {
-	return [3]SafeSearch{Moderate, Off, Strict}
+func PossibleSafeSearchValues() []SafeSearch {
+	return []SafeSearch{Moderate, Off, Strict}
 }
 
 // Type enumerates the values for type.
@@ -675,8 +675,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [3]Type {
-	return [3]Type{TypeAggregateRating, TypePropertiesItem, TypeRating}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAggregateRating, TypePropertiesItem, TypeRating}
 }
 
 // TypeBasicResponseBase enumerates the values for type basic response base.
@@ -738,8 +738,8 @@ const (
 )
 
 // PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
-func PossibleTypeBasicResponseBaseValues() [26]TypeBasicResponseBase {
-	return [26]TypeBasicResponseBase{TypeAggregateOffer, TypeAnswer, TypeCollectionPage, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageGallery, TypeImageInsights, TypeImageObject, TypeImages, TypeIntangible, TypeMediaObject, TypeNormalizedRectangle, TypeOffer, TypeOrganization, TypePerson, TypeRecipe, TypeRecognizedEntity, TypeRecognizedEntityRegion, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeStructuredValue, TypeThing, TypeTrendingImages, TypeWebPage}
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return []TypeBasicResponseBase{TypeAggregateOffer, TypeAnswer, TypeCollectionPage, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageGallery, TypeImageInsights, TypeImageObject, TypeImages, TypeIntangible, TypeMediaObject, TypeNormalizedRectangle, TypeOffer, TypeOrganization, TypePerson, TypeRecipe, TypeRecognizedEntity, TypeRecognizedEntityRegion, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeStructuredValue, TypeThing, TypeTrendingImages, TypeWebPage}
 }
 
 // AggregateOffer defines a list of offers from merchants that are related to the image.

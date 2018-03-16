@@ -41,7 +41,7 @@ const (
 	Hourly AggregationGranularity = original.Hourly
 )
 
-func PossibleAggregationGranularityValues() [2]AggregationGranularity {
+func PossibleAggregationGranularityValues() []AggregationGranularity {
 	return original.PossibleAggregationGranularityValues()
 }
 
@@ -54,7 +54,7 @@ const (
 	NameRecurringCharge    Name = original.NameRecurringCharge
 )
 
-func PossibleNameValues() [4]Name {
+func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
 }
 

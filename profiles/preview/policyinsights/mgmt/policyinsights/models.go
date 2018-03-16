@@ -41,7 +41,7 @@ const (
 	Latest  PolicyStatesResource = original.Latest
 )
 
-func PossiblePolicyStatesResourceValues() [2]PolicyStatesResource {
+func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()
 }
 

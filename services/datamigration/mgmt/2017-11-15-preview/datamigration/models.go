@@ -43,8 +43,8 @@ const (
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() [5]AuthenticationType {
-	return [5]AuthenticationType{ActiveDirectoryIntegrated, ActiveDirectoryPassword, None, SQLAuthentication, WindowsAuthentication}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{ActiveDirectoryIntegrated, ActiveDirectoryPassword, None, SQLAuthentication, WindowsAuthentication}
 }
 
 // DatabaseCompatLevel enumerates the values for database compat level.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleDatabaseCompatLevelValues returns an array of possible values for the DatabaseCompatLevel const type.
-func PossibleDatabaseCompatLevelValues() [7]DatabaseCompatLevel {
-	return [7]DatabaseCompatLevel{CompatLevel100, CompatLevel110, CompatLevel120, CompatLevel130, CompatLevel140, CompatLevel80, CompatLevel90}
+func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
+	return []DatabaseCompatLevel{CompatLevel100, CompatLevel110, CompatLevel120, CompatLevel130, CompatLevel140, CompatLevel80, CompatLevel90}
 }
 
 // DatabaseFileType enumerates the values for database file type.
@@ -89,8 +89,8 @@ const (
 )
 
 // PossibleDatabaseFileTypeValues returns an array of possible values for the DatabaseFileType const type.
-func PossibleDatabaseFileTypeValues() [5]DatabaseFileType {
-	return [5]DatabaseFileType{Filestream, Fulltext, Log, NotSupported, Rows}
+func PossibleDatabaseFileTypeValues() []DatabaseFileType {
+	return []DatabaseFileType{Filestream, Fulltext, Log, NotSupported, Rows}
 }
 
 // DatabaseMigrationStage enumerates the values for database migration stage.
@@ -112,8 +112,8 @@ const (
 )
 
 // PossibleDatabaseMigrationStageValues returns an array of possible values for the DatabaseMigrationStage const type.
-func PossibleDatabaseMigrationStageValues() [6]DatabaseMigrationStage {
-	return [6]DatabaseMigrationStage{DatabaseMigrationStageBackup, DatabaseMigrationStageCompleted, DatabaseMigrationStageFileCopy, DatabaseMigrationStageInitialize, DatabaseMigrationStageNone, DatabaseMigrationStageRestore}
+func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
+	return []DatabaseMigrationStage{DatabaseMigrationStageBackup, DatabaseMigrationStageCompleted, DatabaseMigrationStageFileCopy, DatabaseMigrationStageInitialize, DatabaseMigrationStageNone, DatabaseMigrationStageRestore}
 }
 
 // DatabaseState enumerates the values for database state.
@@ -141,8 +141,8 @@ const (
 )
 
 // PossibleDatabaseStateValues returns an array of possible values for the DatabaseState const type.
-func PossibleDatabaseStateValues() [9]DatabaseState {
-	return [9]DatabaseState{Copying, Emergency, Offline, OfflineSecondary, Online, Recovering, RecoveryPending, Restoring, Suspect}
+func PossibleDatabaseStateValues() []DatabaseState {
+	return []DatabaseState{Copying, Emergency, Offline, OfflineSecondary, Online, Recovering, RecoveryPending, Restoring, Suspect}
 }
 
 // ErrorType enumerates the values for error type.
@@ -158,8 +158,8 @@ const (
 )
 
 // PossibleErrorTypeValues returns an array of possible values for the ErrorType const type.
-func PossibleErrorTypeValues() [3]ErrorType {
-	return [3]ErrorType{ErrorTypeDefault, ErrorTypeError, ErrorTypeWarning}
+func PossibleErrorTypeValues() []ErrorType {
+	return []ErrorType{ErrorTypeDefault, ErrorTypeError, ErrorTypeWarning}
 }
 
 // MigrationState enumerates the values for migration state.
@@ -183,8 +183,8 @@ const (
 )
 
 // PossibleMigrationStateValues returns an array of possible values for the MigrationState const type.
-func PossibleMigrationStateValues() [7]MigrationState {
-	return [7]MigrationState{MigrationStateCompleted, MigrationStateFailed, MigrationStateInProgress, MigrationStateNone, MigrationStateSkipped, MigrationStateStopped, MigrationStateWarning}
+func PossibleMigrationStateValues() []MigrationState {
+	return []MigrationState{MigrationStateCompleted, MigrationStateFailed, MigrationStateInProgress, MigrationStateNone, MigrationStateSkipped, MigrationStateStopped, MigrationStateWarning}
 }
 
 // MigrationStatus enumerates the values for migration status.
@@ -214,8 +214,8 @@ const (
 )
 
 // PossibleMigrationStatusValues returns an array of possible values for the MigrationStatus const type.
-func PossibleMigrationStatusValues() [10]MigrationStatus {
-	return [10]MigrationStatus{MigrationStatusCompleted, MigrationStatusCompletedWithWarnings, MigrationStatusConfigured, MigrationStatusConnecting, MigrationStatusDefault, MigrationStatusError, MigrationStatusRunning, MigrationStatusSelectLogins, MigrationStatusSourceAndTargetSelected, MigrationStatusStopped}
+func PossibleMigrationStatusValues() []MigrationStatus {
+	return []MigrationStatus{MigrationStatusCompleted, MigrationStatusCompletedWithWarnings, MigrationStatusConfigured, MigrationStatusConnecting, MigrationStatusDefault, MigrationStatusError, MigrationStatusRunning, MigrationStatusSelectLogins, MigrationStatusSourceAndTargetSelected, MigrationStatusStopped}
 }
 
 // NameCheckFailureReason enumerates the values for name check failure reason.
@@ -229,8 +229,8 @@ const (
 )
 
 // PossibleNameCheckFailureReasonValues returns an array of possible values for the NameCheckFailureReason const type.
-func PossibleNameCheckFailureReasonValues() [2]NameCheckFailureReason {
-	return [2]NameCheckFailureReason{AlreadyExists, Invalid}
+func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
+	return []NameCheckFailureReason{AlreadyExists, Invalid}
 }
 
 // ObjectType enumerates the values for object type.
@@ -250,8 +250,8 @@ const (
 )
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() [5]ObjectType {
-	return [5]ObjectType{Function, StoredProcedures, Table, User, View}
+func PossibleObjectTypeValues() []ObjectType {
+	return []ObjectType{Function, StoredProcedures, Table, User, View}
 }
 
 // ProjectProvisioningState enumerates the values for project provisioning state.
@@ -265,8 +265,8 @@ const (
 )
 
 // PossibleProjectProvisioningStateValues returns an array of possible values for the ProjectProvisioningState const type.
-func PossibleProjectProvisioningStateValues() [2]ProjectProvisioningState {
-	return [2]ProjectProvisioningState{Deleting, Succeeded}
+func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
+	return []ProjectProvisioningState{Deleting, Succeeded}
 }
 
 // ProjectSourcePlatform enumerates the values for project source platform.
@@ -280,8 +280,8 @@ const (
 )
 
 // PossibleProjectSourcePlatformValues returns an array of possible values for the ProjectSourcePlatform const type.
-func PossibleProjectSourcePlatformValues() [2]ProjectSourcePlatform {
-	return [2]ProjectSourcePlatform{SQL, Unknown}
+func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
+	return []ProjectSourcePlatform{SQL, Unknown}
 }
 
 // ProjectTargetPlatform enumerates the values for project target platform.
@@ -295,8 +295,8 @@ const (
 )
 
 // PossibleProjectTargetPlatformValues returns an array of possible values for the ProjectTargetPlatform const type.
-func PossibleProjectTargetPlatformValues() [2]ProjectTargetPlatform {
-	return [2]ProjectTargetPlatform{ProjectTargetPlatformSQLDB, ProjectTargetPlatformUnknown}
+func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
+	return []ProjectTargetPlatform{ProjectTargetPlatformSQLDB, ProjectTargetPlatformUnknown}
 }
 
 // ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
@@ -312,8 +312,8 @@ const (
 )
 
 // PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
-func PossibleResourceSkuCapacityScaleTypeValues() [3]ResourceSkuCapacityScaleType {
-	return [3]ResourceSkuCapacityScaleType{ResourceSkuCapacityScaleTypeAutomatic, ResourceSkuCapacityScaleTypeManual, ResourceSkuCapacityScaleTypeNone}
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return []ResourceSkuCapacityScaleType{ResourceSkuCapacityScaleTypeAutomatic, ResourceSkuCapacityScaleTypeManual, ResourceSkuCapacityScaleTypeNone}
 }
 
 // ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
@@ -327,8 +327,8 @@ const (
 )
 
 // PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
-func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
-	return [2]ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
 // ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
@@ -340,8 +340,8 @@ const (
 )
 
 // PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
-func PossibleResourceSkuRestrictionsTypeValues() [1]ResourceSkuRestrictionsType {
-	return [1]ResourceSkuRestrictionsType{Location}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return []ResourceSkuRestrictionsType{Location}
 }
 
 // ResultType enumerates the values for result type.
@@ -361,8 +361,8 @@ const (
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
-func PossibleResultTypeValues() [5]ResultType {
-	return [5]ResultType{ResultTypeDatabaseLevelOutput, ResultTypeErrorOutput, ResultTypeMigrateSQLServerSQLDbTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeTableLevelOutput}
+func PossibleResultTypeValues() []ResultType {
+	return []ResultType{ResultTypeDatabaseLevelOutput, ResultTypeErrorOutput, ResultTypeMigrateSQLServerSQLDbTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeTableLevelOutput}
 }
 
 // ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
@@ -379,8 +379,8 @@ const (
 )
 
 // PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues returns an array of possible values for the ResultTypeBasicConnectToSourceSQLServerTaskOutput const type.
-func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() [3]ResultTypeBasicConnectToSourceSQLServerTaskOutput {
-	return [3]ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput}
+func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
+	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput}
 }
 
 // ServerLevelPermissionsGroup enumerates the values for server level permissions group.
@@ -394,8 +394,8 @@ const (
 )
 
 // PossibleServerLevelPermissionsGroupValues returns an array of possible values for the ServerLevelPermissionsGroup const type.
-func PossibleServerLevelPermissionsGroupValues() [2]ServerLevelPermissionsGroup {
-	return [2]ServerLevelPermissionsGroup{Default, MigrationFromSQLServerToAzureDB}
+func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
+	return []ServerLevelPermissionsGroup{Default, MigrationFromSQLServerToAzureDB}
 }
 
 // ServiceProvisioningState enumerates the values for service provisioning state.
@@ -425,8 +425,8 @@ const (
 )
 
 // PossibleServiceProvisioningStateValues returns an array of possible values for the ServiceProvisioningState const type.
-func PossibleServiceProvisioningStateValues() [10]ServiceProvisioningState {
-	return [10]ServiceProvisioningState{ServiceProvisioningStateAccepted, ServiceProvisioningStateDeleting, ServiceProvisioningStateDeploying, ServiceProvisioningStateFailed, ServiceProvisioningStateFailedToStart, ServiceProvisioningStateFailedToStop, ServiceProvisioningStateStarting, ServiceProvisioningStateStopped, ServiceProvisioningStateStopping, ServiceProvisioningStateSucceeded}
+func PossibleServiceProvisioningStateValues() []ServiceProvisioningState {
+	return []ServiceProvisioningState{ServiceProvisioningStateAccepted, ServiceProvisioningStateDeleting, ServiceProvisioningStateDeploying, ServiceProvisioningStateFailed, ServiceProvisioningStateFailedToStart, ServiceProvisioningStateFailedToStop, ServiceProvisioningStateStarting, ServiceProvisioningStateStopped, ServiceProvisioningStateStopping, ServiceProvisioningStateSucceeded}
 }
 
 // ServiceScalability enumerates the values for service scalability.
@@ -442,8 +442,8 @@ const (
 )
 
 // PossibleServiceScalabilityValues returns an array of possible values for the ServiceScalability const type.
-func PossibleServiceScalabilityValues() [3]ServiceScalability {
-	return [3]ServiceScalability{ServiceScalabilityAutomatic, ServiceScalabilityManual, ServiceScalabilityNone}
+func PossibleServiceScalabilityValues() []ServiceScalability {
+	return []ServiceScalability{ServiceScalabilityAutomatic, ServiceScalabilityManual, ServiceScalabilityNone}
 }
 
 // Severity enumerates the values for severity.
@@ -459,8 +459,8 @@ const (
 )
 
 // PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() [3]Severity {
-	return [3]Severity{SeverityError, SeverityMessage, SeverityWarning}
+func PossibleSeverityValues() []Severity {
+	return []Severity{SeverityError, SeverityMessage, SeverityWarning}
 }
 
 // TaskState enumerates the values for task state.
@@ -486,8 +486,8 @@ const (
 )
 
 // PossibleTaskStateValues returns an array of possible values for the TaskState const type.
-func PossibleTaskStateValues() [8]TaskState {
-	return [8]TaskState{TaskStateCanceled, TaskStateFailed, TaskStateFailedInputValidation, TaskStateFaulted, TaskStateQueued, TaskStateRunning, TaskStateSucceeded, TaskStateUnknown}
+func PossibleTaskStateValues() []TaskState {
+	return []TaskState{TaskStateCanceled, TaskStateFailed, TaskStateFailedInputValidation, TaskStateFaulted, TaskStateQueued, TaskStateRunning, TaskStateSucceeded, TaskStateUnknown}
 }
 
 // TaskType enumerates the values for task type.
@@ -507,8 +507,8 @@ const (
 )
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
-func PossibleTaskTypeValues() [5]TaskType {
-	return [5]TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown}
+func PossibleTaskTypeValues() []TaskType {
+	return []TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown}
 }
 
 // Type enumerates the values for type.
@@ -522,8 +522,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [2]Type {
-	return [2]Type{TypeSQLConnectionInfo, TypeUnknown}
+func PossibleTypeValues() []Type {
+	return []Type{TypeSQLConnectionInfo, TypeUnknown}
 }
 
 // UpdateActionType enumerates the values for update action type.
@@ -539,8 +539,8 @@ const (
 )
 
 // PossibleUpdateActionTypeValues returns an array of possible values for the UpdateActionType const type.
-func PossibleUpdateActionTypeValues() [3]UpdateActionType {
-	return [3]UpdateActionType{AddedOnTarget, ChangedOnTarget, DeletedOnTarget}
+func PossibleUpdateActionTypeValues() []UpdateActionType {
+	return []UpdateActionType{AddedOnTarget, ChangedOnTarget, DeletedOnTarget}
 }
 
 // ValidationStatus enumerates the values for validation status.
@@ -566,8 +566,8 @@ const (
 )
 
 // PossibleValidationStatusValues returns an array of possible values for the ValidationStatus const type.
-func PossibleValidationStatusValues() [8]ValidationStatus {
-	return [8]ValidationStatus{ValidationStatusCompleted, ValidationStatusCompletedWithIssues, ValidationStatusDefault, ValidationStatusFailed, ValidationStatusInitialized, ValidationStatusInProgress, ValidationStatusNotStarted, ValidationStatusStopped}
+func PossibleValidationStatusValues() []ValidationStatus {
+	return []ValidationStatus{ValidationStatusCompleted, ValidationStatusCompletedWithIssues, ValidationStatusDefault, ValidationStatusFailed, ValidationStatusInitialized, ValidationStatusInProgress, ValidationStatusNotStarted, ValidationStatusStopped}
 }
 
 // APIError error information.

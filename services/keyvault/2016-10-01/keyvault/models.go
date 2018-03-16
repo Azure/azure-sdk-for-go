@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleActionTypeValues returns an array of possible values for the ActionType const type.
-func PossibleActionTypeValues() [2]ActionType {
-	return [2]ActionType{AutoRenew, EmailContacts}
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{AutoRenew, EmailContacts}
 }
 
 // DeletionRecoveryLevel enumerates the values for deletion recovery level.
@@ -55,8 +55,8 @@ const (
 )
 
 // PossibleDeletionRecoveryLevelValues returns an array of possible values for the DeletionRecoveryLevel const type.
-func PossibleDeletionRecoveryLevelValues() [4]DeletionRecoveryLevel {
-	return [4]DeletionRecoveryLevel{Purgeable, Recoverable, RecoverableProtectedSubscription, RecoverablePurgeable}
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return []DeletionRecoveryLevel{Purgeable, Recoverable, RecoverableProtectedSubscription, RecoverablePurgeable}
 }
 
 // JSONWebKeyCurveName enumerates the values for json web key curve name.
@@ -74,8 +74,8 @@ const (
 )
 
 // PossibleJSONWebKeyCurveNameValues returns an array of possible values for the JSONWebKeyCurveName const type.
-func PossibleJSONWebKeyCurveNameValues() [4]JSONWebKeyCurveName {
-	return [4]JSONWebKeyCurveName{P256, P384, P521, SECP256K1}
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+	return []JSONWebKeyCurveName{P256, P384, P521, SECP256K1}
 }
 
 // JSONWebKeyEncryptionAlgorithm enumerates the values for json web key encryption algorithm.
@@ -91,8 +91,8 @@ const (
 )
 
 // PossibleJSONWebKeyEncryptionAlgorithmValues returns an array of possible values for the JSONWebKeyEncryptionAlgorithm const type.
-func PossibleJSONWebKeyEncryptionAlgorithmValues() [3]JSONWebKeyEncryptionAlgorithm {
-	return [3]JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
+	return []JSONWebKeyEncryptionAlgorithm{RSA15, RSAOAEP, RSAOAEP256}
 }
 
 // JSONWebKeyOperation enumerates the values for json web key operation.
@@ -114,8 +114,8 @@ const (
 )
 
 // PossibleJSONWebKeyOperationValues returns an array of possible values for the JSONWebKeyOperation const type.
-func PossibleJSONWebKeyOperationValues() [6]JSONWebKeyOperation {
-	return [6]JSONWebKeyOperation{Decrypt, Encrypt, Sign, UnwrapKey, Verify, WrapKey}
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return []JSONWebKeyOperation{Decrypt, Encrypt, Sign, UnwrapKey, Verify, WrapKey}
 }
 
 // JSONWebKeySignatureAlgorithm enumerates the values for json web key signature algorithm.
@@ -147,8 +147,8 @@ const (
 )
 
 // PossibleJSONWebKeySignatureAlgorithmValues returns an array of possible values for the JSONWebKeySignatureAlgorithm const type.
-func PossibleJSONWebKeySignatureAlgorithmValues() [11]JSONWebKeySignatureAlgorithm {
-	return [11]JSONWebKeySignatureAlgorithm{ECDSA256, ES256, ES384, ES512, PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
+func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
+	return []JSONWebKeySignatureAlgorithm{ECDSA256, ES256, ES384, ES512, PS256, PS384, PS512, RS256, RS384, RS512, RSNULL}
 }
 
 // JSONWebKeyType enumerates the values for json web key type.
@@ -168,8 +168,8 @@ const (
 )
 
 // PossibleJSONWebKeyTypeValues returns an array of possible values for the JSONWebKeyType const type.
-func PossibleJSONWebKeyTypeValues() [5]JSONWebKeyType {
-	return [5]JSONWebKeyType{EC, ECHSM, Oct, RSA, RSAHSM}
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return []JSONWebKeyType{EC, ECHSM, Oct, RSA, RSAHSM}
 }
 
 // KeyUsageType enumerates the values for key usage type.
@@ -197,8 +197,8 @@ const (
 )
 
 // PossibleKeyUsageTypeValues returns an array of possible values for the KeyUsageType const type.
-func PossibleKeyUsageTypeValues() [9]KeyUsageType {
-	return [9]KeyUsageType{CRLSign, DataEncipherment, DecipherOnly, DigitalSignature, EncipherOnly, KeyAgreement, KeyCertSign, KeyEncipherment, NonRepudiation}
+func PossibleKeyUsageTypeValues() []KeyUsageType {
+	return []KeyUsageType{CRLSign, DataEncipherment, DecipherOnly, DigitalSignature, EncipherOnly, KeyAgreement, KeyCertSign, KeyEncipherment, NonRepudiation}
 }
 
 // Action the action that will be executed.

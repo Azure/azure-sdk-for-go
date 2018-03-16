@@ -42,7 +42,7 @@ const (
 	Replace AccessPolicyUpdateKind = original.Replace
 )
 
-func PossibleAccessPolicyUpdateKindValues() [3]AccessPolicyUpdateKind {
+func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return original.PossibleAccessPolicyUpdateKindValues()
 }
 
@@ -65,7 +65,7 @@ const (
 	Update         CertificatePermissions = original.Update
 )
 
-func PossibleCertificatePermissionsValues() [14]CertificatePermissions {
+func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	return original.PossibleCertificatePermissionsValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	CreateModeRecover CreateMode = original.CreateModeRecover
 )
 
-func PossibleCreateModeValues() [2]CreateMode {
+func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
 }
 
@@ -101,7 +101,7 @@ const (
 	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
 )
 
-func PossibleKeyPermissionsValues() [16]KeyPermissions {
+func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()
 }
 
@@ -112,7 +112,7 @@ const (
 	AlreadyExists      Reason = original.AlreadyExists
 )
 
-func PossibleReasonValues() [2]Reason {
+func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
 
@@ -129,7 +129,7 @@ const (
 	SecretPermissionsSet     SecretPermissions = original.SecretPermissionsSet
 )
 
-func PossibleSecretPermissionsValues() [8]SecretPermissions {
+func PossibleSecretPermissionsValues() []SecretPermissions {
 	return original.PossibleSecretPermissionsValues()
 }
 
@@ -140,7 +140,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [2]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -163,7 +163,7 @@ const (
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
 
-func PossibleStoragePermissionsValues() [14]StoragePermissions {
+func PossibleStoragePermissionsValues() []StoragePermissions {
 	return original.PossibleStoragePermissionsValues()
 }
 

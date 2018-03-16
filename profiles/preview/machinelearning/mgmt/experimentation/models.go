@@ -53,7 +53,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [5]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 

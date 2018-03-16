@@ -51,7 +51,7 @@ const (
 	VirtualMachine   MetricsSourceType = original.VirtualMachine
 )
 
-func PossibleMetricsSourceTypeValues() [3]MetricsSourceType {
+func PossibleMetricsSourceTypeValues() []MetricsSourceType {
 	return original.PossibleMetricsSourceTypeValues()
 }
 
@@ -67,7 +67,7 @@ const (
 	TB         MetricsUnit = original.TB
 )
 
-func PossibleMetricsUnitValues() [7]MetricsUnit {
+func PossibleMetricsUnitValues() []MetricsUnit {
 	return original.PossibleMetricsUnitValues()
 }
 

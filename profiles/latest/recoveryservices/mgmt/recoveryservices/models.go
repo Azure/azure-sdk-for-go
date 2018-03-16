@@ -44,7 +44,7 @@ const (
 	Invalid              AuthType = original.Invalid
 )
 
-func PossibleAuthTypeValues() [5]AuthType {
+func PossibleAuthTypeValues() []AuthType {
 	return original.PossibleAuthTypeValues()
 }
 
@@ -56,7 +56,7 @@ const (
 	AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = original.AuthTypeResourceCertificateDetails
 )
 
-func PossibleAuthTypeBasicResourceCertificateDetailsValues() [3]AuthTypeBasicResourceCertificateDetails {
+func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
 	return original.PossibleAuthTypeBasicResourceCertificateDetailsValues()
 }
 
@@ -67,7 +67,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [2]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -78,7 +78,7 @@ const (
 	UserTriggered TriggerType = original.UserTriggered
 )
 
-func PossibleTriggerTypeValues() [2]TriggerType {
+func PossibleTriggerTypeValues() []TriggerType {
 	return original.PossibleTriggerTypeValues()
 }
 
@@ -93,7 +93,7 @@ const (
 	Seconds        UsagesUnit = original.Seconds
 )
 
-func PossibleUsagesUnitValues() [6]UsagesUnit {
+func PossibleUsagesUnitValues() []UsagesUnit {
 	return original.PossibleUsagesUnitValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	Upgraded   VaultUpgradeState = original.Upgraded
 )
 
-func PossibleVaultUpgradeStateValues() [4]VaultUpgradeState {
+func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
 	return original.PossibleVaultUpgradeStateValues()
 }
 

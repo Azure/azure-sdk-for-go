@@ -40,8 +40,8 @@ const (
 )
 
 // PossibleInfraRoleInstanceStateValues returns an array of possible values for the InfraRoleInstanceState const type.
-func PossibleInfraRoleInstanceStateValues() [4]InfraRoleInstanceState {
-	return [4]InfraRoleInstanceState{Running, Starting, Stopped, Stopping}
+func PossibleInfraRoleInstanceStateValues() []InfraRoleInstanceState {
+	return []InfraRoleInstanceState{Running, Starting, Stopped, Stopping}
 }
 
 // PowerState enumerates the values for power state.
@@ -59,8 +59,8 @@ const (
 )
 
 // PossiblePowerStateValues returns an array of possible values for the PowerState const type.
-func PossiblePowerStateValues() [4]PowerState {
-	return [4]PowerState{PowerStateRunning, PowerStateStarting, PowerStateStopped, PowerStateStopping}
+func PossiblePowerStateValues() []PowerState {
+	return []PowerState{PowerStateRunning, PowerStateStarting, PowerStateStopped, PowerStateStopping}
 }
 
 // ScaleUnitNodeStatus enumerates the values for scale unit node status.
@@ -76,8 +76,8 @@ const (
 )
 
 // PossibleScaleUnitNodeStatusValues returns an array of possible values for the ScaleUnitNodeStatus const type.
-func PossibleScaleUnitNodeStatusValues() [3]ScaleUnitNodeStatus {
-	return [3]ScaleUnitNodeStatus{ScaleUnitNodeStatusMaintenance, ScaleUnitNodeStatusRunning, ScaleUnitNodeStatusStopped}
+func PossibleScaleUnitNodeStatusValues() []ScaleUnitNodeStatus {
+	return []ScaleUnitNodeStatus{ScaleUnitNodeStatusMaintenance, ScaleUnitNodeStatusRunning, ScaleUnitNodeStatusStopped}
 }
 
 // ScaleUnitState enumerates the values for scale unit state.
@@ -97,8 +97,8 @@ const (
 )
 
 // PossibleScaleUnitStateValues returns an array of possible values for the ScaleUnitState const type.
-func PossibleScaleUnitStateValues() [5]ScaleUnitState {
-	return [5]ScaleUnitState{ScaleUnitStateCreating, ScaleUnitStateDeleting, ScaleUnitStateRunning, ScaleUnitStateUnknown, ScaleUnitStateUpgrading}
+func PossibleScaleUnitStateValues() []ScaleUnitState {
+	return []ScaleUnitState{ScaleUnitStateCreating, ScaleUnitStateDeleting, ScaleUnitStateRunning, ScaleUnitStateUnknown, ScaleUnitStateUpgrading}
 }
 
 // ScaleUnitType enumerates the values for scale unit type.
@@ -116,8 +116,8 @@ const (
 )
 
 // PossibleScaleUnitTypeValues returns an array of possible values for the ScaleUnitType const type.
-func PossibleScaleUnitTypeValues() [4]ScaleUnitType {
-	return [4]ScaleUnitType{ComputeOnly, HyperConverged, StorageOnly, Unknown}
+func PossibleScaleUnitTypeValues() []ScaleUnitType {
+	return []ScaleUnitType{ComputeOnly, HyperConverged, StorageOnly, Unknown}
 }
 
 // EdgeGateway this resource represents a gateway, which provides the configuration needed to provide gateway

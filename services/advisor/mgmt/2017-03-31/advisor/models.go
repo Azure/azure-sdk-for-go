@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleCategoryValues returns an array of possible values for the Category const type.
-func PossibleCategoryValues() [4]Category {
-	return [4]Category{Cost, HighAvailability, Performance, Security}
+func PossibleCategoryValues() []Category {
+	return []Category{Cost, HighAvailability, Performance, Security}
 }
 
 // Impact enumerates the values for impact.
@@ -58,8 +58,8 @@ const (
 )
 
 // PossibleImpactValues returns an array of possible values for the Impact const type.
-func PossibleImpactValues() [3]Impact {
-	return [3]Impact{High, Low, Medium}
+func PossibleImpactValues() []Impact {
+	return []Impact{High, Low, Medium}
 }
 
 // Risk enumerates the values for risk.
@@ -75,8 +75,8 @@ const (
 )
 
 // PossibleRiskValues returns an array of possible values for the Risk const type.
-func PossibleRiskValues() [3]Risk {
-	return [3]Risk{Error, None, Warning}
+func PossibleRiskValues() []Risk {
+	return []Risk{Error, None, Warning}
 }
 
 // ListSuppressionContract ...

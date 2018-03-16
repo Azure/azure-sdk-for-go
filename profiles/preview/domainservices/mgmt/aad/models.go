@@ -59,7 +59,7 @@ const (
 	Enabled  ExternalAccess = original.Enabled
 )
 
-func PossibleExternalAccessValues() [2]ExternalAccess {
+func PossibleExternalAccessValues() []ExternalAccess {
 	return original.PossibleExternalAccessValues()
 }
 
@@ -70,7 +70,7 @@ const (
 	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
 
-func PossibleLdapsValues() [2]Ldaps {
+func PossibleLdapsValues() []Ldaps {
 	return original.PossibleLdapsValues()
 }
 

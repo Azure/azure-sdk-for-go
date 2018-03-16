@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleAccuracyValues returns an array of possible values for the Accuracy const type.
-func PossibleAccuracyValues() [2]Accuracy {
-	return [2]Accuracy{Actual, Estimated}
+func PossibleAccuracyValues() []Accuracy {
+	return []Accuracy{Actual, Estimated}
 }
 
 // AzureCloudServiceRoleType enumerates the values for azure cloud service role type.
@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleAzureCloudServiceRoleTypeValues returns an array of possible values for the AzureCloudServiceRoleType const type.
-func PossibleAzureCloudServiceRoleTypeValues() [3]AzureCloudServiceRoleType {
-	return [3]AzureCloudServiceRoleType{Unknown, Web, Worker}
+func PossibleAzureCloudServiceRoleTypeValues() []AzureCloudServiceRoleType {
+	return []AzureCloudServiceRoleType{Unknown, Web, Worker}
 }
 
 // Bitness enumerates the values for bitness.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleBitnessValues returns an array of possible values for the Bitness const type.
-func PossibleBitnessValues() [2]Bitness {
-	return [2]Bitness{SixFourbit, ThreeTwobit}
+func PossibleBitnessValues() []Bitness {
+	return []Bitness{SixFourbit, ThreeTwobit}
 }
 
 // ConnectionFailureState enumerates the values for connection failure state.
@@ -85,8 +85,8 @@ const (
 )
 
 // PossibleConnectionFailureStateValues returns an array of possible values for the ConnectionFailureState const type.
-func PossibleConnectionFailureStateValues() [3]ConnectionFailureState {
-	return [3]ConnectionFailureState{Failed, Mixed, Ok}
+func PossibleConnectionFailureStateValues() []ConnectionFailureState {
+	return []ConnectionFailureState{Failed, Mixed, Ok}
 }
 
 // HypervisorType enumerates the values for hypervisor type.
@@ -100,8 +100,8 @@ const (
 )
 
 // PossibleHypervisorTypeValues returns an array of possible values for the HypervisorType const type.
-func PossibleHypervisorTypeValues() [2]HypervisorType {
-	return [2]HypervisorType{HypervisorTypeHyperv, HypervisorTypeUnknown}
+func PossibleHypervisorTypeValues() []HypervisorType {
+	return []HypervisorType{HypervisorTypeHyperv, HypervisorTypeUnknown}
 }
 
 // Kind enumerates the values for kind.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [6]Kind {
-	return [6]Kind{KindRefclientgroup, KindRefmachine, KindRefmachinewithhints, KindRefport, KindRefprocess, KindResourceReference}
+func PossibleKindValues() []Kind {
+	return []Kind{KindRefclientgroup, KindRefmachine, KindRefmachinewithhints, KindRefport, KindRefprocess, KindResourceReference}
 }
 
 // KindBasicCoreResource enumerates the values for kind basic core resource.
@@ -146,8 +146,8 @@ const (
 )
 
 // PossibleKindBasicCoreResourceValues returns an array of possible values for the KindBasicCoreResource const type.
-func PossibleKindBasicCoreResourceValues() [6]KindBasicCoreResource {
-	return [6]KindBasicCoreResource{KindClientGroup, KindCoreResource, KindMachine, KindMachineGroup, KindPort, KindProcess}
+func PossibleKindBasicCoreResourceValues() []KindBasicCoreResource {
+	return []KindBasicCoreResource{KindClientGroup, KindCoreResource, KindMachine, KindMachineGroup, KindPort, KindProcess}
 }
 
 // KindBasicHostingConfiguration enumerates the values for kind basic hosting configuration.
@@ -161,8 +161,8 @@ const (
 )
 
 // PossibleKindBasicHostingConfigurationValues returns an array of possible values for the KindBasicHostingConfiguration const type.
-func PossibleKindBasicHostingConfigurationValues() [2]KindBasicHostingConfiguration {
-	return [2]KindBasicHostingConfiguration{KindHostingConfiguration, KindProviderazure}
+func PossibleKindBasicHostingConfigurationValues() []KindBasicHostingConfiguration {
+	return []KindBasicHostingConfiguration{KindHostingConfiguration, KindProviderazure}
 }
 
 // KindBasicMapRequest enumerates the values for kind basic map request.
@@ -182,8 +182,8 @@ const (
 )
 
 // PossibleKindBasicMapRequestValues returns an array of possible values for the KindBasicMapRequest const type.
-func PossibleKindBasicMapRequestValues() [5]KindBasicMapRequest {
-	return [5]KindBasicMapRequest{KindMapmachineGroupDependency, KindMapmachineListDependency, KindMapRequest, KindMapsingleMachineDependency, KindMultipleMachinesMapRequest}
+func PossibleKindBasicMapRequestValues() []KindBasicMapRequest {
+	return []KindBasicMapRequest{KindMapmachineGroupDependency, KindMapmachineListDependency, KindMapRequest, KindMapsingleMachineDependency, KindMultipleMachinesMapRequest}
 }
 
 // KindBasicProcessHostingConfiguration enumerates the values for kind basic process hosting configuration.
@@ -197,8 +197,8 @@ const (
 )
 
 // PossibleKindBasicProcessHostingConfigurationValues returns an array of possible values for the KindBasicProcessHostingConfiguration const type.
-func PossibleKindBasicProcessHostingConfigurationValues() [2]KindBasicProcessHostingConfiguration {
-	return [2]KindBasicProcessHostingConfiguration{KindBasicProcessHostingConfigurationKindProcessHostingConfiguration, KindBasicProcessHostingConfigurationKindProviderazure}
+func PossibleKindBasicProcessHostingConfigurationValues() []KindBasicProcessHostingConfiguration {
+	return []KindBasicProcessHostingConfiguration{KindBasicProcessHostingConfigurationKindProcessHostingConfiguration, KindBasicProcessHostingConfigurationKindProviderazure}
 }
 
 // KindBasicRelationship enumerates the values for kind basic relationship.
@@ -214,8 +214,8 @@ const (
 )
 
 // PossibleKindBasicRelationshipValues returns an array of possible values for the KindBasicRelationship const type.
-func PossibleKindBasicRelationshipValues() [3]KindBasicRelationship {
-	return [3]KindBasicRelationship{KindRelacceptor, KindRelationship, KindRelconnection}
+func PossibleKindBasicRelationshipValues() []KindBasicRelationship {
+	return []KindBasicRelationship{KindRelacceptor, KindRelationship, KindRelconnection}
 }
 
 // MachineGroupType enumerates the values for machine group type.
@@ -235,8 +235,8 @@ const (
 )
 
 // PossibleMachineGroupTypeValues returns an array of possible values for the MachineGroupType const type.
-func PossibleMachineGroupTypeValues() [5]MachineGroupType {
-	return [5]MachineGroupType{MachineGroupTypeAzureCs, MachineGroupTypeAzureSf, MachineGroupTypeAzureVmss, MachineGroupTypeUnknown, MachineGroupTypeUserStatic}
+func PossibleMachineGroupTypeValues() []MachineGroupType {
+	return []MachineGroupType{MachineGroupTypeAzureCs, MachineGroupTypeAzureSf, MachineGroupTypeAzureVmss, MachineGroupTypeUnknown, MachineGroupTypeUserStatic}
 }
 
 // MachineRebootStatus enumerates the values for machine reboot status.
@@ -252,8 +252,8 @@ const (
 )
 
 // PossibleMachineRebootStatusValues returns an array of possible values for the MachineRebootStatus const type.
-func PossibleMachineRebootStatusValues() [3]MachineRebootStatus {
-	return [3]MachineRebootStatus{MachineRebootStatusNotRebooted, MachineRebootStatusRebooted, MachineRebootStatusUnknown}
+func PossibleMachineRebootStatusValues() []MachineRebootStatus {
+	return []MachineRebootStatus{MachineRebootStatusNotRebooted, MachineRebootStatusRebooted, MachineRebootStatusUnknown}
 }
 
 // MonitoringState enumerates the values for monitoring state.
@@ -267,8 +267,8 @@ const (
 )
 
 // PossibleMonitoringStateValues returns an array of possible values for the MonitoringState const type.
-func PossibleMonitoringStateValues() [2]MonitoringState {
-	return [2]MonitoringState{Discovered, Monitored}
+func PossibleMonitoringStateValues() []MonitoringState {
+	return []MonitoringState{Discovered, Monitored}
 }
 
 // OperatingSystemFamily enumerates the values for operating system family.
@@ -288,8 +288,8 @@ const (
 )
 
 // PossibleOperatingSystemFamilyValues returns an array of possible values for the OperatingSystemFamily const type.
-func PossibleOperatingSystemFamilyValues() [5]OperatingSystemFamily {
-	return [5]OperatingSystemFamily{OperatingSystemFamilyAix, OperatingSystemFamilyLinux, OperatingSystemFamilySolaris, OperatingSystemFamilyUnknown, OperatingSystemFamilyWindows}
+func PossibleOperatingSystemFamilyValues() []OperatingSystemFamily {
+	return []OperatingSystemFamily{OperatingSystemFamilyAix, OperatingSystemFamilyLinux, OperatingSystemFamilySolaris, OperatingSystemFamilyUnknown, OperatingSystemFamilyWindows}
 }
 
 // ProcessRole enumerates the values for process role.
@@ -309,8 +309,8 @@ const (
 )
 
 // PossibleProcessRoleValues returns an array of possible values for the ProcessRole const type.
-func PossibleProcessRoleValues() [5]ProcessRole {
-	return [5]ProcessRole{AppServer, DatabaseServer, LdapServer, SmbServer, WebServer}
+func PossibleProcessRoleValues() []ProcessRole {
+	return []ProcessRole{AppServer, DatabaseServer, LdapServer, SmbServer, WebServer}
 }
 
 // Provider enumerates the values for provider.
@@ -322,8 +322,8 @@ const (
 )
 
 // PossibleProviderValues returns an array of possible values for the Provider const type.
-func PossibleProviderValues() [1]Provider {
-	return [1]Provider{Azure}
+func PossibleProviderValues() []Provider {
+	return []Provider{Azure}
 }
 
 // Provider1 enumerates the values for provider 1.
@@ -335,8 +335,8 @@ const (
 )
 
 // PossibleProvider1Values returns an array of possible values for the Provider1 const type.
-func PossibleProvider1Values() [1]Provider1 {
-	return [1]Provider1{Provider1Azure}
+func PossibleProvider1Values() []Provider1 {
+	return []Provider1{Provider1Azure}
 }
 
 // VirtualizationState enumerates the values for virtualization state.
@@ -354,8 +354,8 @@ const (
 )
 
 // PossibleVirtualizationStateValues returns an array of possible values for the VirtualizationState const type.
-func PossibleVirtualizationStateValues() [4]VirtualizationState {
-	return [4]VirtualizationState{VirtualizationStateHypervisor, VirtualizationStatePhysical, VirtualizationStateUnknown, VirtualizationStateVirtual}
+func PossibleVirtualizationStateValues() []VirtualizationState {
+	return []VirtualizationState{VirtualizationStateHypervisor, VirtualizationStatePhysical, VirtualizationStateUnknown, VirtualizationStateVirtual}
 }
 
 // VirtualMachineType enumerates the values for virtual machine type.
@@ -379,8 +379,8 @@ const (
 )
 
 // PossibleVirtualMachineTypeValues returns an array of possible values for the VirtualMachineType const type.
-func PossibleVirtualMachineTypeValues() [7]VirtualMachineType {
-	return [7]VirtualMachineType{VirtualMachineTypeHyperv, VirtualMachineTypeLdom, VirtualMachineTypeLpar, VirtualMachineTypeUnknown, VirtualMachineTypeVirtualPc, VirtualMachineTypeVmware, VirtualMachineTypeXen}
+func PossibleVirtualMachineTypeValues() []VirtualMachineType {
+	return []VirtualMachineType{VirtualMachineTypeHyperv, VirtualMachineTypeLdom, VirtualMachineTypeLpar, VirtualMachineTypeUnknown, VirtualMachineTypeVirtualPc, VirtualMachineTypeVmware, VirtualMachineTypeXen}
 }
 
 // Acceptor a process accepting on a port.

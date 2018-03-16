@@ -248,7 +248,7 @@ const (
 	Soap APIType = original.Soap
 )
 
-func PossibleAPITypeValues() [2]APIType {
+func PossibleAPITypeValues() []APIType {
 	return original.PossibleAPITypeValues()
 }
 
@@ -261,7 +261,7 @@ const (
 	Succeeded  AsyncOperationStatus = original.Succeeded
 )
 
-func PossibleAsyncOperationStatusValues() [4]AsyncOperationStatus {
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
 	return original.PossibleAsyncOperationStatusValues()
 }
 
@@ -278,7 +278,7 @@ const (
 	TRACE   AuthorizationMethod = original.TRACE
 )
 
-func PossibleAuthorizationMethodValues() [8]AuthorizationMethod {
+func PossibleAuthorizationMethodValues() []AuthorizationMethod {
 	return original.PossibleAuthorizationMethodValues()
 }
 
@@ -289,7 +289,7 @@ const (
 	BackendProtocolSoap BackendProtocol = original.BackendProtocolSoap
 )
 
-func PossibleBackendProtocolValues() [2]BackendProtocol {
+func PossibleBackendProtocolValues() []BackendProtocol {
 	return original.PossibleBackendProtocolValues()
 }
 
@@ -300,7 +300,7 @@ const (
 	Query               BearerTokenSendingMethod = original.Query
 )
 
-func PossibleBearerTokenSendingMethodValues() [2]BearerTokenSendingMethod {
+func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
 	return original.PossibleBearerTokenSendingMethodValues()
 }
 
@@ -311,7 +311,7 @@ const (
 	Body  ClientAuthenticationMethod = original.Body
 )
 
-func PossibleClientAuthenticationMethodValues() [2]ClientAuthenticationMethod {
+func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
 	return original.PossibleClientAuthenticationMethodValues()
 }
 
@@ -322,7 +322,7 @@ const (
 	Signup Confirmation = original.Signup
 )
 
-func PossibleConfirmationValues() [2]Confirmation {
+func PossibleConfirmationValues() []Confirmation {
 	return original.PossibleConfirmationValues()
 }
 
@@ -334,7 +334,7 @@ const (
 	Success      ConnectivityStatusType = original.Success
 )
 
-func PossibleConnectivityStatusTypeValues() [3]ConnectivityStatusType {
+func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 	return original.PossibleConnectivityStatusTypeValues()
 }
 
@@ -349,7 +349,7 @@ const (
 	WsdlLink        ContentFormat = original.WsdlLink
 )
 
-func PossibleContentFormatValues() [6]ContentFormat {
+func PossibleContentFormatValues() []ContentFormat {
 	return original.PossibleContentFormatValues()
 }
 
@@ -362,7 +362,7 @@ const (
 	ResourceOwnerPassword GrantType = original.ResourceOwnerPassword
 )
 
-func PossibleGrantTypeValues() [4]GrantType {
+func PossibleGrantTypeValues() []GrantType {
 	return original.PossibleGrantTypeValues()
 }
 
@@ -374,7 +374,7 @@ const (
 	System   GroupType = original.System
 )
 
-func PossibleGroupTypeValues() [3]GroupType {
+func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
 }
 
@@ -387,7 +387,7 @@ const (
 	Scm        HostnameType = original.Scm
 )
 
-func PossibleHostnameTypeValues() [4]HostnameType {
+func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()
 }
 
@@ -402,7 +402,7 @@ const (
 	Twitter   IdentityProviderType = original.Twitter
 )
 
-func PossibleIdentityProviderTypeValues() [6]IdentityProviderType {
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 	return original.PossibleIdentityProviderTypeValues()
 }
 
@@ -413,7 +413,7 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -424,7 +424,7 @@ const (
 	AzureEventHub       LoggerType = original.AzureEventHub
 )
 
-func PossibleLoggerTypeValues() [2]LoggerType {
+func PossibleLoggerTypeValues() []LoggerType {
 	return original.PossibleLoggerTypeValues()
 }
 
@@ -436,7 +436,7 @@ const (
 	Valid         NameAvailabilityReason = original.Valid
 )
 
-func PossibleNameAvailabilityReasonValues() [3]NameAvailabilityReason {
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
 }
 
@@ -452,7 +452,7 @@ const (
 	RequestPublisherNotificationMessage               NotificationName = original.RequestPublisherNotificationMessage
 )
 
-func PossibleNotificationNameValues() [7]NotificationName {
+func PossibleNotificationNameValues() []NotificationName {
 	return original.PossibleNotificationNameValues()
 }
 
@@ -466,7 +466,7 @@ const (
 	PolicyScopeContractTenant    PolicyScopeContract = original.PolicyScopeContractTenant
 )
 
-func PossiblePolicyScopeContractValues() [5]PolicyScopeContract {
+func PossiblePolicyScopeContractValues() []PolicyScopeContract {
 	return original.PossiblePolicyScopeContractValues()
 }
 
@@ -477,7 +477,7 @@ const (
 	Published    ProductState = original.Published
 )
 
-func PossibleProductStateValues() [2]ProductState {
+func PossibleProductStateValues() []ProductState {
 	return original.PossibleProductStateValues()
 }
 
@@ -488,7 +488,7 @@ const (
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
 
-func PossibleProtocolValues() [2]Protocol {
+func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
 
@@ -499,7 +499,7 @@ const (
 	Fixed    SamplingType = original.Fixed
 )
 
-func PossibleSamplingTypeValues() [2]SamplingType {
+func PossibleSamplingTypeValues() []SamplingType {
 	return original.PossibleSamplingTypeValues()
 }
 
@@ -512,7 +512,7 @@ const (
 	SkuTypeStandard  SkuType = original.SkuTypeStandard
 )
 
-func PossibleSkuTypeValues() [4]SkuType {
+func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
 }
 
@@ -523,7 +523,7 @@ const (
 	Root                 StoreName = original.Root
 )
 
-func PossibleStoreNameValues() [2]StoreName {
+func PossibleStoreNameValues() []StoreName {
 	return original.PossibleStoreNameValues()
 }
 
@@ -538,7 +538,7 @@ const (
 	Suspended SubscriptionState = original.Suspended
 )
 
-func PossibleSubscriptionStateValues() [6]SubscriptionState {
+func PossibleSubscriptionStateValues() []SubscriptionState {
 	return original.PossibleSubscriptionStateValues()
 }
 
@@ -561,7 +561,7 @@ const (
 	RequestDeveloperNotificationMessage               TemplateName = original.RequestDeveloperNotificationMessage
 )
 
-func PossibleTemplateNameValues() [14]TemplateName {
+func PossibleTemplateNameValues() []TemplateName {
 	return original.PossibleTemplateNameValues()
 }
 
@@ -574,7 +574,7 @@ const (
 	UserStatePending UserState = original.UserStatePending
 )
 
-func PossibleUserStateValues() [4]UserState {
+func PossibleUserStateValues() []UserState {
 	return original.PossibleUserStateValues()
 }
 
@@ -586,7 +586,7 @@ const (
 	VersioningSchemeSegment VersioningScheme = original.VersioningSchemeSegment
 )
 
-func PossibleVersioningSchemeValues() [3]VersioningScheme {
+func PossibleVersioningSchemeValues() []VersioningScheme {
 	return original.PossibleVersioningSchemeValues()
 }
 
@@ -598,7 +598,7 @@ const (
 	VirtualNetworkTypeNone     VirtualNetworkType = original.VirtualNetworkTypeNone
 )
 
-func PossibleVirtualNetworkTypeValues() [3]VirtualNetworkType {
+func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
 	return original.PossibleVirtualNetworkTypeValues()
 }
 

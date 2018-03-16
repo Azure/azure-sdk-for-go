@@ -33,8 +33,8 @@ const (
 )
 
 // PossibleAnswerTypeValues returns an array of possible values for the AnswerType const type.
-func PossibleAnswerTypeValues() [2]AnswerType {
-	return [2]AnswerType{AnswerTypeEntities, AnswerTypePlaces}
+func PossibleAnswerTypeValues() []AnswerType {
+	return []AnswerType{AnswerTypeEntities, AnswerTypePlaces}
 }
 
 // EntityQueryScenario enumerates the values for entity query scenario.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleEntityQueryScenarioValues returns an array of possible values for the EntityQueryScenario const type.
-func PossibleEntityQueryScenarioValues() [5]EntityQueryScenario {
-	return [5]EntityQueryScenario{Disambiguation, DominantEntity, DominantEntityWithDisambiguation, List, ListWithPivot}
+func PossibleEntityQueryScenarioValues() []EntityQueryScenario {
+	return []EntityQueryScenario{Disambiguation, DominantEntity, DominantEntityWithDisambiguation, List, ListWithPivot}
 }
 
 // EntityScenario enumerates the values for entity scenario.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleEntityScenarioValues returns an array of possible values for the EntityScenario const type.
-func PossibleEntityScenarioValues() [3]EntityScenario {
-	return [3]EntityScenario{EntityScenarioDisambiguationItem, EntityScenarioDominantEntity, EntityScenarioListItem}
+func PossibleEntityScenarioValues() []EntityScenario {
+	return []EntityScenario{EntityScenarioDisambiguationItem, EntityScenarioDominantEntity, EntityScenarioListItem}
 }
 
 // EntityType enumerates the values for entity type.
@@ -180,8 +180,8 @@ const (
 )
 
 // PossibleEntityTypeValues returns an array of possible values for the EntityType const type.
-func PossibleEntityTypeValues() [49]EntityType {
-	return [49]EntityType{EntityTypeActor, EntityTypeAnimal, EntityTypeArtist, EntityTypeAttorney, EntityTypeAttraction, EntityTypeBook, EntityTypeCar, EntityTypeCity, EntityTypeCollegeOrUniversity, EntityTypeComposition, EntityTypeContinent, EntityTypeCountry, EntityTypeDrug, EntityTypeEvent, EntityTypeFood, EntityTypeGeneric, EntityTypeHotel, EntityTypeHouse, EntityTypeLocalBusiness, EntityTypeLocality, EntityTypeMedia, EntityTypeMinorRegion, EntityTypeMovie, EntityTypeMusicAlbum, EntityTypeMusicGroup, EntityTypeMusicRecording, EntityTypeNeighborhood, EntityTypeOrganization, EntityTypeOther, EntityTypePerson, EntityTypePlace, EntityTypePointOfInterest, EntityTypePostalCode, EntityTypeProduct, EntityTypeRadioStation, EntityTypeRegion, EntityTypeRestaurant, EntityTypeSchool, EntityTypeSpeciality, EntityTypeSportsTeam, EntityTypeState, EntityTypeStreetAddress, EntityTypeSubRegion, EntityTypeTelevisionSeason, EntityTypeTelevisionShow, EntityTypeTheaterPlay, EntityTypeTouristAttraction, EntityTypeTravel, EntityTypeVideoGame}
+func PossibleEntityTypeValues() []EntityType {
+	return []EntityType{EntityTypeActor, EntityTypeAnimal, EntityTypeArtist, EntityTypeAttorney, EntityTypeAttraction, EntityTypeBook, EntityTypeCar, EntityTypeCity, EntityTypeCollegeOrUniversity, EntityTypeComposition, EntityTypeContinent, EntityTypeCountry, EntityTypeDrug, EntityTypeEvent, EntityTypeFood, EntityTypeGeneric, EntityTypeHotel, EntityTypeHouse, EntityTypeLocalBusiness, EntityTypeLocality, EntityTypeMedia, EntityTypeMinorRegion, EntityTypeMovie, EntityTypeMusicAlbum, EntityTypeMusicGroup, EntityTypeMusicRecording, EntityTypeNeighborhood, EntityTypeOrganization, EntityTypeOther, EntityTypePerson, EntityTypePlace, EntityTypePointOfInterest, EntityTypePostalCode, EntityTypeProduct, EntityTypeRadioStation, EntityTypeRegion, EntityTypeRestaurant, EntityTypeSchool, EntityTypeSpeciality, EntityTypeSportsTeam, EntityTypeState, EntityTypeStreetAddress, EntityTypeSubRegion, EntityTypeTelevisionSeason, EntityTypeTelevisionShow, EntityTypeTheaterPlay, EntityTypeTouristAttraction, EntityTypeTravel, EntityTypeVideoGame}
 }
 
 // ErrorCode enumerates the values for error code.
@@ -203,8 +203,8 @@ const (
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() [6]ErrorCode {
-	return [6]ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
+func PossibleErrorCodeValues() []ErrorCode {
+	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
 }
 
 // ErrorSubCode enumerates the values for error sub code.
@@ -236,8 +236,8 @@ const (
 )
 
 // PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
-	return [11]ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
 }
 
 // ResponseFormat enumerates the values for response format.
@@ -251,8 +251,8 @@ const (
 )
 
 // PossibleResponseFormatValues returns an array of possible values for the ResponseFormat const type.
-func PossibleResponseFormatValues() [2]ResponseFormat {
-	return [2]ResponseFormat{JSON, JSONLd}
+func PossibleResponseFormatValues() []ResponseFormat {
+	return []ResponseFormat{JSON, JSONLd}
 }
 
 // SafeSearch enumerates the values for safe search.
@@ -268,8 +268,8 @@ const (
 )
 
 // PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() [3]SafeSearch {
-	return [3]SafeSearch{Moderate, Off, Strict}
+func PossibleSafeSearchValues() []SafeSearch {
+	return []SafeSearch{Moderate, Off, Strict}
 }
 
 // Type enumerates the values for type.
@@ -291,8 +291,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [6]Type {
-	return [6]Type{TypeContractualRulesAttribution, TypeContractualRulesContractualRule, TypeContractualRulesLicenseAttribution, TypeContractualRulesLinkAttribution, TypeContractualRulesMediaAttribution, TypeContractualRulesTextAttribution}
+func PossibleTypeValues() []Type {
+	return []Type{TypeContractualRulesAttribution, TypeContractualRulesContractualRule, TypeContractualRulesLicenseAttribution, TypeContractualRulesLinkAttribution, TypeContractualRulesMediaAttribution, TypeContractualRulesTextAttribution}
 }
 
 // TypeBasicResponseBase enumerates the values for type basic response base.
@@ -360,8 +360,8 @@ const (
 )
 
 // PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
-func PossibleTypeBasicResponseBaseValues() [29]TypeBasicResponseBase {
-	return [29]TypeBasicResponseBase{TypeAirport, TypeAnswer, TypeCivicStructure, TypeCreativeWork, TypeEntertainmentBusiness, TypeEntities, TypeErrorResponse, TypeFoodEstablishment, TypeHotel, TypeIdentifiable, TypeImageObject, TypeIntangible, TypeLicense, TypeLocalBusiness, TypeLodgingBusiness, TypeMediaObject, TypeMovieTheater, TypeOrganization, TypePlace, TypePlaces, TypePostalAddress, TypeResponse, TypeResponseBase, TypeRestaurant, TypeSearchResponse, TypeSearchResultsAnswer, TypeStructuredValue, TypeThing, TypeTouristAttraction}
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return []TypeBasicResponseBase{TypeAirport, TypeAnswer, TypeCivicStructure, TypeCreativeWork, TypeEntertainmentBusiness, TypeEntities, TypeErrorResponse, TypeFoodEstablishment, TypeHotel, TypeIdentifiable, TypeImageObject, TypeIntangible, TypeLicense, TypeLocalBusiness, TypeLodgingBusiness, TypeMediaObject, TypeMovieTheater, TypeOrganization, TypePlace, TypePlaces, TypePostalAddress, TypeResponse, TypeResponseBase, TypeRestaurant, TypeSearchResponse, TypeSearchResultsAnswer, TypeStructuredValue, TypeThing, TypeTouristAttraction}
 }
 
 // Airport ...

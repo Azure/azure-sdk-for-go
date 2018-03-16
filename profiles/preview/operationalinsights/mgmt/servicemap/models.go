@@ -77,7 +77,7 @@ const (
 	Estimated Accuracy = original.Estimated
 )
 
-func PossibleAccuracyValues() [2]Accuracy {
+func PossibleAccuracyValues() []Accuracy {
 	return original.PossibleAccuracyValues()
 }
 
@@ -89,7 +89,7 @@ const (
 	Worker  AzureCloudServiceRoleType = original.Worker
 )
 
-func PossibleAzureCloudServiceRoleTypeValues() [3]AzureCloudServiceRoleType {
+func PossibleAzureCloudServiceRoleTypeValues() []AzureCloudServiceRoleType {
 	return original.PossibleAzureCloudServiceRoleTypeValues()
 }
 
@@ -100,7 +100,7 @@ const (
 	ThreeTwobit Bitness = original.ThreeTwobit
 )
 
-func PossibleBitnessValues() [2]Bitness {
+func PossibleBitnessValues() []Bitness {
 	return original.PossibleBitnessValues()
 }
 
@@ -112,7 +112,7 @@ const (
 	Ok     ConnectionFailureState = original.Ok
 )
 
-func PossibleConnectionFailureStateValues() [3]ConnectionFailureState {
+func PossibleConnectionFailureStateValues() []ConnectionFailureState {
 	return original.PossibleConnectionFailureStateValues()
 }
 
@@ -123,7 +123,7 @@ const (
 	HypervisorTypeUnknown HypervisorType = original.HypervisorTypeUnknown
 )
 
-func PossibleHypervisorTypeValues() [2]HypervisorType {
+func PossibleHypervisorTypeValues() []HypervisorType {
 	return original.PossibleHypervisorTypeValues()
 }
 
@@ -138,7 +138,7 @@ const (
 	KindResourceReference   Kind = original.KindResourceReference
 )
 
-func PossibleKindValues() [6]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -153,7 +153,7 @@ const (
 	KindProcess      KindBasicCoreResource = original.KindProcess
 )
 
-func PossibleKindBasicCoreResourceValues() [6]KindBasicCoreResource {
+func PossibleKindBasicCoreResourceValues() []KindBasicCoreResource {
 	return original.PossibleKindBasicCoreResourceValues()
 }
 
@@ -164,7 +164,7 @@ const (
 	KindProviderazure        KindBasicHostingConfiguration = original.KindProviderazure
 )
 
-func PossibleKindBasicHostingConfigurationValues() [2]KindBasicHostingConfiguration {
+func PossibleKindBasicHostingConfigurationValues() []KindBasicHostingConfiguration {
 	return original.PossibleKindBasicHostingConfigurationValues()
 }
 
@@ -178,7 +178,7 @@ const (
 	KindMultipleMachinesMapRequest KindBasicMapRequest = original.KindMultipleMachinesMapRequest
 )
 
-func PossibleKindBasicMapRequestValues() [5]KindBasicMapRequest {
+func PossibleKindBasicMapRequestValues() []KindBasicMapRequest {
 	return original.PossibleKindBasicMapRequestValues()
 }
 
@@ -189,7 +189,7 @@ const (
 	KindBasicProcessHostingConfigurationKindProviderazure               KindBasicProcessHostingConfiguration = original.KindBasicProcessHostingConfigurationKindProviderazure
 )
 
-func PossibleKindBasicProcessHostingConfigurationValues() [2]KindBasicProcessHostingConfiguration {
+func PossibleKindBasicProcessHostingConfigurationValues() []KindBasicProcessHostingConfiguration {
 	return original.PossibleKindBasicProcessHostingConfigurationValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	KindRelconnection KindBasicRelationship = original.KindRelconnection
 )
 
-func PossibleKindBasicRelationshipValues() [3]KindBasicRelationship {
+func PossibleKindBasicRelationshipValues() []KindBasicRelationship {
 	return original.PossibleKindBasicRelationshipValues()
 }
 
@@ -215,7 +215,7 @@ const (
 	MachineGroupTypeUserStatic MachineGroupType = original.MachineGroupTypeUserStatic
 )
 
-func PossibleMachineGroupTypeValues() [5]MachineGroupType {
+func PossibleMachineGroupTypeValues() []MachineGroupType {
 	return original.PossibleMachineGroupTypeValues()
 }
 
@@ -227,7 +227,7 @@ const (
 	MachineRebootStatusUnknown     MachineRebootStatus = original.MachineRebootStatusUnknown
 )
 
-func PossibleMachineRebootStatusValues() [3]MachineRebootStatus {
+func PossibleMachineRebootStatusValues() []MachineRebootStatus {
 	return original.PossibleMachineRebootStatusValues()
 }
 
@@ -238,7 +238,7 @@ const (
 	Monitored  MonitoringState = original.Monitored
 )
 
-func PossibleMonitoringStateValues() [2]MonitoringState {
+func PossibleMonitoringStateValues() []MonitoringState {
 	return original.PossibleMonitoringStateValues()
 }
 
@@ -252,7 +252,7 @@ const (
 	OperatingSystemFamilyWindows OperatingSystemFamily = original.OperatingSystemFamilyWindows
 )
 
-func PossibleOperatingSystemFamilyValues() [5]OperatingSystemFamily {
+func PossibleOperatingSystemFamilyValues() []OperatingSystemFamily {
 	return original.PossibleOperatingSystemFamilyValues()
 }
 
@@ -266,7 +266,7 @@ const (
 	WebServer      ProcessRole = original.WebServer
 )
 
-func PossibleProcessRoleValues() [5]ProcessRole {
+func PossibleProcessRoleValues() []ProcessRole {
 	return original.PossibleProcessRoleValues()
 }
 
@@ -276,7 +276,7 @@ const (
 	Azure Provider = original.Azure
 )
 
-func PossibleProviderValues() [1]Provider {
+func PossibleProviderValues() []Provider {
 	return original.PossibleProviderValues()
 }
 
@@ -286,7 +286,7 @@ const (
 	Provider1Azure Provider1 = original.Provider1Azure
 )
 
-func PossibleProvider1Values() [1]Provider1 {
+func PossibleProvider1Values() []Provider1 {
 	return original.PossibleProvider1Values()
 }
 
@@ -299,7 +299,7 @@ const (
 	VirtualizationStateVirtual    VirtualizationState = original.VirtualizationStateVirtual
 )
 
-func PossibleVirtualizationStateValues() [4]VirtualizationState {
+func PossibleVirtualizationStateValues() []VirtualizationState {
 	return original.PossibleVirtualizationStateValues()
 }
 
@@ -315,7 +315,7 @@ const (
 	VirtualMachineTypeXen       VirtualMachineType = original.VirtualMachineTypeXen
 )
 
-func PossibleVirtualMachineTypeValues() [7]VirtualMachineType {
+func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 	return original.PossibleVirtualMachineTypeValues()
 }
 

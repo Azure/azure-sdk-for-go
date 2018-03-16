@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleAzureRegionsValues returns an array of possible values for the AzureRegions const type.
-func PossibleAzureRegionsValues() [12]AzureRegions {
-	return [12]AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return []AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
 }
 
 // Details enumerates the values for details.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleDetailsValues returns an array of possible values for the Details const type.
-func PossibleDetailsValues() [2]Details {
-	return [2]Details{Celebrities, Landmarks}
+func PossibleDetailsValues() []Details {
+	return []Details{Celebrities, Landmarks}
 }
 
 // DomainModels enumerates the values for domain models.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleDomainModelsValues returns an array of possible values for the DomainModels const type.
-func PossibleDomainModelsValues() [2]DomainModels {
-	return [2]DomainModels{DomainModelsCelebrities, DomainModelsLandmarks}
+func PossibleDomainModelsValues() []DomainModels {
+	return []DomainModels{DomainModelsCelebrities, DomainModelsLandmarks}
 }
 
 // ErrorCodes enumerates the values for error codes.
@@ -121,8 +121,8 @@ const (
 )
 
 // PossibleErrorCodesValues returns an array of possible values for the ErrorCodes const type.
-func PossibleErrorCodesValues() [13]ErrorCodes {
-	return [13]ErrorCodes{BadArgument, FailedToProcess, InternalServerError, InvalidDetails, InvalidImageFormat, InvalidImageSize, InvalidImageURL, NotSupportedImage, NotSupportedLanguage, NotSupportedVisualFeature, StorageException, Timeout, Unspecified}
+func PossibleErrorCodesValues() []ErrorCodes {
+	return []ErrorCodes{BadArgument, FailedToProcess, InternalServerError, InvalidDetails, InvalidImageFormat, InvalidImageSize, InvalidImageURL, NotSupportedImage, NotSupportedLanguage, NotSupportedVisualFeature, StorageException, Timeout, Unspecified}
 }
 
 // Gender enumerates the values for gender.
@@ -136,8 +136,8 @@ const (
 )
 
 // PossibleGenderValues returns an array of possible values for the Gender const type.
-func PossibleGenderValues() [2]Gender {
-	return [2]Gender{Female, Male}
+func PossibleGenderValues() []Gender {
+	return []Gender{Female, Male}
 }
 
 // Language1 enumerates the values for language 1.
@@ -151,8 +151,8 @@ const (
 )
 
 // PossibleLanguage1Values returns an array of possible values for the Language1 const type.
-func PossibleLanguage1Values() [2]Language1 {
-	return [2]Language1{En, Zh}
+func PossibleLanguage1Values() []Language1 {
+	return []Language1{En, Zh}
 }
 
 // OcrLanguages enumerates the values for ocr languages.
@@ -216,8 +216,8 @@ const (
 )
 
 // PossibleOcrLanguagesValues returns an array of possible values for the OcrLanguages const type.
-func PossibleOcrLanguagesValues() [27]OcrLanguages {
-	return [27]OcrLanguages{OcrLanguagesAr, OcrLanguagesCs, OcrLanguagesDa, OcrLanguagesDe, OcrLanguagesEl, OcrLanguagesEn, OcrLanguagesEs, OcrLanguagesFi, OcrLanguagesFr, OcrLanguagesHu, OcrLanguagesIt, OcrLanguagesJa, OcrLanguagesKo, OcrLanguagesNb, OcrLanguagesNl, OcrLanguagesPl, OcrLanguagesPt, OcrLanguagesRo, OcrLanguagesRu, OcrLanguagesSk, OcrLanguagesSrCyrl, OcrLanguagesSrLatn, OcrLanguagesSv, OcrLanguagesTr, OcrLanguagesUnk, OcrLanguagesZhHans, OcrLanguagesZhHant}
+func PossibleOcrLanguagesValues() []OcrLanguages {
+	return []OcrLanguages{OcrLanguagesAr, OcrLanguagesCs, OcrLanguagesDa, OcrLanguagesDe, OcrLanguagesEl, OcrLanguagesEn, OcrLanguagesEs, OcrLanguagesFi, OcrLanguagesFr, OcrLanguagesHu, OcrLanguagesIt, OcrLanguagesJa, OcrLanguagesKo, OcrLanguagesNb, OcrLanguagesNl, OcrLanguagesPl, OcrLanguagesPt, OcrLanguagesRo, OcrLanguagesRu, OcrLanguagesSk, OcrLanguagesSrCyrl, OcrLanguagesSrLatn, OcrLanguagesSv, OcrLanguagesTr, OcrLanguagesUnk, OcrLanguagesZhHans, OcrLanguagesZhHant}
 }
 
 // TextOperationStatusCodes enumerates the values for text operation status codes.
@@ -235,8 +235,8 @@ const (
 )
 
 // PossibleTextOperationStatusCodesValues returns an array of possible values for the TextOperationStatusCodes const type.
-func PossibleTextOperationStatusCodesValues() [4]TextOperationStatusCodes {
-	return [4]TextOperationStatusCodes{Failed, NotStarted, Running, Succeeded}
+func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
+	return []TextOperationStatusCodes{Failed, NotStarted, Running, Succeeded}
 }
 
 // VisualFeatureTypes enumerates the values for visual feature types.
@@ -260,8 +260,8 @@ const (
 )
 
 // PossibleVisualFeatureTypesValues returns an array of possible values for the VisualFeatureTypes const type.
-func PossibleVisualFeatureTypesValues() [7]VisualFeatureTypes {
-	return [7]VisualFeatureTypes{VisualFeatureTypesAdult, VisualFeatureTypesCategories, VisualFeatureTypesColor, VisualFeatureTypesDescription, VisualFeatureTypesFaces, VisualFeatureTypesImageType, VisualFeatureTypesTags}
+func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
+	return []VisualFeatureTypes{VisualFeatureTypesAdult, VisualFeatureTypesCategories, VisualFeatureTypesColor, VisualFeatureTypesDescription, VisualFeatureTypesFaces, VisualFeatureTypesImageType, VisualFeatureTypesTags}
 }
 
 // AdultInfo an object describing whether the image contains adult-oriented content and/or is racy.

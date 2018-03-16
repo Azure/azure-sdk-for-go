@@ -47,7 +47,7 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() [12]AzureRegions {
+func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
 }
 
@@ -58,7 +58,7 @@ const (
 	Landmarks   Details = original.Landmarks
 )
 
-func PossibleDetailsValues() [2]Details {
+func PossibleDetailsValues() []Details {
 	return original.PossibleDetailsValues()
 }
 
@@ -69,7 +69,7 @@ const (
 	DomainModelsLandmarks   DomainModels = original.DomainModelsLandmarks
 )
 
-func PossibleDomainModelsValues() [2]DomainModels {
+func PossibleDomainModelsValues() []DomainModels {
 	return original.PossibleDomainModelsValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	Unspecified               ErrorCodes = original.Unspecified
 )
 
-func PossibleErrorCodesValues() [13]ErrorCodes {
+func PossibleErrorCodesValues() []ErrorCodes {
 	return original.PossibleErrorCodesValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Male   Gender = original.Male
 )
 
-func PossibleGenderValues() [2]Gender {
+func PossibleGenderValues() []Gender {
 	return original.PossibleGenderValues()
 }
 
@@ -113,7 +113,7 @@ const (
 	Zh Language1 = original.Zh
 )
 
-func PossibleLanguage1Values() [2]Language1 {
+func PossibleLanguage1Values() []Language1 {
 	return original.PossibleLanguage1Values()
 }
 
@@ -149,7 +149,7 @@ const (
 	OcrLanguagesZhHant OcrLanguages = original.OcrLanguagesZhHant
 )
 
-func PossibleOcrLanguagesValues() [27]OcrLanguages {
+func PossibleOcrLanguagesValues() []OcrLanguages {
 	return original.PossibleOcrLanguagesValues()
 }
 
@@ -162,7 +162,7 @@ const (
 	Succeeded  TextOperationStatusCodes = original.Succeeded
 )
 
-func PossibleTextOperationStatusCodesValues() [4]TextOperationStatusCodes {
+func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
 	return original.PossibleTextOperationStatusCodesValues()
 }
 
@@ -178,7 +178,7 @@ const (
 	VisualFeatureTypesTags        VisualFeatureTypes = original.VisualFeatureTypesTags
 )
 
-func PossibleVisualFeatureTypesValues() [7]VisualFeatureTypes {
+func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
 	return original.PossibleVisualFeatureTypesValues()
 }
 

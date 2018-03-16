@@ -42,8 +42,8 @@ const (
 )
 
 // PossibleAudienceOperatorsValues returns an array of possible values for the AudienceOperators const type.
-func PossibleAudienceOperatorsValues() [5]AudienceOperators {
-	return [5]AudienceOperators{EQ, GE, GT, LE, LT}
+func PossibleAudienceOperatorsValues() []AudienceOperators {
+	return []AudienceOperators{EQ, GE, GT, LE, LT}
 }
 
 // CampaignFeedbacks enumerates the values for campaign feedbacks.
@@ -61,8 +61,8 @@ const (
 )
 
 // PossibleCampaignFeedbacksValues returns an array of possible values for the CampaignFeedbacks const type.
-func PossibleCampaignFeedbacksValues() [4]CampaignFeedbacks {
-	return [4]CampaignFeedbacks{Actioned, Exited, Pushed, Replied}
+func PossibleCampaignFeedbacksValues() []CampaignFeedbacks {
+	return []CampaignFeedbacks{Actioned, Exited, Pushed, Replied}
 }
 
 // CampaignKinds enumerates the values for campaign kinds.
@@ -80,8 +80,8 @@ const (
 )
 
 // PossibleCampaignKindsValues returns an array of possible values for the CampaignKinds const type.
-func PossibleCampaignKindsValues() [4]CampaignKinds {
-	return [4]CampaignKinds{Announcements, DataPushes, NativePushes, Polls}
+func PossibleCampaignKindsValues() []CampaignKinds {
+	return []CampaignKinds{Announcements, DataPushes, NativePushes, Polls}
 }
 
 // CampaignStates enumerates the values for campaign states.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleCampaignStatesValues returns an array of possible values for the CampaignStates const type.
-func PossibleCampaignStatesValues() [5]CampaignStates {
-	return [5]CampaignStates{Draft, Finished, InProgress, Queued, Scheduled}
+func PossibleCampaignStatesValues() []CampaignStates {
+	return []CampaignStates{Draft, Finished, InProgress, Queued, Scheduled}
 }
 
 // CampaignType enumerates the values for campaign type.
@@ -120,8 +120,8 @@ const (
 )
 
 // PossibleCampaignTypeValues returns an array of possible values for the CampaignType const type.
-func PossibleCampaignTypeValues() [4]CampaignType {
-	return [4]CampaignType{Announcement, DataPush, NativePush, Poll}
+func PossibleCampaignTypeValues() []CampaignType {
+	return []CampaignType{Announcement, DataPush, NativePush, Poll}
 }
 
 // CampaignTypes enumerates the values for campaign types.
@@ -139,8 +139,8 @@ const (
 )
 
 // PossibleCampaignTypesValues returns an array of possible values for the CampaignTypes const type.
-func PossibleCampaignTypesValues() [4]CampaignTypes {
-	return [4]CampaignTypes{OnlyNotif, Textbase64, Texthtml, Textplain}
+func PossibleCampaignTypesValues() []CampaignTypes {
+	return []CampaignTypes{OnlyNotif, Textbase64, Texthtml, Textplain}
 }
 
 // DeliveryTimes enumerates the values for delivery times.
@@ -156,8 +156,8 @@ const (
 )
 
 // PossibleDeliveryTimesValues returns an array of possible values for the DeliveryTimes const type.
-func PossibleDeliveryTimesValues() [3]DeliveryTimes {
-	return [3]DeliveryTimes{Any, Background, Session}
+func PossibleDeliveryTimesValues() []DeliveryTimes {
+	return []DeliveryTimes{Any, Background, Session}
 }
 
 // ExportFormat enumerates the values for export format.
@@ -171,8 +171,8 @@ const (
 )
 
 // PossibleExportFormatValues returns an array of possible values for the ExportFormat const type.
-func PossibleExportFormatValues() [2]ExportFormat {
-	return [2]ExportFormat{CsvBlob, JSONBlob}
+func PossibleExportFormatValues() []ExportFormat {
+	return []ExportFormat{CsvBlob, JSONBlob}
 }
 
 // ExportState enumerates the values for export state.
@@ -190,8 +190,8 @@ const (
 )
 
 // PossibleExportStateValues returns an array of possible values for the ExportState const type.
-func PossibleExportStateValues() [4]ExportState {
-	return [4]ExportState{ExportStateFailed, ExportStateQueued, ExportStateStarted, ExportStateSucceeded}
+func PossibleExportStateValues() []ExportState {
+	return []ExportState{ExportStateFailed, ExportStateQueued, ExportStateStarted, ExportStateSucceeded}
 }
 
 // ExportType enumerates the values for export type.
@@ -219,8 +219,8 @@ const (
 )
 
 // PossibleExportTypeValues returns an array of possible values for the ExportType const type.
-func PossibleExportTypeValues() [9]ExportType {
-	return [9]ExportType{ExportTypeActivity, ExportTypeCrash, ExportTypeError, ExportTypeEvent, ExportTypeJob, ExportTypePush, ExportTypeSession, ExportTypeTag, ExportTypeToken}
+func PossibleExportTypeValues() []ExportType {
+	return []ExportType{ExportTypeActivity, ExportTypeCrash, ExportTypeError, ExportTypeEvent, ExportTypeJob, ExportTypePush, ExportTypeSession, ExportTypeTag, ExportTypeToken}
 }
 
 // JobStates enumerates the values for job states.
@@ -238,8 +238,8 @@ const (
 )
 
 // PossibleJobStatesValues returns an array of possible values for the JobStates const type.
-func PossibleJobStatesValues() [4]JobStates {
-	return [4]JobStates{JobStatesFailed, JobStatesQueued, JobStatesStarted, JobStatesSucceeded}
+func PossibleJobStatesValues() []JobStates {
+	return []JobStates{JobStatesFailed, JobStatesQueued, JobStatesStarted, JobStatesSucceeded}
 }
 
 // NotificationTypes enumerates the values for notification types.
@@ -253,8 +253,8 @@ const (
 )
 
 // PossibleNotificationTypesValues returns an array of possible values for the NotificationTypes const type.
-func PossibleNotificationTypesValues() [2]NotificationTypes {
-	return [2]NotificationTypes{Popup, System}
+func PossibleNotificationTypesValues() []NotificationTypes {
+	return []NotificationTypes{Popup, System}
 }
 
 // ProvisioningStates enumerates the values for provisioning states.
@@ -268,8 +268,8 @@ const (
 )
 
 // PossibleProvisioningStatesValues returns an array of possible values for the ProvisioningStates const type.
-func PossibleProvisioningStatesValues() [2]ProvisioningStates {
-	return [2]ProvisioningStates{Creating, Succeeded}
+func PossibleProvisioningStatesValues() []ProvisioningStates {
+	return []ProvisioningStates{Creating, Succeeded}
 }
 
 // PushModes enumerates the values for push modes.
@@ -285,8 +285,8 @@ const (
 )
 
 // PossiblePushModesValues returns an array of possible values for the PushModes const type.
-func PossiblePushModesValues() [3]PushModes {
-	return [3]PushModes{Manual, OneShot, RealTime}
+func PossiblePushModesValues() []PushModes {
+	return []PushModes{Manual, OneShot, RealTime}
 }
 
 // Type enumerates the values for type.
@@ -338,8 +338,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [21]Type {
-	return [21]Type{TypeAnnouncementFeedback, TypeApplicationVersion, TypeBooleanTag, TypeCarrierCountry, TypeCarrierName, TypeCriterion, TypeDatapushFeedback, TypeDateTag, TypeDeviceManufacturer, TypeDeviceModel, TypeFirmwareVersion, TypeGeoFencing, TypeIntegerTag, TypeLanguage, TypeLocation, TypeNetworkType, TypePollAnswerFeedback, TypePollFeedback, TypeScreenSize, TypeSegment, TypeStringTag}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAnnouncementFeedback, TypeApplicationVersion, TypeBooleanTag, TypeCarrierCountry, TypeCarrierName, TypeCriterion, TypeDatapushFeedback, TypeDateTag, TypeDeviceManufacturer, TypeDeviceModel, TypeFirmwareVersion, TypeGeoFencing, TypeIntegerTag, TypeLanguage, TypeLocation, TypeNetworkType, TypePollAnswerFeedback, TypePollFeedback, TypeScreenSize, TypeSegment, TypeStringTag}
 }
 
 // TypeBasicFilter enumerates the values for type basic filter.
@@ -367,8 +367,8 @@ const (
 )
 
 // PossibleTypeBasicFilterValues returns an array of possible values for the TypeBasicFilter const type.
-func PossibleTypeBasicFilterValues() [9]TypeBasicFilter {
-	return [9]TypeBasicFilter{TypeAppInfo, TypeEngageActiveUsers, TypeEngageIdleUsers, TypeEngageNewUsers, TypeEngageOldUsers, TypeEngageSubset, TypeFilter, TypeNativePushEnabled, TypePushQuota}
+func PossibleTypeBasicFilterValues() []TypeBasicFilter {
+	return []TypeBasicFilter{TypeAppInfo, TypeEngageActiveUsers, TypeEngageIdleUsers, TypeEngageNewUsers, TypeEngageOldUsers, TypeEngageSubset, TypeFilter, TypeNativePushEnabled, TypePushQuota}
 }
 
 // AnnouncementFeedbackCriterion used to target devices who received an announcement.

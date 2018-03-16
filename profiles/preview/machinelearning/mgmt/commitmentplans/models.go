@@ -59,7 +59,7 @@ const (
 	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
 )
 
-func PossibleResourceSkuRestrictionsReasonCodeValues() [2]ResourceSkuRestrictionsReasonCode {
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
 	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
 }
 
@@ -70,7 +70,7 @@ const (
 	Zone     ResourceSkuRestrictionsType = original.Zone
 )
 
-func PossibleResourceSkuRestrictionsTypeValues() [2]ResourceSkuRestrictionsType {
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
 
@@ -82,7 +82,7 @@ const (
 	None      SkuCapacityScaleType = original.None
 )
 
-func PossibleSkuCapacityScaleTypeValues() [3]SkuCapacityScaleType {
+func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
 	return original.PossibleSkuCapacityScaleTypeValues()
 }
 

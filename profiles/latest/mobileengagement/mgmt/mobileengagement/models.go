@@ -98,7 +98,7 @@ const (
 	LT AudienceOperators = original.LT
 )
 
-func PossibleAudienceOperatorsValues() [5]AudienceOperators {
+func PossibleAudienceOperatorsValues() []AudienceOperators {
 	return original.PossibleAudienceOperatorsValues()
 }
 
@@ -111,7 +111,7 @@ const (
 	Replied  CampaignFeedbacks = original.Replied
 )
 
-func PossibleCampaignFeedbacksValues() [4]CampaignFeedbacks {
+func PossibleCampaignFeedbacksValues() []CampaignFeedbacks {
 	return original.PossibleCampaignFeedbacksValues()
 }
 
@@ -124,7 +124,7 @@ const (
 	Polls         CampaignKinds = original.Polls
 )
 
-func PossibleCampaignKindsValues() [4]CampaignKinds {
+func PossibleCampaignKindsValues() []CampaignKinds {
 	return original.PossibleCampaignKindsValues()
 }
 
@@ -138,7 +138,7 @@ const (
 	Scheduled  CampaignStates = original.Scheduled
 )
 
-func PossibleCampaignStatesValues() [5]CampaignStates {
+func PossibleCampaignStatesValues() []CampaignStates {
 	return original.PossibleCampaignStatesValues()
 }
 
@@ -151,7 +151,7 @@ const (
 	Poll         CampaignType = original.Poll
 )
 
-func PossibleCampaignTypeValues() [4]CampaignType {
+func PossibleCampaignTypeValues() []CampaignType {
 	return original.PossibleCampaignTypeValues()
 }
 
@@ -164,7 +164,7 @@ const (
 	Textplain  CampaignTypes = original.Textplain
 )
 
-func PossibleCampaignTypesValues() [4]CampaignTypes {
+func PossibleCampaignTypesValues() []CampaignTypes {
 	return original.PossibleCampaignTypesValues()
 }
 
@@ -176,7 +176,7 @@ const (
 	Session    DeliveryTimes = original.Session
 )
 
-func PossibleDeliveryTimesValues() [3]DeliveryTimes {
+func PossibleDeliveryTimesValues() []DeliveryTimes {
 	return original.PossibleDeliveryTimesValues()
 }
 
@@ -187,7 +187,7 @@ const (
 	JSONBlob ExportFormat = original.JSONBlob
 )
 
-func PossibleExportFormatValues() [2]ExportFormat {
+func PossibleExportFormatValues() []ExportFormat {
 	return original.PossibleExportFormatValues()
 }
 
@@ -200,7 +200,7 @@ const (
 	ExportStateSucceeded ExportState = original.ExportStateSucceeded
 )
 
-func PossibleExportStateValues() [4]ExportState {
+func PossibleExportStateValues() []ExportState {
 	return original.PossibleExportStateValues()
 }
 
@@ -218,7 +218,7 @@ const (
 	ExportTypeToken    ExportType = original.ExportTypeToken
 )
 
-func PossibleExportTypeValues() [9]ExportType {
+func PossibleExportTypeValues() []ExportType {
 	return original.PossibleExportTypeValues()
 }
 
@@ -231,7 +231,7 @@ const (
 	JobStatesSucceeded JobStates = original.JobStatesSucceeded
 )
 
-func PossibleJobStatesValues() [4]JobStates {
+func PossibleJobStatesValues() []JobStates {
 	return original.PossibleJobStatesValues()
 }
 
@@ -242,7 +242,7 @@ const (
 	System NotificationTypes = original.System
 )
 
-func PossibleNotificationTypesValues() [2]NotificationTypes {
+func PossibleNotificationTypesValues() []NotificationTypes {
 	return original.PossibleNotificationTypesValues()
 }
 
@@ -253,7 +253,7 @@ const (
 	Succeeded ProvisioningStates = original.Succeeded
 )
 
-func PossibleProvisioningStatesValues() [2]ProvisioningStates {
+func PossibleProvisioningStatesValues() []ProvisioningStates {
 	return original.PossibleProvisioningStatesValues()
 }
 
@@ -265,7 +265,7 @@ const (
 	RealTime PushModes = original.RealTime
 )
 
-func PossiblePushModesValues() [3]PushModes {
+func PossiblePushModesValues() []PushModes {
 	return original.PossiblePushModesValues()
 }
 
@@ -295,7 +295,7 @@ const (
 	TypeStringTag            Type = original.TypeStringTag
 )
 
-func PossibleTypeValues() [21]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -313,7 +313,7 @@ const (
 	TypePushQuota         TypeBasicFilter = original.TypePushQuota
 )
 
-func PossibleTypeBasicFilterValues() [9]TypeBasicFilter {
+func PossibleTypeBasicFilterValues() []TypeBasicFilter {
 	return original.PossibleTypeBasicFilterValues()
 }
 

@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAppliedScopeTypeValues returns an array of possible values for the AppliedScopeType const type.
-func PossibleAppliedScopeTypeValues() [2]AppliedScopeType {
-	return [2]AppliedScopeType{Shared, Single}
+func PossibleAppliedScopeTypeValues() []AppliedScopeType {
+	return []AppliedScopeType{Shared, Single}
 }
 
 // AppliedScopeType1 enumerates the values for applied scope type 1.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleAppliedScopeType1Values returns an array of possible values for the AppliedScopeType1 const type.
-func PossibleAppliedScopeType1Values() [2]AppliedScopeType1 {
-	return [2]AppliedScopeType1{AppliedScopeType1Shared, AppliedScopeType1Single}
+func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
+	return []AppliedScopeType1{AppliedScopeType1Shared, AppliedScopeType1Single}
 }
 
 // Code enumerates the values for code.
@@ -173,8 +173,8 @@ const (
 )
 
 // PossibleCodeValues returns an array of possible values for the Code const type.
-func PossibleCodeValues() [55]Code {
-	return [55]Code{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AppliedScopesSameAsExisting, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
+func PossibleCodeValues() []Code {
+	return []Code{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AppliedScopesSameAsExisting, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
 }
 
 // Kind enumerates the values for kind.
@@ -186,8 +186,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [1]Kind {
-	return [1]Kind{MicrosoftCompute}
+func PossibleKindValues() []Kind {
+	return []Kind{MicrosoftCompute}
 }
 
 // Location enumerates the values for location.
@@ -245,8 +245,8 @@ const (
 )
 
 // PossibleLocationValues returns an array of possible values for the Location const type.
-func PossibleLocationValues() [24]Location {
-	return [24]Location{Australiaeast, Australiasoutheast, Brazilsouth, Canadacentral, Canadaeast, Centralindia, Centralus, Eastasia, Eastus, Eastus2, Japaneast, Japanwest, Northcentralus, Northeurope, Southcentralus, Southeastasia, Southindia, Uksouth, Ukwest, Westcentralus, Westeurope, Westindia, Westus, Westus2}
+func PossibleLocationValues() []Location {
+	return []Location{Australiaeast, Australiasoutheast, Brazilsouth, Canadacentral, Canadaeast, Centralindia, Centralus, Eastasia, Eastus, Eastus2, Japaneast, Japanwest, Northcentralus, Northeurope, Southcentralus, Southeastasia, Southindia, Uksouth, Ukwest, Westcentralus, Westeurope, Westindia, Westus, Westus2}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -282,8 +282,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [13]ProvisioningState {
-	return [13]ProvisioningState{BillingFailed, Cancelled, ConfirmedBilling, ConfirmedResourceHold, Created, Creating, Expired, Failed, Merged, PendingBilling, PendingResourceHold, Split, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{BillingFailed, Cancelled, ConfirmedBilling, ConfirmedResourceHold, Created, Creating, Expired, Failed, Merged, PendingBilling, PendingResourceHold, Split, Succeeded}
 }
 
 // ProvisioningState1 enumerates the values for provisioning state 1.
@@ -319,8 +319,8 @@ const (
 )
 
 // PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
-func PossibleProvisioningState1Values() [13]ProvisioningState1 {
-	return [13]ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
 }
 
 // StatusCode enumerates the values for status code.
@@ -348,8 +348,8 @@ const (
 )
 
 // PossibleStatusCodeValues returns an array of possible values for the StatusCode const type.
-func PossibleStatusCodeValues() [9]StatusCode {
-	return [9]StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
+func PossibleStatusCodeValues() []StatusCode {
+	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
 }
 
 // Term enumerates the values for term.
@@ -363,8 +363,8 @@ const (
 )
 
 // PossibleTermValues returns an array of possible values for the Term const type.
-func PossibleTermValues() [2]Term {
-	return [2]Term{P1Y, P3Y}
+func PossibleTermValues() []Term {
+	return []Term{P1Y, P3Y}
 }
 
 // AppliedReservationList ...

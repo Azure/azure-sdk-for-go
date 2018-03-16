@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleCodeValues returns an array of possible values for the Code const type.
-func PossibleCodeValues() [3]Code {
-	return [3]Code{BadRequest, Conflict, NotFound}
+func PossibleCodeValues() []Code {
+	return []Code{BadRequest, Conflict, NotFound}
 }
 
 // State enumerates the values for state.
@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [2]State {
-	return [2]State{Active, Deleted}
+func PossibleStateValues() []State {
+	return []State{Active, Deleted}
 }
 
 // Error this is the management partner operations error
@@ -199,6 +199,8 @@ type OperationResponse struct {
 type PartnerProperties struct {
 	// PartnerID - This is the partner id
 	PartnerID *string `json:"partnerId,omitempty"`
+	// PartnerName - This is the partner name
+	PartnerName *string `json:"partnerName,omitempty"`
 	// TenantID - This is the tenant id.
 	TenantID *string `json:"tenantId,omitempty"`
 	// ObjectID - This is the object id.

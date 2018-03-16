@@ -48,7 +48,7 @@ const (
 	SingleBox CompileMode = original.SingleBox
 )
 
-func PossibleCompileModeValues() [3]CompileMode {
+func PossibleCompileModeValues() []CompileMode {
 	return original.PossibleCompileModeValues()
 }
 
@@ -63,7 +63,7 @@ const (
 	VertexResourceInUserFolder     ResourceType = original.VertexResourceInUserFolder
 )
 
-func PossibleResourceTypeValues() [6]ResourceType {
+func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	Succeeded Result = original.Succeeded
 )
 
-func PossibleResultValues() [4]Result {
+func PossibleResultValues() []Result {
 	return original.PossibleResultValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	Warning       SeverityTypes = original.Warning
 )
 
-func PossibleSeverityTypesValues() [6]SeverityTypes {
+func PossibleSeverityTypesValues() []SeverityTypes {
 	return original.PossibleSeverityTypesValues()
 }
 
@@ -110,7 +110,7 @@ const (
 	StateWaitingForCapacity State = original.StateWaitingForCapacity
 )
 
-func PossibleStateValues() [10]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 
@@ -122,7 +122,7 @@ const (
 	TypeUSQL          Type = original.TypeUSQL
 )
 
-func PossibleTypeValues() [3]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -133,7 +133,7 @@ const (
 	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
-func PossibleTypeBasicCreateJobPropertiesValues() [2]TypeBasicCreateJobProperties {
+func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties {
 	return original.PossibleTypeBasicCreateJobPropertiesValues()
 }
 
@@ -144,7 +144,7 @@ const (
 	USQL TypeEnum = original.USQL
 )
 
-func PossibleTypeEnumValues() [2]TypeEnum {
+func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()
 }
 

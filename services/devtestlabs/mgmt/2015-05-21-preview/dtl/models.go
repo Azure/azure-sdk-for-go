@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleCostPropertyTypeValues returns an array of possible values for the CostPropertyType const type.
-func PossibleCostPropertyTypeValues() [3]CostPropertyType {
-	return [3]CostPropertyType{Projected, Reported, Unavailable}
+func PossibleCostPropertyTypeValues() []CostPropertyType {
+	return []CostPropertyType{Projected, Reported, Unavailable}
 }
 
 // CustomImageOsType enumerates the values for custom image os type.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleCustomImageOsTypeValues returns an array of possible values for the CustomImageOsType const type.
-func PossibleCustomImageOsTypeValues() [3]CustomImageOsType {
-	return [3]CustomImageOsType{Linux, None, Windows}
+func PossibleCustomImageOsTypeValues() []CustomImageOsType {
+	return []CustomImageOsType{Linux, None, Windows}
 }
 
 // EnableStatus enumerates the values for enable status.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleEnableStatusValues returns an array of possible values for the EnableStatus const type.
-func PossibleEnableStatusValues() [2]EnableStatus {
-	return [2]EnableStatus{Disabled, Enabled}
+func PossibleEnableStatusValues() []EnableStatus {
+	return []EnableStatus{Disabled, Enabled}
 }
 
 // LabStorageType enumerates the values for lab storage type.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleLabStorageTypeValues returns an array of possible values for the LabStorageType const type.
-func PossibleLabStorageTypeValues() [2]LabStorageType {
-	return [2]LabStorageType{Premium, Standard}
+func PossibleLabStorageTypeValues() []LabStorageType {
+	return []LabStorageType{Premium, Standard}
 }
 
 // LinuxOsState enumerates the values for linux os state.
@@ -103,8 +103,8 @@ const (
 )
 
 // PossibleLinuxOsStateValues returns an array of possible values for the LinuxOsState const type.
-func PossibleLinuxOsStateValues() [3]LinuxOsState {
-	return [3]LinuxOsState{DeprovisionApplied, DeprovisionRequested, NonDeprovisioned}
+func PossibleLinuxOsStateValues() []LinuxOsState {
+	return []LinuxOsState{DeprovisionApplied, DeprovisionRequested, NonDeprovisioned}
 }
 
 // PolicyEvaluatorType enumerates the values for policy evaluator type.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossiblePolicyEvaluatorTypeValues returns an array of possible values for the PolicyEvaluatorType const type.
-func PossiblePolicyEvaluatorTypeValues() [2]PolicyEvaluatorType {
-	return [2]PolicyEvaluatorType{AllowedValuesPolicy, MaxValuePolicy}
+func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
+	return []PolicyEvaluatorType{AllowedValuesPolicy, MaxValuePolicy}
 }
 
 // PolicyFactName enumerates the values for policy fact name.
@@ -139,8 +139,8 @@ const (
 )
 
 // PossiblePolicyFactNameValues returns an array of possible values for the PolicyFactName const type.
-func PossiblePolicyFactNameValues() [5]PolicyFactName {
-	return [5]PolicyFactName{PolicyFactNameGalleryImage, PolicyFactNameLabVMCount, PolicyFactNameLabVMSize, PolicyFactNameUserOwnedLabVMCount, PolicyFactNameUserOwnedLabVMCountInSubnet}
+func PossiblePolicyFactNameValues() []PolicyFactName {
+	return []PolicyFactName{PolicyFactNameGalleryImage, PolicyFactNameLabVMCount, PolicyFactNameLabVMSize, PolicyFactNameUserOwnedLabVMCount, PolicyFactNameUserOwnedLabVMCountInSubnet}
 }
 
 // PolicyStatus enumerates the values for policy status.
@@ -154,8 +154,8 @@ const (
 )
 
 // PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() [2]PolicyStatus {
-	return [2]PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
+func PossiblePolicyStatusValues() []PolicyStatus {
+	return []PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
 }
 
 // SourceControlType enumerates the values for source control type.
@@ -169,8 +169,8 @@ const (
 )
 
 // PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
-func PossibleSourceControlTypeValues() [2]SourceControlType {
-	return [2]SourceControlType{GitHub, VsoGit}
+func PossibleSourceControlTypeValues() []SourceControlType {
+	return []SourceControlType{GitHub, VsoGit}
 }
 
 // SubscriptionNotificationState enumerates the values for subscription notification state.
@@ -192,8 +192,8 @@ const (
 )
 
 // PossibleSubscriptionNotificationStateValues returns an array of possible values for the SubscriptionNotificationState const type.
-func PossibleSubscriptionNotificationStateValues() [6]SubscriptionNotificationState {
-	return [6]SubscriptionNotificationState{Deleted, NotDefined, Registered, Suspended, Unregistered, Warned}
+func PossibleSubscriptionNotificationStateValues() []SubscriptionNotificationState {
+	return []SubscriptionNotificationState{Deleted, NotDefined, Registered, Suspended, Unregistered, Warned}
 }
 
 // TaskType enumerates the values for task type.
@@ -209,8 +209,8 @@ const (
 )
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
-func PossibleTaskTypeValues() [3]TaskType {
-	return [3]TaskType{LabBillingTask, LabVmsShutdownTask, LabVmsStartupTask}
+func PossibleTaskTypeValues() []TaskType {
+	return []TaskType{LabBillingTask, LabVmsShutdownTask, LabVmsStartupTask}
 }
 
 // UsagePermissionType enumerates the values for usage permission type.
@@ -226,8 +226,8 @@ const (
 )
 
 // PossibleUsagePermissionTypeValues returns an array of possible values for the UsagePermissionType const type.
-func PossibleUsagePermissionTypeValues() [3]UsagePermissionType {
-	return [3]UsagePermissionType{Allow, Default, Deny}
+func PossibleUsagePermissionTypeValues() []UsagePermissionType {
+	return []UsagePermissionType{Allow, Default, Deny}
 }
 
 // WindowsOsState enumerates the values for windows os state.
@@ -243,8 +243,8 @@ const (
 )
 
 // PossibleWindowsOsStateValues returns an array of possible values for the WindowsOsState const type.
-func PossibleWindowsOsStateValues() [3]WindowsOsState {
-	return [3]WindowsOsState{NonSysprepped, SysprepApplied, SysprepRequested}
+func PossibleWindowsOsStateValues() []WindowsOsState {
+	return []WindowsOsState{NonSysprepped, SysprepApplied, SysprepRequested}
 }
 
 // ApplyArtifactsRequest request body for applying artifacts to a virtual machine.

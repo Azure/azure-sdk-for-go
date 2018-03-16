@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() [2]DeploymentMode {
-	return [2]DeploymentMode{Complete, Incremental}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return []DeploymentMode{Complete, Incremental}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -50,8 +50,8 @@ const (
 )
 
 // PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
-	return [1]ResourceIdentityType{SystemAssigned}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{SystemAssigned}
 }
 
 // AliasPathType ...

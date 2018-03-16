@@ -64,7 +64,7 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() [7]DayOfWeek {
+func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
 
@@ -78,7 +78,7 @@ const (
 	StorageQueue    JobActionType = original.StorageQueue
 )
 
-func PossibleJobActionTypeValues() [5]JobActionType {
+func PossibleJobActionTypeValues() []JobActionType {
 	return original.PossibleJobActionTypeValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	Suspended JobCollectionState = original.Suspended
 )
 
-func PossibleJobCollectionStateValues() [4]JobCollectionState {
+func PossibleJobCollectionStateValues() []JobCollectionState {
 	return original.PossibleJobCollectionStateValues()
 }
 
@@ -103,7 +103,7 @@ const (
 	Postponed JobExecutionStatus = original.Postponed
 )
 
-func PossibleJobExecutionStatusValues() [3]JobExecutionStatus {
+func PossibleJobExecutionStatusValues() []JobExecutionStatus {
 	return original.PossibleJobExecutionStatusValues()
 }
 
@@ -114,7 +114,7 @@ const (
 	MainAction  JobHistoryActionName = original.MainAction
 )
 
-func PossibleJobHistoryActionNameValues() [2]JobHistoryActionName {
+func PossibleJobHistoryActionNameValues() []JobHistoryActionName {
 	return original.PossibleJobHistoryActionNameValues()
 }
 
@@ -130,7 +130,7 @@ const (
 	JobScheduleDayWednesday JobScheduleDay = original.JobScheduleDayWednesday
 )
 
-func PossibleJobScheduleDayValues() [7]JobScheduleDay {
+func PossibleJobScheduleDayValues() []JobScheduleDay {
 	return original.PossibleJobScheduleDayValues()
 }
 
@@ -143,7 +143,7 @@ const (
 	JobStateFaulted   JobState = original.JobStateFaulted
 )
 
-func PossibleJobStateValues() [4]JobState {
+func PossibleJobStateValues() []JobState {
 	return original.PossibleJobStateValues()
 }
 
@@ -157,7 +157,7 @@ const (
 	Week   RecurrenceFrequency = original.Week
 )
 
-func PossibleRecurrenceFrequencyValues() [5]RecurrenceFrequency {
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return original.PossibleRecurrenceFrequencyValues()
 }
 
@@ -168,7 +168,7 @@ const (
 	None  RetryType = original.None
 )
 
-func PossibleRetryTypeValues() [2]RetryType {
+func PossibleRetryTypeValues() []RetryType {
 	return original.PossibleRetryTypeValues()
 }
 
@@ -179,7 +179,7 @@ const (
 	SharedAccessKey ServiceBusAuthenticationType = original.SharedAccessKey
 )
 
-func PossibleServiceBusAuthenticationTypeValues() [2]ServiceBusAuthenticationType {
+func PossibleServiceBusAuthenticationTypeValues() []ServiceBusAuthenticationType {
 	return original.PossibleServiceBusAuthenticationTypeValues()
 }
 
@@ -191,7 +191,7 @@ const (
 	ServiceBusTransportTypeNotSpecified ServiceBusTransportType = original.ServiceBusTransportTypeNotSpecified
 )
 
-func PossibleServiceBusTransportTypeValues() [3]ServiceBusTransportType {
+func PossibleServiceBusTransportTypeValues() []ServiceBusTransportType {
 	return original.PossibleServiceBusTransportTypeValues()
 }
 
@@ -204,7 +204,7 @@ const (
 	Standard   SkuDefinition = original.Standard
 )
 
-func PossibleSkuDefinitionValues() [4]SkuDefinition {
+func PossibleSkuDefinitionValues() []SkuDefinition {
 	return original.PossibleSkuDefinitionValues()
 }
 
@@ -217,7 +217,7 @@ const (
 	TypeHTTPAuthentication   Type = original.TypeHTTPAuthentication
 )
 
-func PossibleTypeValues() [4]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 

@@ -42,7 +42,7 @@ const (
 	On               SpendingLimit = original.On
 )
 
-func PossibleSpendingLimitValues() [3]SpendingLimit {
+func PossibleSpendingLimitValues() []SpendingLimit {
 	return original.PossibleSpendingLimitValues()
 }
 
@@ -56,7 +56,7 @@ const (
 	Warned   State = original.Warned
 )
 
-func PossibleStateValues() [5]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 

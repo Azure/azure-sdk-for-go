@@ -43,7 +43,7 @@ const (
 	LatestProcessed             A2ARpRecoveryPointType = original.LatestProcessed
 )
 
-func PossibleA2ARpRecoveryPointTypeValues() [4]A2ARpRecoveryPointType {
+func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
 	return original.PossibleA2ARpRecoveryPointTypeValues()
 }
 
@@ -57,7 +57,7 @@ const (
 	UpdateRequired         AgentVersionStatus = original.UpdateRequired
 )
 
-func PossibleAgentVersionStatusValues() [5]AgentVersionStatus {
+func PossibleAgentVersionStatusValues() []AgentVersionStatus {
 	return original.PossibleAgentVersionStatusValues()
 }
 
@@ -68,7 +68,7 @@ const (
 	NoAction           AlternateLocationRecoveryOption = original.NoAction
 )
 
-func PossibleAlternateLocationRecoveryOptionValues() [2]AlternateLocationRecoveryOption {
+func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecoveryOption {
 	return original.PossibleAlternateLocationRecoveryOptionValues()
 }
 
@@ -79,7 +79,7 @@ const (
 	ForSynchronization DataSyncStatus = original.ForSynchronization
 )
 
-func PossibleDataSyncStatusValues() [2]DataSyncStatus {
+func PossibleDataSyncStatusValues() []DataSyncStatus {
 	return original.PossibleDataSyncStatusValues()
 }
 
@@ -90,7 +90,7 @@ const (
 	NotSpecified      DisableProtectionReason = original.NotSpecified
 )
 
-func PossibleDisableProtectionReasonValues() [2]DisableProtectionReason {
+func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
 	return original.PossibleDisableProtectionReasonValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	ResourceManager FailoverDeploymentModel = original.ResourceManager
 )
 
-func PossibleFailoverDeploymentModelValues() [3]FailoverDeploymentModel {
+func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
 	return original.PossibleFailoverDeploymentModelValues()
 }
 
@@ -117,7 +117,7 @@ const (
 	VersionExpiry        HealthErrorCategory = original.VersionExpiry
 )
 
-func PossibleHealthErrorCategoryValues() [6]HealthErrorCategory {
+func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
 	return original.PossibleHealthErrorCategoryValues()
 }
 
@@ -129,7 +129,7 @@ const (
 	HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed             HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed
 )
 
-func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() [3]HyperVReplicaAzureRpRecoveryPointType {
+func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
 	return original.PossibleHyperVReplicaAzureRpRecoveryPointTypeValues()
 }
 
@@ -139,7 +139,7 @@ const (
 	RecoveryServicesActiveDirectory IdentityProviderType = original.RecoveryServicesActiveDirectory
 )
 
-func PossibleIdentityProviderTypeValues() [1]IdentityProviderType {
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
 	return original.PossibleIdentityProviderTypeValues()
 }
 
@@ -152,7 +152,7 @@ const (
 	InMageV2RpRecoveryPointTypeLatestProcessed             InMageV2RpRecoveryPointType = original.InMageV2RpRecoveryPointTypeLatestProcessed
 )
 
-func PossibleInMageV2RpRecoveryPointTypeValues() [4]InMageV2RpRecoveryPointType {
+func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
 	return original.PossibleInMageV2RpRecoveryPointTypeValues()
 }
 
@@ -165,7 +165,7 @@ const (
 	InstanceTypeInMageAzureV2                           InstanceType = original.InstanceTypeInMageAzureV2
 )
 
-func PossibleInstanceTypeValues() [4]InstanceType {
+func PossibleInstanceTypeValues() []InstanceType {
 	return original.PossibleInstanceTypeValues()
 }
 
@@ -179,7 +179,7 @@ const (
 	InstanceTypeVMwareVirtualMachine    InstanceTypeBasicConfigurationSettings = original.InstanceTypeVMwareVirtualMachine
 )
 
-func PossibleInstanceTypeBasicConfigurationSettingsValues() [5]InstanceTypeBasicConfigurationSettings {
+func PossibleInstanceTypeBasicConfigurationSettingsValues() []InstanceTypeBasicConfigurationSettings {
 	return original.PossibleInstanceTypeBasicConfigurationSettingsValues()
 }
 
@@ -190,7 +190,7 @@ const (
 	InstanceTypeInMage                                 InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeInMage
 )
 
-func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() [2]InstanceTypeBasicDisableProtectionProviderSpecificInput {
+func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues()
 }
 
@@ -205,7 +205,7 @@ const (
 	InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan                                   InstanceTypeBasicEnableProtectionProviderSpecificInput = original.InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan
 )
 
-func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() [6]InstanceTypeBasicEnableProtectionProviderSpecificInput {
+func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() []InstanceTypeBasicEnableProtectionProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues()
 }
 
@@ -221,7 +221,7 @@ const (
 	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2                 InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2
 )
 
-func PossibleInstanceTypeBasicEventProviderSpecificDetailsValues() [7]InstanceTypeBasicEventProviderSpecificDetails {
+func PossibleInstanceTypeBasicEventProviderSpecificDetailsValues() []InstanceTypeBasicEventProviderSpecificDetails {
 	return original.PossibleInstanceTypeBasicEventProviderSpecificDetailsValues()
 }
 
@@ -232,7 +232,7 @@ const (
 	InstanceTypeJobStatus            InstanceTypeBasicEventSpecificDetails = original.InstanceTypeJobStatus
 )
 
-func PossibleInstanceTypeBasicEventSpecificDetailsValues() [2]InstanceTypeBasicEventSpecificDetails {
+func PossibleInstanceTypeBasicEventSpecificDetailsValues() []InstanceTypeBasicEventSpecificDetails {
 	return original.PossibleInstanceTypeBasicEventSpecificDetailsValues()
 }
 
@@ -245,7 +245,7 @@ const (
 	InstanceTypeVmmToVmm                                InstanceTypeBasicFabricSpecificCreateNetworkMappingInput = original.InstanceTypeVmmToVmm
 )
 
-func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() [4]InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
+func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
 	return original.PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues()
 }
 
@@ -257,7 +257,7 @@ const (
 	InstanceTypeVMwareV2                    InstanceTypeBasicFabricSpecificCreationInput = original.InstanceTypeVMwareV2
 )
 
-func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() [3]InstanceTypeBasicFabricSpecificCreationInput {
+func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() []InstanceTypeBasicFabricSpecificCreationInput {
 	return original.PossibleInstanceTypeBasicFabricSpecificCreationInputValues()
 }
 
@@ -272,7 +272,7 @@ const (
 	InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2              InstanceTypeBasicFabricSpecificDetails = original.InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2
 )
 
-func PossibleInstanceTypeBasicFabricSpecificDetailsValues() [6]InstanceTypeBasicFabricSpecificDetails {
+func PossibleInstanceTypeBasicFabricSpecificDetailsValues() []InstanceTypeBasicFabricSpecificDetails {
 	return original.PossibleInstanceTypeBasicFabricSpecificDetailsValues()
 }
 
@@ -285,7 +285,7 @@ const (
 	InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm                                InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput = original.InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm
 )
 
-func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() [4]InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
+func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
 	return original.PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues()
 }
 
@@ -298,7 +298,7 @@ const (
 	InstanceTypeRecoveryPlanShutdownGroupTaskDetails InstanceTypeBasicGroupTaskDetails = original.InstanceTypeRecoveryPlanShutdownGroupTaskDetails
 )
 
-func PossibleInstanceTypeBasicGroupTaskDetailsValues() [4]InstanceTypeBasicGroupTaskDetails {
+func PossibleInstanceTypeBasicGroupTaskDetailsValues() []InstanceTypeBasicGroupTaskDetails {
 	return original.PossibleInstanceTypeBasicGroupTaskDetailsValues()
 }
 
@@ -313,7 +313,7 @@ const (
 	InstanceTypeTestFailoverJobDetails     InstanceTypeBasicJobDetails = original.InstanceTypeTestFailoverJobDetails
 )
 
-func PossibleInstanceTypeBasicJobDetailsValues() [6]InstanceTypeBasicJobDetails {
+func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
 	return original.PossibleInstanceTypeBasicJobDetailsValues()
 }
 
@@ -326,7 +326,7 @@ const (
 	InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm                             InstanceTypeBasicNetworkMappingFabricSpecificSettings = original.InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm
 )
 
-func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() [4]InstanceTypeBasicNetworkMappingFabricSpecificSettings {
+func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() []InstanceTypeBasicNetworkMappingFabricSpecificSettings {
 	return original.PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues()
 }
 
@@ -346,7 +346,7 @@ const (
 	InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt                      InstanceTypeBasicPolicyProviderSpecificDetails = original.InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt
 )
 
-func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() [11]InstanceTypeBasicPolicyProviderSpecificDetails {
+func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() []InstanceTypeBasicPolicyProviderSpecificDetails {
 	return original.PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues()
 }
 
@@ -363,7 +363,7 @@ const (
 	InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt                   InstanceTypeBasicPolicyProviderSpecificInput = original.InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt
 )
 
-func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() [8]InstanceTypeBasicPolicyProviderSpecificInput {
+func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceTypeBasicPolicyProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicPolicyProviderSpecificInputValues()
 }
 
@@ -378,7 +378,7 @@ const (
 	InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput InstanceTypeBasicProviderSpecificFailoverInput = original.InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput
 )
 
-func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() [6]InstanceTypeBasicProviderSpecificFailoverInput {
+func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() []InstanceTypeBasicProviderSpecificFailoverInput {
 	return original.PossibleInstanceTypeBasicProviderSpecificFailoverInputValues()
 }
 
@@ -390,7 +390,7 @@ const (
 	InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails InstanceTypeBasicProviderSpecificRecoveryPointDetails = original.InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails
 )
 
-func PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues() [3]InstanceTypeBasicProviderSpecificRecoveryPointDetails {
+func PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues() []InstanceTypeBasicProviderSpecificRecoveryPointDetails {
 	return original.PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues()
 }
 
@@ -403,7 +403,7 @@ const (
 	InstanceTypeScriptActionDetails            InstanceTypeBasicRecoveryPlanActionDetails = original.InstanceTypeScriptActionDetails
 )
 
-func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() [4]InstanceTypeBasicRecoveryPlanActionDetails {
+func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBasicRecoveryPlanActionDetails {
 	return original.PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues()
 }
 
@@ -418,7 +418,7 @@ const (
 	InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput
 )
 
-func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() [6]InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
+func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
 	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues()
 }
 
@@ -429,7 +429,7 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
 )
 
-func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() [2]InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
+func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
 	return original.PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues()
 }
 
@@ -446,7 +446,7 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings
 )
 
-func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() [8]InstanceTypeBasicReplicationProviderSpecificSettings {
+func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
 	return original.PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues()
 }
 
@@ -460,7 +460,7 @@ const (
 	InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput InstanceTypeBasicReverseReplicationProviderSpecificInput = original.InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput
 )
 
-func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() [5]InstanceTypeBasicReverseReplicationProviderSpecificInput {
+func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues()
 }
 
@@ -471,7 +471,7 @@ const (
 	InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput InstanceTypeBasicSwitchProtectionProviderSpecificInput = original.InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput
 )
 
-func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() [2]InstanceTypeBasicSwitchProtectionProviderSpecificInput {
+func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() []InstanceTypeBasicSwitchProtectionProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues()
 }
 
@@ -489,7 +489,7 @@ const (
 	InstanceTypeVMNicUpdatesTaskDetails           InstanceTypeBasicTaskTypeDetails = original.InstanceTypeVMNicUpdatesTaskDetails
 )
 
-func PossibleInstanceTypeBasicTaskTypeDetailsValues() [9]InstanceTypeBasicTaskTypeDetails {
+func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTypeDetails {
 	return original.PossibleInstanceTypeBasicTaskTypeDetailsValues()
 }
 
@@ -502,7 +502,7 @@ const (
 	InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput InstanceTypeBasicUpdateReplicationProtectedItemProviderInput = original.InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput
 )
 
-func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() [4]InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
+func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
 	return original.PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues()
 }
 
@@ -514,7 +514,7 @@ const (
 	LicenseTypeWindowsServer LicenseType = original.LicenseTypeWindowsServer
 )
 
-func PossibleLicenseTypeValues() [3]LicenseType {
+func PossibleLicenseTypeValues() []LicenseType {
 	return original.PossibleLicenseTypeValues()
 }
 
@@ -525,7 +525,7 @@ const (
 	UserSpecified MultiVMGroupCreateOption = original.UserSpecified
 )
 
-func PossibleMultiVMGroupCreateOptionValues() [2]MultiVMGroupCreateOption {
+func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
 	return original.PossibleMultiVMGroupCreateOptionValues()
 }
 
@@ -536,7 +536,7 @@ const (
 	UsePerVMRecoveryPoint       MultiVMSyncPointOption = original.UsePerVMRecoveryPoint
 )
 
-func PossibleMultiVMSyncPointOptionValues() [2]MultiVMSyncPointOption {
+func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
 	return original.PossibleMultiVMSyncPointOptionValues()
 }
 
@@ -547,7 +547,7 @@ const (
 	Enabled  MultiVMSyncStatus = original.Enabled
 )
 
-func PossibleMultiVMSyncStatusValues() [2]MultiVMSyncStatus {
+func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
 	return original.PossibleMultiVMSyncStatusValues()
 }
 
@@ -558,7 +558,7 @@ const (
 	RecoveryToPrimary PossibleOperationsDirections = original.RecoveryToPrimary
 )
 
-func PossiblePossibleOperationsDirectionsValues() [2]PossibleOperationsDirections {
+func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
 	return original.PossiblePossibleOperationsDirectionsValues()
 }
 
@@ -569,7 +569,7 @@ const (
 	Recovery RecoveryPlanActionLocation = original.Recovery
 )
 
-func PossibleRecoveryPlanActionLocationValues() [2]RecoveryPlanActionLocation {
+func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
 	return original.PossibleRecoveryPlanActionLocationValues()
 }
 
@@ -581,7 +581,7 @@ const (
 	Shutdown RecoveryPlanGroupType = original.Shutdown
 )
 
-func PossibleRecoveryPlanGroupTypeValues() [3]RecoveryPlanGroupType {
+func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
 	return original.PossibleRecoveryPlanGroupTypeValues()
 }
 
@@ -592,7 +592,7 @@ const (
 	PerVMRecoveryPoint       RecoveryPointSyncType = original.PerVMRecoveryPoint
 )
 
-func PossibleRecoveryPointSyncTypeValues() [2]RecoveryPointSyncType {
+func PossibleRecoveryPointSyncTypeValues() []RecoveryPointSyncType {
 	return original.PossibleRecoveryPointSyncTypeValues()
 }
 
@@ -604,7 +604,7 @@ const (
 	LatestTime RecoveryPointType = original.LatestTime
 )
 
-func PossibleRecoveryPointTypeValues() [3]RecoveryPointType {
+func PossibleRecoveryPointTypeValues() []RecoveryPointType {
 	return original.PossibleRecoveryPointTypeValues()
 }
 
@@ -626,7 +626,7 @@ const (
 	ReplicationProtectedItemOperationUnplannedFailover   ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperationUnplannedFailover
 )
 
-func PossibleReplicationProtectedItemOperationValues() [13]ReplicationProtectedItemOperation {
+func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
 	return original.PossibleReplicationProtectedItemOperationValues()
 }
 
@@ -638,7 +638,7 @@ const (
 	RpInMageRecoveryPointTypeLatestTime RpInMageRecoveryPointType = original.RpInMageRecoveryPointTypeLatestTime
 )
 
-func PossibleRpInMageRecoveryPointTypeValues() [3]RpInMageRecoveryPointType {
+func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
 	return original.PossibleRpInMageRecoveryPointTypeValues()
 }
 
@@ -649,7 +649,7 @@ const (
 	Enable  SetMultiVMSyncStatus = original.Enable
 )
 
-func PossibleSetMultiVMSyncStatusValues() [2]SetMultiVMSyncStatus {
+func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
 	return original.PossibleSetMultiVMSyncStatusValues()
 }
 
@@ -662,7 +662,7 @@ const (
 	Warning Severity = original.Warning
 )
 
-func PossibleSeverityValues() [4]Severity {
+func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
 }
 
@@ -673,7 +673,7 @@ const (
 	Required    SourceSiteOperations = original.Required
 )
 
-func PossibleSourceSiteOperationsValues() [2]SourceSiteOperations {
+func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
 	return original.PossibleSourceSiteOperationsValues()
 }
 

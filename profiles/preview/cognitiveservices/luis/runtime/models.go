@@ -47,7 +47,7 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() [12]AzureRegions {
+func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
 }
 

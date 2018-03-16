@@ -41,7 +41,7 @@ const (
 	ReadOnly ConnectionMode = original.ReadOnly
 )
 
-func PossibleConnectionModeValues() [2]ConnectionMode {
+func PossibleConnectionModeValues() []ConnectionMode {
 	return original.PossibleConnectionModeValues()
 }
 
@@ -62,7 +62,7 @@ const (
 	Updating     ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [12]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -74,7 +74,7 @@ const (
 	Standard    SkuTier = original.Standard
 )
 
-func PossibleSkuTierValues() [3]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -95,7 +95,7 @@ const (
 	StateUpdating     State = original.StateUpdating
 )
 
-func PossibleStateValues() [12]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 
@@ -105,7 +105,7 @@ const (
 	Live Status = original.Live
 )
 
-func PossibleStatusValues() [1]Status {
+func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
 

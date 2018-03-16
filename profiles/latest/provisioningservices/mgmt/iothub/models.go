@@ -19,7 +19,7 @@
 
 package iothub
 
-import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2017-11-15/iothub"
+import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -63,7 +63,7 @@ const (
 	ServiceConfig           AccessRightsDescription = original.ServiceConfig
 )
 
-func PossibleAccessRightsDescriptionValues() [6]AccessRightsDescription {
+func PossibleAccessRightsDescriptionValues() []AccessRightsDescription {
 	return original.PossibleAccessRightsDescriptionValues()
 }
 
@@ -75,7 +75,7 @@ const (
 	Static     AllocationPolicy = original.Static
 )
 
-func PossibleAllocationPolicyValues() [3]AllocationPolicy {
+func PossibleAllocationPolicyValues() []AllocationPolicy {
 	return original.PossibleAllocationPolicyValues()
 }
 
@@ -86,7 +86,7 @@ const (
 	ServerAuthentication CertificatePurpose = original.ServerAuthentication
 )
 
-func PossibleCertificatePurposeValues() [2]CertificatePurpose {
+func PossibleCertificatePurposeValues() []CertificatePurpose {
 	return original.PossibleCertificatePurposeValues()
 }
 
@@ -96,7 +96,7 @@ const (
 	S1 IotDpsSku = original.S1
 )
 
-func PossibleIotDpsSkuValues() [1]IotDpsSku {
+func PossibleIotDpsSkuValues() []IotDpsSku {
 	return original.PossibleIotDpsSkuValues()
 }
 
@@ -107,7 +107,7 @@ const (
 	Invalid       NameUnavailabilityReason = original.Invalid
 )
 
-func PossibleNameUnavailabilityReasonValues() [2]NameUnavailabilityReason {
+func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
 	return original.PossibleNameUnavailabilityReasonValues()
 }
 
@@ -128,7 +128,7 @@ const (
 	Transitioning    State = original.Transitioning
 )
 
-func PossibleStateValues() [12]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 

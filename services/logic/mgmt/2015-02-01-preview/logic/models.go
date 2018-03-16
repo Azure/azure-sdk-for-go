@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [3]KeyType {
-	return [3]KeyType{NotSpecified, Primary, Secondary}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{NotSpecified, Primary, Secondary}
 }
 
 // ParameterType enumerates the values for parameter type.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() [9]ParameterType {
-	return [9]ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
 }
 
 // RecurrenceFrequency enumerates the values for recurrence frequency.
@@ -93,8 +93,8 @@ const (
 )
 
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() [7]RecurrenceFrequency {
-	return [7]RecurrenceFrequency{Day, Hour, Minute, Month, Second, Week, Year}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return []RecurrenceFrequency{Day, Hour, Minute, Month, Second, Week, Year}
 }
 
 // SkuName enumerates the values for sku name.
@@ -116,8 +116,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [6]SkuName {
-	return [6]SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
 }
 
 // WorkflowProvisioningState enumerates the values for workflow provisioning state.
@@ -133,8 +133,8 @@ const (
 )
 
 // PossibleWorkflowProvisioningStateValues returns an array of possible values for the WorkflowProvisioningState const type.
-func PossibleWorkflowProvisioningStateValues() [3]WorkflowProvisioningState {
-	return [3]WorkflowProvisioningState{WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateSucceeded}
+func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
+	return []WorkflowProvisioningState{WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateSucceeded}
 }
 
 // WorkflowState enumerates the values for workflow state.
@@ -154,8 +154,8 @@ const (
 )
 
 // PossibleWorkflowStateValues returns an array of possible values for the WorkflowState const type.
-func PossibleWorkflowStateValues() [5]WorkflowState {
-	return [5]WorkflowState{WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
+func PossibleWorkflowStateValues() []WorkflowState {
+	return []WorkflowState{WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
 }
 
 // WorkflowStatus enumerates the values for workflow status.
@@ -189,8 +189,8 @@ const (
 )
 
 // PossibleWorkflowStatusValues returns an array of possible values for the WorkflowStatus const type.
-func PossibleWorkflowStatusValues() [12]WorkflowStatus {
-	return [12]WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
+func PossibleWorkflowStatusValues() []WorkflowStatus {
+	return []WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
 }
 
 // WorkflowTriggerProvisioningState enumerates the values for workflow trigger provisioning state.
@@ -208,8 +208,8 @@ const (
 )
 
 // PossibleWorkflowTriggerProvisioningStateValues returns an array of possible values for the WorkflowTriggerProvisioningState const type.
-func PossibleWorkflowTriggerProvisioningStateValues() [4]WorkflowTriggerProvisioningState {
-	return [4]WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUpdating}
+func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
+	return []WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUpdating}
 }
 
 // ContentHash ...

@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleDatabaseAccountKindValues returns an array of possible values for the DatabaseAccountKind const type.
-func PossibleDatabaseAccountKindValues() [3]DatabaseAccountKind {
-	return [3]DatabaseAccountKind{GlobalDocumentDB, MongoDB, Parse}
+func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
+	return []DatabaseAccountKind{GlobalDocumentDB, MongoDB, Parse}
 }
 
 // DatabaseAccountOfferType enumerates the values for database account offer type.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleDatabaseAccountOfferTypeValues returns an array of possible values for the DatabaseAccountOfferType const type.
-func PossibleDatabaseAccountOfferTypeValues() [1]DatabaseAccountOfferType {
-	return [1]DatabaseAccountOfferType{Standard}
+func PossibleDatabaseAccountOfferTypeValues() []DatabaseAccountOfferType {
+	return []DatabaseAccountOfferType{Standard}
 }
 
 // DefaultConsistencyLevel enumerates the values for default consistency level.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleDefaultConsistencyLevelValues returns an array of possible values for the DefaultConsistencyLevel const type.
-func PossibleDefaultConsistencyLevelValues() [5]DefaultConsistencyLevel {
-	return [5]DefaultConsistencyLevel{BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong}
+func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
+	return []DefaultConsistencyLevel{BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong}
 }
 
 // KeyKind enumerates the values for key kind.
@@ -92,8 +92,8 @@ const (
 )
 
 // PossibleKeyKindValues returns an array of possible values for the KeyKind const type.
-func PossibleKeyKindValues() [4]KeyKind {
-	return [4]KeyKind{Primary, PrimaryReadonly, Secondary, SecondaryReadonly}
+func PossibleKeyKindValues() []KeyKind {
+	return []KeyKind{Primary, PrimaryReadonly, Secondary, SecondaryReadonly}
 }
 
 // PrimaryAggregationType enumerates the values for primary aggregation type.
@@ -115,8 +115,8 @@ const (
 )
 
 // PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
-func PossiblePrimaryAggregationTypeValues() [6]PrimaryAggregationType {
-	return [6]PrimaryAggregationType{Average, Last, Maximum, Minimimum, None, Total}
+func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
+	return []PrimaryAggregationType{Average, Last, Maximum, Minimimum, None, Total}
 }
 
 // UnitType enumerates the values for unit type.
@@ -140,8 +140,8 @@ const (
 )
 
 // PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() [7]UnitType {
-	return [7]UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
+func PossibleUnitTypeValues() []UnitType {
+	return []UnitType{Bytes, BytesPerSecond, Count, CountPerSecond, Milliseconds, Percent, Seconds}
 }
 
 // Capability cosmos DB capability object

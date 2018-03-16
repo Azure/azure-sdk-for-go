@@ -42,7 +42,7 @@ const (
 	None          EntityNameUnavailabilityReason = original.None
 )
 
-func PossibleEntityNameUnavailabilityReasonValues() [3]EntityNameUnavailabilityReason {
+func PossibleEntityNameUnavailabilityReasonValues() []EntityNameUnavailabilityReason {
 	return original.PossibleEntityNameUnavailabilityReasonValues()
 }
 
@@ -53,7 +53,7 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -63,7 +63,7 @@ const (
 	Mediaservices ResourceType = original.Mediaservices
 )
 
-func PossibleResourceTypeValues() [1]ResourceType {
+func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
 }
 

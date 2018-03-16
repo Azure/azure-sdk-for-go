@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleDataLakeStoreAccountStateValues returns an array of possible values for the DataLakeStoreAccountState const type.
-func PossibleDataLakeStoreAccountStateValues() [2]DataLakeStoreAccountState {
-	return [2]DataLakeStoreAccountState{Active, Suspended}
+func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
+	return []DataLakeStoreAccountState{Active, Suspended}
 }
 
 // DataLakeStoreAccountStatus enumerates the values for data lake store account status.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleDataLakeStoreAccountStatusValues returns an array of possible values for the DataLakeStoreAccountStatus const type.
-func PossibleDataLakeStoreAccountStatusValues() [11]DataLakeStoreAccountStatus {
-	return [11]DataLakeStoreAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
+func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
+	return []DataLakeStoreAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
 }
 
 // EncryptionConfigType enumerates the values for encryption config type.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleEncryptionConfigTypeValues returns an array of possible values for the EncryptionConfigType const type.
-func PossibleEncryptionConfigTypeValues() [2]EncryptionConfigType {
-	return [2]EncryptionConfigType{ServiceManaged, UserManaged}
+func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
+	return []EncryptionConfigType{ServiceManaged, UserManaged}
 }
 
 // EncryptionProvisioningState enumerates the values for encryption provisioning state.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleEncryptionProvisioningStateValues returns an array of possible values for the EncryptionProvisioningState const type.
-func PossibleEncryptionProvisioningStateValues() [2]EncryptionProvisioningState {
-	return [2]EncryptionProvisioningState{EncryptionProvisioningStateCreating, EncryptionProvisioningStateSucceeded}
+func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
+	return []EncryptionProvisioningState{EncryptionProvisioningStateCreating, EncryptionProvisioningStateSucceeded}
 }
 
 // EncryptionState enumerates the values for encryption state.
@@ -116,8 +116,8 @@ const (
 )
 
 // PossibleEncryptionStateValues returns an array of possible values for the EncryptionState const type.
-func PossibleEncryptionStateValues() [2]EncryptionState {
-	return [2]EncryptionState{Disabled, Enabled}
+func PossibleEncryptionStateValues() []EncryptionState {
+	return []EncryptionState{Disabled, Enabled}
 }
 
 // FirewallAllowAzureIpsState enumerates the values for firewall allow azure ips state.
@@ -131,8 +131,8 @@ const (
 )
 
 // PossibleFirewallAllowAzureIpsStateValues returns an array of possible values for the FirewallAllowAzureIpsState const type.
-func PossibleFirewallAllowAzureIpsStateValues() [2]FirewallAllowAzureIpsState {
-	return [2]FirewallAllowAzureIpsState{FirewallAllowAzureIpsStateDisabled, FirewallAllowAzureIpsStateEnabled}
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
+	return []FirewallAllowAzureIpsState{FirewallAllowAzureIpsStateDisabled, FirewallAllowAzureIpsStateEnabled}
 }
 
 // FirewallState enumerates the values for firewall state.
@@ -146,8 +146,8 @@ const (
 )
 
 // PossibleFirewallStateValues returns an array of possible values for the FirewallState const type.
-func PossibleFirewallStateValues() [2]FirewallState {
-	return [2]FirewallState{FirewallStateDisabled, FirewallStateEnabled}
+func PossibleFirewallStateValues() []FirewallState {
+	return []FirewallState{FirewallStateDisabled, FirewallStateEnabled}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -163,8 +163,8 @@ const (
 )
 
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() [3]OperationOrigin {
-	return [3]OperationOrigin{System, User, Usersystem}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return []OperationOrigin{System, User, Usersystem}
 }
 
 // SubscriptionState enumerates the values for subscription state.
@@ -184,8 +184,8 @@ const (
 )
 
 // PossibleSubscriptionStateValues returns an array of possible values for the SubscriptionState const type.
-func PossibleSubscriptionStateValues() [5]SubscriptionState {
-	return [5]SubscriptionState{SubscriptionStateDeleted, SubscriptionStateRegistered, SubscriptionStateSuspended, SubscriptionStateUnregistered, SubscriptionStateWarned}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return []SubscriptionState{SubscriptionStateDeleted, SubscriptionStateRegistered, SubscriptionStateSuspended, SubscriptionStateUnregistered, SubscriptionStateWarned}
 }
 
 // TierType enumerates the values for tier type.
@@ -209,8 +209,8 @@ const (
 )
 
 // PossibleTierTypeValues returns an array of possible values for the TierType const type.
-func PossibleTierTypeValues() [7]TierType {
-	return [7]TierType{Commitment100TB, Commitment10TB, Commitment1PB, Commitment1TB, Commitment500TB, Commitment5PB, Consumption}
+func PossibleTierTypeValues() []TierType {
+	return []TierType{Commitment100TB, Commitment10TB, Commitment1PB, Commitment1TB, Commitment500TB, Commitment5PB, Consumption}
 }
 
 // TrustedIDProviderState enumerates the values for trusted id provider state.
@@ -224,8 +224,8 @@ const (
 )
 
 // PossibleTrustedIDProviderStateValues returns an array of possible values for the TrustedIDProviderState const type.
-func PossibleTrustedIDProviderStateValues() [2]TrustedIDProviderState {
-	return [2]TrustedIDProviderState{TrustedIDProviderStateDisabled, TrustedIDProviderStateEnabled}
+func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
+	return []TrustedIDProviderState{TrustedIDProviderStateDisabled, TrustedIDProviderStateEnabled}
 }
 
 // AccountsCreateFutureType an abstraction for monitoring and retrieving the results of a long-running operation.

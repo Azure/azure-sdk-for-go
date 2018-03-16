@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleCompileModeValues returns an array of possible values for the CompileMode const type.
-func PossibleCompileModeValues() [3]CompileMode {
-	return [3]CompileMode{Full, Semantic, SingleBox}
+func PossibleCompileModeValues() []CompileMode {
+	return []CompileMode{Full, Semantic, SingleBox}
 }
 
 // ResourceType enumerates the values for resource type.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() [2]ResourceType {
-	return [2]ResourceType{StatisticsResource, VertexResource}
+func PossibleResourceTypeValues() []ResourceType {
+	return []ResourceType{StatisticsResource, VertexResource}
 }
 
 // Result enumerates the values for result.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleResultValues returns an array of possible values for the Result const type.
-func PossibleResultValues() [4]Result {
-	return [4]Result{Cancelled, Failed, None, Succeeded}
+func PossibleResultValues() []Result {
+	return []Result{Cancelled, Failed, None, Succeeded}
 }
 
 // SeverityTypes enumerates the values for severity types.
@@ -88,8 +88,8 @@ const (
 )
 
 // PossibleSeverityTypesValues returns an array of possible values for the SeverityTypes const type.
-func PossibleSeverityTypesValues() [2]SeverityTypes {
-	return [2]SeverityTypes{Error, Warning}
+func PossibleSeverityTypesValues() []SeverityTypes {
+	return []SeverityTypes{Error, Warning}
 }
 
 // State enumerates the values for state.
@@ -119,8 +119,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [10]State {
-	return [10]State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
+func PossibleStateValues() []State {
+	return []State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
 }
 
 // Type enumerates the values for type.
@@ -136,8 +136,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [3]Type {
-	return [3]Type{TypeHive, TypeJobProperties, TypeUSQL}
+func PossibleTypeValues() []Type {
+	return []Type{TypeHive, TypeJobProperties, TypeUSQL}
 }
 
 // TypeEnum enumerates the values for type enum.
@@ -151,8 +151,8 @@ const (
 )
 
 // PossibleTypeEnumValues returns an array of possible values for the TypeEnum const type.
-func PossibleTypeEnumValues() [2]TypeEnum {
-	return [2]TypeEnum{Hive, USQL}
+func PossibleTypeEnumValues() []TypeEnum {
+	return []TypeEnum{Hive, USQL}
 }
 
 // DataPath a Data Lake Analytics U-SQL job data path item.

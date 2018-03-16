@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() [2]AuthenticationType {
-	return [2]AuthenticationType{ADPassword, SQL}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{ADPassword, SQL}
 }
 
 // BackupLongTermRetentionPolicyState enumerates the values for backup long term retention policy state.
@@ -53,8 +53,8 @@ const (
 )
 
 // PossibleBackupLongTermRetentionPolicyStateValues returns an array of possible values for the BackupLongTermRetentionPolicyState const type.
-func PossibleBackupLongTermRetentionPolicyStateValues() [2]BackupLongTermRetentionPolicyState {
-	return [2]BackupLongTermRetentionPolicyState{Disabled, Enabled}
+func PossibleBackupLongTermRetentionPolicyStateValues() []BackupLongTermRetentionPolicyState {
+	return []BackupLongTermRetentionPolicyState{Disabled, Enabled}
 }
 
 // BlobAuditingPolicyState enumerates the values for blob auditing policy state.
@@ -68,8 +68,8 @@ const (
 )
 
 // PossibleBlobAuditingPolicyStateValues returns an array of possible values for the BlobAuditingPolicyState const type.
-func PossibleBlobAuditingPolicyStateValues() [2]BlobAuditingPolicyState {
-	return [2]BlobAuditingPolicyState{BlobAuditingPolicyStateDisabled, BlobAuditingPolicyStateEnabled}
+func PossibleBlobAuditingPolicyStateValues() []BlobAuditingPolicyState {
+	return []BlobAuditingPolicyState{BlobAuditingPolicyStateDisabled, BlobAuditingPolicyStateEnabled}
 }
 
 // CapabilityStatus enumerates the values for capability status.
@@ -87,8 +87,8 @@ const (
 )
 
 // PossibleCapabilityStatusValues returns an array of possible values for the CapabilityStatus const type.
-func PossibleCapabilityStatusValues() [4]CapabilityStatus {
-	return [4]CapabilityStatus{CapabilityStatusAvailable, CapabilityStatusDefault, CapabilityStatusDisabled, CapabilityStatusVisible}
+func PossibleCapabilityStatusValues() []CapabilityStatus {
+	return []CapabilityStatus{CapabilityStatusAvailable, CapabilityStatusDefault, CapabilityStatusDisabled, CapabilityStatusVisible}
 }
 
 // CheckNameAvailabilityReason enumerates the values for check name availability reason.
@@ -102,8 +102,8 @@ const (
 )
 
 // PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() [2]CheckNameAvailabilityReason {
-	return [2]CheckNameAvailabilityReason{AlreadyExists, Invalid}
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
 }
 
 // CreateMode enumerates the values for create mode.
@@ -129,8 +129,8 @@ const (
 )
 
 // PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() [8]CreateMode {
-	return [8]CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
 }
 
 // DatabaseEdition enumerates the values for database edition.
@@ -162,8 +162,8 @@ const (
 )
 
 // PossibleDatabaseEditionValues returns an array of possible values for the DatabaseEdition const type.
-func PossibleDatabaseEditionValues() [11]DatabaseEdition {
-	return [11]DatabaseEdition{Basic, Business, DataWarehouse, Free, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
+func PossibleDatabaseEditionValues() []DatabaseEdition {
+	return []DatabaseEdition{Basic, Business, DataWarehouse, Free, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
 }
 
 // DataMaskingFunction enumerates the values for data masking function.
@@ -185,8 +185,8 @@ const (
 )
 
 // PossibleDataMaskingFunctionValues returns an array of possible values for the DataMaskingFunction const type.
-func PossibleDataMaskingFunctionValues() [6]DataMaskingFunction {
-	return [6]DataMaskingFunction{DataMaskingFunctionCCN, DataMaskingFunctionDefault, DataMaskingFunctionEmail, DataMaskingFunctionNumber, DataMaskingFunctionSSN, DataMaskingFunctionText}
+func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
+	return []DataMaskingFunction{DataMaskingFunctionCCN, DataMaskingFunctionDefault, DataMaskingFunctionEmail, DataMaskingFunctionNumber, DataMaskingFunctionSSN, DataMaskingFunctionText}
 }
 
 // DataMaskingRuleState enumerates the values for data masking rule state.
@@ -200,8 +200,8 @@ const (
 )
 
 // PossibleDataMaskingRuleStateValues returns an array of possible values for the DataMaskingRuleState const type.
-func PossibleDataMaskingRuleStateValues() [2]DataMaskingRuleState {
-	return [2]DataMaskingRuleState{DataMaskingRuleStateDisabled, DataMaskingRuleStateEnabled}
+func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
+	return []DataMaskingRuleState{DataMaskingRuleStateDisabled, DataMaskingRuleStateEnabled}
 }
 
 // DataMaskingState enumerates the values for data masking state.
@@ -215,8 +215,8 @@ const (
 )
 
 // PossibleDataMaskingStateValues returns an array of possible values for the DataMaskingState const type.
-func PossibleDataMaskingStateValues() [2]DataMaskingState {
-	return [2]DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
+func PossibleDataMaskingStateValues() []DataMaskingState {
+	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
 }
 
 // ElasticPoolEdition enumerates the values for elastic pool edition.
@@ -232,8 +232,8 @@ const (
 )
 
 // PossibleElasticPoolEditionValues returns an array of possible values for the ElasticPoolEdition const type.
-func PossibleElasticPoolEditionValues() [3]ElasticPoolEdition {
-	return [3]ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
+func PossibleElasticPoolEditionValues() []ElasticPoolEdition {
+	return []ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
 }
 
 // ElasticPoolState enumerates the values for elastic pool state.
@@ -249,8 +249,8 @@ const (
 )
 
 // PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
-func PossibleElasticPoolStateValues() [3]ElasticPoolState {
-	return [3]ElasticPoolState{ElasticPoolStateCreating, ElasticPoolStateDisabled, ElasticPoolStateReady}
+func PossibleElasticPoolStateValues() []ElasticPoolState {
+	return []ElasticPoolState{ElasticPoolStateCreating, ElasticPoolStateDisabled, ElasticPoolStateReady}
 }
 
 // FailoverGroupReplicationRole enumerates the values for failover group replication role.
@@ -264,8 +264,8 @@ const (
 )
 
 // PossibleFailoverGroupReplicationRoleValues returns an array of possible values for the FailoverGroupReplicationRole const type.
-func PossibleFailoverGroupReplicationRoleValues() [2]FailoverGroupReplicationRole {
-	return [2]FailoverGroupReplicationRole{Primary, Secondary}
+func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole {
+	return []FailoverGroupReplicationRole{Primary, Secondary}
 }
 
 // GeoBackupPolicyState enumerates the values for geo backup policy state.
@@ -279,8 +279,8 @@ const (
 )
 
 // PossibleGeoBackupPolicyStateValues returns an array of possible values for the GeoBackupPolicyState const type.
-func PossibleGeoBackupPolicyStateValues() [2]GeoBackupPolicyState {
-	return [2]GeoBackupPolicyState{GeoBackupPolicyStateDisabled, GeoBackupPolicyStateEnabled}
+func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
+	return []GeoBackupPolicyState{GeoBackupPolicyStateDisabled, GeoBackupPolicyStateEnabled}
 }
 
 // IdentityType enumerates the values for identity type.
@@ -292,8 +292,8 @@ const (
 )
 
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() [1]IdentityType {
-	return [1]IdentityType{SystemAssigned}
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{SystemAssigned}
 }
 
 // MaxSizeUnits enumerates the values for max size units.
@@ -311,8 +311,8 @@ const (
 )
 
 // PossibleMaxSizeUnitsValues returns an array of possible values for the MaxSizeUnits const type.
-func PossibleMaxSizeUnitsValues() [4]MaxSizeUnits {
-	return [4]MaxSizeUnits{Gigabytes, Megabytes, Petabytes, Terabytes}
+func PossibleMaxSizeUnitsValues() []MaxSizeUnits {
+	return []MaxSizeUnits{Gigabytes, Megabytes, Petabytes, Terabytes}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -326,8 +326,8 @@ const (
 )
 
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() [2]OperationOrigin {
-	return [2]OperationOrigin{OperationOriginSystem, OperationOriginUser}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return []OperationOrigin{OperationOriginSystem, OperationOriginUser}
 }
 
 // PerformanceLevelUnit enumerates the values for performance level unit.
@@ -339,8 +339,8 @@ const (
 )
 
 // PossiblePerformanceLevelUnitValues returns an array of possible values for the PerformanceLevelUnit const type.
-func PossiblePerformanceLevelUnitValues() [1]PerformanceLevelUnit {
-	return [1]PerformanceLevelUnit{DTU}
+func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
+	return []PerformanceLevelUnit{DTU}
 }
 
 // PrimaryAggregationType enumerates the values for primary aggregation type.
@@ -362,8 +362,8 @@ const (
 )
 
 // PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
-func PossiblePrimaryAggregationTypeValues() [6]PrimaryAggregationType {
-	return [6]PrimaryAggregationType{Average, Count, Maximum, Minimum, None, Total}
+func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
+	return []PrimaryAggregationType{Average, Count, Maximum, Minimum, None, Total}
 }
 
 // ReadOnlyEndpointFailoverPolicy enumerates the values for read only endpoint failover policy.
@@ -377,8 +377,8 @@ const (
 )
 
 // PossibleReadOnlyEndpointFailoverPolicyValues returns an array of possible values for the ReadOnlyEndpointFailoverPolicy const type.
-func PossibleReadOnlyEndpointFailoverPolicyValues() [2]ReadOnlyEndpointFailoverPolicy {
-	return [2]ReadOnlyEndpointFailoverPolicy{ReadOnlyEndpointFailoverPolicyDisabled, ReadOnlyEndpointFailoverPolicyEnabled}
+func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
+	return []ReadOnlyEndpointFailoverPolicy{ReadOnlyEndpointFailoverPolicyDisabled, ReadOnlyEndpointFailoverPolicyEnabled}
 }
 
 // ReadScale enumerates the values for read scale.
@@ -392,8 +392,8 @@ const (
 )
 
 // PossibleReadScaleValues returns an array of possible values for the ReadScale const type.
-func PossibleReadScaleValues() [2]ReadScale {
-	return [2]ReadScale{ReadScaleDisabled, ReadScaleEnabled}
+func PossibleReadScaleValues() []ReadScale {
+	return []ReadScale{ReadScaleDisabled, ReadScaleEnabled}
 }
 
 // ReadWriteEndpointFailoverPolicy enumerates the values for read write endpoint failover policy.
@@ -407,8 +407,8 @@ const (
 )
 
 // PossibleReadWriteEndpointFailoverPolicyValues returns an array of possible values for the ReadWriteEndpointFailoverPolicy const type.
-func PossibleReadWriteEndpointFailoverPolicyValues() [2]ReadWriteEndpointFailoverPolicy {
-	return [2]ReadWriteEndpointFailoverPolicy{Automatic, Manual}
+func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
+	return []ReadWriteEndpointFailoverPolicy{Automatic, Manual}
 }
 
 // RecommendedIndexAction enumerates the values for recommended index action.
@@ -424,8 +424,8 @@ const (
 )
 
 // PossibleRecommendedIndexActionValues returns an array of possible values for the RecommendedIndexAction const type.
-func PossibleRecommendedIndexActionValues() [3]RecommendedIndexAction {
-	return [3]RecommendedIndexAction{Create, Drop, Rebuild}
+func PossibleRecommendedIndexActionValues() []RecommendedIndexAction {
+	return []RecommendedIndexAction{Create, Drop, Rebuild}
 }
 
 // RecommendedIndexState enumerates the values for recommended index state.
@@ -457,8 +457,8 @@ const (
 )
 
 // PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
-func PossibleRecommendedIndexStateValues() [11]RecommendedIndexState {
-	return [11]RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
+func PossibleRecommendedIndexStateValues() []RecommendedIndexState {
+	return []RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
 }
 
 // RecommendedIndexType enumerates the values for recommended index type.
@@ -476,8 +476,8 @@ const (
 )
 
 // PossibleRecommendedIndexTypeValues returns an array of possible values for the RecommendedIndexType const type.
-func PossibleRecommendedIndexTypeValues() [4]RecommendedIndexType {
-	return [4]RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
+func PossibleRecommendedIndexTypeValues() []RecommendedIndexType {
+	return []RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
 }
 
 // ReplicationRole enumerates the values for replication role.
@@ -497,8 +497,8 @@ const (
 )
 
 // PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
-func PossibleReplicationRoleValues() [5]ReplicationRole {
-	return [5]ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return []ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
 }
 
 // ReplicationState enumerates the values for replication state.
@@ -516,8 +516,8 @@ const (
 )
 
 // PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
-func PossibleReplicationStateValues() [4]ReplicationState {
-	return [4]ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
+func PossibleReplicationStateValues() []ReplicationState {
+	return []ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
 }
 
 // RestorePointType enumerates the values for restore point type.
@@ -531,8 +531,8 @@ const (
 )
 
 // PossibleRestorePointTypeValues returns an array of possible values for the RestorePointType const type.
-func PossibleRestorePointTypeValues() [2]RestorePointType {
-	return [2]RestorePointType{CONTINUOUS, DISCRETE}
+func PossibleRestorePointTypeValues() []RestorePointType {
+	return []RestorePointType{CONTINUOUS, DISCRETE}
 }
 
 // SampleName enumerates the values for sample name.
@@ -544,8 +544,8 @@ const (
 )
 
 // PossibleSampleNameValues returns an array of possible values for the SampleName const type.
-func PossibleSampleNameValues() [1]SampleName {
-	return [1]SampleName{AdventureWorksLT}
+func PossibleSampleNameValues() []SampleName {
+	return []SampleName{AdventureWorksLT}
 }
 
 // SecurityAlertPolicyEmailAccountAdmins enumerates the values for security alert policy email account admins.
@@ -559,8 +559,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyEmailAccountAdminsValues returns an array of possible values for the SecurityAlertPolicyEmailAccountAdmins const type.
-func PossibleSecurityAlertPolicyEmailAccountAdminsValues() [2]SecurityAlertPolicyEmailAccountAdmins {
-	return [2]SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
+func PossibleSecurityAlertPolicyEmailAccountAdminsValues() []SecurityAlertPolicyEmailAccountAdmins {
+	return []SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
 }
 
 // SecurityAlertPolicyState enumerates the values for security alert policy state.
@@ -576,8 +576,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
-func PossibleSecurityAlertPolicyStateValues() [3]SecurityAlertPolicyState {
-	return [3]SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
+	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
 }
 
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
@@ -591,8 +591,8 @@ const (
 )
 
 // PossibleSecurityAlertPolicyUseServerDefaultValues returns an array of possible values for the SecurityAlertPolicyUseServerDefault const type.
-func PossibleSecurityAlertPolicyUseServerDefaultValues() [2]SecurityAlertPolicyUseServerDefault {
-	return [2]SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
+func PossibleSecurityAlertPolicyUseServerDefaultValues() []SecurityAlertPolicyUseServerDefault {
+	return []SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
 }
 
 // ServerConnectionType enumerates the values for server connection type.
@@ -608,8 +608,8 @@ const (
 )
 
 // PossibleServerConnectionTypeValues returns an array of possible values for the ServerConnectionType const type.
-func PossibleServerConnectionTypeValues() [3]ServerConnectionType {
-	return [3]ServerConnectionType{ServerConnectionTypeDefault, ServerConnectionTypeProxy, ServerConnectionTypeRedirect}
+func PossibleServerConnectionTypeValues() []ServerConnectionType {
+	return []ServerConnectionType{ServerConnectionTypeDefault, ServerConnectionTypeProxy, ServerConnectionTypeRedirect}
 }
 
 // ServerKeyType enumerates the values for server key type.
@@ -623,8 +623,8 @@ const (
 )
 
 // PossibleServerKeyTypeValues returns an array of possible values for the ServerKeyType const type.
-func PossibleServerKeyTypeValues() [2]ServerKeyType {
-	return [2]ServerKeyType{AzureKeyVault, ServiceManaged}
+func PossibleServerKeyTypeValues() []ServerKeyType {
+	return []ServerKeyType{AzureKeyVault, ServiceManaged}
 }
 
 // ServiceObjectiveName enumerates the values for service objective name.
@@ -764,8 +764,8 @@ const (
 )
 
 // PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
-func PossibleServiceObjectiveNameValues() [65]ServiceObjectiveName {
-	return [65]ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
+func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
+	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
 }
 
 // StorageKeyType enumerates the values for storage key type.
@@ -779,8 +779,8 @@ const (
 )
 
 // PossibleStorageKeyTypeValues returns an array of possible values for the StorageKeyType const type.
-func PossibleStorageKeyTypeValues() [2]StorageKeyType {
-	return [2]StorageKeyType{SharedAccessKey, StorageAccessKey}
+func PossibleStorageKeyTypeValues() []StorageKeyType {
+	return []StorageKeyType{SharedAccessKey, StorageAccessKey}
 }
 
 // SyncAgentState enumerates the values for sync agent state.
@@ -796,8 +796,8 @@ const (
 )
 
 // PossibleSyncAgentStateValues returns an array of possible values for the SyncAgentState const type.
-func PossibleSyncAgentStateValues() [3]SyncAgentState {
-	return [3]SyncAgentState{NeverConnected, Offline, Online}
+func PossibleSyncAgentStateValues() []SyncAgentState {
+	return []SyncAgentState{NeverConnected, Offline, Online}
 }
 
 // SyncConflictResolutionPolicy enumerates the values for sync conflict resolution policy.
@@ -811,8 +811,8 @@ const (
 )
 
 // PossibleSyncConflictResolutionPolicyValues returns an array of possible values for the SyncConflictResolutionPolicy const type.
-func PossibleSyncConflictResolutionPolicyValues() [2]SyncConflictResolutionPolicy {
-	return [2]SyncConflictResolutionPolicy{HubWin, MemberWin}
+func PossibleSyncConflictResolutionPolicyValues() []SyncConflictResolutionPolicy {
+	return []SyncConflictResolutionPolicy{HubWin, MemberWin}
 }
 
 // SyncDirection enumerates the values for sync direction.
@@ -828,8 +828,8 @@ const (
 )
 
 // PossibleSyncDirectionValues returns an array of possible values for the SyncDirection const type.
-func PossibleSyncDirectionValues() [3]SyncDirection {
-	return [3]SyncDirection{Bidirectional, OneWayHubToMember, OneWayMemberToHub}
+func PossibleSyncDirectionValues() []SyncDirection {
+	return []SyncDirection{Bidirectional, OneWayHubToMember, OneWayMemberToHub}
 }
 
 // SyncGroupLogType enumerates the values for sync group log type.
@@ -847,8 +847,8 @@ const (
 )
 
 // PossibleSyncGroupLogTypeValues returns an array of possible values for the SyncGroupLogType const type.
-func PossibleSyncGroupLogTypeValues() [4]SyncGroupLogType {
-	return [4]SyncGroupLogType{SyncGroupLogTypeAll, SyncGroupLogTypeError, SyncGroupLogTypeSuccess, SyncGroupLogTypeWarning}
+func PossibleSyncGroupLogTypeValues() []SyncGroupLogType {
+	return []SyncGroupLogType{SyncGroupLogTypeAll, SyncGroupLogTypeError, SyncGroupLogTypeSuccess, SyncGroupLogTypeWarning}
 }
 
 // SyncGroupState enumerates the values for sync group state.
@@ -868,8 +868,8 @@ const (
 )
 
 // PossibleSyncGroupStateValues returns an array of possible values for the SyncGroupState const type.
-func PossibleSyncGroupStateValues() [5]SyncGroupState {
-	return [5]SyncGroupState{Error, Good, NotReady, Progressing, Warning}
+func PossibleSyncGroupStateValues() []SyncGroupState {
+	return []SyncGroupState{Error, Good, NotReady, Progressing, Warning}
 }
 
 // SyncMemberDbType enumerates the values for sync member db type.
@@ -883,8 +883,8 @@ const (
 )
 
 // PossibleSyncMemberDbTypeValues returns an array of possible values for the SyncMemberDbType const type.
-func PossibleSyncMemberDbTypeValues() [2]SyncMemberDbType {
-	return [2]SyncMemberDbType{AzureSQLDatabase, SQLServerDatabase}
+func PossibleSyncMemberDbTypeValues() []SyncMemberDbType {
+	return []SyncMemberDbType{AzureSQLDatabase, SQLServerDatabase}
 }
 
 // SyncMemberState enumerates the values for sync member state.
@@ -930,8 +930,8 @@ const (
 )
 
 // PossibleSyncMemberStateValues returns an array of possible values for the SyncMemberState const type.
-func PossibleSyncMemberStateValues() [18]SyncMemberState {
-	return [18]SyncMemberState{DeProvisioned, DeProvisionFailed, DeProvisioning, DisabledBackupRestore, DisabledTombstoneCleanup, Provisioned, ProvisionFailed, Provisioning, ReprovisionFailed, Reprovisioning, SyncCancelled, SyncCancelling, SyncFailed, SyncInProgress, SyncSucceeded, SyncSucceededWithWarnings, UnProvisioned, UnReprovisioned}
+func PossibleSyncMemberStateValues() []SyncMemberState {
+	return []SyncMemberState{DeProvisioned, DeProvisionFailed, DeProvisioning, DisabledBackupRestore, DisabledTombstoneCleanup, Provisioned, ProvisionFailed, Provisioning, ReprovisionFailed, Reprovisioning, SyncCancelled, SyncCancelling, SyncFailed, SyncInProgress, SyncSucceeded, SyncSucceededWithWarnings, UnProvisioned, UnReprovisioned}
 }
 
 // TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
@@ -946,8 +946,8 @@ const (
 )
 
 // PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
-func PossibleTransparentDataEncryptionActivityStatusValues() [2]TransparentDataEncryptionActivityStatus {
-	return [2]TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
+func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEncryptionActivityStatus {
+	return []TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
 }
 
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
@@ -961,8 +961,8 @@ const (
 )
 
 // PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
-func PossibleTransparentDataEncryptionStatusValues() [2]TransparentDataEncryptionStatus {
-	return [2]TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
+func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
+	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
 }
 
 // UnitDefinitionType enumerates the values for unit definition type.
@@ -984,8 +984,8 @@ const (
 )
 
 // PossibleUnitDefinitionTypeValues returns an array of possible values for the UnitDefinitionType const type.
-func PossibleUnitDefinitionTypeValues() [6]UnitDefinitionType {
-	return [6]UnitDefinitionType{UnitDefinitionTypeBytes, UnitDefinitionTypeBytesPerSecond, UnitDefinitionTypeCount, UnitDefinitionTypeCountPerSecond, UnitDefinitionTypePercent, UnitDefinitionTypeSeconds}
+func PossibleUnitDefinitionTypeValues() []UnitDefinitionType {
+	return []UnitDefinitionType{UnitDefinitionTypeBytes, UnitDefinitionTypeBytesPerSecond, UnitDefinitionTypeCount, UnitDefinitionTypeCountPerSecond, UnitDefinitionTypePercent, UnitDefinitionTypeSeconds}
 }
 
 // UnitType enumerates the values for unit type.
@@ -1007,8 +1007,8 @@ const (
 )
 
 // PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() [6]UnitType {
-	return [6]UnitType{UnitTypeBytes, UnitTypeBytesPerSecond, UnitTypeCount, UnitTypeCountPerSecond, UnitTypePercent, UnitTypeSeconds}
+func PossibleUnitTypeValues() []UnitType {
+	return []UnitType{UnitTypeBytes, UnitTypeBytesPerSecond, UnitTypeCount, UnitTypeCountPerSecond, UnitTypePercent, UnitTypeSeconds}
 }
 
 // VirtualNetworkRuleState enumerates the values for virtual network rule state.
@@ -1028,8 +1028,8 @@ const (
 )
 
 // PossibleVirtualNetworkRuleStateValues returns an array of possible values for the VirtualNetworkRuleState const type.
-func PossibleVirtualNetworkRuleStateValues() [5]VirtualNetworkRuleState {
-	return [5]VirtualNetworkRuleState{Deleting, Initializing, InProgress, Ready, Unknown}
+func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
+	return []VirtualNetworkRuleState{Deleting, Initializing, InProgress, Ready, Unknown}
 }
 
 // BackupLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of

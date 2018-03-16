@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleConnectionModeValues returns an array of possible values for the ConnectionMode const type.
-func PossibleConnectionModeValues() [2]ConnectionMode {
-	return [2]ConnectionMode{All, ReadOnly}
+func PossibleConnectionModeValues() []ConnectionMode {
+	return []ConnectionMode{All, ReadOnly}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [12]ProvisioningState {
-	return [12]ProvisioningState{Deleting, Failed, Paused, Pausing, Preparing, Provisioning, Resuming, Scaling, Succeeded, Suspended, Suspending, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Deleting, Failed, Paused, Pausing, Preparing, Provisioning, Resuming, Scaling, Succeeded, Suspended, Suspending, Updating}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -88,8 +88,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [3]SkuTier {
-	return [3]SkuTier{Basic, Development, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Basic, Development, Standard}
 }
 
 // State enumerates the values for state.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [12]State {
-	return [12]State{StateDeleting, StateFailed, StatePaused, StatePausing, StatePreparing, StateProvisioning, StateResuming, StateScaling, StateSucceeded, StateSuspended, StateSuspending, StateUpdating}
+func PossibleStateValues() []State {
+	return []State{StateDeleting, StateFailed, StatePaused, StatePausing, StatePreparing, StateProvisioning, StateResuming, StateScaling, StateSucceeded, StateSuspended, StateSuspending, StateUpdating}
 }
 
 // Status enumerates the values for status.
@@ -136,8 +136,8 @@ const (
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() [1]Status {
-	return [1]Status{Live}
+func PossibleStatusValues() []Status {
+	return []Status{Live}
 }
 
 // CheckServerNameAvailabilityParameters details of server name request body.

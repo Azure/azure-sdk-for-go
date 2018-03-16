@@ -51,7 +51,7 @@ const (
 	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
 )
 
-func PossibleEndpointTypeValues() [3]EndpointType {
+func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
 
@@ -66,7 +66,7 @@ const (
 	Updating  EventSubscriptionProvisioningState = original.Updating
 )
 
-func PossibleEventSubscriptionProvisioningStateValues() [6]EventSubscriptionProvisioningState {
+func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
 }
 
@@ -77,7 +77,7 @@ const (
 	RegionalResource ResourceRegionType = original.RegionalResource
 )
 
-func PossibleResourceRegionTypeValues() [2]ResourceRegionType {
+func PossibleResourceRegionTypeValues() []ResourceRegionType {
 	return original.PossibleResourceRegionTypeValues()
 }
 
@@ -92,7 +92,7 @@ const (
 	TopicProvisioningStateUpdating  TopicProvisioningState = original.TopicProvisioningStateUpdating
 )
 
-func PossibleTopicProvisioningStateValues() [6]TopicProvisioningState {
+func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 	return original.PossibleTopicProvisioningStateValues()
 }
 
@@ -107,7 +107,7 @@ const (
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
-func PossibleTopicTypeProvisioningStateValues() [6]TopicTypeProvisioningState {
+func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return original.PossibleTopicTypeProvisioningStateValues()
 }
 

@@ -204,7 +204,7 @@ const (
 	Unavailable AccountState = original.Unavailable
 )
 
-func PossibleAccountStateValues() [3]AccountState {
+func PossibleAccountStateValues() []AccountState {
 	return original.PossibleAccountStateValues()
 }
 
@@ -215,7 +215,7 @@ const (
 	Secondary AgentRegistrationKeyName = original.Secondary
 )
 
-func PossibleAgentRegistrationKeyNameValues() [2]AgentRegistrationKeyName {
+func PossibleAgentRegistrationKeyNameValues() []AgentRegistrationKeyName {
 	return original.PossibleAgentRegistrationKeyNameValues()
 }
 
@@ -226,7 +226,7 @@ const (
 	URI             ContentSourceType = original.URI
 )
 
-func PossibleContentSourceTypeValues() [2]ContentSourceType {
+func PossibleContentSourceTypeValues() []ContentSourceType {
 	return original.PossibleContentSourceTypeValues()
 }
 
@@ -236,7 +236,7 @@ const (
 	Succeeded DscConfigurationProvisioningState = original.Succeeded
 )
 
-func PossibleDscConfigurationProvisioningStateValues() [1]DscConfigurationProvisioningState {
+func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisioningState {
 	return original.PossibleDscConfigurationProvisioningStateValues()
 }
 
@@ -248,7 +248,7 @@ const (
 	DscConfigurationStatePublished DscConfigurationState = original.DscConfigurationStatePublished
 )
 
-func PossibleDscConfigurationStateValues() [3]DscConfigurationState {
+func PossibleDscConfigurationStateValues() []DscConfigurationState {
 	return original.PossibleDscConfigurationStateValues()
 }
 
@@ -304,7 +304,7 @@ const (
 	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
-func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 	return original.PossibleHTTPStatusCodeValues()
 }
 
@@ -317,7 +317,7 @@ const (
 	JobProvisioningStateSuspended  JobProvisioningState = original.JobProvisioningStateSuspended
 )
 
-func PossibleJobProvisioningStateValues() [4]JobProvisioningState {
+func PossibleJobProvisioningStateValues() []JobProvisioningState {
 	return original.PossibleJobProvisioningStateValues()
 }
 
@@ -339,7 +339,7 @@ const (
 	JobStatusSuspending   JobStatus = original.JobStatusSuspending
 )
 
-func PossibleJobStatusValues() [13]JobStatus {
+func PossibleJobStatusValues() []JobStatus {
 	return original.PossibleJobStatusValues()
 }
 
@@ -355,7 +355,7 @@ const (
 	Warning  JobStreamType = original.Warning
 )
 
-func PossibleJobStreamTypeValues() [7]JobStreamType {
+func PossibleJobStreamTypeValues() []JobStreamType {
 	return original.PossibleJobStreamTypeValues()
 }
 
@@ -380,7 +380,7 @@ const (
 	ModuleProvisioningStateUpdating                    ModuleProvisioningState = original.ModuleProvisioningStateUpdating
 )
 
-func PossibleModuleProvisioningStateValues() [16]ModuleProvisioningState {
+func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
 	return original.PossibleModuleProvisioningStateValues()
 }
 
@@ -390,7 +390,7 @@ const (
 	RunbookProvisioningStateSucceeded RunbookProvisioningState = original.RunbookProvisioningStateSucceeded
 )
 
-func PossibleRunbookProvisioningStateValues() [1]RunbookProvisioningState {
+func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
 	return original.PossibleRunbookProvisioningStateValues()
 }
 
@@ -402,7 +402,7 @@ const (
 	RunbookStatePublished RunbookState = original.RunbookStatePublished
 )
 
-func PossibleRunbookStateValues() [3]RunbookState {
+func PossibleRunbookStateValues() []RunbookState {
 	return original.PossibleRunbookStateValues()
 }
 
@@ -417,7 +417,7 @@ const (
 	Script                  RunbookTypeEnum = original.Script
 )
 
-func PossibleRunbookTypeEnumValues() [6]RunbookTypeEnum {
+func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
 	return original.PossibleRunbookTypeEnumValues()
 }
 
@@ -433,7 +433,7 @@ const (
 	Wednesday ScheduleDay = original.Wednesday
 )
 
-func PossibleScheduleDayValues() [7]ScheduleDay {
+func PossibleScheduleDayValues() []ScheduleDay {
 	return original.PossibleScheduleDayValues()
 }
 
@@ -447,7 +447,7 @@ const (
 	Week    ScheduleFrequency = original.Week
 )
 
-func PossibleScheduleFrequencyValues() [5]ScheduleFrequency {
+func PossibleScheduleFrequencyValues() []ScheduleFrequency {
 	return original.PossibleScheduleFrequencyValues()
 }
 
@@ -458,7 +458,7 @@ const (
 	Free  SkuNameEnum = original.Free
 )
 
-func PossibleSkuNameEnumValues() [2]SkuNameEnum {
+func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
 }
 

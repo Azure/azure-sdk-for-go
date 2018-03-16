@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAccountKeyTypeValues returns an array of possible values for the AccountKeyType const type.
-func PossibleAccountKeyTypeValues() [2]AccountKeyType {
-	return [2]AccountKeyType{Primary, Secondary}
+func PossibleAccountKeyTypeValues() []AccountKeyType {
+	return []AccountKeyType{Primary, Secondary}
 }
 
 // NameAvailabilityReason enumerates the values for name availability reason.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() [2]NameAvailabilityReason {
-	return [2]NameAvailabilityReason{AlreadyExists, Invalid}
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return []NameAvailabilityReason{AlreadyExists, Invalid}
 }
 
 // PackageState enumerates the values for package state.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossiblePackageStateValues returns an array of possible values for the PackageState const type.
-func PossiblePackageStateValues() [3]PackageState {
-	return [3]PackageState{Active, Pending, Unmapped}
+func PossiblePackageStateValues() []PackageState {
+	return []PackageState{Active, Pending, Unmapped}
 }
 
 // PoolAllocationMode enumerates the values for pool allocation mode.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossiblePoolAllocationModeValues returns an array of possible values for the PoolAllocationMode const type.
-func PossiblePoolAllocationModeValues() [2]PoolAllocationMode {
-	return [2]PoolAllocationMode{BatchService, UserSubscription}
+func PossiblePoolAllocationModeValues() []PoolAllocationMode {
+	return []PoolAllocationMode{BatchService, UserSubscription}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -107,8 +107,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [6]ProvisioningState {
-	return [6]ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
 }
 
 // Account contains information about an Azure Batch account.

@@ -140,7 +140,7 @@ const (
 	Enabled  CostThresholdStatus = original.Enabled
 )
 
-func PossibleCostThresholdStatusValues() [2]CostThresholdStatus {
+func PossibleCostThresholdStatusValues() []CostThresholdStatus {
 	return original.PossibleCostThresholdStatusValues()
 }
 
@@ -152,7 +152,7 @@ const (
 	Unavailable CostType = original.Unavailable
 )
 
-func PossibleCostTypeValues() [3]CostType {
+func PossibleCostTypeValues() []CostType {
 	return original.PossibleCostTypeValues()
 }
 
@@ -164,7 +164,7 @@ const (
 	Windows CustomImageOsType = original.Windows
 )
 
-func PossibleCustomImageOsTypeValues() [3]CustomImageOsType {
+func PossibleCustomImageOsTypeValues() []CustomImageOsType {
 	return original.PossibleCustomImageOsTypeValues()
 }
 
@@ -175,7 +175,7 @@ const (
 	EnableStatusEnabled  EnableStatus = original.EnableStatusEnabled
 )
 
-func PossibleEnableStatusValues() [2]EnableStatus {
+func PossibleEnableStatusValues() []EnableStatus {
 	return original.PossibleEnableStatusValues()
 }
 
@@ -186,7 +186,7 @@ const (
 	FileUploadOptionsUploadFilesAndGenerateSasTokens FileUploadOptions = original.FileUploadOptionsUploadFilesAndGenerateSasTokens
 )
 
-func PossibleFileUploadOptionsValues() [2]FileUploadOptions {
+func PossibleFileUploadOptionsValues() []FileUploadOptions {
 	return original.PossibleFileUploadOptionsValues()
 }
 
@@ -198,7 +198,7 @@ const (
 	HostCachingOptionsReadWrite HostCachingOptions = original.HostCachingOptionsReadWrite
 )
 
-func PossibleHostCachingOptionsValues() [3]HostCachingOptions {
+func PossibleHostCachingOptionsValues() []HostCachingOptions {
 	return original.PossibleHostCachingOptionsValues()
 }
 
@@ -249,7 +249,7 @@ const (
 	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
-func PossibleHTTPStatusCodeValues() [42]HTTPStatusCode {
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
 	return original.PossibleHTTPStatusCodeValues()
 }
 
@@ -261,7 +261,7 @@ const (
 	NonDeprovisioned     LinuxOsState = original.NonDeprovisioned
 )
 
-func PossibleLinuxOsStateValues() [3]LinuxOsState {
+func PossibleLinuxOsStateValues() []LinuxOsState {
 	return original.PossibleLinuxOsStateValues()
 }
 
@@ -272,7 +272,7 @@ const (
 	Cost         NotificationChannelEventType = original.Cost
 )
 
-func PossibleNotificationChannelEventTypeValues() [2]NotificationChannelEventType {
+func PossibleNotificationChannelEventTypeValues() []NotificationChannelEventType {
 	return original.PossibleNotificationChannelEventTypeValues()
 }
 
@@ -283,7 +283,7 @@ const (
 	NotificationStatusEnabled  NotificationStatus = original.NotificationStatusEnabled
 )
 
-func PossibleNotificationStatusValues() [2]NotificationStatus {
+func PossibleNotificationStatusValues() []NotificationStatus {
 	return original.PossibleNotificationStatusValues()
 }
 
@@ -294,7 +294,7 @@ const (
 	MaxValuePolicy      PolicyEvaluatorType = original.MaxValuePolicy
 )
 
-func PossiblePolicyEvaluatorTypeValues() [2]PolicyEvaluatorType {
+func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
 	return original.PossiblePolicyEvaluatorTypeValues()
 }
 
@@ -311,7 +311,7 @@ const (
 	PolicyFactNameUserOwnedLabVMCountInSubnet PolicyFactName = original.PolicyFactNameUserOwnedLabVMCountInSubnet
 )
 
-func PossiblePolicyFactNameValues() [8]PolicyFactName {
+func PossiblePolicyFactNameValues() []PolicyFactName {
 	return original.PossiblePolicyFactNameValues()
 }
 
@@ -322,7 +322,7 @@ const (
 	PolicyStatusEnabled  PolicyStatus = original.PolicyStatusEnabled
 )
 
-func PossiblePolicyStatusValues() [2]PolicyStatus {
+func PossiblePolicyStatusValues() []PolicyStatus {
 	return original.PossiblePolicyStatusValues()
 }
 
@@ -333,7 +333,7 @@ const (
 	PremiumDataDiskEnabled  PremiumDataDisk = original.PremiumDataDiskEnabled
 )
 
-func PossiblePremiumDataDiskValues() [2]PremiumDataDisk {
+func PossiblePremiumDataDiskValues() []PremiumDataDisk {
 	return original.PossiblePremiumDataDiskValues()
 }
 
@@ -344,7 +344,7 @@ const (
 	Custom        ReportingCycleType = original.Custom
 )
 
-func PossibleReportingCycleTypeValues() [2]ReportingCycleType {
+func PossibleReportingCycleTypeValues() []ReportingCycleType {
 	return original.PossibleReportingCycleTypeValues()
 }
 
@@ -355,7 +355,7 @@ const (
 	VsoGit SourceControlType = original.VsoGit
 )
 
-func PossibleSourceControlTypeValues() [2]SourceControlType {
+func PossibleSourceControlTypeValues() []SourceControlType {
 	return original.PossibleSourceControlTypeValues()
 }
 
@@ -366,7 +366,7 @@ const (
 	Standard StorageType = original.Standard
 )
 
-func PossibleStorageTypeValues() [2]StorageType {
+func PossibleStorageTypeValues() []StorageType {
 	return original.PossibleStorageTypeValues()
 }
 
@@ -377,7 +377,7 @@ const (
 	TargetCostStatusEnabled  TargetCostStatus = original.TargetCostStatusEnabled
 )
 
-func PossibleTargetCostStatusValues() [2]TargetCostStatus {
+func PossibleTargetCostStatusValues() []TargetCostStatus {
 	return original.PossibleTargetCostStatusValues()
 }
 
@@ -388,7 +388,7 @@ const (
 	UDP TransportProtocol = original.UDP
 )
 
-func PossibleTransportProtocolValues() [2]TransportProtocol {
+func PossibleTransportProtocolValues() []TransportProtocol {
 	return original.PossibleTransportProtocolValues()
 }
 
@@ -400,7 +400,7 @@ const (
 	Deny    UsagePermissionType = original.Deny
 )
 
-func PossibleUsagePermissionTypeValues() [3]UsagePermissionType {
+func PossibleUsagePermissionTypeValues() []UsagePermissionType {
 	return original.PossibleUsagePermissionTypeValues()
 }
 
@@ -411,7 +411,7 @@ const (
 	FromGalleryImage VirtualMachineCreationSource = original.FromGalleryImage
 )
 
-func PossibleVirtualMachineCreationSourceValues() [2]VirtualMachineCreationSource {
+func PossibleVirtualMachineCreationSourceValues() []VirtualMachineCreationSource {
 	return original.PossibleVirtualMachineCreationSourceValues()
 }
 
@@ -423,7 +423,7 @@ const (
 	SysprepRequested WindowsOsState = original.SysprepRequested
 )
 
-func PossibleWindowsOsStateValues() [3]WindowsOsState {
+func PossibleWindowsOsStateValues() []WindowsOsState {
 	return original.PossibleWindowsOsStateValues()
 }
 

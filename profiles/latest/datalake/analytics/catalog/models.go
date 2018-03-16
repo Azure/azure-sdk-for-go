@@ -50,7 +50,7 @@ const (
 	UserObj  ACLType = original.UserObj
 )
 
-func PossibleACLTypeValues() [5]ACLType {
+func PossibleACLTypeValues() []ACLType {
 	return original.PossibleACLTypeValues()
 }
 
@@ -62,7 +62,7 @@ const (
 	Resource FileType = original.Resource
 )
 
-func PossibleFileTypeValues() [3]FileType {
+func PossibleFileTypeValues() []FileType {
 	return original.PossibleFileTypeValues()
 }
 
@@ -78,7 +78,7 @@ const (
 	Write  PermissionType = original.Write
 )
 
-func PossiblePermissionTypeValues() [7]PermissionType {
+func PossiblePermissionTypeValues() []PermissionType {
 	return original.PossiblePermissionTypeValues()
 }
 

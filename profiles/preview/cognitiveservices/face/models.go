@@ -50,7 +50,7 @@ const (
 	Mask     AccessoryType = original.Mask
 )
 
-func PossibleAccessoryTypeValues() [3]AccessoryType {
+func PossibleAccessoryTypeValues() []AccessoryType {
 	return original.PossibleAccessoryTypeValues()
 }
 
@@ -73,7 +73,7 @@ const (
 	AttributeTypeSmile       AttributeType = original.AttributeTypeSmile
 )
 
-func PossibleAttributeTypeValues() [14]AttributeType {
+func PossibleAttributeTypeValues() []AttributeType {
 	return original.PossibleAttributeTypeValues()
 }
 
@@ -94,7 +94,7 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() [12]AzureRegions {
+func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
 }
 
@@ -106,7 +106,7 @@ const (
 	Medium BlurLevel = original.Medium
 )
 
-func PossibleBlurLevelValues() [3]BlurLevel {
+func PossibleBlurLevelValues() []BlurLevel {
 	return original.PossibleBlurLevelValues()
 }
 
@@ -118,7 +118,7 @@ const (
 	UnderExposure ExposureLevel = original.UnderExposure
 )
 
-func PossibleExposureLevelValues() [3]ExposureLevel {
+func PossibleExposureLevelValues() []ExposureLevel {
 	return original.PossibleExposureLevelValues()
 }
 
@@ -129,7 +129,7 @@ const (
 	MatchPerson FindSimilarMatchMode = original.MatchPerson
 )
 
-func PossibleFindSimilarMatchModeValues() [2]FindSimilarMatchMode {
+func PossibleFindSimilarMatchModeValues() []FindSimilarMatchMode {
 	return original.PossibleFindSimilarMatchModeValues()
 }
 
@@ -141,7 +141,7 @@ const (
 	Male       Gender = original.Male
 )
 
-func PossibleGenderValues() [3]Gender {
+func PossibleGenderValues() []Gender {
 	return original.PossibleGenderValues()
 }
 
@@ -154,7 +154,7 @@ const (
 	SwimmingGoggles GlassesType = original.SwimmingGoggles
 )
 
-func PossibleGlassesTypeValues() [4]GlassesType {
+func PossibleGlassesTypeValues() []GlassesType {
 	return original.PossibleGlassesTypeValues()
 }
 
@@ -171,7 +171,7 @@ const (
 	White   HairColorType = original.White
 )
 
-func PossibleHairColorTypeValues() [8]HairColorType {
+func PossibleHairColorTypeValues() []HairColorType {
 	return original.PossibleHairColorTypeValues()
 }
 
@@ -183,7 +183,7 @@ const (
 	NoiseLevelMedium NoiseLevel = original.NoiseLevelMedium
 )
 
-func PossibleNoiseLevelValues() [3]NoiseLevel {
+func PossibleNoiseLevelValues() []NoiseLevel {
 	return original.PossibleNoiseLevelValues()
 }
 
@@ -196,7 +196,7 @@ const (
 	Succeeded  TrainingStatusType = original.Succeeded
 )
 
-func PossibleTrainingStatusTypeValues() [4]TrainingStatusType {
+func PossibleTrainingStatusTypeValues() []TrainingStatusType {
 	return original.PossibleTrainingStatusTypeValues()
 }
 

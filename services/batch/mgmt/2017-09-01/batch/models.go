@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAccountKeyTypeValues returns an array of possible values for the AccountKeyType const type.
-func PossibleAccountKeyTypeValues() [2]AccountKeyType {
-	return [2]AccountKeyType{Primary, Secondary}
+func PossibleAccountKeyTypeValues() []AccountKeyType {
+	return []AccountKeyType{Primary, Secondary}
 }
 
 // AllocationState enumerates the values for allocation state.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() [3]AllocationState {
-	return [3]AllocationState{Resizing, Steady, Stopping}
+func PossibleAllocationStateValues() []AllocationState {
+	return []AllocationState{Resizing, Steady, Stopping}
 }
 
 // AutoUserScope enumerates the values for auto user scope.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleAutoUserScopeValues returns an array of possible values for the AutoUserScope const type.
-func PossibleAutoUserScopeValues() [2]AutoUserScope {
-	return [2]AutoUserScope{AutoUserScopePool, AutoUserScopeTask}
+func PossibleAutoUserScopeValues() []AutoUserScope {
+	return []AutoUserScope{AutoUserScopePool, AutoUserScopeTask}
 }
 
 // CachingType enumerates the values for caching type.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() [3]CachingType {
-	return [3]CachingType{None, ReadOnly, ReadWrite}
+func PossibleCachingTypeValues() []CachingType {
+	return []CachingType{None, ReadOnly, ReadWrite}
 }
 
 // CertificateFormat enumerates the values for certificate format.
@@ -101,8 +101,8 @@ const (
 )
 
 // PossibleCertificateFormatValues returns an array of possible values for the CertificateFormat const type.
-func PossibleCertificateFormatValues() [2]CertificateFormat {
-	return [2]CertificateFormat{Cer, Pfx}
+func PossibleCertificateFormatValues() []CertificateFormat {
+	return []CertificateFormat{Cer, Pfx}
 }
 
 // CertificateProvisioningState enumerates the values for certificate provisioning state.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleCertificateProvisioningStateValues returns an array of possible values for the CertificateProvisioningState const type.
-func PossibleCertificateProvisioningStateValues() [3]CertificateProvisioningState {
-	return [3]CertificateProvisioningState{Deleting, Failed, Succeeded}
+func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
+	return []CertificateProvisioningState{Deleting, Failed, Succeeded}
 }
 
 // CertificateStoreLocation enumerates the values for certificate store location.
@@ -133,8 +133,8 @@ const (
 )
 
 // PossibleCertificateStoreLocationValues returns an array of possible values for the CertificateStoreLocation const type.
-func PossibleCertificateStoreLocationValues() [2]CertificateStoreLocation {
-	return [2]CertificateStoreLocation{CurrentUser, LocalMachine}
+func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
+	return []CertificateStoreLocation{CurrentUser, LocalMachine}
 }
 
 // CertificateVisibility enumerates the values for certificate visibility.
@@ -150,8 +150,8 @@ const (
 )
 
 // PossibleCertificateVisibilityValues returns an array of possible values for the CertificateVisibility const type.
-func PossibleCertificateVisibilityValues() [3]CertificateVisibility {
-	return [3]CertificateVisibility{CertificateVisibilityRemoteUser, CertificateVisibilityStartTask, CertificateVisibilityTask}
+func PossibleCertificateVisibilityValues() []CertificateVisibility {
+	return []CertificateVisibility{CertificateVisibilityRemoteUser, CertificateVisibilityStartTask, CertificateVisibilityTask}
 }
 
 // ComputeNodeDeallocationOption enumerates the values for compute node deallocation option.
@@ -169,8 +169,8 @@ const (
 )
 
 // PossibleComputeNodeDeallocationOptionValues returns an array of possible values for the ComputeNodeDeallocationOption const type.
-func PossibleComputeNodeDeallocationOptionValues() [4]ComputeNodeDeallocationOption {
-	return [4]ComputeNodeDeallocationOption{Requeue, RetainedData, TaskCompletion, Terminate}
+func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
+	return []ComputeNodeDeallocationOption{Requeue, RetainedData, TaskCompletion, Terminate}
 }
 
 // ComputeNodeFillType enumerates the values for compute node fill type.
@@ -184,8 +184,8 @@ const (
 )
 
 // PossibleComputeNodeFillTypeValues returns an array of possible values for the ComputeNodeFillType const type.
-func PossibleComputeNodeFillTypeValues() [2]ComputeNodeFillType {
-	return [2]ComputeNodeFillType{Pack, Spread}
+func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
+	return []ComputeNodeFillType{Pack, Spread}
 }
 
 // ElevationLevel enumerates the values for elevation level.
@@ -199,8 +199,8 @@ const (
 )
 
 // PossibleElevationLevelValues returns an array of possible values for the ElevationLevel const type.
-func PossibleElevationLevelValues() [2]ElevationLevel {
-	return [2]ElevationLevel{Admin, NonAdmin}
+func PossibleElevationLevelValues() []ElevationLevel {
+	return []ElevationLevel{Admin, NonAdmin}
 }
 
 // InboundEndpointProtocol enumerates the values for inbound endpoint protocol.
@@ -214,8 +214,8 @@ const (
 )
 
 // PossibleInboundEndpointProtocolValues returns an array of possible values for the InboundEndpointProtocol const type.
-func PossibleInboundEndpointProtocolValues() [2]InboundEndpointProtocol {
-	return [2]InboundEndpointProtocol{TCP, UDP}
+func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
+	return []InboundEndpointProtocol{TCP, UDP}
 }
 
 // InterNodeCommunicationState enumerates the values for inter node communication state.
@@ -229,8 +229,8 @@ const (
 )
 
 // PossibleInterNodeCommunicationStateValues returns an array of possible values for the InterNodeCommunicationState const type.
-func PossibleInterNodeCommunicationStateValues() [2]InterNodeCommunicationState {
-	return [2]InterNodeCommunicationState{Disabled, Enabled}
+func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
+	return []InterNodeCommunicationState{Disabled, Enabled}
 }
 
 // NameAvailabilityReason enumerates the values for name availability reason.
@@ -244,8 +244,8 @@ const (
 )
 
 // PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() [2]NameAvailabilityReason {
-	return [2]NameAvailabilityReason{AlreadyExists, Invalid}
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return []NameAvailabilityReason{AlreadyExists, Invalid}
 }
 
 // NetworkSecurityGroupRuleAccess enumerates the values for network security group rule access.
@@ -259,8 +259,8 @@ const (
 )
 
 // PossibleNetworkSecurityGroupRuleAccessValues returns an array of possible values for the NetworkSecurityGroupRuleAccess const type.
-func PossibleNetworkSecurityGroupRuleAccessValues() [2]NetworkSecurityGroupRuleAccess {
-	return [2]NetworkSecurityGroupRuleAccess{Allow, Deny}
+func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
+	return []NetworkSecurityGroupRuleAccess{Allow, Deny}
 }
 
 // PackageState enumerates the values for package state.
@@ -276,8 +276,8 @@ const (
 )
 
 // PossiblePackageStateValues returns an array of possible values for the PackageState const type.
-func PossiblePackageStateValues() [3]PackageState {
-	return [3]PackageState{Active, Pending, Unmapped}
+func PossiblePackageStateValues() []PackageState {
+	return []PackageState{Active, Pending, Unmapped}
 }
 
 // PoolAllocationMode enumerates the values for pool allocation mode.
@@ -291,8 +291,8 @@ const (
 )
 
 // PossiblePoolAllocationModeValues returns an array of possible values for the PoolAllocationMode const type.
-func PossiblePoolAllocationModeValues() [2]PoolAllocationMode {
-	return [2]PoolAllocationMode{BatchService, UserSubscription}
+func PossiblePoolAllocationModeValues() []PoolAllocationMode {
+	return []PoolAllocationMode{BatchService, UserSubscription}
 }
 
 // PoolProvisioningState enumerates the values for pool provisioning state.
@@ -306,8 +306,8 @@ const (
 )
 
 // PossiblePoolProvisioningStateValues returns an array of possible values for the PoolProvisioningState const type.
-func PossiblePoolProvisioningStateValues() [2]PoolProvisioningState {
-	return [2]PoolProvisioningState{PoolProvisioningStateDeleting, PoolProvisioningStateSucceeded}
+func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
+	return []PoolProvisioningState{PoolProvisioningStateDeleting, PoolProvisioningStateSucceeded}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -329,8 +329,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [6]ProvisioningState {
-	return [6]ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
 }
 
 // StorageAccountType enumerates the values for storage account type.
@@ -344,8 +344,8 @@ const (
 )
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() [2]StorageAccountType {
-	return [2]StorageAccountType{PremiumLRS, StandardLRS}
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return []StorageAccountType{PremiumLRS, StandardLRS}
 }
 
 // Account contains information about an Azure Batch account.

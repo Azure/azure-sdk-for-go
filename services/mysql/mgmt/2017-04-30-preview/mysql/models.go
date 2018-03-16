@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() [3]CreateMode {
-	return [3]CreateMode{CreateModeDefault, CreateModePointInTimeRestore, CreateModeServerPropertiesForCreate}
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{CreateModeDefault, CreateModePointInTimeRestore, CreateModeServerPropertiesForCreate}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -55,8 +55,8 @@ const (
 )
 
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() [3]OperationOrigin {
-	return [3]OperationOrigin{NotSpecified, System, User}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return []OperationOrigin{NotSpecified, System, User}
 }
 
 // ServerState enumerates the values for server state.
@@ -72,8 +72,8 @@ const (
 )
 
 // PossibleServerStateValues returns an array of possible values for the ServerState const type.
-func PossibleServerStateValues() [3]ServerState {
-	return [3]ServerState{Disabled, Dropping, Ready}
+func PossibleServerStateValues() []ServerState {
+	return []ServerState{Disabled, Dropping, Ready}
 }
 
 // ServerVersion enumerates the values for server version.
@@ -87,8 +87,8 @@ const (
 )
 
 // PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
-func PossibleServerVersionValues() [2]ServerVersion {
-	return [2]ServerVersion{FiveFullStopSeven, FiveFullStopSix}
+func PossibleServerVersionValues() []ServerVersion {
+	return []ServerVersion{FiveFullStopSeven, FiveFullStopSix}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -102,8 +102,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [2]SkuTier {
-	return [2]SkuTier{Basic, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Basic, Standard}
 }
 
 // SslEnforcementEnum enumerates the values for ssl enforcement enum.
@@ -117,8 +117,8 @@ const (
 )
 
 // PossibleSslEnforcementEnumValues returns an array of possible values for the SslEnforcementEnum const type.
-func PossibleSslEnforcementEnumValues() [2]SslEnforcementEnum {
-	return [2]SslEnforcementEnum{SslEnforcementEnumDisabled, SslEnforcementEnumEnabled}
+func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
+	return []SslEnforcementEnum{SslEnforcementEnumDisabled, SslEnforcementEnumEnabled}
 }
 
 // Configuration represents a Configuration.

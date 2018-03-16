@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleAsyncOperationStateValues returns an array of possible values for the AsyncOperationState const type.
-func PossibleAsyncOperationStateValues() [3]AsyncOperationState {
-	return [3]AsyncOperationState{Failed, InProgress, Succeeded}
+func PossibleAsyncOperationStateValues() []AsyncOperationState {
+	return []AsyncOperationState{Failed, InProgress, Succeeded}
 }
 
 // ClusterProvisioningState enumerates the values for cluster provisioning state.
@@ -59,8 +59,8 @@ const (
 )
 
 // PossibleClusterProvisioningStateValues returns an array of possible values for the ClusterProvisioningState const type.
-func PossibleClusterProvisioningStateValues() [5]ClusterProvisioningState {
-	return [5]ClusterProvisioningState{ClusterProvisioningStateCanceled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateInProgress, ClusterProvisioningStateSucceeded}
+func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
+	return []ClusterProvisioningState{ClusterProvisioningStateCanceled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateInProgress, ClusterProvisioningStateSucceeded}
 }
 
 // DirectoryType enumerates the values for directory type.
@@ -72,8 +72,8 @@ const (
 )
 
 // PossibleDirectoryTypeValues returns an array of possible values for the DirectoryType const type.
-func PossibleDirectoryTypeValues() [1]DirectoryType {
-	return [1]DirectoryType{ActiveDirectory}
+func PossibleDirectoryTypeValues() []DirectoryType {
+	return []DirectoryType{ActiveDirectory}
 }
 
 // EnabledCredential enumerates the values for enabled credential.
@@ -87,8 +87,8 @@ const (
 )
 
 // PossibleEnabledCredentialValues returns an array of possible values for the EnabledCredential const type.
-func PossibleEnabledCredentialValues() [2]EnabledCredential {
-	return [2]EnabledCredential{False, True}
+func PossibleEnabledCredentialValues() []EnabledCredential {
+	return []EnabledCredential{False, True}
 }
 
 // OSType enumerates the values for os type.
@@ -102,8 +102,8 @@ const (
 )
 
 // PossibleOSTypeValues returns an array of possible values for the OSType const type.
-func PossibleOSTypeValues() [2]OSType {
-	return [2]OSType{Linux, Windows}
+func PossibleOSTypeValues() []OSType {
+	return []OSType{Linux, Windows}
 }
 
 // Tier enumerates the values for tier.
@@ -117,8 +117,8 @@ const (
 )
 
 // PossibleTierValues returns an array of possible values for the Tier const type.
-func PossibleTierValues() [2]Tier {
-	return [2]Tier{Premium, Standard}
+func PossibleTierValues() []Tier {
+	return []Tier{Premium, Standard}
 }
 
 // Application the HDInsight cluster application

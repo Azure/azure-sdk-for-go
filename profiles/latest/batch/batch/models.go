@@ -103,7 +103,7 @@ const (
 	Job AccessScope = original.Job
 )
 
-func PossibleAccessScopeValues() [1]AccessScope {
+func PossibleAccessScopeValues() []AccessScope {
 	return original.PossibleAccessScopeValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	Stopping AllocationState = original.Stopping
 )
 
-func PossibleAllocationStateValues() [3]AllocationState {
+func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
 
@@ -126,7 +126,7 @@ const (
 	Task AutoUserScope = original.Task
 )
 
-func PossibleAutoUserScopeValues() [2]AutoUserScope {
+func PossibleAutoUserScopeValues() []AutoUserScope {
 	return original.PossibleAutoUserScopeValues()
 }
 
@@ -138,7 +138,7 @@ const (
 	ReadWrite CachingType = original.ReadWrite
 )
 
-func PossibleCachingTypeValues() [3]CachingType {
+func PossibleCachingTypeValues() []CachingType {
 	return original.PossibleCachingTypeValues()
 }
 
@@ -149,7 +149,7 @@ const (
 	Pfx CertificateFormat = original.Pfx
 )
 
-func PossibleCertificateFormatValues() [2]CertificateFormat {
+func PossibleCertificateFormatValues() []CertificateFormat {
 	return original.PossibleCertificateFormatValues()
 }
 
@@ -161,7 +161,7 @@ const (
 	Deleting     CertificateState = original.Deleting
 )
 
-func PossibleCertificateStateValues() [3]CertificateState {
+func PossibleCertificateStateValues() []CertificateState {
 	return original.PossibleCertificateStateValues()
 }
 
@@ -172,7 +172,7 @@ const (
 	LocalMachine CertificateStoreLocation = original.LocalMachine
 )
 
-func PossibleCertificateStoreLocationValues() [2]CertificateStoreLocation {
+func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 	return original.PossibleCertificateStoreLocationValues()
 }
 
@@ -184,7 +184,7 @@ const (
 	CertificateVisibilityTask       CertificateVisibility = original.CertificateVisibilityTask
 )
 
-func PossibleCertificateVisibilityValues() [3]CertificateVisibility {
+func PossibleCertificateVisibilityValues() []CertificateVisibility {
 	return original.PossibleCertificateVisibilityValues()
 }
 
@@ -197,7 +197,7 @@ const (
 	Terminate      ComputeNodeDeallocationOption = original.Terminate
 )
 
-func PossibleComputeNodeDeallocationOptionValues() [4]ComputeNodeDeallocationOption {
+func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
 	return original.PossibleComputeNodeDeallocationOptionValues()
 }
 
@@ -208,7 +208,7 @@ const (
 	Spread ComputeNodeFillType = original.Spread
 )
 
-func PossibleComputeNodeFillTypeValues() [2]ComputeNodeFillType {
+func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 	return original.PossibleComputeNodeFillTypeValues()
 }
 
@@ -221,7 +221,7 @@ const (
 	ComputeNodeRebootOptionTerminate      ComputeNodeRebootOption = original.ComputeNodeRebootOptionTerminate
 )
 
-func PossibleComputeNodeRebootOptionValues() [4]ComputeNodeRebootOption {
+func PossibleComputeNodeRebootOptionValues() []ComputeNodeRebootOption {
 	return original.PossibleComputeNodeRebootOptionValues()
 }
 
@@ -234,7 +234,7 @@ const (
 	ComputeNodeReimageOptionTerminate      ComputeNodeReimageOption = original.ComputeNodeReimageOptionTerminate
 )
 
-func PossibleComputeNodeReimageOptionValues() [4]ComputeNodeReimageOption {
+func PossibleComputeNodeReimageOptionValues() []ComputeNodeReimageOption {
 	return original.PossibleComputeNodeReimageOptionValues()
 }
 
@@ -256,7 +256,7 @@ const (
 	WaitingForStartTask ComputeNodeState = original.WaitingForStartTask
 )
 
-func PossibleComputeNodeStateValues() [13]ComputeNodeState {
+func PossibleComputeNodeStateValues() []ComputeNodeState {
 	return original.PossibleComputeNodeStateValues()
 }
 
@@ -267,7 +267,7 @@ const (
 	Satisfy DependencyAction = original.Satisfy
 )
 
-func PossibleDependencyActionValues() [2]DependencyAction {
+func PossibleDependencyActionValues() []DependencyAction {
 	return original.PossibleDependencyActionValues()
 }
 
@@ -279,7 +279,7 @@ const (
 	DisableComputeNodeSchedulingOptionTerminate      DisableComputeNodeSchedulingOption = original.DisableComputeNodeSchedulingOptionTerminate
 )
 
-func PossibleDisableComputeNodeSchedulingOptionValues() [3]DisableComputeNodeSchedulingOption {
+func PossibleDisableComputeNodeSchedulingOptionValues() []DisableComputeNodeSchedulingOption {
 	return original.PossibleDisableComputeNodeSchedulingOptionValues()
 }
 
@@ -291,7 +291,7 @@ const (
 	DisableJobOptionWait      DisableJobOption = original.DisableJobOptionWait
 )
 
-func PossibleDisableJobOptionValues() [3]DisableJobOption {
+func PossibleDisableJobOptionValues() []DisableJobOption {
 	return original.PossibleDisableJobOptionValues()
 }
 
@@ -302,7 +302,7 @@ const (
 	NonAdmin ElevationLevel = original.NonAdmin
 )
 
-func PossibleElevationLevelValues() [2]ElevationLevel {
+func PossibleElevationLevelValues() []ElevationLevel {
 	return original.PossibleElevationLevelValues()
 }
 
@@ -313,7 +313,7 @@ const (
 	UserError   ErrorCategory = original.UserError
 )
 
-func PossibleErrorCategoryValues() [2]ErrorCategory {
+func PossibleErrorCategoryValues() []ErrorCategory {
 	return original.PossibleErrorCategoryValues()
 }
 
@@ -324,7 +324,7 @@ const (
 	UDP InboundEndpointProtocol = original.UDP
 )
 
-func PossibleInboundEndpointProtocolValues() [2]InboundEndpointProtocol {
+func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 	return original.PossibleInboundEndpointProtocolValues()
 }
 
@@ -336,7 +336,7 @@ const (
 	JobActionTerminate JobAction = original.JobActionTerminate
 )
 
-func PossibleJobActionValues() [3]JobAction {
+func PossibleJobActionValues() []JobAction {
 	return original.PossibleJobActionValues()
 }
 
@@ -347,7 +347,7 @@ const (
 	JobPreparationTaskStateRunning   JobPreparationTaskState = original.JobPreparationTaskStateRunning
 )
 
-func PossibleJobPreparationTaskStateValues() [2]JobPreparationTaskState {
+func PossibleJobPreparationTaskStateValues() []JobPreparationTaskState {
 	return original.PossibleJobPreparationTaskStateValues()
 }
 
@@ -358,7 +358,7 @@ const (
 	JobReleaseTaskStateRunning   JobReleaseTaskState = original.JobReleaseTaskStateRunning
 )
 
-func PossibleJobReleaseTaskStateValues() [2]JobReleaseTaskState {
+func PossibleJobReleaseTaskStateValues() []JobReleaseTaskState {
 	return original.PossibleJobReleaseTaskStateValues()
 }
 
@@ -372,7 +372,7 @@ const (
 	JobScheduleStateTerminating JobScheduleState = original.JobScheduleStateTerminating
 )
 
-func PossibleJobScheduleStateValues() [5]JobScheduleState {
+func PossibleJobScheduleStateValues() []JobScheduleState {
 	return original.PossibleJobScheduleStateValues()
 }
 
@@ -388,7 +388,7 @@ const (
 	JobStateTerminating JobState = original.JobStateTerminating
 )
 
-func PossibleJobStateValues() [7]JobState {
+func PossibleJobStateValues() []JobState {
 	return original.PossibleJobStateValues()
 }
 
@@ -399,7 +399,7 @@ const (
 	Deny  NetworkSecurityGroupRuleAccess = original.Deny
 )
 
-func PossibleNetworkSecurityGroupRuleAccessValues() [2]NetworkSecurityGroupRuleAccess {
+func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
 	return original.PossibleNetworkSecurityGroupRuleAccessValues()
 }
 
@@ -410,7 +410,7 @@ const (
 	TerminateJob OnAllTasksComplete = original.TerminateJob
 )
 
-func PossibleOnAllTasksCompleteValues() [2]OnAllTasksComplete {
+func PossibleOnAllTasksCompleteValues() []OnAllTasksComplete {
 	return original.PossibleOnAllTasksCompleteValues()
 }
 
@@ -421,7 +421,7 @@ const (
 	OnTaskFailurePerformExitOptionsJobAction OnTaskFailure = original.OnTaskFailurePerformExitOptionsJobAction
 )
 
-func PossibleOnTaskFailureValues() [2]OnTaskFailure {
+func PossibleOnTaskFailureValues() []OnTaskFailure {
 	return original.PossibleOnTaskFailureValues()
 }
 
@@ -432,7 +432,7 @@ const (
 	Windows OSType = original.Windows
 )
 
-func PossibleOSTypeValues() [2]OSType {
+func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
 }
 
@@ -444,7 +444,7 @@ const (
 	OutputFileUploadConditionTaskSuccess    OutputFileUploadCondition = original.OutputFileUploadConditionTaskSuccess
 )
 
-func PossibleOutputFileUploadConditionValues() [3]OutputFileUploadCondition {
+func PossibleOutputFileUploadConditionValues() []OutputFileUploadCondition {
 	return original.PossibleOutputFileUploadConditionValues()
 }
 
@@ -455,7 +455,7 @@ const (
 	PoolLifetimeOptionJobSchedule PoolLifetimeOption = original.PoolLifetimeOptionJobSchedule
 )
 
-func PossiblePoolLifetimeOptionValues() [2]PoolLifetimeOption {
+func PossiblePoolLifetimeOptionValues() []PoolLifetimeOption {
 	return original.PossiblePoolLifetimeOptionValues()
 }
 
@@ -467,7 +467,7 @@ const (
 	PoolStateUpgrading PoolState = original.PoolStateUpgrading
 )
 
-func PossiblePoolStateValues() [3]PoolState {
+func PossiblePoolStateValues() []PoolState {
 	return original.PossiblePoolStateValues()
 }
 
@@ -478,7 +478,7 @@ const (
 	Enabled  SchedulingState = original.Enabled
 )
 
-func PossibleSchedulingStateValues() [2]SchedulingState {
+func PossibleSchedulingStateValues() []SchedulingState {
 	return original.PossibleSchedulingStateValues()
 }
 
@@ -489,7 +489,7 @@ const (
 	StartTaskStateRunning   StartTaskState = original.StartTaskStateRunning
 )
 
-func PossibleStartTaskStateValues() [2]StartTaskState {
+func PossibleStartTaskStateValues() []StartTaskState {
 	return original.PossibleStartTaskStateValues()
 }
 
@@ -500,7 +500,7 @@ const (
 	StandardLRS StorageAccountType = original.StandardLRS
 )
 
-func PossibleStorageAccountTypeValues() [2]StorageAccountType {
+func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
 }
 
@@ -512,7 +512,7 @@ const (
 	SubtaskStateRunning   SubtaskState = original.SubtaskStateRunning
 )
 
-func PossibleSubtaskStateValues() [3]SubtaskState {
+func PossibleSubtaskStateValues() []SubtaskState {
 	return original.PossibleSubtaskStateValues()
 }
 
@@ -524,7 +524,7 @@ const (
 	TaskAddStatusSuccess     TaskAddStatus = original.TaskAddStatusSuccess
 )
 
-func PossibleTaskAddStatusValues() [3]TaskAddStatus {
+func PossibleTaskAddStatusValues() []TaskAddStatus {
 	return original.PossibleTaskAddStatusValues()
 }
 
@@ -535,7 +535,7 @@ const (
 	Validated   TaskCountValidationStatus = original.Validated
 )
 
-func PossibleTaskCountValidationStatusValues() [2]TaskCountValidationStatus {
+func PossibleTaskCountValidationStatusValues() []TaskCountValidationStatus {
 	return original.PossibleTaskCountValidationStatusValues()
 }
 
@@ -546,7 +546,7 @@ const (
 	Success TaskExecutionResult = original.Success
 )
 
-func PossibleTaskExecutionResultValues() [2]TaskExecutionResult {
+func PossibleTaskExecutionResultValues() []TaskExecutionResult {
 	return original.PossibleTaskExecutionResultValues()
 }
 
@@ -559,7 +559,7 @@ const (
 	TaskStateRunning   TaskState = original.TaskStateRunning
 )
 
-func PossibleTaskStateValues() [4]TaskState {
+func PossibleTaskStateValues() []TaskState {
 	return original.PossibleTaskStateValues()
 }
 

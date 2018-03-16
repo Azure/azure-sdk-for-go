@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() [3]AccessRights {
-	return [3]AccessRights{Listen, Manage, Send}
+func PossibleAccessRightsValues() []AccessRights {
+	return []AccessRights{Listen, Manage, Send}
 }
 
 // KeyType enumerates the values for key type.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [2]KeyType {
-	return [2]KeyType{PrimaryKey, SecondaryKey}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{PrimaryKey, SecondaryKey}
 }
 
 // ProvisioningStateEnum enumerates the values for provisioning state enum.
@@ -77,8 +77,8 @@ const (
 )
 
 // PossibleProvisioningStateEnumValues returns an array of possible values for the ProvisioningStateEnum const type.
-func PossibleProvisioningStateEnumValues() [6]ProvisioningStateEnum {
-	return [6]ProvisioningStateEnum{Created, Deleted, Failed, Succeeded, Unknown, Updating}
+func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
+	return []ProvisioningStateEnum{Created, Deleted, Failed, Succeeded, Unknown, Updating}
 }
 
 // RelaytypeEnum enumerates the values for relaytype enum.
@@ -92,8 +92,8 @@ const (
 )
 
 // PossibleRelaytypeEnumValues returns an array of possible values for the RelaytypeEnum const type.
-func PossibleRelaytypeEnumValues() [2]RelaytypeEnum {
-	return [2]RelaytypeEnum{HTTP, NetTCP}
+func PossibleRelaytypeEnumValues() []RelaytypeEnum {
+	return []RelaytypeEnum{HTTP, NetTCP}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -105,8 +105,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [1]SkuTier {
-	return [1]SkuTier{Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Standard}
 }
 
 // UnavailableReason enumerates the values for unavailable reason.
@@ -128,8 +128,8 @@ const (
 )
 
 // PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
-	return [6]UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
+func PossibleUnavailableReasonValues() []UnavailableReason {
+	return []UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
 }
 
 // AccessKeys namespace/Relay Connection String

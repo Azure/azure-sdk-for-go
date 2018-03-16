@@ -59,7 +59,7 @@ const (
 	Key2 KeyName = original.Key2
 )
 
-func PossibleKeyNameValues() [2]KeyName {
+func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
 }
 
@@ -87,7 +87,7 @@ const (
 	WebLM                  Kind = original.WebLM
 )
 
-func PossibleKindValues() [19]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() [6]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	Unknown   QuotaUsageStatus = original.Unknown
 )
 
-func PossibleQuotaUsageStatusValues() [4]QuotaUsageStatus {
+func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	return original.PossibleQuotaUsageStatusValues()
 }
 
@@ -135,7 +135,7 @@ const (
 	S6 SkuName = original.S6
 )
 
-func PossibleSkuNameValues() [11]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -147,7 +147,7 @@ const (
 	Standard SkuTier = original.Standard
 )
 
-func PossibleSkuTierValues() [3]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -163,7 +163,7 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
-func PossibleUnitTypeValues() [7]UnitType {
+func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
 }
 

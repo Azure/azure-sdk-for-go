@@ -50,7 +50,7 @@ const (
 	Secondary AdminKeyKind = original.Secondary
 )
 
-func PossibleAdminKeyKindValues() [2]AdminKeyKind {
+func PossibleAdminKeyKindValues() []AdminKeyKind {
 	return original.PossibleAdminKeyKindValues()
 }
 
@@ -61,7 +61,7 @@ const (
 	HighDensity HostingMode = original.HighDensity
 )
 
-func PossibleHostingModeValues() [2]HostingMode {
+func PossibleHostingModeValues() []HostingMode {
 	return original.PossibleHostingModeValues()
 }
 
@@ -73,7 +73,7 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() [3]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -88,7 +88,7 @@ const (
 	ServiceStatusRunning      ServiceStatus = original.ServiceStatusRunning
 )
 
-func PossibleServiceStatusValues() [6]ServiceStatus {
+func PossibleServiceStatusValues() []ServiceStatus {
 	return original.PossibleServiceStatusValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Standard3 SkuName = original.Standard3
 )
 
-func PossibleSkuNameValues() [5]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -113,7 +113,7 @@ const (
 	Invalid       UnavailableNameReason = original.Invalid
 )
 
-func PossibleUnavailableNameReasonValues() [2]UnavailableNameReason {
+func PossibleUnavailableNameReasonValues() []UnavailableNameReason {
 	return original.PossibleUnavailableNameReasonValues()
 }
 

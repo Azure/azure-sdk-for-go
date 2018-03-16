@@ -59,7 +59,7 @@ const (
 	Usage CategoryType = original.Usage
 )
 
-func PossibleCategoryTypeValues() [2]CategoryType {
+func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
 }
 
@@ -70,7 +70,7 @@ const (
 	MonthlyGrain Datagrain = original.MonthlyGrain
 )
 
-func PossibleDatagrainValues() [2]Datagrain {
+func PossibleDatagrainValues() []Datagrain {
 	return original.PossibleDatagrainValues()
 }
 
@@ -82,7 +82,7 @@ const (
 	GreaterThanOrEqualTo OperatorType = original.GreaterThanOrEqualTo
 )
 
-func PossibleOperatorTypeValues() [3]OperatorType {
+func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
 
@@ -94,7 +94,7 @@ const (
 	Quarterly TimeGrainType = original.Quarterly
 )
 
-func PossibleTimeGrainTypeValues() [3]TimeGrainType {
+func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
 }
 

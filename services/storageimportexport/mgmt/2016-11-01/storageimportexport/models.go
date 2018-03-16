@@ -45,8 +45,8 @@ const (
 )
 
 // PossibleDriveStateValues returns an array of possible values for the DriveState const type.
-func PossibleDriveStateValues() [7]DriveState {
-	return [7]DriveState{Completed, CompletedMoreInfo, NeverReceived, Received, ShippedBack, Specified, Transferring}
+func PossibleDriveStateValues() []DriveState {
+	return []DriveState{Completed, CompletedMoreInfo, NeverReceived, Received, ShippedBack, Specified, Transferring}
 }
 
 // DriveBitLockerKey bitLocker recovery key or password to the specified drive

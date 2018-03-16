@@ -51,7 +51,7 @@ const (
 	ReadWrite CachingTypes = original.ReadWrite
 )
 
-func PossibleCachingTypesValues() [3]CachingTypes {
+func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()
 }
 
@@ -61,7 +61,7 @@ const (
 	MicrosoftWindowsShellSetup ComponentNames = original.MicrosoftWindowsShellSetup
 )
 
-func PossibleComponentNamesValues() [1]ComponentNames {
+func PossibleComponentNamesValues() []ComponentNames {
 	return original.PossibleComponentNamesValues()
 }
 
@@ -73,7 +73,7 @@ const (
 	FromImage DiskCreateOptionTypes = original.FromImage
 )
 
-func PossibleDiskCreateOptionTypesValues() [3]DiskCreateOptionTypes {
+func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	InstanceView InstanceViewTypes = original.InstanceView
 )
 
-func PossibleInstanceViewTypesValues() [1]InstanceViewTypes {
+func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return original.PossibleInstanceViewTypesValues()
 }
 
@@ -94,7 +94,7 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
-func PossibleOperatingSystemTypesValues() [2]OperatingSystemTypes {
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
 }
 
@@ -104,7 +104,7 @@ const (
 	OobeSystem PassNames = original.OobeSystem
 )
 
-func PossiblePassNamesValues() [1]PassNames {
+func PossiblePassNamesValues() []PassNames {
 	return original.PossiblePassNamesValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	HTTPS ProtocolTypes = original.HTTPS
 )
 
-func PossibleProtocolTypesValues() [2]ProtocolTypes {
+func PossibleProtocolTypesValues() []ProtocolTypes {
 	return original.PossibleProtocolTypesValues()
 }
 
@@ -125,7 +125,7 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 
@@ -136,7 +136,7 @@ const (
 	FirstLogonCommands SettingNames = original.FirstLogonCommands
 )
 
-func PossibleSettingNamesValues() [2]SettingNames {
+func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()
 }
 
@@ -148,7 +148,7 @@ const (
 	Warning StatusLevelTypes = original.Warning
 )
 
-func PossibleStatusLevelTypesValues() [3]StatusLevelTypes {
+func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	return original.PossibleStatusLevelTypesValues()
 }
 
@@ -159,7 +159,7 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
-func PossibleUpgradeModeValues() [2]UpgradeMode {
+func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
 
@@ -170,7 +170,7 @@ const (
 	VirtualMachineScaleSetSkuScaleTypeNone      VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleTypeNone
 )
 
-func PossibleVirtualMachineScaleSetSkuScaleTypeValues() [2]VirtualMachineScaleSetSkuScaleType {
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSetSkuScaleType {
 	return original.PossibleVirtualMachineScaleSetSkuScaleTypeValues()
 }
 
@@ -242,7 +242,7 @@ const (
 	StandardGS5    VirtualMachineSizeTypes = original.StandardGS5
 )
 
-func PossibleVirtualMachineSizeTypesValues() [63]VirtualMachineSizeTypes {
+func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return original.PossibleVirtualMachineSizeTypesValues()
 }
 

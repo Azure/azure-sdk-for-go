@@ -62,8 +62,8 @@ const (
 )
 
 // PossibleCertificatePermissionsValues returns an array of possible values for the CertificatePermissions const type.
-func PossibleCertificatePermissionsValues() [15]CertificatePermissions {
-	return [15]CertificatePermissions{All, Create, Delete, Deleteissuers, Get, Getissuers, Import, List, Listissuers, Managecontacts, Manageissuers, Purge, Recover, Setissuers, Update}
+func PossibleCertificatePermissionsValues() []CertificatePermissions {
+	return []CertificatePermissions{All, Create, Delete, Deleteissuers, Get, Getissuers, Import, List, Listissuers, Managecontacts, Manageissuers, Purge, Recover, Setissuers, Update}
 }
 
 // KeyPermissions enumerates the values for key permissions.
@@ -107,8 +107,8 @@ const (
 )
 
 // PossibleKeyPermissionsValues returns an array of possible values for the KeyPermissions const type.
-func PossibleKeyPermissionsValues() [17]KeyPermissions {
-	return [17]KeyPermissions{KeyPermissionsAll, KeyPermissionsBackup, KeyPermissionsCreate, KeyPermissionsDecrypt, KeyPermissionsDelete, KeyPermissionsEncrypt, KeyPermissionsGet, KeyPermissionsImport, KeyPermissionsList, KeyPermissionsPurge, KeyPermissionsRecover, KeyPermissionsRestore, KeyPermissionsSign, KeyPermissionsUnwrapKey, KeyPermissionsUpdate, KeyPermissionsVerify, KeyPermissionsWrapKey}
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return []KeyPermissions{KeyPermissionsAll, KeyPermissionsBackup, KeyPermissionsCreate, KeyPermissionsDecrypt, KeyPermissionsDelete, KeyPermissionsEncrypt, KeyPermissionsGet, KeyPermissionsImport, KeyPermissionsList, KeyPermissionsPurge, KeyPermissionsRecover, KeyPermissionsRestore, KeyPermissionsSign, KeyPermissionsUnwrapKey, KeyPermissionsUpdate, KeyPermissionsVerify, KeyPermissionsWrapKey}
 }
 
 // SecretPermissions enumerates the values for secret permissions.
@@ -136,8 +136,8 @@ const (
 )
 
 // PossibleSecretPermissionsValues returns an array of possible values for the SecretPermissions const type.
-func PossibleSecretPermissionsValues() [9]SecretPermissions {
-	return [9]SecretPermissions{SecretPermissionsAll, SecretPermissionsBackup, SecretPermissionsDelete, SecretPermissionsGet, SecretPermissionsList, SecretPermissionsPurge, SecretPermissionsRecover, SecretPermissionsRestore, SecretPermissionsSet}
+func PossibleSecretPermissionsValues() []SecretPermissions {
+	return []SecretPermissions{SecretPermissionsAll, SecretPermissionsBackup, SecretPermissionsDelete, SecretPermissionsGet, SecretPermissionsList, SecretPermissionsPurge, SecretPermissionsRecover, SecretPermissionsRestore, SecretPermissionsSet}
 }
 
 // SkuName enumerates the values for sku name.
@@ -151,8 +151,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [2]SkuName {
-	return [2]SkuName{Premium, Standard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Premium, Standard}
 }
 
 // AccessPolicyEntry an identity that have access to the key vault. All identities in the array must use the same

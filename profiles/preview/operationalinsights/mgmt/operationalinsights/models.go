@@ -72,7 +72,7 @@ const (
 	WindowsPerformanceCounter     DataSourceKind = original.WindowsPerformanceCounter
 )
 
-func PossibleDataSourceKindValues() [15]DataSourceKind {
+func PossibleDataSourceKindValues() []DataSourceKind {
 	return original.PossibleDataSourceKindValues()
 }
 
@@ -87,7 +87,7 @@ const (
 	Succeeded           EntityStatus = original.Succeeded
 )
 
-func PossibleEntityStatusValues() [6]EntityStatus {
+func PossibleEntityStatusValues() []EntityStatus {
 	return original.PossibleEntityStatusValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	Unlimited  SkuNameEnum = original.Unlimited
 )
 
-func PossibleSkuNameEnumValues() [6]SkuNameEnum {
+func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
 }
 

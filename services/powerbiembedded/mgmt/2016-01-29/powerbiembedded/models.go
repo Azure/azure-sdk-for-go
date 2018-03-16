@@ -35,8 +35,8 @@ const (
 )
 
 // PossibleAccessKeyNameValues returns an array of possible values for the AccessKeyName const type.
-func PossibleAccessKeyNameValues() [2]AccessKeyName {
-	return [2]AccessKeyName{Key1, Key2}
+func PossibleAccessKeyNameValues() []AccessKeyName {
+	return []AccessKeyName{Key1, Key2}
 }
 
 // CheckNameReason enumerates the values for check name reason.
@@ -50,8 +50,8 @@ const (
 )
 
 // PossibleCheckNameReasonValues returns an array of possible values for the CheckNameReason const type.
-func PossibleCheckNameReasonValues() [2]CheckNameReason {
-	return [2]CheckNameReason{Invalid, Unavailable}
+func PossibleCheckNameReasonValues() []CheckNameReason {
+	return []CheckNameReason{Invalid, Unavailable}
 }
 
 // AzureSku ...

@@ -52,7 +52,7 @@ const (
 	Security         Category = original.Security
 )
 
-func PossibleCategoryValues() [4]Category {
+func PossibleCategoryValues() []Category {
 	return original.PossibleCategoryValues()
 }
 
@@ -64,7 +64,7 @@ const (
 	Medium Impact = original.Medium
 )
 
-func PossibleImpactValues() [3]Impact {
+func PossibleImpactValues() []Impact {
 	return original.PossibleImpactValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	Warning Risk = original.Warning
 )
 
-func PossibleRiskValues() [3]Risk {
+func PossibleRiskValues() []Risk {
 	return original.PossibleRiskValues()
 }
 

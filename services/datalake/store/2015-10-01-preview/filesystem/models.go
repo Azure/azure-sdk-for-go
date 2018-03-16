@@ -32,8 +32,8 @@ const (
 )
 
 // PossibleAppendModeTypeValues returns an array of possible values for the AppendModeType const type.
-func PossibleAppendModeTypeValues() [1]AppendModeType {
-	return [1]AppendModeType{Autocreate}
+func PossibleAppendModeTypeValues() []AppendModeType {
+	return []AppendModeType{Autocreate}
 }
 
 // Exception enumerates the values for exception.
@@ -63,8 +63,8 @@ const (
 )
 
 // PossibleExceptionValues returns an array of possible values for the Exception const type.
-func PossibleExceptionValues() [10]Exception {
-	return [10]Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionUnsupportedOperationException}
+func PossibleExceptionValues() []Exception {
+	return []Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionUnsupportedOperationException}
 }
 
 // ExpiryOptionType enumerates the values for expiry option type.
@@ -82,8 +82,8 @@ const (
 )
 
 // PossibleExpiryOptionTypeValues returns an array of possible values for the ExpiryOptionType const type.
-func PossibleExpiryOptionTypeValues() [4]ExpiryOptionType {
-	return [4]ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
+func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
+	return []ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
 }
 
 // FileType enumerates the values for file type.
@@ -97,8 +97,8 @@ const (
 )
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() [2]FileType {
-	return [2]FileType{DIRECTORY, FILE}
+func PossibleFileTypeValues() []FileType {
+	return []FileType{DIRECTORY, FILE}
 }
 
 // ACLStatus data Lake Store file or directory Access Control List information.

@@ -40,7 +40,7 @@ const (
 	MicrosoftManagedIdentityuserAssignedIdentities UserAssignedIdentities = original.MicrosoftManagedIdentityuserAssignedIdentities
 )
 
-func PossibleUserAssignedIdentitiesValues() [1]UserAssignedIdentities {
+func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
 	return original.PossibleUserAssignedIdentitiesValues()
 }
 

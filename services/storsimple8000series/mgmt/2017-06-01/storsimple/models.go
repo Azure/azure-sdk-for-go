@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAlertEmailNotificationStatusValues returns an array of possible values for the AlertEmailNotificationStatus const type.
-func PossibleAlertEmailNotificationStatusValues() [2]AlertEmailNotificationStatus {
-	return [2]AlertEmailNotificationStatus{Disabled, Enabled}
+func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
+	return []AlertEmailNotificationStatus{Disabled, Enabled}
 }
 
 // AlertScope enumerates the values for alert scope.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleAlertScopeValues returns an array of possible values for the AlertScope const type.
-func PossibleAlertScopeValues() [2]AlertScope {
-	return [2]AlertScope{AlertScopeDevice, AlertScopeResource}
+func PossibleAlertScopeValues() []AlertScope {
+	return []AlertScope{AlertScopeDevice, AlertScopeResource}
 }
 
 // AlertSeverity enumerates the values for alert severity.
@@ -69,8 +69,8 @@ const (
 )
 
 // PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() [3]AlertSeverity {
-	return [3]AlertSeverity{Critical, Informational, Warning}
+func PossibleAlertSeverityValues() []AlertSeverity {
+	return []AlertSeverity{Critical, Informational, Warning}
 }
 
 // AlertSourceType enumerates the values for alert source type.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossibleAlertSourceTypeValues returns an array of possible values for the AlertSourceType const type.
-func PossibleAlertSourceTypeValues() [2]AlertSourceType {
-	return [2]AlertSourceType{AlertSourceTypeDevice, AlertSourceTypeResource}
+func PossibleAlertSourceTypeValues() []AlertSourceType {
+	return []AlertSourceType{AlertSourceTypeDevice, AlertSourceTypeResource}
 }
 
 // AlertStatus enumerates the values for alert status.
@@ -99,8 +99,8 @@ const (
 )
 
 // PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
-func PossibleAlertStatusValues() [2]AlertStatus {
-	return [2]AlertStatus{Active, Cleared}
+func PossibleAlertStatusValues() []AlertStatus {
+	return []AlertStatus{Active, Cleared}
 }
 
 // AuthenticationType enumerates the values for authentication type.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() [4]AuthenticationType {
-	return [4]AuthenticationType{Basic, Invalid, None, NTLM}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{Basic, Invalid, None, NTLM}
 }
 
 // AuthorizationEligibility enumerates the values for authorization eligibility.
@@ -133,8 +133,8 @@ const (
 )
 
 // PossibleAuthorizationEligibilityValues returns an array of possible values for the AuthorizationEligibility const type.
-func PossibleAuthorizationEligibilityValues() [2]AuthorizationEligibility {
-	return [2]AuthorizationEligibility{Eligible, InEligible}
+func PossibleAuthorizationEligibilityValues() []AuthorizationEligibility {
+	return []AuthorizationEligibility{Eligible, InEligible}
 }
 
 // AuthorizationStatus enumerates the values for authorization status.
@@ -148,8 +148,8 @@ const (
 )
 
 // PossibleAuthorizationStatusValues returns an array of possible values for the AuthorizationStatus const type.
-func PossibleAuthorizationStatusValues() [2]AuthorizationStatus {
-	return [2]AuthorizationStatus{AuthorizationStatusDisabled, AuthorizationStatusEnabled}
+func PossibleAuthorizationStatusValues() []AuthorizationStatus {
+	return []AuthorizationStatus{AuthorizationStatusDisabled, AuthorizationStatusEnabled}
 }
 
 // BackupJobCreationType enumerates the values for backup job creation type.
@@ -165,8 +165,8 @@ const (
 )
 
 // PossibleBackupJobCreationTypeValues returns an array of possible values for the BackupJobCreationType const type.
-func PossibleBackupJobCreationTypeValues() [3]BackupJobCreationType {
-	return [3]BackupJobCreationType{Adhoc, BySchedule, BySSM}
+func PossibleBackupJobCreationTypeValues() []BackupJobCreationType {
+	return []BackupJobCreationType{Adhoc, BySchedule, BySSM}
 }
 
 // BackupPolicyCreationType enumerates the values for backup policy creation type.
@@ -180,8 +180,8 @@ const (
 )
 
 // PossibleBackupPolicyCreationTypeValues returns an array of possible values for the BackupPolicyCreationType const type.
-func PossibleBackupPolicyCreationTypeValues() [2]BackupPolicyCreationType {
-	return [2]BackupPolicyCreationType{BackupPolicyCreationTypeBySaaS, BackupPolicyCreationTypeBySSM}
+func PossibleBackupPolicyCreationTypeValues() []BackupPolicyCreationType {
+	return []BackupPolicyCreationType{BackupPolicyCreationTypeBySaaS, BackupPolicyCreationTypeBySSM}
 }
 
 // BackupStatus enumerates the values for backup status.
@@ -195,8 +195,8 @@ const (
 )
 
 // PossibleBackupStatusValues returns an array of possible values for the BackupStatus const type.
-func PossibleBackupStatusValues() [2]BackupStatus {
-	return [2]BackupStatus{BackupStatusDisabled, BackupStatusEnabled}
+func PossibleBackupStatusValues() []BackupStatus {
+	return []BackupStatus{BackupStatusDisabled, BackupStatusEnabled}
 }
 
 // BackupType enumerates the values for backup type.
@@ -210,8 +210,8 @@ const (
 )
 
 // PossibleBackupTypeValues returns an array of possible values for the BackupType const type.
-func PossibleBackupTypeValues() [2]BackupType {
-	return [2]BackupType{CloudSnapshot, LocalSnapshot}
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{CloudSnapshot, LocalSnapshot}
 }
 
 // ControllerID enumerates the values for controller id.
@@ -229,8 +229,8 @@ const (
 )
 
 // PossibleControllerIDValues returns an array of possible values for the ControllerID const type.
-func PossibleControllerIDValues() [4]ControllerID {
-	return [4]ControllerID{ControllerIDController0, ControllerIDController1, ControllerIDNone, ControllerIDUnknown}
+func PossibleControllerIDValues() []ControllerID {
+	return []ControllerID{ControllerIDController0, ControllerIDController1, ControllerIDNone, ControllerIDUnknown}
 }
 
 // ControllerPowerStateAction enumerates the values for controller power state action.
@@ -246,8 +246,8 @@ const (
 )
 
 // PossibleControllerPowerStateActionValues returns an array of possible values for the ControllerPowerStateAction const type.
-func PossibleControllerPowerStateActionValues() [3]ControllerPowerStateAction {
-	return [3]ControllerPowerStateAction{Restart, Shutdown, Start}
+func PossibleControllerPowerStateActionValues() []ControllerPowerStateAction {
+	return []ControllerPowerStateAction{Restart, Shutdown, Start}
 }
 
 // ControllerStatus enumerates the values for controller status.
@@ -269,8 +269,8 @@ const (
 )
 
 // PossibleControllerStatusValues returns an array of possible values for the ControllerStatus const type.
-func PossibleControllerStatusValues() [6]ControllerStatus {
-	return [6]ControllerStatus{ControllerStatusFailure, ControllerStatusNotPresent, ControllerStatusOk, ControllerStatusPoweredOff, ControllerStatusRecovering, ControllerStatusWarning}
+func PossibleControllerStatusValues() []ControllerStatus {
+	return []ControllerStatus{ControllerStatusFailure, ControllerStatusNotPresent, ControllerStatusOk, ControllerStatusPoweredOff, ControllerStatusRecovering, ControllerStatusWarning}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -294,8 +294,8 @@ const (
 )
 
 // PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() [7]DayOfWeek {
-	return [7]DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // DeviceConfigurationStatus enumerates the values for device configuration status.
@@ -309,8 +309,8 @@ const (
 )
 
 // PossibleDeviceConfigurationStatusValues returns an array of possible values for the DeviceConfigurationStatus const type.
-func PossibleDeviceConfigurationStatusValues() [2]DeviceConfigurationStatus {
-	return [2]DeviceConfigurationStatus{Complete, Pending}
+func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
+	return []DeviceConfigurationStatus{Complete, Pending}
 }
 
 // DeviceStatus enumerates the values for device status.
@@ -342,8 +342,8 @@ const (
 )
 
 // PossibleDeviceStatusValues returns an array of possible values for the DeviceStatus const type.
-func PossibleDeviceStatusValues() [11]DeviceStatus {
-	return [11]DeviceStatus{Creating, Deactivated, Deactivating, Deleted, MaintenanceMode, Offline, Online, Provisioning, ReadyToSetup, RequiresAttention, Unknown}
+func PossibleDeviceStatusValues() []DeviceStatus {
+	return []DeviceStatus{Creating, Deactivated, Deactivating, Deleted, MaintenanceMode, Offline, Online, Provisioning, ReadyToSetup, RequiresAttention, Unknown}
 }
 
 // DeviceType enumerates the values for device type.
@@ -359,8 +359,8 @@ const (
 )
 
 // PossibleDeviceTypeValues returns an array of possible values for the DeviceType const type.
-func PossibleDeviceTypeValues() [3]DeviceType {
-	return [3]DeviceType{DeviceTypeInvalid, DeviceTypeSeries8000PhysicalAppliance, DeviceTypeSeries8000VirtualAppliance}
+func PossibleDeviceTypeValues() []DeviceType {
+	return []DeviceType{DeviceTypeInvalid, DeviceTypeSeries8000PhysicalAppliance, DeviceTypeSeries8000VirtualAppliance}
 }
 
 // EncryptionAlgorithm enumerates the values for encryption algorithm.
@@ -376,8 +376,8 @@ const (
 )
 
 // PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() [3]EncryptionAlgorithm {
-	return [3]EncryptionAlgorithm{EncryptionAlgorithmAES256, EncryptionAlgorithmNone, EncryptionAlgorithmRSAESPKCS1V15}
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return []EncryptionAlgorithm{EncryptionAlgorithmAES256, EncryptionAlgorithmNone, EncryptionAlgorithmRSAESPKCS1V15}
 }
 
 // EncryptionStatus enumerates the values for encryption status.
@@ -391,8 +391,8 @@ const (
 )
 
 // PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
-func PossibleEncryptionStatusValues() [2]EncryptionStatus {
-	return [2]EncryptionStatus{EncryptionStatusDisabled, EncryptionStatusEnabled}
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return []EncryptionStatus{EncryptionStatusDisabled, EncryptionStatusEnabled}
 }
 
 // FeatureSupportStatus enumerates the values for feature support status.
@@ -408,8 +408,8 @@ const (
 )
 
 // PossibleFeatureSupportStatusValues returns an array of possible values for the FeatureSupportStatus const type.
-func PossibleFeatureSupportStatusValues() [3]FeatureSupportStatus {
-	return [3]FeatureSupportStatus{NotAvailable, Supported, UnsupportedDeviceVersion}
+func PossibleFeatureSupportStatusValues() []FeatureSupportStatus {
+	return []FeatureSupportStatus{NotAvailable, Supported, UnsupportedDeviceVersion}
 }
 
 // HardwareComponentStatus enumerates the values for hardware component status.
@@ -433,8 +433,8 @@ const (
 )
 
 // PossibleHardwareComponentStatusValues returns an array of possible values for the HardwareComponentStatus const type.
-func PossibleHardwareComponentStatusValues() [7]HardwareComponentStatus {
-	return [7]HardwareComponentStatus{HardwareComponentStatusFailure, HardwareComponentStatusNotPresent, HardwareComponentStatusOk, HardwareComponentStatusPoweredOff, HardwareComponentStatusRecovering, HardwareComponentStatusUnknown, HardwareComponentStatusWarning}
+func PossibleHardwareComponentStatusValues() []HardwareComponentStatus {
+	return []HardwareComponentStatus{HardwareComponentStatusFailure, HardwareComponentStatusNotPresent, HardwareComponentStatusOk, HardwareComponentStatusPoweredOff, HardwareComponentStatusRecovering, HardwareComponentStatusUnknown, HardwareComponentStatusWarning}
 }
 
 // InEligibilityCategory enumerates the values for in eligibility category.
@@ -450,8 +450,8 @@ const (
 )
 
 // PossibleInEligibilityCategoryValues returns an array of possible values for the InEligibilityCategory const type.
-func PossibleInEligibilityCategoryValues() [3]InEligibilityCategory {
-	return [3]InEligibilityCategory{DeviceNotOnline, NotSupportedAppliance, RolloverPending}
+func PossibleInEligibilityCategoryValues() []InEligibilityCategory {
+	return []InEligibilityCategory{DeviceNotOnline, NotSupportedAppliance, RolloverPending}
 }
 
 // ISCSIAndCloudStatus enumerates the values for iscsi and cloud status.
@@ -469,8 +469,8 @@ const (
 )
 
 // PossibleISCSIAndCloudStatusValues returns an array of possible values for the ISCSIAndCloudStatus const type.
-func PossibleISCSIAndCloudStatusValues() [4]ISCSIAndCloudStatus {
-	return [4]ISCSIAndCloudStatus{ISCSIAndCloudStatusCloudEnabled, ISCSIAndCloudStatusDisabled, ISCSIAndCloudStatusIscsiAndCloudEnabled, ISCSIAndCloudStatusIscsiEnabled}
+func PossibleISCSIAndCloudStatusValues() []ISCSIAndCloudStatus {
+	return []ISCSIAndCloudStatus{ISCSIAndCloudStatusCloudEnabled, ISCSIAndCloudStatusDisabled, ISCSIAndCloudStatusIscsiAndCloudEnabled, ISCSIAndCloudStatusIscsiEnabled}
 }
 
 // JobStatus enumerates the values for job status.
@@ -488,8 +488,8 @@ const (
 )
 
 // PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() [4]JobStatus {
-	return [4]JobStatus{Canceled, Failed, Running, Succeeded}
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{Canceled, Failed, Running, Succeeded}
 }
 
 // JobType enumerates the values for job type.
@@ -519,8 +519,8 @@ const (
 )
 
 // PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() [10]JobType {
-	return [10]JobType{CloneVolume, CreateCloudAppliance, CreateLocallyPinnedVolume, FailoverVolumeContainers, InstallUpdates, ManualBackup, ModifyVolume, RestoreBackup, ScheduledBackup, SupportPackageLogs}
+func PossibleJobTypeValues() []JobType {
+	return []JobType{CloneVolume, CreateCloudAppliance, CreateLocallyPinnedVolume, FailoverVolumeContainers, InstallUpdates, ManualBackup, ModifyVolume, RestoreBackup, ScheduledBackup, SupportPackageLogs}
 }
 
 // KeyRolloverStatus enumerates the values for key rollover status.
@@ -534,8 +534,8 @@ const (
 )
 
 // PossibleKeyRolloverStatusValues returns an array of possible values for the KeyRolloverStatus const type.
-func PossibleKeyRolloverStatusValues() [2]KeyRolloverStatus {
-	return [2]KeyRolloverStatus{NotRequired, Required}
+func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
+	return []KeyRolloverStatus{NotRequired, Required}
 }
 
 // Kind enumerates the values for kind.
@@ -547,8 +547,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [1]Kind {
-	return [1]Kind{Series8000}
+func PossibleKindValues() []Kind {
+	return []Kind{Series8000}
 }
 
 // ManagerType enumerates the values for manager type.
@@ -562,8 +562,8 @@ const (
 )
 
 // PossibleManagerTypeValues returns an array of possible values for the ManagerType const type.
-func PossibleManagerTypeValues() [2]ManagerType {
-	return [2]ManagerType{GardaV1, HelsinkiV1}
+func PossibleManagerTypeValues() []ManagerType {
+	return []ManagerType{GardaV1, HelsinkiV1}
 }
 
 // MetricAggregationType enumerates the values for metric aggregation type.
@@ -585,8 +585,8 @@ const (
 )
 
 // PossibleMetricAggregationTypeValues returns an array of possible values for the MetricAggregationType const type.
-func PossibleMetricAggregationTypeValues() [6]MetricAggregationType {
-	return [6]MetricAggregationType{MetricAggregationTypeAverage, MetricAggregationTypeLast, MetricAggregationTypeMaximum, MetricAggregationTypeMinimum, MetricAggregationTypeNone, MetricAggregationTypeTotal}
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return []MetricAggregationType{MetricAggregationTypeAverage, MetricAggregationTypeLast, MetricAggregationTypeMaximum, MetricAggregationTypeMinimum, MetricAggregationTypeNone, MetricAggregationTypeTotal}
 }
 
 // MetricUnit enumerates the values for metric unit.
@@ -608,8 +608,8 @@ const (
 )
 
 // PossibleMetricUnitValues returns an array of possible values for the MetricUnit const type.
-func PossibleMetricUnitValues() [6]MetricUnit {
-	return [6]MetricUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
+func PossibleMetricUnitValues() []MetricUnit {
+	return []MetricUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
 }
 
 // MonitoringStatus enumerates the values for monitoring status.
@@ -623,8 +623,8 @@ const (
 )
 
 // PossibleMonitoringStatusValues returns an array of possible values for the MonitoringStatus const type.
-func PossibleMonitoringStatusValues() [2]MonitoringStatus {
-	return [2]MonitoringStatus{MonitoringStatusDisabled, MonitoringStatusEnabled}
+func PossibleMonitoringStatusValues() []MonitoringStatus {
+	return []MonitoringStatus{MonitoringStatusDisabled, MonitoringStatusEnabled}
 }
 
 // NetInterfaceID enumerates the values for net interface id.
@@ -648,8 +648,8 @@ const (
 )
 
 // PossibleNetInterfaceIDValues returns an array of possible values for the NetInterfaceID const type.
-func PossibleNetInterfaceIDValues() [7]NetInterfaceID {
-	return [7]NetInterfaceID{NetInterfaceIDData0, NetInterfaceIDData1, NetInterfaceIDData2, NetInterfaceIDData3, NetInterfaceIDData4, NetInterfaceIDData5, NetInterfaceIDInvalid}
+func PossibleNetInterfaceIDValues() []NetInterfaceID {
+	return []NetInterfaceID{NetInterfaceIDData0, NetInterfaceIDData1, NetInterfaceIDData2, NetInterfaceIDData3, NetInterfaceIDData4, NetInterfaceIDData5, NetInterfaceIDInvalid}
 }
 
 // NetInterfaceStatus enumerates the values for net interface status.
@@ -663,8 +663,8 @@ const (
 )
 
 // PossibleNetInterfaceStatusValues returns an array of possible values for the NetInterfaceStatus const type.
-func PossibleNetInterfaceStatusValues() [2]NetInterfaceStatus {
-	return [2]NetInterfaceStatus{NetInterfaceStatusDisabled, NetInterfaceStatusEnabled}
+func PossibleNetInterfaceStatusValues() []NetInterfaceStatus {
+	return []NetInterfaceStatus{NetInterfaceStatusDisabled, NetInterfaceStatusEnabled}
 }
 
 // NetworkMode enumerates the values for network mode.
@@ -682,8 +682,8 @@ const (
 )
 
 // PossibleNetworkModeValues returns an array of possible values for the NetworkMode const type.
-func PossibleNetworkModeValues() [4]NetworkMode {
-	return [4]NetworkMode{NetworkModeBOTH, NetworkModeInvalid, NetworkModeIPV4, NetworkModeIPV6}
+func PossibleNetworkModeValues() []NetworkMode {
+	return []NetworkMode{NetworkModeBOTH, NetworkModeInvalid, NetworkModeIPV4, NetworkModeIPV6}
 }
 
 // OperationStatus enumerates the values for operation status.
@@ -701,8 +701,8 @@ const (
 )
 
 // PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() [4]OperationStatus {
-	return [4]OperationStatus{OperationStatusDeleting, OperationStatusNone, OperationStatusRestoring, OperationStatusUpdating}
+func PossibleOperationStatusValues() []OperationStatus {
+	return []OperationStatus{OperationStatusDeleting, OperationStatusNone, OperationStatusRestoring, OperationStatusUpdating}
 }
 
 // OwnerShipStatus enumerates the values for owner ship status.
@@ -716,8 +716,8 @@ const (
 )
 
 // PossibleOwnerShipStatusValues returns an array of possible values for the OwnerShipStatus const type.
-func PossibleOwnerShipStatusValues() [2]OwnerShipStatus {
-	return [2]OwnerShipStatus{NotOwned, Owned}
+func PossibleOwnerShipStatusValues() []OwnerShipStatus {
+	return []OwnerShipStatus{NotOwned, Owned}
 }
 
 // RecurrenceType enumerates the values for recurrence type.
@@ -735,8 +735,8 @@ const (
 )
 
 // PossibleRecurrenceTypeValues returns an array of possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() [4]RecurrenceType {
-	return [4]RecurrenceType{Daily, Hourly, Minutes, Weekly}
+func PossibleRecurrenceTypeValues() []RecurrenceType {
+	return []RecurrenceType{Daily, Hourly, Minutes, Weekly}
 }
 
 // RemoteManagementModeConfiguration enumerates the values for remote management mode configuration.
@@ -754,8 +754,8 @@ const (
 )
 
 // PossibleRemoteManagementModeConfigurationValues returns an array of possible values for the RemoteManagementModeConfiguration const type.
-func PossibleRemoteManagementModeConfigurationValues() [4]RemoteManagementModeConfiguration {
-	return [4]RemoteManagementModeConfiguration{RemoteManagementModeConfigurationDisabled, RemoteManagementModeConfigurationHTTPSAndHTTPEnabled, RemoteManagementModeConfigurationHTTPSEnabled, RemoteManagementModeConfigurationUnknown}
+func PossibleRemoteManagementModeConfigurationValues() []RemoteManagementModeConfiguration {
+	return []RemoteManagementModeConfiguration{RemoteManagementModeConfigurationDisabled, RemoteManagementModeConfigurationHTTPSAndHTTPEnabled, RemoteManagementModeConfigurationHTTPSEnabled, RemoteManagementModeConfigurationUnknown}
 }
 
 // ScheduledBackupStatus enumerates the values for scheduled backup status.
@@ -769,8 +769,8 @@ const (
 )
 
 // PossibleScheduledBackupStatusValues returns an array of possible values for the ScheduledBackupStatus const type.
-func PossibleScheduledBackupStatusValues() [2]ScheduledBackupStatus {
-	return [2]ScheduledBackupStatus{ScheduledBackupStatusDisabled, ScheduledBackupStatusEnabled}
+func PossibleScheduledBackupStatusValues() []ScheduledBackupStatus {
+	return []ScheduledBackupStatus{ScheduledBackupStatusDisabled, ScheduledBackupStatusEnabled}
 }
 
 // ScheduleStatus enumerates the values for schedule status.
@@ -784,8 +784,8 @@ const (
 )
 
 // PossibleScheduleStatusValues returns an array of possible values for the ScheduleStatus const type.
-func PossibleScheduleStatusValues() [2]ScheduleStatus {
-	return [2]ScheduleStatus{ScheduleStatusDisabled, ScheduleStatusEnabled}
+func PossibleScheduleStatusValues() []ScheduleStatus {
+	return []ScheduleStatus{ScheduleStatusDisabled, ScheduleStatusEnabled}
 }
 
 // SslStatus enumerates the values for ssl status.
@@ -799,8 +799,8 @@ const (
 )
 
 // PossibleSslStatusValues returns an array of possible values for the SslStatus const type.
-func PossibleSslStatusValues() [2]SslStatus {
-	return [2]SslStatus{SslStatusDisabled, SslStatusEnabled}
+func PossibleSslStatusValues() []SslStatus {
+	return []SslStatus{SslStatusDisabled, SslStatusEnabled}
 }
 
 // TargetEligibilityResultCode enumerates the values for target eligibility result code.
@@ -824,8 +824,8 @@ const (
 )
 
 // PossibleTargetEligibilityResultCodeValues returns an array of possible values for the TargetEligibilityResultCode const type.
-func PossibleTargetEligibilityResultCodeValues() [7]TargetEligibilityResultCode {
-	return [7]TargetEligibilityResultCode{LocalToTieredVolumesConversionWarning, TargetAndSourceCannotBeSameError, TargetInsufficientCapacityError, TargetInsufficientLocalVolumeMemoryError, TargetInsufficientTieredVolumeMemoryError, TargetIsNotOnlineError, TargetSourceIncompatibleVersionError}
+func PossibleTargetEligibilityResultCodeValues() []TargetEligibilityResultCode {
+	return []TargetEligibilityResultCode{LocalToTieredVolumesConversionWarning, TargetAndSourceCannotBeSameError, TargetInsufficientCapacityError, TargetInsufficientLocalVolumeMemoryError, TargetInsufficientTieredVolumeMemoryError, TargetIsNotOnlineError, TargetSourceIncompatibleVersionError}
 }
 
 // TargetEligibilityStatus enumerates the values for target eligibility status.
@@ -839,8 +839,8 @@ const (
 )
 
 // PossibleTargetEligibilityStatusValues returns an array of possible values for the TargetEligibilityStatus const type.
-func PossibleTargetEligibilityStatusValues() [2]TargetEligibilityStatus {
-	return [2]TargetEligibilityStatus{TargetEligibilityStatusEligible, TargetEligibilityStatusNotEligible}
+func PossibleTargetEligibilityStatusValues() []TargetEligibilityStatus {
+	return []TargetEligibilityStatus{TargetEligibilityStatusEligible, TargetEligibilityStatusNotEligible}
 }
 
 // VirtualMachineAPIType enumerates the values for virtual machine api type.
@@ -854,8 +854,8 @@ const (
 )
 
 // PossibleVirtualMachineAPITypeValues returns an array of possible values for the VirtualMachineAPIType const type.
-func PossibleVirtualMachineAPITypeValues() [2]VirtualMachineAPIType {
-	return [2]VirtualMachineAPIType{Arm, Classic}
+func PossibleVirtualMachineAPITypeValues() []VirtualMachineAPIType {
+	return []VirtualMachineAPIType{Arm, Classic}
 }
 
 // VolumeStatus enumerates the values for volume status.
@@ -869,8 +869,8 @@ const (
 )
 
 // PossibleVolumeStatusValues returns an array of possible values for the VolumeStatus const type.
-func PossibleVolumeStatusValues() [2]VolumeStatus {
-	return [2]VolumeStatus{VolumeStatusOffline, VolumeStatusOnline}
+func PossibleVolumeStatusValues() []VolumeStatus {
+	return []VolumeStatus{VolumeStatusOffline, VolumeStatusOnline}
 }
 
 // VolumeType enumerates the values for volume type.
@@ -886,8 +886,8 @@ const (
 )
 
 // PossibleVolumeTypeValues returns an array of possible values for the VolumeType const type.
-func PossibleVolumeTypeValues() [3]VolumeType {
-	return [3]VolumeType{Archival, LocallyPinned, Tiered}
+func PossibleVolumeTypeValues() []VolumeType {
+	return []VolumeType{Archival, LocallyPinned, Tiered}
 }
 
 // AccessControlRecord the access control record.

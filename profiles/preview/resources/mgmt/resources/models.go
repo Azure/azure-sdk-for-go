@@ -68,7 +68,7 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
-func PossibleDeploymentModeValues() [2]DeploymentMode {
+func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
 
@@ -79,17 +79,20 @@ const (
 	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
 )
 
-func PossibleOnErrorDeploymentTypeValues() [2]OnErrorDeploymentType {
+func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	return original.PossibleOnErrorDeploymentTypeValues()
 }
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
 
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 

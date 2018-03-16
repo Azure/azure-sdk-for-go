@@ -51,7 +51,7 @@ const (
 	ReadOnly     LockLevel = original.ReadOnly
 )
 
-func PossibleLockLevelValues() [3]LockLevel {
+func PossibleLockLevelValues() []LockLevel {
 	return original.PossibleLockLevelValues()
 }
 

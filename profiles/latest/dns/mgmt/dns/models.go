@@ -49,7 +49,7 @@ const (
 	TXT   RecordType = original.TXT
 )
 
-func PossibleRecordTypeValues() [10]RecordType {
+func PossibleRecordTypeValues() []RecordType {
 	return original.PossibleRecordTypeValues()
 }
 

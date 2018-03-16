@@ -71,7 +71,7 @@ const (
 	ObjectTypeUser             ObjectType = original.ObjectTypeUser
 )
 
-func PossibleObjectTypeValues() [5]ObjectType {
+func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()
 }
 
@@ -82,7 +82,7 @@ const (
 	Member UserType = original.Member
 )
 
-func PossibleUserTypeValues() [2]UserType {
+func PossibleUserTypeValues() []UserType {
 	return original.PossibleUserTypeValues()
 }
 

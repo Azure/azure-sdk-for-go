@@ -40,7 +40,7 @@ const (
 	AtScope Filter = original.AtScope
 )
 
-func PossibleFilterValues() [1]Filter {
+func PossibleFilterValues() []Filter {
 	return original.PossibleFilterValues()
 }
 

@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleApplicationTypeValues returns an array of possible values for the ApplicationType const type.
-func PossibleApplicationTypeValues() [2]ApplicationType {
-	return [2]ApplicationType{Other, Web}
+func PossibleApplicationTypeValues() []ApplicationType {
+	return []ApplicationType{Other, Web}
 }
 
 // FavoriteSourceType enumerates the values for favorite source type.
@@ -63,8 +63,8 @@ const (
 )
 
 // PossibleFavoriteSourceTypeValues returns an array of possible values for the FavoriteSourceType const type.
-func PossibleFavoriteSourceTypeValues() [8]FavoriteSourceType {
-	return [8]FavoriteSourceType{Events, Funnel, Impact, Notebook, Retention, Segmentation, Sessions, Userflows}
+func PossibleFavoriteSourceTypeValues() []FavoriteSourceType {
+	return []FavoriteSourceType{Events, Funnel, Impact, Notebook, Retention, Segmentation, Sessions, Userflows}
 }
 
 // FavoriteType enumerates the values for favorite type.
@@ -78,8 +78,8 @@ const (
 )
 
 // PossibleFavoriteTypeValues returns an array of possible values for the FavoriteType const type.
-func PossibleFavoriteTypeValues() [2]FavoriteType {
-	return [2]FavoriteType{Shared, User}
+func PossibleFavoriteTypeValues() []FavoriteType {
+	return []FavoriteType{Shared, User}
 }
 
 // FlowType enumerates the values for flow type.
@@ -91,8 +91,8 @@ const (
 )
 
 // PossibleFlowTypeValues returns an array of possible values for the FlowType const type.
-func PossibleFlowTypeValues() [1]FlowType {
-	return [1]FlowType{Bluefield}
+func PossibleFlowTypeValues() []FlowType {
+	return []FlowType{Bluefield}
 }
 
 // PurgeState enumerates the values for purge state.
@@ -106,8 +106,8 @@ const (
 )
 
 // PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
-func PossiblePurgeStateValues() [2]PurgeState {
-	return [2]PurgeState{Completed, Pending}
+func PossiblePurgeStateValues() []PurgeState {
+	return []PurgeState{Completed, Pending}
 }
 
 // RequestSource enumerates the values for request source.
@@ -119,8 +119,8 @@ const (
 )
 
 // PossibleRequestSourceValues returns an array of possible values for the RequestSource const type.
-func PossibleRequestSourceValues() [1]RequestSource {
-	return [1]RequestSource{Rest}
+func PossibleRequestSourceValues() []RequestSource {
+	return []RequestSource{Rest}
 }
 
 // WebTestKind enumerates the values for web test kind.
@@ -134,8 +134,8 @@ const (
 )
 
 // PossibleWebTestKindValues returns an array of possible values for the WebTestKind const type.
-func PossibleWebTestKindValues() [2]WebTestKind {
-	return [2]WebTestKind{Multistep, Ping}
+func PossibleWebTestKindValues() []WebTestKind {
+	return []WebTestKind{Multistep, Ping}
 }
 
 // Annotation annotation associated with an application insights resource.

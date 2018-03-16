@@ -87,7 +87,7 @@ const (
 	User             AADObjectType = original.User
 )
 
-func PossibleAADObjectTypeValues() [3]AADObjectType {
+func PossibleAADObjectTypeValues() []AADObjectType {
 	return original.PossibleAADObjectTypeValues()
 }
 
@@ -98,7 +98,7 @@ const (
 	Suspended DataLakeAnalyticsAccountState = original.Suspended
 )
 
-func PossibleDataLakeAnalyticsAccountStateValues() [2]DataLakeAnalyticsAccountState {
+func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
 	return original.PossibleDataLakeAnalyticsAccountStateValues()
 }
 
@@ -118,7 +118,7 @@ const (
 	Undeleting DataLakeAnalyticsAccountStatus = original.Undeleting
 )
 
-func PossibleDataLakeAnalyticsAccountStatusValues() [11]DataLakeAnalyticsAccountStatus {
+func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
 	return original.PossibleDataLakeAnalyticsAccountStatusValues()
 }
 
@@ -129,7 +129,7 @@ const (
 	Enabled  FirewallAllowAzureIpsState = original.Enabled
 )
 
-func PossibleFirewallAllowAzureIpsStateValues() [2]FirewallAllowAzureIpsState {
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
 	return original.PossibleFirewallAllowAzureIpsStateValues()
 }
 
@@ -140,7 +140,7 @@ const (
 	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
-func PossibleFirewallStateValues() [2]FirewallState {
+func PossibleFirewallStateValues() []FirewallState {
 	return original.PossibleFirewallStateValues()
 }
 
@@ -152,7 +152,7 @@ const (
 	OperationOriginUsersystem OperationOrigin = original.OperationOriginUsersystem
 )
 
-func PossibleOperationOriginValues() [3]OperationOrigin {
+func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
 }
 
@@ -166,7 +166,7 @@ const (
 	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
 
-func PossibleSubscriptionStateValues() [5]SubscriptionState {
+func PossibleSubscriptionStateValues() []SubscriptionState {
 	return original.PossibleSubscriptionStateValues()
 }
 
@@ -184,7 +184,7 @@ const (
 	Consumption             TierType = original.Consumption
 )
 
-func PossibleTierTypeValues() [9]TierType {
+func PossibleTierTypeValues() []TierType {
 	return original.PossibleTierTypeValues()
 }
 

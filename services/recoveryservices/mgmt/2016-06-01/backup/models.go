@@ -48,8 +48,8 @@ const (
 )
 
 // PossibleDataSourceTypeValues returns an array of possible values for the DataSourceType const type.
-func PossibleDataSourceTypeValues() [8]DataSourceType {
-	return [8]DataSourceType{AzureSQLDb, DPMUnknown, Exchange, FileFolder, Invalid, Sharepoint, SQLDB, VM}
+func PossibleDataSourceTypeValues() []DataSourceType {
+	return []DataSourceType{AzureSQLDb, DPMUnknown, Exchange, FileFolder, Invalid, Sharepoint, SQLDB, VM}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() [7]DayOfWeek {
-	return [7]DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // EngineType enumerates the values for engine type.
@@ -90,8 +90,8 @@ const (
 )
 
 // PossibleEngineTypeValues returns an array of possible values for the EngineType const type.
-func PossibleEngineTypeValues() [3]EngineType {
-	return [3]EngineType{BackupEngineTypeAzureBackupServerEngine, BackupEngineTypeBackupEngineBase, BackupEngineTypeDpmBackupEngine}
+func PossibleEngineTypeValues() []EngineType {
+	return []EngineType{BackupEngineTypeAzureBackupServerEngine, BackupEngineTypeBackupEngineBase, BackupEngineTypeDpmBackupEngine}
 }
 
 // HTTPStatusCode enumerates the values for http status code.
@@ -195,8 +195,8 @@ const (
 )
 
 // PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() [47]HTTPStatusCode {
-	return [47]HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return []HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
 }
 
 // ItemType enumerates the values for item type.
@@ -222,8 +222,8 @@ const (
 )
 
 // PossibleItemTypeValues returns an array of possible values for the ItemType const type.
-func PossibleItemTypeValues() [8]ItemType {
-	return [8]ItemType{ItemTypeAzureSQLDb, ItemTypeDPMUnknown, ItemTypeExchange, ItemTypeFileFolder, ItemTypeInvalid, ItemTypeSharepoint, ItemTypeSQLDB, ItemTypeVM}
+func PossibleItemTypeValues() []ItemType {
+	return []ItemType{ItemTypeAzureSQLDb, ItemTypeDPMUnknown, ItemTypeExchange, ItemTypeFileFolder, ItemTypeInvalid, ItemTypeSharepoint, ItemTypeSQLDB, ItemTypeVM}
 }
 
 // JobOperationType enumerates the values for job operation type.
@@ -245,8 +245,8 @@ const (
 )
 
 // PossibleJobOperationTypeValues returns an array of possible values for the JobOperationType const type.
-func PossibleJobOperationTypeValues() [6]JobOperationType {
-	return [6]JobOperationType{JobOperationTypeBackup, JobOperationTypeConfigureBackup, JobOperationTypeDeleteBackupData, JobOperationTypeDisableBackup, JobOperationTypeInvalid, JobOperationTypeRestore}
+func PossibleJobOperationTypeValues() []JobOperationType {
+	return []JobOperationType{JobOperationTypeBackup, JobOperationTypeConfigureBackup, JobOperationTypeDeleteBackupData, JobOperationTypeDisableBackup, JobOperationTypeInvalid, JobOperationTypeRestore}
 }
 
 // JobStatus enumerates the values for job status.
@@ -270,8 +270,8 @@ const (
 )
 
 // PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() [7]JobStatus {
-	return [7]JobStatus{JobStatusCancelled, JobStatusCancelling, JobStatusCompleted, JobStatusCompletedWithWarnings, JobStatusFailed, JobStatusInProgress, JobStatusInvalid}
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{JobStatusCancelled, JobStatusCancelling, JobStatusCompleted, JobStatusCompletedWithWarnings, JobStatusFailed, JobStatusInProgress, JobStatusInvalid}
 }
 
 // JobSupportedAction enumerates the values for job supported action.
@@ -287,8 +287,8 @@ const (
 )
 
 // PossibleJobSupportedActionValues returns an array of possible values for the JobSupportedAction const type.
-func PossibleJobSupportedActionValues() [3]JobSupportedAction {
-	return [3]JobSupportedAction{JobSupportedActionCancellable, JobSupportedActionInvalid, JobSupportedActionRetriable}
+func PossibleJobSupportedActionValues() []JobSupportedAction {
+	return []JobSupportedAction{JobSupportedActionCancellable, JobSupportedActionInvalid, JobSupportedActionRetriable}
 }
 
 // JobType enumerates the values for job type.
@@ -306,8 +306,8 @@ const (
 )
 
 // PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() [4]JobType {
-	return [4]JobType{JobTypeAzureIaaSVMJob, JobTypeDpmJob, JobTypeJob, JobTypeMabJob}
+func PossibleJobTypeValues() []JobType {
+	return []JobType{JobTypeAzureIaaSVMJob, JobTypeDpmJob, JobTypeJob, JobTypeMabJob}
 }
 
 // MabServerType enumerates the values for mab server type.
@@ -339,8 +339,8 @@ const (
 )
 
 // PossibleMabServerTypeValues returns an array of possible values for the MabServerType const type.
-func PossibleMabServerTypeValues() [11]MabServerType {
-	return [11]MabServerType{MabServerTypeAzureSQLContainer, MabServerTypeClusterResource, MabServerTypeDPMContainer, MabServerTypeDPMVenusContainer, MabServerTypeIaasVMContainer, MabServerTypeIaasVMServiceContainer, MabServerTypeInvalid, MabServerTypeMABContainer, MabServerTypeUnknown, MabServerTypeWindows, MabServerTypeWindowsServer}
+func PossibleMabServerTypeValues() []MabServerType {
+	return []MabServerType{MabServerTypeAzureSQLContainer, MabServerTypeClusterResource, MabServerTypeDPMContainer, MabServerTypeDPMVenusContainer, MabServerTypeIaasVMContainer, MabServerTypeIaasVMServiceContainer, MabServerTypeInvalid, MabServerTypeMABContainer, MabServerTypeUnknown, MabServerTypeWindows, MabServerTypeWindowsServer}
 }
 
 // ManagementType enumerates the values for management type.
@@ -362,8 +362,8 @@ const (
 )
 
 // PossibleManagementTypeValues returns an array of possible values for the ManagementType const type.
-func PossibleManagementTypeValues() [6]ManagementType {
-	return [6]ManagementType{ManagementTypeAzureBackupServer, ManagementTypeAzureIaasVM, ManagementTypeAzureSQL, ManagementTypeDPM, ManagementTypeInvalid, ManagementTypeMAB}
+func PossibleManagementTypeValues() []ManagementType {
+	return []ManagementType{ManagementTypeAzureBackupServer, ManagementTypeAzureIaasVM, ManagementTypeAzureSQL, ManagementTypeDPM, ManagementTypeInvalid, ManagementTypeMAB}
 }
 
 // ManagementTypeBasicProtectionPolicy enumerates the values for management type basic protection policy.
@@ -381,8 +381,8 @@ const (
 )
 
 // PossibleManagementTypeBasicProtectionPolicyValues returns an array of possible values for the ManagementTypeBasicProtectionPolicy const type.
-func PossibleManagementTypeBasicProtectionPolicyValues() [4]ManagementTypeBasicProtectionPolicy {
-	return [4]ManagementTypeBasicProtectionPolicy{BackupManagementTypeAzureIaasVM, BackupManagementTypeAzureSQL, BackupManagementTypeMAB, BackupManagementTypeProtectionPolicy}
+func PossibleManagementTypeBasicProtectionPolicyValues() []ManagementTypeBasicProtectionPolicy {
+	return []ManagementTypeBasicProtectionPolicy{BackupManagementTypeAzureIaasVM, BackupManagementTypeAzureSQL, BackupManagementTypeMAB, BackupManagementTypeProtectionPolicy}
 }
 
 // MonthOfYear enumerates the values for month of year.
@@ -418,8 +418,8 @@ const (
 )
 
 // PossibleMonthOfYearValues returns an array of possible values for the MonthOfYear const type.
-func PossibleMonthOfYearValues() [13]MonthOfYear {
-	return [13]MonthOfYear{MonthOfYearApril, MonthOfYearAugust, MonthOfYearDecember, MonthOfYearFebruary, MonthOfYearInvalid, MonthOfYearJanuary, MonthOfYearJuly, MonthOfYearJune, MonthOfYearMarch, MonthOfYearMay, MonthOfYearNovember, MonthOfYearOctober, MonthOfYearSeptember}
+func PossibleMonthOfYearValues() []MonthOfYear {
+	return []MonthOfYear{MonthOfYearApril, MonthOfYearAugust, MonthOfYearDecember, MonthOfYearFebruary, MonthOfYearInvalid, MonthOfYearJanuary, MonthOfYearJuly, MonthOfYearJune, MonthOfYearMarch, MonthOfYearMay, MonthOfYearNovember, MonthOfYearOctober, MonthOfYearSeptember}
 }
 
 // ObjectType enumerates the values for object type.
@@ -437,8 +437,8 @@ const (
 )
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() [4]ObjectType {
-	return [4]ObjectType{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
+func PossibleObjectTypeValues() []ObjectType {
+	return []ObjectType{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
 }
 
 // ObjectTypeBasicBackupRequest enumerates the values for object type basic backup request.
@@ -452,8 +452,8 @@ const (
 )
 
 // PossibleObjectTypeBasicBackupRequestValues returns an array of possible values for the ObjectTypeBasicBackupRequest const type.
-func PossibleObjectTypeBasicBackupRequestValues() [2]ObjectTypeBasicBackupRequest {
-	return [2]ObjectTypeBasicBackupRequest{ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
+func PossibleObjectTypeBasicBackupRequestValues() []ObjectTypeBasicBackupRequest {
+	return []ObjectTypeBasicBackupRequest{ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
 }
 
 // ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
@@ -467,8 +467,8 @@ const (
 )
 
 // PossibleObjectTypeBasicILRRequestValues returns an array of possible values for the ObjectTypeBasicILRRequest const type.
-func PossibleObjectTypeBasicILRRequestValues() [2]ObjectTypeBasicILRRequest {
-	return [2]ObjectTypeBasicILRRequest{ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
+func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
+	return []ObjectTypeBasicILRRequest{ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
 }
 
 // ObjectTypeBasicOperationResultInfoBase enumerates the values for object type basic operation result info
@@ -485,8 +485,8 @@ const (
 )
 
 // PossibleObjectTypeBasicOperationResultInfoBaseValues returns an array of possible values for the ObjectTypeBasicOperationResultInfoBase const type.
-func PossibleObjectTypeBasicOperationResultInfoBaseValues() [3]ObjectTypeBasicOperationResultInfoBase {
-	return [3]ObjectTypeBasicOperationResultInfoBase{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
+func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
+	return []ObjectTypeBasicOperationResultInfoBase{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
 }
 
 // ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
@@ -502,8 +502,8 @@ const (
 )
 
 // PossibleObjectTypeBasicRecoveryPointValues returns an array of possible values for the ObjectTypeBasicRecoveryPoint const type.
-func PossibleObjectTypeBasicRecoveryPointValues() [3]ObjectTypeBasicRecoveryPoint {
-	return [3]ObjectTypeBasicRecoveryPoint{ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
+func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
+	return []ObjectTypeBasicRecoveryPoint{ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
 }
 
 // ObjectTypeBasicRestoreRequest enumerates the values for object type basic restore request.
@@ -517,8 +517,8 @@ const (
 )
 
 // PossibleObjectTypeBasicRestoreRequestValues returns an array of possible values for the ObjectTypeBasicRestoreRequest const type.
-func PossibleObjectTypeBasicRestoreRequestValues() [2]ObjectTypeBasicRestoreRequest {
-	return [2]ObjectTypeBasicRestoreRequest{ObjectTypeIaasVMRestoreRequest, ObjectTypeRestoreRequest}
+func PossibleObjectTypeBasicRestoreRequestValues() []ObjectTypeBasicRestoreRequest {
+	return []ObjectTypeBasicRestoreRequest{ObjectTypeIaasVMRestoreRequest, ObjectTypeRestoreRequest}
 }
 
 // OperationStatusValues enumerates the values for operation status values.
@@ -538,8 +538,8 @@ const (
 )
 
 // PossibleOperationStatusValuesValues returns an array of possible values for the OperationStatusValues const type.
-func PossibleOperationStatusValuesValues() [5]OperationStatusValues {
-	return [5]OperationStatusValues{OperationStatusValuesCanceled, OperationStatusValuesFailed, OperationStatusValuesInProgress, OperationStatusValuesInvalid, OperationStatusValuesSucceeded}
+func PossibleOperationStatusValuesValues() []OperationStatusValues {
+	return []OperationStatusValues{OperationStatusValuesCanceled, OperationStatusValuesFailed, OperationStatusValuesInProgress, OperationStatusValuesInvalid, OperationStatusValuesSucceeded}
 }
 
 // ProtectableItemType enumerates the values for protectable item type.
@@ -557,8 +557,8 @@ const (
 )
 
 // PossibleProtectableItemTypeValues returns an array of possible values for the ProtectableItemType const type.
-func PossibleProtectableItemTypeValues() [4]ProtectableItemType {
-	return [4]ProtectableItemType{ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeWorkloadProtectableItem}
+func PossibleProtectableItemTypeValues() []ProtectableItemType {
+	return []ProtectableItemType{ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeWorkloadProtectableItem}
 }
 
 // ProtectableObjectType enumerates the values for protectable object type.
@@ -580,8 +580,8 @@ const (
 )
 
 // PossibleProtectableObjectTypeValues returns an array of possible values for the ProtectableObjectType const type.
-func PossibleProtectableObjectTypeValues() [6]ProtectableObjectType {
-	return [6]ProtectableObjectType{ProtectableObjectTypeAzureSQLContainer, ProtectableObjectTypeIaaSVMContainer, ProtectableObjectTypeMABWindowsContainer, ProtectableObjectTypeMicrosoftClassicComputevirtualMachines, ProtectableObjectTypeMicrosoftComputevirtualMachines, ProtectableObjectTypeProtectionContainer}
+func PossibleProtectableObjectTypeValues() []ProtectableObjectType {
+	return []ProtectableObjectType{ProtectableObjectTypeAzureSQLContainer, ProtectableObjectTypeIaaSVMContainer, ProtectableObjectTypeMABWindowsContainer, ProtectableObjectTypeMicrosoftClassicComputevirtualMachines, ProtectableObjectTypeMicrosoftComputevirtualMachines, ProtectableObjectTypeProtectionContainer}
 }
 
 // ProtectedItemState enumerates the values for protected item state.
@@ -603,8 +603,8 @@ const (
 )
 
 // PossibleProtectedItemStateValues returns an array of possible values for the ProtectedItemState const type.
-func PossibleProtectedItemStateValues() [6]ProtectedItemState {
-	return [6]ProtectedItemState{ProtectedItemStateInvalid, ProtectedItemStateIRPending, ProtectedItemStateProtected, ProtectedItemStateProtectionError, ProtectedItemStateProtectionPaused, ProtectedItemStateProtectionStopped}
+func PossibleProtectedItemStateValues() []ProtectedItemState {
+	return []ProtectedItemState{ProtectedItemStateInvalid, ProtectedItemStateIRPending, ProtectedItemStateProtected, ProtectedItemStateProtectionError, ProtectedItemStateProtectionPaused, ProtectedItemStateProtectionStopped}
 }
 
 // ProtectedItemType enumerates the values for protected item type.
@@ -626,8 +626,8 @@ const (
 )
 
 // PossibleProtectedItemTypeValues returns an array of possible values for the ProtectedItemType const type.
-func PossibleProtectedItemTypeValues() [6]ProtectedItemType {
-	return [6]ProtectedItemType{ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
+func PossibleProtectedItemTypeValues() []ProtectedItemType {
+	return []ProtectedItemType{ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
 }
 
 // ProtectionState enumerates the values for protection state.
@@ -649,8 +649,8 @@ const (
 )
 
 // PossibleProtectionStateValues returns an array of possible values for the ProtectionState const type.
-func PossibleProtectionStateValues() [6]ProtectionState {
-	return [6]ProtectionState{ProtectionStateInvalid, ProtectionStateIRPending, ProtectionStateProtected, ProtectionStateProtectionError, ProtectionStateProtectionPaused, ProtectionStateProtectionStopped}
+func PossibleProtectionStateValues() []ProtectionState {
+	return []ProtectionState{ProtectionStateInvalid, ProtectionStateIRPending, ProtectionStateProtected, ProtectionStateProtectionError, ProtectionStateProtectionPaused, ProtectionStateProtectionStopped}
 }
 
 // ProtectionStatus enumerates the values for protection status.
@@ -668,8 +668,8 @@ const (
 )
 
 // PossibleProtectionStatusValues returns an array of possible values for the ProtectionStatus const type.
-func PossibleProtectionStatusValues() [4]ProtectionStatus {
-	return [4]ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting}
+func PossibleProtectionStatusValues() []ProtectionStatus {
+	return []ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting}
 }
 
 // RecoveryType enumerates the values for recovery type.
@@ -687,8 +687,8 @@ const (
 )
 
 // PossibleRecoveryTypeValues returns an array of possible values for the RecoveryType const type.
-func PossibleRecoveryTypeValues() [4]RecoveryType {
-	return [4]RecoveryType{RecoveryTypeAlternateLocation, RecoveryTypeInvalid, RecoveryTypeOriginalLocation, RecoveryTypeRestoreDisks}
+func PossibleRecoveryTypeValues() []RecoveryType {
+	return []RecoveryType{RecoveryTypeAlternateLocation, RecoveryTypeInvalid, RecoveryTypeOriginalLocation, RecoveryTypeRestoreDisks}
 }
 
 // RetentionDurationType enumerates the values for retention duration type.
@@ -708,8 +708,8 @@ const (
 )
 
 // PossibleRetentionDurationTypeValues returns an array of possible values for the RetentionDurationType const type.
-func PossibleRetentionDurationTypeValues() [5]RetentionDurationType {
-	return [5]RetentionDurationType{RetentionDurationTypeDays, RetentionDurationTypeInvalid, RetentionDurationTypeMonths, RetentionDurationTypeWeeks, RetentionDurationTypeYears}
+func PossibleRetentionDurationTypeValues() []RetentionDurationType {
+	return []RetentionDurationType{RetentionDurationTypeDays, RetentionDurationTypeInvalid, RetentionDurationTypeMonths, RetentionDurationTypeWeeks, RetentionDurationTypeYears}
 }
 
 // RetentionPolicyType enumerates the values for retention policy type.
@@ -725,8 +725,8 @@ const (
 )
 
 // PossibleRetentionPolicyTypeValues returns an array of possible values for the RetentionPolicyType const type.
-func PossibleRetentionPolicyTypeValues() [3]RetentionPolicyType {
-	return [3]RetentionPolicyType{RetentionPolicyTypeLongTermRetentionPolicy, RetentionPolicyTypeRetentionPolicy, RetentionPolicyTypeSimpleRetentionPolicy}
+func PossibleRetentionPolicyTypeValues() []RetentionPolicyType {
+	return []RetentionPolicyType{RetentionPolicyTypeLongTermRetentionPolicy, RetentionPolicyTypeRetentionPolicy, RetentionPolicyTypeSimpleRetentionPolicy}
 }
 
 // RetentionScheduleFormat enumerates the values for retention schedule format.
@@ -742,8 +742,8 @@ const (
 )
 
 // PossibleRetentionScheduleFormatValues returns an array of possible values for the RetentionScheduleFormat const type.
-func PossibleRetentionScheduleFormatValues() [3]RetentionScheduleFormat {
-	return [3]RetentionScheduleFormat{RetentionScheduleFormatDaily, RetentionScheduleFormatInvalid, RetentionScheduleFormatWeekly}
+func PossibleRetentionScheduleFormatValues() []RetentionScheduleFormat {
+	return []RetentionScheduleFormat{RetentionScheduleFormatDaily, RetentionScheduleFormatInvalid, RetentionScheduleFormatWeekly}
 }
 
 // SchedulePolicyType enumerates the values for schedule policy type.
@@ -759,8 +759,8 @@ const (
 )
 
 // PossibleSchedulePolicyTypeValues returns an array of possible values for the SchedulePolicyType const type.
-func PossibleSchedulePolicyTypeValues() [3]SchedulePolicyType {
-	return [3]SchedulePolicyType{SchedulePolicyTypeLongTermSchedulePolicy, SchedulePolicyTypeSchedulePolicy, SchedulePolicyTypeSimpleSchedulePolicy}
+func PossibleSchedulePolicyTypeValues() []SchedulePolicyType {
+	return []SchedulePolicyType{SchedulePolicyTypeLongTermSchedulePolicy, SchedulePolicyTypeSchedulePolicy, SchedulePolicyTypeSimpleSchedulePolicy}
 }
 
 // ScheduleRunType enumerates the values for schedule run type.
@@ -776,8 +776,8 @@ const (
 )
 
 // PossibleScheduleRunTypeValues returns an array of possible values for the ScheduleRunType const type.
-func PossibleScheduleRunTypeValues() [3]ScheduleRunType {
-	return [3]ScheduleRunType{ScheduleRunTypeDaily, ScheduleRunTypeInvalid, ScheduleRunTypeWeekly}
+func PossibleScheduleRunTypeValues() []ScheduleRunType {
+	return []ScheduleRunType{ScheduleRunTypeDaily, ScheduleRunTypeInvalid, ScheduleRunTypeWeekly}
 }
 
 // WeekOfMonth enumerates the values for week of month.
@@ -797,8 +797,8 @@ const (
 )
 
 // PossibleWeekOfMonthValues returns an array of possible values for the WeekOfMonth const type.
-func PossibleWeekOfMonthValues() [5]WeekOfMonth {
-	return [5]WeekOfMonth{First, Fourth, Last, Second, Third}
+func PossibleWeekOfMonthValues() []WeekOfMonth {
+	return []WeekOfMonth{First, Fourth, Last, Second, Third}
 }
 
 // WorkloadType enumerates the values for workload type.
@@ -824,8 +824,8 @@ const (
 )
 
 // PossibleWorkloadTypeValues returns an array of possible values for the WorkloadType const type.
-func PossibleWorkloadTypeValues() [8]WorkloadType {
-	return [8]WorkloadType{WorkloadTypeAzureSQLDb, WorkloadTypeDPMUnknown, WorkloadTypeExchange, WorkloadTypeFileFolder, WorkloadTypeInvalid, WorkloadTypeSharepoint, WorkloadTypeSQLDB, WorkloadTypeVM}
+func PossibleWorkloadTypeValues() []WorkloadType {
+	return []WorkloadType{WorkloadTypeAzureSQLDb, WorkloadTypeDPMUnknown, WorkloadTypeExchange, WorkloadTypeFileFolder, WorkloadTypeInvalid, WorkloadTypeSharepoint, WorkloadTypeSQLDB, WorkloadTypeVM}
 }
 
 // AzureBackupServerEngine the backup engine type when Azure Backup Server is used to manage the backups.

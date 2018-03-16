@@ -37,7 +37,7 @@ const (
 	EmailContacts ActionType = original.EmailContacts
 )
 
-func PossibleActionTypeValues() [2]ActionType {
+func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
 }
 
@@ -50,7 +50,7 @@ const (
 	RecoverablePurgeable             DeletionRecoveryLevel = original.RecoverablePurgeable
 )
 
-func PossibleDeletionRecoveryLevelValues() [4]DeletionRecoveryLevel {
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	return original.PossibleDeletionRecoveryLevelValues()
 }
 
@@ -63,7 +63,7 @@ const (
 	SECP256K1 JSONWebKeyCurveName = original.SECP256K1
 )
 
-func PossibleJSONWebKeyCurveNameValues() [4]JSONWebKeyCurveName {
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 	return original.PossibleJSONWebKeyCurveNameValues()
 }
 
@@ -75,7 +75,7 @@ const (
 	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.RSAOAEP256
 )
 
-func PossibleJSONWebKeyEncryptionAlgorithmValues() [3]JSONWebKeyEncryptionAlgorithm {
+func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
 	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()
 }
 
@@ -90,7 +90,7 @@ const (
 	WrapKey   JSONWebKeyOperation = original.WrapKey
 )
 
-func PossibleJSONWebKeyOperationValues() [6]JSONWebKeyOperation {
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 	return original.PossibleJSONWebKeyOperationValues()
 }
 
@@ -110,7 +110,7 @@ const (
 	RSNULL   JSONWebKeySignatureAlgorithm = original.RSNULL
 )
 
-func PossibleJSONWebKeySignatureAlgorithmValues() [11]JSONWebKeySignatureAlgorithm {
+func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
 	return original.PossibleJSONWebKeySignatureAlgorithmValues()
 }
 
@@ -124,7 +124,7 @@ const (
 	RSAHSM JSONWebKeyType = original.RSAHSM
 )
 
-func PossibleJSONWebKeyTypeValues() [5]JSONWebKeyType {
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return original.PossibleJSONWebKeyTypeValues()
 }
 
@@ -142,7 +142,7 @@ const (
 	NonRepudiation   KeyUsageType = original.NonRepudiation
 )
 
-func PossibleKeyUsageTypeValues() [9]KeyUsageType {
+func PossibleKeyUsageTypeValues() []KeyUsageType {
 	return original.PossibleKeyUsageTypeValues()
 }
 

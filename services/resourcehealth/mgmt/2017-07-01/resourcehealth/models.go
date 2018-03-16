@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAvailabilityStateValuesValues returns an array of possible values for the AvailabilityStateValues const type.
-func PossibleAvailabilityStateValuesValues() [3]AvailabilityStateValues {
-	return [3]AvailabilityStateValues{Available, Unavailable, Unknown}
+func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
+	return []AvailabilityStateValues{Available, Unavailable, Unknown}
 }
 
 // ReasonChronicityTypes enumerates the values for reason chronicity types.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleReasonChronicityTypesValues returns an array of possible values for the ReasonChronicityTypes const type.
-func PossibleReasonChronicityTypesValues() [2]ReasonChronicityTypes {
-	return [2]ReasonChronicityTypes{Persistent, Transient}
+func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
+	return []ReasonChronicityTypes{Persistent, Transient}
 }
 
 // AvailabilityStatus availabilityStatus of a resource.

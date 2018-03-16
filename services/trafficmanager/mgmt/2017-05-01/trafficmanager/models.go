@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleEndpointMonitorStatusValues returns an array of possible values for the EndpointMonitorStatus const type.
-func PossibleEndpointMonitorStatusValues() [6]EndpointMonitorStatus {
-	return [6]EndpointMonitorStatus{CheckingEndpoint, Degraded, Disabled, Inactive, Online, Stopped}
+func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
+	return []EndpointMonitorStatus{CheckingEndpoint, Degraded, Disabled, Inactive, Online, Stopped}
 }
 
 // EndpointStatus enumerates the values for endpoint status.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleEndpointStatusValues returns an array of possible values for the EndpointStatus const type.
-func PossibleEndpointStatusValues() [2]EndpointStatus {
-	return [2]EndpointStatus{EndpointStatusDisabled, EndpointStatusEnabled}
+func PossibleEndpointStatusValues() []EndpointStatus {
+	return []EndpointStatus{EndpointStatusDisabled, EndpointStatusEnabled}
 }
 
 // MonitorProtocol enumerates the values for monitor protocol.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleMonitorProtocolValues returns an array of possible values for the MonitorProtocol const type.
-func PossibleMonitorProtocolValues() [3]MonitorProtocol {
-	return [3]MonitorProtocol{HTTP, HTTPS, TCP}
+func PossibleMonitorProtocolValues() []MonitorProtocol {
+	return []MonitorProtocol{HTTP, HTTPS, TCP}
 }
 
 // ProfileMonitorStatus enumerates the values for profile monitor status.
@@ -94,8 +94,8 @@ const (
 )
 
 // PossibleProfileMonitorStatusValues returns an array of possible values for the ProfileMonitorStatus const type.
-func PossibleProfileMonitorStatusValues() [5]ProfileMonitorStatus {
-	return [5]ProfileMonitorStatus{ProfileMonitorStatusCheckingEndpoints, ProfileMonitorStatusDegraded, ProfileMonitorStatusDisabled, ProfileMonitorStatusInactive, ProfileMonitorStatusOnline}
+func PossibleProfileMonitorStatusValues() []ProfileMonitorStatus {
+	return []ProfileMonitorStatus{ProfileMonitorStatusCheckingEndpoints, ProfileMonitorStatusDegraded, ProfileMonitorStatusDisabled, ProfileMonitorStatusInactive, ProfileMonitorStatusOnline}
 }
 
 // ProfileStatus enumerates the values for profile status.
@@ -109,8 +109,8 @@ const (
 )
 
 // PossibleProfileStatusValues returns an array of possible values for the ProfileStatus const type.
-func PossibleProfileStatusValues() [2]ProfileStatus {
-	return [2]ProfileStatus{ProfileStatusDisabled, ProfileStatusEnabled}
+func PossibleProfileStatusValues() []ProfileStatus {
+	return []ProfileStatus{ProfileStatusDisabled, ProfileStatusEnabled}
 }
 
 // TrafficRoutingMethod enumerates the values for traffic routing method.
@@ -128,8 +128,8 @@ const (
 )
 
 // PossibleTrafficRoutingMethodValues returns an array of possible values for the TrafficRoutingMethod const type.
-func PossibleTrafficRoutingMethodValues() [4]TrafficRoutingMethod {
-	return [4]TrafficRoutingMethod{Geographic, Performance, Priority, Weighted}
+func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
+	return []TrafficRoutingMethod{Geographic, Performance, Priority, Weighted}
 }
 
 // CheckTrafficManagerRelativeDNSNameAvailabilityParameters parameters supplied to check Traffic Manager name

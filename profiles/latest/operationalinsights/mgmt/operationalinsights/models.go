@@ -41,7 +41,7 @@ const (
 	Pending   PurgeState = original.Pending
 )
 
-func PossiblePurgeStateValues() [2]PurgeState {
+func PossiblePurgeStateValues() []PurgeState {
 	return original.PossiblePurgeStateValues()
 }
 
@@ -52,7 +52,7 @@ const (
 	Desc SearchSortEnum = original.Desc
 )
 
-func PossibleSearchSortEnumValues() [2]SearchSortEnum {
+func PossibleSearchSortEnumValues() []SearchSortEnum {
 	return original.PossibleSearchSortEnumValues()
 }
 
@@ -63,7 +63,7 @@ const (
 	OK    StorageInsightState = original.OK
 )
 
-func PossibleStorageInsightStateValues() [2]StorageInsightState {
+func PossibleStorageInsightStateValues() []StorageInsightState {
 	return original.PossibleStorageInsightStateValues()
 }
 

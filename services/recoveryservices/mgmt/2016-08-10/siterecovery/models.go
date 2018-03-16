@@ -41,8 +41,8 @@ const (
 )
 
 // PossibleA2ARpRecoveryPointTypeValues returns an array of possible values for the A2ARpRecoveryPointType const type.
-func PossibleA2ARpRecoveryPointTypeValues() [4]A2ARpRecoveryPointType {
-	return [4]A2ARpRecoveryPointType{Latest, LatestApplicationConsistent, LatestCrashConsistent, LatestProcessed}
+func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
+	return []A2ARpRecoveryPointType{Latest, LatestApplicationConsistent, LatestCrashConsistent, LatestProcessed}
 }
 
 // AlternateLocationRecoveryOption enumerates the values for alternate location recovery option.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleAlternateLocationRecoveryOptionValues returns an array of possible values for the AlternateLocationRecoveryOption const type.
-func PossibleAlternateLocationRecoveryOptionValues() [2]AlternateLocationRecoveryOption {
-	return [2]AlternateLocationRecoveryOption{CreateVMIfNotFound, NoAction}
+func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecoveryOption {
+	return []AlternateLocationRecoveryOption{CreateVMIfNotFound, NoAction}
 }
 
 // DataSyncStatus enumerates the values for data sync status.
@@ -71,8 +71,8 @@ const (
 )
 
 // PossibleDataSyncStatusValues returns an array of possible values for the DataSyncStatus const type.
-func PossibleDataSyncStatusValues() [2]DataSyncStatus {
-	return [2]DataSyncStatus{ForDownTime, ForSynchronization}
+func PossibleDataSyncStatusValues() []DataSyncStatus {
+	return []DataSyncStatus{ForDownTime, ForSynchronization}
 }
 
 // DisableProtectionReason enumerates the values for disable protection reason.
@@ -86,8 +86,8 @@ const (
 )
 
 // PossibleDisableProtectionReasonValues returns an array of possible values for the DisableProtectionReason const type.
-func PossibleDisableProtectionReasonValues() [2]DisableProtectionReason {
-	return [2]DisableProtectionReason{MigrationComplete, NotSpecified}
+func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
+	return []DisableProtectionReason{MigrationComplete, NotSpecified}
 }
 
 // FailoverDeploymentModel enumerates the values for failover deployment model.
@@ -103,8 +103,8 @@ const (
 )
 
 // PossibleFailoverDeploymentModelValues returns an array of possible values for the FailoverDeploymentModel const type.
-func PossibleFailoverDeploymentModelValues() [3]FailoverDeploymentModel {
-	return [3]FailoverDeploymentModel{Classic, NotApplicable, ResourceManager}
+func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
+	return []FailoverDeploymentModel{Classic, NotApplicable, ResourceManager}
 }
 
 // HealthErrorCategory enumerates the values for health error category.
@@ -120,8 +120,8 @@ const (
 )
 
 // PossibleHealthErrorCategoryValues returns an array of possible values for the HealthErrorCategory const type.
-func PossibleHealthErrorCategoryValues() [3]HealthErrorCategory {
-	return [3]HealthErrorCategory{Configuration, Replication, TestFailover}
+func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
+	return []HealthErrorCategory{Configuration, Replication, TestFailover}
 }
 
 // HyperVReplicaAzureRpRecoveryPointType enumerates the values for hyper v replica azure rp recovery point
@@ -138,8 +138,8 @@ const (
 )
 
 // PossibleHyperVReplicaAzureRpRecoveryPointTypeValues returns an array of possible values for the HyperVReplicaAzureRpRecoveryPointType const type.
-func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() [3]HyperVReplicaAzureRpRecoveryPointType {
-	return [3]HyperVReplicaAzureRpRecoveryPointType{HyperVReplicaAzureRpRecoveryPointTypeLatest, HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent, HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed}
+func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
+	return []HyperVReplicaAzureRpRecoveryPointType{HyperVReplicaAzureRpRecoveryPointTypeLatest, HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent, HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed}
 }
 
 // IdentityProviderType enumerates the values for identity provider type.
@@ -153,8 +153,8 @@ const (
 )
 
 // PossibleIdentityProviderTypeValues returns an array of possible values for the IdentityProviderType const type.
-func PossibleIdentityProviderTypeValues() [2]IdentityProviderType {
-	return [2]IdentityProviderType{CustomerActiveDirectory, RecoveryServicesActiveDirectory}
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
+	return []IdentityProviderType{CustomerActiveDirectory, RecoveryServicesActiveDirectory}
 }
 
 // InMageV2RpRecoveryPointType enumerates the values for in mage v2 rp recovery point type.
@@ -172,8 +172,8 @@ const (
 )
 
 // PossibleInMageV2RpRecoveryPointTypeValues returns an array of possible values for the InMageV2RpRecoveryPointType const type.
-func PossibleInMageV2RpRecoveryPointTypeValues() [4]InMageV2RpRecoveryPointType {
-	return [4]InMageV2RpRecoveryPointType{InMageV2RpRecoveryPointTypeLatest, InMageV2RpRecoveryPointTypeLatestApplicationConsistent, InMageV2RpRecoveryPointTypeLatestCrashConsistent, InMageV2RpRecoveryPointTypeLatestProcessed}
+func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
+	return []InMageV2RpRecoveryPointType{InMageV2RpRecoveryPointTypeLatest, InMageV2RpRecoveryPointTypeLatestApplicationConsistent, InMageV2RpRecoveryPointTypeLatestCrashConsistent, InMageV2RpRecoveryPointTypeLatestProcessed}
 }
 
 // InstanceType enumerates the values for instance type.
@@ -197,8 +197,8 @@ const (
 )
 
 // PossibleInstanceTypeValues returns an array of possible values for the InstanceType const type.
-func PossibleInstanceTypeValues() [7]InstanceType {
-	return [7]InstanceType{InstanceTypeA2A, InstanceTypeEventProviderSpecificDetails, InstanceTypeHyperVReplica2012, InstanceTypeHyperVReplica2012R2, InstanceTypeHyperVReplicaAzure, InstanceTypeHyperVReplicaBaseEventDetails, InstanceTypeInMageAzureV2}
+func PossibleInstanceTypeValues() []InstanceType {
+	return []InstanceType{InstanceTypeA2A, InstanceTypeEventProviderSpecificDetails, InstanceTypeHyperVReplica2012, InstanceTypeHyperVReplica2012R2, InstanceTypeHyperVReplicaAzure, InstanceTypeHyperVReplicaBaseEventDetails, InstanceTypeInMageAzureV2}
 }
 
 // InstanceTypeBasicApplyRecoveryPointProviderSpecificInput enumerates the values for instance type basic apply
@@ -217,8 +217,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicApplyRecoveryPointProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicApplyRecoveryPointProviderSpecificInput const type.
-func PossibleInstanceTypeBasicApplyRecoveryPointProviderSpecificInputValues() [4]InstanceTypeBasicApplyRecoveryPointProviderSpecificInput {
-	return [4]InstanceTypeBasicApplyRecoveryPointProviderSpecificInput{InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2}
+func PossibleInstanceTypeBasicApplyRecoveryPointProviderSpecificInputValues() []InstanceTypeBasicApplyRecoveryPointProviderSpecificInput {
+	return []InstanceTypeBasicApplyRecoveryPointProviderSpecificInput{InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2}
 }
 
 // InstanceTypeBasicConfigurationSettings enumerates the values for instance type basic configuration settings.
@@ -236,8 +236,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicConfigurationSettingsValues returns an array of possible values for the InstanceTypeBasicConfigurationSettings const type.
-func PossibleInstanceTypeBasicConfigurationSettingsValues() [4]InstanceTypeBasicConfigurationSettings {
-	return [4]InstanceTypeBasicConfigurationSettings{InstanceTypeConfigurationSettings, InstanceTypeHyperVVirtualMachine, InstanceTypeReplicationGroupDetails, InstanceTypeVMwareVirtualMachine}
+func PossibleInstanceTypeBasicConfigurationSettingsValues() []InstanceTypeBasicConfigurationSettings {
+	return []InstanceTypeBasicConfigurationSettings{InstanceTypeConfigurationSettings, InstanceTypeHyperVVirtualMachine, InstanceTypeReplicationGroupDetails, InstanceTypeVMwareVirtualMachine}
 }
 
 // InstanceTypeBasicDisableProtectionProviderSpecificInput enumerates the values for instance type basic
@@ -252,8 +252,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicDisableProtectionProviderSpecificInput const type.
-func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() [2]InstanceTypeBasicDisableProtectionProviderSpecificInput {
-	return [2]InstanceTypeBasicDisableProtectionProviderSpecificInput{InstanceTypeDisableProtectionProviderSpecificInput, InstanceTypeInMage}
+func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
+	return []InstanceTypeBasicDisableProtectionProviderSpecificInput{InstanceTypeDisableProtectionProviderSpecificInput, InstanceTypeInMage}
 }
 
 // InstanceTypeBasicEnableProtectionProviderSpecificInput enumerates the values for instance type basic enable
@@ -276,8 +276,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicEnableProtectionProviderSpecificInput const type.
-func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() [6]InstanceTypeBasicEnableProtectionProviderSpecificInput {
-	return [6]InstanceTypeBasicEnableProtectionProviderSpecificInput{InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan}
+func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() []InstanceTypeBasicEnableProtectionProviderSpecificInput {
+	return []InstanceTypeBasicEnableProtectionProviderSpecificInput{InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan}
 }
 
 // InstanceTypeBasicEventSpecificDetails enumerates the values for instance type basic event specific details.
@@ -291,8 +291,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicEventSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicEventSpecificDetails const type.
-func PossibleInstanceTypeBasicEventSpecificDetailsValues() [2]InstanceTypeBasicEventSpecificDetails {
-	return [2]InstanceTypeBasicEventSpecificDetails{InstanceTypeEventSpecificDetails, InstanceTypeJobStatus}
+func PossibleInstanceTypeBasicEventSpecificDetailsValues() []InstanceTypeBasicEventSpecificDetails {
+	return []InstanceTypeBasicEventSpecificDetails{InstanceTypeEventSpecificDetails, InstanceTypeJobStatus}
 }
 
 // InstanceTypeBasicFabricSpecificCreateNetworkMappingInput enumerates the values for instance type basic
@@ -311,8 +311,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues returns an array of possible values for the InstanceTypeBasicFabricSpecificCreateNetworkMappingInput const type.
-func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() [4]InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
-	return [4]InstanceTypeBasicFabricSpecificCreateNetworkMappingInput{InstanceTypeAzureToAzure, InstanceTypeFabricSpecificCreateNetworkMappingInput, InstanceTypeVmmToAzure, InstanceTypeVmmToVmm}
+func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
+	return []InstanceTypeBasicFabricSpecificCreateNetworkMappingInput{InstanceTypeAzureToAzure, InstanceTypeFabricSpecificCreateNetworkMappingInput, InstanceTypeVmmToAzure, InstanceTypeVmmToVmm}
 }
 
 // InstanceTypeBasicFabricSpecificCreationInput enumerates the values for instance type basic fabric specific
@@ -329,8 +329,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicFabricSpecificCreationInputValues returns an array of possible values for the InstanceTypeBasicFabricSpecificCreationInput const type.
-func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() [3]InstanceTypeBasicFabricSpecificCreationInput {
-	return [3]InstanceTypeBasicFabricSpecificCreationInput{InstanceTypeAzure, InstanceTypeFabricSpecificCreationInput, InstanceTypeVMwareV2}
+func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() []InstanceTypeBasicFabricSpecificCreationInput {
+	return []InstanceTypeBasicFabricSpecificCreationInput{InstanceTypeAzure, InstanceTypeFabricSpecificCreationInput, InstanceTypeVMwareV2}
 }
 
 // InstanceTypeBasicFabricSpecificDetails enumerates the values for instance type basic fabric specific
@@ -353,8 +353,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicFabricSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicFabricSpecificDetails const type.
-func PossibleInstanceTypeBasicFabricSpecificDetailsValues() [6]InstanceTypeBasicFabricSpecificDetails {
-	return [6]InstanceTypeBasicFabricSpecificDetails{InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure, InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails, InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2}
+func PossibleInstanceTypeBasicFabricSpecificDetailsValues() []InstanceTypeBasicFabricSpecificDetails {
+	return []InstanceTypeBasicFabricSpecificDetails{InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure, InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails, InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware, InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2}
 }
 
 // InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput enumerates the values for instance type basic
@@ -373,8 +373,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues returns an array of possible values for the InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput const type.
-func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() [4]InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
-	return [4]InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput{InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeFabricSpecificUpdateNetworkMappingInput, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm}
+func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
+	return []InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput{InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeAzureToAzure, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeFabricSpecificUpdateNetworkMappingInput, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToAzure, InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm}
 }
 
 // InstanceTypeBasicGroupTaskDetails enumerates the values for instance type basic group task details.
@@ -392,8 +392,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicGroupTaskDetailsValues returns an array of possible values for the InstanceTypeBasicGroupTaskDetails const type.
-func PossibleInstanceTypeBasicGroupTaskDetailsValues() [4]InstanceTypeBasicGroupTaskDetails {
-	return [4]InstanceTypeBasicGroupTaskDetails{InstanceTypeGroupTaskDetails, InstanceTypeInlineWorkflowTaskDetails, InstanceTypeRecoveryPlanGroupTaskDetails, InstanceTypeRecoveryPlanShutdownGroupTaskDetails}
+func PossibleInstanceTypeBasicGroupTaskDetailsValues() []InstanceTypeBasicGroupTaskDetails {
+	return []InstanceTypeBasicGroupTaskDetails{InstanceTypeGroupTaskDetails, InstanceTypeInlineWorkflowTaskDetails, InstanceTypeRecoveryPlanGroupTaskDetails, InstanceTypeRecoveryPlanShutdownGroupTaskDetails}
 }
 
 // InstanceTypeBasicJobDetails enumerates the values for instance type basic job details.
@@ -415,8 +415,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicJobDetailsValues returns an array of possible values for the InstanceTypeBasicJobDetails const type.
-func PossibleInstanceTypeBasicJobDetailsValues() [6]InstanceTypeBasicJobDetails {
-	return [6]InstanceTypeBasicJobDetails{InstanceTypeAsrJobDetails, InstanceTypeExportJobDetails, InstanceTypeFailoverJobDetails, InstanceTypeJobDetails, InstanceTypeSwitchProtectionJobDetails, InstanceTypeTestFailoverJobDetails}
+func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
+	return []InstanceTypeBasicJobDetails{InstanceTypeAsrJobDetails, InstanceTypeExportJobDetails, InstanceTypeFailoverJobDetails, InstanceTypeJobDetails, InstanceTypeSwitchProtectionJobDetails, InstanceTypeTestFailoverJobDetails}
 }
 
 // InstanceTypeBasicNetworkMappingFabricSpecificSettings enumerates the values for instance type basic network
@@ -435,8 +435,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues returns an array of possible values for the InstanceTypeBasicNetworkMappingFabricSpecificSettings const type.
-func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() [4]InstanceTypeBasicNetworkMappingFabricSpecificSettings {
-	return [4]InstanceTypeBasicNetworkMappingFabricSpecificSettings{InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeAzureToAzure, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeNetworkMappingFabricSpecificSettings, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm}
+func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() []InstanceTypeBasicNetworkMappingFabricSpecificSettings {
+	return []InstanceTypeBasicNetworkMappingFabricSpecificSettings{InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeAzureToAzure, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeNetworkMappingFabricSpecificSettings, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure, InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm}
 }
 
 // InstanceTypeBasicPolicyProviderSpecificDetails enumerates the values for instance type basic policy provider
@@ -469,8 +469,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicPolicyProviderSpecificDetails const type.
-func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() [11]InstanceTypeBasicPolicyProviderSpecificDetails {
-	return [11]InstanceTypeBasicPolicyProviderSpecificDetails{InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt}
+func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() []InstanceTypeBasicPolicyProviderSpecificDetails {
+	return []InstanceTypeBasicPolicyProviderSpecificDetails{InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration, InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt}
 }
 
 // InstanceTypeBasicPolicyProviderSpecificInput enumerates the values for instance type basic policy provider
@@ -497,8 +497,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicPolicyProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicPolicyProviderSpecificInput const type.
-func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() [8]InstanceTypeBasicPolicyProviderSpecificInput {
-	return [8]InstanceTypeBasicPolicyProviderSpecificInput{InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt}
+func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceTypeBasicPolicyProviderSpecificInput {
+	return []InstanceTypeBasicPolicyProviderSpecificInput{InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt}
 }
 
 // InstanceTypeBasicProviderSpecificFailoverInput enumerates the values for instance type basic provider
@@ -521,8 +521,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicProviderSpecificFailoverInputValues returns an array of possible values for the InstanceTypeBasicProviderSpecificFailoverInput const type.
-func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() [6]InstanceTypeBasicProviderSpecificFailoverInput {
-	return [6]InstanceTypeBasicProviderSpecificFailoverInput{InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeA2A, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeInMage, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeInMageAzureV2, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput}
+func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() []InstanceTypeBasicProviderSpecificFailoverInput {
+	return []InstanceTypeBasicProviderSpecificFailoverInput{InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeA2A, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeInMage, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeInMageAzureV2, InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput}
 }
 
 // InstanceTypeBasicRecoveryPlanActionDetails enumerates the values for instance type basic recovery plan
@@ -541,8 +541,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues returns an array of possible values for the InstanceTypeBasicRecoveryPlanActionDetails const type.
-func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() [4]InstanceTypeBasicRecoveryPlanActionDetails {
-	return [4]InstanceTypeBasicRecoveryPlanActionDetails{InstanceTypeAutomationRunbookActionDetails, InstanceTypeManualActionDetails, InstanceTypeRecoveryPlanActionDetails, InstanceTypeScriptActionDetails}
+func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBasicRecoveryPlanActionDetails {
+	return []InstanceTypeBasicRecoveryPlanActionDetails{InstanceTypeAutomationRunbookActionDetails, InstanceTypeManualActionDetails, InstanceTypeRecoveryPlanActionDetails, InstanceTypeScriptActionDetails}
 }
 
 // InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput enumerates the values for instance type basic
@@ -565,8 +565,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues returns an array of possible values for the InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput const type.
-func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() [6]InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
-	return [6]InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput{InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput}
+func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
+	return []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput{InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2, InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput}
 }
 
 // InstanceTypeBasicReplicationProviderSpecificContainerCreationInput enumerates the values for instance type
@@ -581,8 +581,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificContainerCreationInput const type.
-func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() [2]InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
-	return [2]InstanceTypeBasicReplicationProviderSpecificContainerCreationInput{InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput}
+func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
+	return []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput{InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput}
 }
 
 // InstanceTypeBasicReplicationProviderSpecificSettings enumerates the values for instance type basic
@@ -609,8 +609,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificSettings const type.
-func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() [8]InstanceTypeBasicReplicationProviderSpecificSettings {
-	return [8]InstanceTypeBasicReplicationProviderSpecificSettings{InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings}
+func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
+	return []InstanceTypeBasicReplicationProviderSpecificSettings{InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings}
 }
 
 // InstanceTypeBasicReverseReplicationProviderSpecificInput enumerates the values for instance type basic
@@ -631,8 +631,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicReverseReplicationProviderSpecificInput const type.
-func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() [5]InstanceTypeBasicReverseReplicationProviderSpecificInput {
-	return [5]InstanceTypeBasicReverseReplicationProviderSpecificInput{InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput}
+func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
+	return []InstanceTypeBasicReverseReplicationProviderSpecificInput{InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput}
 }
 
 // InstanceTypeBasicSwitchProtectionProviderSpecificInput enumerates the values for instance type basic switch
@@ -647,8 +647,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues returns an array of possible values for the InstanceTypeBasicSwitchProtectionProviderSpecificInput const type.
-func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() [2]InstanceTypeBasicSwitchProtectionProviderSpecificInput {
-	return [2]InstanceTypeBasicSwitchProtectionProviderSpecificInput{InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput}
+func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() []InstanceTypeBasicSwitchProtectionProviderSpecificInput {
+	return []InstanceTypeBasicSwitchProtectionProviderSpecificInput{InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput}
 }
 
 // InstanceTypeBasicTaskTypeDetails enumerates the values for instance type basic task type details.
@@ -676,8 +676,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicTaskTypeDetailsValues returns an array of possible values for the InstanceTypeBasicTaskTypeDetails const type.
-func PossibleInstanceTypeBasicTaskTypeDetailsValues() [9]InstanceTypeBasicTaskTypeDetails {
-	return [9]InstanceTypeBasicTaskTypeDetails{InstanceTypeAutomationRunbookTaskDetails, InstanceTypeConsistencyCheckTaskDetails, InstanceTypeFabricReplicationGroupTaskDetails, InstanceTypeJobTaskDetails, InstanceTypeManualActionTaskDetails, InstanceTypeScriptActionTaskDetails, InstanceTypeTaskTypeDetails, InstanceTypeVirtualMachineTaskDetails, InstanceTypeVMNicUpdatesTaskDetails}
+func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTypeDetails {
+	return []InstanceTypeBasicTaskTypeDetails{InstanceTypeAutomationRunbookTaskDetails, InstanceTypeConsistencyCheckTaskDetails, InstanceTypeFabricReplicationGroupTaskDetails, InstanceTypeJobTaskDetails, InstanceTypeManualActionTaskDetails, InstanceTypeScriptActionTaskDetails, InstanceTypeTaskTypeDetails, InstanceTypeVirtualMachineTaskDetails, InstanceTypeVMNicUpdatesTaskDetails}
 }
 
 // InstanceTypeBasicUpdateReplicationProtectedItemProviderInput enumerates the values for instance type basic
@@ -696,8 +696,8 @@ const (
 )
 
 // PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues returns an array of possible values for the InstanceTypeBasicUpdateReplicationProtectedItemProviderInput const type.
-func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() [4]InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
-	return [4]InstanceTypeBasicUpdateReplicationProtectedItemProviderInput{InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput}
+func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
+	return []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput{InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2, InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput}
 }
 
 // LicenseType enumerates the values for license type.
@@ -713,8 +713,8 @@ const (
 )
 
 // PossibleLicenseTypeValues returns an array of possible values for the LicenseType const type.
-func PossibleLicenseTypeValues() [3]LicenseType {
-	return [3]LicenseType{LicenseTypeNoLicenseType, LicenseTypeNotSpecified, LicenseTypeWindowsServer}
+func PossibleLicenseTypeValues() []LicenseType {
+	return []LicenseType{LicenseTypeNoLicenseType, LicenseTypeNotSpecified, LicenseTypeWindowsServer}
 }
 
 // MultiVMSyncStatus enumerates the values for multi vm sync status.
@@ -728,8 +728,8 @@ const (
 )
 
 // PossibleMultiVMSyncStatusValues returns an array of possible values for the MultiVMSyncStatus const type.
-func PossibleMultiVMSyncStatusValues() [2]MultiVMSyncStatus {
-	return [2]MultiVMSyncStatus{Disabled, Enabled}
+func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
+	return []MultiVMSyncStatus{Disabled, Enabled}
 }
 
 // PossibleOperationsDirections enumerates the values for possible operations directions.
@@ -743,8 +743,8 @@ const (
 )
 
 // PossiblePossibleOperationsDirectionsValues returns an array of possible values for the PossibleOperationsDirections const type.
-func PossiblePossibleOperationsDirectionsValues() [2]PossibleOperationsDirections {
-	return [2]PossibleOperationsDirections{PrimaryToRecovery, RecoveryToPrimary}
+func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
+	return []PossibleOperationsDirections{PrimaryToRecovery, RecoveryToPrimary}
 }
 
 // RecoveryPlanActionLocation enumerates the values for recovery plan action location.
@@ -758,8 +758,8 @@ const (
 )
 
 // PossibleRecoveryPlanActionLocationValues returns an array of possible values for the RecoveryPlanActionLocation const type.
-func PossibleRecoveryPlanActionLocationValues() [2]RecoveryPlanActionLocation {
-	return [2]RecoveryPlanActionLocation{Primary, Recovery}
+func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
+	return []RecoveryPlanActionLocation{Primary, Recovery}
 }
 
 // RecoveryPlanGroupType enumerates the values for recovery plan group type.
@@ -775,8 +775,8 @@ const (
 )
 
 // PossibleRecoveryPlanGroupTypeValues returns an array of possible values for the RecoveryPlanGroupType const type.
-func PossibleRecoveryPlanGroupTypeValues() [3]RecoveryPlanGroupType {
-	return [3]RecoveryPlanGroupType{Boot, Failover, Shutdown}
+func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
+	return []RecoveryPlanGroupType{Boot, Failover, Shutdown}
 }
 
 // RecoveryPointType enumerates the values for recovery point type.
@@ -792,8 +792,8 @@ const (
 )
 
 // PossibleRecoveryPointTypeValues returns an array of possible values for the RecoveryPointType const type.
-func PossibleRecoveryPointTypeValues() [3]RecoveryPointType {
-	return [3]RecoveryPointType{Custom, LatestTag, LatestTime}
+func PossibleRecoveryPointTypeValues() []RecoveryPointType {
+	return []RecoveryPointType{Custom, LatestTag, LatestTime}
 }
 
 // ReplicationProtectedItemOperation enumerates the values for replication protected item operation.
@@ -829,8 +829,8 @@ const (
 )
 
 // PossibleReplicationProtectedItemOperationValues returns an array of possible values for the ReplicationProtectedItemOperation const type.
-func PossibleReplicationProtectedItemOperationValues() [13]ReplicationProtectedItemOperation {
-	return [13]ReplicationProtectedItemOperation{ReplicationProtectedItemOperationChangePit, ReplicationProtectedItemOperationCommit, ReplicationProtectedItemOperationCompleteMigration, ReplicationProtectedItemOperationDisableProtection, ReplicationProtectedItemOperationFailback, ReplicationProtectedItemOperationFinalizeFailback, ReplicationProtectedItemOperationPlannedFailover, ReplicationProtectedItemOperationRepairReplication, ReplicationProtectedItemOperationReverseReplicate, ReplicationProtectedItemOperationSwitchProtection, ReplicationProtectedItemOperationTestFailover, ReplicationProtectedItemOperationTestFailoverCleanup, ReplicationProtectedItemOperationUnplannedFailover}
+func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
+	return []ReplicationProtectedItemOperation{ReplicationProtectedItemOperationChangePit, ReplicationProtectedItemOperationCommit, ReplicationProtectedItemOperationCompleteMigration, ReplicationProtectedItemOperationDisableProtection, ReplicationProtectedItemOperationFailback, ReplicationProtectedItemOperationFinalizeFailback, ReplicationProtectedItemOperationPlannedFailover, ReplicationProtectedItemOperationRepairReplication, ReplicationProtectedItemOperationReverseReplicate, ReplicationProtectedItemOperationSwitchProtection, ReplicationProtectedItemOperationTestFailover, ReplicationProtectedItemOperationTestFailoverCleanup, ReplicationProtectedItemOperationUnplannedFailover}
 }
 
 // RpInMageRecoveryPointType enumerates the values for rp in mage recovery point type.
@@ -846,8 +846,8 @@ const (
 )
 
 // PossibleRpInMageRecoveryPointTypeValues returns an array of possible values for the RpInMageRecoveryPointType const type.
-func PossibleRpInMageRecoveryPointTypeValues() [3]RpInMageRecoveryPointType {
-	return [3]RpInMageRecoveryPointType{RpInMageRecoveryPointTypeCustom, RpInMageRecoveryPointTypeLatestTag, RpInMageRecoveryPointTypeLatestTime}
+func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
+	return []RpInMageRecoveryPointType{RpInMageRecoveryPointTypeCustom, RpInMageRecoveryPointTypeLatestTag, RpInMageRecoveryPointTypeLatestTime}
 }
 
 // SetMultiVMSyncStatus enumerates the values for set multi vm sync status.
@@ -861,8 +861,8 @@ const (
 )
 
 // PossibleSetMultiVMSyncStatusValues returns an array of possible values for the SetMultiVMSyncStatus const type.
-func PossibleSetMultiVMSyncStatusValues() [2]SetMultiVMSyncStatus {
-	return [2]SetMultiVMSyncStatus{Disable, Enable}
+func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
+	return []SetMultiVMSyncStatus{Disable, Enable}
 }
 
 // Severity enumerates the values for severity.
@@ -880,8 +880,8 @@ const (
 )
 
 // PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() [4]Severity {
-	return [4]Severity{Error, Info, NONE, Warning}
+func PossibleSeverityValues() []Severity {
+	return []Severity{Error, Info, NONE, Warning}
 }
 
 // SourceSiteOperations enumerates the values for source site operations.
@@ -895,8 +895,8 @@ const (
 )
 
 // PossibleSourceSiteOperationsValues returns an array of possible values for the SourceSiteOperations const type.
-func PossibleSourceSiteOperationsValues() [2]SourceSiteOperations {
-	return [2]SourceSiteOperations{NotRequired, Required}
+func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
+	return []SourceSiteOperations{NotRequired, Required}
 }
 
 // A2AApplyRecoveryPointInput applyRecoveryPoint input specific to A2A provider.

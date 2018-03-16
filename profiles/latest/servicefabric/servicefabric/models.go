@@ -215,7 +215,7 @@ const (
 	Warning AggregatedHealthState = original.Warning
 )
 
-func PossibleAggregatedHealthStateValues() [5]AggregatedHealthState {
+func PossibleAggregatedHealthStateValues() []AggregatedHealthState {
 	return original.PossibleAggregatedHealthStateValues()
 }
 
@@ -229,7 +229,7 @@ const (
 	AggregatedHealthState1Warning AggregatedHealthState1 = original.AggregatedHealthState1Warning
 )
 
-func PossibleAggregatedHealthState1Values() [5]AggregatedHealthState1 {
+func PossibleAggregatedHealthState1Values() []AggregatedHealthState1 {
 	return original.PossibleAggregatedHealthState1Values()
 }
 
@@ -243,7 +243,7 @@ const (
 	AggregatedHealthState10Warning AggregatedHealthState10 = original.AggregatedHealthState10Warning
 )
 
-func PossibleAggregatedHealthState10Values() [5]AggregatedHealthState10 {
+func PossibleAggregatedHealthState10Values() []AggregatedHealthState10 {
 	return original.PossibleAggregatedHealthState10Values()
 }
 
@@ -257,7 +257,7 @@ const (
 	AggregatedHealthState11Warning AggregatedHealthState11 = original.AggregatedHealthState11Warning
 )
 
-func PossibleAggregatedHealthState11Values() [5]AggregatedHealthState11 {
+func PossibleAggregatedHealthState11Values() []AggregatedHealthState11 {
 	return original.PossibleAggregatedHealthState11Values()
 }
 
@@ -271,7 +271,7 @@ const (
 	AggregatedHealthState12Warning AggregatedHealthState12 = original.AggregatedHealthState12Warning
 )
 
-func PossibleAggregatedHealthState12Values() [5]AggregatedHealthState12 {
+func PossibleAggregatedHealthState12Values() []AggregatedHealthState12 {
 	return original.PossibleAggregatedHealthState12Values()
 }
 
@@ -285,7 +285,7 @@ const (
 	AggregatedHealthState13Warning AggregatedHealthState13 = original.AggregatedHealthState13Warning
 )
 
-func PossibleAggregatedHealthState13Values() [5]AggregatedHealthState13 {
+func PossibleAggregatedHealthState13Values() []AggregatedHealthState13 {
 	return original.PossibleAggregatedHealthState13Values()
 }
 
@@ -299,7 +299,7 @@ const (
 	AggregatedHealthState14Warning AggregatedHealthState14 = original.AggregatedHealthState14Warning
 )
 
-func PossibleAggregatedHealthState14Values() [5]AggregatedHealthState14 {
+func PossibleAggregatedHealthState14Values() []AggregatedHealthState14 {
 	return original.PossibleAggregatedHealthState14Values()
 }
 
@@ -313,7 +313,7 @@ const (
 	AggregatedHealthState15Warning AggregatedHealthState15 = original.AggregatedHealthState15Warning
 )
 
-func PossibleAggregatedHealthState15Values() [5]AggregatedHealthState15 {
+func PossibleAggregatedHealthState15Values() []AggregatedHealthState15 {
 	return original.PossibleAggregatedHealthState15Values()
 }
 
@@ -327,7 +327,7 @@ const (
 	AggregatedHealthState2Warning AggregatedHealthState2 = original.AggregatedHealthState2Warning
 )
 
-func PossibleAggregatedHealthState2Values() [5]AggregatedHealthState2 {
+func PossibleAggregatedHealthState2Values() []AggregatedHealthState2 {
 	return original.PossibleAggregatedHealthState2Values()
 }
 
@@ -341,7 +341,7 @@ const (
 	AggregatedHealthState3Warning AggregatedHealthState3 = original.AggregatedHealthState3Warning
 )
 
-func PossibleAggregatedHealthState3Values() [5]AggregatedHealthState3 {
+func PossibleAggregatedHealthState3Values() []AggregatedHealthState3 {
 	return original.PossibleAggregatedHealthState3Values()
 }
 
@@ -355,7 +355,7 @@ const (
 	AggregatedHealthState4Warning AggregatedHealthState4 = original.AggregatedHealthState4Warning
 )
 
-func PossibleAggregatedHealthState4Values() [5]AggregatedHealthState4 {
+func PossibleAggregatedHealthState4Values() []AggregatedHealthState4 {
 	return original.PossibleAggregatedHealthState4Values()
 }
 
@@ -369,7 +369,7 @@ const (
 	AggregatedHealthState5Warning AggregatedHealthState5 = original.AggregatedHealthState5Warning
 )
 
-func PossibleAggregatedHealthState5Values() [5]AggregatedHealthState5 {
+func PossibleAggregatedHealthState5Values() []AggregatedHealthState5 {
 	return original.PossibleAggregatedHealthState5Values()
 }
 
@@ -383,7 +383,7 @@ const (
 	AggregatedHealthState6Warning AggregatedHealthState6 = original.AggregatedHealthState6Warning
 )
 
-func PossibleAggregatedHealthState6Values() [5]AggregatedHealthState6 {
+func PossibleAggregatedHealthState6Values() []AggregatedHealthState6 {
 	return original.PossibleAggregatedHealthState6Values()
 }
 
@@ -397,7 +397,7 @@ const (
 	AggregatedHealthState7Warning AggregatedHealthState7 = original.AggregatedHealthState7Warning
 )
 
-func PossibleAggregatedHealthState7Values() [5]AggregatedHealthState7 {
+func PossibleAggregatedHealthState7Values() []AggregatedHealthState7 {
 	return original.PossibleAggregatedHealthState7Values()
 }
 
@@ -411,7 +411,7 @@ const (
 	AggregatedHealthState8Warning AggregatedHealthState8 = original.AggregatedHealthState8Warning
 )
 
-func PossibleAggregatedHealthState8Values() [5]AggregatedHealthState8 {
+func PossibleAggregatedHealthState8Values() []AggregatedHealthState8 {
 	return original.PossibleAggregatedHealthState8Values()
 }
 
@@ -425,7 +425,7 @@ const (
 	AggregatedHealthState9Warning AggregatedHealthState9 = original.AggregatedHealthState9Warning
 )
 
-func PossibleAggregatedHealthState9Values() [5]AggregatedHealthState9 {
+func PossibleAggregatedHealthState9Values() []AggregatedHealthState9 {
 	return original.PossibleAggregatedHealthState9Values()
 }
 
@@ -438,7 +438,7 @@ const (
 	Restart    DeactivationIntent = original.Restart
 )
 
-func PossibleDeactivationIntentValues() [4]DeactivationIntent {
+func PossibleDeactivationIntentValues() []DeactivationIntent {
 	return original.PossibleDeactivationIntentValues()
 }
 
@@ -451,7 +451,7 @@ const (
 	Zero   DefaultMoveCost = original.Zero
 )
 
-func PossibleDefaultMoveCostValues() [4]DefaultMoveCost {
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
 	return original.PossibleDefaultMoveCostValues()
 }
 
@@ -464,7 +464,7 @@ const (
 	DefaultMoveCost1Zero   DefaultMoveCost1 = original.DefaultMoveCost1Zero
 )
 
-func PossibleDefaultMoveCost1Values() [4]DefaultMoveCost1 {
+func PossibleDefaultMoveCost1Values() []DefaultMoveCost1 {
 	return original.PossibleDefaultMoveCost1Values()
 }
 
@@ -477,7 +477,7 @@ const (
 	DefaultMoveCost2Zero   DefaultMoveCost2 = original.DefaultMoveCost2Zero
 )
 
-func PossibleDefaultMoveCost2Values() [4]DefaultMoveCost2 {
+func PossibleDefaultMoveCost2Values() []DefaultMoveCost2 {
 	return original.PossibleDefaultMoveCost2Values()
 }
 
@@ -490,7 +490,7 @@ const (
 	DefaultMoveCost3Zero   DefaultMoveCost3 = original.DefaultMoveCost3Zero
 )
 
-func PossibleDefaultMoveCost3Values() [4]DefaultMoveCost3 {
+func PossibleDefaultMoveCost3Values() []DefaultMoveCost3 {
 	return original.PossibleDefaultMoveCost3Values()
 }
 
@@ -504,7 +504,7 @@ const (
 	FailureReasonUpgradeDomainTimeout  FailureReason = original.FailureReasonUpgradeDomainTimeout
 )
 
-func PossibleFailureReasonValues() [5]FailureReason {
+func PossibleFailureReasonValues() []FailureReason {
 	return original.PossibleFailureReasonValues()
 }
 
@@ -518,7 +518,7 @@ const (
 	FailureReason1UpgradeDomainTimeout  FailureReason1 = original.FailureReason1UpgradeDomainTimeout
 )
 
-func PossibleFailureReason1Values() [5]FailureReason1 {
+func PossibleFailureReason1Values() []FailureReason1 {
 	return original.PossibleFailureReason1Values()
 }
 
@@ -532,7 +532,7 @@ const (
 	HealthStateWarning HealthState = original.HealthStateWarning
 )
 
-func PossibleHealthStateValues() [5]HealthState {
+func PossibleHealthStateValues() []HealthState {
 	return original.PossibleHealthStateValues()
 }
 
@@ -546,7 +546,7 @@ const (
 	HealthState1Warning HealthState1 = original.HealthState1Warning
 )
 
-func PossibleHealthState1Values() [5]HealthState1 {
+func PossibleHealthState1Values() []HealthState1 {
 	return original.PossibleHealthState1Values()
 }
 
@@ -560,7 +560,7 @@ const (
 	HealthState2Warning HealthState2 = original.HealthState2Warning
 )
 
-func PossibleHealthState2Values() [5]HealthState2 {
+func PossibleHealthState2Values() []HealthState2 {
 	return original.PossibleHealthState2Values()
 }
 
@@ -574,7 +574,7 @@ const (
 	HealthState3Warning HealthState3 = original.HealthState3Warning
 )
 
-func PossibleHealthState3Values() [5]HealthState3 {
+func PossibleHealthState3Values() []HealthState3 {
 	return original.PossibleHealthState3Values()
 }
 
@@ -588,7 +588,7 @@ const (
 	HealthState4Warning HealthState4 = original.HealthState4Warning
 )
 
-func PossibleHealthState4Values() [5]HealthState4 {
+func PossibleHealthState4Values() []HealthState4 {
 	return original.PossibleHealthState4Values()
 }
 
@@ -602,7 +602,7 @@ const (
 	HealthState5Warning HealthState5 = original.HealthState5Warning
 )
 
-func PossibleHealthState5Values() [5]HealthState5 {
+func PossibleHealthState5Values() []HealthState5 {
 	return original.PossibleHealthState5Values()
 }
 
@@ -616,7 +616,7 @@ const (
 	HealthState6Warning HealthState6 = original.HealthState6Warning
 )
 
-func PossibleHealthState6Values() [5]HealthState6 {
+func PossibleHealthState6Values() []HealthState6 {
 	return original.PossibleHealthState6Values()
 }
 
@@ -647,7 +647,7 @@ const (
 	KindUpgradeDomainNodes                Kind = original.KindUpgradeDomainNodes
 )
 
-func PossibleKindValues() [22]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -660,7 +660,7 @@ const (
 	NodeDeactivationIntentRestart    NodeDeactivationIntent = original.NodeDeactivationIntentRestart
 )
 
-func PossibleNodeDeactivationIntentValues() [4]NodeDeactivationIntent {
+func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
 	return original.PossibleNodeDeactivationIntentValues()
 }
 
@@ -673,7 +673,7 @@ const (
 	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = original.NodeDeactivationStatusSafetyCheckInProgress
 )
 
-func PossibleNodeDeactivationStatusValues() [4]NodeDeactivationStatus {
+func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
 	return original.PossibleNodeDeactivationStatusValues()
 }
 
@@ -690,7 +690,7 @@ const (
 	NodeStatusUp        NodeStatus = original.NodeStatusUp
 )
 
-func PossibleNodeStatusValues() [8]NodeStatus {
+func PossibleNodeStatusValues() []NodeStatus {
 	return original.PossibleNodeStatusValues()
 }
 
@@ -703,7 +703,7 @@ const (
 	PartitionSchemeUniformInt64 PartitionScheme = original.PartitionSchemeUniformInt64
 )
 
-func PossiblePartitionSchemeValues() [4]PartitionScheme {
+func PossiblePartitionSchemeValues() []PartitionScheme {
 	return original.PossiblePartitionSchemeValues()
 }
 
@@ -718,7 +718,7 @@ const (
 	PartitionStatusReconfiguring PartitionStatus = original.PartitionStatusReconfiguring
 )
 
-func PossiblePartitionStatusValues() [6]PartitionStatus {
+func PossiblePartitionStatusValues() []PartitionStatus {
 	return original.PossiblePartitionStatusValues()
 }
 
@@ -732,7 +732,7 @@ const (
 	ReplicaRolePrimary         ReplicaRole = original.ReplicaRolePrimary
 )
 
-func PossibleReplicaRoleValues() [5]ReplicaRole {
+func PossibleReplicaRoleValues() []ReplicaRole {
 	return original.PossibleReplicaRoleValues()
 }
 
@@ -746,7 +746,7 @@ const (
 	ReplicaRole1Primary         ReplicaRole1 = original.ReplicaRole1Primary
 )
 
-func PossibleReplicaRole1Values() [5]ReplicaRole1 {
+func PossibleReplicaRole1Values() []ReplicaRole1 {
 	return original.PossibleReplicaRole1Values()
 }
 
@@ -761,7 +761,7 @@ const (
 	ReplicaStatusStandby ReplicaStatus = original.ReplicaStatusStandby
 )
 
-func PossibleReplicaStatusValues() [6]ReplicaStatus {
+func PossibleReplicaStatusValues() []ReplicaStatus {
 	return original.PossibleReplicaStatusValues()
 }
 
@@ -776,7 +776,7 @@ const (
 	ReplicaStatus1Standby ReplicaStatus1 = original.ReplicaStatus1Standby
 )
 
-func PossibleReplicaStatus1Values() [6]ReplicaStatus1 {
+func PossibleReplicaStatus1Values() []ReplicaStatus1 {
 	return original.PossibleReplicaStatus1Values()
 }
 
@@ -789,7 +789,7 @@ const (
 	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredManual
 )
 
-func PossibleRollingUpgradeModeValues() [4]RollingUpgradeMode {
+func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
 	return original.PossibleRollingUpgradeModeValues()
 }
 
@@ -802,7 +802,7 @@ const (
 	RollingUpgradeMode1UnmonitoredManual RollingUpgradeMode1 = original.RollingUpgradeMode1UnmonitoredManual
 )
 
-func PossibleRollingUpgradeMode1Values() [4]RollingUpgradeMode1 {
+func PossibleRollingUpgradeMode1Values() []RollingUpgradeMode1 {
 	return original.PossibleRollingUpgradeMode1Values()
 }
 
@@ -815,7 +815,7 @@ const (
 	RollingUpgradeMode2UnmonitoredManual RollingUpgradeMode2 = original.RollingUpgradeMode2UnmonitoredManual
 )
 
-func PossibleRollingUpgradeMode2Values() [4]RollingUpgradeMode2 {
+func PossibleRollingUpgradeMode2Values() []RollingUpgradeMode2 {
 	return original.PossibleRollingUpgradeMode2Values()
 }
 
@@ -828,7 +828,7 @@ const (
 	RollingUpgradeMode3UnmonitoredManual RollingUpgradeMode3 = original.RollingUpgradeMode3UnmonitoredManual
 )
 
-func PossibleRollingUpgradeMode3Values() [4]RollingUpgradeMode3 {
+func PossibleRollingUpgradeMode3Values() []RollingUpgradeMode3 {
 	return original.PossibleRollingUpgradeMode3Values()
 }
 
@@ -841,7 +841,7 @@ const (
 	RollingUpgradeMode4UnmonitoredManual RollingUpgradeMode4 = original.RollingUpgradeMode4UnmonitoredManual
 )
 
-func PossibleRollingUpgradeMode4Values() [4]RollingUpgradeMode4 {
+func PossibleRollingUpgradeMode4Values() []RollingUpgradeMode4 {
 	return original.PossibleRollingUpgradeMode4Values()
 }
 
@@ -854,7 +854,7 @@ const (
 	RollingUpgradeMode5UnmonitoredManual RollingUpgradeMode5 = original.RollingUpgradeMode5UnmonitoredManual
 )
 
-func PossibleRollingUpgradeMode5Values() [4]RollingUpgradeMode5 {
+func PossibleRollingUpgradeMode5Values() []RollingUpgradeMode5 {
 	return original.PossibleRollingUpgradeMode5Values()
 }
 
@@ -867,7 +867,7 @@ const (
 	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = original.ServiceCorrelationSchemeNonAlignedAffinity
 )
 
-func PossibleServiceCorrelationSchemeValues() [4]ServiceCorrelationScheme {
+func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
 	return original.PossibleServiceCorrelationSchemeValues()
 }
 
@@ -879,7 +879,7 @@ const (
 	ServiceKindStateless ServiceKind = original.ServiceKindStateless
 )
 
-func PossibleServiceKindValues() [3]ServiceKind {
+func PossibleServiceKindValues() []ServiceKind {
 	return original.PossibleServiceKindValues()
 }
 
@@ -891,7 +891,7 @@ const (
 	ServiceKind1Stateless ServiceKind1 = original.ServiceKind1Stateless
 )
 
-func PossibleServiceKind1Values() [3]ServiceKind1 {
+func PossibleServiceKind1Values() []ServiceKind1 {
 	return original.PossibleServiceKind1Values()
 }
 
@@ -903,7 +903,7 @@ const (
 	ServiceKind2Stateless ServiceKind2 = original.ServiceKind2Stateless
 )
 
-func PossibleServiceKind2Values() [3]ServiceKind2 {
+func PossibleServiceKind2Values() []ServiceKind2 {
 	return original.PossibleServiceKind2Values()
 }
 
@@ -915,7 +915,7 @@ const (
 	ServiceKind3Stateless ServiceKind3 = original.ServiceKind3Stateless
 )
 
-func PossibleServiceKind3Values() [3]ServiceKind3 {
+func PossibleServiceKind3Values() []ServiceKind3 {
 	return original.PossibleServiceKind3Values()
 }
 
@@ -927,7 +927,7 @@ const (
 	ServiceKind4Stateless ServiceKind4 = original.ServiceKind4Stateless
 )
 
-func PossibleServiceKind4Values() [3]ServiceKind4 {
+func PossibleServiceKind4Values() []ServiceKind4 {
 	return original.PossibleServiceKind4Values()
 }
 
@@ -939,7 +939,7 @@ const (
 	ServiceKind5Stateless ServiceKind5 = original.ServiceKind5Stateless
 )
 
-func PossibleServiceKind5Values() [3]ServiceKind5 {
+func PossibleServiceKind5Values() []ServiceKind5 {
 	return original.PossibleServiceKind5Values()
 }
 
@@ -951,7 +951,7 @@ const (
 	ServiceKind6Stateless ServiceKind6 = original.ServiceKind6Stateless
 )
 
-func PossibleServiceKind6Values() [3]ServiceKind6 {
+func PossibleServiceKind6Values() []ServiceKind6 {
 	return original.PossibleServiceKind6Values()
 }
 
@@ -963,7 +963,7 @@ const (
 	ServiceKindStateless1               ServiceKindBasicCreateServiceDescription = original.ServiceKindStateless1
 )
 
-func PossibleServiceKindBasicCreateServiceDescriptionValues() [3]ServiceKindBasicCreateServiceDescription {
+func PossibleServiceKindBasicCreateServiceDescriptionValues() []ServiceKindBasicCreateServiceDescription {
 	return original.PossibleServiceKindBasicCreateServiceDescriptionValues()
 }
 
@@ -975,7 +975,7 @@ const (
 	ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless                     ServiceKindBasicCreateServiceGroupDescription = original.ServiceKindBasicCreateServiceGroupDescriptionServiceKindStateless
 )
 
-func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() [3]ServiceKindBasicCreateServiceGroupDescription {
+func PossibleServiceKindBasicCreateServiceGroupDescriptionValues() []ServiceKindBasicCreateServiceGroupDescription {
 	return original.PossibleServiceKindBasicCreateServiceGroupDescriptionValues()
 }
 
@@ -987,7 +987,7 @@ const (
 	ServiceKindBasicServiceDescriptionServiceKindStateless          ServiceKindBasicServiceDescription = original.ServiceKindBasicServiceDescriptionServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceDescriptionValues() [3]ServiceKindBasicServiceDescription {
+func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
 	return original.PossibleServiceKindBasicServiceDescriptionValues()
 }
 
@@ -999,7 +999,7 @@ const (
 	ServiceKindBasicServiceGroupDescriptionServiceKindStateless               ServiceKindBasicServiceGroupDescription = original.ServiceKindBasicServiceGroupDescriptionServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceGroupDescriptionValues() [3]ServiceKindBasicServiceGroupDescription {
+func PossibleServiceKindBasicServiceGroupDescriptionValues() []ServiceKindBasicServiceGroupDescription {
 	return original.PossibleServiceKindBasicServiceGroupDescriptionValues()
 }
 
@@ -1011,7 +1011,7 @@ const (
 	ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription ServiceKindBasicUpdateServiceDescription = original.ServiceKindBasicUpdateServiceDescriptionServiceKindUpdateServiceDescription
 )
 
-func PossibleServiceKindBasicUpdateServiceDescriptionValues() [3]ServiceKindBasicUpdateServiceDescription {
+func PossibleServiceKindBasicUpdateServiceDescriptionValues() []ServiceKindBasicUpdateServiceDescription {
 	return original.PossibleServiceKindBasicUpdateServiceDescriptionValues()
 }
 
@@ -1023,7 +1023,7 @@ const (
 	ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription ServiceKindBasicUpdateServiceGroupDescription = original.ServiceKindBasicUpdateServiceGroupDescriptionServiceKindUpdateServiceGroupDescription
 )
 
-func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() [3]ServiceKindBasicUpdateServiceGroupDescription {
+func PossibleServiceKindBasicUpdateServiceGroupDescriptionValues() []ServiceKindBasicUpdateServiceGroupDescription {
 	return original.PossibleServiceKindBasicUpdateServiceGroupDescriptionValues()
 }
 
@@ -1036,7 +1036,7 @@ const (
 	ServiceLoadMetricWeightZero   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightZero
 )
 
-func PossibleServiceLoadMetricWeightValues() [4]ServiceLoadMetricWeight {
+func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
 	return original.PossibleServiceLoadMetricWeightValues()
 }
 
@@ -1049,7 +1049,7 @@ const (
 	ServicePartitionKindSingleton  ServicePartitionKind = original.ServicePartitionKindSingleton
 )
 
-func PossibleServicePartitionKindValues() [4]ServicePartitionKind {
+func PossibleServicePartitionKindValues() []ServicePartitionKind {
 	return original.PossibleServicePartitionKindValues()
 }
 
@@ -1064,7 +1064,7 @@ const (
 	ServiceStatusUpgrading ServiceStatus = original.ServiceStatusUpgrading
 )
 
-func PossibleServiceStatusValues() [6]ServiceStatus {
+func PossibleServiceStatusValues() []ServiceStatus {
 	return original.PossibleServiceStatusValues()
 }
 
@@ -1075,7 +1075,7 @@ const (
 	UpgradeKindRolling UpgradeKind = original.UpgradeKindRolling
 )
 
-func PossibleUpgradeKindValues() [2]UpgradeKind {
+func PossibleUpgradeKindValues() []UpgradeKind {
 	return original.PossibleUpgradeKindValues()
 }
 
@@ -1090,7 +1090,7 @@ const (
 	UpgradeStateRollingForwardPending    UpgradeState = original.UpgradeStateRollingForwardPending
 )
 
-func PossibleUpgradeStateValues() [6]UpgradeState {
+func PossibleUpgradeStateValues() []UpgradeState {
 	return original.PossibleUpgradeStateValues()
 }
 
@@ -1105,7 +1105,7 @@ const (
 	UpgradeState1RollingForwardPending    UpgradeState1 = original.UpgradeState1RollingForwardPending
 )
 
-func PossibleUpgradeState1Values() [6]UpgradeState1 {
+func PossibleUpgradeState1Values() []UpgradeState1 {
 	return original.PossibleUpgradeState1Values()
 }
 

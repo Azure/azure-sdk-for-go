@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() [2]DeploymentMode {
-	return [2]DeploymentMode{Complete, Incremental}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return []DeploymentMode{Complete, Incremental}
 }
 
 // BasicDependency deployment dependency information.

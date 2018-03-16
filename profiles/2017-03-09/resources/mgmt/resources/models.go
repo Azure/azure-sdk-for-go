@@ -68,7 +68,7 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
-func PossibleDeploymentModeValues() [2]DeploymentMode {
+func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
 
@@ -78,7 +78,7 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
-func PossibleResourceIdentityTypeValues() [1]ResourceIdentityType {
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
 

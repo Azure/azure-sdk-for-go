@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleEventTypeValues returns an array of possible values for the EventType const type.
-func PossibleEventTypeValues() [11]EventType {
-	return [11]EventType{All, AvailabilityResults, BrowserTimings, CustomEvents, CustomMetrics, Dependencies, Exceptions, PageViews, PerformanceCounters, Requests, Traces}
+func PossibleEventTypeValues() []EventType {
+	return []EventType{All, AvailabilityResults, BrowserTimings, CustomEvents, CustomMetrics, Dependencies, Exceptions, PageViews, PerformanceCounters, Requests, Traces}
 }
 
 // MetricID enumerates the values for metric id.
@@ -127,8 +127,8 @@ const (
 )
 
 // PossibleMetricIDValues returns an array of possible values for the MetricID const type.
-func PossibleMetricIDValues() [32]MetricID {
-	return [32]MetricID{AvailabilityResultsavailabilityPercentage, AvailabilityResultsduration, BillingtelemetryCount, ClientnetworkDuration, ClientprocessingDuration, ClientreceiveDuration, ClientsendDuration, ClienttotalDuration, CustomEventscount, Dependenciescount, Dependenciesduration, Dependenciesfailed, Exceptionsbrowser, Exceptionscount, Exceptionsserver, PageViewscount, PageViewsduration, PerformanceCountersexceptionsPerSecond, PerformanceCountersmemoryAvailableBytes, PerformanceCountersprocessCPUPercentage, PerformanceCountersprocessIOBytesPerSecond, PerformanceCountersprocessorCPUPercentage, PerformanceCountersprocessPrivateBytes, PerformanceCountersrequestExecutionTime, PerformanceCountersrequestsInQueue, PerformanceCountersrequestsPerSecond, Requestscount, Requestsduration, Requestsfailed, Sessionscount, Usersauthenticated, Userscount}
+func PossibleMetricIDValues() []MetricID {
+	return []MetricID{AvailabilityResultsavailabilityPercentage, AvailabilityResultsduration, BillingtelemetryCount, ClientnetworkDuration, ClientprocessingDuration, ClientreceiveDuration, ClientsendDuration, ClienttotalDuration, CustomEventscount, Dependenciescount, Dependenciesduration, Dependenciesfailed, Exceptionsbrowser, Exceptionscount, Exceptionsserver, PageViewscount, PageViewsduration, PerformanceCountersexceptionsPerSecond, PerformanceCountersmemoryAvailableBytes, PerformanceCountersprocessCPUPercentage, PerformanceCountersprocessIOBytesPerSecond, PerformanceCountersprocessorCPUPercentage, PerformanceCountersprocessPrivateBytes, PerformanceCountersrequestExecutionTime, PerformanceCountersrequestsInQueue, PerformanceCountersrequestsPerSecond, Requestscount, Requestsduration, Requestsfailed, Sessionscount, Usersauthenticated, Userscount}
 }
 
 // Type enumerates the values for type.
@@ -160,8 +160,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [11]Type {
-	return [11]Type{TypeAvailabilityResult, TypeBrowserTiming, TypeCustomEvent, TypeCustomMetric, TypeDependency, TypeEventsResultData, TypeException, TypePageView, TypePerformanceCounter, TypeRequest, TypeTrace}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAvailabilityResult, TypeBrowserTiming, TypeCustomEvent, TypeCustomMetric, TypeDependency, TypeEventsResultData, TypeException, TypePageView, TypePerformanceCounter, TypeRequest, TypeTrace}
 }
 
 // Column a column in a table.

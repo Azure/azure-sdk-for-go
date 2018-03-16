@@ -33,8 +33,8 @@ const (
 )
 
 // PossibleHanaHardwareTypeNamesEnumValues returns an array of possible values for the HanaHardwareTypeNamesEnum const type.
-func PossibleHanaHardwareTypeNamesEnumValues() [1]HanaHardwareTypeNamesEnum {
-	return [1]HanaHardwareTypeNamesEnum{CiscoUCS}
+func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
+	return []HanaHardwareTypeNamesEnum{CiscoUCS}
 }
 
 // HanaInstanceSizeNamesEnum enumerates the values for hana instance size names enum.
@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleHanaInstanceSizeNamesEnumValues returns an array of possible values for the HanaInstanceSizeNamesEnum const type.
-func PossibleHanaInstanceSizeNamesEnumValues() [6]HanaInstanceSizeNamesEnum {
-	return [6]HanaInstanceSizeNamesEnum{S144, S144m, S192, S192m, S72, S72m}
+func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
+	return []HanaInstanceSizeNamesEnum{S144, S144m, S192, S192m, S72, S72m}
 }
 
 // Disk specifies the disk information fo the HANA instance

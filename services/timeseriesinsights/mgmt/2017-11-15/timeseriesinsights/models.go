@@ -38,8 +38,8 @@ const (
 )
 
 // PossibleAccessPolicyRoleValues returns an array of possible values for the AccessPolicyRole const type.
-func PossibleAccessPolicyRoleValues() [2]AccessPolicyRole {
-	return [2]AccessPolicyRole{Contributor, Reader}
+func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
+	return []AccessPolicyRole{Contributor, Reader}
 }
 
 // IngressState enumerates the values for ingress state.
@@ -59,8 +59,8 @@ const (
 )
 
 // PossibleIngressStateValues returns an array of possible values for the IngressState const type.
-func PossibleIngressStateValues() [5]IngressState {
-	return [5]IngressState{Disabled, Paused, Ready, Running, Unknown}
+func PossibleIngressStateValues() []IngressState {
+	return []IngressState{Disabled, Paused, Ready, Running, Unknown}
 }
 
 // Kind enumerates the values for kind.
@@ -76,8 +76,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [3]Kind {
-	return [3]Kind{KindEventSourceCreateOrUpdateParameters, KindMicrosoftEventHub, KindMicrosoftIoTHub}
+func PossibleKindValues() []Kind {
+	return []Kind{KindEventSourceCreateOrUpdateParameters, KindMicrosoftEventHub, KindMicrosoftIoTHub}
 }
 
 // KindBasicEventSourceResource enumerates the values for kind basic event source resource.
@@ -93,8 +93,8 @@ const (
 )
 
 // PossibleKindBasicEventSourceResourceValues returns an array of possible values for the KindBasicEventSourceResource const type.
-func PossibleKindBasicEventSourceResourceValues() [3]KindBasicEventSourceResource {
-	return [3]KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIotHub}
+func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
+	return []KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIotHub}
 }
 
 // LocalTimestampFormat enumerates the values for local timestamp format.
@@ -110,8 +110,8 @@ const (
 )
 
 // PossibleLocalTimestampFormatValues returns an array of possible values for the LocalTimestampFormat const type.
-func PossibleLocalTimestampFormatValues() [3]LocalTimestampFormat {
-	return [3]LocalTimestampFormat{Embedded, Iana, TimeSpan}
+func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
+	return []LocalTimestampFormat{Embedded, Iana, TimeSpan}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -133,8 +133,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [6]ProvisioningState {
-	return [6]ProvisioningState{Accepted, Creating, Deleting, Failed, Succeeded, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Accepted, Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // ReferenceDataKeyPropertyType enumerates the values for reference data key property type.
@@ -152,8 +152,8 @@ const (
 )
 
 // PossibleReferenceDataKeyPropertyTypeValues returns an array of possible values for the ReferenceDataKeyPropertyType const type.
-func PossibleReferenceDataKeyPropertyTypeValues() [4]ReferenceDataKeyPropertyType {
-	return [4]ReferenceDataKeyPropertyType{Bool, DateTime, Double, String}
+func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
+	return []ReferenceDataKeyPropertyType{Bool, DateTime, Double, String}
 }
 
 // SkuName enumerates the values for sku name.
@@ -167,8 +167,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [2]SkuName {
-	return [2]SkuName{S1, S2}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{S1, S2}
 }
 
 // StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
@@ -182,8 +182,8 @@ const (
 )
 
 // PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
-func PossibleStorageLimitExceededBehaviorValues() [2]StorageLimitExceededBehavior {
-	return [2]StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
+func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
+	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
 }
 
 // AccessPolicyCreateOrUpdateParameters ...

@@ -41,7 +41,7 @@ const (
 	Load ActionType = original.Load
 )
 
-func PossibleActionTypeValues() [2]ActionType {
+func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
 }
 
@@ -56,7 +56,7 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
-func PossibleErrorCodeValues() [6]ErrorCode {
+func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+func PossibleErrorSubCodeValues() []ErrorSubCode {
 	return original.PossibleErrorSubCodeValues()
 }
 
@@ -87,7 +87,7 @@ const (
 	UnknownToken  ErrorType = original.UnknownToken
 )
 
-func PossibleErrorTypeValues() [2]ErrorType {
+func PossibleErrorTypeValues() []ErrorType {
 	return original.PossibleErrorTypeValues()
 }
 
@@ -102,7 +102,7 @@ const (
 	TypeSpellCheck    Type = original.TypeSpellCheck
 )
 
-func PossibleTypeValues() [6]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 

@@ -67,7 +67,7 @@ const (
 	WaitingForNodes           ClusterState = original.WaitingForNodes
 )
 
-func PossibleClusterStateValues() [10]ClusterState {
+func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()
 }
 
@@ -79,7 +79,7 @@ const (
 	Silver DurabilityLevel = original.Silver
 )
 
-func PossibleDurabilityLevelValues() [3]DurabilityLevel {
+func PossibleDurabilityLevelValues() []DurabilityLevel {
 	return original.PossibleDurabilityLevelValues()
 }
 
@@ -90,7 +90,7 @@ const (
 	Windows Environment = original.Windows
 )
 
-func PossibleEnvironmentValues() [2]Environment {
+func PossibleEnvironmentValues() []Environment {
 	return original.PossibleEnvironmentValues()
 }
 
@@ -103,7 +103,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [4]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	ReliabilityLevelSilver ReliabilityLevel = original.ReliabilityLevelSilver
 )
 
-func PossibleReliabilityLevelValues() [3]ReliabilityLevel {
+func PossibleReliabilityLevelValues() []ReliabilityLevel {
 	return original.PossibleReliabilityLevelValues()
 }
 
@@ -128,7 +128,7 @@ const (
 	ReliabilityLevel1Silver   ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
 
-func PossibleReliabilityLevel1Values() [4]ReliabilityLevel1 {
+func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
 	return original.PossibleReliabilityLevel1Values()
 }
 
@@ -139,7 +139,7 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
-func PossibleUpgradeModeValues() [2]UpgradeMode {
+func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
 
@@ -150,7 +150,7 @@ const (
 	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
 )
 
-func PossibleUpgradeMode1Values() [2]UpgradeMode1 {
+func PossibleUpgradeMode1Values() []UpgradeMode1 {
 	return original.PossibleUpgradeMode1Values()
 }
 
@@ -167,7 +167,7 @@ const (
 	TrustedPublisher     X509StoreName = original.TrustedPublisher
 )
 
-func PossibleX509StoreNameValues() [8]X509StoreName {
+func PossibleX509StoreNameValues() []X509StoreName {
 	return original.PossibleX509StoreNameValues()
 }
 

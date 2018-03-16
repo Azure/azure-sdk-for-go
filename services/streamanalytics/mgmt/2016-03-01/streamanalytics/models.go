@@ -39,8 +39,8 @@ const (
 )
 
 // PossibleBindingTypeValues returns an array of possible values for the BindingType const type.
-func PossibleBindingTypeValues() [3]BindingType {
-	return [3]BindingType{BindingTypeFunctionRetrieveDefaultDefinitionParameters, BindingTypeMicrosoftMachineLearningWebService, BindingTypeMicrosoftStreamAnalyticsJavascriptUdf}
+func PossibleBindingTypeValues() []BindingType {
+	return []BindingType{BindingTypeFunctionRetrieveDefaultDefinitionParameters, BindingTypeMicrosoftMachineLearningWebService, BindingTypeMicrosoftStreamAnalyticsJavascriptUdf}
 }
 
 // CompatibilityLevel enumerates the values for compatibility level.
@@ -52,8 +52,8 @@ const (
 )
 
 // PossibleCompatibilityLevelValues returns an array of possible values for the CompatibilityLevel const type.
-func PossibleCompatibilityLevelValues() [1]CompatibilityLevel {
-	return [1]CompatibilityLevel{OneFullStopZero}
+func PossibleCompatibilityLevelValues() []CompatibilityLevel {
+	return []CompatibilityLevel{OneFullStopZero}
 }
 
 // Encoding enumerates the values for encoding.
@@ -65,8 +65,8 @@ const (
 )
 
 // PossibleEncodingValues returns an array of possible values for the Encoding const type.
-func PossibleEncodingValues() [1]Encoding {
-	return [1]Encoding{UTF8}
+func PossibleEncodingValues() []Encoding {
+	return []Encoding{UTF8}
 }
 
 // EventsOutOfOrderPolicy enumerates the values for events out of order policy.
@@ -80,8 +80,8 @@ const (
 )
 
 // PossibleEventsOutOfOrderPolicyValues returns an array of possible values for the EventsOutOfOrderPolicy const type.
-func PossibleEventsOutOfOrderPolicyValues() [2]EventsOutOfOrderPolicy {
-	return [2]EventsOutOfOrderPolicy{Adjust, Drop}
+func PossibleEventsOutOfOrderPolicyValues() []EventsOutOfOrderPolicy {
+	return []EventsOutOfOrderPolicy{Adjust, Drop}
 }
 
 // JSONOutputSerializationFormat enumerates the values for json output serialization format.
@@ -95,8 +95,8 @@ const (
 )
 
 // PossibleJSONOutputSerializationFormatValues returns an array of possible values for the JSONOutputSerializationFormat const type.
-func PossibleJSONOutputSerializationFormatValues() [2]JSONOutputSerializationFormat {
-	return [2]JSONOutputSerializationFormat{Array, LineSeparated}
+func PossibleJSONOutputSerializationFormatValues() []JSONOutputSerializationFormat {
+	return []JSONOutputSerializationFormat{Array, LineSeparated}
 }
 
 // OutputErrorPolicy enumerates the values for output error policy.
@@ -110,8 +110,8 @@ const (
 )
 
 // PossibleOutputErrorPolicyValues returns an array of possible values for the OutputErrorPolicy const type.
-func PossibleOutputErrorPolicyValues() [2]OutputErrorPolicy {
-	return [2]OutputErrorPolicy{OutputErrorPolicyDrop, OutputErrorPolicyStop}
+func PossibleOutputErrorPolicyValues() []OutputErrorPolicy {
+	return []OutputErrorPolicy{OutputErrorPolicyDrop, OutputErrorPolicyStop}
 }
 
 // OutputStartMode enumerates the values for output start mode.
@@ -127,8 +127,8 @@ const (
 )
 
 // PossibleOutputStartModeValues returns an array of possible values for the OutputStartMode const type.
-func PossibleOutputStartModeValues() [3]OutputStartMode {
-	return [3]OutputStartMode{CustomTime, JobStartTime, LastOutputEventTime}
+func PossibleOutputStartModeValues() []OutputStartMode {
+	return []OutputStartMode{CustomTime, JobStartTime, LastOutputEventTime}
 }
 
 // SkuName enumerates the values for sku name.
@@ -140,8 +140,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [1]SkuName {
-	return [1]SkuName{Standard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{Standard}
 }
 
 // Type enumerates the values for type.
@@ -159,8 +159,8 @@ const (
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() [4]Type {
-	return [4]Type{TypeAvro, TypeCsv, TypeJSON, TypeSerialization}
+func PossibleTypeValues() []Type {
+	return []Type{TypeAvro, TypeCsv, TypeJSON, TypeSerialization}
 }
 
 // TypeBasicFunctionBinding enumerates the values for type basic function binding.
@@ -176,8 +176,8 @@ const (
 )
 
 // PossibleTypeBasicFunctionBindingValues returns an array of possible values for the TypeBasicFunctionBinding const type.
-func PossibleTypeBasicFunctionBindingValues() [3]TypeBasicFunctionBinding {
-	return [3]TypeBasicFunctionBinding{TypeFunctionBinding, TypeMicrosoftMachineLearningWebService, TypeMicrosoftStreamAnalyticsJavascriptUdf}
+func PossibleTypeBasicFunctionBindingValues() []TypeBasicFunctionBinding {
+	return []TypeBasicFunctionBinding{TypeFunctionBinding, TypeMicrosoftMachineLearningWebService, TypeMicrosoftStreamAnalyticsJavascriptUdf}
 }
 
 // TypeBasicFunctionProperties enumerates the values for type basic function properties.
@@ -191,8 +191,8 @@ const (
 )
 
 // PossibleTypeBasicFunctionPropertiesValues returns an array of possible values for the TypeBasicFunctionProperties const type.
-func PossibleTypeBasicFunctionPropertiesValues() [2]TypeBasicFunctionProperties {
-	return [2]TypeBasicFunctionProperties{TypeFunctionProperties, TypeScalar}
+func PossibleTypeBasicFunctionPropertiesValues() []TypeBasicFunctionProperties {
+	return []TypeBasicFunctionProperties{TypeFunctionProperties, TypeScalar}
 }
 
 // TypeBasicInputProperties enumerates the values for type basic input properties.
@@ -208,8 +208,8 @@ const (
 )
 
 // PossibleTypeBasicInputPropertiesValues returns an array of possible values for the TypeBasicInputProperties const type.
-func PossibleTypeBasicInputPropertiesValues() [3]TypeBasicInputProperties {
-	return [3]TypeBasicInputProperties{TypeInputProperties, TypeReference, TypeStream}
+func PossibleTypeBasicInputPropertiesValues() []TypeBasicInputProperties {
+	return []TypeBasicInputProperties{TypeInputProperties, TypeReference, TypeStream}
 }
 
 // TypeBasicOutputDataSource enumerates the values for type basic output data source.
@@ -239,8 +239,8 @@ const (
 )
 
 // PossibleTypeBasicOutputDataSourceValues returns an array of possible values for the TypeBasicOutputDataSource const type.
-func PossibleTypeBasicOutputDataSourceValues() [10]TypeBasicOutputDataSource {
-	return [10]TypeBasicOutputDataSource{TypeMicrosoftDataLakeAccounts, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI}
+func PossibleTypeBasicOutputDataSourceValues() []TypeBasicOutputDataSource {
+	return []TypeBasicOutputDataSource{TypeMicrosoftDataLakeAccounts, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI}
 }
 
 // TypeBasicReferenceInputDataSource enumerates the values for type basic reference input data source.
@@ -254,8 +254,8 @@ const (
 )
 
 // PossibleTypeBasicReferenceInputDataSourceValues returns an array of possible values for the TypeBasicReferenceInputDataSource const type.
-func PossibleTypeBasicReferenceInputDataSourceValues() [2]TypeBasicReferenceInputDataSource {
-	return [2]TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
+func PossibleTypeBasicReferenceInputDataSourceValues() []TypeBasicReferenceInputDataSource {
+	return []TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
 }
 
 // TypeBasicStreamInputDataSource enumerates the values for type basic stream input data source.
@@ -273,8 +273,8 @@ const (
 )
 
 // PossibleTypeBasicStreamInputDataSourceValues returns an array of possible values for the TypeBasicStreamInputDataSource const type.
-func PossibleTypeBasicStreamInputDataSourceValues() [4]TypeBasicStreamInputDataSource {
-	return [4]TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
+func PossibleTypeBasicStreamInputDataSourceValues() []TypeBasicStreamInputDataSource {
+	return []TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
 }
 
 // UdfType enumerates the values for udf type.
@@ -286,8 +286,8 @@ const (
 )
 
 // PossibleUdfTypeValues returns an array of possible values for the UdfType const type.
-func PossibleUdfTypeValues() [1]UdfType {
-	return [1]UdfType{Scalar}
+func PossibleUdfTypeValues() []UdfType {
+	return []UdfType{Scalar}
 }
 
 // AvroSerialization describes how data from an input is serialized or how data is serialized when written to an

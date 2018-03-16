@@ -41,7 +41,7 @@ const (
 	MonthlyGrain Datagrain = original.MonthlyGrain
 )
 
-func PossibleDatagrainValues() [2]Datagrain {
+func PossibleDatagrainValues() []Datagrain {
 	return original.PossibleDatagrainValues()
 }
 

@@ -73,7 +73,7 @@ const (
 	Transferring      DriveState = original.Transferring
 )
 
-func PossibleDriveStateValues() [7]DriveState {
+func PossibleDriveStateValues() []DriveState {
 	return original.PossibleDriveStateValues()
 }
 

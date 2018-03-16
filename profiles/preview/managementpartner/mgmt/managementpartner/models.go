@@ -42,7 +42,7 @@ const (
 	NotFound   Code = original.NotFound
 )
 
-func PossibleCodeValues() [3]Code {
+func PossibleCodeValues() []Code {
 	return original.PossibleCodeValues()
 }
 
@@ -53,7 +53,7 @@ const (
 	Deleted State = original.Deleted
 )
 
-func PossibleStateValues() [2]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 

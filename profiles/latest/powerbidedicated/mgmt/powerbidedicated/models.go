@@ -60,7 +60,7 @@ const (
 	Updating     ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [12]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -70,7 +70,7 @@ const (
 	PBIEAzure SkuTier = original.PBIEAzure
 )
 
-func PossibleSkuTierValues() [1]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -91,7 +91,7 @@ const (
 	StateUpdating     State = original.StateUpdating
 )
 
-func PossibleStateValues() [12]State {
+func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
 

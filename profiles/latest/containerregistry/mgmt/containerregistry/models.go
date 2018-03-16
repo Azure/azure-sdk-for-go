@@ -41,7 +41,7 @@ const (
 	Password2 PasswordName = original.Password2
 )
 
-func PossiblePasswordNameValues() [2]PasswordName {
+func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
 
@@ -56,7 +56,7 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() [6]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -67,7 +67,7 @@ const (
 	Count RegistryUsageUnit = original.Count
 )
 
-func PossibleRegistryUsageUnitValues() [2]RegistryUsageUnit {
+func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
 	return original.PossibleRegistryUsageUnitValues()
 }
 
@@ -80,7 +80,7 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() [4]SkuName {
+func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
 
@@ -93,7 +93,7 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
-func PossibleSkuTierValues() [4]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -104,7 +104,7 @@ const (
 	Push   WebhookAction = original.Push
 )
 
-func PossibleWebhookActionValues() [2]WebhookAction {
+func PossibleWebhookActionValues() []WebhookAction {
 	return original.PossibleWebhookActionValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	Enabled  WebhookStatus = original.Enabled
 )
 
-func PossibleWebhookStatusValues() [2]WebhookStatus {
+func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
 }
 

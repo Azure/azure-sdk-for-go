@@ -51,7 +51,7 @@ const (
 	Send   AccessRights = original.Send
 )
 
-func PossibleAccessRightsValues() [3]AccessRights {
+func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
 
@@ -62,7 +62,7 @@ const (
 	SecondaryKey KeyType = original.SecondaryKey
 )
 
-func PossibleKeyTypeValues() [2]KeyType {
+func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
@@ -77,7 +77,7 @@ const (
 	Updating  ProvisioningStateEnum = original.Updating
 )
 
-func PossibleProvisioningStateEnumValues() [6]ProvisioningStateEnum {
+func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
 	return original.PossibleProvisioningStateEnumValues()
 }
 
@@ -88,7 +88,7 @@ const (
 	NetTCP RelaytypeEnum = original.NetTCP
 )
 
-func PossibleRelaytypeEnumValues() [2]RelaytypeEnum {
+func PossibleRelaytypeEnumValues() []RelaytypeEnum {
 	return original.PossibleRelaytypeEnumValues()
 }
 
@@ -98,7 +98,7 @@ const (
 	Standard SkuTier = original.Standard
 )
 
-func PossibleSkuTierValues() [1]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -113,7 +113,7 @@ const (
 	TooManyNamespaceInCurrentSubscription UnavailableReason = original.TooManyNamespaceInCurrentSubscription
 )
 
-func PossibleUnavailableReasonValues() [6]UnavailableReason {
+func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()
 }
 

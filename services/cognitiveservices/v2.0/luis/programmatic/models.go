@@ -56,8 +56,8 @@ const (
 )
 
 // PossibleAzureRegionsValues returns an array of possible values for the AzureRegions const type.
-func PossibleAzureRegionsValues() [12]AzureRegions {
-	return [12]AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return []AzureRegions{Australiaeast, Brazilsouth, Eastasia, Eastus, Eastus2, Northeurope, Southcentralus, Southeastasia, Westcentralus, Westeurope, Westus, Westus2}
 }
 
 // OperationStatusType enumerates the values for operation status type.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleOperationStatusTypeValues returns an array of possible values for the OperationStatusType const type.
-func PossibleOperationStatusTypeValues() [3]OperationStatusType {
-	return [3]OperationStatusType{Failed, FAILED, Success}
+func PossibleOperationStatusTypeValues() []OperationStatusType {
+	return []OperationStatusType{Failed, FAILED, Success}
 }
 
 // ReadableType enumerates the values for readable type.
@@ -98,8 +98,8 @@ const (
 )
 
 // PossibleReadableTypeValues returns an array of possible values for the ReadableType const type.
-func PossibleReadableTypeValues() [7]ReadableType {
-	return [7]ReadableType{ReadableTypeClosedListEntityExtractor, ReadableTypeCompositeEntityExtractor, ReadableTypeEntityExtractor, ReadableTypeHierarchicalChildEntityExtractor, ReadableTypeHierarchicalEntityExtractor, ReadableTypeIntentClassifier, ReadableTypePrebuiltEntityExtractor}
+func PossibleReadableTypeValues() []ReadableType {
+	return []ReadableType{ReadableTypeClosedListEntityExtractor, ReadableTypeCompositeEntityExtractor, ReadableTypeEntityExtractor, ReadableTypeHierarchicalChildEntityExtractor, ReadableTypeHierarchicalEntityExtractor, ReadableTypeIntentClassifier, ReadableTypePrebuiltEntityExtractor}
 }
 
 // ReadableType1 enumerates the values for readable type 1.
@@ -123,8 +123,8 @@ const (
 )
 
 // PossibleReadableType1Values returns an array of possible values for the ReadableType1 const type.
-func PossibleReadableType1Values() [7]ReadableType1 {
-	return [7]ReadableType1{ReadableType1ClosedListEntityExtractor, ReadableType1CompositeEntityExtractor, ReadableType1EntityExtractor, ReadableType1HierarchicalChildEntityExtractor, ReadableType1HierarchicalEntityExtractor, ReadableType1IntentClassifier, ReadableType1PrebuiltEntityExtractor}
+func PossibleReadableType1Values() []ReadableType1 {
+	return []ReadableType1{ReadableType1ClosedListEntityExtractor, ReadableType1CompositeEntityExtractor, ReadableType1EntityExtractor, ReadableType1HierarchicalChildEntityExtractor, ReadableType1HierarchicalEntityExtractor, ReadableType1IntentClassifier, ReadableType1PrebuiltEntityExtractor}
 }
 
 // ReadableType2 enumerates the values for readable type 2.
@@ -148,8 +148,8 @@ const (
 )
 
 // PossibleReadableType2Values returns an array of possible values for the ReadableType2 const type.
-func PossibleReadableType2Values() [7]ReadableType2 {
-	return [7]ReadableType2{ReadableType2ClosedListEntityExtractor, ReadableType2CompositeEntityExtractor, ReadableType2EntityExtractor, ReadableType2HierarchicalChildEntityExtractor, ReadableType2HierarchicalEntityExtractor, ReadableType2IntentClassifier, ReadableType2PrebuiltEntityExtractor}
+func PossibleReadableType2Values() []ReadableType2 {
+	return []ReadableType2{ReadableType2ClosedListEntityExtractor, ReadableType2CompositeEntityExtractor, ReadableType2EntityExtractor, ReadableType2HierarchicalChildEntityExtractor, ReadableType2HierarchicalEntityExtractor, ReadableType2IntentClassifier, ReadableType2PrebuiltEntityExtractor}
 }
 
 // ReadableType3 enumerates the values for readable type 3.
@@ -173,8 +173,8 @@ const (
 )
 
 // PossibleReadableType3Values returns an array of possible values for the ReadableType3 const type.
-func PossibleReadableType3Values() [7]ReadableType3 {
-	return [7]ReadableType3{ReadableType3ClosedListEntityExtractor, ReadableType3CompositeEntityExtractor, ReadableType3EntityExtractor, ReadableType3HierarchicalChildEntityExtractor, ReadableType3HierarchicalEntityExtractor, ReadableType3IntentClassifier, ReadableType3PrebuiltEntityExtractor}
+func PossibleReadableType3Values() []ReadableType3 {
+	return []ReadableType3{ReadableType3ClosedListEntityExtractor, ReadableType3CompositeEntityExtractor, ReadableType3EntityExtractor, ReadableType3HierarchicalChildEntityExtractor, ReadableType3HierarchicalEntityExtractor, ReadableType3IntentClassifier, ReadableType3PrebuiltEntityExtractor}
 }
 
 // Status enumerates the values for status.
@@ -194,8 +194,8 @@ const (
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() [5]Status {
-	return [5]Status{StatusFail, StatusInProgress, StatusQueued, StatusSuccess, StatusUpToDate}
+func PossibleStatusValues() []Status {
+	return []Status{StatusFail, StatusInProgress, StatusQueued, StatusSuccess, StatusUpToDate}
 }
 
 // Status1 enumerates the values for status 1.
@@ -215,8 +215,8 @@ const (
 )
 
 // PossibleStatus1Values returns an array of possible values for the Status1 const type.
-func PossibleStatus1Values() [5]Status1 {
-	return [5]Status1{Status1Fail, Status1InProgress, Status1Queued, Status1Success, Status1UpToDate}
+func PossibleStatus1Values() []Status1 {
+	return []Status1{Status1Fail, Status1InProgress, Status1Queued, Status1Success, Status1UpToDate}
 }
 
 // TrainingStatus enumerates the values for training status.
@@ -232,8 +232,8 @@ const (
 )
 
 // PossibleTrainingStatusValues returns an array of possible values for the TrainingStatus const type.
-func PossibleTrainingStatusValues() [3]TrainingStatus {
-	return [3]TrainingStatus{InProgress, NeedsTraining, Trained}
+func PossibleTrainingStatusValues() []TrainingStatus {
+	return []TrainingStatus{InProgress, NeedsTraining, Trained}
 }
 
 // ApplicationCreateObject properties for creating a new LUIS Application

@@ -131,7 +131,7 @@ const (
 	Web   ApplicationType = original.Web
 )
 
-func PossibleApplicationTypeValues() [2]ApplicationType {
+func PossibleApplicationTypeValues() []ApplicationType {
 	return original.PossibleApplicationTypeValues()
 }
 
@@ -148,7 +148,7 @@ const (
 	Userflows    FavoriteSourceType = original.Userflows
 )
 
-func PossibleFavoriteSourceTypeValues() [8]FavoriteSourceType {
+func PossibleFavoriteSourceTypeValues() []FavoriteSourceType {
 	return original.PossibleFavoriteSourceTypeValues()
 }
 
@@ -159,7 +159,7 @@ const (
 	User   FavoriteType = original.User
 )
 
-func PossibleFavoriteTypeValues() [2]FavoriteType {
+func PossibleFavoriteTypeValues() []FavoriteType {
 	return original.PossibleFavoriteTypeValues()
 }
 
@@ -169,7 +169,7 @@ const (
 	Bluefield FlowType = original.Bluefield
 )
 
-func PossibleFlowTypeValues() [1]FlowType {
+func PossibleFlowTypeValues() []FlowType {
 	return original.PossibleFlowTypeValues()
 }
 
@@ -180,7 +180,7 @@ const (
 	Pending   PurgeState = original.Pending
 )
 
-func PossiblePurgeStateValues() [2]PurgeState {
+func PossiblePurgeStateValues() []PurgeState {
 	return original.PossiblePurgeStateValues()
 }
 
@@ -190,7 +190,7 @@ const (
 	Rest RequestSource = original.Rest
 )
 
-func PossibleRequestSourceValues() [1]RequestSource {
+func PossibleRequestSourceValues() []RequestSource {
 	return original.PossibleRequestSourceValues()
 }
 
@@ -201,7 +201,7 @@ const (
 	Ping      WebTestKind = original.Ping
 )
 
-func PossibleWebTestKindValues() [2]WebTestKind {
+func PossibleWebTestKindValues() []WebTestKind {
 	return original.PossibleWebTestKindValues()
 }
 

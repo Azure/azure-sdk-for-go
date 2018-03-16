@@ -149,7 +149,7 @@ const (
 	Enabled  AlertEmailNotificationStatus = original.Enabled
 )
 
-func PossibleAlertEmailNotificationStatusValues() [2]AlertEmailNotificationStatus {
+func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
 	return original.PossibleAlertEmailNotificationStatusValues()
 }
 
@@ -160,7 +160,7 @@ const (
 	AlertScopeResource AlertScope = original.AlertScopeResource
 )
 
-func PossibleAlertScopeValues() [2]AlertScope {
+func PossibleAlertScopeValues() []AlertScope {
 	return original.PossibleAlertScopeValues()
 }
 
@@ -172,7 +172,7 @@ const (
 	Warning       AlertSeverity = original.Warning
 )
 
-func PossibleAlertSeverityValues() [3]AlertSeverity {
+func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
 }
 
@@ -183,7 +183,7 @@ const (
 	AlertSourceTypeResource AlertSourceType = original.AlertSourceTypeResource
 )
 
-func PossibleAlertSourceTypeValues() [2]AlertSourceType {
+func PossibleAlertSourceTypeValues() []AlertSourceType {
 	return original.PossibleAlertSourceTypeValues()
 }
 
@@ -194,7 +194,7 @@ const (
 	Cleared AlertStatus = original.Cleared
 )
 
-func PossibleAlertStatusValues() [2]AlertStatus {
+func PossibleAlertStatusValues() []AlertStatus {
 	return original.PossibleAlertStatusValues()
 }
 
@@ -207,7 +207,7 @@ const (
 	NTLM    AuthenticationType = original.NTLM
 )
 
-func PossibleAuthenticationTypeValues() [4]AuthenticationType {
+func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
 }
 
@@ -218,7 +218,7 @@ const (
 	InEligible AuthorizationEligibility = original.InEligible
 )
 
-func PossibleAuthorizationEligibilityValues() [2]AuthorizationEligibility {
+func PossibleAuthorizationEligibilityValues() []AuthorizationEligibility {
 	return original.PossibleAuthorizationEligibilityValues()
 }
 
@@ -229,7 +229,7 @@ const (
 	AuthorizationStatusEnabled  AuthorizationStatus = original.AuthorizationStatusEnabled
 )
 
-func PossibleAuthorizationStatusValues() [2]AuthorizationStatus {
+func PossibleAuthorizationStatusValues() []AuthorizationStatus {
 	return original.PossibleAuthorizationStatusValues()
 }
 
@@ -241,7 +241,7 @@ const (
 	BySSM      BackupJobCreationType = original.BySSM
 )
 
-func PossibleBackupJobCreationTypeValues() [3]BackupJobCreationType {
+func PossibleBackupJobCreationTypeValues() []BackupJobCreationType {
 	return original.PossibleBackupJobCreationTypeValues()
 }
 
@@ -252,7 +252,7 @@ const (
 	BackupPolicyCreationTypeBySSM  BackupPolicyCreationType = original.BackupPolicyCreationTypeBySSM
 )
 
-func PossibleBackupPolicyCreationTypeValues() [2]BackupPolicyCreationType {
+func PossibleBackupPolicyCreationTypeValues() []BackupPolicyCreationType {
 	return original.PossibleBackupPolicyCreationTypeValues()
 }
 
@@ -263,7 +263,7 @@ const (
 	BackupStatusEnabled  BackupStatus = original.BackupStatusEnabled
 )
 
-func PossibleBackupStatusValues() [2]BackupStatus {
+func PossibleBackupStatusValues() []BackupStatus {
 	return original.PossibleBackupStatusValues()
 }
 
@@ -274,7 +274,7 @@ const (
 	LocalSnapshot BackupType = original.LocalSnapshot
 )
 
-func PossibleBackupTypeValues() [2]BackupType {
+func PossibleBackupTypeValues() []BackupType {
 	return original.PossibleBackupTypeValues()
 }
 
@@ -287,7 +287,7 @@ const (
 	ControllerIDUnknown     ControllerID = original.ControllerIDUnknown
 )
 
-func PossibleControllerIDValues() [4]ControllerID {
+func PossibleControllerIDValues() []ControllerID {
 	return original.PossibleControllerIDValues()
 }
 
@@ -299,7 +299,7 @@ const (
 	Start    ControllerPowerStateAction = original.Start
 )
 
-func PossibleControllerPowerStateActionValues() [3]ControllerPowerStateAction {
+func PossibleControllerPowerStateActionValues() []ControllerPowerStateAction {
 	return original.PossibleControllerPowerStateActionValues()
 }
 
@@ -314,7 +314,7 @@ const (
 	ControllerStatusWarning    ControllerStatus = original.ControllerStatusWarning
 )
 
-func PossibleControllerStatusValues() [6]ControllerStatus {
+func PossibleControllerStatusValues() []ControllerStatus {
 	return original.PossibleControllerStatusValues()
 }
 
@@ -330,7 +330,7 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() [7]DayOfWeek {
+func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
 
@@ -341,7 +341,7 @@ const (
 	Pending  DeviceConfigurationStatus = original.Pending
 )
 
-func PossibleDeviceConfigurationStatusValues() [2]DeviceConfigurationStatus {
+func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
 	return original.PossibleDeviceConfigurationStatusValues()
 }
 
@@ -361,7 +361,7 @@ const (
 	Unknown           DeviceStatus = original.Unknown
 )
 
-func PossibleDeviceStatusValues() [11]DeviceStatus {
+func PossibleDeviceStatusValues() []DeviceStatus {
 	return original.PossibleDeviceStatusValues()
 }
 
@@ -373,7 +373,7 @@ const (
 	DeviceTypeSeries8000VirtualAppliance  DeviceType = original.DeviceTypeSeries8000VirtualAppliance
 )
 
-func PossibleDeviceTypeValues() [3]DeviceType {
+func PossibleDeviceTypeValues() []DeviceType {
 	return original.PossibleDeviceTypeValues()
 }
 
@@ -385,7 +385,7 @@ const (
 	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = original.EncryptionAlgorithmRSAESPKCS1V15
 )
 
-func PossibleEncryptionAlgorithmValues() [3]EncryptionAlgorithm {
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	return original.PossibleEncryptionAlgorithmValues()
 }
 
@@ -396,7 +396,7 @@ const (
 	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
 )
 
-func PossibleEncryptionStatusValues() [2]EncryptionStatus {
+func PossibleEncryptionStatusValues() []EncryptionStatus {
 	return original.PossibleEncryptionStatusValues()
 }
 
@@ -408,7 +408,7 @@ const (
 	UnsupportedDeviceVersion FeatureSupportStatus = original.UnsupportedDeviceVersion
 )
 
-func PossibleFeatureSupportStatusValues() [3]FeatureSupportStatus {
+func PossibleFeatureSupportStatusValues() []FeatureSupportStatus {
 	return original.PossibleFeatureSupportStatusValues()
 }
 
@@ -424,7 +424,7 @@ const (
 	HardwareComponentStatusWarning    HardwareComponentStatus = original.HardwareComponentStatusWarning
 )
 
-func PossibleHardwareComponentStatusValues() [7]HardwareComponentStatus {
+func PossibleHardwareComponentStatusValues() []HardwareComponentStatus {
 	return original.PossibleHardwareComponentStatusValues()
 }
 
@@ -436,7 +436,7 @@ const (
 	RolloverPending       InEligibilityCategory = original.RolloverPending
 )
 
-func PossibleInEligibilityCategoryValues() [3]InEligibilityCategory {
+func PossibleInEligibilityCategoryValues() []InEligibilityCategory {
 	return original.PossibleInEligibilityCategoryValues()
 }
 
@@ -449,7 +449,7 @@ const (
 	ISCSIAndCloudStatusIscsiEnabled         ISCSIAndCloudStatus = original.ISCSIAndCloudStatusIscsiEnabled
 )
 
-func PossibleISCSIAndCloudStatusValues() [4]ISCSIAndCloudStatus {
+func PossibleISCSIAndCloudStatusValues() []ISCSIAndCloudStatus {
 	return original.PossibleISCSIAndCloudStatusValues()
 }
 
@@ -462,7 +462,7 @@ const (
 	Succeeded JobStatus = original.Succeeded
 )
 
-func PossibleJobStatusValues() [4]JobStatus {
+func PossibleJobStatusValues() []JobStatus {
 	return original.PossibleJobStatusValues()
 }
 
@@ -481,7 +481,7 @@ const (
 	SupportPackageLogs        JobType = original.SupportPackageLogs
 )
 
-func PossibleJobTypeValues() [10]JobType {
+func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
 
@@ -492,7 +492,7 @@ const (
 	Required    KeyRolloverStatus = original.Required
 )
 
-func PossibleKeyRolloverStatusValues() [2]KeyRolloverStatus {
+func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
 	return original.PossibleKeyRolloverStatusValues()
 }
 
@@ -502,7 +502,7 @@ const (
 	Series8000 Kind = original.Series8000
 )
 
-func PossibleKindValues() [1]Kind {
+func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
 
@@ -513,7 +513,7 @@ const (
 	HelsinkiV1 ManagerType = original.HelsinkiV1
 )
 
-func PossibleManagerTypeValues() [2]ManagerType {
+func PossibleManagerTypeValues() []ManagerType {
 	return original.PossibleManagerTypeValues()
 }
 
@@ -528,7 +528,7 @@ const (
 	MetricAggregationTypeTotal   MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
-func PossibleMetricAggregationTypeValues() [6]MetricAggregationType {
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	return original.PossibleMetricAggregationTypeValues()
 }
 
@@ -543,7 +543,7 @@ const (
 	Seconds        MetricUnit = original.Seconds
 )
 
-func PossibleMetricUnitValues() [6]MetricUnit {
+func PossibleMetricUnitValues() []MetricUnit {
 	return original.PossibleMetricUnitValues()
 }
 
@@ -554,7 +554,7 @@ const (
 	MonitoringStatusEnabled  MonitoringStatus = original.MonitoringStatusEnabled
 )
 
-func PossibleMonitoringStatusValues() [2]MonitoringStatus {
+func PossibleMonitoringStatusValues() []MonitoringStatus {
 	return original.PossibleMonitoringStatusValues()
 }
 
@@ -570,7 +570,7 @@ const (
 	NetInterfaceIDInvalid NetInterfaceID = original.NetInterfaceIDInvalid
 )
 
-func PossibleNetInterfaceIDValues() [7]NetInterfaceID {
+func PossibleNetInterfaceIDValues() []NetInterfaceID {
 	return original.PossibleNetInterfaceIDValues()
 }
 
@@ -581,7 +581,7 @@ const (
 	NetInterfaceStatusEnabled  NetInterfaceStatus = original.NetInterfaceStatusEnabled
 )
 
-func PossibleNetInterfaceStatusValues() [2]NetInterfaceStatus {
+func PossibleNetInterfaceStatusValues() []NetInterfaceStatus {
 	return original.PossibleNetInterfaceStatusValues()
 }
 
@@ -594,7 +594,7 @@ const (
 	NetworkModeIPV6    NetworkMode = original.NetworkModeIPV6
 )
 
-func PossibleNetworkModeValues() [4]NetworkMode {
+func PossibleNetworkModeValues() []NetworkMode {
 	return original.PossibleNetworkModeValues()
 }
 
@@ -607,7 +607,7 @@ const (
 	OperationStatusUpdating  OperationStatus = original.OperationStatusUpdating
 )
 
-func PossibleOperationStatusValues() [4]OperationStatus {
+func PossibleOperationStatusValues() []OperationStatus {
 	return original.PossibleOperationStatusValues()
 }
 
@@ -618,7 +618,7 @@ const (
 	Owned    OwnerShipStatus = original.Owned
 )
 
-func PossibleOwnerShipStatusValues() [2]OwnerShipStatus {
+func PossibleOwnerShipStatusValues() []OwnerShipStatus {
 	return original.PossibleOwnerShipStatusValues()
 }
 
@@ -631,7 +631,7 @@ const (
 	Weekly  RecurrenceType = original.Weekly
 )
 
-func PossibleRecurrenceTypeValues() [4]RecurrenceType {
+func PossibleRecurrenceTypeValues() []RecurrenceType {
 	return original.PossibleRecurrenceTypeValues()
 }
 
@@ -644,7 +644,7 @@ const (
 	RemoteManagementModeConfigurationUnknown             RemoteManagementModeConfiguration = original.RemoteManagementModeConfigurationUnknown
 )
 
-func PossibleRemoteManagementModeConfigurationValues() [4]RemoteManagementModeConfiguration {
+func PossibleRemoteManagementModeConfigurationValues() []RemoteManagementModeConfiguration {
 	return original.PossibleRemoteManagementModeConfigurationValues()
 }
 
@@ -655,7 +655,7 @@ const (
 	ScheduledBackupStatusEnabled  ScheduledBackupStatus = original.ScheduledBackupStatusEnabled
 )
 
-func PossibleScheduledBackupStatusValues() [2]ScheduledBackupStatus {
+func PossibleScheduledBackupStatusValues() []ScheduledBackupStatus {
 	return original.PossibleScheduledBackupStatusValues()
 }
 
@@ -666,7 +666,7 @@ const (
 	ScheduleStatusEnabled  ScheduleStatus = original.ScheduleStatusEnabled
 )
 
-func PossibleScheduleStatusValues() [2]ScheduleStatus {
+func PossibleScheduleStatusValues() []ScheduleStatus {
 	return original.PossibleScheduleStatusValues()
 }
 
@@ -677,7 +677,7 @@ const (
 	SslStatusEnabled  SslStatus = original.SslStatusEnabled
 )
 
-func PossibleSslStatusValues() [2]SslStatus {
+func PossibleSslStatusValues() []SslStatus {
 	return original.PossibleSslStatusValues()
 }
 
@@ -693,7 +693,7 @@ const (
 	TargetSourceIncompatibleVersionError      TargetEligibilityResultCode = original.TargetSourceIncompatibleVersionError
 )
 
-func PossibleTargetEligibilityResultCodeValues() [7]TargetEligibilityResultCode {
+func PossibleTargetEligibilityResultCodeValues() []TargetEligibilityResultCode {
 	return original.PossibleTargetEligibilityResultCodeValues()
 }
 
@@ -704,7 +704,7 @@ const (
 	TargetEligibilityStatusNotEligible TargetEligibilityStatus = original.TargetEligibilityStatusNotEligible
 )
 
-func PossibleTargetEligibilityStatusValues() [2]TargetEligibilityStatus {
+func PossibleTargetEligibilityStatusValues() []TargetEligibilityStatus {
 	return original.PossibleTargetEligibilityStatusValues()
 }
 
@@ -715,7 +715,7 @@ const (
 	Classic VirtualMachineAPIType = original.Classic
 )
 
-func PossibleVirtualMachineAPITypeValues() [2]VirtualMachineAPIType {
+func PossibleVirtualMachineAPITypeValues() []VirtualMachineAPIType {
 	return original.PossibleVirtualMachineAPITypeValues()
 }
 
@@ -726,7 +726,7 @@ const (
 	VolumeStatusOnline  VolumeStatus = original.VolumeStatusOnline
 )
 
-func PossibleVolumeStatusValues() [2]VolumeStatus {
+func PossibleVolumeStatusValues() []VolumeStatus {
 	return original.PossibleVolumeStatusValues()
 }
 
@@ -738,7 +738,7 @@ const (
 	Tiered        VolumeType = original.Tiered
 )
 
-func PossibleVolumeTypeValues() [3]VolumeType {
+func PossibleVolumeTypeValues() []VolumeType {
 	return original.PossibleVolumeTypeValues()
 }
 

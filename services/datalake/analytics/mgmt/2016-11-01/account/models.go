@@ -40,8 +40,8 @@ const (
 )
 
 // PossibleAADObjectTypeValues returns an array of possible values for the AADObjectType const type.
-func PossibleAADObjectTypeValues() [3]AADObjectType {
-	return [3]AADObjectType{Group, ServicePrincipal, User}
+func PossibleAADObjectTypeValues() []AADObjectType {
+	return []AADObjectType{Group, ServicePrincipal, User}
 }
 
 // DataLakeAnalyticsAccountState enumerates the values for data lake analytics account state.
@@ -55,8 +55,8 @@ const (
 )
 
 // PossibleDataLakeAnalyticsAccountStateValues returns an array of possible values for the DataLakeAnalyticsAccountState const type.
-func PossibleDataLakeAnalyticsAccountStateValues() [2]DataLakeAnalyticsAccountState {
-	return [2]DataLakeAnalyticsAccountState{Active, Suspended}
+func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
+	return []DataLakeAnalyticsAccountState{Active, Suspended}
 }
 
 // DataLakeAnalyticsAccountStatus enumerates the values for data lake analytics account status.
@@ -88,8 +88,8 @@ const (
 )
 
 // PossibleDataLakeAnalyticsAccountStatusValues returns an array of possible values for the DataLakeAnalyticsAccountStatus const type.
-func PossibleDataLakeAnalyticsAccountStatusValues() [11]DataLakeAnalyticsAccountStatus {
-	return [11]DataLakeAnalyticsAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
+func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
+	return []DataLakeAnalyticsAccountStatus{Canceled, Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending, Undeleting}
 }
 
 // FirewallAllowAzureIpsState enumerates the values for firewall allow azure ips state.
@@ -103,8 +103,8 @@ const (
 )
 
 // PossibleFirewallAllowAzureIpsStateValues returns an array of possible values for the FirewallAllowAzureIpsState const type.
-func PossibleFirewallAllowAzureIpsStateValues() [2]FirewallAllowAzureIpsState {
-	return [2]FirewallAllowAzureIpsState{Disabled, Enabled}
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
+	return []FirewallAllowAzureIpsState{Disabled, Enabled}
 }
 
 // FirewallState enumerates the values for firewall state.
@@ -118,8 +118,8 @@ const (
 )
 
 // PossibleFirewallStateValues returns an array of possible values for the FirewallState const type.
-func PossibleFirewallStateValues() [2]FirewallState {
-	return [2]FirewallState{FirewallStateDisabled, FirewallStateEnabled}
+func PossibleFirewallStateValues() []FirewallState {
+	return []FirewallState{FirewallStateDisabled, FirewallStateEnabled}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -135,8 +135,8 @@ const (
 )
 
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() [3]OperationOrigin {
-	return [3]OperationOrigin{OperationOriginSystem, OperationOriginUser, OperationOriginUsersystem}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return []OperationOrigin{OperationOriginSystem, OperationOriginUser, OperationOriginUsersystem}
 }
 
 // SubscriptionState enumerates the values for subscription state.
@@ -156,8 +156,8 @@ const (
 )
 
 // PossibleSubscriptionStateValues returns an array of possible values for the SubscriptionState const type.
-func PossibleSubscriptionStateValues() [5]SubscriptionState {
-	return [5]SubscriptionState{SubscriptionStateDeleted, SubscriptionStateRegistered, SubscriptionStateSuspended, SubscriptionStateUnregistered, SubscriptionStateWarned}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return []SubscriptionState{SubscriptionStateDeleted, SubscriptionStateRegistered, SubscriptionStateSuspended, SubscriptionStateUnregistered, SubscriptionStateWarned}
 }
 
 // TierType enumerates the values for tier type.
@@ -185,8 +185,8 @@ const (
 )
 
 // PossibleTierTypeValues returns an array of possible values for the TierType const type.
-func PossibleTierTypeValues() [9]TierType {
-	return [9]TierType{Commitment100000AUHours, Commitment10000AUHours, Commitment1000AUHours, Commitment100AUHours, Commitment500000AUHours, Commitment50000AUHours, Commitment5000AUHours, Commitment500AUHours, Consumption}
+func PossibleTierTypeValues() []TierType {
+	return []TierType{Commitment100000AUHours, Commitment10000AUHours, Commitment1000AUHours, Commitment100AUHours, Commitment500000AUHours, Commitment50000AUHours, Commitment5000AUHours, Commitment500AUHours, Consumption}
 }
 
 // AccountsCreateFutureType an abstraction for monitoring and retrieving the results of a long-running operation.

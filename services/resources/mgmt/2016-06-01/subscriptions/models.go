@@ -36,8 +36,8 @@ const (
 )
 
 // PossibleSpendingLimitValues returns an array of possible values for the SpendingLimit const type.
-func PossibleSpendingLimitValues() [3]SpendingLimit {
-	return [3]SpendingLimit{CurrentPeriodOff, Off, On}
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return []SpendingLimit{CurrentPeriodOff, Off, On}
 }
 
 // State enumerates the values for state.
@@ -57,8 +57,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [5]State {
-	return [5]State{Deleted, Disabled, Enabled, PastDue, Warned}
+func PossibleStateValues() []State {
+	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
 }
 
 // ListResult subscription list operation response.

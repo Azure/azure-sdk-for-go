@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() [2]AllocationState {
-	return [2]AllocationState{Resizing, Steady}
+func PossibleAllocationStateValues() []AllocationState {
+	return []AllocationState{Resizing, Steady}
 }
 
 // CachingType enumerates the values for caching type.
@@ -54,8 +54,8 @@ const (
 )
 
 // PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() [3]CachingType {
-	return [3]CachingType{None, Readonly, Readwrite}
+func PossibleCachingTypeValues() []CachingType {
+	return []CachingType{None, Readonly, Readwrite}
 }
 
 // DeallocationOption enumerates the values for deallocation option.
@@ -73,8 +73,8 @@ const (
 )
 
 // PossibleDeallocationOptionValues returns an array of possible values for the DeallocationOption const type.
-func PossibleDeallocationOptionValues() [4]DeallocationOption {
-	return [4]DeallocationOption{Requeue, Terminate, Unknown, Waitforjobcompletion}
+func PossibleDeallocationOptionValues() []DeallocationOption {
+	return []DeallocationOption{Requeue, Terminate, Unknown, Waitforjobcompletion}
 }
 
 // ExecutionState enumerates the values for execution state.
@@ -94,8 +94,8 @@ const (
 )
 
 // PossibleExecutionStateValues returns an array of possible values for the ExecutionState const type.
-func PossibleExecutionStateValues() [5]ExecutionState {
-	return [5]ExecutionState{Failed, Queued, Running, Succeeded, Terminating}
+func PossibleExecutionStateValues() []ExecutionState {
+	return []ExecutionState{Failed, Queued, Running, Succeeded, Terminating}
 }
 
 // FileServerProvisioningState enumerates the values for file server provisioning state.
@@ -115,8 +115,8 @@ const (
 )
 
 // PossibleFileServerProvisioningStateValues returns an array of possible values for the FileServerProvisioningState const type.
-func PossibleFileServerProvisioningStateValues() [5]FileServerProvisioningState {
-	return [5]FileServerProvisioningState{FileServerProvisioningStateCreating, FileServerProvisioningStateDeleting, FileServerProvisioningStateFailed, FileServerProvisioningStateSucceeded, FileServerProvisioningStateUpdating}
+func PossibleFileServerProvisioningStateValues() []FileServerProvisioningState {
+	return []FileServerProvisioningState{FileServerProvisioningStateCreating, FileServerProvisioningStateDeleting, FileServerProvisioningStateFailed, FileServerProvisioningStateSucceeded, FileServerProvisioningStateUpdating}
 }
 
 // FileServerType enumerates the values for file server type.
@@ -130,8 +130,8 @@ const (
 )
 
 // PossibleFileServerTypeValues returns an array of possible values for the FileServerType const type.
-func PossibleFileServerTypeValues() [2]FileServerType {
-	return [2]FileServerType{Glusterfs, Nfs}
+func PossibleFileServerTypeValues() []FileServerType {
+	return []FileServerType{Glusterfs, Nfs}
 }
 
 // OutputType enumerates the values for output type.
@@ -149,8 +149,8 @@ const (
 )
 
 // PossibleOutputTypeValues returns an array of possible values for the OutputType const type.
-func PossibleOutputTypeValues() [4]OutputType {
-	return [4]OutputType{Custom, Logs, Model, Summary}
+func PossibleOutputTypeValues() []OutputType {
+	return []OutputType{Custom, Logs, Model, Summary}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -168,8 +168,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [4]ProvisioningState {
-	return [4]ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded}
 }
 
 // StorageAccountType enumerates the values for storage account type.
@@ -183,8 +183,8 @@ const (
 )
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() [2]StorageAccountType {
-	return [2]StorageAccountType{PremiumLRS, StandardLRS}
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return []StorageAccountType{PremiumLRS, StandardLRS}
 }
 
 // ToolType enumerates the values for tool type.
@@ -206,8 +206,8 @@ const (
 )
 
 // PossibleToolTypeValues returns an array of possible values for the ToolType const type.
-func PossibleToolTypeValues() [6]ToolType {
-	return [6]ToolType{ToolTypeCaffe, ToolTypeCaffe2, ToolTypeChainer, ToolTypeCntk, ToolTypeCustom, ToolTypeTensorflow}
+func PossibleToolTypeValues() []ToolType {
+	return []ToolType{ToolTypeCaffe, ToolTypeCaffe2, ToolTypeChainer, ToolTypeCntk, ToolTypeCustom, ToolTypeTensorflow}
 }
 
 // VMPriority enumerates the values for vm priority.
@@ -221,8 +221,8 @@ const (
 )
 
 // PossibleVMPriorityValues returns an array of possible values for the VMPriority const type.
-func PossibleVMPriorityValues() [2]VMPriority {
-	return [2]VMPriority{Dedicated, Lowpriority}
+func PossibleVMPriorityValues() []VMPriority {
+	return []VMPriority{Dedicated, Lowpriority}
 }
 
 // AutoScaleSettings the system automatically scales the cluster up and down (within minimumNodeCount and

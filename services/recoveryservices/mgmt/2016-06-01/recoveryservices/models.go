@@ -42,8 +42,8 @@ const (
 )
 
 // PossibleAuthTypeValues returns an array of possible values for the AuthType const type.
-func PossibleAuthTypeValues() [5]AuthType {
-	return [5]AuthType{AAD, AccessControlService, ACS, AzureActiveDirectory, Invalid}
+func PossibleAuthTypeValues() []AuthType {
+	return []AuthType{AAD, AccessControlService, ACS, AzureActiveDirectory, Invalid}
 }
 
 // AuthTypeBasicResourceCertificateDetails enumerates the values for auth type basic resource certificate
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleAuthTypeBasicResourceCertificateDetailsValues returns an array of possible values for the AuthTypeBasicResourceCertificateDetails const type.
-func PossibleAuthTypeBasicResourceCertificateDetailsValues() [3]AuthTypeBasicResourceCertificateDetails {
-	return [3]AuthTypeBasicResourceCertificateDetails{AuthTypeAccessControlService, AuthTypeAzureActiveDirectory, AuthTypeResourceCertificateDetails}
+func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
+	return []AuthTypeBasicResourceCertificateDetails{AuthTypeAccessControlService, AuthTypeAzureActiveDirectory, AuthTypeResourceCertificateDetails}
 }
 
 // SkuName enumerates the values for sku name.
@@ -75,8 +75,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [2]SkuName {
-	return [2]SkuName{RS0, Standard}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{RS0, Standard}
 }
 
 // TriggerType enumerates the values for trigger type.
@@ -90,8 +90,8 @@ const (
 )
 
 // PossibleTriggerTypeValues returns an array of possible values for the TriggerType const type.
-func PossibleTriggerTypeValues() [2]TriggerType {
-	return [2]TriggerType{ForcedUpgrade, UserTriggered}
+func PossibleTriggerTypeValues() []TriggerType {
+	return []TriggerType{ForcedUpgrade, UserTriggered}
 }
 
 // UsagesUnit enumerates the values for usages unit.
@@ -113,8 +113,8 @@ const (
 )
 
 // PossibleUsagesUnitValues returns an array of possible values for the UsagesUnit const type.
-func PossibleUsagesUnitValues() [6]UsagesUnit {
-	return [6]UsagesUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
+func PossibleUsagesUnitValues() []UsagesUnit {
+	return []UsagesUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
 }
 
 // VaultUpgradeState enumerates the values for vault upgrade state.
@@ -132,8 +132,8 @@ const (
 )
 
 // PossibleVaultUpgradeStateValues returns an array of possible values for the VaultUpgradeState const type.
-func PossibleVaultUpgradeStateValues() [4]VaultUpgradeState {
-	return [4]VaultUpgradeState{Failed, InProgress, Unknown, Upgraded}
+func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
+	return []VaultUpgradeState{Failed, InProgress, Unknown, Upgraded}
 }
 
 // CertificateRequest details of the certificate to be uploaded to the vault.

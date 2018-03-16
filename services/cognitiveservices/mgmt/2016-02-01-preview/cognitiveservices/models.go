@@ -33,8 +33,8 @@ const (
 )
 
 // PossibleKeyNameValues returns an array of possible values for the KeyName const type.
-func PossibleKeyNameValues() [2]KeyName {
-	return [2]KeyName{Key1, Key2}
+func PossibleKeyNameValues() []KeyName {
+	return []KeyName{Key1, Key2}
 }
 
 // Kind enumerates the values for kind.
@@ -78,8 +78,8 @@ const (
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() [17]Kind {
-	return [17]Kind{Academic, BingAutosuggest, BingSearch, BingSpeech, BingSpellCheck, ComputerVision, ContentModerator, Emotion, Face, LUIS, Recommendations, SpeakerRecognition, Speech, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
+func PossibleKindValues() []Kind {
+	return []Kind{Academic, BingAutosuggest, BingSearch, BingSpeech, BingSpellCheck, ComputerVision, ContentModerator, Emotion, Face, LUIS, Recommendations, SpeakerRecognition, Speech, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -97,8 +97,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [4]ProvisioningState {
-	return [4]ProvisioningState{Creating, Failed, ResolvingDNS, Succeeded}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Creating, Failed, ResolvingDNS, Succeeded}
 }
 
 // SkuName enumerates the values for sku name.
@@ -130,8 +130,8 @@ const (
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() [11]SkuName {
-	return [11]SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -147,8 +147,8 @@ const (
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() [3]SkuTier {
-	return [3]SkuTier{Free, Premium, Standard}
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{Free, Premium, Standard}
 }
 
 // Account cognitive Services Account is an Azure resource representing the provisioned account, its type, location

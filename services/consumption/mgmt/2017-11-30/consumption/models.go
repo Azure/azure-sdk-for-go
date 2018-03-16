@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleDatagrainValues returns an array of possible values for the Datagrain const type.
-func PossibleDatagrainValues() [2]Datagrain {
-	return [2]Datagrain{DailyGrain, MonthlyGrain}
+func PossibleDatagrainValues() []Datagrain {
+	return []Datagrain{DailyGrain, MonthlyGrain}
 }
 
 // ErrorDetails the details of the error.

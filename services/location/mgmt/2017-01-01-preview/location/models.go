@@ -33,8 +33,8 @@ const (
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() [2]KeyType {
-	return [2]KeyType{Primary, Secondary}
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{Primary, Secondary}
 }
 
 // BasedServicesAccount an Azure resource which represents access to a suite of Location Based Services REST APIs.

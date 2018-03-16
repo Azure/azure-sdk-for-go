@@ -50,7 +50,7 @@ const (
 	AnswerTypePlaces   AnswerType = original.AnswerTypePlaces
 )
 
-func PossibleAnswerTypeValues() [2]AnswerType {
+func PossibleAnswerTypeValues() []AnswerType {
 	return original.PossibleAnswerTypeValues()
 }
 
@@ -64,7 +64,7 @@ const (
 	ListWithPivot                    EntityQueryScenario = original.ListWithPivot
 )
 
-func PossibleEntityQueryScenarioValues() [5]EntityQueryScenario {
+func PossibleEntityQueryScenarioValues() []EntityQueryScenario {
 	return original.PossibleEntityQueryScenarioValues()
 }
 
@@ -76,7 +76,7 @@ const (
 	EntityScenarioListItem           EntityScenario = original.EntityScenarioListItem
 )
 
-func PossibleEntityScenarioValues() [3]EntityScenario {
+func PossibleEntityScenarioValues() []EntityScenario {
 	return original.PossibleEntityScenarioValues()
 }
 
@@ -134,7 +134,7 @@ const (
 	EntityTypeVideoGame           EntityType = original.EntityTypeVideoGame
 )
 
-func PossibleEntityTypeValues() [49]EntityType {
+func PossibleEntityTypeValues() []EntityType {
 	return original.PossibleEntityTypeValues()
 }
 
@@ -149,7 +149,7 @@ const (
 	ServerError               ErrorCode = original.ServerError
 )
 
-func PossibleErrorCodeValues() [6]ErrorCode {
+func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
 }
 
@@ -169,7 +169,7 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() [11]ErrorSubCode {
+func PossibleErrorSubCodeValues() []ErrorSubCode {
 	return original.PossibleErrorSubCodeValues()
 }
 
@@ -180,7 +180,7 @@ const (
 	JSONLd ResponseFormat = original.JSONLd
 )
 
-func PossibleResponseFormatValues() [2]ResponseFormat {
+func PossibleResponseFormatValues() []ResponseFormat {
 	return original.PossibleResponseFormatValues()
 }
 
@@ -192,7 +192,7 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
-func PossibleSafeSearchValues() [3]SafeSearch {
+func PossibleSafeSearchValues() []SafeSearch {
 	return original.PossibleSafeSearchValues()
 }
 
@@ -207,7 +207,7 @@ const (
 	TypeContractualRulesTextAttribution    Type = original.TypeContractualRulesTextAttribution
 )
 
-func PossibleTypeValues() [6]Type {
+func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 
@@ -245,7 +245,7 @@ const (
 	TypeTouristAttraction     TypeBasicResponseBase = original.TypeTouristAttraction
 )
 
-func PossibleTypeBasicResponseBaseValues() [29]TypeBasicResponseBase {
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
 	return original.PossibleTypeBasicResponseBaseValues()
 }
 

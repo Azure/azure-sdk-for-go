@@ -35,8 +35,8 @@ const (
 )
 
 // PossibleCredentialDataFormatValues returns an array of possible values for the CredentialDataFormat const type.
-func PossibleCredentialDataFormatValues() [1]CredentialDataFormat {
-	return [1]CredentialDataFormat{RsaEncrypted}
+func PossibleCredentialDataFormatValues() []CredentialDataFormat {
+	return []CredentialDataFormat{RsaEncrypted}
 }
 
 // GatewayExpandOption enumerates the values for gateway expand option.
@@ -50,8 +50,8 @@ const (
 )
 
 // PossibleGatewayExpandOptionValues returns an array of possible values for the GatewayExpandOption const type.
-func PossibleGatewayExpandOptionValues() [2]GatewayExpandOption {
-	return [2]GatewayExpandOption{Download, Status}
+func PossibleGatewayExpandOptionValues() []GatewayExpandOption {
+	return []GatewayExpandOption{Download, Status}
 }
 
 // PowerShellExpandOption enumerates the values for power shell expand option.
@@ -63,8 +63,8 @@ const (
 )
 
 // PossiblePowerShellExpandOptionValues returns an array of possible values for the PowerShellExpandOption const type.
-func PossiblePowerShellExpandOptionValues() [1]PowerShellExpandOption {
-	return [1]PowerShellExpandOption{Output}
+func PossiblePowerShellExpandOptionValues() []PowerShellExpandOption {
+	return []PowerShellExpandOption{Output}
 }
 
 // PromptFieldType enumerates the values for prompt field type.
@@ -80,8 +80,8 @@ const (
 )
 
 // PossiblePromptFieldTypeValues returns an array of possible values for the PromptFieldType const type.
-func PossiblePromptFieldTypeValues() [3]PromptFieldType {
-	return [3]PromptFieldType{Credential, SecureString, String}
+func PossiblePromptFieldTypeValues() []PromptFieldType {
+	return []PromptFieldType{Credential, SecureString, String}
 }
 
 // RetentionPeriod enumerates the values for retention period.
@@ -95,8 +95,8 @@ const (
 )
 
 // PossibleRetentionPeriodValues returns an array of possible values for the RetentionPeriod const type.
-func PossibleRetentionPeriodValues() [2]RetentionPeriod {
-	return [2]RetentionPeriod{Persistent, Session}
+func PossibleRetentionPeriodValues() []RetentionPeriod {
+	return []RetentionPeriod{Persistent, Session}
 }
 
 // UpgradeMode enumerates the values for upgrade mode.
@@ -110,8 +110,8 @@ const (
 )
 
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() [2]UpgradeMode {
-	return [2]UpgradeMode{Automatic, Manual}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return []UpgradeMode{Automatic, Manual}
 }
 
 // EncryptionJwkResource the public key of the gateway.

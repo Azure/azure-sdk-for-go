@@ -59,7 +59,7 @@ const (
 	Standard SkuType = original.Standard
 )
 
-func PossibleSkuTypeValues() [2]SkuType {
+func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
 }
 

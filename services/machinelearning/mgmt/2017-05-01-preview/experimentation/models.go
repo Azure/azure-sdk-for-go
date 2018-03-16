@@ -42,8 +42,8 @@ const (
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() [5]ProvisioningState {
-	return [5]ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // Account an object that represents a machine learning team account.

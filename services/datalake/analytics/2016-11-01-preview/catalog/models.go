@@ -42,8 +42,8 @@ const (
 )
 
 // PossibleACLTypeValues returns an array of possible values for the ACLType const type.
-func PossibleACLTypeValues() [5]ACLType {
-	return [5]ACLType{Group, GroupObj, Other, User, UserObj}
+func PossibleACLTypeValues() []ACLType {
+	return []ACLType{Group, GroupObj, Other, User, UserObj}
 }
 
 // FileType enumerates the values for file type.
@@ -59,8 +59,8 @@ const (
 )
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() [3]FileType {
-	return [3]FileType{Assembly, Nodeploy, Resource}
+func PossibleFileTypeValues() []FileType {
+	return []FileType{Assembly, Nodeploy, Resource}
 }
 
 // PermissionType enumerates the values for permission type.
@@ -84,8 +84,8 @@ const (
 )
 
 // PossiblePermissionTypeValues returns an array of possible values for the PermissionType const type.
-func PossiblePermissionTypeValues() [7]PermissionType {
-	return [7]PermissionType{All, Alter, Create, Drop, None, Use, Write}
+func PossiblePermissionTypeValues() []PermissionType {
+	return []PermissionType{All, Alter, Create, Drop, None, Use, Write}
 }
 
 // ACL a Data Lake Analytics catalog access control list (ACL) entry.

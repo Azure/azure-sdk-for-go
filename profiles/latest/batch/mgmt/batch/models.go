@@ -86,7 +86,7 @@ const (
 	Secondary AccountKeyType = original.Secondary
 )
 
-func PossibleAccountKeyTypeValues() [2]AccountKeyType {
+func PossibleAccountKeyTypeValues() []AccountKeyType {
 	return original.PossibleAccountKeyTypeValues()
 }
 
@@ -98,7 +98,7 @@ const (
 	Stopping AllocationState = original.Stopping
 )
 
-func PossibleAllocationStateValues() [3]AllocationState {
+func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
 
@@ -109,7 +109,7 @@ const (
 	AutoUserScopeTask AutoUserScope = original.AutoUserScopeTask
 )
 
-func PossibleAutoUserScopeValues() [2]AutoUserScope {
+func PossibleAutoUserScopeValues() []AutoUserScope {
 	return original.PossibleAutoUserScopeValues()
 }
 
@@ -121,7 +121,7 @@ const (
 	ReadWrite CachingType = original.ReadWrite
 )
 
-func PossibleCachingTypeValues() [3]CachingType {
+func PossibleCachingTypeValues() []CachingType {
 	return original.PossibleCachingTypeValues()
 }
 
@@ -132,7 +132,7 @@ const (
 	Pfx CertificateFormat = original.Pfx
 )
 
-func PossibleCertificateFormatValues() [2]CertificateFormat {
+func PossibleCertificateFormatValues() []CertificateFormat {
 	return original.PossibleCertificateFormatValues()
 }
 
@@ -144,7 +144,7 @@ const (
 	Succeeded CertificateProvisioningState = original.Succeeded
 )
 
-func PossibleCertificateProvisioningStateValues() [3]CertificateProvisioningState {
+func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
 	return original.PossibleCertificateProvisioningStateValues()
 }
 
@@ -155,7 +155,7 @@ const (
 	LocalMachine CertificateStoreLocation = original.LocalMachine
 )
 
-func PossibleCertificateStoreLocationValues() [2]CertificateStoreLocation {
+func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 	return original.PossibleCertificateStoreLocationValues()
 }
 
@@ -167,7 +167,7 @@ const (
 	CertificateVisibilityTask       CertificateVisibility = original.CertificateVisibilityTask
 )
 
-func PossibleCertificateVisibilityValues() [3]CertificateVisibility {
+func PossibleCertificateVisibilityValues() []CertificateVisibility {
 	return original.PossibleCertificateVisibilityValues()
 }
 
@@ -180,7 +180,7 @@ const (
 	Terminate      ComputeNodeDeallocationOption = original.Terminate
 )
 
-func PossibleComputeNodeDeallocationOptionValues() [4]ComputeNodeDeallocationOption {
+func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
 	return original.PossibleComputeNodeDeallocationOptionValues()
 }
 
@@ -191,7 +191,7 @@ const (
 	Spread ComputeNodeFillType = original.Spread
 )
 
-func PossibleComputeNodeFillTypeValues() [2]ComputeNodeFillType {
+func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 	return original.PossibleComputeNodeFillTypeValues()
 }
 
@@ -202,7 +202,7 @@ const (
 	NonAdmin ElevationLevel = original.NonAdmin
 )
 
-func PossibleElevationLevelValues() [2]ElevationLevel {
+func PossibleElevationLevelValues() []ElevationLevel {
 	return original.PossibleElevationLevelValues()
 }
 
@@ -213,7 +213,7 @@ const (
 	UDP InboundEndpointProtocol = original.UDP
 )
 
-func PossibleInboundEndpointProtocolValues() [2]InboundEndpointProtocol {
+func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 	return original.PossibleInboundEndpointProtocolValues()
 }
 
@@ -224,7 +224,7 @@ const (
 	Enabled  InterNodeCommunicationState = original.Enabled
 )
 
-func PossibleInterNodeCommunicationStateValues() [2]InterNodeCommunicationState {
+func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
 	return original.PossibleInterNodeCommunicationStateValues()
 }
 
@@ -235,7 +235,7 @@ const (
 	Invalid       NameAvailabilityReason = original.Invalid
 )
 
-func PossibleNameAvailabilityReasonValues() [2]NameAvailabilityReason {
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
 	return original.PossibleNameAvailabilityReasonValues()
 }
 
@@ -246,7 +246,7 @@ const (
 	Deny  NetworkSecurityGroupRuleAccess = original.Deny
 )
 
-func PossibleNetworkSecurityGroupRuleAccessValues() [2]NetworkSecurityGroupRuleAccess {
+func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
 	return original.PossibleNetworkSecurityGroupRuleAccessValues()
 }
 
@@ -258,7 +258,7 @@ const (
 	Unmapped PackageState = original.Unmapped
 )
 
-func PossiblePackageStateValues() [3]PackageState {
+func PossiblePackageStateValues() []PackageState {
 	return original.PossiblePackageStateValues()
 }
 
@@ -269,7 +269,7 @@ const (
 	UserSubscription PoolAllocationMode = original.UserSubscription
 )
 
-func PossiblePoolAllocationModeValues() [2]PoolAllocationMode {
+func PossiblePoolAllocationModeValues() []PoolAllocationMode {
 	return original.PossiblePoolAllocationModeValues()
 }
 
@@ -280,7 +280,7 @@ const (
 	PoolProvisioningStateSucceeded PoolProvisioningState = original.PoolProvisioningStateSucceeded
 )
 
-func PossiblePoolProvisioningStateValues() [2]PoolProvisioningState {
+func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
 	return original.PossiblePoolProvisioningStateValues()
 }
 
@@ -295,7 +295,7 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
-func PossibleProvisioningStateValues() [6]ProvisioningState {
+func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
 
@@ -306,7 +306,7 @@ const (
 	StandardLRS StorageAccountType = original.StandardLRS
 )
 
-func PossibleStorageAccountTypeValues() [2]StorageAccountType {
+func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
 }
 

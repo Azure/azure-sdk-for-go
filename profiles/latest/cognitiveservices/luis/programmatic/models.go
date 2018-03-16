@@ -71,7 +71,7 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() [12]AzureRegions {
+func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
 }
 
@@ -83,7 +83,7 @@ const (
 	Success OperationStatusType = original.Success
 )
 
-func PossibleOperationStatusTypeValues() [3]OperationStatusType {
+func PossibleOperationStatusTypeValues() []OperationStatusType {
 	return original.PossibleOperationStatusTypeValues()
 }
 
@@ -99,7 +99,7 @@ const (
 	ReadableTypePrebuiltEntityExtractor          ReadableType = original.ReadableTypePrebuiltEntityExtractor
 )
 
-func PossibleReadableTypeValues() [7]ReadableType {
+func PossibleReadableTypeValues() []ReadableType {
 	return original.PossibleReadableTypeValues()
 }
 
@@ -115,7 +115,7 @@ const (
 	ReadableType1PrebuiltEntityExtractor          ReadableType1 = original.ReadableType1PrebuiltEntityExtractor
 )
 
-func PossibleReadableType1Values() [7]ReadableType1 {
+func PossibleReadableType1Values() []ReadableType1 {
 	return original.PossibleReadableType1Values()
 }
 
@@ -131,7 +131,7 @@ const (
 	ReadableType2PrebuiltEntityExtractor          ReadableType2 = original.ReadableType2PrebuiltEntityExtractor
 )
 
-func PossibleReadableType2Values() [7]ReadableType2 {
+func PossibleReadableType2Values() []ReadableType2 {
 	return original.PossibleReadableType2Values()
 }
 
@@ -147,7 +147,7 @@ const (
 	ReadableType3PrebuiltEntityExtractor          ReadableType3 = original.ReadableType3PrebuiltEntityExtractor
 )
 
-func PossibleReadableType3Values() [7]ReadableType3 {
+func PossibleReadableType3Values() []ReadableType3 {
 	return original.PossibleReadableType3Values()
 }
 
@@ -161,7 +161,7 @@ const (
 	StatusUpToDate   Status = original.StatusUpToDate
 )
 
-func PossibleStatusValues() [5]Status {
+func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
 
@@ -175,7 +175,7 @@ const (
 	Status1UpToDate   Status1 = original.Status1UpToDate
 )
 
-func PossibleStatus1Values() [5]Status1 {
+func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()
 }
 
@@ -187,7 +187,7 @@ const (
 	Trained       TrainingStatus = original.Trained
 )
 
-func PossibleTrainingStatusValues() [3]TrainingStatus {
+func PossibleTrainingStatusValues() []TrainingStatus {
 	return original.PossibleTrainingStatusValues()
 }
 

@@ -37,8 +37,8 @@ const (
 )
 
 // PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() [3]EndpointType {
-	return [3]EndpointType{EndpointTypeEventHub, EndpointTypeEventSubscriptionDestination, EndpointTypeWebHook}
+func PossibleEndpointTypeValues() []EndpointType {
+	return []EndpointType{EndpointTypeEventHub, EndpointTypeEventSubscriptionDestination, EndpointTypeWebHook}
 }
 
 // EventSubscriptionProvisioningState enumerates the values for event subscription provisioning state.
@@ -60,8 +60,8 @@ const (
 )
 
 // PossibleEventSubscriptionProvisioningStateValues returns an array of possible values for the EventSubscriptionProvisioningState const type.
-func PossibleEventSubscriptionProvisioningStateValues() [6]EventSubscriptionProvisioningState {
-	return [6]EventSubscriptionProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
+func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
+	return []EventSubscriptionProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -77,8 +77,8 @@ const (
 )
 
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() [3]OperationOrigin {
-	return [3]OperationOrigin{System, User, UserAndSystem}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return []OperationOrigin{System, User, UserAndSystem}
 }
 
 // ResourceRegionType enumerates the values for resource region type.
@@ -92,8 +92,8 @@ const (
 )
 
 // PossibleResourceRegionTypeValues returns an array of possible values for the ResourceRegionType const type.
-func PossibleResourceRegionTypeValues() [2]ResourceRegionType {
-	return [2]ResourceRegionType{GlobalResource, RegionalResource}
+func PossibleResourceRegionTypeValues() []ResourceRegionType {
+	return []ResourceRegionType{GlobalResource, RegionalResource}
 }
 
 // TopicProvisioningState enumerates the values for topic provisioning state.
@@ -115,8 +115,8 @@ const (
 )
 
 // PossibleTopicProvisioningStateValues returns an array of possible values for the TopicProvisioningState const type.
-func PossibleTopicProvisioningStateValues() [6]TopicProvisioningState {
-	return [6]TopicProvisioningState{TopicProvisioningStateCanceled, TopicProvisioningStateCreating, TopicProvisioningStateDeleting, TopicProvisioningStateFailed, TopicProvisioningStateSucceeded, TopicProvisioningStateUpdating}
+func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
+	return []TopicProvisioningState{TopicProvisioningStateCanceled, TopicProvisioningStateCreating, TopicProvisioningStateDeleting, TopicProvisioningStateFailed, TopicProvisioningStateSucceeded, TopicProvisioningStateUpdating}
 }
 
 // TopicTypeProvisioningState enumerates the values for topic type provisioning state.
@@ -138,8 +138,8 @@ const (
 )
 
 // PossibleTopicTypeProvisioningStateValues returns an array of possible values for the TopicTypeProvisioningState const type.
-func PossibleTopicTypeProvisioningStateValues() [6]TopicTypeProvisioningState {
-	return [6]TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
+func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
+	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
 }
 
 // EventHubEventSubscriptionDestination information about the event hub destination for an event subscription

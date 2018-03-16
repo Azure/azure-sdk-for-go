@@ -118,6 +118,18 @@ const (
 	StandardA8V2 VMSizeTypes = "Standard_A8_v2"
 	// StandardA9 ...
 	StandardA9 VMSizeTypes = "Standard_A9"
+	// StandardB1ms ...
+	StandardB1ms VMSizeTypes = "Standard_B1ms"
+	// StandardB1s ...
+	StandardB1s VMSizeTypes = "Standard_B1s"
+	// StandardB2ms ...
+	StandardB2ms VMSizeTypes = "Standard_B2ms"
+	// StandardB2s ...
+	StandardB2s VMSizeTypes = "Standard_B2s"
+	// StandardB4ms ...
+	StandardB4ms VMSizeTypes = "Standard_B4ms"
+	// StandardB8ms ...
+	StandardB8ms VMSizeTypes = "Standard_B8ms"
 	// StandardD1 ...
 	StandardD1 VMSizeTypes = "Standard_D1"
 	// StandardD11 ...
@@ -164,6 +176,10 @@ const (
 	StandardD2V3 VMSizeTypes = "Standard_D2_v3"
 	// StandardD3 ...
 	StandardD3 VMSizeTypes = "Standard_D3"
+	// StandardD32sV3 ...
+	StandardD32sV3 VMSizeTypes = "Standard_D32s_v3"
+	// StandardD32V3 ...
+	StandardD32V3 VMSizeTypes = "Standard_D32_v3"
 	// StandardD3V2 ...
 	StandardD3V2 VMSizeTypes = "Standard_D3_v2"
 	// StandardD3V2Promo ...
@@ -182,6 +198,10 @@ const (
 	StandardD5V2 VMSizeTypes = "Standard_D5_v2"
 	// StandardD5V2Promo ...
 	StandardD5V2Promo VMSizeTypes = "Standard_D5_v2_Promo"
+	// StandardD64sV3 ...
+	StandardD64sV3 VMSizeTypes = "Standard_D64s_v3"
+	// StandardD64V3 ...
+	StandardD64V3 VMSizeTypes = "Standard_D64_v3"
 	// StandardD8sV3 ...
 	StandardD8sV3 VMSizeTypes = "Standard_D8s_v3"
 	// StandardD8V3 ...
@@ -202,12 +222,20 @@ const (
 	StandardDS12V2Promo VMSizeTypes = "Standard_DS12_v2_Promo"
 	// StandardDS13 ...
 	StandardDS13 VMSizeTypes = "Standard_DS13"
+	// StandardDS132V2 ...
+	StandardDS132V2 VMSizeTypes = "Standard_DS13-2_v2"
+	// StandardDS134V2 ...
+	StandardDS134V2 VMSizeTypes = "Standard_DS13-4_v2"
 	// StandardDS13V2 ...
 	StandardDS13V2 VMSizeTypes = "Standard_DS13_v2"
 	// StandardDS13V2Promo ...
 	StandardDS13V2Promo VMSizeTypes = "Standard_DS13_v2_Promo"
 	// StandardDS14 ...
 	StandardDS14 VMSizeTypes = "Standard_DS14"
+	// StandardDS144V2 ...
+	StandardDS144V2 VMSizeTypes = "Standard_DS14-4_v2"
+	// StandardDS148V2 ...
+	StandardDS148V2 VMSizeTypes = "Standard_DS14-8_v2"
 	// StandardDS14V2 ...
 	StandardDS14V2 VMSizeTypes = "Standard_DS14_v2"
 	// StandardDS14V2Promo ...
@@ -246,6 +274,10 @@ const (
 	StandardE2sV3 VMSizeTypes = "Standard_E2s_v3"
 	// StandardE2V3 ...
 	StandardE2V3 VMSizeTypes = "Standard_E2_v3"
+	// StandardE3216sV3 ...
+	StandardE3216sV3 VMSizeTypes = "Standard_E32-16s_v3"
+	// StandardE328sV3 ...
+	StandardE328sV3 VMSizeTypes = "Standard_E32-8s_v3"
 	// StandardE32sV3 ...
 	StandardE32sV3 VMSizeTypes = "Standard_E32s_v3"
 	// StandardE32V3 ...
@@ -254,6 +286,10 @@ const (
 	StandardE4sV3 VMSizeTypes = "Standard_E4s_v3"
 	// StandardE4V3 ...
 	StandardE4V3 VMSizeTypes = "Standard_E4_v3"
+	// StandardE6416sV3 ...
+	StandardE6416sV3 VMSizeTypes = "Standard_E64-16s_v3"
+	// StandardE6432sV3 ...
+	StandardE6432sV3 VMSizeTypes = "Standard_E64-32s_v3"
 	// StandardE64sV3 ...
 	StandardE64sV3 VMSizeTypes = "Standard_E64s_v3"
 	// StandardE64V3 ...
@@ -268,20 +304,34 @@ const (
 	StandardF16 VMSizeTypes = "Standard_F16"
 	// StandardF16s ...
 	StandardF16s VMSizeTypes = "Standard_F16s"
+	// StandardF16sV2 ...
+	StandardF16sV2 VMSizeTypes = "Standard_F16s_v2"
 	// StandardF1s ...
 	StandardF1s VMSizeTypes = "Standard_F1s"
 	// StandardF2 ...
 	StandardF2 VMSizeTypes = "Standard_F2"
 	// StandardF2s ...
 	StandardF2s VMSizeTypes = "Standard_F2s"
+	// StandardF2sV2 ...
+	StandardF2sV2 VMSizeTypes = "Standard_F2s_v2"
+	// StandardF32sV2 ...
+	StandardF32sV2 VMSizeTypes = "Standard_F32s_v2"
 	// StandardF4 ...
 	StandardF4 VMSizeTypes = "Standard_F4"
 	// StandardF4s ...
 	StandardF4s VMSizeTypes = "Standard_F4s"
+	// StandardF4sV2 ...
+	StandardF4sV2 VMSizeTypes = "Standard_F4s_v2"
+	// StandardF64sV2 ...
+	StandardF64sV2 VMSizeTypes = "Standard_F64s_v2"
+	// StandardF72sV2 ...
+	StandardF72sV2 VMSizeTypes = "Standard_F72s_v2"
 	// StandardF8 ...
 	StandardF8 VMSizeTypes = "Standard_F8"
 	// StandardF8s ...
 	StandardF8s VMSizeTypes = "Standard_F8s"
+	// StandardF8sV2 ...
+	StandardF8sV2 VMSizeTypes = "Standard_F8s_v2"
 	// StandardG1 ...
 	StandardG1 VMSizeTypes = "Standard_G1"
 	// StandardG2 ...
@@ -300,8 +350,16 @@ const (
 	StandardGS3 VMSizeTypes = "Standard_GS3"
 	// StandardGS4 ...
 	StandardGS4 VMSizeTypes = "Standard_GS4"
+	// StandardGS44 ...
+	StandardGS44 VMSizeTypes = "Standard_GS4-4"
+	// StandardGS48 ...
+	StandardGS48 VMSizeTypes = "Standard_GS4-8"
 	// StandardGS5 ...
 	StandardGS5 VMSizeTypes = "Standard_GS5"
+	// StandardGS516 ...
+	StandardGS516 VMSizeTypes = "Standard_GS5-16"
+	// StandardGS58 ...
+	StandardGS58 VMSizeTypes = "Standard_GS5-8"
 	// StandardH16 ...
 	StandardH16 VMSizeTypes = "Standard_H16"
 	// StandardH16m ...
@@ -322,18 +380,54 @@ const (
 	StandardL4s VMSizeTypes = "Standard_L4s"
 	// StandardL8s ...
 	StandardL8s VMSizeTypes = "Standard_L8s"
+	// StandardM12832ms ...
+	StandardM12832ms VMSizeTypes = "Standard_M128-32ms"
+	// StandardM12864ms ...
+	StandardM12864ms VMSizeTypes = "Standard_M128-64ms"
+	// StandardM128ms ...
+	StandardM128ms VMSizeTypes = "Standard_M128ms"
 	// StandardM128s ...
 	StandardM128s VMSizeTypes = "Standard_M128s"
+	// StandardM6416ms ...
+	StandardM6416ms VMSizeTypes = "Standard_M64-16ms"
+	// StandardM6432ms ...
+	StandardM6432ms VMSizeTypes = "Standard_M64-32ms"
 	// StandardM64ms ...
 	StandardM64ms VMSizeTypes = "Standard_M64ms"
+	// StandardM64s ...
+	StandardM64s VMSizeTypes = "Standard_M64s"
 	// StandardNC12 ...
 	StandardNC12 VMSizeTypes = "Standard_NC12"
+	// StandardNC12sV2 ...
+	StandardNC12sV2 VMSizeTypes = "Standard_NC12s_v2"
+	// StandardNC12sV3 ...
+	StandardNC12sV3 VMSizeTypes = "Standard_NC12s_v3"
 	// StandardNC24 ...
 	StandardNC24 VMSizeTypes = "Standard_NC24"
 	// StandardNC24r ...
 	StandardNC24r VMSizeTypes = "Standard_NC24r"
+	// StandardNC24rsV2 ...
+	StandardNC24rsV2 VMSizeTypes = "Standard_NC24rs_v2"
+	// StandardNC24rsV3 ...
+	StandardNC24rsV3 VMSizeTypes = "Standard_NC24rs_v3"
+	// StandardNC24sV2 ...
+	StandardNC24sV2 VMSizeTypes = "Standard_NC24s_v2"
+	// StandardNC24sV3 ...
+	StandardNC24sV3 VMSizeTypes = "Standard_NC24s_v3"
 	// StandardNC6 ...
 	StandardNC6 VMSizeTypes = "Standard_NC6"
+	// StandardNC6sV2 ...
+	StandardNC6sV2 VMSizeTypes = "Standard_NC6s_v2"
+	// StandardNC6sV3 ...
+	StandardNC6sV3 VMSizeTypes = "Standard_NC6s_v3"
+	// StandardND12s ...
+	StandardND12s VMSizeTypes = "Standard_ND12s"
+	// StandardND24rs ...
+	StandardND24rs VMSizeTypes = "Standard_ND24rs"
+	// StandardND24s ...
+	StandardND24s VMSizeTypes = "Standard_ND24s"
+	// StandardND6s ...
+	StandardND6s VMSizeTypes = "Standard_ND6s"
 	// StandardNV12 ...
 	StandardNV12 VMSizeTypes = "Standard_NV12"
 	// StandardNV24 ...
@@ -343,14 +437,14 @@ const (
 )
 
 // PossibleVMSizeTypesValues returns an array of possible values for the VMSizeTypes const type.
-func PossibleVMSizeTypesValues() [130]VMSizeTypes {
-	return [130]VMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA1V2, StandardA2, StandardA2mV2, StandardA2V2, StandardA3, StandardA4, StandardA4mV2, StandardA4V2, StandardA5, StandardA6, StandardA7, StandardA8, StandardA8mV2, StandardA8V2, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD11V2Promo, StandardD12, StandardD12V2, StandardD12V2Promo, StandardD13, StandardD13V2, StandardD13V2Promo, StandardD14, StandardD14V2, StandardD14V2Promo, StandardD15V2, StandardD16sV3, StandardD16V3, StandardD1V2, StandardD2, StandardD2sV3, StandardD2V2, StandardD2V2Promo, StandardD2V3, StandardD3, StandardD3V2, StandardD3V2Promo, StandardD4, StandardD4sV3, StandardD4V2, StandardD4V2Promo, StandardD4V3, StandardD5V2, StandardD5V2Promo, StandardD8sV3, StandardD8V3, StandardDS1, StandardDS11, StandardDS11V2, StandardDS11V2Promo, StandardDS12, StandardDS12V2, StandardDS12V2Promo, StandardDS13, StandardDS13V2, StandardDS13V2Promo, StandardDS14, StandardDS14V2, StandardDS14V2Promo, StandardDS15V2, StandardDS1V2, StandardDS2, StandardDS2V2, StandardDS2V2Promo, StandardDS3, StandardDS3V2, StandardDS3V2Promo, StandardDS4, StandardDS4V2, StandardDS4V2Promo, StandardDS5V2, StandardDS5V2Promo, StandardE16sV3, StandardE16V3, StandardE2sV3, StandardE2V3, StandardE32sV3, StandardE32V3, StandardE4sV3, StandardE4V3, StandardE64sV3, StandardE64V3, StandardE8sV3, StandardE8V3, StandardF1, StandardF16, StandardF16s, StandardF1s, StandardF2, StandardF2s, StandardF4, StandardF4s, StandardF8, StandardF8s, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5, StandardH16, StandardH16m, StandardH16mr, StandardH16r, StandardH8, StandardH8m, StandardL16s, StandardL32s, StandardL4s, StandardL8s, StandardM128s, StandardM64ms, StandardNC12, StandardNC24, StandardNC24r, StandardNC6, StandardNV12, StandardNV24, StandardNV6}
+func PossibleVMSizeTypesValues() [177]VMSizeTypes {
+	return [177]VMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA1V2, StandardA2, StandardA2mV2, StandardA2V2, StandardA3, StandardA4, StandardA4mV2, StandardA4V2, StandardA5, StandardA6, StandardA7, StandardA8, StandardA8mV2, StandardA8V2, StandardA9, StandardB1ms, StandardB1s, StandardB2ms, StandardB2s, StandardB4ms, StandardB8ms, StandardD1, StandardD11, StandardD11V2, StandardD11V2Promo, StandardD12, StandardD12V2, StandardD12V2Promo, StandardD13, StandardD13V2, StandardD13V2Promo, StandardD14, StandardD14V2, StandardD14V2Promo, StandardD15V2, StandardD16sV3, StandardD16V3, StandardD1V2, StandardD2, StandardD2sV3, StandardD2V2, StandardD2V2Promo, StandardD2V3, StandardD3, StandardD32sV3, StandardD32V3, StandardD3V2, StandardD3V2Promo, StandardD4, StandardD4sV3, StandardD4V2, StandardD4V2Promo, StandardD4V3, StandardD5V2, StandardD5V2Promo, StandardD64sV3, StandardD64V3, StandardD8sV3, StandardD8V3, StandardDS1, StandardDS11, StandardDS11V2, StandardDS11V2Promo, StandardDS12, StandardDS12V2, StandardDS12V2Promo, StandardDS13, StandardDS132V2, StandardDS134V2, StandardDS13V2, StandardDS13V2Promo, StandardDS14, StandardDS144V2, StandardDS148V2, StandardDS14V2, StandardDS14V2Promo, StandardDS15V2, StandardDS1V2, StandardDS2, StandardDS2V2, StandardDS2V2Promo, StandardDS3, StandardDS3V2, StandardDS3V2Promo, StandardDS4, StandardDS4V2, StandardDS4V2Promo, StandardDS5V2, StandardDS5V2Promo, StandardE16sV3, StandardE16V3, StandardE2sV3, StandardE2V3, StandardE3216sV3, StandardE328sV3, StandardE32sV3, StandardE32V3, StandardE4sV3, StandardE4V3, StandardE6416sV3, StandardE6432sV3, StandardE64sV3, StandardE64V3, StandardE8sV3, StandardE8V3, StandardF1, StandardF16, StandardF16s, StandardF16sV2, StandardF1s, StandardF2, StandardF2s, StandardF2sV2, StandardF32sV2, StandardF4, StandardF4s, StandardF4sV2, StandardF64sV2, StandardF72sV2, StandardF8, StandardF8s, StandardF8sV2, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS44, StandardGS48, StandardGS5, StandardGS516, StandardGS58, StandardH16, StandardH16m, StandardH16mr, StandardH16r, StandardH8, StandardH8m, StandardL16s, StandardL32s, StandardL4s, StandardL8s, StandardM12832ms, StandardM12864ms, StandardM128ms, StandardM128s, StandardM6416ms, StandardM6432ms, StandardM64ms, StandardM64s, StandardNC12, StandardNC12sV2, StandardNC12sV3, StandardNC24, StandardNC24r, StandardNC24rsV2, StandardNC24rsV3, StandardNC24sV2, StandardNC24sV3, StandardNC6, StandardNC6sV2, StandardNC6sV3, StandardND12s, StandardND24rs, StandardND24s, StandardND6s, StandardNV12, StandardNV24, StandardNV6}
 }
 
 // AccessProfile profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
 	// KubeConfig - Base64-encoded Kubernetes configuration file.
-	KubeConfig *string `json:"kubeConfig,omitempty"`
+	KubeConfig *[]byte `json:"kubeConfig,omitempty"`
 }
 
 // AgentPoolProfile profile for the container service agent pool.
@@ -359,7 +453,7 @@ type AgentPoolProfile struct {
 	Name *string `json:"name,omitempty"`
 	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
 	Count *int32 `json:"count,omitempty"`
-	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF4', 'StandardF4s', 'StandardF8', 'StandardF8s', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM128s', 'StandardM64ms', 'StandardNC12', 'StandardNC24', 'StandardNC24r', 'StandardNC6', 'StandardNV12', 'StandardNV24', 'StandardNV6'
+	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardB1ms', 'StandardB1s', 'StandardB2ms', 'StandardB2s', 'StandardB4ms', 'StandardB8ms', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD32V3', 'StandardD32sV3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD64V3', 'StandardD64sV3', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS132V2', 'StandardDS134V2', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS144V2', 'StandardDS148V2', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE3216sV3', 'StandardE328sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE6416sV3', 'StandardE6432sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF16sV2', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF2sV2', 'StandardF32sV2', 'StandardF4', 'StandardF4s', 'StandardF4sV2', 'StandardF64sV2', 'StandardF72sV2', 'StandardF8', 'StandardF8s', 'StandardF8sV2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS44', 'StandardGS48', 'StandardGS5', 'StandardGS516', 'StandardGS58', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM12832ms', 'StandardM12864ms', 'StandardM128ms', 'StandardM128s', 'StandardM6416ms', 'StandardM6432ms', 'StandardM64ms', 'StandardM64s', 'StandardNC12', 'StandardNC12sV2', 'StandardNC12sV3', 'StandardNC24', 'StandardNC24r', 'StandardNC24rsV2', 'StandardNC24rsV3', 'StandardNC24sV2', 'StandardNC24sV3', 'StandardNC6', 'StandardNC6sV2', 'StandardNC6sV3', 'StandardND12s', 'StandardND24rs', 'StandardND24s', 'StandardND6s', 'StandardNV12', 'StandardNV24', 'StandardNV6'
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
@@ -487,29 +581,29 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ContainerServicesCreateOrUpdateFutureType an abstraction for monitoring and retrieving the results of a
+// ContainerServicesGroupCreateOrUpdateFutureType an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type ContainerServicesCreateOrUpdateFutureType struct {
+type ContainerServicesGroupCreateOrUpdateFutureType struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ContainerServicesCreateOrUpdateFutureType) Result(client ContainerServicesClient) (cs ContainerService, err error) {
+func (future ContainerServicesGroupCreateOrUpdateFutureType) Result(client ContainerServicesGroupClient) (cs ContainerService, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return cs, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
+		return cs, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesGroupCreateOrUpdateFutureType")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		cs, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupCreateOrUpdateFutureType", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -526,39 +620,39 @@ func (future ContainerServicesCreateOrUpdateFutureType) Result(client ContainerS
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupCreateOrUpdateFutureType", "Result", resp, "Failure sending request")
 		return
 	}
 	cs, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupCreateOrUpdateFutureType", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ContainerServicesDeleteFutureType struct {
+// ContainerServicesGroupDeleteFutureType an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ContainerServicesGroupDeleteFutureType struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ContainerServicesDeleteFutureType) Result(client ContainerServicesClient) (ar autorest.Response, err error) {
+func (future ContainerServicesGroupDeleteFutureType) Result(client ContainerServicesGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupDeleteFutureType", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
+		return ar, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesGroupDeleteFutureType")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupDeleteFutureType", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -575,12 +669,12 @@ func (future ContainerServicesDeleteFutureType) Result(client ContainerServicesC
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupDeleteFutureType", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesGroupDeleteFutureType", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1069,29 +1163,29 @@ type ManagedClusterProperties struct {
 	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
 }
 
-// ManagedClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ManagedClustersCreateOrUpdateFuture struct {
+// ManagedClustersGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ManagedClustersGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ManagedClustersCreateOrUpdateFuture) Result(client ManagedClustersClient) (mc ManagedCluster, err error) {
+func (future ManagedClustersGroupCreateOrUpdateFuture) Result(client ManagedClustersGroupClient) (mc ManagedCluster, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return mc, azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersCreateOrUpdateFuture")
+		return mc, azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		mc, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1108,39 +1202,39 @@ func (future ManagedClustersCreateOrUpdateFuture) Result(client ManagedClustersC
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	mc, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ManagedClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// ManagedClustersGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ManagedClustersDeleteFuture struct {
+type ManagedClustersGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ManagedClustersDeleteFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
+func (future ManagedClustersGroupDeleteFuture) Result(client ManagedClustersGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1157,12 +1251,12 @@ func (future ManagedClustersDeleteFuture) Result(client ManagedClustersClient) (
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1178,24 +1272,6 @@ type ManagedClusterUpgradeProfile struct {
 	Type *string `json:"type,omitempty"`
 	// ManagedClusterUpgradeProfileProperties - Properties of upgrade profile.
 	*ManagedClusterUpgradeProfileProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ManagedClusterUpgradeProfile.
-func (mcup ManagedClusterUpgradeProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mcup.ID != nil {
-		objectMap["id"] = mcup.ID
-	}
-	if mcup.Name != nil {
-		objectMap["name"] = mcup.Name
-	}
-	if mcup.Type != nil {
-		objectMap["type"] = mcup.Type
-	}
-	if mcup.ManagedClusterUpgradeProfileProperties != nil {
-		objectMap["properties"] = mcup.ManagedClusterUpgradeProfileProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ManagedClusterUpgradeProfile struct.
@@ -1263,7 +1339,7 @@ type MasterProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for the master pool.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF4', 'StandardF4s', 'StandardF8', 'StandardF8s', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM128s', 'StandardM64ms', 'StandardNC12', 'StandardNC24', 'StandardNC24r', 'StandardNC6', 'StandardNV12', 'StandardNV24', 'StandardNV6'
+	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardB1ms', 'StandardB1s', 'StandardB2ms', 'StandardB2s', 'StandardB4ms', 'StandardB8ms', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD32V3', 'StandardD32sV3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD64V3', 'StandardD64sV3', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS132V2', 'StandardDS134V2', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS144V2', 'StandardDS148V2', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE3216sV3', 'StandardE328sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE6416sV3', 'StandardE6432sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF16sV2', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF2sV2', 'StandardF32sV2', 'StandardF4', 'StandardF4s', 'StandardF4sV2', 'StandardF64sV2', 'StandardF72sV2', 'StandardF8', 'StandardF8s', 'StandardF8sV2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS44', 'StandardGS48', 'StandardGS5', 'StandardGS516', 'StandardGS58', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM12832ms', 'StandardM12864ms', 'StandardM128ms', 'StandardM128s', 'StandardM6416ms', 'StandardM6432ms', 'StandardM64ms', 'StandardM64s', 'StandardNC12', 'StandardNC12sV2', 'StandardNC12sV3', 'StandardNC24', 'StandardNC24r', 'StandardNC24rsV2', 'StandardNC24rsV3', 'StandardNC24sV2', 'StandardNC24sV3', 'StandardNC6', 'StandardNC6sV2', 'StandardNC6sV3', 'StandardND12s', 'StandardND24rs', 'StandardND24s', 'StandardND6s', 'StandardNV12', 'StandardNV24', 'StandardNV6'
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`

@@ -1,4 +1,4 @@
-package insights
+package policyinsights
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //

@@ -1,7 +1,7 @@
-// Package insights implements the Azure ARM Insights service API version 2015-05-01.
+// Package policyinsights implements the Azure ARM Policyinsights service API version 2017-12-12-preview.
 //
-// Composite Swagger for Application Insights Management Client
-package insights
+//
+package policyinsights
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,29 +25,25 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Insights
+	// DefaultBaseURI is the default URI used for the service Policyinsights
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Insights.
+// BaseClient is the base client for Policyinsights.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
-	PurgeID        string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, purgeID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, purgeID string) BaseClient {
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-		PurgeID:        purgeID,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }

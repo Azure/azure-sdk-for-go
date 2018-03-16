@@ -24,49 +24,49 @@ import (
 	"net/http"
 )
 
-// ComponentQuotaStatusClient is the composite Swagger for Application Insights Management Client
-type ComponentQuotaStatusClient struct {
+// ComponentAvailableFeaturesClient is the composite Swagger for Application Insights Management Client
+type ComponentAvailableFeaturesClient struct {
 	BaseClient
 }
 
-// NewComponentQuotaStatusClient creates an instance of the ComponentQuotaStatusClient client.
-func NewComponentQuotaStatusClient(subscriptionID string, purgeID string) ComponentQuotaStatusClient {
-	return NewComponentQuotaStatusClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+// NewComponentAvailableFeaturesClient creates an instance of the ComponentAvailableFeaturesClient client.
+func NewComponentAvailableFeaturesClient(subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
+	return NewComponentAvailableFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
 }
 
-// NewComponentQuotaStatusClientWithBaseURI creates an instance of the ComponentQuotaStatusClient client.
-func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentQuotaStatusClient {
-	return ComponentQuotaStatusClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+// NewComponentAvailableFeaturesClientWithBaseURI creates an instance of the ComponentAvailableFeaturesClient client.
+func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
+	return ComponentAvailableFeaturesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
 }
 
-// Get returns daily data volume cap (quota) status for an Application Insights component.
+// Get returns all available features of the application insights component.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
 // component resource.
-func (client ComponentQuotaStatusClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result ApplicationInsightsComponentQuotaStatus, err error) {
+func (client ComponentAvailableFeaturesClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result ApplicationInsightsComponentAvailableFeatures, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentQuotaStatusClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.ComponentAvailableFeaturesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ComponentQuotaStatusClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.ComponentAvailableFeaturesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentQuotaStatusClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.ComponentAvailableFeaturesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ComponentQuotaStatusClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client ComponentAvailableFeaturesClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -81,21 +81,21 @@ func (client ComponentQuotaStatusClient) GetPreparer(ctx context.Context, resour
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/quotastatus", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/getavailablebillingfeatures", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ComponentQuotaStatusClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ComponentAvailableFeaturesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ComponentQuotaStatusClient) GetResponder(resp *http.Response) (result ApplicationInsightsComponentQuotaStatus, err error) {
+func (client ComponentAvailableFeaturesClient) GetResponder(resp *http.Response) (result ApplicationInsightsComponentAvailableFeatures, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

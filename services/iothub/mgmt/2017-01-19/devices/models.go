@@ -63,8 +63,8 @@ const (
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() [15]AccessRights {
-	return [15]AccessRights{DeviceConnect, RegistryRead, RegistryReadDeviceConnect, RegistryReadRegistryWrite, RegistryReadRegistryWriteDeviceConnect, RegistryReadRegistryWriteServiceConnect, RegistryReadRegistryWriteServiceConnectDeviceConnect, RegistryReadServiceConnect, RegistryReadServiceConnectDeviceConnect, RegistryWrite, RegistryWriteDeviceConnect, RegistryWriteServiceConnect, RegistryWriteServiceConnectDeviceConnect, ServiceConnect, ServiceConnectDeviceConnect}
+func PossibleAccessRightsValues() []AccessRights {
+	return []AccessRights{DeviceConnect, RegistryRead, RegistryReadDeviceConnect, RegistryReadRegistryWrite, RegistryReadRegistryWriteDeviceConnect, RegistryReadRegistryWriteServiceConnect, RegistryReadRegistryWriteServiceConnectDeviceConnect, RegistryReadServiceConnect, RegistryReadServiceConnectDeviceConnect, RegistryWrite, RegistryWriteDeviceConnect, RegistryWriteServiceConnect, RegistryWriteServiceConnectDeviceConnect, ServiceConnect, ServiceConnectDeviceConnect}
 }
 
 // Capabilities enumerates the values for capabilities.
@@ -78,8 +78,8 @@ const (
 )
 
 // PossibleCapabilitiesValues returns an array of possible values for the Capabilities const type.
-func PossibleCapabilitiesValues() [2]Capabilities {
-	return [2]Capabilities{DeviceManagement, None}
+func PossibleCapabilitiesValues() []Capabilities {
+	return []Capabilities{DeviceManagement, None}
 }
 
 // IotHubNameUnavailabilityReason enumerates the values for iot hub name unavailability reason.
@@ -93,8 +93,8 @@ const (
 )
 
 // PossibleIotHubNameUnavailabilityReasonValues returns an array of possible values for the IotHubNameUnavailabilityReason const type.
-func PossibleIotHubNameUnavailabilityReasonValues() [2]IotHubNameUnavailabilityReason {
-	return [2]IotHubNameUnavailabilityReason{AlreadyExists, Invalid}
+func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
+	return []IotHubNameUnavailabilityReason{AlreadyExists, Invalid}
 }
 
 // IotHubScaleType enumerates the values for iot hub scale type.
@@ -110,8 +110,8 @@ const (
 )
 
 // PossibleIotHubScaleTypeValues returns an array of possible values for the IotHubScaleType const type.
-func PossibleIotHubScaleTypeValues() [3]IotHubScaleType {
-	return [3]IotHubScaleType{IotHubScaleTypeAutomatic, IotHubScaleTypeManual, IotHubScaleTypeNone}
+func PossibleIotHubScaleTypeValues() []IotHubScaleType {
+	return []IotHubScaleType{IotHubScaleTypeAutomatic, IotHubScaleTypeManual, IotHubScaleTypeNone}
 }
 
 // IotHubSku enumerates the values for iot hub sku.
@@ -129,8 +129,8 @@ const (
 )
 
 // PossibleIotHubSkuValues returns an array of possible values for the IotHubSku const type.
-func PossibleIotHubSkuValues() [4]IotHubSku {
-	return [4]IotHubSku{F1, S1, S2, S3}
+func PossibleIotHubSkuValues() []IotHubSku {
+	return []IotHubSku{F1, S1, S2, S3}
 }
 
 // IotHubSkuTier enumerates the values for iot hub sku tier.
@@ -144,8 +144,8 @@ const (
 )
 
 // PossibleIotHubSkuTierValues returns an array of possible values for the IotHubSkuTier const type.
-func PossibleIotHubSkuTierValues() [2]IotHubSkuTier {
-	return [2]IotHubSkuTier{Free, Standard}
+func PossibleIotHubSkuTierValues() []IotHubSkuTier {
+	return []IotHubSkuTier{Free, Standard}
 }
 
 // IPFilterActionType enumerates the values for ip filter action type.
@@ -159,8 +159,8 @@ const (
 )
 
 // PossibleIPFilterActionTypeValues returns an array of possible values for the IPFilterActionType const type.
-func PossibleIPFilterActionTypeValues() [2]IPFilterActionType {
-	return [2]IPFilterActionType{Accept, Reject}
+func PossibleIPFilterActionTypeValues() []IPFilterActionType {
+	return []IPFilterActionType{Accept, Reject}
 }
 
 // JobStatus enumerates the values for job status.
@@ -182,8 +182,8 @@ const (
 )
 
 // PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() [6]JobStatus {
-	return [6]JobStatus{Cancelled, Completed, Enqueued, Failed, Running, Unknown}
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{Cancelled, Completed, Enqueued, Failed, Running, Unknown}
 }
 
 // JobType enumerates the values for job type.
@@ -213,8 +213,8 @@ const (
 )
 
 // PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() [10]JobType {
-	return [10]JobType{JobTypeBackup, JobTypeExport, JobTypeFactoryResetDevice, JobTypeFirmwareUpdate, JobTypeImport, JobTypeReadDeviceProperties, JobTypeRebootDevice, JobTypeUnknown, JobTypeUpdateDeviceConfiguration, JobTypeWriteDeviceProperties}
+func PossibleJobTypeValues() []JobType {
+	return []JobType{JobTypeBackup, JobTypeExport, JobTypeFactoryResetDevice, JobTypeFirmwareUpdate, JobTypeImport, JobTypeReadDeviceProperties, JobTypeRebootDevice, JobTypeUnknown, JobTypeUpdateDeviceConfiguration, JobTypeWriteDeviceProperties}
 }
 
 // OperationMonitoringLevel enumerates the values for operation monitoring level.
@@ -232,8 +232,8 @@ const (
 )
 
 // PossibleOperationMonitoringLevelValues returns an array of possible values for the OperationMonitoringLevel const type.
-func PossibleOperationMonitoringLevelValues() [4]OperationMonitoringLevel {
-	return [4]OperationMonitoringLevel{OperationMonitoringLevelError, OperationMonitoringLevelErrorInformation, OperationMonitoringLevelInformation, OperationMonitoringLevelNone}
+func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
+	return []OperationMonitoringLevel{OperationMonitoringLevelError, OperationMonitoringLevelErrorInformation, OperationMonitoringLevelInformation, OperationMonitoringLevelNone}
 }
 
 // RoutingSource enumerates the values for routing source.
@@ -251,8 +251,8 @@ const (
 )
 
 // PossibleRoutingSourceValues returns an array of possible values for the RoutingSource const type.
-func PossibleRoutingSourceValues() [4]RoutingSource {
-	return [4]RoutingSource{DeviceJobLifecycleEvents, DeviceLifecycleEvents, DeviceMessages, TwinChangeEvents}
+func PossibleRoutingSourceValues() []RoutingSource {
+	return []RoutingSource{DeviceJobLifecycleEvents, DeviceLifecycleEvents, DeviceMessages, TwinChangeEvents}
 }
 
 // CloudToDeviceProperties the IoT hub cloud-to-device messaging properties.

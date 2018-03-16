@@ -711,24 +711,6 @@ type APIContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for APIContract.
-func (ac APIContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ac.APIContractProperties != nil {
-		objectMap["properties"] = ac.APIContractProperties
-	}
-	if ac.ID != nil {
-		objectMap["id"] = ac.ID
-	}
-	if ac.Name != nil {
-		objectMap["name"] = ac.Name
-	}
-	if ac.Type != nil {
-		objectMap["type"] = ac.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for APIContract struct.
 func (ac *APIContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -845,15 +827,6 @@ type APIContractUpdateProperties struct {
 type APICreateOrUpdateParameter struct {
 	// APICreateOrUpdateProperties - Api entity create of update properties.
 	*APICreateOrUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for APICreateOrUpdateParameter.
-func (acoup APICreateOrUpdateParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if acoup.APICreateOrUpdateProperties != nil {
-		objectMap["properties"] = acoup.APICreateOrUpdateProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for APICreateOrUpdateParameter struct.
@@ -1099,24 +1072,6 @@ type APIReleaseContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for APIReleaseContract.
-func (arc APIReleaseContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if arc.APIReleaseContractProperties != nil {
-		objectMap["properties"] = arc.APIReleaseContractProperties
-	}
-	if arc.ID != nil {
-		objectMap["id"] = arc.ID
-	}
-	if arc.Name != nil {
-		objectMap["name"] = arc.Name
-	}
-	if arc.Type != nil {
-		objectMap["type"] = arc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for APIReleaseContract struct.
 func (arc *APIReleaseContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1294,24 +1249,6 @@ type APIRevisionContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for APIRevisionContract.
-func (arc APIRevisionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if arc.APIRevisionContractProperties != nil {
-		objectMap["properties"] = arc.APIRevisionContractProperties
-	}
-	if arc.ID != nil {
-		objectMap["id"] = arc.ID
-	}
-	if arc.Name != nil {
-		objectMap["name"] = arc.Name
-	}
-	if arc.Type != nil {
-		objectMap["type"] = arc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for APIRevisionContract struct.
 func (arc *APIRevisionContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1399,15 +1336,6 @@ type APIRevisionInfoContract struct {
 type APIUpdateContract struct {
 	// APIContractUpdateProperties - Properties of the API entity that can be updated.
 	*APIContractUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for APIUpdateContract.
-func (auc APIUpdateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if auc.APIContractUpdateProperties != nil {
-		objectMap["properties"] = auc.APIContractUpdateProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for APIUpdateContract struct.
@@ -1548,24 +1476,6 @@ type APIVersionSetContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for APIVersionSetContract.
-func (avsc APIVersionSetContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if avsc.APIVersionSetContractProperties != nil {
-		objectMap["properties"] = avsc.APIVersionSetContractProperties
-	}
-	if avsc.ID != nil {
-		objectMap["id"] = avsc.ID
-	}
-	if avsc.Name != nil {
-		objectMap["name"] = avsc.Name
-	}
-	if avsc.Type != nil {
-		objectMap["type"] = avsc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for APIVersionSetContract struct.
 func (avsc *APIVersionSetContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1645,15 +1555,6 @@ type APIVersionSetEntityBase struct {
 type APIVersionSetUpdateParameters struct {
 	// APIVersionSetUpdateParametersProperties - Parameters to update or create an Api Version Set Contract.
 	*APIVersionSetUpdateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for APIVersionSetUpdateParameters.
-func (avsup APIVersionSetUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if avsup.APIVersionSetUpdateParametersProperties != nil {
-		objectMap["properties"] = avsup.APIVersionSetUpdateParametersProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for APIVersionSetUpdateParameters struct.
@@ -1818,24 +1719,6 @@ type AuthorizationServerContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AuthorizationServerContract.
-func (asc AuthorizationServerContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if asc.AuthorizationServerContractProperties != nil {
-		objectMap["properties"] = asc.AuthorizationServerContractProperties
-	}
-	if asc.ID != nil {
-		objectMap["id"] = asc.ID
-	}
-	if asc.Name != nil {
-		objectMap["name"] = asc.Name
-	}
-	if asc.Type != nil {
-		objectMap["type"] = asc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for AuthorizationServerContract struct.
 func (asc *AuthorizationServerContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1959,24 +1842,6 @@ type AuthorizationServerUpdateContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AuthorizationServerUpdateContract.
-func (asuc AuthorizationServerUpdateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if asuc.AuthorizationServerUpdateContractProperties != nil {
-		objectMap["properties"] = asuc.AuthorizationServerUpdateContractProperties
-	}
-	if asuc.ID != nil {
-		objectMap["id"] = asuc.ID
-	}
-	if asuc.Name != nil {
-		objectMap["name"] = asuc.Name
-	}
-	if asuc.Type != nil {
-		objectMap["type"] = asuc.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for AuthorizationServerUpdateContract struct.
@@ -2207,24 +2072,6 @@ type BackendContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for BackendContract.
-func (bc BackendContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bc.BackendContractProperties != nil {
-		objectMap["properties"] = bc.BackendContractProperties
-	}
-	if bc.ID != nil {
-		objectMap["id"] = bc.ID
-	}
-	if bc.Name != nil {
-		objectMap["name"] = bc.Name
-	}
-	if bc.Type != nil {
-		objectMap["type"] = bc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for BackendContract struct.
 func (bc *BackendContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2356,24 +2203,6 @@ type BackendReconnectContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for BackendReconnectContract.
-func (brc BackendReconnectContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if brc.BackendReconnectProperties != nil {
-		objectMap["properties"] = brc.BackendReconnectProperties
-	}
-	if brc.ID != nil {
-		objectMap["id"] = brc.ID
-	}
-	if brc.Name != nil {
-		objectMap["name"] = brc.Name
-	}
-	if brc.Type != nil {
-		objectMap["type"] = brc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for BackendReconnectContract struct.
 func (brc *BackendReconnectContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2479,15 +2308,6 @@ type BackendUpdateParameterProperties struct {
 type BackendUpdateParameters struct {
 	// BackendUpdateParameterProperties - Backend entity update contract properties.
 	*BackendUpdateParameterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BackendUpdateParameters.
-func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bup.BackendUpdateParameterProperties != nil {
-		objectMap["properties"] = bup.BackendUpdateParameterProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for BackendUpdateParameters struct.
@@ -2642,24 +2462,6 @@ type CertificateContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for CertificateContract.
-func (cc CertificateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cc.CertificateContractProperties != nil {
-		objectMap["properties"] = cc.CertificateContractProperties
-	}
-	if cc.ID != nil {
-		objectMap["id"] = cc.ID
-	}
-	if cc.Name != nil {
-		objectMap["name"] = cc.Name
-	}
-	if cc.Type != nil {
-		objectMap["type"] = cc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for CertificateContract struct.
 func (cc *CertificateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2725,15 +2527,6 @@ type CertificateContractProperties struct {
 type CertificateCreateOrUpdateParameters struct {
 	// CertificateCreateOrUpdateProperties - Certificate create or update properties details.
 	*CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CertificateCreateOrUpdateParameters.
-func (ccoup CertificateCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ccoup.CertificateCreateOrUpdateProperties != nil {
-		objectMap["properties"] = ccoup.CertificateCreateOrUpdateProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for CertificateCreateOrUpdateParameters struct.
@@ -2916,24 +2709,6 @@ type DiagnosticContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for DiagnosticContract.
-func (dc DiagnosticContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dc.DiagnosticContractProperties != nil {
-		objectMap["properties"] = dc.DiagnosticContractProperties
-	}
-	if dc.ID != nil {
-		objectMap["id"] = dc.ID
-	}
-	if dc.Name != nil {
-		objectMap["name"] = dc.Name
-	}
-	if dc.Type != nil {
-		objectMap["type"] = dc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for DiagnosticContract struct.
 func (dc *DiagnosticContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3106,24 +2881,6 @@ type EmailTemplateContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for EmailTemplateContract.
-func (etc EmailTemplateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if etc.EmailTemplateContractProperties != nil {
-		objectMap["properties"] = etc.EmailTemplateContractProperties
-	}
-	if etc.ID != nil {
-		objectMap["id"] = etc.ID
-	}
-	if etc.Name != nil {
-		objectMap["name"] = etc.Name
-	}
-	if etc.Type != nil {
-		objectMap["type"] = etc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for EmailTemplateContract struct.
 func (etc *EmailTemplateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3219,15 +2976,6 @@ type EmailTemplateUpdateParameterProperties struct {
 type EmailTemplateUpdateParameters struct {
 	// EmailTemplateUpdateParameterProperties - Email Template Update contract properties.
 	*EmailTemplateUpdateParameterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for EmailTemplateUpdateParameters.
-func (etup EmailTemplateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if etup.EmailTemplateUpdateParameterProperties != nil {
-		objectMap["properties"] = etup.EmailTemplateUpdateParameterProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for EmailTemplateUpdateParameters struct.
@@ -3396,24 +3144,6 @@ type GroupContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for GroupContract.
-func (gc GroupContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if gc.GroupContractProperties != nil {
-		objectMap["properties"] = gc.GroupContractProperties
-	}
-	if gc.ID != nil {
-		objectMap["id"] = gc.ID
-	}
-	if gc.Name != nil {
-		objectMap["name"] = gc.Name
-	}
-	if gc.Type != nil {
-		objectMap["type"] = gc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for GroupContract struct.
 func (gc *GroupContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3485,15 +3215,6 @@ type GroupCreateParameters struct {
 	*GroupCreateParametersProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for GroupCreateParameters.
-func (gcp GroupCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if gcp.GroupCreateParametersProperties != nil {
-		objectMap["properties"] = gcp.GroupCreateParametersProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for GroupCreateParameters struct.
 func (gcp *GroupCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3534,15 +3255,6 @@ type GroupCreateParametersProperties struct {
 type GroupUpdateParameters struct {
 	// GroupUpdateParametersProperties - Group entity update contract properties.
 	*GroupUpdateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for GroupUpdateParameters.
-func (gup GroupUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if gup.GroupUpdateParametersProperties != nil {
-		objectMap["properties"] = gup.GroupUpdateParametersProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for GroupUpdateParameters struct.
@@ -3640,24 +3352,6 @@ type IdentityProviderContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for IdentityProviderContract.
-func (ipc IdentityProviderContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ipc.IdentityProviderContractProperties != nil {
-		objectMap["properties"] = ipc.IdentityProviderContractProperties
-	}
-	if ipc.ID != nil {
-		objectMap["id"] = ipc.ID
-	}
-	if ipc.Name != nil {
-		objectMap["name"] = ipc.Name
-	}
-	if ipc.Type != nil {
-		objectMap["type"] = ipc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for IdentityProviderContract struct.
 func (ipc *IdentityProviderContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3744,15 +3438,6 @@ type IdentityProviderList struct {
 type IdentityProviderUpdateParameters struct {
 	// IdentityProviderUpdateProperties - Identity Provider update properties.
 	*IdentityProviderUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IdentityProviderUpdateParameters.
-func (ipup IdentityProviderUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ipup.IdentityProviderUpdateProperties != nil {
-		objectMap["properties"] = ipup.IdentityProviderUpdateProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for IdentityProviderUpdateParameters struct.
@@ -3916,24 +3601,6 @@ type LoggerContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for LoggerContract.
-func (lc LoggerContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if lc.LoggerContractProperties != nil {
-		objectMap["properties"] = lc.LoggerContractProperties
-	}
-	if lc.ID != nil {
-		objectMap["id"] = lc.ID
-	}
-	if lc.Name != nil {
-		objectMap["name"] = lc.Name
-	}
-	if lc.Type != nil {
-		objectMap["type"] = lc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for LoggerContract struct.
 func (lc *LoggerContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4004,9 +3671,7 @@ type LoggerContractProperties struct {
 // MarshalJSON is the custom marshaler for LoggerContractProperties.
 func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if lcp.LoggerType != "" {
-		objectMap["loggerType"] = lcp.LoggerType
-	}
+	objectMap["loggerType"] = lcp.LoggerType
 	if lcp.Description != nil {
 		objectMap["description"] = lcp.Description
 	}
@@ -4026,15 +3691,6 @@ func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 type LoggerSamplingContract struct {
 	// LoggerSamplingProperties - Sampling settings entity contract properties.
 	*LoggerSamplingProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for LoggerSamplingContract.
-func (lsc LoggerSamplingContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if lsc.LoggerSamplingProperties != nil {
-		objectMap["properties"] = lsc.LoggerSamplingProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for LoggerSamplingContract struct.
@@ -4091,15 +3747,6 @@ type LoggerUpdateContract struct {
 	*LoggerUpdateParameters `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for LoggerUpdateContract.
-func (luc LoggerUpdateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if luc.LoggerUpdateParameters != nil {
-		objectMap["properties"] = luc.LoggerUpdateParameters
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for LoggerUpdateContract struct.
 func (luc *LoggerUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4139,9 +3786,7 @@ type LoggerUpdateParameters struct {
 // MarshalJSON is the custom marshaler for LoggerUpdateParameters.
 func (lup LoggerUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if lup.LoggerType != "" {
-		objectMap["loggerType"] = lup.LoggerType
-	}
+	objectMap["loggerType"] = lup.LoggerType
 	if lup.Description != nil {
 		objectMap["description"] = lup.Description
 	}
@@ -4276,24 +3921,6 @@ type NotificationContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for NotificationContract.
-func (nc NotificationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if nc.NotificationContractProperties != nil {
-		objectMap["properties"] = nc.NotificationContractProperties
-	}
-	if nc.ID != nil {
-		objectMap["id"] = nc.ID
-	}
-	if nc.Name != nil {
-		objectMap["name"] = nc.Name
-	}
-	if nc.Type != nil {
-		objectMap["type"] = nc.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for NotificationContract struct.
@@ -4481,24 +4108,6 @@ type OpenidConnectProviderContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for OpenidConnectProviderContract.
-func (ocpc OpenidConnectProviderContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ocpc.OpenidConnectProviderContractProperties != nil {
-		objectMap["properties"] = ocpc.OpenidConnectProviderContractProperties
-	}
-	if ocpc.ID != nil {
-		objectMap["id"] = ocpc.ID
-	}
-	if ocpc.Name != nil {
-		objectMap["name"] = ocpc.Name
-	}
-	if ocpc.Type != nil {
-		objectMap["type"] = ocpc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for OpenidConnectProviderContract struct.
 func (ocpc *OpenidConnectProviderContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4568,15 +4177,6 @@ type OpenidConnectProviderContractProperties struct {
 type OpenidConnectProviderUpdateContract struct {
 	// OpenidConnectProviderUpdateContractProperties - OpenId Connect Provider Update contract properties.
 	*OpenidConnectProviderUpdateContractProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OpenidConnectProviderUpdateContract.
-func (ocpuc OpenidConnectProviderUpdateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ocpuc.OpenidConnectProviderUpdateContractProperties != nil {
-		objectMap["properties"] = ocpuc.OpenidConnectProviderUpdateContractProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for OpenidConnectProviderUpdateContract struct.
@@ -4745,24 +4345,6 @@ type OperationContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for OperationContract.
-func (oc OperationContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if oc.OperationContractProperties != nil {
-		objectMap["properties"] = oc.OperationContractProperties
-	}
-	if oc.ID != nil {
-		objectMap["id"] = oc.ID
-	}
-	if oc.Name != nil {
-		objectMap["name"] = oc.Name
-	}
-	if oc.Type != nil {
-		objectMap["type"] = oc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for OperationContract struct.
 func (oc *OperationContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4870,24 +4452,6 @@ type OperationEntityContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationEntityContract.
-func (oec OperationEntityContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if oec.OperationEntityContractProperties != nil {
-		objectMap["properties"] = oec.OperationEntityContractProperties
-	}
-	if oec.ID != nil {
-		objectMap["id"] = oec.ID
-	}
-	if oec.Name != nil {
-		objectMap["name"] = oec.Name
-	}
-	if oec.Type != nil {
-		objectMap["type"] = oec.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for OperationEntityContract struct.
@@ -5097,15 +4661,6 @@ type OperationUpdateContract struct {
 	*OperationUpdateContractProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for OperationUpdateContract.
-func (ouc OperationUpdateContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ouc.OperationUpdateContractProperties != nil {
-		objectMap["properties"] = ouc.OperationUpdateContractProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for OperationUpdateContract struct.
 func (ouc *OperationUpdateContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5186,24 +4741,6 @@ type PolicyContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PolicyContract.
-func (pc PolicyContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pc.PolicyContractProperties != nil {
-		objectMap["properties"] = pc.PolicyContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for PolicyContract struct.
@@ -5295,24 +4832,6 @@ type PortalDelegationSettings struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PortalDelegationSettings.
-func (pds PortalDelegationSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pds.PortalDelegationSettingsProperties != nil {
-		objectMap["properties"] = pds.PortalDelegationSettingsProperties
-	}
-	if pds.ID != nil {
-		objectMap["id"] = pds.ID
-	}
-	if pds.Name != nil {
-		objectMap["name"] = pds.Name
-	}
-	if pds.Type != nil {
-		objectMap["type"] = pds.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for PortalDelegationSettings struct.
 func (pds *PortalDelegationSettings) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5395,24 +4914,6 @@ type PortalSigninSettings struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PortalSigninSettings.
-func (pss PortalSigninSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pss.PortalSigninSettingProperties != nil {
-		objectMap["properties"] = pss.PortalSigninSettingProperties
-	}
-	if pss.ID != nil {
-		objectMap["id"] = pss.ID
-	}
-	if pss.Name != nil {
-		objectMap["name"] = pss.Name
-	}
-	if pss.Type != nil {
-		objectMap["type"] = pss.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for PortalSigninSettings struct.
 func (pss *PortalSigninSettings) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5475,24 +4976,6 @@ type PortalSignupSettings struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for PortalSignupSettings.
-func (pss PortalSignupSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pss.PortalSignupSettingsProperties != nil {
-		objectMap["properties"] = pss.PortalSignupSettingsProperties
-	}
-	if pss.ID != nil {
-		objectMap["id"] = pss.ID
-	}
-	if pss.Name != nil {
-		objectMap["name"] = pss.Name
-	}
-	if pss.Type != nil {
-		objectMap["type"] = pss.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for PortalSignupSettings struct.
@@ -5669,24 +5152,6 @@ type ProductContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ProductContract.
-func (pc ProductContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pc.ProductContractProperties != nil {
-		objectMap["properties"] = pc.ProductContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for ProductContract struct.
 func (pc *ProductContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5776,15 +5241,6 @@ type ProductEntityBaseParameters struct {
 type ProductUpdateParameters struct {
 	// ProductUpdateProperties - Product entity Update contract properties.
 	*ProductUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ProductUpdateParameters.
-func (pup ProductUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pup.ProductUpdateProperties != nil {
-		objectMap["properties"] = pup.ProductUpdateProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ProductUpdateParameters struct.
@@ -5944,24 +5400,6 @@ type PropertyContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PropertyContract.
-func (pc PropertyContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pc.PropertyContractProperties != nil {
-		objectMap["properties"] = pc.PropertyContractProperties
-	}
-	if pc.ID != nil {
-		objectMap["id"] = pc.ID
-	}
-	if pc.Name != nil {
-		objectMap["name"] = pc.Name
-	}
-	if pc.Type != nil {
-		objectMap["type"] = pc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for PropertyContract struct.
 func (pc *PropertyContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6051,15 +5489,6 @@ type PropertyUpdateParameters struct {
 	*PropertyUpdateParameterProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PropertyUpdateParameters.
-func (pup PropertyUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if pup.PropertyUpdateParameterProperties != nil {
-		objectMap["properties"] = pup.PropertyUpdateParameterProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for PropertyUpdateParameters struct.
 func (pup *PropertyUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6116,15 +5545,6 @@ type QuotaCounterValueContract struct {
 	*QuotaCounterValueContractProperties `json:"value,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for QuotaCounterValueContract.
-func (qcvc QuotaCounterValueContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if qcvc.QuotaCounterValueContractProperties != nil {
-		objectMap["value"] = qcvc.QuotaCounterValueContractProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for QuotaCounterValueContract struct.
 func (qcvc *QuotaCounterValueContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6177,24 +5597,6 @@ type RecipientEmailContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RecipientEmailContract.
-func (rec RecipientEmailContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rec.RecipientEmailContractProperties != nil {
-		objectMap["properties"] = rec.RecipientEmailContractProperties
-	}
-	if rec.ID != nil {
-		objectMap["id"] = rec.ID
-	}
-	if rec.Name != nil {
-		objectMap["name"] = rec.Name
-	}
-	if rec.Type != nil {
-		objectMap["type"] = rec.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for RecipientEmailContract struct.
@@ -6282,24 +5684,6 @@ type RecipientUserContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RecipientUserContract.
-func (ruc RecipientUserContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ruc.RecipientUsersContractProperties != nil {
-		objectMap["properties"] = ruc.RecipientUsersContractProperties
-	}
-	if ruc.ID != nil {
-		objectMap["id"] = ruc.ID
-	}
-	if ruc.Name != nil {
-		objectMap["name"] = ruc.Name
-	}
-	if ruc.Type != nil {
-		objectMap["type"] = ruc.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for RecipientUserContract struct.
@@ -6766,24 +6150,6 @@ type SchemaContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for SchemaContract.
-func (sc SchemaContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sc.SchemaContractProperties != nil {
-		objectMap["properties"] = sc.SchemaContractProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for SchemaContract struct.
 func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6841,18 +6207,6 @@ type SchemaContractProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 	// SchemaDocumentProperties - Properties of the Schema Document.
 	*SchemaDocumentProperties `json:"document,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SchemaContractProperties.
-func (scp SchemaContractProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if scp.ContentType != nil {
-		objectMap["contentType"] = scp.ContentType
-	}
-	if scp.SchemaDocumentProperties != nil {
-		objectMap["document"] = scp.SchemaDocumentProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SchemaContractProperties struct.
@@ -7093,9 +6447,7 @@ func (sbp ServiceBaseProperties) MarshalJSON() ([]byte, error) {
 	if sbp.Certificates != nil {
 		objectMap["certificates"] = sbp.Certificates
 	}
-	if sbp.VirtualNetworkType != "" {
-		objectMap["virtualNetworkType"] = sbp.VirtualNetworkType
-	}
+	objectMap["virtualNetworkType"] = sbp.VirtualNetworkType
 	return json.Marshal(objectMap)
 }
 
@@ -7378,9 +6730,7 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	if sp.Certificates != nil {
 		objectMap["certificates"] = sp.Certificates
 	}
-	if sp.VirtualNetworkType != "" {
-		objectMap["virtualNetworkType"] = sp.VirtualNetworkType
-	}
+	objectMap["virtualNetworkType"] = sp.VirtualNetworkType
 	return json.Marshal(objectMap)
 }
 
@@ -7928,9 +7278,7 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	if sup.Certificates != nil {
 		objectMap["certificates"] = sup.Certificates
 	}
-	if sup.VirtualNetworkType != "" {
-		objectMap["virtualNetworkType"] = sup.VirtualNetworkType
-	}
+	objectMap["virtualNetworkType"] = sup.VirtualNetworkType
 	return json.Marshal(objectMap)
 }
 
@@ -8060,24 +7408,6 @@ type SubscriptionContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for SubscriptionContract.
-func (sc SubscriptionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sc.SubscriptionContractProperties != nil {
-		objectMap["properties"] = sc.SubscriptionContractProperties
-	}
-	if sc.ID != nil {
-		objectMap["id"] = sc.ID
-	}
-	if sc.Name != nil {
-		objectMap["name"] = sc.Name
-	}
-	if sc.Type != nil {
-		objectMap["type"] = sc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for SubscriptionContract struct.
 func (sc *SubscriptionContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8179,15 +7509,6 @@ type SubscriptionCreateParameters struct {
 	*SubscriptionCreateParameterProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for SubscriptionCreateParameters.
-func (scp SubscriptionCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if scp.SubscriptionCreateParameterProperties != nil {
-		objectMap["properties"] = scp.SubscriptionCreateParameterProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for SubscriptionCreateParameters struct.
 func (scp *SubscriptionCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8250,15 +7571,6 @@ type SubscriptionUpdateParameterProperties struct {
 type SubscriptionUpdateParameters struct {
 	// SubscriptionUpdateParameterProperties - Subscription Update contract properties.
 	*SubscriptionUpdateParameterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SubscriptionUpdateParameters.
-func (sup SubscriptionUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sup.SubscriptionUpdateParameterProperties != nil {
-		objectMap["properties"] = sup.SubscriptionUpdateParameterProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for SubscriptionUpdateParameters struct.
@@ -8400,24 +7712,6 @@ type TagContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for TagContract.
-func (tc TagContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tc.TagContractProperties != nil {
-		objectMap["properties"] = tc.TagContractProperties
-	}
-	if tc.ID != nil {
-		objectMap["id"] = tc.ID
-	}
-	if tc.Name != nil {
-		objectMap["name"] = tc.Name
-	}
-	if tc.Type != nil {
-		objectMap["type"] = tc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for TagContract struct.
 func (tc *TagContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8479,15 +7773,6 @@ type TagContractProperties struct {
 type TagCreateUpdateParameters struct {
 	// TagContractProperties - Properties supplied to Create Tag operation.
 	*TagContractProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TagCreateUpdateParameters.
-func (tcup TagCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tcup.TagContractProperties != nil {
-		objectMap["properties"] = tcup.TagContractProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TagCreateUpdateParameters struct.
@@ -8639,24 +7924,6 @@ type TagDescriptionContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for TagDescriptionContract.
-func (tdc TagDescriptionContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tdc.TagDescriptionContractProperties != nil {
-		objectMap["properties"] = tdc.TagDescriptionContractProperties
-	}
-	if tdc.ID != nil {
-		objectMap["id"] = tdc.ID
-	}
-	if tdc.Name != nil {
-		objectMap["name"] = tdc.Name
-	}
-	if tdc.Type != nil {
-		objectMap["type"] = tdc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for TagDescriptionContract struct.
 func (tdc *TagDescriptionContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8724,15 +7991,6 @@ type TagDescriptionContractProperties struct {
 type TagDescriptionCreateParameters struct {
 	// TagDescriptionBaseProperties - Properties supplied to Create TagDescription operation.
 	*TagDescriptionBaseProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TagDescriptionCreateParameters.
-func (tdcp TagDescriptionCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tdcp.TagDescriptionBaseProperties != nil {
-		objectMap["properties"] = tdcp.TagDescriptionBaseProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TagDescriptionCreateParameters struct.
@@ -8871,24 +8129,6 @@ type TagResourceContract struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type for API Management resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TagResourceContract.
-func (trc TagResourceContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if trc.TagResourceContractProperties != nil {
-		objectMap["properties"] = trc.TagResourceContractProperties
-	}
-	if trc.ID != nil {
-		objectMap["id"] = trc.ID
-	}
-	if trc.Name != nil {
-		objectMap["name"] = trc.Name
-	}
-	if trc.Type != nil {
-		objectMap["type"] = trc.Type
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TagResourceContract struct.
@@ -9253,24 +8493,6 @@ type UserContract struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for UserContract.
-func (uc UserContract) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if uc.UserContractProperties != nil {
-		objectMap["properties"] = uc.UserContractProperties
-	}
-	if uc.ID != nil {
-		objectMap["id"] = uc.ID
-	}
-	if uc.Name != nil {
-		objectMap["name"] = uc.Name
-	}
-	if uc.Type != nil {
-		objectMap["type"] = uc.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for UserContract struct.
 func (uc *UserContract) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9368,15 +8590,6 @@ type UserCreateParameters struct {
 	*UserCreateParameterProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for UserCreateParameters.
-func (ucp UserCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ucp.UserCreateParameterProperties != nil {
-		objectMap["properties"] = ucp.UserCreateParameterProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for UserCreateParameters struct.
 func (ucp *UserCreateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9449,15 +8662,6 @@ type UserTokenResult struct {
 type UserUpdateParameters struct {
 	// UserUpdateParametersProperties - User entity update contract properties.
 	*UserUpdateParametersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for UserUpdateParameters.
-func (uup UserUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if uup.UserUpdateParametersProperties != nil {
-		objectMap["properties"] = uup.UserUpdateParametersProperties
-	}
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for UserUpdateParameters struct.

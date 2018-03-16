@@ -242,27 +242,6 @@ type RecordSet struct {
 	*RecordSetProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for RecordSet.
-func (rs RecordSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rs.ID != nil {
-		objectMap["id"] = rs.ID
-	}
-	if rs.Name != nil {
-		objectMap["name"] = rs.Name
-	}
-	if rs.Type != nil {
-		objectMap["type"] = rs.Type
-	}
-	if rs.Etag != nil {
-		objectMap["etag"] = rs.Etag
-	}
-	if rs.RecordSetProperties != nil {
-		objectMap["properties"] = rs.RecordSetProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON is the custom unmarshaler for RecordSet struct.
 func (rs *RecordSet) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage

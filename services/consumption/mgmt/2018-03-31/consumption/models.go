@@ -1149,6 +1149,253 @@ type ReservationDetailsProperties struct {
 	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
 }
 
+// ReservationRecommendations reservation recommendations resource.
+type ReservationRecommendations struct {
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Sku - Resource sku
+	Sku                                   *string `json:"sku,omitempty"`
+	*ReservationRecommendationsProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationRecommendations.
+func (rr ReservationRecommendations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rr.ID != nil {
+		objectMap["id"] = rr.ID
+	}
+	if rr.Name != nil {
+		objectMap["name"] = rr.Name
+	}
+	if rr.Type != nil {
+		objectMap["type"] = rr.Type
+	}
+	if rr.Tags != nil {
+		objectMap["tags"] = rr.Tags
+	}
+	if rr.Location != nil {
+		objectMap["location"] = rr.Location
+	}
+	if rr.Sku != nil {
+		objectMap["sku"] = rr.Sku
+	}
+	if rr.ReservationRecommendationsProperties != nil {
+		objectMap["properties"] = rr.ReservationRecommendationsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ReservationRecommendations struct.
+func (rr *ReservationRecommendations) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rr.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				rr.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				rr.Location = &location
+			}
+		case "sku":
+			if v != nil {
+				var sku string
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				rr.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var reservationRecommendationsProperties ReservationRecommendationsProperties
+				err = json.Unmarshal(*v, &reservationRecommendationsProperties)
+				if err != nil {
+					return err
+				}
+				rr.ReservationRecommendationsProperties = &reservationRecommendationsProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReservationRecommendationsListResult result of listing reservation recommendations.
+type ReservationRecommendationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of reservation recommendations.
+	Value *[]ReservationRecommendations `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ReservationRecommendationsListResultIterator provides access to a complete listing of ReservationRecommendations
+// values.
+type ReservationRecommendationsListResultIterator struct {
+	i    int
+	page ReservationRecommendationsListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ReservationRecommendationsListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ReservationRecommendationsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ReservationRecommendationsListResultIterator) Response() ReservationRecommendationsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ReservationRecommendationsListResultIterator) Value() ReservationRecommendations {
+	if !iter.page.NotDone() {
+		return ReservationRecommendations{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rrlr ReservationRecommendationsListResult) IsEmpty() bool {
+	return rrlr.Value == nil || len(*rrlr.Value) == 0
+}
+
+// reservationRecommendationsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rrlr ReservationRecommendationsListResult) reservationRecommendationsListResultPreparer() (*http.Request, error) {
+	if rrlr.NextLink == nil || len(to.String(rrlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rrlr.NextLink)))
+}
+
+// ReservationRecommendationsListResultPage contains a page of ReservationRecommendations values.
+type ReservationRecommendationsListResultPage struct {
+	fn   func(ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)
+	rrlr ReservationRecommendationsListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ReservationRecommendationsListResultPage) Next() error {
+	next, err := page.fn(page.rrlr)
+	if err != nil {
+		return err
+	}
+	page.rrlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ReservationRecommendationsListResultPage) NotDone() bool {
+	return !page.rrlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ReservationRecommendationsListResultPage) Response() ReservationRecommendationsListResult {
+	return page.rrlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ReservationRecommendationsListResultPage) Values() []ReservationRecommendations {
+	if page.rrlr.IsEmpty() {
+		return nil
+	}
+	return *page.rrlr.Value
+}
+
+// ReservationRecommendationsProperties the properties of the reservation recommendations.
+type ReservationRecommendationsProperties struct {
+	// LookBackPeriod - The number of days of usage to look back for recommendations.
+	LookBackPeriod *string `json:"lookBackPeriod,omitempty"`
+	// MeterID - The meter id (GUID)
+	MeterID *uuid.UUID `json:"meterId,omitempty"`
+	// Term - RI recommendations in one or three year terms.
+	Term *string `json:"term,omitempty"`
+	// CostWithNoReservedInstances - The total amount of cost without reserved instances.
+	CostWithNoReservedInstances *decimal.Decimal `json:"costWithNoReservedInstances,omitempty"`
+	// RecommendedQuantity - Recomended quality for reserved instances.
+	RecommendedQuantity *decimal.Decimal `json:"recommendedQuantity,omitempty"`
+	// TotalCostWithReservedInstances - The total amount of cost with reserved instances.
+	TotalCostWithReservedInstances *decimal.Decimal `json:"totalCostWithReservedInstances,omitempty"`
+	// NetSavings - Total estimated savings with reserved instances.
+	NetSavings *decimal.Decimal `json:"netSavings,omitempty"`
+	// FirstUsageDate - The usage date for looking back.
+	FirstUsageDate *date.Time `json:"firstUsageDate,omitempty"`
+	// Scope - Shared or single recommendation.
+	Scope *string `json:"scope,omitempty"`
+}
+
 // ReservationSummaries reservation summaries resource.
 type ReservationSummaries struct {
 	*ReservationSummariesProperties `json:"properties,omitempty"`
@@ -1395,6 +1642,14 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// ResourceAttributes the Resource model definition.
+type ResourceAttributes struct {
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Sku - Resource sku
+	Sku *string `json:"sku,omitempty"`
 }
 
 // UsageDetail an usage detail resource.

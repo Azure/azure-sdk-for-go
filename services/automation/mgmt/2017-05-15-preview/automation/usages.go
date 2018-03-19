@@ -31,13 +31,13 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates an instance of the UsagesClient client.
-func NewUsagesClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) UsagesClient {
-	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewUsagesClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) UsagesClient {
-	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // ListByAutomationAccount retrieve the usage for the account id.

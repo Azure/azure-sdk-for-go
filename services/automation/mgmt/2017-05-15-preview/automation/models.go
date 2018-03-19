@@ -3409,7 +3409,7 @@ type DscMetaConfiguration struct {
 	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 }
 
-// DscNode definition of the dsc node type.
+// DscNode definition of a DscNode
 type DscNode struct {
 	autorest.Response `json:"-"`
 	// LastSeen - Gets or sets the last seen time of the node.

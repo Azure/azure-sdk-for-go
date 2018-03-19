@@ -31,24 +31,26 @@ type SoftwareUpdateConfigurationsClient struct {
 }
 
 // NewSoftwareUpdateConfigurationsClient creates an instance of the SoftwareUpdateConfigurationsClient client.
-func NewSoftwareUpdateConfigurationsClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SoftwareUpdateConfigurationsClient {
-	return NewSoftwareUpdateConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewSoftwareUpdateConfigurationsClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) SoftwareUpdateConfigurationsClient {
+	return NewSoftwareUpdateConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewSoftwareUpdateConfigurationsClientWithBaseURI creates an instance of the SoftwareUpdateConfigurationsClient
 // client.
-func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SoftwareUpdateConfigurationsClient {
-	return SoftwareUpdateConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) SoftwareUpdateConfigurationsClient {
+	return SoftwareUpdateConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // Create create a new software update configuration with the name given in the URI.
 //
-// softwareUpdateConfigurationName is the name of the software update configuration to be created. parameters is
-// request body.
-func (client SoftwareUpdateConfigurationsClient) Create(ctx context.Context, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration) (result SoftwareUpdateConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. softwareUpdateConfigurationName is the name of the
+// software update configuration to be created. parameters is request body.
+func (client SoftwareUpdateConfigurationsClient) Create(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration) (result SoftwareUpdateConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.SoftwareUpdateConfigurationProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.SoftwareUpdateConfigurationProperties.UpdateConfiguration", Name: validation.Null, Rule: true, Chain: nil},
@@ -57,7 +59,7 @@ func (client SoftwareUpdateConfigurationsClient) Create(ctx context.Context, sof
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, softwareUpdateConfigurationName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, softwareUpdateConfigurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationsClient", "Create", nil, "Failure preparing request")
 		return
@@ -79,10 +81,10 @@ func (client SoftwareUpdateConfigurationsClient) Create(ctx context.Context, sof
 }
 
 // CreatePreparer prepares the Create request.
-func (client SoftwareUpdateConfigurationsClient) CreatePreparer(ctx context.Context, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":           autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":               autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":               autorest.Encode("path", resourceGroupName),
 		"softwareUpdateConfigurationName": autorest.Encode("path", softwareUpdateConfigurationName),
 		"subscriptionId":                  autorest.Encode("path", client.SubscriptionID),
 	}
@@ -128,15 +130,18 @@ func (client SoftwareUpdateConfigurationsClient) CreateResponder(resp *http.Resp
 
 // Delete delete a specific software update configuration.
 //
-// softwareUpdateConfigurationName is the name of the software update configuration to be created.
-func (client SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, softwareUpdateConfigurationName string) (result autorest.Response, err error) {
+// resourceGroupName is name of an Azure Resource group. softwareUpdateConfigurationName is the name of the
+// software update configuration to be created.
+func (client SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, softwareUpdateConfigurationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, softwareUpdateConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -158,10 +163,10 @@ func (client SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, sof
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SoftwareUpdateConfigurationsClient) DeletePreparer(ctx context.Context, softwareUpdateConfigurationName string) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":           autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":               autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":               autorest.Encode("path", resourceGroupName),
 		"softwareUpdateConfigurationName": autorest.Encode("path", softwareUpdateConfigurationName),
 		"subscriptionId":                  autorest.Encode("path", client.SubscriptionID),
 	}
@@ -204,15 +209,18 @@ func (client SoftwareUpdateConfigurationsClient) DeleteResponder(resp *http.Resp
 
 // GetByName get a single software update configuration by name.
 //
-// softwareUpdateConfigurationName is the name of the software update configuration to be created.
-func (client SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context, softwareUpdateConfigurationName string) (result SoftwareUpdateConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. softwareUpdateConfigurationName is the name of the
+// software update configuration to be created.
+func (client SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string) (result SoftwareUpdateConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "GetByName", err.Error())
 	}
 
-	req, err := client.GetByNamePreparer(ctx, softwareUpdateConfigurationName)
+	req, err := client.GetByNamePreparer(ctx, resourceGroupName, softwareUpdateConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationsClient", "GetByName", nil, "Failure preparing request")
 		return
@@ -234,10 +242,10 @@ func (client SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context, 
 }
 
 // GetByNamePreparer prepares the GetByName request.
-func (client SoftwareUpdateConfigurationsClient) GetByNamePreparer(ctx context.Context, softwareUpdateConfigurationName string) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationsClient) GetByNamePreparer(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":           autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":               autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":               autorest.Encode("path", resourceGroupName),
 		"softwareUpdateConfigurationName": autorest.Encode("path", softwareUpdateConfigurationName),
 		"subscriptionId":                  autorest.Encode("path", client.SubscriptionID),
 	}
@@ -281,15 +289,17 @@ func (client SoftwareUpdateConfigurationsClient) GetByNameResponder(resp *http.R
 
 // List get all software update configurations for the account.
 //
-// filter is the filter to apply on the operation.
-func (client SoftwareUpdateConfigurationsClient) List(ctx context.Context, filter string) (result SoftwareUpdateConfigurationListResult, err error) {
+// resourceGroupName is name of an Azure Resource group. filter is the filter to apply on the operation.
+func (client SoftwareUpdateConfigurationsClient) List(ctx context.Context, resourceGroupName string, filter string) (result SoftwareUpdateConfigurationListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, filter)
+	req, err := client.ListPreparer(ctx, resourceGroupName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationsClient", "List", nil, "Failure preparing request")
 		return
@@ -311,10 +321,10 @@ func (client SoftwareUpdateConfigurationsClient) List(ctx context.Context, filte
 }
 
 // ListPreparer prepares the List request.
-func (client SoftwareUpdateConfigurationsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationsClient) ListPreparer(ctx context.Context, resourceGroupName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

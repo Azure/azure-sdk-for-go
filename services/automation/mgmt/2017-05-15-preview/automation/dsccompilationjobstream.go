@@ -32,26 +32,29 @@ type DscCompilationJobStreamClient struct {
 }
 
 // NewDscCompilationJobStreamClient creates an instance of the DscCompilationJobStreamClient client.
-func NewDscCompilationJobStreamClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) DscCompilationJobStreamClient {
-	return NewDscCompilationJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewDscCompilationJobStreamClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) DscCompilationJobStreamClient {
+	return NewDscCompilationJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewDscCompilationJobStreamClientWithBaseURI creates an instance of the DscCompilationJobStreamClient client.
-func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) DscCompilationJobStreamClient {
-	return DscCompilationJobStreamClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) DscCompilationJobStreamClient {
+	return DscCompilationJobStreamClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // ListByJob retrieve all the job streams for the compilation Job.
 //
-// automationAccountName is the automation account name. jobID is the job id.
-func (client DscCompilationJobStreamClient) ListByJob(ctx context.Context, automationAccountName string, jobID uuid.UUID) (result JobStreamListResult, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
+func (client DscCompilationJobStreamClient) ListByJob(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result JobStreamListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscCompilationJobStreamClient", "ListByJob", err.Error())
 	}
 
-	req, err := client.ListByJobPreparer(ctx, automationAccountName, jobID)
+	req, err := client.ListByJobPreparer(ctx, resourceGroupName, automationAccountName, jobID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobStreamClient", "ListByJob", nil, "Failure preparing request")
 		return
@@ -73,11 +76,11 @@ func (client DscCompilationJobStreamClient) ListByJob(ctx context.Context, autom
 }
 
 // ListByJobPreparer prepares the ListByJob request.
-func (client DscCompilationJobStreamClient) ListByJobPreparer(ctx context.Context, automationAccountName string, jobID uuid.UUID) (*http.Request, error) {
+func (client DscCompilationJobStreamClient) ListByJobPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobId":                 autorest.Encode("path", jobID),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

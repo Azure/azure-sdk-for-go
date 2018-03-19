@@ -31,26 +31,28 @@ type LinkedWorkspaceClient struct {
 }
 
 // NewLinkedWorkspaceClient creates an instance of the LinkedWorkspaceClient client.
-func NewLinkedWorkspaceClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) LinkedWorkspaceClient {
-	return NewLinkedWorkspaceClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewLinkedWorkspaceClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) LinkedWorkspaceClient {
+	return NewLinkedWorkspaceClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewLinkedWorkspaceClientWithBaseURI creates an instance of the LinkedWorkspaceClient client.
-func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) LinkedWorkspaceClient {
-	return LinkedWorkspaceClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) LinkedWorkspaceClient {
+	return LinkedWorkspaceClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // Get retrieve the linked workspace for the account id.
 //
-// automationAccountName is the automation account name.
-func (client LinkedWorkspaceClient) Get(ctx context.Context, automationAccountName string) (result LinkedWorkspace, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+func (client LinkedWorkspaceClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string) (result LinkedWorkspace, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.LinkedWorkspaceClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, automationAccountName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.LinkedWorkspaceClient", "Get", nil, "Failure preparing request")
 		return
@@ -72,10 +74,10 @@ func (client LinkedWorkspaceClient) Get(ctx context.Context, automationAccountNa
 }
 
 // GetPreparer prepares the Get request.
-func (client LinkedWorkspaceClient) GetPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
+func (client LinkedWorkspaceClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

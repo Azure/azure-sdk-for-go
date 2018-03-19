@@ -32,27 +32,30 @@ type SoftwareUpdateConfigurationRunsClient struct {
 }
 
 // NewSoftwareUpdateConfigurationRunsClient creates an instance of the SoftwareUpdateConfigurationRunsClient client.
-func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SoftwareUpdateConfigurationRunsClient {
-	return NewSoftwareUpdateConfigurationRunsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) SoftwareUpdateConfigurationRunsClient {
+	return NewSoftwareUpdateConfigurationRunsClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewSoftwareUpdateConfigurationRunsClientWithBaseURI creates an instance of the SoftwareUpdateConfigurationRunsClient
 // client.
-func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SoftwareUpdateConfigurationRunsClient {
-	return SoftwareUpdateConfigurationRunsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) SoftwareUpdateConfigurationRunsClient {
+	return SoftwareUpdateConfigurationRunsClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // GetByID get a single software update configuration Run by Id.
 //
-// softwareUpdateConfigurationRunID is the Id of the software update configuration run.
-func (client SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context, softwareUpdateConfigurationRunID uuid.UUID) (result SoftwareUpdateConfigurationRun, err error) {
+// resourceGroupName is name of an Azure Resource group. softwareUpdateConfigurationRunID is the Id of the software
+// update configuration run.
+func (client SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationRunID uuid.UUID) (result SoftwareUpdateConfigurationRun, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationRunsClient", "GetByID", err.Error())
 	}
 
-	req, err := client.GetByIDPreparer(ctx, softwareUpdateConfigurationRunID)
+	req, err := client.GetByIDPreparer(ctx, resourceGroupName, softwareUpdateConfigurationRunID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationRunsClient", "GetByID", nil, "Failure preparing request")
 		return
@@ -74,10 +77,10 @@ func (client SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context,
 }
 
 // GetByIDPreparer prepares the GetByID request.
-func (client SoftwareUpdateConfigurationRunsClient) GetByIDPreparer(ctx context.Context, softwareUpdateConfigurationRunID uuid.UUID) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationRunsClient) GetByIDPreparer(ctx context.Context, resourceGroupName string, softwareUpdateConfigurationRunID uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":            autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":                autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":                autorest.Encode("path", resourceGroupName),
 		"softwareUpdateConfigurationRunId": autorest.Encode("path", softwareUpdateConfigurationRunID),
 		"subscriptionId":                   autorest.Encode("path", client.SubscriptionID),
 	}
@@ -121,17 +124,20 @@ func (client SoftwareUpdateConfigurationRunsClient) GetByIDResponder(resp *http.
 
 // List return list of software update configuration runs
 //
-// filter is the filter to apply on the operation. You can use the following filters: 'properties/osType',
-// 'properties/status', 'properties/startTime', and 'properties/softwareUpdateConfiguration/name' skip is number of
-// entries you skip before returning results top is maximum number of entries returned in the results collection
-func (client SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, filter string, skip string, top string) (result SoftwareUpdateConfigurationRunListResult, err error) {
+// resourceGroupName is name of an Azure Resource group. filter is the filter to apply on the operation. You can
+// use the following filters: 'properties/osType', 'properties/status', 'properties/startTime', and
+// 'properties/softwareUpdateConfiguration/name' skip is number of entries you skip before returning results top is
+// maximum number of entries returned in the results collection
+func (client SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, resourceGroupName string, filter string, skip string, top string) (result SoftwareUpdateConfigurationRunListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SoftwareUpdateConfigurationRunsClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, filter, skip, top)
+	req, err := client.ListPreparer(ctx, resourceGroupName, filter, skip, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SoftwareUpdateConfigurationRunsClient", "List", nil, "Failure preparing request")
 		return
@@ -153,10 +159,10 @@ func (client SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, fi
 }
 
 // ListPreparer prepares the List request.
-func (client SoftwareUpdateConfigurationRunsClient) ListPreparer(ctx context.Context, filter string, skip string, top string) (*http.Request, error) {
+func (client SoftwareUpdateConfigurationRunsClient) ListPreparer(ctx context.Context, resourceGroupName string, filter string, skip string, top string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", client.AutomationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

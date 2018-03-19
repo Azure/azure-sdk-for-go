@@ -31,23 +31,26 @@ type DscNodeConfigurationClient struct {
 }
 
 // NewDscNodeConfigurationClient creates an instance of the DscNodeConfigurationClient client.
-func NewDscNodeConfigurationClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) DscNodeConfigurationClient {
-	return NewDscNodeConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewDscNodeConfigurationClient(subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) DscNodeConfigurationClient {
+	return NewDscNodeConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)
 }
 
 // NewDscNodeConfigurationClientWithBaseURI creates an instance of the DscNodeConfigurationClient client.
-func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) DscNodeConfigurationClient {
-	return DscNodeConfigurationClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string, automationAccountName string, automationAccountName1 string, clientRequestID string) DscNodeConfigurationClient {
+	return DscNodeConfigurationClient{NewWithBaseURI(baseURI, subscriptionID, automationAccountName, automationAccountName1, clientRequestID)}
 }
 
 // CreateOrUpdate create the node configuration identified by node configuration name.
 //
-// automationAccountName is the automation account name. nodeConfigurationName is the create or update parameters
-// for configuration. parameters is the create or update parameters for configuration.
-func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (result DscNodeConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// nodeConfigurationName is the create or update parameters for configuration. parameters is the create or update
+// parameters for configuration.
+func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (result DscNodeConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Source", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Source.Hash", Name: validation.Null, Rule: false,
@@ -60,7 +63,7 @@ func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, aut
 		return result, validation.NewError("automation.DscNodeConfigurationClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, nodeConfigurationName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, automationAccountName, nodeConfigurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -82,11 +85,11 @@ func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, aut
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (*http.Request, error) {
+func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeConfigurationName": autorest.Encode("path", nodeConfigurationName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -127,15 +130,18 @@ func (client DscNodeConfigurationClient) CreateOrUpdateResponder(resp *http.Resp
 
 // Delete delete the Dsc node configurations by node configuration.
 //
-// automationAccountName is the automation account name. nodeConfigurationName is the Dsc node configuration name.
-func (client DscNodeConfigurationClient) Delete(ctx context.Context, automationAccountName string, nodeConfigurationName string) (result autorest.Response, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// nodeConfigurationName is the Dsc node configuration name.
+func (client DscNodeConfigurationClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscNodeConfigurationClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, automationAccountName, nodeConfigurationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, automationAccountName, nodeConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "Delete", nil, "Failure preparing request")
 		return
@@ -157,11 +163,11 @@ func (client DscNodeConfigurationClient) Delete(ctx context.Context, automationA
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DscNodeConfigurationClient) DeletePreparer(ctx context.Context, automationAccountName string, nodeConfigurationName string) (*http.Request, error) {
+func (client DscNodeConfigurationClient) DeletePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeConfigurationName": autorest.Encode("path", nodeConfigurationName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -199,15 +205,18 @@ func (client DscNodeConfigurationClient) DeleteResponder(resp *http.Response) (r
 
 // Get retrieve the Dsc node configurations by node configuration.
 //
-// automationAccountName is the automation account name. nodeConfigurationName is the Dsc node configuration name.
-func (client DscNodeConfigurationClient) Get(ctx context.Context, automationAccountName string, nodeConfigurationName string) (result DscNodeConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// nodeConfigurationName is the Dsc node configuration name.
+func (client DscNodeConfigurationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result DscNodeConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscNodeConfigurationClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, automationAccountName, nodeConfigurationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, nodeConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "Get", nil, "Failure preparing request")
 		return
@@ -229,11 +238,11 @@ func (client DscNodeConfigurationClient) Get(ctx context.Context, automationAcco
 }
 
 // GetPreparer prepares the Get request.
-func (client DscNodeConfigurationClient) GetPreparer(ctx context.Context, automationAccountName string, nodeConfigurationName string) (*http.Request, error) {
+func (client DscNodeConfigurationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeConfigurationName": autorest.Encode("path", nodeConfigurationName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -272,16 +281,19 @@ func (client DscNodeConfigurationClient) GetResponder(resp *http.Response) (resu
 
 // ListByAutomationAccount retrieve a list of dsc node configurations.
 //
-// automationAccountName is the automation account name. filter is the filter to apply on the operation.
-func (client DscNodeConfigurationClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter string) (result DscNodeConfigurationListResultPage, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// filter is the filter to apply on the operation.
+func (client DscNodeConfigurationClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result DscNodeConfigurationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscNodeConfigurationClient", "ListByAutomationAccount", err.Error())
 	}
 
 	result.fn = client.listByAutomationAccountNextResults
-	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName, filter)
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -303,10 +315,10 @@ func (client DscNodeConfigurationClient) ListByAutomationAccount(ctx context.Con
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client DscNodeConfigurationClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string, filter string) (*http.Request, error) {
+func (client DscNodeConfigurationClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -368,7 +380,7 @@ func (client DscNodeConfigurationClient) listByAutomationAccountNextResults(last
 }
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DscNodeConfigurationClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string, filter string) (result DscNodeConfigurationListResultIterator, err error) {
-	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName, filter)
+func (client DscNodeConfigurationClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result DscNodeConfigurationListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, filter)
 	return
 }

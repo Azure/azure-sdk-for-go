@@ -19,7 +19,7 @@
 
 package apimanagement
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-01-01/apimanagement"
 
 type APIClient = original.APIClient
 
@@ -353,6 +353,18 @@ func PossibleContentFormatValues() []ContentFormat {
 	return original.PossibleContentFormatValues()
 }
 
+type ExportFormat = original.ExportFormat
+
+const (
+	ExportFormatSwagger ExportFormat = original.ExportFormatSwagger
+	ExportFormatWadl    ExportFormat = original.ExportFormatWadl
+	ExportFormatWsdl    ExportFormat = original.ExportFormatWsdl
+)
+
+func PossibleExportFormatValues() []ExportFormat {
+	return original.PossibleExportFormatValues()
+}
+
 type GrantType = original.GrantType
 
 const (
@@ -456,6 +468,17 @@ func PossibleNotificationNameValues() []NotificationName {
 	return original.PossibleNotificationNameValues()
 }
 
+type PolicyContentFormat = original.PolicyContentFormat
+
+const (
+	XML     PolicyContentFormat = original.XML
+	XMLLink PolicyContentFormat = original.XMLLink
+)
+
+func PossiblePolicyContentFormatValues() []PolicyContentFormat {
+	return original.PossiblePolicyContentFormatValues()
+}
+
 type PolicyScopeContract = original.PolicyScopeContract
 
 const (
@@ -492,17 +515,6 @@ func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
 
-type SamplingType = original.SamplingType
-
-const (
-	Adaptive SamplingType = original.Adaptive
-	Fixed    SamplingType = original.Fixed
-)
-
-func PossibleSamplingTypeValues() []SamplingType {
-	return original.PossibleSamplingTypeValues()
-}
-
 type SkuType = original.SkuType
 
 const (
@@ -514,6 +526,17 @@ const (
 
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
+}
+
+type SoapAPIType = original.SoapAPIType
+
+const (
+	SoapPassThrough SoapAPIType = original.SoapPassThrough
+	SoapToRest      SoapAPIType = original.SoapToRest
+)
+
+func PossibleSoapAPITypeValues() []SoapAPIType {
+	return original.PossibleSoapAPITypeValues()
 }
 
 type StoreName = original.StoreName
@@ -590,6 +613,18 @@ func PossibleVersioningSchemeValues() []VersioningScheme {
 	return original.PossibleVersioningSchemeValues()
 }
 
+type VersioningScheme1 = original.VersioningScheme1
+
+const (
+	VersioningScheme1Header  VersioningScheme1 = original.VersioningScheme1Header
+	VersioningScheme1Query   VersioningScheme1 = original.VersioningScheme1Query
+	VersioningScheme1Segment VersioningScheme1 = original.VersioningScheme1Segment
+)
+
+func PossibleVersioningScheme1Values() []VersioningScheme1 {
+	return original.PossibleVersioningScheme1Values()
+}
+
 type VirtualNetworkType = original.VirtualNetworkType
 
 const (
@@ -626,13 +661,14 @@ type APIRevisionCollection = original.APIRevisionCollection
 type APIRevisionCollectionIterator = original.APIRevisionCollectionIterator
 type APIRevisionCollectionPage = original.APIRevisionCollectionPage
 type APIRevisionContract = original.APIRevisionContract
-type APIRevisionContractProperties = original.APIRevisionContractProperties
 type APIRevisionInfoContract = original.APIRevisionInfoContract
+type APITagResourceContractProperties = original.APITagResourceContractProperties
 type APIUpdateContract = original.APIUpdateContract
 type APIVersionSetCollection = original.APIVersionSetCollection
 type APIVersionSetCollectionIterator = original.APIVersionSetCollectionIterator
 type APIVersionSetCollectionPage = original.APIVersionSetCollectionPage
 type APIVersionSetContract = original.APIVersionSetContract
+type APIVersionSetContractDetails = original.APIVersionSetContractDetails
 type APIVersionSetContractProperties = original.APIVersionSetContractProperties
 type APIVersionSetEntityBase = original.APIVersionSetEntityBase
 type APIVersionSetUpdateParameters = original.APIVersionSetUpdateParameters
@@ -704,18 +740,20 @@ type IdentityProviderBaseParameters = original.IdentityProviderBaseParameters
 type IdentityProviderContract = original.IdentityProviderContract
 type IdentityProviderContractProperties = original.IdentityProviderContractProperties
 type IdentityProviderList = original.IdentityProviderList
+type IdentityProviderListIterator = original.IdentityProviderListIterator
+type IdentityProviderListPage = original.IdentityProviderListPage
 type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
 type IdentityProviderUpdateProperties = original.IdentityProviderUpdateProperties
+type ListNetworkStatusContractByLocation = original.ListNetworkStatusContractByLocation
 type LoggerCollection = original.LoggerCollection
 type LoggerCollectionIterator = original.LoggerCollectionIterator
 type LoggerCollectionPage = original.LoggerCollectionPage
 type LoggerContract = original.LoggerContract
 type LoggerContractProperties = original.LoggerContractProperties
-type LoggerSamplingContract = original.LoggerSamplingContract
-type LoggerSamplingProperties = original.LoggerSamplingProperties
 type LoggerUpdateContract = original.LoggerUpdateContract
 type LoggerUpdateParameters = original.LoggerUpdateParameters
 type NetworkStatusContract = original.NetworkStatusContract
+type NetworkStatusContractByLocation = original.NetworkStatusContractByLocation
 type NotificationCollection = original.NotificationCollection
 type NotificationCollectionIterator = original.NotificationCollectionIterator
 type NotificationCollectionPage = original.NotificationCollectionPage
@@ -737,13 +775,12 @@ type OperationContract = original.OperationContract
 type OperationContractProperties = original.OperationContractProperties
 type OperationDisplay = original.OperationDisplay
 type OperationEntityBaseContract = original.OperationEntityBaseContract
-type OperationEntityContract = original.OperationEntityContract
-type OperationEntityContractProperties = original.OperationEntityContractProperties
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationResultContract = original.OperationResultContract
 type OperationResultLogItemContract = original.OperationResultLogItemContract
+type OperationTagResourceContractProperties = original.OperationTagResourceContractProperties
 type OperationUpdateContract = original.OperationUpdateContract
 type OperationUpdateContractProperties = original.OperationUpdateContractProperties
 type ParameterContract = original.ParameterContract
@@ -764,6 +801,7 @@ type ProductCollectionPage = original.ProductCollectionPage
 type ProductContract = original.ProductContract
 type ProductContractProperties = original.ProductContractProperties
 type ProductEntityBaseParameters = original.ProductEntityBaseParameters
+type ProductTagResourceContractProperties = original.ProductTagResourceContractProperties
 type ProductUpdateParameters = original.ProductUpdateParameters
 type ProductUpdateProperties = original.ProductUpdateProperties
 type PropertyCollection = original.PropertyCollection
@@ -787,6 +825,8 @@ type RecipientUserContract = original.RecipientUserContract
 type RecipientUsersContractProperties = original.RecipientUsersContractProperties
 type RegionContract = original.RegionContract
 type RegionListResult = original.RegionListResult
+type RegionListResultIterator = original.RegionListResultIterator
+type RegionListResultPage = original.RegionListResultPage
 type RegistrationDelegationSettingsProperties = original.RegistrationDelegationSettingsProperties
 type ReportCollection = original.ReportCollection
 type ReportCollectionIterator = original.ReportCollectionIterator
@@ -856,7 +896,7 @@ type TagResourceCollection = original.TagResourceCollection
 type TagResourceCollectionIterator = original.TagResourceCollectionIterator
 type TagResourceCollectionPage = original.TagResourceCollectionPage
 type TagResourceContract = original.TagResourceContract
-type TagResourceContractProperties = original.TagResourceContractProperties
+type TagTagResourceContractProperties = original.TagTagResourceContractProperties
 type TenantConfigurationDeployFuture = original.TenantConfigurationDeployFuture
 type TenantConfigurationSaveFuture = original.TenantConfigurationSaveFuture
 type TenantConfigurationSyncStateContract = original.TenantConfigurationSyncStateContract
@@ -872,6 +912,8 @@ type UserCreateParameterProperties = original.UserCreateParameterProperties
 type UserCreateParameters = original.UserCreateParameters
 type UserEntityBaseParameters = original.UserEntityBaseParameters
 type UserIdentityCollection = original.UserIdentityCollection
+type UserIdentityCollectionIterator = original.UserIdentityCollectionIterator
+type UserIdentityCollectionPage = original.UserIdentityCollectionPage
 type UserIdentityContract = original.UserIdentityContract
 type UserTokenParameters = original.UserTokenParameters
 type UserTokenResult = original.UserTokenResult

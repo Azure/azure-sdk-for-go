@@ -19,7 +19,7 @@
 
 package dns
 
-import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-03-01-preview/dns"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -49,7 +49,7 @@ const (
 	TXT   RecordType = original.TXT
 )
 
-func PossibleRecordTypeValues() [10]RecordType {
+func PossibleRecordTypeValues() []RecordType {
 	return original.PossibleRecordTypeValues()
 }
 
@@ -60,7 +60,7 @@ const (
 	Public  ZoneType = original.Public
 )
 
-func PossibleZoneTypeValues() [2]ZoneType {
+func PossibleZoneTypeValues() []ZoneType {
 	return original.PossibleZoneTypeValues()
 }
 

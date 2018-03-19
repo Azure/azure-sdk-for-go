@@ -129,12 +129,18 @@ type ReservationDetailsListResult = original.ReservationDetailsListResult
 type ReservationDetailsListResultIterator = original.ReservationDetailsListResultIterator
 type ReservationDetailsListResultPage = original.ReservationDetailsListResultPage
 type ReservationDetailsProperties = original.ReservationDetailsProperties
+type ReservationRecommendations = original.ReservationRecommendations
+type ReservationRecommendationsListResult = original.ReservationRecommendationsListResult
+type ReservationRecommendationsListResultIterator = original.ReservationRecommendationsListResultIterator
+type ReservationRecommendationsListResultPage = original.ReservationRecommendationsListResultPage
+type ReservationRecommendationsProperties = original.ReservationRecommendationsProperties
 type ReservationSummaries = original.ReservationSummaries
 type ReservationSummariesListResult = original.ReservationSummariesListResult
 type ReservationSummariesListResultIterator = original.ReservationSummariesListResultIterator
 type ReservationSummariesListResultPage = original.ReservationSummariesListResultPage
 type ReservationSummariesProperties = original.ReservationSummariesProperties
 type Resource = original.Resource
+type ResourceAttributes = original.ResourceAttributes
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
@@ -156,6 +162,15 @@ func NewPriceSheetClient(subscriptionID string, grain Datagrain) PriceSheetClien
 }
 func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) PriceSheetClient {
 	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID, grain)
+}
+
+type ReservationRecommendationsClient = original.ReservationRecommendationsClient
+
+func NewReservationRecommendationsClient(subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClient(subscriptionID, grain)
+}
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
 
 type ReservationsDetailsClient = original.ReservationsDetailsClient

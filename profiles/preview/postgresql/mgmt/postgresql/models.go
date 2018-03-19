@@ -19,7 +19,7 @@
 
 package postgresql
 
-import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01-preview/postgresql"
+import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql"
 
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 

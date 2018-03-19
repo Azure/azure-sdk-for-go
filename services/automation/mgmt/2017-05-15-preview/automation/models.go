@@ -5791,7 +5791,7 @@ type RunbookDraftPublishFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
+func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (s String, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -5799,10 +5799,10 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar au
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
+		return s, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.PublishResponder(future.Response())
+		s, err = client.PublishResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -5824,7 +5824,7 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar au
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.PublishResponder(resp)
+	s, err = client.PublishResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure responding to request")
 	}
@@ -5840,7 +5840,7 @@ type RunbookDraftReplaceContentFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
+func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (s String, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -5848,10 +5848,10 @@ func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient)
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
+		return s, azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.ReplaceContentResponder(future.Response())
+		s, err = client.ReplaceContentResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -5873,7 +5873,7 @@ func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient)
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.ReplaceContentResponder(resp)
+	s, err = client.ReplaceContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure responding to request")
 	}

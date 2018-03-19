@@ -124,9 +124,8 @@ func (client DscCompilationJobGroupClient) CreateResponder(resp *http.Response) 
 
 // Get retrieve the Dsc configuration compilation job identified by job id.
 //
-// resourceGroupName is name of an Azure Resource group. compilationJobID is the Dsc configuration compilation job
-// id.
-func (client DscCompilationJobGroupClient) Get(ctx context.Context, resourceGroupName string, compilationJobID uuid.UUID) (result DscCompilationJob, err error) {
+// resourceGroupName is name of an Azure Resource group. compilationJobName is the the DSC configuration Id.
+func (client DscCompilationJobGroupClient) Get(ctx context.Context, resourceGroupName string, compilationJobName string) (result DscCompilationJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -135,7 +134,7 @@ func (client DscCompilationJobGroupClient) Get(ctx context.Context, resourceGrou
 		return result, validation.NewError("automation.DscCompilationJobGroupClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, compilationJobID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, compilationJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobGroupClient", "Get", nil, "Failure preparing request")
 		return
@@ -157,10 +156,10 @@ func (client DscCompilationJobGroupClient) Get(ctx context.Context, resourceGrou
 }
 
 // GetPreparer prepares the Get request.
-func (client DscCompilationJobGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, compilationJobID uuid.UUID) (*http.Request, error) {
+func (client DscCompilationJobGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, compilationJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", client.AutomationAccountName),
-		"compilationJobId":      autorest.Encode("path", compilationJobID),
+		"compilationJobName":    autorest.Encode("path", compilationJobName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}

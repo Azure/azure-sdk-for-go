@@ -23,7 +23,6 @@ package model
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -103,23 +102,17 @@ func BuildProfile(packageList collection.Enumerable, name, outputLocation string
 		}
 	}
 	outputLog.Print(generated, " packages generated.")
-
-	if err := exec.Command("gofmt", "-w", outputLocation).Run(); err == nil {
-		outputLog.Print("Success formatting profile.")
-	} else {
-		errLog.Print("Trouble formatting profile: ", err)
-	}
 }
 
 // GetAliasPath takes an existing API Version path and a package name, and converts the path
 // to a path which uses the new profile layout.
 func GetAliasPath(subject, profile string) (transformed string, err error) {
 	subject = strings.TrimSuffix(subject, "/")
-	subject = TrimGoPath(subject)
+	subject = TrimPrefix(subject)
 
 	matches := packageName.FindAllStringSubmatch(subject, -1)
 	if matches == nil {
-		err = errors.New("path does not resemble a known package path")
+		err = fmt.Errorf("path '%s' does not resemble a known package path", subject)
 		return
 	}
 
@@ -138,18 +131,14 @@ func GetAliasPath(subject, profile string) (transformed string, err error) {
 	return
 }
 
-// TrimGoPath removes the prefix defined in the environment variabe GOPATH if it is present in the string provided.
-func TrimGoPath(subject string) string {
-	splitGo := strings.Split(os.Getenv("GOPATH"), string(os.PathSeparator))
-	splitGo = append(splitGo, "src")
-	splitPath := strings.Split(subject, string(os.PathSeparator))
-	for i, dir := range splitGo {
-		if splitPath[i] != dir {
-			return subject
-		}
+// TrimPrefix removes the prefix before the package import name.
+// NOTE: assumes the package import name begins with "github.com".
+func TrimPrefix(subject string) string {
+	i := strings.Index(strings.ToLower(subject), "github.com")
+	if i > 0 {
+		return subject[i:]
 	}
-	packageIdentifier := splitPath[len(splitGo):]
-	return path.Join(packageIdentifier...)
+	return subject
 }
 
 // GenerateAliasPackages creates an enumerator, which when called, will create Alias packages ready to be
@@ -236,7 +225,7 @@ func generateIntermediateAliasPackage(x interface{}, profileName string, outputL
 	var bundle Alias
 	for filename := range cast.Files {
 		bundle.TargetPath = filepath.Dir(filename)
-		bundle.TargetPath = TrimGoPath(bundle.TargetPath)
+		bundle.TargetPath = TrimPrefix(bundle.TargetPath)
 		subject, err = goalias.NewAliasPackage(cast, bundle.TargetPath)
 		if err != nil {
 			errLog.Print(err)
@@ -325,5 +314,12 @@ func writeAliasPackage(x interface{}, outputLocation string, outputLog, errLog *
 	printer.Fprint(&b, files, file)
 	res, _ := imports.Process(outputPath, b.Bytes(), nil)
 	fmt.Fprintf(outputFile, "%s", res)
+	outputFile.Close()
+
+	if err := exec.Command("gofmt", "-w", outputPath).Run(); err == nil {
+		outputLog.Print("Success formatting profile.")
+	} else {
+		errLog.Print("Trouble formatting profile: ", err)
+	}
 	return true
 }

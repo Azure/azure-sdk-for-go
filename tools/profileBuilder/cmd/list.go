@@ -38,6 +38,12 @@ const (
 	inputDescription = "Specify a file to read for the list of packages, instead of stdin."
 )
 
+const (
+	gopathLongName    = "gopath"
+	gopathShortName   = "g"
+	gopathDescription = "The GOPATH, defaults to the environment's GOPATH if available.  If your environment doesn't set GOPATH you must specifiy it in this argument."
+)
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
@@ -82,8 +88,14 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 			}
 		}
 
+		gopath := listFlags.GetString(gopathLongName)
+		if gopath == "" {
+			errLog.Printf("value for arg %s is empty, is your GOPATH set?", gopathLongName)
+			return
+		}
+
 		model.BuildProfile(
-			&model.ListStrategy{Reader: input},
+			&model.ListStrategy{Reader: input, Root: gopath},
 			listFlags.GetString(nameLongName),
 			listFlags.GetString(outputLocationLongName),
 			outputLog,
@@ -107,6 +119,7 @@ func init() {
 	listCmd.Flags().StringP(outputLocationLongName, outputLocationShortName, outputLocationDefault, outputLocationDescription)
 	listCmd.Flags().StringP(nameLongName, nameShortName, nameDefault, nameDescription)
 	listCmd.Flags().StringP(inputLongName, inputShortName, inputDefault, inputDescription)
+	listCmd.Flags().StringP(gopathLongName, gopathShortName, os.Getenv("GOPATH"), gopathDescription)
 
 	listFlags.BindPFlags(listCmd.Flags())
 

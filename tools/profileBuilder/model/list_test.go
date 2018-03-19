@@ -56,7 +56,7 @@ func TestList_Enumerate(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		subject := model.ListStrategy{Reader: tc}
+		subject := model.ListStrategy{Reader: tc, Root: gopath}
 		t.Run("", func(t *testing.T) {
 			done := make(chan struct{})
 			defer close(done)

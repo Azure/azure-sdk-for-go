@@ -1,6 +1,6 @@
 // Package subscription implements the Azure ARM Subscription service API version 2018-03-01-preview.
 //
-// Subscription management client provides an interface to create and manage Azure subscriptions programmatically.
+// Subscription client provides an interface to create and manage Azure subscriptions programmatically.
 package subscription
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

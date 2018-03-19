@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// FactoryClient is the subscription management client provides an interface to create and manage Azure subscriptions
+// FactoryClient is the subscription client provides an interface to create and manage Azure subscriptions
 // programmatically.
 type FactoryClient struct {
 	BaseClient

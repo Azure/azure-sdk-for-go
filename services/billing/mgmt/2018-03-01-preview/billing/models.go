@@ -33,21 +33,8 @@ type DownloadURL struct {
 	URL *string `json:"url,omitempty"`
 }
 
-// EnrollmentAccountListResult result of listing enrollment accounts.
-type EnrollmentAccountListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of enrollment accounts.
-	Value *[]EnrollmentAccountResult `json:"value,omitempty"`
-}
-
-// EnrollmentAccountProperties the properties of the enrollment account.
-type EnrollmentAccountProperties struct {
-	// PrincipalName - The account owner's principal name.
-	PrincipalName *string `json:"principalName,omitempty"`
-}
-
-// EnrollmentAccountResult an enrollment account resource.
-type EnrollmentAccountResult struct {
+// EnrollmentAccount an enrollment account resource.
+type EnrollmentAccount struct {
 	autorest.Response `json:"-"`
 	// EnrollmentAccountProperties - An enrollment account.
 	*EnrollmentAccountProperties `json:"properties,omitempty"`
@@ -59,26 +46,26 @@ type EnrollmentAccountResult struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for EnrollmentAccountResult.
-func (ear EnrollmentAccountResult) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for EnrollmentAccount.
+func (ea EnrollmentAccount) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ear.EnrollmentAccountProperties != nil {
-		objectMap["properties"] = ear.EnrollmentAccountProperties
+	if ea.EnrollmentAccountProperties != nil {
+		objectMap["properties"] = ea.EnrollmentAccountProperties
 	}
-	if ear.ID != nil {
-		objectMap["id"] = ear.ID
+	if ea.ID != nil {
+		objectMap["id"] = ea.ID
 	}
-	if ear.Name != nil {
-		objectMap["name"] = ear.Name
+	if ea.Name != nil {
+		objectMap["name"] = ea.Name
 	}
-	if ear.Type != nil {
-		objectMap["type"] = ear.Type
+	if ea.Type != nil {
+		objectMap["type"] = ea.Type
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for EnrollmentAccountResult struct.
-func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for EnrollmentAccount struct.
+func (ea *EnrollmentAccount) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -93,7 +80,7 @@ func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ear.EnrollmentAccountProperties = &enrollmentAccountProperties
+				ea.EnrollmentAccountProperties = &enrollmentAccountProperties
 			}
 		case "id":
 			if v != nil {
@@ -102,7 +89,7 @@ func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ear.ID = &ID
+				ea.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -111,7 +98,7 @@ func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ear.Name = &name
+				ea.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -120,12 +107,27 @@ func (ear *EnrollmentAccountResult) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ear.Type = &typeVar
+				ea.Type = &typeVar
 			}
 		}
 	}
 
 	return nil
+}
+
+// EnrollmentAccountListResult result of listing enrollment accounts.
+type EnrollmentAccountListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of enrollment accounts.
+	Value *[]EnrollmentAccount `json:"value,omitempty"`
+	// NextLink - The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// EnrollmentAccountProperties the properties of the enrollment account.
+type EnrollmentAccountProperties struct {
+	// PrincipalName - The account owner's principal name.
+	PrincipalName *string `json:"principalName,omitempty"`
 }
 
 // ErrorDetails the details of the error.

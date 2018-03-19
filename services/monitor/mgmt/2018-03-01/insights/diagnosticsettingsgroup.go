@@ -24,49 +24,49 @@ import (
 	"net/http"
 )
 
-// DiagnosticSettingsClient is the monitor Management Client
-type DiagnosticSettingsClient struct {
+// DiagnosticSettingsGroupClient is the monitor Management Client
+type DiagnosticSettingsGroupClient struct {
 	BaseClient
 }
 
-// NewDiagnosticSettingsClient creates an instance of the DiagnosticSettingsClient client.
-func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
-	return NewDiagnosticSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDiagnosticSettingsGroupClient creates an instance of the DiagnosticSettingsGroupClient client.
+func NewDiagnosticSettingsGroupClient(subscriptionID string) DiagnosticSettingsGroupClient {
+	return NewDiagnosticSettingsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDiagnosticSettingsClientWithBaseURI creates an instance of the DiagnosticSettingsClient client.
-func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
-	return DiagnosticSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDiagnosticSettingsGroupClientWithBaseURI creates an instance of the DiagnosticSettingsGroupClient client.
+func NewDiagnosticSettingsGroupClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsGroupClient {
+	return DiagnosticSettingsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates diagnostic settings for the specified resource.
 //
 // resourceURI is the identifier of the resource. parameters is parameters supplied to the operation. name is the
 // name of the diagnostic setting.
-func (client DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceURI string, parameters DiagnosticSettingsResource, name string) (result DiagnosticSettingsResource, err error) {
+func (client DiagnosticSettingsGroupClient) CreateOrUpdate(ctx context.Context, resourceURI string, parameters DiagnosticSettingsResource, name string) (result DiagnosticSettingsResource, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceURI, parameters, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DiagnosticSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceURI string, parameters DiagnosticSettingsResource, name string) (*http.Request, error) {
+func (client DiagnosticSettingsGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceURI string, parameters DiagnosticSettingsResource, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
 		"resourceUri": resourceURI,
@@ -89,14 +89,14 @@ func (client DiagnosticSettingsClient) CreateOrUpdatePreparer(ctx context.Contex
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsGroupClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result DiagnosticSettingsResource, err error) {
+func (client DiagnosticSettingsGroupClient) CreateOrUpdateResponder(resp *http.Response) (result DiagnosticSettingsResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -110,30 +110,30 @@ func (client DiagnosticSettingsClient) CreateOrUpdateResponder(resp *http.Respon
 // Delete deletes existing diagnostic settings for the specified resource.
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
-func (client DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI string, name string) (result autorest.Response, err error) {
+func (client DiagnosticSettingsGroupClient) Delete(ctx context.Context, resourceURI string, name string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceURI, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DiagnosticSettingsClient) DeletePreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
+func (client DiagnosticSettingsGroupClient) DeletePreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
 		"resourceUri": resourceURI,
@@ -154,14 +154,14 @@ func (client DiagnosticSettingsClient) DeletePreparer(ctx context.Context, resou
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DiagnosticSettingsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -174,30 +174,30 @@ func (client DiagnosticSettingsClient) DeleteResponder(resp *http.Response) (res
 // Get gets the active diagnostic settings for the specified resource.
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
-func (client DiagnosticSettingsClient) Get(ctx context.Context, resourceURI string, name string) (result DiagnosticSettingsResource, err error) {
+func (client DiagnosticSettingsGroupClient) Get(ctx context.Context, resourceURI string, name string) (result DiagnosticSettingsResource, err error) {
 	req, err := client.GetPreparer(ctx, resourceURI, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DiagnosticSettingsClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
+func (client DiagnosticSettingsGroupClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
 		"resourceUri": resourceURI,
@@ -218,14 +218,14 @@ func (client DiagnosticSettingsClient) GetPreparer(ctx context.Context, resource
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsClient) GetResponder(resp *http.Response) (result DiagnosticSettingsResource, err error) {
+func (client DiagnosticSettingsGroupClient) GetResponder(resp *http.Response) (result DiagnosticSettingsResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -239,30 +239,30 @@ func (client DiagnosticSettingsClient) GetResponder(resp *http.Response) (result
 // List gets the active diagnostic settings list for the specified resource.
 //
 // resourceURI is the identifier of the resource.
-func (client DiagnosticSettingsClient) List(ctx context.Context, resourceURI string) (result DiagnosticSettingsResourceCollection, err error) {
+func (client DiagnosticSettingsGroupClient) List(ctx context.Context, resourceURI string) (result DiagnosticSettingsResourceCollection, err error) {
 	req, err := client.ListPreparer(ctx, resourceURI)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client DiagnosticSettingsClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
+func (client DiagnosticSettingsGroupClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
@@ -282,14 +282,14 @@ func (client DiagnosticSettingsClient) ListPreparer(ctx context.Context, resourc
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsClient) ListResponder(resp *http.Response) (result DiagnosticSettingsResourceCollection, err error) {
+func (client DiagnosticSettingsGroupClient) ListResponder(resp *http.Response) (result DiagnosticSettingsResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

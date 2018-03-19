@@ -24,46 +24,46 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the monitor Management Client
-type OperationsClient struct {
+// OperationsGroupClient is the monitor Management Client
+type OperationsGroupClient struct {
 	BaseClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOperationsGroupClient creates an instance of the OperationsGroupClient client.
+func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
+	return NewOperationsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOperationsGroupClientWithBaseURI creates an instance of the OperationsGroupClient client.
+func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
+	return OperationsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available operations from Microsoft.Insights provider.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
+func (client OperationsGroupClient) List(ctx context.Context) (result OperationListResult, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.OperationsGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.OperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.OperationsGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.OperationsGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2015-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -79,14 +79,14 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client OperationsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
+func (client OperationsGroupClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

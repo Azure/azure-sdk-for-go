@@ -240,16 +240,23 @@ All clients implement some handy hooks to help inspect the underlying requests b
 Here is an example of how these can be used with `net/http/httputil` to see requests and responses.
 
 ```go
+
 vnetClient := network.NewVirtualNetworksClient("<subscriptionID>")
 vnetClient.RequestInspector = LogRequest()
 vnetClient.ResponseInspector = LogResponse()
 
+...
+
 func LogRequest() autorest.PrepareDecorator {
 	return func(p autorest.Preparer) autorest.Preparer {
 		return autorest.PreparerFunc(func(r *http.Request) (*http.Request, error) {
+			r, err := p.Prepare(r)
+			if err != nil {
+				log.Println(err)
+			}
 			dump, _ := httputil.DumpRequestOut(r, true)
 			log.Println(string(dump))
-			return r, nil
+			return r, err
 		})
 	}
 }
@@ -257,9 +264,13 @@ func LogRequest() autorest.PrepareDecorator {
 func LogResponse() autorest.RespondDecorator {
 	return func(p autorest.Responder) autorest.Responder {
 		return autorest.ResponderFunc(func(r *http.Response) error {
+			err := p.Respond(r)
+			if err != nil {
+				log.Println(err)
+			}
 			dump, _ := httputil.DumpResponse(r, true)
 			log.Println(string(dump))
-			return nil
+			return err
 		})
 	}
 }

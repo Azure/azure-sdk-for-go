@@ -30,13 +30,13 @@ type APIKeysClient struct {
 }
 
 // NewAPIKeysClient creates an instance of the APIKeysClient client.
-func NewAPIKeysClient(subscriptionID string, purgeID string) APIKeysClient {
-	return NewAPIKeysClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewAPIKeysClient(subscriptionID string) APIKeysClient {
+	return NewAPIKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAPIKeysClientWithBaseURI creates an instance of the APIKeysClient client.
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) APIKeysClient {
-	return APIKeysClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
+	return APIKeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create an API Key of an Application Insights component.

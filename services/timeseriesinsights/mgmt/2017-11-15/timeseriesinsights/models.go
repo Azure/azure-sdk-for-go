@@ -42,6 +42,21 @@ func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return []AccessPolicyRole{Contributor, Reader}
 }
 
+// DataStringComparisonBehavior enumerates the values for data string comparison behavior.
+type DataStringComparisonBehavior string
+
+const (
+	// Ordinal ...
+	Ordinal DataStringComparisonBehavior = "Ordinal"
+	// OrdinalIgnoreCase ...
+	OrdinalIgnoreCase DataStringComparisonBehavior = "OrdinalIgnoreCase"
+)
+
+// PossibleDataStringComparisonBehaviorValues returns an array of possible values for the DataStringComparisonBehavior const type.
+func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
+	return []DataStringComparisonBehavior{Ordinal, OrdinalIgnoreCase}
+}
+
 // IngressState enumerates the values for ingress state.
 type IngressState string
 
@@ -2091,6 +2106,8 @@ func (rdscoup *ReferenceDataSetCreateOrUpdateParameters) UnmarshalJSON(body []by
 type ReferenceDataSetCreationProperties struct {
 	// KeyProperties - The list of key properties for the reference data set.
 	KeyProperties *[]ReferenceDataSetKeyProperty `json:"keyProperties,omitempty"`
+	// DataStringComparisonBehavior - The reference data set key comparison behavior can be set using this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used. Possible values include: 'Ordinal', 'OrdinalIgnoreCase'
+	DataStringComparisonBehavior DataStringComparisonBehavior `json:"dataStringComparisonBehavior,omitempty"`
 }
 
 // ReferenceDataSetKeyProperty a key property for the reference data set. A reference data set can have multiple
@@ -2224,6 +2241,8 @@ func (rdsr *ReferenceDataSetResource) UnmarshalJSON(body []byte) error {
 type ReferenceDataSetResourceProperties struct {
 	// KeyProperties - The list of key properties for the reference data set.
 	KeyProperties *[]ReferenceDataSetKeyProperty `json:"keyProperties,omitempty"`
+	// DataStringComparisonBehavior - The reference data set key comparison behavior can be set using this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set, case insensitive comparison will be used. Possible values include: 'Ordinal', 'OrdinalIgnoreCase'
+	DataStringComparisonBehavior DataStringComparisonBehavior `json:"dataStringComparisonBehavior,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - The time the resource was created.

@@ -30,13 +30,13 @@ type WorkItemConfigurationsClient struct {
 }
 
 // NewWorkItemConfigurationsClient creates an instance of the WorkItemConfigurationsClient client.
-func NewWorkItemConfigurationsClient(subscriptionID string, purgeID string) WorkItemConfigurationsClient {
-	return NewWorkItemConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewWorkItemConfigurationsClient(subscriptionID string) WorkItemConfigurationsClient {
+	return NewWorkItemConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWorkItemConfigurationsClientWithBaseURI creates an instance of the WorkItemConfigurationsClient client.
-func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WorkItemConfigurationsClient {
-	return WorkItemConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) WorkItemConfigurationsClient {
+	return WorkItemConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a work item configuration for an Application Insights component.

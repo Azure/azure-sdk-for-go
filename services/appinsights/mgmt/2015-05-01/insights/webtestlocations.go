@@ -30,13 +30,13 @@ type WebTestLocationsClient struct {
 }
 
 // NewWebTestLocationsClient creates an instance of the WebTestLocationsClient client.
-func NewWebTestLocationsClient(subscriptionID string, purgeID string) WebTestLocationsClient {
-	return NewWebTestLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewWebTestLocationsClient(subscriptionID string) WebTestLocationsClient {
+	return NewWebTestLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWebTestLocationsClientWithBaseURI creates an instance of the WebTestLocationsClient client.
-func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WebTestLocationsClient {
-	return WebTestLocationsClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string) WebTestLocationsClient {
+	return WebTestLocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets a list of web test locations available to this Application Insights component.

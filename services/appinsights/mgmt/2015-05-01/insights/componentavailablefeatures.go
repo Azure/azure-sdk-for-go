@@ -30,13 +30,13 @@ type ComponentAvailableFeaturesClient struct {
 }
 
 // NewComponentAvailableFeaturesClient creates an instance of the ComponentAvailableFeaturesClient client.
-func NewComponentAvailableFeaturesClient(subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
-	return NewComponentAvailableFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
+	return NewComponentAvailableFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewComponentAvailableFeaturesClientWithBaseURI creates an instance of the ComponentAvailableFeaturesClient client.
-func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentAvailableFeaturesClient {
-	return ComponentAvailableFeaturesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentAvailableFeaturesClient {
+	return ComponentAvailableFeaturesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get returns all available features of the application insights component.

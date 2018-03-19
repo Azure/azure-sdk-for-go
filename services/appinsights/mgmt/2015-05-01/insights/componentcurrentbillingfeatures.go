@@ -30,14 +30,14 @@ type ComponentCurrentBillingFeaturesClient struct {
 }
 
 // NewComponentCurrentBillingFeaturesClient creates an instance of the ComponentCurrentBillingFeaturesClient client.
-func NewComponentCurrentBillingFeaturesClient(subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
-	return NewComponentCurrentBillingFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return NewComponentCurrentBillingFeaturesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewComponentCurrentBillingFeaturesClientWithBaseURI creates an instance of the ComponentCurrentBillingFeaturesClient
 // client.
-func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentCurrentBillingFeaturesClient {
-	return ComponentCurrentBillingFeaturesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
+	return ComponentCurrentBillingFeaturesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get returns current billing features for an Application Insights component.

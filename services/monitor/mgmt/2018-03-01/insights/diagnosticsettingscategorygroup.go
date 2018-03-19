@@ -24,48 +24,49 @@ import (
 	"net/http"
 )
 
-// DiagnosticSettingsCategoryClient is the monitor Management Client
-type DiagnosticSettingsCategoryClient struct {
+// DiagnosticSettingsCategoryGroupClient is the monitor Management Client
+type DiagnosticSettingsCategoryGroupClient struct {
 	BaseClient
 }
 
-// NewDiagnosticSettingsCategoryClient creates an instance of the DiagnosticSettingsCategoryClient client.
-func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
-	return NewDiagnosticSettingsCategoryClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDiagnosticSettingsCategoryGroupClient creates an instance of the DiagnosticSettingsCategoryGroupClient client.
+func NewDiagnosticSettingsCategoryGroupClient(subscriptionID string) DiagnosticSettingsCategoryGroupClient {
+	return NewDiagnosticSettingsCategoryGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDiagnosticSettingsCategoryClientWithBaseURI creates an instance of the DiagnosticSettingsCategoryClient client.
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
-	return DiagnosticSettingsCategoryClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDiagnosticSettingsCategoryGroupClientWithBaseURI creates an instance of the DiagnosticSettingsCategoryGroupClient
+// client.
+func NewDiagnosticSettingsCategoryGroupClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryGroupClient {
+	return DiagnosticSettingsCategoryGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the diagnostic settings category for the specified resource.
 //
 // resourceURI is the identifier of the resource. name is the name of the diagnostic setting.
-func (client DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceURI string, name string) (result DiagnosticSettingsCategoryResource, err error) {
+func (client DiagnosticSettingsCategoryGroupClient) Get(ctx context.Context, resourceURI string, name string) (result DiagnosticSettingsCategoryResource, err error) {
 	req, err := client.GetPreparer(ctx, resourceURI, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DiagnosticSettingsCategoryClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
+func (client DiagnosticSettingsCategoryGroupClient) GetPreparer(ctx context.Context, resourceURI string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":        autorest.Encode("path", name),
 		"resourceUri": resourceURI,
@@ -86,14 +87,14 @@ func (client DiagnosticSettingsCategoryClient) GetPreparer(ctx context.Context, 
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsCategoryClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsCategoryGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsCategoryClient) GetResponder(resp *http.Response) (result DiagnosticSettingsCategoryResource, err error) {
+func (client DiagnosticSettingsCategoryGroupClient) GetResponder(resp *http.Response) (result DiagnosticSettingsCategoryResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -107,30 +108,30 @@ func (client DiagnosticSettingsCategoryClient) GetResponder(resp *http.Response)
 // List lists the diagnostic settings categories for the specified resource.
 //
 // resourceURI is the identifier of the resource.
-func (client DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceURI string) (result DiagnosticSettingsCategoryResourceCollection, err error) {
+func (client DiagnosticSettingsCategoryGroupClient) List(ctx context.Context, resourceURI string) (result DiagnosticSettingsCategoryResourceCollection, err error) {
 	req, err := client.ListPreparer(ctx, resourceURI)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.DiagnosticSettingsCategoryGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client DiagnosticSettingsCategoryClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
+func (client DiagnosticSettingsCategoryGroupClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
@@ -150,14 +151,14 @@ func (client DiagnosticSettingsCategoryClient) ListPreparer(ctx context.Context,
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client DiagnosticSettingsCategoryClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client DiagnosticSettingsCategoryGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client DiagnosticSettingsCategoryClient) ListResponder(resp *http.Response) (result DiagnosticSettingsCategoryResourceCollection, err error) {
+func (client DiagnosticSettingsCategoryGroupClient) ListResponder(resp *http.Response) (result DiagnosticSettingsCategoryResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -1032,29 +1032,29 @@ func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	return []VirtualNetworkRuleState{Deleting, Initializing, InProgress, Ready, Unknown}
 }
 
-// BackupLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
-type BackupLongTermRetentionPoliciesCreateOrUpdateFuture struct {
+// BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future BackupLongTermRetentionPoliciesCreateOrUpdateFuture) Result(client BackupLongTermRetentionPoliciesClient) (bltrp BackupLongTermRetentionPolicy, err error) {
+func (future BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture) Result(client BackupLongTermRetentionPoliciesGroupClient) (bltrp BackupLongTermRetentionPolicy, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return bltrp, azure.NewAsyncOpIncompleteError("sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture")
+		return bltrp, azure.NewAsyncOpIncompleteError("sql.BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		bltrp, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1071,12 +1071,12 @@ func (future BackupLongTermRetentionPoliciesCreateOrUpdateFuture) Result(client 
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	bltrp, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionPoliciesGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1301,29 +1301,29 @@ type BackupLongTermRetentionVaultProperties struct {
 	RecoveryServicesVaultResourceID *string `json:"recoveryServicesVaultResourceId,omitempty"`
 }
 
-// BackupLongTermRetentionVaultsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type BackupLongTermRetentionVaultsCreateOrUpdateFuture struct {
+// BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future BackupLongTermRetentionVaultsCreateOrUpdateFuture) Result(client BackupLongTermRetentionVaultsClient) (bltrv BackupLongTermRetentionVault, err error) {
+func (future BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture) Result(client BackupLongTermRetentionVaultsGroupClient) (bltrv BackupLongTermRetentionVault, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return bltrv, azure.NewAsyncOpIncompleteError("sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture")
+		return bltrv, azure.NewAsyncOpIncompleteError("sql.BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		bltrv, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1340,12 +1340,12 @@ func (future BackupLongTermRetentionVaultsCreateOrUpdateFuture) Result(client Ba
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	bltrv, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.BackupLongTermRetentionVaultsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1680,104 +1680,6 @@ type DatabaseProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type DatabasesCreateImportOperationFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future DatabasesCreateImportOperationFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesCreateImportOperationFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ier, err = client.CreateImportOperationResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ier, err = client.CreateImportOperationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type DatabasesCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		d, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	d, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
 // DatabaseSecurityAlertPolicy contains information about a database Threat Detection policy.
 type DatabaseSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
@@ -1908,28 +1810,126 @@ type DatabaseSecurityAlertPolicyProperties struct {
 	UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
 }
 
-// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesExportFuture struct {
+// DatabasesGroupCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DatabasesGroupCreateImportOperationFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DatabasesExportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
+func (future DatabasesGroupCreateImportOperationFuture) Result(client DatabasesGroupClient) (ier ImportExportResponse, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateImportOperationFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesExportFuture")
+		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupCreateImportOperationFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ier, err = client.CreateImportOperationResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateImportOperationFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateImportOperationFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ier, err = client.CreateImportOperationResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateImportOperationFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesGroupCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesGroupCreateOrUpdateFuture) Result(client DatabasesGroupClient) (d Database, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		d, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	d, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesGroupExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesGroupExportFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesGroupExportFuture) Result(client DatabasesGroupClient) (ier ImportExportResponse, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupExportFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupExportFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ier, err = client.ExportResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupExportFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1946,38 +1946,38 @@ func (future DatabasesExportFuture) Result(client DatabasesClient) (ier ImportEx
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupExportFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ier, err = client.ExportResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupExportFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesImportFuture struct {
+// DatabasesGroupImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesGroupImportFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DatabasesImportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
+func (future DatabasesGroupImportFuture) Result(client DatabasesGroupClient) (ier ImportExportResponse, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupImportFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesImportFuture")
+		return ier, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupImportFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ier, err = client.ImportResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupImportFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1994,38 +1994,38 @@ func (future DatabasesImportFuture) Result(client DatabasesClient) (ier ImportEx
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupImportFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ier, err = client.ImportResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupImportFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesPauseFuture struct {
+// DatabasesGroupPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesGroupPauseFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+func (future DatabasesGroupPauseFuture) Result(client DatabasesGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupPauseFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesPauseFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupPauseFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.PauseResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupPauseFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -2042,38 +2042,38 @@ func (future DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.R
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupPauseFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.PauseResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupPauseFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesResumeFuture struct {
+// DatabasesGroupResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesGroupResumeFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+func (future DatabasesGroupResumeFuture) Result(client DatabasesGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupResumeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesResumeFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupResumeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.ResumeResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupResumeFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -2090,38 +2090,38 @@ func (future DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest.
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupResumeFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.ResumeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupResumeFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesUpdateFuture struct {
+// DatabasesGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
+func (future DatabasesGroupUpdateFuture) Result(client DatabasesGroupClient) (d Database, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesUpdateFuture")
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		d, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -2138,12 +2138,12 @@ func (future DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, 
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	d, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.DatabasesGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -3034,29 +3034,29 @@ type ElasticPoolProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ElasticPoolsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ElasticPoolsCreateOrUpdateFuture struct {
+type ElasticPoolsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
+func (future ElasticPoolsGroupCreateOrUpdateFuture) Result(client ElasticPoolsGroupClient) (ep ElasticPool, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsCreateOrUpdateFuture")
+		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ep, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3073,38 +3073,39 @@ func (future ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient)
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ep, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ElasticPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ElasticPoolsUpdateFuture struct {
+// ElasticPoolsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ElasticPoolsGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ElasticPoolsUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
+func (future ElasticPoolsGroupUpdateFuture) Result(client ElasticPoolsGroupClient) (ep ElasticPool, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsUpdateFuture")
+		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ep, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3121,12 +3122,12 @@ func (future ElasticPoolsUpdateFuture) Result(client ElasticPoolsClient) (ep Ela
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ep, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -3452,29 +3453,29 @@ type EncryptionProtectorProperties struct {
 	Thumbprint *string `json:"thumbprint,omitempty"`
 }
 
-// EncryptionProtectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// EncryptionProtectorsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type EncryptionProtectorsCreateOrUpdateFuture struct {
+type EncryptionProtectorsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future EncryptionProtectorsCreateOrUpdateFuture) Result(client EncryptionProtectorsClient) (ep EncryptionProtector, err error) {
+func (future EncryptionProtectorsGroupCreateOrUpdateFuture) Result(client EncryptionProtectorsGroupClient) (ep EncryptionProtector, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ep, azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsCreateOrUpdateFuture")
+		return ep, azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ep, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3491,12 +3492,12 @@ func (future EncryptionProtectorsCreateOrUpdateFuture) Result(client EncryptionP
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ep, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -3759,29 +3760,29 @@ type FailoverGroupReadWriteEndpoint struct {
 	FailoverWithDataLossGracePeriodMinutes *int32 `json:"failoverWithDataLossGracePeriodMinutes,omitempty"`
 }
 
-// FailoverGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type FailoverGroupsCreateOrUpdateFuture struct {
+// FailoverGroupsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type FailoverGroupsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FailoverGroupsCreateOrUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
+func (future FailoverGroupsGroupCreateOrUpdateFuture) Result(client FailoverGroupsGroupClient) (fg FailoverGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsCreateOrUpdateFuture")
+		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fg, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3798,38 +3799,39 @@ func (future FailoverGroupsCreateOrUpdateFuture) Result(client FailoverGroupsCli
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fg, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// FailoverGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type FailoverGroupsDeleteFuture struct {
+// FailoverGroupsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type FailoverGroupsGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FailoverGroupsDeleteFuture) Result(client FailoverGroupsClient) (ar autorest.Response, err error) {
+func (future FailoverGroupsGroupDeleteFuture) Result(client FailoverGroupsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3846,39 +3848,39 @@ func (future FailoverGroupsDeleteFuture) Result(client FailoverGroupsClient) (ar
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// FailoverGroupsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// FailoverGroupsGroupFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type FailoverGroupsFailoverFuture struct {
+type FailoverGroupsGroupFailoverFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
+func (future FailoverGroupsGroupFailoverFuture) Result(client FailoverGroupsGroupClient) (fg FailoverGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsFailoverFuture")
+		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsGroupFailoverFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fg, err = client.FailoverResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupFailoverFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3895,39 +3897,39 @@ func (future FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) (
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupFailoverFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fg, err = client.FailoverResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupFailoverFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type FailoverGroupsForceFailoverAllowDataLossFuture struct {
+// FailoverGroupsGroupForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type FailoverGroupsGroupForceFailoverAllowDataLossFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FailoverGroupsForceFailoverAllowDataLossFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
+func (future FailoverGroupsGroupForceFailoverAllowDataLossFuture) Result(client FailoverGroupsGroupClient) (fg FailoverGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupForceFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsForceFailoverAllowDataLossFuture")
+		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsGroupForceFailoverAllowDataLossFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fg, err = client.ForceFailoverAllowDataLossResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupForceFailoverAllowDataLossFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3944,38 +3946,39 @@ func (future FailoverGroupsForceFailoverAllowDataLossFuture) Result(client Failo
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupForceFailoverAllowDataLossFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fg, err = client.ForceFailoverAllowDataLossResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupForceFailoverAllowDataLossFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// FailoverGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type FailoverGroupsUpdateFuture struct {
+// FailoverGroupsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type FailoverGroupsGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future FailoverGroupsUpdateFuture) Result(client FailoverGroupsClient) (fg FailoverGroup, err error) {
+func (future FailoverGroupsGroupUpdateFuture) Result(client FailoverGroupsGroupClient) (fg FailoverGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsUpdateFuture")
+		return fg, azure.NewAsyncOpIncompleteError("sql.FailoverGroupsGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		fg, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -3992,12 +3995,12 @@ func (future FailoverGroupsUpdateFuture) Result(client FailoverGroupsClient) (fg
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	fg, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.FailoverGroupsGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -5283,29 +5286,29 @@ type ReplicationLinkProperties struct {
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
-// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
+// ReplicationLinksGroupFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type ReplicationLinksFailoverAllowDataLossFuture struct {
+type ReplicationLinksGroupFailoverAllowDataLossFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ReplicationLinksFailoverAllowDataLossFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
+func (future ReplicationLinksGroupFailoverAllowDataLossFuture) Result(client ReplicationLinksGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverAllowDataLossFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.ReplicationLinksGroupFailoverAllowDataLossFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.FailoverAllowDataLossResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverAllowDataLossFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -5322,39 +5325,39 @@ func (future ReplicationLinksFailoverAllowDataLossFuture) Result(client Replicat
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverAllowDataLossFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.FailoverAllowDataLossResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverAllowDataLossFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverAllowDataLossFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// ReplicationLinksGroupFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ReplicationLinksFailoverFuture struct {
+type ReplicationLinksGroupFailoverFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ReplicationLinksFailoverFuture) Result(client ReplicationLinksClient) (ar autorest.Response, err error) {
+func (future ReplicationLinksGroupFailoverFuture) Result(client ReplicationLinksGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.ReplicationLinksGroupFailoverFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.FailoverResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -5371,12 +5374,12 @@ func (future ReplicationLinksFailoverFuture) Result(client ReplicationLinksClien
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.FailoverResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksFailoverFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ReplicationLinksGroupFailoverFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -5861,29 +5864,29 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
+// ServerAzureADAdministratorsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type ServerAzureADAdministratorsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServerAzureADAdministratorsCreateOrUpdateFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
+func (future ServerAzureADAdministratorsGroupCreateOrUpdateFuture) Result(client ServerAzureADAdministratorsGroupClient) (saaa ServerAzureADAdministrator, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return saaa, azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsCreateOrUpdateFuture")
+		return saaa, azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		saaa, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -5900,39 +5903,39 @@ func (future ServerAzureADAdministratorsCreateOrUpdateFuture) Result(client Serv
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	saaa, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ServerAzureADAdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// ServerAzureADAdministratorsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type ServerAzureADAdministratorsDeleteFuture struct {
+type ServerAzureADAdministratorsGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
+func (future ServerAzureADAdministratorsGroupDeleteFuture) Result(client ServerAzureADAdministratorsGroupClient) (saaa ServerAzureADAdministrator, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return saaa, azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
+		return saaa, azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		saaa, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -5949,12 +5952,12 @@ func (future ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureA
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	saaa, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -6084,29 +6087,29 @@ type ServerCommunicationLinkProperties struct {
 	PartnerServer *string `json:"partnerServer,omitempty"`
 }
 
-// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// ServerCommunicationLinksGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type ServerCommunicationLinksCreateOrUpdateFuture struct {
+type ServerCommunicationLinksGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServerCommunicationLinksCreateOrUpdateFuture) Result(client ServerCommunicationLinksClient) (scl ServerCommunicationLink, err error) {
+func (future ServerCommunicationLinksGroupCreateOrUpdateFuture) Result(client ServerCommunicationLinksGroupClient) (scl ServerCommunicationLink, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return scl, azure.NewAsyncOpIncompleteError("sql.ServerCommunicationLinksCreateOrUpdateFuture")
+		return scl, azure.NewAsyncOpIncompleteError("sql.ServerCommunicationLinksGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		scl, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6123,12 +6126,12 @@ func (future ServerCommunicationLinksCreateOrUpdateFuture) Result(client ServerC
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	scl, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -6475,29 +6478,29 @@ type ServerKeyProperties struct {
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 }
 
-// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServerKeysGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServerKeysCreateOrUpdateFuture struct {
+type ServerKeysGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (sk ServerKey, err error) {
+func (future ServerKeysGroupCreateOrUpdateFuture) Result(client ServerKeysGroupClient) (sk ServerKey, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sk, azure.NewAsyncOpIncompleteError("sql.ServerKeysCreateOrUpdateFuture")
+		return sk, azure.NewAsyncOpIncompleteError("sql.ServerKeysGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sk, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6514,38 +6517,39 @@ func (future ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (sk
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sk, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServerKeysDeleteFuture struct {
+// ServerKeysGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServerKeysGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServerKeysDeleteFuture) Result(client ServerKeysClient) (ar autorest.Response, err error) {
+func (future ServerKeysGroupDeleteFuture) Result(client ServerKeysGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.ServerKeysDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.ServerKeysGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6562,12 +6566,12 @@ func (future ServerKeysDeleteFuture) Result(client ServerKeysClient) (ar autores
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerKeysDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServerKeysGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -6688,29 +6692,29 @@ type ServerProperties struct {
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
 }
 
-// ServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServersGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServersCreateOrUpdateFuture struct {
+type ServersGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServersCreateOrUpdateFuture) Result(client ServersClient) (s Server, err error) {
+func (future ServersGroupCreateOrUpdateFuture) Result(client ServersGroupClient) (s Server, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return s, azure.NewAsyncOpIncompleteError("sql.ServersCreateOrUpdateFuture")
+		return s, azure.NewAsyncOpIncompleteError("sql.ServersGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		s, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServersGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6727,38 +6731,38 @@ func (future ServersCreateOrUpdateFuture) Result(client ServersClient) (s Server
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	s, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServersDeleteFuture struct {
+// ServersGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ServersGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServersDeleteFuture) Result(client ServersClient) (ar autorest.Response, err error) {
+func (future ServersGroupDeleteFuture) Result(client ServersGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.ServersDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.ServersGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServersGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6775,38 +6779,38 @@ func (future ServersDeleteFuture) Result(client ServersClient) (ar autorest.Resp
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServersUpdateFuture struct {
+// ServersGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ServersGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ServersUpdateFuture) Result(client ServersClient) (s Server, err error) {
+func (future ServersGroupUpdateFuture) Result(client ServersGroupClient) (s Server, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return s, azure.NewAsyncOpIncompleteError("sql.ServersUpdateFuture")
+		return s, azure.NewAsyncOpIncompleteError("sql.ServersGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		s, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.ServersGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6823,12 +6827,12 @@ func (future ServersUpdateFuture) Result(client ServersClient) (s Server, err er
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	s, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.ServersGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -7792,29 +7796,29 @@ type SyncAgentProperties struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// SyncAgentsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type SyncAgentsCreateOrUpdateFuture struct {
+type SyncAgentsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (sa SyncAgent, err error) {
+func (future SyncAgentsGroupCreateOrUpdateFuture) Result(client SyncAgentsGroupClient) (sa SyncAgent, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sa, azure.NewAsyncOpIncompleteError("sql.SyncAgentsCreateOrUpdateFuture")
+		return sa, azure.NewAsyncOpIncompleteError("sql.SyncAgentsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sa, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -7831,38 +7835,39 @@ func (future SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (sa
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sa, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type SyncAgentsDeleteFuture struct {
+// SyncAgentsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SyncAgentsGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncAgentsDeleteFuture) Result(client SyncAgentsClient) (ar autorest.Response, err error) {
+func (future SyncAgentsGroupDeleteFuture) Result(client SyncAgentsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.SyncAgentsDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.SyncAgentsGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -7879,12 +7884,12 @@ func (future SyncAgentsDeleteFuture) Result(client SyncAgentsClient) (ar autores
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncAgentsDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncAgentsGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -8488,29 +8493,29 @@ type SyncGroupSchemaTableColumn struct {
 	DataType *string `json:"dataType,omitempty"`
 }
 
-// SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// SyncGroupsGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type SyncGroupsCreateOrUpdateFuture struct {
+type SyncGroupsGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
+func (future SyncGroupsGroupCreateOrUpdateFuture) Result(client SyncGroupsGroupClient) (sg SyncGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sg, azure.NewAsyncOpIncompleteError("sql.SyncGroupsCreateOrUpdateFuture")
+		return sg, azure.NewAsyncOpIncompleteError("sql.SyncGroupsGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sg, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8527,38 +8532,39 @@ func (future SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (sg
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sg, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type SyncGroupsDeleteFuture struct {
+// SyncGroupsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SyncGroupsGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
+func (future SyncGroupsGroupDeleteFuture) Result(client SyncGroupsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.SyncGroupsDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.SyncGroupsGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8575,39 +8581,39 @@ func (future SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autores
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a long-running
+// SyncGroupsGroupRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type SyncGroupsRefreshHubSchemaFuture struct {
+type SyncGroupsGroupRefreshHubSchemaFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) (ar autorest.Response, err error) {
+func (future SyncGroupsGroupRefreshHubSchemaFuture) Result(client SyncGroupsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupRefreshHubSchemaFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.SyncGroupsRefreshHubSchemaFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.SyncGroupsGroupRefreshHubSchemaFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.RefreshHubSchemaResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupRefreshHubSchemaFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8624,38 +8630,39 @@ func (future SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) (
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupRefreshHubSchemaFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.RefreshHubSchemaResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsRefreshHubSchemaFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupRefreshHubSchemaFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type SyncGroupsUpdateFuture struct {
+// SyncGroupsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SyncGroupsGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncGroupsUpdateFuture) Result(client SyncGroupsClient) (sg SyncGroup, err error) {
+func (future SyncGroupsGroupUpdateFuture) Result(client SyncGroupsGroupClient) (sg SyncGroup, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sg, azure.NewAsyncOpIncompleteError("sql.SyncGroupsUpdateFuture")
+		return sg, azure.NewAsyncOpIncompleteError("sql.SyncGroupsGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sg, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8672,12 +8679,12 @@ func (future SyncGroupsUpdateFuture) Result(client SyncGroupsClient) (sg SyncGro
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sg, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncGroupsUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncGroupsGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -8888,29 +8895,29 @@ type SyncMemberProperties struct {
 	SyncState SyncMemberState `json:"syncState,omitempty"`
 }
 
-// SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// SyncMembersGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type SyncMembersCreateOrUpdateFuture struct {
+type SyncMembersGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncMembersCreateOrUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
+func (future SyncMembersGroupCreateOrUpdateFuture) Result(client SyncMembersGroupClient) (sm SyncMember, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sm, azure.NewAsyncOpIncompleteError("sql.SyncMembersCreateOrUpdateFuture")
+		return sm, azure.NewAsyncOpIncompleteError("sql.SyncMembersGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sm, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8927,38 +8934,39 @@ func (future SyncMembersCreateOrUpdateFuture) Result(client SyncMembersClient) (
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sm, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncMembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type SyncMembersDeleteFuture struct {
+// SyncMembersGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SyncMembersGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncMembersDeleteFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
+func (future SyncMembersGroupDeleteFuture) Result(client SyncMembersGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.SyncMembersDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.SyncMembersGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -8975,39 +8983,39 @@ func (future SyncMembersDeleteFuture) Result(client SyncMembersClient) (ar autor
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncMembersRefreshMemberSchemaFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type SyncMembersRefreshMemberSchemaFuture struct {
+// SyncMembersGroupRefreshMemberSchemaFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SyncMembersGroupRefreshMemberSchemaFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncMembersRefreshMemberSchemaFuture) Result(client SyncMembersClient) (ar autorest.Response, err error) {
+func (future SyncMembersGroupRefreshMemberSchemaFuture) Result(client SyncMembersGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupRefreshMemberSchemaFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.SyncMembersRefreshMemberSchemaFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.SyncMembersGroupRefreshMemberSchemaFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.RefreshMemberSchemaResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupRefreshMemberSchemaFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -9024,38 +9032,39 @@ func (future SyncMembersRefreshMemberSchemaFuture) Result(client SyncMembersClie
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupRefreshMemberSchemaFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.RefreshMemberSchemaResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersRefreshMemberSchemaFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupRefreshMemberSchemaFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// SyncMembersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type SyncMembersUpdateFuture struct {
+// SyncMembersGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SyncMembersGroupUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SyncMembersUpdateFuture) Result(client SyncMembersClient) (sm SyncMember, err error) {
+func (future SyncMembersGroupUpdateFuture) Result(client SyncMembersGroupClient) (sm SyncMember, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return sm, azure.NewAsyncOpIncompleteError("sql.SyncMembersUpdateFuture")
+		return sm, azure.NewAsyncOpIncompleteError("sql.SyncMembersGroupUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		sm, err = client.UpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -9072,12 +9081,12 @@ func (future SyncMembersUpdateFuture) Result(client SyncMembersClient) (sm SyncM
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	sm, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.SyncMembersUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.SyncMembersGroupUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -9525,29 +9534,29 @@ type VirtualNetworkRuleProperties struct {
 	State VirtualNetworkRuleState `json:"state,omitempty"`
 }
 
-// VirtualNetworkRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// VirtualNetworkRulesGroupCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
-type VirtualNetworkRulesCreateOrUpdateFuture struct {
+type VirtualNetworkRulesGroupCreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetworkRulesClient) (vnr VirtualNetworkRule, err error) {
+func (future VirtualNetworkRulesGroupCreateOrUpdateFuture) Result(client VirtualNetworkRulesGroupClient) (vnr VirtualNetworkRule, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return vnr, azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesCreateOrUpdateFuture")
+		return vnr, azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesGroupCreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		vnr, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -9564,39 +9573,39 @@ func (future VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetwo
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupCreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	vnr, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// VirtualNetworkRulesGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type VirtualNetworkRulesDeleteFuture struct {
+type VirtualNetworkRulesGroupDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future VirtualNetworkRulesDeleteFuture) Result(client VirtualNetworkRulesClient) (ar autorest.Response, err error) {
+func (future VirtualNetworkRulesGroupDeleteFuture) Result(client VirtualNetworkRulesGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("sql.VirtualNetworkRulesGroupDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -9613,12 +9622,12 @@ func (future VirtualNetworkRulesDeleteFuture) Result(client VirtualNetworkRulesC
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesDeleteFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.VirtualNetworkRulesGroupDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

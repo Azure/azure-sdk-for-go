@@ -1074,12 +1074,12 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 					Chain: []validation.Constraint{{Target: "parameters.FlowLogProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.FlowLogProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
 					}},
-				{Target: "parameters.TrafficAnalyticsProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.TrafficAnalyticsProperties.NetworkWatcherFlowAnalyticsConfiguration", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "parameters.TrafficAnalyticsProperties.NetworkWatcherFlowAnalyticsConfiguration.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.TrafficAnalyticsProperties.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceID", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.TrafficAnalyticsProperties.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceRegion", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.TrafficAnalyticsProperties.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceResourceID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.FlowAnalyticsConfiguration", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceRegion", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceResourceID", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 					}}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "SetFlowLogConfiguration", err.Error())

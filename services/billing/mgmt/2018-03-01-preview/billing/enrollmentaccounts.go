@@ -42,7 +42,7 @@ func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID strin
 // Get gets a enrollment account by name.
 //
 // name is enrollment Account name.
-func (client EnrollmentAccountsClient) Get(ctx context.Context, name string) (result EnrollmentAccountResult, err error) {
+func (client EnrollmentAccountsClient) Get(ctx context.Context, name string) (result EnrollmentAccount, err error) {
 	req, err := client.GetPreparer(ctx, name)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "Get", nil, "Failure preparing request")
@@ -92,7 +92,7 @@ func (client EnrollmentAccountsClient) GetSender(req *http.Request) (*http.Respo
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result EnrollmentAccountResult, err error) {
+func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result EnrollmentAccount, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

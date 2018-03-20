@@ -6121,29 +6121,28 @@ func (rd RunbookDraft) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RunbookDraftGroupPublishFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RunbookDraftGroupPublishFuture struct {
+// RunbookDraftPublishFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type RunbookDraftPublishFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftGroupPublishFuture) Result(client RunbookDraftGroupClient) (ar autorest.Response, err error) {
+func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupPublishFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftGroupPublishFuture")
+		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.PublishResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupPublishFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6160,39 +6159,39 @@ func (future RunbookDraftGroupPublishFuture) Result(client RunbookDraftGroupClie
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupPublishFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.PublishResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupPublishFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// RunbookDraftGroupReplaceContentFuture an abstraction for monitoring and retrieving the results of a long-running
+// RunbookDraftReplaceContentFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type RunbookDraftGroupReplaceContentFuture struct {
+type RunbookDraftReplaceContentFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftGroupReplaceContentFuture) Result(client RunbookDraftGroupClient) (ar autorest.Response, err error) {
+func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupReplaceContentFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftGroupReplaceContentFuture")
+		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.ReplaceContentResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupReplaceContentFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -6209,12 +6208,12 @@ func (future RunbookDraftGroupReplaceContentFuture) Result(client RunbookDraftGr
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupReplaceContentFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.ReplaceContentResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftGroupReplaceContentFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

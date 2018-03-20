@@ -30,14 +30,14 @@ type ComponentFeatureCapabilitiesClient struct {
 }
 
 // NewComponentFeatureCapabilitiesClient creates an instance of the ComponentFeatureCapabilitiesClient client.
-func NewComponentFeatureCapabilitiesClient(subscriptionID string, purgeID string) ComponentFeatureCapabilitiesClient {
-	return NewComponentFeatureCapabilitiesClientWithBaseURI(DefaultBaseURI, subscriptionID, purgeID)
+func NewComponentFeatureCapabilitiesClient(subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return NewComponentFeatureCapabilitiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewComponentFeatureCapabilitiesClientWithBaseURI creates an instance of the ComponentFeatureCapabilitiesClient
 // client.
-func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) ComponentFeatureCapabilitiesClient {
-	return ComponentFeatureCapabilitiesClient{NewWithBaseURI(baseURI, subscriptionID, purgeID)}
+func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return ComponentFeatureCapabilitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get returns feature capabilites of the application insights component.

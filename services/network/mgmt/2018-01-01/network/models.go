@@ -7010,12 +7010,13 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// FlowLogInformation information on the configuration of flow log.
+// FlowLogInformation information on the configuration of flow log and traffic analytics (optional).
 type FlowLogInformation struct {
 	autorest.Response `json:"-"`
 	// TargetResourceID - The ID of the resource to configure for flow logging.
-	TargetResourceID   *string `json:"targetResourceId,omitempty"`
-	*FlowLogProperties `json:"properties,omitempty"`
+	TargetResourceID            *string `json:"targetResourceId,omitempty"`
+	*FlowLogProperties          `json:"properties,omitempty"`
+	*TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FlowLogInformation.
@@ -7026,6 +7027,9 @@ func (fli FlowLogInformation) MarshalJSON() ([]byte, error) {
 	}
 	if fli.FlowLogProperties != nil {
 		objectMap["properties"] = fli.FlowLogProperties
+	}
+	if fli.TrafficAnalyticsProperties != nil {
+		objectMap["flowAnalyticsConfiguration"] = fli.TrafficAnalyticsProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -7057,6 +7061,15 @@ func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
 				}
 				fli.FlowLogProperties = &flowLogProperties
 			}
+		case "flowAnalyticsConfiguration":
+			if v != nil {
+				var trafficAnalyticsProperties TrafficAnalyticsProperties
+				err = json.Unmarshal(*v, &trafficAnalyticsProperties)
+				if err != nil {
+					return err
+				}
+				fli.TrafficAnalyticsProperties = &trafficAnalyticsProperties
+			}
 		}
 	}
 
@@ -7072,9 +7085,10 @@ type FlowLogProperties struct {
 	RetentionPolicy *RetentionPolicyParameters `json:"retentionPolicy,omitempty"`
 }
 
-// FlowLogStatusParameters parameters that define a resource to query flow log status.
+// FlowLogStatusParameters parameters that define a resource to query flow log and traffic analytics (optional)
+// status.
 type FlowLogStatusParameters struct {
-	// TargetResourceID - The target resource where getting the flow logging status.
+	// TargetResourceID - The target resource where getting the flow logging and traffic analytics (optional) status.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 }
 
@@ -14132,6 +14146,23 @@ type TopologyResource struct {
 	Location *string `json:"location,omitempty"`
 	// Associations - Holds the associations the resource has with other resources in the resource group.
 	Associations *[]TopologyAssociation `json:"associations,omitempty"`
+}
+
+// TrafficAnalyticsConfigurationProperties parameters that define the configuration of traffic analytics.
+type TrafficAnalyticsConfigurationProperties struct {
+	// Enabled - Flag to enable/disable traffic analytics.
+	Enabled *bool `json:"enabled,omitempty"`
+	// WorkspaceID - The resource guid of the attached workspace
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// WorkspaceRegion - The location of the attached workspace
+	WorkspaceRegion *string `json:"workspaceRegion,omitempty"`
+	// WorkspaceResourceID - Resource Id of the attached workspace
+	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+}
+
+// TrafficAnalyticsProperties parameters that define the configuration of traffic analytics.
+type TrafficAnalyticsProperties struct {
+	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties `json:"networkWatcherFlowAnalyticsConfiguration,omitempty"`
 }
 
 // TroubleshootingDetails information gained from troubleshooting of specified resource.

@@ -3413,24 +3413,6 @@ type DscMetaConfiguration struct {
 // DscNode definition of a DscNode
 type DscNode struct {
 	autorest.Response `json:"-"`
-	// LastSeen - Gets or sets the last seen time of the node.
-	LastSeen *date.Time `json:"lastSeen,omitempty"`
-	// RegistrationTime - Gets or sets the registration time of the node.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
-	// IP - Gets or sets the ip of the node.
-	IP *string `json:"ip,omitempty"`
-	// AccountID - Gets or sets the account id of the node.
-	AccountID *string `json:"accountId,omitempty"`
-	// NodeConfiguration - Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
-	// Status - Gets or sets the status of the node.
-	Status *string `json:"status,omitempty"`
-	// NodeID - Gets or sets the node id.
-	NodeID *string `json:"nodeId,omitempty"`
-	// Etag - Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
-	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
 	// DscNodeProperties - The properties of a DscNode.
 	*DscNodeProperties `json:"properties,omitempty"`
 	// ID - Resource Id
@@ -3444,33 +3426,6 @@ type DscNode struct {
 // MarshalJSON is the custom marshaler for DscNode.
 func (dn DscNode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dn.LastSeen != nil {
-		objectMap["lastSeen"] = dn.LastSeen
-	}
-	if dn.RegistrationTime != nil {
-		objectMap["registrationTime"] = dn.RegistrationTime
-	}
-	if dn.IP != nil {
-		objectMap["ip"] = dn.IP
-	}
-	if dn.AccountID != nil {
-		objectMap["accountId"] = dn.AccountID
-	}
-	if dn.NodeConfiguration != nil {
-		objectMap["nodeConfiguration"] = dn.NodeConfiguration
-	}
-	if dn.Status != nil {
-		objectMap["status"] = dn.Status
-	}
-	if dn.NodeID != nil {
-		objectMap["nodeId"] = dn.NodeID
-	}
-	if dn.Etag != nil {
-		objectMap["etag"] = dn.Etag
-	}
-	if dn.ExtensionHandler != nil {
-		objectMap["extensionHandler"] = dn.ExtensionHandler
-	}
 	if dn.DscNodeProperties != nil {
 		objectMap["properties"] = dn.DscNodeProperties
 	}
@@ -3495,87 +3450,6 @@ func (dn *DscNode) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "lastSeen":
-			if v != nil {
-				var lastSeen date.Time
-				err = json.Unmarshal(*v, &lastSeen)
-				if err != nil {
-					return err
-				}
-				dn.LastSeen = &lastSeen
-			}
-		case "registrationTime":
-			if v != nil {
-				var registrationTime date.Time
-				err = json.Unmarshal(*v, &registrationTime)
-				if err != nil {
-					return err
-				}
-				dn.RegistrationTime = &registrationTime
-			}
-		case "ip":
-			if v != nil {
-				var IP string
-				err = json.Unmarshal(*v, &IP)
-				if err != nil {
-					return err
-				}
-				dn.IP = &IP
-			}
-		case "accountId":
-			if v != nil {
-				var accountID string
-				err = json.Unmarshal(*v, &accountID)
-				if err != nil {
-					return err
-				}
-				dn.AccountID = &accountID
-			}
-		case "nodeConfiguration":
-			if v != nil {
-				var nodeConfiguration DscNodeConfigurationAssociationProperty
-				err = json.Unmarshal(*v, &nodeConfiguration)
-				if err != nil {
-					return err
-				}
-				dn.NodeConfiguration = &nodeConfiguration
-			}
-		case "status":
-			if v != nil {
-				var status string
-				err = json.Unmarshal(*v, &status)
-				if err != nil {
-					return err
-				}
-				dn.Status = &status
-			}
-		case "nodeId":
-			if v != nil {
-				var nodeID string
-				err = json.Unmarshal(*v, &nodeID)
-				if err != nil {
-					return err
-				}
-				dn.NodeID = &nodeID
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				dn.Etag = &etag
-			}
-		case "extensionHandler":
-			if v != nil {
-				var extensionHandler []DscNodeExtensionHandlerAssociationProperty
-				err = json.Unmarshal(*v, &extensionHandler)
-				if err != nil {
-					return err
-				}
-				dn.ExtensionHandler = &extensionHandler
-			}
 		case "properties":
 			if v != nil {
 				var dscNodeProperties DscNodeProperties
@@ -3621,12 +3495,6 @@ func (dn *DscNode) UnmarshalJSON(body []byte) error {
 // DscNodeConfiguration definition of the dsc node configuration.
 type DscNodeConfiguration struct {
 	autorest.Response `json:"-"`
-	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// CreationTime - Gets or sets creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Configuration - Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// DscNodeConfigurationProperties - Gets or sets the configuration properties.
 	*DscNodeConfigurationProperties `json:"properties,omitempty"`
 	// ID - Resource Id
@@ -3640,15 +3508,6 @@ type DscNodeConfiguration struct {
 // MarshalJSON is the custom marshaler for DscNodeConfiguration.
 func (dnc DscNodeConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dnc.LastModifiedTime != nil {
-		objectMap["lastModifiedTime"] = dnc.LastModifiedTime
-	}
-	if dnc.CreationTime != nil {
-		objectMap["creationTime"] = dnc.CreationTime
-	}
-	if dnc.Configuration != nil {
-		objectMap["configuration"] = dnc.Configuration
-	}
 	if dnc.DscNodeConfigurationProperties != nil {
 		objectMap["properties"] = dnc.DscNodeConfigurationProperties
 	}
@@ -3673,33 +3532,6 @@ func (dnc *DscNodeConfiguration) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "lastModifiedTime":
-			if v != nil {
-				var lastModifiedTime date.Time
-				err = json.Unmarshal(*v, &lastModifiedTime)
-				if err != nil {
-					return err
-				}
-				dnc.LastModifiedTime = &lastModifiedTime
-			}
-		case "creationTime":
-			if v != nil {
-				var creationTime date.Time
-				err = json.Unmarshal(*v, &creationTime)
-				if err != nil {
-					return err
-				}
-				dnc.CreationTime = &creationTime
-			}
-		case "configuration":
-			if v != nil {
-				var configuration DscConfigurationAssociationProperty
-				err = json.Unmarshal(*v, &configuration)
-				if err != nil {
-					return err
-				}
-				dnc.Configuration = &configuration
-			}
 		case "properties":
 			if v != nil {
 				var dscNodeConfigurationProperties DscNodeConfigurationProperties

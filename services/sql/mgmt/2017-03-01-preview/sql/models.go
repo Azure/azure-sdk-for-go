@@ -3046,6 +3046,96 @@ type DataMaskingRuleProperties struct {
 	ReplacementString *string `json:"replacementString,omitempty"`
 }
 
+// DataWarehouseUserActivities user activities of a data warehouse
+type DataWarehouseUserActivities struct {
+	autorest.Response `json:"-"`
+	// DataWarehouseUserActivitiesProperties - Resource properties.
+	*DataWarehouseUserActivitiesProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataWarehouseUserActivities.
+func (dwua DataWarehouseUserActivities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dwua.DataWarehouseUserActivitiesProperties != nil {
+		objectMap["properties"] = dwua.DataWarehouseUserActivitiesProperties
+	}
+	if dwua.ID != nil {
+		objectMap["id"] = dwua.ID
+	}
+	if dwua.Name != nil {
+		objectMap["name"] = dwua.Name
+	}
+	if dwua.Type != nil {
+		objectMap["type"] = dwua.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataWarehouseUserActivities struct.
+func (dwua *DataWarehouseUserActivities) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataWarehouseUserActivitiesProperties DataWarehouseUserActivitiesProperties
+				err = json.Unmarshal(*v, &dataWarehouseUserActivitiesProperties)
+				if err != nil {
+					return err
+				}
+				dwua.DataWarehouseUserActivitiesProperties = &dataWarehouseUserActivitiesProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dwua.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dwua.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dwua.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataWarehouseUserActivitiesProperties user activities of a data warehouse. This currently includes the count of
+// running or suspended queries. For more information, please view the sys.dm_pdw_exec_requests dynamic management
+// view (DMV).
+type DataWarehouseUserActivitiesProperties struct {
+	// ActiveQueriesCount - Count of running and suspended queries.
+	ActiveQueriesCount *int32 `json:"activeQueriesCount,omitempty"`
+}
+
 // EditionCapability the database edition capabilities.
 type EditionCapability struct {
 	// Name - The edition name.

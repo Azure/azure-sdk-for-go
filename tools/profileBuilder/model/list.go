@@ -19,7 +19,6 @@ package model
 import (
 	"fmt"
 	"io"
-	"os"
 	"path"
 
 	"github.com/marstr/collection"
@@ -28,9 +27,13 @@ import (
 // ListStrategy allows a mechanism for a list of packages that should be included in a profile.
 type ListStrategy struct {
 	io.Reader
+
+	// Root is the root directory of the packages.
+	Root string
 }
 
-// Enumerate reads a new line delimited list of packages names relative to $GOPATH
+// Enumerate reads a new line delimited list of packages names relative to the ListStrategy's root directory.
+// The root directory is usualy the same directory as the GOPATH environment variable.
 func (list ListStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator {
 	results := make(chan interface{})
 
@@ -45,7 +48,7 @@ func (list ListStrategy) Enumerate(cancel <-chan struct{}) collection.Enumerator
 				return
 			}
 
-			currentLine = path.Join(os.Getenv("GOPATH"), "src", currentLine)
+			currentLine = path.Join(list.Root, "src", currentLine)
 
 			select {
 			case results <- currentLine:

@@ -146,7 +146,7 @@ func PossibleUnitTypeValues() []UnitType {
 
 // Capability cosmos DB capability object
 type Capability struct {
-	// Name - Name of the Cosmos DB capability
+	// Name - Name of the Cosmos DB capability. For example, "name": "EnableCassandra". Current values also include "EnableTable" and "EnableGremlin".
 	Name *string `json:"name,omitempty"`
 }
 

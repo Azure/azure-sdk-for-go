@@ -19,7 +19,7 @@
 
 package redis
 
-import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-10-01/redis"
+import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -81,6 +81,27 @@ func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()
 }
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Creating               ProvisioningState = original.Creating
+	Deleting               ProvisioningState = original.Deleting
+	Disabled               ProvisioningState = original.Disabled
+	Failed                 ProvisioningState = original.Failed
+	Linking                ProvisioningState = original.Linking
+	Provisioning           ProvisioningState = original.Provisioning
+	RecoveringScaleFailure ProvisioningState = original.RecoveringScaleFailure
+	Scaling                ProvisioningState = original.Scaling
+	Succeeded              ProvisioningState = original.Succeeded
+	Unlinking              ProvisioningState = original.Unlinking
+	Unprovisioning         ProvisioningState = original.Unprovisioning
+	Updating               ProvisioningState = original.Updating
+)
+
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+
 type RebootType = original.RebootType
 
 const (
@@ -125,6 +146,18 @@ const (
 
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
+}
+
+type TLSVersion = original.TLSVersion
+
+const (
+	OneFullStopOne  TLSVersion = original.OneFullStopOne
+	OneFullStopTwo  TLSVersion = original.OneFullStopTwo
+	OneFullStopZero TLSVersion = original.OneFullStopZero
+)
+
+func PossibleTLSVersionValues() []TLSVersion {
+	return original.PossibleTLSVersionValues()
 }
 
 type AccessKeys = original.AccessKeys

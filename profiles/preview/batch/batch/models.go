@@ -19,7 +19,7 @@
 
 package batch
 
-import original "github.com/Azure/azure-sdk-for-go/services/batch/2017-09-01.6.0/batch"
+import original "github.com/Azure/azure-sdk-for-go/services/batch/2018-03-01.6.1/batch"
 
 type AccountClient = original.AccountClient
 
@@ -657,6 +657,7 @@ type NameValuePair = original.NameValuePair
 type NetworkConfiguration = original.NetworkConfiguration
 type NetworkSecurityGroupRule = original.NetworkSecurityGroupRule
 type NodeAgentSku = original.NodeAgentSku
+type NodeCounts = original.NodeCounts
 type NodeDisableSchedulingParameter = original.NodeDisableSchedulingParameter
 type NodeFile = original.NodeFile
 type NodeFileListResult = original.NodeFileListResult
@@ -679,6 +680,10 @@ type PoolInformation = original.PoolInformation
 type PoolListUsageMetricsResult = original.PoolListUsageMetricsResult
 type PoolListUsageMetricsResultIterator = original.PoolListUsageMetricsResultIterator
 type PoolListUsageMetricsResultPage = original.PoolListUsageMetricsResultPage
+type PoolNodeCounts = original.PoolNodeCounts
+type PoolNodeCountsListResult = original.PoolNodeCountsListResult
+type PoolNodeCountsListResultIterator = original.PoolNodeCountsListResultIterator
+type PoolNodeCountsListResultPage = original.PoolNodeCountsListResultPage
 type PoolPatchParameter = original.PoolPatchParameter
 type PoolResizeParameter = original.PoolResizeParameter
 type PoolSpecification = original.PoolSpecification
@@ -711,6 +716,8 @@ type TaskInformation = original.TaskInformation
 type TaskSchedulingPolicy = original.TaskSchedulingPolicy
 type TaskStatistics = original.TaskStatistics
 type TaskUpdateParameter = original.TaskUpdateParameter
+type UploadBatchServiceLogsConfiguration = original.UploadBatchServiceLogsConfiguration
+type UploadBatchServiceLogsResult = original.UploadBatchServiceLogsResult
 type UsageStatistics = original.UsageStatistics
 type UserAccount = original.UserAccount
 type UserIdentity = original.UserIdentity

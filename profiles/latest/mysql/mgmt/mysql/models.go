@@ -229,7 +229,7 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()

@@ -72,6 +72,17 @@ func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return original.PossibleAccessPolicyRoleValues()
 }
 
+type DataStringComparisonBehavior = original.DataStringComparisonBehavior
+
+const (
+	Ordinal           DataStringComparisonBehavior = original.Ordinal
+	OrdinalIgnoreCase DataStringComparisonBehavior = original.OrdinalIgnoreCase
+)
+
+func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
+	return original.PossibleDataStringComparisonBehaviorValues()
+}
+
 type IngressState = original.IngressState
 
 const (

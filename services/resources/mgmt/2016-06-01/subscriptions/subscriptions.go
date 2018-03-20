@@ -32,18 +32,20 @@ type Client struct {
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(subscriptionID string) Client {
-	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewClient() Client {
+	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewClientWithBaseURI creates an instance of the Client client.
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return Client{NewWithBaseURI(baseURI, subscriptionID)}
+func NewClientWithBaseURI(baseURI string) Client {
+	return Client{NewWithBaseURI(baseURI)}
 }
 
 // Get gets details about a specified subscription.
-func (client Client) Get(ctx context.Context) (result Subscription, err error) {
-	req, err := client.GetPreparer(ctx)
+//
+// subscriptionID is the ID of the target subscription.
+func (client Client) Get(ctx context.Context, subscriptionID string) (result Subscription, err error) {
+	req, err := client.GetPreparer(ctx, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.Client", "Get", nil, "Failure preparing request")
 		return
@@ -65,9 +67,9 @@ func (client Client) Get(ctx context.Context) (result Subscription, err error) {
 }
 
 // GetPreparer prepares the Get request.
-func (client Client) GetPreparer(ctx context.Context) (*http.Request, error) {
+func (client Client) GetPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2016-06-01"
@@ -191,8 +193,10 @@ func (client Client) ListComplete(ctx context.Context) (result ListResultIterato
 
 // ListLocations this operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
-func (client Client) ListLocations(ctx context.Context) (result LocationListResult, err error) {
-	req, err := client.ListLocationsPreparer(ctx)
+//
+// subscriptionID is the ID of the target subscription.
+func (client Client) ListLocations(ctx context.Context, subscriptionID string) (result LocationListResult, err error) {
+	req, err := client.ListLocationsPreparer(ctx, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.Client", "ListLocations", nil, "Failure preparing request")
 		return
@@ -214,9 +218,9 @@ func (client Client) ListLocations(ctx context.Context) (result LocationListResu
 }
 
 // ListLocationsPreparer prepares the ListLocations request.
-func (client Client) ListLocationsPreparer(ctx context.Context) (*http.Request, error) {
+func (client Client) ListLocationsPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2016-06-01"

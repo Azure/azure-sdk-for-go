@@ -32,13 +32,13 @@ type TenantsClient struct {
 }
 
 // NewTenantsClient creates an instance of the TenantsClient client.
-func NewTenantsClient(subscriptionID string) TenantsClient {
-	return NewTenantsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewTenantsClient() TenantsClient {
+	return NewTenantsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewTenantsClientWithBaseURI creates an instance of the TenantsClient client.
-func NewTenantsClientWithBaseURI(baseURI string, subscriptionID string) TenantsClient {
-	return TenantsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
+	return TenantsClient{NewWithBaseURI(baseURI)}
 }
 
 // List gets the tenants for your account.

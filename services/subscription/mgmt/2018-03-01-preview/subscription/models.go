@@ -20,7 +20,6 @@ package subscription
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -41,10 +40,8 @@ func PossibleOfferTypeValues() []OfferType {
 
 // AdPrincipal active Directory Principal for subscription creation delegated permission
 type AdPrincipal struct {
-	// TenantID - Tenant id of the Principal. Must be the current tenant the caller is logged in to.
-	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 	// ObjectID - Object id of the Principal
-	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	ObjectID *string `json:"objectId,omitempty"`
 }
 
 // CreationParameters subscription Creation Parameters required to create a new Azure subscription.

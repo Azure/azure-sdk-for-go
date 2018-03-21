@@ -1903,8 +1903,6 @@ type TopicProperties struct {
 	EnableExpress *bool `json:"enableExpress,omitempty"`
 	// EnablePartitioning - Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
 	EnablePartitioning *bool `json:"enablePartitioning,omitempty"`
-	// EnableSubscriptionPartitioning - Value that indicates whether partitioning is enabled or disabled. NOTE: This property is unsupported, and may be deprecated.
-	EnableSubscriptionPartitioning *bool `json:"enableSubscriptionPartitioning,omitempty"`
 	// FilteringMessagesBeforePublishing - Whether messages should be filtered before publishing.
 	FilteringMessagesBeforePublishing *bool `json:"filteringMessagesBeforePublishing,omitempty"`
 	// IsAnonymousAccessible - Value that indicates whether the message is accessible anonymously.

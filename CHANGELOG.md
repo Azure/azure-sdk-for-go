@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v14.6.0`
+
+### New Services
+
+- Batch 2018-03-01.6.1
+- BatchAI 2018-03-01
+- Cognitive services custom vision prediction v1.1
+- Eventhub 2018-01-01-preview
+- MySQL 2017-12-01
+- PostgreSQL 2017-12-01
+- Redis 2018-03-01
+- Subscription 2018-03-01-preview
+
 ## `v14.5.0`
 
 ### Changes

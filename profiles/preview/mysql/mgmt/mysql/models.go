@@ -19,7 +19,7 @@
 
 package mysql
 
-import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01-preview/mysql"
+import original "github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql"
 
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 
@@ -96,7 +96,7 @@ const (
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
 
-func PossibleCreateModeValues() [3]CreateMode {
+func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
 }
 
@@ -107,7 +107,7 @@ const (
 	Enabled  GeoRedundantBackup = original.Enabled
 )
 
-func PossibleGeoRedundantBackupValues() [2]GeoRedundantBackup {
+func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return original.PossibleGeoRedundantBackupValues()
 }
 
@@ -119,7 +119,7 @@ const (
 	User         OperationOrigin = original.User
 )
 
-func PossibleOperationOriginValues() [3]OperationOrigin {
+func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
 }
 
@@ -131,7 +131,7 @@ const (
 	ServerStateReady    ServerState = original.ServerStateReady
 )
 
-func PossibleServerStateValues() [3]ServerState {
+func PossibleServerStateValues() []ServerState {
 	return original.PossibleServerStateValues()
 }
 
@@ -142,7 +142,7 @@ const (
 	FiveFullStopSix   ServerVersion = original.FiveFullStopSix
 )
 
-func PossibleServerVersionValues() [2]ServerVersion {
+func PossibleServerVersionValues() []ServerVersion {
 	return original.PossibleServerVersionValues()
 }
 
@@ -154,7 +154,7 @@ const (
 	MemoryOptimized SkuTier = original.MemoryOptimized
 )
 
-func PossibleSkuTierValues() [3]SkuTier {
+func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
 
@@ -165,7 +165,7 @@ const (
 	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
 )
 
-func PossibleSslEnforcementEnumValues() [2]SslEnforcementEnum {
+func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 	return original.PossibleSslEnforcementEnumValues()
 }
 

@@ -43,9 +43,13 @@ func NewAPIRevisionsClientWithBaseURI(baseURI string, subscriptionID string) API
 // List lists all revisions of an API.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. top is number of records
-// to return. skip is number of records to skip.
-func (client APIRevisionsClient) List(ctx context.Context, resourceGroupName string, serviceName string, apiid string, top *int32, skip *int32) (result APIRevisionCollectionPage, err error) {
+// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+//
+// |apiRevision | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| top is number of records to
+// return. skip is number of records to skip.
+func (client APIRevisionsClient) List(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result APIRevisionCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -65,7 +69,7 @@ func (client APIRevisionsClient) List(ctx context.Context, resourceGroupName str
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, serviceName, apiid, top, skip)
+	req, err := client.ListPreparer(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIRevisionsClient", "List", nil, "Failure preparing request")
 		return
@@ -87,7 +91,7 @@ func (client APIRevisionsClient) List(ctx context.Context, resourceGroupName str
 }
 
 // ListPreparer prepares the List request.
-func (client APIRevisionsClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, top *int32, skip *int32) (*http.Request, error) {
+func (client APIRevisionsClient) ListPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -98,6 +102,9 @@ func (client APIRevisionsClient) ListPreparer(ctx context.Context, resourceGroup
 	const APIVersion = "2017-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -156,7 +163,7 @@ func (client APIRevisionsClient) listNextResults(lastResults APIRevisionCollecti
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client APIRevisionsClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, top *int32, skip *int32) (result APIRevisionCollectionIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, serviceName, apiid, top, skip)
+func (client APIRevisionsClient) ListComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result APIRevisionCollectionIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
 	return
 }

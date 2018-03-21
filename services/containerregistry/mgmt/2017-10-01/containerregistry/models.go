@@ -382,6 +382,25 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ImageCopyFromModel ...
+type ImageCopyFromModel struct {
+	// SourceRepository - Repository name of the source image.
+	SourceRepository *string `json:"sourceRepository,omitempty"`
+	// SourceTag - The tag name of the source image.  When both source tag and source manifest are omitted the 'latest' tag will be used.
+	// Exclusive with SourceManifestDigest.
+	SourceTag *string `json:"sourceTag,omitempty"`
+	// SourceManifestDigest - The manifest sha of the source image. Exclusive with SourceTag.
+	SourceManifestDigest *string `json:"sourceManifestDigest,omitempty"`
+	// SourceRegistryResourceID - The resource id of the source registry.
+	SourceRegistryResourceID *string `json:"sourceRegistryResourceId,omitempty"`
+	// TargetTags - List of strings of the form repo[:tag].  When tag is omitted the source will be used (or 'latest' if source tag is also omitted.)
+	TargetTags *[]string `json:"targetTags,omitempty"`
+	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy.  No tag will be created.
+	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
+	// Force - When true, any existing target tags will be overwritten.  When false, any existing target tags will fail the operation before any copying begins.
+	Force *bool `json:"force,omitempty"`
+}
+
 // OperationDefinition the definition of a container registry operation.
 type OperationDefinition struct {
 	// Name - Operation name: {provider}/{resource}/{operation}.
@@ -508,6 +527,55 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 type RegenerateCredentialParameters struct {
 	// Name - Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'Password', 'Password2'
 	Name PasswordName `json:"name,omitempty"`
+}
+
+// RegistriesCopyImageFromFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type RegistriesCopyImageFromFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future RegistriesCopyImageFromFuture) Result(client RegistriesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCopyImageFromFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("containerregistry.RegistriesCopyImageFromFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.CopyImageFromResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCopyImageFromFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCopyImageFromFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.CopyImageFromResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesCopyImageFromFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

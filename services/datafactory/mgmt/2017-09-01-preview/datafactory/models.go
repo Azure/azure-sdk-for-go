@@ -32463,10 +32463,56 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	Runtime SSISExecutionRuntime `json:"runtime,omitempty"`
 	// LoggingLevel - The logging level of SSIS package execution.
 	LoggingLevel *string `json:"loggingLevel,omitempty"`
-	// EnvironmentPath - The environment path to execution the SSIS package.
+	// EnvironmentPath - The environment path to execute the SSIS package.
 	EnvironmentPath *string `json:"environmentPath,omitempty"`
 	// ConnectVia - The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+	// ProjectParameters - The project level parameters to execute the SSIS package.
+	ProjectParameters map[string]*SSISExecutionParameter `json:"projectParameters"`
+	// PackageParameters - The package level parameters to execute the SSIS package.
+	PackageParameters map[string]*SSISExecutionParameter `json:"packageParameters"`
+	// ProjectConnectionManagers - The project level connection managers to execute the SSIS package.
+	ProjectConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"projectConnectionManagers"`
+	// PackageConnectionManagers - The package level connection managers to execute the SSIS package.
+	PackageConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"packageConnectionManagers"`
+	// PropertyOverrides - The property overrides to execute the SSIS package.
+	PropertyOverrides map[string]*SSISPropertyOverride `json:"propertyOverrides"`
+}
+
+// MarshalJSON is the custom marshaler for ExecuteSSISPackageActivityTypeProperties.
+func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if espatp.PackageLocation != nil {
+		objectMap["packageLocation"] = espatp.PackageLocation
+	}
+	if espatp.Runtime != "" {
+		objectMap["runtime"] = espatp.Runtime
+	}
+	if espatp.LoggingLevel != nil {
+		objectMap["loggingLevel"] = espatp.LoggingLevel
+	}
+	if espatp.EnvironmentPath != nil {
+		objectMap["environmentPath"] = espatp.EnvironmentPath
+	}
+	if espatp.ConnectVia != nil {
+		objectMap["connectVia"] = espatp.ConnectVia
+	}
+	if espatp.ProjectParameters != nil {
+		objectMap["projectParameters"] = espatp.ProjectParameters
+	}
+	if espatp.PackageParameters != nil {
+		objectMap["packageParameters"] = espatp.PackageParameters
+	}
+	if espatp.ProjectConnectionManagers != nil {
+		objectMap["projectConnectionManagers"] = espatp.ProjectConnectionManagers
+	}
+	if espatp.PackageConnectionManagers != nil {
+		objectMap["packageConnectionManagers"] = espatp.PackageConnectionManagers
+	}
+	if espatp.PropertyOverrides != nil {
+		objectMap["propertyOverrides"] = espatp.PropertyOverrides
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicExecutionActivity base class for all execution activities.
@@ -83745,10 +83791,24 @@ func (ss SquareSource) AsBasicCopySource() (BasicCopySource, bool) {
 	return &ss, true
 }
 
+// SSISExecutionParameter SSIS execution parameter.
+type SSISExecutionParameter struct {
+	// Value - SSIS package execution parameter value. Type: string (or Expression with resultType string).
+	Value interface{} `json:"value,omitempty"`
+}
+
 // SSISPackageLocation SSIS package location.
 type SSISPackageLocation struct {
 	// PackagePath - The SSIS package path.
 	PackagePath *string `json:"packagePath,omitempty"`
+}
+
+// SSISPropertyOverride SSIS property override.
+type SSISPropertyOverride struct {
+	// Value - SSIS package property override value. Type: string (or Expression with resultType string).
+	Value interface{} `json:"value,omitempty"`
+	// IsSensitive - Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
+	IsSensitive *bool `json:"isSensitive,omitempty"`
 }
 
 // StagingSettings staging settings.

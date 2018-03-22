@@ -18,6 +18,7 @@ package subscription
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"net/http"
@@ -51,7 +52,26 @@ type CreationParameters struct {
 	// Owners - The list of principals that should be granted Owner access on the subscription. Principals should be of type User, Service Principal or Security Group.
 	Owners *[]AdPrincipal `json:"owners,omitempty"`
 	// OfferType - The offer type of the subscription. For example, MS-AZR-0017P (EnterpriseAgreement) and MS-AZR-0148P (EnterpriseAgreement devTest) are available. Only valid when creating a subscription in a enrollment account scope. Possible values include: 'MSAZR0017P', 'MSAZR0148P'
-	OfferType OfferType `json:"offerType,omitempty"`
+	OfferType            OfferType              `json:"offerType,omitempty"`
+	AdditionalParameters map[string]interface{} `json:"additionalParameters"`
+}
+
+// MarshalJSON is the custom marshaler for CreationParameters.
+func (cp CreationParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.DisplayName != nil {
+		objectMap["displayName"] = cp.DisplayName
+	}
+	if cp.Owners != nil {
+		objectMap["owners"] = cp.Owners
+	}
+	if cp.OfferType != "" {
+		objectMap["offerType"] = cp.OfferType
+	}
+	if cp.AdditionalParameters != nil {
+		objectMap["additionalParameters"] = cp.AdditionalParameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // CreationResult the created subscription object.

@@ -7014,9 +7014,9 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 type FlowLogInformation struct {
 	autorest.Response `json:"-"`
 	// TargetResourceID - The ID of the resource to configure for flow logging.
-	TargetResourceID            *string `json:"targetResourceId,omitempty"`
-	*FlowLogProperties          `json:"properties,omitempty"`
-	*TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
+	TargetResourceID           *string `json:"targetResourceId,omitempty"`
+	*FlowLogProperties         `json:"properties,omitempty"`
+	FlowAnalyticsConfiguration *TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FlowLogInformation.
@@ -7028,8 +7028,8 @@ func (fli FlowLogInformation) MarshalJSON() ([]byte, error) {
 	if fli.FlowLogProperties != nil {
 		objectMap["properties"] = fli.FlowLogProperties
 	}
-	if fli.TrafficAnalyticsProperties != nil {
-		objectMap["flowAnalyticsConfiguration"] = fli.TrafficAnalyticsProperties
+	if fli.FlowAnalyticsConfiguration != nil {
+		objectMap["flowAnalyticsConfiguration"] = fli.FlowAnalyticsConfiguration
 	}
 	return json.Marshal(objectMap)
 }
@@ -7063,12 +7063,12 @@ func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
 			}
 		case "flowAnalyticsConfiguration":
 			if v != nil {
-				var trafficAnalyticsProperties TrafficAnalyticsProperties
-				err = json.Unmarshal(*v, &trafficAnalyticsProperties)
+				var flowAnalyticsConfiguration TrafficAnalyticsProperties
+				err = json.Unmarshal(*v, &flowAnalyticsConfiguration)
 				if err != nil {
 					return err
 				}
-				fli.TrafficAnalyticsProperties = &trafficAnalyticsProperties
+				fli.FlowAnalyticsConfiguration = &flowAnalyticsConfiguration
 			}
 		}
 	}

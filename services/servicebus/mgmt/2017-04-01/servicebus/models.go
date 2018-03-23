@@ -474,6 +474,8 @@ type CheckNameAvailabilityResult struct {
 
 // CorrelationFilter represents the correlation filter expression.
 type CorrelationFilter struct {
+	// Properties - dictionary object for custom filters
+	Properties map[string]*string `json:"properties"`
 	// CorrelationID - Identifier of the correlation.
 	CorrelationID *string `json:"correlationId,omitempty"`
 	// MessageID - Identifier of the message.
@@ -492,6 +494,42 @@ type CorrelationFilter struct {
 	ContentType *string `json:"contentType,omitempty"`
 	// RequiresPreprocessing - Value that indicates whether the rule action requires preprocessing.
 	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CorrelationFilter.
+func (cf CorrelationFilter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cf.Properties != nil {
+		objectMap["properties"] = cf.Properties
+	}
+	if cf.CorrelationID != nil {
+		objectMap["correlationId"] = cf.CorrelationID
+	}
+	if cf.MessageID != nil {
+		objectMap["messageId"] = cf.MessageID
+	}
+	if cf.To != nil {
+		objectMap["to"] = cf.To
+	}
+	if cf.ReplyTo != nil {
+		objectMap["replyTo"] = cf.ReplyTo
+	}
+	if cf.Label != nil {
+		objectMap["label"] = cf.Label
+	}
+	if cf.SessionID != nil {
+		objectMap["sessionId"] = cf.SessionID
+	}
+	if cf.ReplyToSessionID != nil {
+		objectMap["replyToSessionId"] = cf.ReplyToSessionID
+	}
+	if cf.ContentType != nil {
+		objectMap["contentType"] = cf.ContentType
+	}
+	if cf.RequiresPreprocessing != nil {
+		objectMap["requiresPreprocessing"] = cf.RequiresPreprocessing
+	}
+	return json.Marshal(objectMap)
 }
 
 // Destination capture storage details for capture description

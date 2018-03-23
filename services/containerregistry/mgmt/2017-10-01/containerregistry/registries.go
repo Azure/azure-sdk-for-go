@@ -118,88 +118,6 @@ func (client RegistriesClient) CheckNameAvailabilityResponder(resp *http.Respons
 	return
 }
 
-// CopyImageFrom copies an image to this registry from the specified registry.
-//
-// resourceGroupName is the name of the resource group to which the container registry belongs. registryName is the
-// name of the container registry. imageCopyParameters is the parameters specifying the image to copy and the
-// source registry.
-func (client RegistriesClient) CopyImageFrom(ctx context.Context, resourceGroupName string, registryName string, imageCopyParameters ImageCopyFromModel) (result RegistriesCopyImageFromFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: registryName,
-			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
-		{TargetValue: imageCopyParameters,
-			Constraints: []validation.Constraint{{Target: "imageCopyParameters.SourceRepository", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "imageCopyParameters.SourceRegistryResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("containerregistry.RegistriesClient", "CopyImageFrom", err.Error())
-	}
-
-	req, err := client.CopyImageFromPreparer(ctx, resourceGroupName, registryName, imageCopyParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CopyImageFrom", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.CopyImageFromSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "CopyImageFrom", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// CopyImageFromPreparer prepares the CopyImageFrom request.
-func (client RegistriesClient) CopyImageFromPreparer(ctx context.Context, resourceGroupName string, registryName string, imageCopyParameters ImageCopyFromModel) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"registryName":      autorest.Encode("path", registryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-10-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/copyImageFrom", pathParameters),
-		autorest.WithJSON(imageCopyParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CopyImageFromSender sends the CopyImageFrom request. The method will close the
-// http.Response Body if it receives an error.
-func (client RegistriesClient) CopyImageFromSender(req *http.Request) (future RegistriesCopyImageFromFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
-}
-
-// CopyImageFromResponder handles the response to the CopyImageFrom request. The method always
-// closes the http.Response Body.
-func (client RegistriesClient) CopyImageFromResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // Create creates a container registry with the specified parameters.
 //
 // resourceGroupName is the name of the resource group to which the container registry belongs. registryName is the
@@ -433,6 +351,88 @@ func (client RegistriesClient) GetResponder(resp *http.Response) (result Registr
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportImage copies an image to this registry from the specified registry.
+//
+// resourceGroupName is the name of the resource group to which the container registry belongs. registryName is the
+// name of the container registry. importParameters is the parameters specifying the image to copy and the source
+// registry.
+func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupName string, registryName string, importParameters ImportImageParameters) (result RegistriesImportImageFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: registryName,
+			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: importParameters,
+			Constraints: []validation.Constraint{{Target: "importParameters.SourceRepository", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "importParameters.Source", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("containerregistry.RegistriesClient", "ImportImage", err.Error())
+	}
+
+	req, err := client.ImportImagePreparer(ctx, resourceGroupName, registryName, importParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ImportImageSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ImportImagePreparer prepares the ImportImage request.
+func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resourceGroupName string, registryName string, importParameters ImportImageParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"registryName":      autorest.Encode("path", registryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importImage", pathParameters),
+		autorest.WithJSON(importParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportImageSender sends the ImportImage request. The method will close the
+// http.Response Body if it receives an error.
+func (client RegistriesClient) ImportImageSender(req *http.Request) (future RegistriesImportImageFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// ImportImageResponder handles the response to the ImportImage request. The method always
+// closes the http.Response Body.
+func (client RegistriesClient) ImportImageResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 

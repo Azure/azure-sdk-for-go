@@ -31,13 +31,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string, billingAccountID string, grain Datagrain) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
+func NewOperationsClient(subscriptionID string, billingAccountID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, grain)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID)}
 }
 
 // List lists all of the available consumption REST API operations.

@@ -31,13 +31,13 @@ type CostAllocationTagsClient struct {
 }
 
 // NewCostAllocationTagsClient creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClient(subscriptionID string, billingAccountID string, grain Datagrain) CostAllocationTagsClient {
-	return NewCostAllocationTagsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
+func NewCostAllocationTagsClient(subscriptionID string, billingAccountID string) CostAllocationTagsClient {
+	return NewCostAllocationTagsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
 }
 
 // NewCostAllocationTagsClientWithBaseURI creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) CostAllocationTagsClient {
-	return CostAllocationTagsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, grain)}
+func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) CostAllocationTagsClient {
+	return CostAllocationTagsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID)}
 }
 
 // CreateOrUpdate the operation to create or update cost allocation tags assiciated with a billing account. Update

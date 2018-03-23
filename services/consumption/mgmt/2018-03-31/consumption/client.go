@@ -35,21 +35,19 @@ type BaseClient struct {
 	BaseURI          string
 	SubscriptionID   string
 	BillingAccountID string
-	Grain            Datagrain
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, billingAccountID string, grain Datagrain) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
+func New(subscriptionID string, billingAccountID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) BaseClient {
 	return BaseClient{
 		Client:           autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:          baseURI,
 		SubscriptionID:   subscriptionID,
 		BillingAccountID: billingAccountID,
-		Grain:            grain,
 	}
 }

@@ -31,13 +31,13 @@ type ReservationsDetailsClient struct {
 }
 
 // NewReservationsDetailsClient creates an instance of the ReservationsDetailsClient client.
-func NewReservationsDetailsClient(subscriptionID string, billingAccountID string, grain Datagrain) ReservationsDetailsClient {
-	return NewReservationsDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
+func NewReservationsDetailsClient(subscriptionID string, billingAccountID string) ReservationsDetailsClient {
+	return NewReservationsDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
 }
 
 // NewReservationsDetailsClientWithBaseURI creates an instance of the ReservationsDetailsClient client.
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) ReservationsDetailsClient {
-	return ReservationsDetailsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, grain)}
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) ReservationsDetailsClient {
+	return ReservationsDetailsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID)}
 }
 
 // ListByReservationOrder lists the reservations details for provided date range.

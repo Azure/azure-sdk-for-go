@@ -20,11 +20,13 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 )
 
@@ -63,7 +65,8 @@ type breakingChanges struct {
 
 // returns true if there are no breaking changes
 func (bc breakingChanges) isEmpty() bool {
-	return len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0
+	return len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Interfaces) == 0 && len(bc.Structs) == 0 &&
+		(bc.Removed == nil || bc.Removed.IsEmpty())
 }
 
 // represents a per-package report, contains additive and breaking changes
@@ -144,6 +147,11 @@ func processArgsAndClone(args []string) (dir string, cln repo.WorkingTree, clean
 
 	dir = args[0]
 
+	dir, err = filepath.Abs(dir)
+	if err != nil {
+		err = fmt.Errorf("failed to convert path '%s' to absolute path: %v", dir, err)
+	}
+
 	src, err := repo.Get(dir)
 	if err != nil {
 		err = fmt.Errorf("failed to get repository: %v", err)
@@ -151,11 +159,25 @@ func processArgsAndClone(args []string) (dir string, cln repo.WorkingTree, clean
 	}
 
 	tempRepoDir := path.Join(os.TempDir(), fmt.Sprintf("apidiff-%v", time.Now().Unix()))
-	vprintf("cloning '%s' into '%s'...\n", src.Root(), tempRepoDir)
-	cln, err = src.Clone(tempRepoDir)
-	if err != nil {
-		err = fmt.Errorf("failed to clone repository: %v", err)
-		return
+	if copyRepoFlag {
+		vprintf("copying '%s' into '%s'...\n", src.Root(), tempRepoDir)
+		err = ioext.CopyDir(src.Root(), tempRepoDir)
+		if err != nil {
+			err = fmt.Errorf("failed to copy repo: %v", err)
+			return
+		}
+		cln, err = repo.Get(tempRepoDir)
+		if err != nil {
+			err = fmt.Errorf("failed to get copied repo: %v", err)
+			return
+		}
+	} else {
+		vprintf("cloning '%s' into '%s'...\n", src.Root(), tempRepoDir)
+		cln, err = src.Clone(tempRepoDir)
+		if err != nil {
+			err = fmt.Errorf("failed to clone repository: %v", err)
+			return
+		}
 	}
 
 	clean = func() {

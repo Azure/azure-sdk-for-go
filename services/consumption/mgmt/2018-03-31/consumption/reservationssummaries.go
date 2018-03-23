@@ -31,13 +31,13 @@ type ReservationsSummariesClient struct {
 }
 
 // NewReservationsSummariesClient creates an instance of the ReservationsSummariesClient client.
-func NewReservationsSummariesClient(subscriptionID string, grain Datagrain) ReservationsSummariesClient {
-	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func NewReservationsSummariesClient(subscriptionID string, billingAccountID string, grain Datagrain) ReservationsSummariesClient {
+	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
 }
 
 // NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client.
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationsSummariesClient {
-	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID, grain)}
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) ReservationsSummariesClient {
+	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, grain)}
 }
 
 // ListByReservationOrder lists the reservations summaries for daily or monthly grain.

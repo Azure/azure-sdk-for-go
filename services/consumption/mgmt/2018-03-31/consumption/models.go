@@ -341,6 +341,113 @@ type BudgetTimePeriod struct {
 	EndDate *date.Time `json:"endDate,omitempty"`
 }
 
+// CostAllocationTag the cost allocation tag.
+type CostAllocationTag struct {
+	// KeyName - Cost allocation tag key name.
+	KeyName *string `json:"keyName,omitempty"`
+}
+
+// CostAllocationTagProperties the properties of the cost allocation tag.
+type CostAllocationTagProperties struct {
+	// CostAllocationTags - Cost allocation tags.
+	CostAllocationTags *[]CostAllocationTag `json:"costAllocationTags,omitempty"`
+}
+
+// CostAllocationTags a cost allocation tag resource.
+type CostAllocationTags struct {
+	autorest.Response            `json:"-"`
+	*CostAllocationTagProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// ETag - eTag of the resource. To handle concurrent update scenarion, this field will be used to determine whether the user is updating the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CostAllocationTags.
+func (cat CostAllocationTags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cat.CostAllocationTagProperties != nil {
+		objectMap["properties"] = cat.CostAllocationTagProperties
+	}
+	if cat.ID != nil {
+		objectMap["id"] = cat.ID
+	}
+	if cat.Name != nil {
+		objectMap["name"] = cat.Name
+	}
+	if cat.Type != nil {
+		objectMap["type"] = cat.Type
+	}
+	if cat.ETag != nil {
+		objectMap["eTag"] = cat.ETag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CostAllocationTags struct.
+func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var costAllocationTagProperties CostAllocationTagProperties
+				err = json.Unmarshal(*v, &costAllocationTagProperties)
+				if err != nil {
+					return err
+				}
+				cat.CostAllocationTagProperties = &costAllocationTagProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cat.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cat.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cat.Type = &typeVar
+			}
+		case "eTag":
+			if v != nil {
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
+				if err != nil {
+					return err
+				}
+				cat.ETag = &eTag
+			}
+		}
+	}
+
+	return nil
+}
+
 // CurrentSpend the current amount of cost which is being tracked for a budget.
 type CurrentSpend struct {
 	// Amount - The total amount of cost which is being tracked by the budget.

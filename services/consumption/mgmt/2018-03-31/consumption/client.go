@@ -32,22 +32,24 @@ const (
 // BaseClient is the base client for Consumption.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
-	Grain          Datagrain
+	BaseURI          string
+	SubscriptionID   string
+	BillingAccountID string
+	Grain            Datagrain
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, grain Datagrain) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func New(subscriptionID string, billingAccountID string, grain Datagrain) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-		Grain:          grain,
+		Client:           autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:          baseURI,
+		SubscriptionID:   subscriptionID,
+		BillingAccountID: billingAccountID,
+		Grain:            grain,
 	}
 }

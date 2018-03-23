@@ -31,13 +31,13 @@ type ReservationRecommendationsClient struct {
 }
 
 // NewReservationRecommendationsClient creates an instance of the ReservationRecommendationsClient client.
-func NewReservationRecommendationsClient(subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
-	return NewReservationRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func NewReservationRecommendationsClient(subscriptionID string, billingAccountID string, grain Datagrain) ReservationRecommendationsClient {
+	return NewReservationRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID, grain)
 }
 
 // NewReservationRecommendationsClientWithBaseURI creates an instance of the ReservationRecommendationsClient client.
-func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
-	return ReservationRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID, grain)}
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string, grain Datagrain) ReservationRecommendationsClient {
+	return ReservationRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID, grain)}
 }
 
 // List list of recomendations for purchasing reserved instances.

@@ -108,31 +108,31 @@ func (client CostAllocationTagsClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
-// List lists all cost allocation tags for a billing account.
-func (client CostAllocationTagsClient) List(ctx context.Context) (result CostAllocationTags, err error) {
-	req, err := client.ListPreparer(ctx)
+// Get get cost allocation tags for a billing account.
+func (client CostAllocationTagsClient) Get(ctx context.Context) (result CostAllocationTags, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client CostAllocationTagsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client CostAllocationTagsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
@@ -150,16 +150,16 @@ func (client CostAllocationTagsClient) ListPreparer(ctx context.Context) (*http.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client CostAllocationTagsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client CostAllocationTagsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListResponder handles the response to the List request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client CostAllocationTagsClient) ListResponder(resp *http.Response) (result CostAllocationTags, err error) {
+func (client CostAllocationTagsClient) GetResponder(resp *http.Response) (result CostAllocationTags, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

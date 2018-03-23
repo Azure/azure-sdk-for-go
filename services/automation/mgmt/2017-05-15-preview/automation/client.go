@@ -32,26 +32,20 @@ const (
 // BaseClient is the base client for Automation.
 type BaseClient struct {
 	autorest.Client
-	BaseURI               string
-	SubscriptionID        string
-	ResourceGroupName     string
-	ClientRequestID       string
-	AutomationAccountName string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:                autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:               baseURI,
-		SubscriptionID:        subscriptionID,
-		ResourceGroupName:     resourceGroupName,
-		ClientRequestID:       clientRequestID,
-		AutomationAccountName: automationAccountName,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

@@ -32,27 +32,27 @@ type SourceControlSyncJobClient struct {
 }
 
 // NewSourceControlSyncJobClient creates an instance of the SourceControlSyncJobClient client.
-func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobClient {
-	return NewSourceControlSyncJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSourceControlSyncJobClient(subscriptionID string, resourceGroupName string) SourceControlSyncJobClient {
+	return NewSourceControlSyncJobClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
 }
 
 // NewSourceControlSyncJobClientWithBaseURI creates an instance of the SourceControlSyncJobClient client.
-func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
-	return SourceControlSyncJobClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) SourceControlSyncJobClient {
+	return SourceControlSyncJobClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
 // Create creates the sync job for a source control.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
-// sourceControlName is the source control name. sourceControlSyncJobID is the source control sync job id.
-func (client SourceControlSyncJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (result SourceControlSyncJob, err error) {
+// automationAccountName is the automation account name. sourceControlName is the source control name.
+// sourceControlSyncJobID is the source control sync job id.
+func (client SourceControlSyncJobClient) Create(ctx context.Context, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (result SourceControlSyncJob, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlSyncJobClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID)
+	req, err := client.CreatePreparer(ctx, automationAccountName, sourceControlName, sourceControlSyncJobID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlSyncJobClient", "Create", nil, "Failure preparing request")
 		return
@@ -74,10 +74,10 @@ func (client SourceControlSyncJobClient) Create(ctx context.Context, resourceGro
 }
 
 // CreatePreparer prepares the Create request.
-func (client SourceControlSyncJobClient) CreatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (*http.Request, error) {
+func (client SourceControlSyncJobClient) CreatePreparer(ctx context.Context, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":  autorest.Encode("path", automationAccountName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":      autorest.Encode("path", client.ResourceGroupName),
 		"sourceControlName":      autorest.Encode("path", sourceControlName),
 		"sourceControlSyncJobId": autorest.Encode("path", sourceControlSyncJobID),
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
@@ -118,16 +118,16 @@ func (client SourceControlSyncJobClient) CreateResponder(resp *http.Response) (r
 
 // Get retrieve the source control sync job identified by job id.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
-// sourceControlName is the source control name. sourceControlSyncJobID is the source control sync job id.
-func (client SourceControlSyncJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (result SourceControlSyncJobByID, err error) {
+// automationAccountName is the automation account name. sourceControlName is the source control name.
+// sourceControlSyncJobID is the source control sync job id.
+func (client SourceControlSyncJobClient) Get(ctx context.Context, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (result SourceControlSyncJobByID, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlSyncJobClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID)
+	req, err := client.GetPreparer(ctx, automationAccountName, sourceControlName, sourceControlSyncJobID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlSyncJobClient", "Get", nil, "Failure preparing request")
 		return
@@ -149,10 +149,10 @@ func (client SourceControlSyncJobClient) Get(ctx context.Context, resourceGroupN
 }
 
 // GetPreparer prepares the Get request.
-func (client SourceControlSyncJobClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (*http.Request, error) {
+func (client SourceControlSyncJobClient) GetPreparer(ctx context.Context, automationAccountName string, sourceControlName string, sourceControlSyncJobID uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName":  autorest.Encode("path", automationAccountName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":      autorest.Encode("path", client.ResourceGroupName),
 		"sourceControlName":      autorest.Encode("path", sourceControlName),
 		"sourceControlSyncJobId": autorest.Encode("path", sourceControlSyncJobID),
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
@@ -193,17 +193,17 @@ func (client SourceControlSyncJobClient) GetResponder(resp *http.Response) (resu
 
 // ListByAutomationAccount retrieve a list of source control sync jobs.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
-// sourceControlName is the source control name. filter is the filter to apply on the operation.
-func (client SourceControlSyncJobClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, filter string) (result SourceControlSyncJobListResultPage, err error) {
+// automationAccountName is the automation account name. sourceControlName is the source control name. filter is
+// the filter to apply on the operation.
+func (client SourceControlSyncJobClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, sourceControlName string, filter string) (result SourceControlSyncJobListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlSyncJobClient", "ListByAutomationAccount", err.Error())
 	}
 
 	result.fn = client.listByAutomationAccountNextResults
-	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName, sourceControlName, filter)
+	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName, sourceControlName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlSyncJobClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -225,10 +225,10 @@ func (client SourceControlSyncJobClient) ListByAutomationAccount(ctx context.Con
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client SourceControlSyncJobClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, filter string) (*http.Request, error) {
+func (client SourceControlSyncJobClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string, sourceControlName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
 		"sourceControlName":     autorest.Encode("path", sourceControlName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
@@ -291,7 +291,7 @@ func (client SourceControlSyncJobClient) listByAutomationAccountNextResults(last
 }
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SourceControlSyncJobClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, filter string) (result SourceControlSyncJobListResultIterator, err error) {
-	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, sourceControlName, filter)
+func (client SourceControlSyncJobClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string, sourceControlName string, filter string) (result SourceControlSyncJobListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName, sourceControlName, filter)
 	return
 }

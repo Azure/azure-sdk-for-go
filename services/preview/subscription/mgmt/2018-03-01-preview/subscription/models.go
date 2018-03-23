@@ -52,7 +52,8 @@ type CreationParameters struct {
 	// Owners - The list of principals that should be granted Owner access on the subscription. Principals should be of type User, Service Principal or Security Group.
 	Owners *[]AdPrincipal `json:"owners,omitempty"`
 	// OfferType - The offer type of the subscription. For example, MS-AZR-0017P (EnterpriseAgreement) and MS-AZR-0148P (EnterpriseAgreement devTest) are available. Only valid when creating a subscription in a enrollment account scope. Possible values include: 'MSAZR0017P', 'MSAZR0148P'
-	OfferType            OfferType              `json:"offerType,omitempty"`
+	OfferType OfferType `json:"offerType,omitempty"`
+	// AdditionalParameters - Additional, untyped parameters to support custom subscription creation scenarios.
 	AdditionalParameters map[string]interface{} `json:"additionalParameters"`
 }
 

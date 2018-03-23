@@ -31,23 +31,24 @@ type SourceControlClient struct {
 }
 
 // NewSourceControlClient creates an instance of the SourceControlClient client.
-func NewSourceControlClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SourceControlClient {
-	return NewSourceControlClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewSourceControlClient(subscriptionID string) SourceControlClient {
+	return NewSourceControlClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSourceControlClientWithBaseURI creates an instance of the SourceControlClient client.
-func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) SourceControlClient {
-	return SourceControlClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
+	return SourceControlClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a source control.
 //
-// automationAccountName is the automation account name. sourceControlName is the source control name. parameters
-// is the parameters supplied to the create or update source control operation.
-func (client SourceControlClient) CreateOrUpdate(ctx context.Context, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters) (result SourceControl, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// sourceControlName is the source control name. parameters is the parameters supplied to the create or update
+// source control operation.
+func (client SourceControlClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters) (result SourceControl, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.SourceControlCreateOrUpdateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.SourceControlCreateOrUpdateProperties.RepoURL", Name: validation.Null, Rule: false,
@@ -64,7 +65,7 @@ func (client SourceControlClient) CreateOrUpdate(ctx context.Context, automation
 		return result, validation.NewError("automation.SourceControlClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, automationAccountName, sourceControlName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -86,10 +87,10 @@ func (client SourceControlClient) CreateOrUpdate(ctx context.Context, automation
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SourceControlClient) CreateOrUpdatePreparer(ctx context.Context, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters) (*http.Request, error) {
+func (client SourceControlClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"sourceControlName":     autorest.Encode("path", sourceControlName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
@@ -131,15 +132,16 @@ func (client SourceControlClient) CreateOrUpdateResponder(resp *http.Response) (
 
 // Delete delete the source control.
 //
-// automationAccountName is the automation account name. sourceControlName is the name of source control.
-func (client SourceControlClient) Delete(ctx context.Context, automationAccountName string, sourceControlName string) (result autorest.Response, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// sourceControlName is the name of source control.
+func (client SourceControlClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, automationAccountName, sourceControlName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, automationAccountName, sourceControlName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlClient", "Delete", nil, "Failure preparing request")
 		return
@@ -161,10 +163,10 @@ func (client SourceControlClient) Delete(ctx context.Context, automationAccountN
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SourceControlClient) DeletePreparer(ctx context.Context, automationAccountName string, sourceControlName string) (*http.Request, error) {
+func (client SourceControlClient) DeletePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"sourceControlName":     autorest.Encode("path", sourceControlName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
@@ -203,15 +205,16 @@ func (client SourceControlClient) DeleteResponder(resp *http.Response) (result a
 
 // Get retrieve the source control identified by source control name.
 //
-// automationAccountName is the automation account name. sourceControlName is the name of source control.
-func (client SourceControlClient) Get(ctx context.Context, automationAccountName string, sourceControlName string) (result SourceControl, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// sourceControlName is the name of source control.
+func (client SourceControlClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string) (result SourceControl, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, automationAccountName, sourceControlName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, sourceControlName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,10 +236,10 @@ func (client SourceControlClient) Get(ctx context.Context, automationAccountName
 }
 
 // GetPreparer prepares the Get request.
-func (client SourceControlClient) GetPreparer(ctx context.Context, automationAccountName string, sourceControlName string) (*http.Request, error) {
+func (client SourceControlClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"sourceControlName":     autorest.Encode("path", sourceControlName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
@@ -276,16 +279,17 @@ func (client SourceControlClient) GetResponder(resp *http.Response) (result Sour
 
 // ListByAutomationAccount retrieve a list of source controls.
 //
-// automationAccountName is the automation account name. filter is the filter to apply on the operation.
-func (client SourceControlClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter string) (result SourceControlListResultPage, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name. filter is
+// the filter to apply on the operation.
+func (client SourceControlClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result SourceControlListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlClient", "ListByAutomationAccount", err.Error())
 	}
 
 	result.fn = client.listByAutomationAccountNextResults
-	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName, filter)
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -307,10 +311,10 @@ func (client SourceControlClient) ListByAutomationAccount(ctx context.Context, a
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client SourceControlClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string, filter string) (*http.Request, error) {
+func (client SourceControlClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -372,23 +376,24 @@ func (client SourceControlClient) listByAutomationAccountNextResults(lastResults
 }
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SourceControlClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string, filter string) (result SourceControlListResultIterator, err error) {
-	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName, filter)
+func (client SourceControlClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result SourceControlListResultIterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, filter)
 	return
 }
 
 // Update update a source control.
 //
-// automationAccountName is the automation account name. sourceControlName is the source control name. parameters
-// is the parameters supplied to the update source control operation.
-func (client SourceControlClient) Update(ctx context.Context, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters) (result SourceControl, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// sourceControlName is the source control name. parameters is the parameters supplied to the update source control
+// operation.
+func (client SourceControlClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters) (result SourceControl, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.SourceControlClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, automationAccountName, sourceControlName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlClient", "Update", nil, "Failure preparing request")
 		return
@@ -410,10 +415,10 @@ func (client SourceControlClient) Update(ctx context.Context, automationAccountN
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SourceControlClient) UpdatePreparer(ctx context.Context, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters) (*http.Request, error) {
+func (client SourceControlClient) UpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"sourceControlName":     autorest.Encode("path", sourceControlName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}

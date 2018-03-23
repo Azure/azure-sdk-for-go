@@ -5408,6 +5408,20 @@ type BackupSchedule struct {
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 }
 
+// BillingMeter billing meter.
+type BillingMeter struct {
+	// MeterID - Meter GUID onboarded in Commerce
+	MeterID *string `json:"meterId,omitempty"`
+	// BillingLocation - CSM Location
+	BillingLocation *string `json:"billingLocation,omitempty"`
+	// ShortName - Short Name from Azure pricing Page
+	ShortName *string `json:"shortName,omitempty"`
+	// FriendlyName - Meter Resource Name
+	FriendlyName *string `json:"friendlyName,omitempty"`
+	// ResourceType - ResourceType meter used for
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+
 // Capability describes the capabilities/features allowed for a specific SKU.
 type Capability struct {
 	// Name - Name of the SKU capability.
@@ -10594,6 +10608,12 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 		objectMap["settings"] = j.Settings
 	}
 	return json.Marshal(objectMap)
+}
+
+// ListBillingMeter ...
+type ListBillingMeter struct {
+	autorest.Response `json:"-"`
+	Value             *[]BillingMeter `json:"value,omitempty"`
 }
 
 // ListCapability ...

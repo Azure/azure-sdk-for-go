@@ -43,7 +43,7 @@ func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID 
 
 // ListByJob retrieve all the job streams for the compilation Job.
 //
-// automationAccountName is the automation account name. jobID is the job id.
+// automationAccountName is the name of the automation account. jobID is the job id.
 func (client DscCompilationJobStreamClient) ListByJob(ctx context.Context, automationAccountName string, jobID uuid.UUID) (result JobStreamListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -83,7 +83,7 @@ func (client DscCompilationJobStreamClient) ListByJobPreparer(ctx context.Contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

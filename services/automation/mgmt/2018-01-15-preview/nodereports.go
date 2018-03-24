@@ -42,7 +42,8 @@ func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string, reso
 
 // Get retrieve the Dsc node report data by node id and report id.
 //
-// automationAccountName is the automation account name. nodeID is the Dsc node id. reportID is the report id.
+// automationAccountName is the name of the automation account. nodeID is the Dsc node id. reportID is the report
+// id.
 func (client NodeReportsClient) Get(ctx context.Context, automationAccountName string, nodeID string, reportID string) (result DscNodeReport, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -83,7 +84,7 @@ func (client NodeReportsClient) GetPreparer(ctx context.Context, automationAccou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -118,8 +119,9 @@ func (client NodeReportsClient) GetResponder(resp *http.Response) (result DscNod
 
 // GetContent retrieve the Dsc node reports by node id and report id.
 //
-// automationAccountName is the automation account name. nodeID is the Dsc node id. reportID is the report id.
-func (client NodeReportsClient) GetContent(ctx context.Context, automationAccountName string, nodeID string, reportID string) (result SetObject, err error) {
+// automationAccountName is the name of the automation account. nodeID is the Dsc node id. reportID is the report
+// id.
+func (client NodeReportsClient) GetContent(ctx context.Context, automationAccountName string, nodeID string, reportID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -159,7 +161,7 @@ func (client NodeReportsClient) GetContentPreparer(ctx context.Context, automati
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -181,21 +183,20 @@ func (client NodeReportsClient) GetContentSender(req *http.Request) (*http.Respo
 
 // GetContentResponder handles the response to the GetContent request. The method always
 // closes the http.Response Body.
-func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result SetObject, err error) {
+func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // ListByNode retrieve the Dsc node report list by node id.
 //
-// automationAccountName is the automation account name. nodeID is the parameters supplied to the list operation.
-// filter is the filter to apply on the operation.
+// automationAccountName is the name of the automation account. nodeID is the parameters supplied to the list
+// operation. filter is the filter to apply on the operation.
 func (client NodeReportsClient) ListByNode(ctx context.Context, automationAccountName string, nodeID string, filter string) (result DscNodeReportListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -236,7 +237,7 @@ func (client NodeReportsClient) ListByNodePreparer(ctx context.Context, automati
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

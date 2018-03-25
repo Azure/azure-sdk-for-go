@@ -3767,8 +3767,8 @@ type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
 	Name *string `json:"name,omitempty"`
 	// Configuration - Gets or sets the configuration of the node.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
-	// NewNodeConfigurationBuildVersionRequired - If a new build version of NodeConfiguration is required.
-	NewNodeConfigurationBuildVersionRequired *bool `json:"newNodeConfigurationBuildVersionRequired,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeConfigurationListResult the response model for the list job operation.
@@ -3881,6 +3881,12 @@ type DscNodeConfigurationProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// Configuration - Gets or sets the configuration of the node.
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// Source - Source of node configuration.
+	Source *string `json:"source,omitempty"`
+	// NodeCount - Number of nodes with this nodeconfiguration assigned
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
@@ -4295,6 +4301,46 @@ type DscNodeUpdateParameters struct {
 	NodeID *string `json:"nodeId,omitempty"`
 	// NodeConfiguration - Gets or sets the configuration of the node.
 	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	Properties        *DscNodeUpdateParametersProperties       `json:"properties,omitempty"`
+}
+
+// DscNodeUpdateParametersProperties ...
+type DscNodeUpdateParametersProperties struct {
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeUpdateParametersProperties.
+func (dnup DscNodeUpdateParametersProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnup.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnup.DscNodeConfigurationAssociationProperty
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeUpdateParametersProperties struct.
+func (dnup *DscNodeUpdateParametersProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnup.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscReportError definition of the dsc node report error type.

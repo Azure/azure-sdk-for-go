@@ -298,8 +298,8 @@ func (client DscNodeClient) ListByAutomationAccountComplete(ctx context.Context,
 // Update update the dsc node.
 //
 // automationAccountName is the name of the automation account. nodeID is parameters supplied to the update dsc
-// node. parameters is parameters supplied to the update dsc node.
-func (client DscNodeClient) Update(ctx context.Context, automationAccountName string, nodeID string, parameters DscNodeUpdateParameters) (result DscNode, err error) {
+// node. dscNodeUpdateParameters is parameters supplied to the update dsc node.
+func (client DscNodeClient) Update(ctx context.Context, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters) (result DscNode, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -308,7 +308,7 @@ func (client DscNodeClient) Update(ctx context.Context, automationAccountName st
 		return result, validation.NewError("automation.DscNodeClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, automationAccountName, nodeID, parameters)
+	req, err := client.UpdatePreparer(ctx, automationAccountName, nodeID, dscNodeUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeClient", "Update", nil, "Failure preparing request")
 		return
@@ -330,7 +330,7 @@ func (client DscNodeClient) Update(ctx context.Context, automationAccountName st
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccountName string, nodeID string, parameters DscNodeUpdateParameters) (*http.Request, error) {
+func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeId":                autorest.Encode("path", nodeID),
@@ -348,7 +348,7 @@ func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccoun
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithJSON(dscNodeUpdateParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

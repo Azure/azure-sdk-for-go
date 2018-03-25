@@ -43,7 +43,7 @@ func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscripti
 
 // Get retrieve the automation agent registration information.
 //
-// automationAccountName is the automation account name.
+// automationAccountName is the name of the automation account.
 func (client AgentRegistrationInformationClient) Get(ctx context.Context, automationAccountName string) (result AgentRegistration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -82,7 +82,7 @@ func (client AgentRegistrationInformationClient) GetPreparer(ctx context.Context
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -117,8 +117,8 @@ func (client AgentRegistrationInformationClient) GetResponder(resp *http.Respons
 
 // RegenerateKey regenerate a primary or secondary agent registration key
 //
-// automationAccountName is the automation account name. parameters is the name of the agent registration key to be
-// regenerated
+// automationAccountName is the name of the automation account. parameters is the name of the agent registration
+// key to be regenerated
 func (client AgentRegistrationInformationClient) RegenerateKey(ctx context.Context, automationAccountName string, parameters AgentRegistrationRegenerateKeyParameter) (result AgentRegistration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -157,7 +157,7 @@ func (client AgentRegistrationInformationClient) RegenerateKeyPreparer(ctx conte
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -42,7 +42,7 @@ func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string, resource
 
 // Delete delete the dsc node identified by node id.
 //
-// automationAccountName is automation account name. nodeID is the node id.
+// automationAccountName is the name of the automation account. nodeID is the node id.
 func (client DscNodeClient) Delete(ctx context.Context, automationAccountName string, nodeID string) (result DscNode, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -82,7 +82,7 @@ func (client DscNodeClient) DeletePreparer(ctx context.Context, automationAccoun
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -117,7 +117,7 @@ func (client DscNodeClient) DeleteResponder(resp *http.Response) (result DscNode
 
 // Get retrieve the dsc node identified by node id.
 //
-// automationAccountName is the automation account name. nodeID is the node id.
+// automationAccountName is the name of the automation account. nodeID is the node id.
 func (client DscNodeClient) Get(ctx context.Context, automationAccountName string, nodeID string) (result DscNode, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -157,7 +157,7 @@ func (client DscNodeClient) GetPreparer(ctx context.Context, automationAccountNa
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -192,7 +192,7 @@ func (client DscNodeClient) GetResponder(resp *http.Response) (result DscNode, e
 
 // ListByAutomationAccount retrieve a list of dsc nodes.
 //
-// automationAccountName is the automation account name. filter is the filter to apply on the operation.
+// automationAccountName is the name of the automation account. filter is the filter to apply on the operation.
 func (client DscNodeClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter string) (result DscNodeListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
@@ -232,7 +232,7 @@ func (client DscNodeClient) ListByAutomationAccountPreparer(ctx context.Context,
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -297,9 +297,9 @@ func (client DscNodeClient) ListByAutomationAccountComplete(ctx context.Context,
 
 // Update update the dsc node.
 //
-// automationAccountName is the automation account name. nodeID is parameters supplied to the update dsc node.
-// parameters is parameters supplied to the update dsc node.
-func (client DscNodeClient) Update(ctx context.Context, automationAccountName string, nodeID string, parameters DscNodeUpdateParameters) (result DscNode, err error) {
+// automationAccountName is the name of the automation account. nodeID is parameters supplied to the update dsc
+// node. dscNodeUpdateParameters is parameters supplied to the update dsc node.
+func (client DscNodeClient) Update(ctx context.Context, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters) (result DscNode, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.ResourceGroupName,
 			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -308,7 +308,7 @@ func (client DscNodeClient) Update(ctx context.Context, automationAccountName st
 		return result, validation.NewError("automation.DscNodeClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, automationAccountName, nodeID, parameters)
+	req, err := client.UpdatePreparer(ctx, automationAccountName, nodeID, dscNodeUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeClient", "Update", nil, "Failure preparing request")
 		return
@@ -330,7 +330,7 @@ func (client DscNodeClient) Update(ctx context.Context, automationAccountName st
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccountName string, nodeID string, parameters DscNodeUpdateParameters) (*http.Request, error) {
+func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccountName string, nodeID string, dscNodeUpdateParameters DscNodeUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeId":                autorest.Encode("path", nodeID),
@@ -338,7 +338,7 @@ func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccoun
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -348,7 +348,7 @@ func (client DscNodeClient) UpdatePreparer(ctx context.Context, automationAccoun
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithJSON(dscNodeUpdateParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

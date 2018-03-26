@@ -54,16 +54,53 @@ func PossibleOfferTypeValues() []OfferType {
 	return original.PossibleOfferTypeValues()
 }
 
+type SpendingLimit = original.SpendingLimit
+
+const (
+	CurrentPeriodOff SpendingLimit = original.CurrentPeriodOff
+	Off              SpendingLimit = original.Off
+	On               SpendingLimit = original.On
+)
+
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+
+type State = original.State
+
+const (
+	Deleted  State = original.Deleted
+	Disabled State = original.Disabled
+	Enabled  State = original.Enabled
+	PastDue  State = original.PastDue
+	Warned   State = original.Warned
+)
+
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+
 type AdPrincipal = original.AdPrincipal
 type CreationParameters = original.CreationParameters
 type CreationResult = original.CreationResult
 type ErrorResponse = original.ErrorResponse
 type FactoryCreateSubscriptionInEnrollmentAccountFuture = original.FactoryCreateSubscriptionInEnrollmentAccountFuture
+type ListResult = original.ListResult
+type ListResultIterator = original.ListResultIterator
+type ListResultPage = original.ListResultPage
+type Location = original.Location
+type LocationListResult = original.LocationListResult
+type Model = original.Model
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultType = original.OperationListResultType
 type OperationType = original.OperationType
+type Policies = original.Policies
+type TenantIDDescription = original.TenantIDDescription
+type TenantListResult = original.TenantListResult
+type TenantListResultIterator = original.TenantListResultIterator
+type TenantListResultPage = original.TenantListResultPage
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient() OperationsClient {
@@ -80,6 +117,24 @@ func NewOperationsGroupClient() OperationsGroupClient {
 }
 func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
 	return original.NewOperationsGroupClientWithBaseURI(baseURI)
+}
+
+type SubscriptionsClient = original.SubscriptionsClient
+
+func NewSubscriptionsClient() SubscriptionsClient {
+	return original.NewSubscriptionsClient()
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI)
+}
+
+type TenantsClient = original.TenantsClient
+
+func NewTenantsClient() TenantsClient {
+	return original.NewTenantsClient()
+}
+func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
+	return original.NewTenantsClientWithBaseURI(baseURI)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -38,6 +38,24 @@ type Definition struct {
 	*DefinitionProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Definition.
+func (d Definition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.ID != nil {
+		objectMap["id"] = d.ID
+	}
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	if d.Type != nil {
+		objectMap["type"] = d.Type
+	}
+	if d.DefinitionProperties != nil {
+		objectMap["properties"] = d.DefinitionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for Definition struct.
 func (d *Definition) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage

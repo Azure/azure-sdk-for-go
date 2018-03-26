@@ -42,8 +42,10 @@ func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) Snapsh
 
 // CreateOrUpdate creates or updates a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group. snapshot is snapshot object supplied in the body of the Put disk operation.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters. snapshot is snapshot object supplied in the body of the
+// Put disk operation.
 func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (result SnapshotsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: snapshot,
@@ -89,7 +91,7 @@ func (client SnapshotsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -134,8 +136,9 @@ func (client SnapshotsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 
 // Delete deletes a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters.
 func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
@@ -160,7 +163,7 @@ func (client SnapshotsClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -203,8 +206,9 @@ func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result Opera
 
 // Get gets information about a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters.
 func (client SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string) (result Snapshot, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
@@ -235,7 +239,7 @@ func (client SnapshotsClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -270,9 +274,10 @@ func (client SnapshotsClient) GetResponder(resp *http.Response) (result Snapshot
 
 // GrantAccess grants access to a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group. grantAccessData is access data object supplied in the body of the get snapshot
-// access operation.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters. grantAccessData is access data object supplied in the body
+// of the get snapshot access operation.
 func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (result SnapshotsGrantAccessFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: grantAccessData,
@@ -303,7 +308,7 @@ func (client SnapshotsClient) GrantAccessPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -376,7 +381,7 @@ func (client SnapshotsClient) ListPreparer(ctx context.Context) (*http.Request, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -469,7 +474,7 @@ func (client SnapshotsClient) ListByResourceGroupPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -531,8 +536,9 @@ func (client SnapshotsClient) ListByResourceGroupComplete(ctx context.Context, r
 
 // RevokeAccess revokes access to a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters.
 func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsRevokeAccessFuture, err error) {
 	req, err := client.RevokeAccessPreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
@@ -557,7 +563,7 @@ func (client SnapshotsClient) RevokeAccessPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -600,9 +606,10 @@ func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result
 
 // Update updates (patches) a snapshot.
 //
-// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
-// subscription and resource group. snapshot is snapshot object supplied in the body of the Patch snapshot
-// operation.
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot that is being
+// created. The name can't be changed after the snapshot is created. Supported characters for the name are a-z,
+// A-Z, 0-9 and _. The max name length is 80 characters. snapshot is snapshot object supplied in the body of the
+// Patch snapshot operation.
 func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (result SnapshotsUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, snapshotName, snapshot)
 	if err != nil {
@@ -627,7 +634,7 @@ func (client SnapshotsClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-04-30-preview"
+	const APIVersion = "2018-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

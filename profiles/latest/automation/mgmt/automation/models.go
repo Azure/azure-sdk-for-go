@@ -187,6 +187,15 @@ func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStr
 	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type KeysClient = original.KeysClient
+
+func NewKeysClient(subscriptionID string, resourceGroupName string) KeysClient {
+	return original.NewKeysClient(subscriptionID, resourceGroupName)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID, resourceGroupName)
+}
+
 type LinkedWorkspaceClient = original.LinkedWorkspaceClient
 
 func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
@@ -357,6 +366,27 @@ const (
 
 func PossibleJobStreamTypeValues() []JobStreamType {
 	return original.PossibleJobStreamTypeValues()
+}
+
+type KeyName = original.KeyName
+
+const (
+	KeyNamePrimary   KeyName = original.KeyNamePrimary
+	KeyNameSecondary KeyName = original.KeyNameSecondary
+)
+
+func PossibleKeyNameValues() []KeyName {
+	return original.PossibleKeyNameValues()
+}
+
+type KeyPermissions = original.KeyPermissions
+
+const (
+	Full KeyPermissions = original.Full
+)
+
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return original.PossibleKeyPermissionsValues()
 }
 
 type ModuleProvisioningState = original.ModuleProvisioningState
@@ -587,6 +617,8 @@ type JobStreamListResult = original.JobStreamListResult
 type JobStreamListResultIterator = original.JobStreamListResultIterator
 type JobStreamListResultPage = original.JobStreamListResultPage
 type JobStreamProperties = original.JobStreamProperties
+type Key = original.Key
+type KeyListResult = original.KeyListResult
 type LinkedWorkspace = original.LinkedWorkspace
 type Module = original.Module
 type ModuleCreateOrUpdateParameters = original.ModuleCreateOrUpdateParameters

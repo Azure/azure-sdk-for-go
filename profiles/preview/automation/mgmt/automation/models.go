@@ -187,6 +187,15 @@ func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStr
 	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type KeysClient = original.KeysClient
+
+func NewKeysClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
+	return original.NewKeysClient(subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+}
+
 type LinkedWorkspaceClient = original.LinkedWorkspaceClient
 
 func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
@@ -357,6 +366,27 @@ const (
 
 func PossibleJobStreamTypeValues() []JobStreamType {
 	return original.PossibleJobStreamTypeValues()
+}
+
+type KeyName = original.KeyName
+
+const (
+	KeyNamePrimary   KeyName = original.KeyNamePrimary
+	KeyNameSecondary KeyName = original.KeyNameSecondary
+)
+
+func PossibleKeyNameValues() []KeyName {
+	return original.PossibleKeyNameValues()
+}
+
+type KeyPermissions = original.KeyPermissions
+
+const (
+	Full KeyPermissions = original.Full
+)
+
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return original.PossibleKeyPermissionsValues()
 }
 
 type LinuxUpdateClasses = original.LinuxUpdateClasses
@@ -658,6 +688,8 @@ type JobStreamListResult = original.JobStreamListResult
 type JobStreamListResultIterator = original.JobStreamListResultIterator
 type JobStreamListResultPage = original.JobStreamListResultPage
 type JobStreamProperties = original.JobStreamProperties
+type Key = original.Key
+type KeyListResult = original.KeyListResult
 type LinkedWorkspace = original.LinkedWorkspace
 type LinuxProperties = original.LinuxProperties
 type Module = original.Module

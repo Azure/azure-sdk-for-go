@@ -290,6 +290,34 @@ func PossibleJobStreamTypeValues() []JobStreamType {
 	return []JobStreamType{Any, Debug, Error, Output, Progress, Verbose, Warning}
 }
 
+// KeyName enumerates the values for key name.
+type KeyName string
+
+const (
+	// KeyNamePrimary ...
+	KeyNamePrimary KeyName = "primary"
+	// KeyNameSecondary ...
+	KeyNameSecondary KeyName = "secondary"
+)
+
+// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
+func PossibleKeyNameValues() []KeyName {
+	return []KeyName{KeyNamePrimary, KeyNameSecondary}
+}
+
+// KeyPermissions enumerates the values for key permissions.
+type KeyPermissions string
+
+const (
+	// Full ...
+	Full KeyPermissions = "Full"
+)
+
+// PossibleKeyPermissionsValues returns an array of possible values for the KeyPermissions const type.
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return []KeyPermissions{Full}
+}
+
 // LinuxUpdateClasses enumerates the values for linux update classes.
 type LinuxUpdateClasses string
 
@@ -4966,6 +4994,23 @@ func (jsp JobStreamProperties) MarshalJSON() ([]byte, error) {
 		objectMap["value"] = jsp.Value
 	}
 	return json.Marshal(objectMap)
+}
+
+// Key automation key which is used to register a DSC Node
+type Key struct {
+	// KeyName - Automation key name. Possible values include: 'KeyNamePrimary', 'KeyNameSecondary'
+	KeyName KeyName `json:"keyName,omitempty"`
+	// Permissions - Automation key permissions. Possible values include: 'Full'
+	Permissions KeyPermissions `json:"permissions,omitempty"`
+	// Value - Value of the Automation Key used for registration.
+	Value *string `json:"value,omitempty"`
+}
+
+// KeyListResult ...
+type KeyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Lists the automation keys.
+	Value *[]Key `json:"value,omitempty"`
 }
 
 // LinkedWorkspace definition of the linked workspace.

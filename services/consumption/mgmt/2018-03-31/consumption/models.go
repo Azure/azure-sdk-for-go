@@ -343,8 +343,8 @@ type BudgetTimePeriod struct {
 
 // CostAllocationTag the cost allocation tag.
 type CostAllocationTag struct {
-	// KeyName - Cost allocation tag key name.
-	KeyName *string `json:"keyName,omitempty"`
+	// Key - Cost allocation tag key.
+	Key *string `json:"key,omitempty"`
 }
 
 // CostAllocationTagProperties the properties of the cost allocation tag.

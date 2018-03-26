@@ -32,13 +32,13 @@ type MarketplacesClient struct {
 }
 
 // NewMarketplacesClient creates an instance of the MarketplacesClient client.
-func NewMarketplacesClient(subscriptionID string, billingAccountID string) MarketplacesClient {
-	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
+func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
+	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client.
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) MarketplacesClient {
-	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID)}
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
+	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the marketplaces for a scope by subscriptionId. Marketplaces are available via this API only for May 1,

@@ -32,13 +32,13 @@ type PriceSheetClient struct {
 }
 
 // NewPriceSheetClient creates an instance of the PriceSheetClient client.
-func NewPriceSheetClient(subscriptionID string, billingAccountID string) PriceSheetClient {
-	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID, billingAccountID)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, billingAccountID string) PriceSheetClient {
-	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID, billingAccountID)}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014

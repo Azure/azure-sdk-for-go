@@ -31,13 +31,13 @@ type StatisticsClient struct {
 }
 
 // NewStatisticsClient creates an instance of the StatisticsClient client.
-func NewStatisticsClient(subscriptionID string) StatisticsClient {
-	return NewStatisticsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewStatisticsClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) StatisticsClient {
+	return NewStatisticsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
 }
 
 // NewStatisticsClientWithBaseURI creates an instance of the StatisticsClient client.
-func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string) StatisticsClient {
-	return StatisticsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) StatisticsClient {
+	return StatisticsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
 }
 
 // ListByAutomationAccount retrieve the statistics for the account.

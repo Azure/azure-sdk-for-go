@@ -1045,9 +1045,6 @@ type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
 type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DataSource = original.DataSource
-type DefaultErrorResponse = original.DefaultErrorResponse
-type DefaultErrorResponseError = original.DefaultErrorResponseError
-type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
 type DeletedSite = original.DeletedSite
 type DeletedWebAppCollection = original.DeletedWebAppCollection
 type DeletedWebAppCollectionIterator = original.DeletedWebAppCollectionIterator
@@ -1237,11 +1234,6 @@ type Resource = original.Resource
 type ResourceCollection = original.ResourceCollection
 type ResourceCollectionIterator = original.ResourceCollectionIterator
 type ResourceCollectionPage = original.ResourceCollectionPage
-type ResourceHealthMetadata = original.ResourceHealthMetadata
-type ResourceHealthMetadataCollection = original.ResourceHealthMetadataCollection
-type ResourceHealthMetadataCollectionIterator = original.ResourceHealthMetadataCollectionIterator
-type ResourceHealthMetadataCollectionPage = original.ResourceHealthMetadataCollectionPage
-type ResourceHealthMetadataProperties = original.ResourceHealthMetadataProperties
 type ResourceMetric = original.ResourceMetric
 type ResourceMetricAvailability = original.ResourceMetricAvailability
 type ResourceMetricCollection = original.ResourceMetricCollection
@@ -1412,15 +1404,6 @@ func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 }
 func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ResourceHealthMetadataClient = original.ResourceHealthMetadataClient
-
-func NewResourceHealthMetadataClient(subscriptionID string) ResourceHealthMetadataClient {
-	return original.NewResourceHealthMetadataClient(subscriptionID)
-}
-func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthMetadataClient {
-	return original.NewResourceHealthMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type TopLevelDomainsClient = original.TopLevelDomainsClient

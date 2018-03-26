@@ -401,8 +401,6 @@ type ActionGroup struct {
 	VoiceReceivers *[]VoiceReceiver `json:"voiceReceivers,omitempty"`
 	// LogicAppReceivers - The list of logic app receivers that are part of this action group.
 	LogicAppReceivers *[]LogicAppReceiver `json:"logicAppReceivers,omitempty"`
-	// AzureFunctionReceivers - The list of azure function receivers that are part of this action group.
-	AzureFunctionReceivers *[]AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
 }
 
 // ActionGroupList a list of action groups.
@@ -1396,18 +1394,6 @@ type AzureAppPushReceiver struct {
 	Name *string `json:"name,omitempty"`
 	// EmailAddress - The email address registered for the Azure mobile app.
 	EmailAddress *string `json:"emailAddress,omitempty"`
-}
-
-// AzureFunctionReceiver an azure function receiver.
-type AzureFunctionReceiver struct {
-	// Name - The name of the azure function receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
-	// FunctionAppResourceID - The azure resource id of the function app.
-	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
-	// FunctionName - The function name in the function app.
-	FunctionName *string `json:"functionName,omitempty"`
-	// HTTPTriggerURL - The http trigger url where http request sent to.
-	HTTPTriggerURL *string `json:"httpTriggerUrl,omitempty"`
 }
 
 // Baseline the baseline values for a single sensitivity value.

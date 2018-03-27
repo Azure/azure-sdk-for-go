@@ -31,13 +31,13 @@ type AccountClient struct {
 }
 
 // NewAccountClient creates an instance of the AccountClient client.
-func NewAccountClient(subscriptionID string, resourceGroupName string) AccountClient {
-	return NewAccountClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
+func NewAccountClient(subscriptionID string) AccountClient {
+	return NewAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAccountClientWithBaseURI creates an instance of the AccountClient client.
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) AccountClient {
-	return AccountClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return AccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update automation account.

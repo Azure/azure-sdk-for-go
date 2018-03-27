@@ -31,30 +31,31 @@ type JobClient struct {
 }
 
 // NewJobClient creates an instance of the JobClient client.
-func NewJobClient(subscriptionID string, resourceGroupName string) JobClient {
-	return NewJobClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
+func NewJobClient(subscriptionID string) JobClient {
+	return NewJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobClientWithBaseURI creates an instance of the JobClient client.
-func NewJobClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) JobClient {
-	return JobClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
+func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
+	return JobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a job of the runbook.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. parameters is the
-// parameters supplied to the create job operation. clientRequestID is identifies this specific client request.
-func (client JobClient) Create(ctx context.Context, automationAccountName string, jobName string, parameters JobCreateParameters, clientRequestID string) (result Job, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. parameters is the parameters supplied to the create job operation. clientRequestID is
+// identifies this specific client request.
+func (client JobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, clientRequestID string) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.JobCreateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.JobCreateProperties.Runbook", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, automationAccountName, jobName, parameters, clientRequestID)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, automationAccountName, jobName, parameters, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "Create", nil, "Failure preparing request")
 		return
@@ -76,11 +77,11 @@ func (client JobClient) Create(ctx context.Context, automationAccountName string
 }
 
 // CreatePreparer prepares the Create request.
-func (client JobClient) CreatePreparer(ctx context.Context, automationAccountName string, jobName string, parameters JobCreateParameters, clientRequestID string) (*http.Request, error) {
+func (client JobClient) CreatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, parameters JobCreateParameters, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -125,16 +126,16 @@ func (client JobClient) CreateResponder(resp *http.Response) (result Job, err er
 
 // Get retrieve the job identified by job name.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. clientRequestID is
-// identifies this specific client request.
-func (client JobClient) Get(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result Job, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. clientRequestID is identifies this specific client request.
+func (client JobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "Get", nil, "Failure preparing request")
 		return
@@ -156,11 +157,11 @@ func (client JobClient) Get(ctx context.Context, automationAccountName string, j
 }
 
 // GetPreparer prepares the Get request.
-func (client JobClient) GetPreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -203,16 +204,16 @@ func (client JobClient) GetResponder(resp *http.Response) (result Job, err error
 
 // GetOutput retrieve the job output identified by job name.
 //
-// automationAccountName is the name of the automation account. jobName is the name of the job to be created.
-// clientRequestID is identifies this specific client request.
-func (client JobClient) GetOutput(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the name of the job to be created. clientRequestID is identifies this specific client request.
+func (client JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "GetOutput", err.Error())
 	}
 
-	req, err := client.GetOutputPreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.GetOutputPreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "GetOutput", nil, "Failure preparing request")
 		return
@@ -234,11 +235,11 @@ func (client JobClient) GetOutput(ctx context.Context, automationAccountName str
 }
 
 // GetOutputPreparer prepares the GetOutput request.
-func (client JobClient) GetOutputPreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) GetOutputPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -281,16 +282,16 @@ func (client JobClient) GetOutputResponder(resp *http.Response) (result String, 
 
 // GetRunbookContent retrieve the runbook content of the job identified by job name.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. clientRequestID is
-// identifies this specific client request.
-func (client JobClient) GetRunbookContent(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. clientRequestID is identifies this specific client request.
+func (client JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "GetRunbookContent", err.Error())
 	}
 
-	req, err := client.GetRunbookContentPreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.GetRunbookContentPreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "GetRunbookContent", nil, "Failure preparing request")
 		return
@@ -312,11 +313,11 @@ func (client JobClient) GetRunbookContent(ctx context.Context, automationAccount
 }
 
 // GetRunbookContentPreparer prepares the GetRunbookContent request.
-func (client JobClient) GetRunbookContentPreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) GetRunbookContentPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -359,17 +360,17 @@ func (client JobClient) GetRunbookContentResponder(resp *http.Response) (result 
 
 // ListByAutomationAccount retrieve a list of jobs.
 //
-// automationAccountName is the name of the automation account. filter is the filter to apply on the operation.
-// clientRequestID is identifies this specific client request.
-func (client JobClient) ListByAutomationAccount(ctx context.Context, automationAccountName string, filter string, clientRequestID string) (result JobListResultV2Page, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// filter is the filter to apply on the operation. clientRequestID is identifies this specific client request.
+func (client JobClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, clientRequestID string) (result JobListResultV2Page, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "ListByAutomationAccount", err.Error())
 	}
 
 	result.fn = client.listByAutomationAccountNextResults
-	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName, filter, clientRequestID)
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName, filter, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -391,10 +392,10 @@ func (client JobClient) ListByAutomationAccount(ctx context.Context, automationA
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client JobClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string, filter string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -460,23 +461,23 @@ func (client JobClient) listByAutomationAccountNextResults(lastResults JobListRe
 }
 
 // ListByAutomationAccountComplete enumerates all values, automatically crossing page boundaries as required.
-func (client JobClient) ListByAutomationAccountComplete(ctx context.Context, automationAccountName string, filter string, clientRequestID string) (result JobListResultV2Iterator, err error) {
-	result.page, err = client.ListByAutomationAccount(ctx, automationAccountName, filter, clientRequestID)
+func (client JobClient) ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string, clientRequestID string) (result JobListResultV2Iterator, err error) {
+	result.page, err = client.ListByAutomationAccount(ctx, resourceGroupName, automationAccountName, filter, clientRequestID)
 	return
 }
 
 // Resume resume the job identified by jobName.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. clientRequestID is
-// identifies this specific client request.
-func (client JobClient) Resume(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. clientRequestID is identifies this specific client request.
+func (client JobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Resume", err.Error())
 	}
 
-	req, err := client.ResumePreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.ResumePreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "Resume", nil, "Failure preparing request")
 		return
@@ -498,11 +499,11 @@ func (client JobClient) Resume(ctx context.Context, automationAccountName string
 }
 
 // ResumePreparer prepares the Resume request.
-func (client JobClient) ResumePreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) ResumePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -544,16 +545,16 @@ func (client JobClient) ResumeResponder(resp *http.Response) (result autorest.Re
 
 // Stop stop the job identified by jobName.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. clientRequestID is
-// identifies this specific client request.
-func (client JobClient) Stop(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. clientRequestID is identifies this specific client request.
+func (client JobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Stop", err.Error())
 	}
 
-	req, err := client.StopPreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.StopPreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "Stop", nil, "Failure preparing request")
 		return
@@ -575,11 +576,11 @@ func (client JobClient) Stop(ctx context.Context, automationAccountName string, 
 }
 
 // StopPreparer prepares the Stop request.
-func (client JobClient) StopPreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) StopPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -621,16 +622,16 @@ func (client JobClient) StopResponder(resp *http.Response) (result autorest.Resp
 
 // Suspend suspend the job identified by job name.
 //
-// automationAccountName is the name of the automation account. jobName is the job name. clientRequestID is
-// identifies this specific client request.
-func (client JobClient) Suspend(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the name of the automation account.
+// jobName is the job name. clientRequestID is identifies this specific client request.
+func (client JobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Suspend", err.Error())
 	}
 
-	req, err := client.SuspendPreparer(ctx, automationAccountName, jobName, clientRequestID)
+	req, err := client.SuspendPreparer(ctx, resourceGroupName, automationAccountName, jobName, clientRequestID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobClient", "Suspend", nil, "Failure preparing request")
 		return
@@ -652,11 +653,11 @@ func (client JobClient) Suspend(ctx context.Context, automationAccountName strin
 }
 
 // SuspendPreparer prepares the Suspend request.
-func (client JobClient) SuspendPreparer(ctx context.Context, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
+func (client JobClient) SuspendPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, clientRequestID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"jobName":               autorest.Encode("path", jobName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

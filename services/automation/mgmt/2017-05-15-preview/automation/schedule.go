@@ -42,12 +42,15 @@ func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) Schedul
 
 // CreateOrUpdate create a schedule.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. scheduleName
-// is the schedule name. parameters is the parameters supplied to the create or update schedule operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// scheduleName is the schedule name. parameters is the parameters supplied to the create or update schedule
+// operation.
 func (client ScheduleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleCreateOrUpdateParameters) (result Schedule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.ScheduleCreateOrUpdateProperties", Name: validation.Null, Rule: true,
@@ -122,12 +125,14 @@ func (client ScheduleClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete delete the schedule identified by schedule name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. scheduleName
-// is the schedule name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// scheduleName is the schedule name.
 func (client ScheduleClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ScheduleClient", "Delete", err.Error())
 	}
 
@@ -195,12 +200,14 @@ func (client ScheduleClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get retrieve the schedule identified by schedule name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. scheduleName
-// is the schedule name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// scheduleName is the schedule name.
 func (client ScheduleClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string) (result Schedule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ScheduleClient", "Get", err.Error())
 	}
 
@@ -269,11 +276,13 @@ func (client ScheduleClient) GetResponder(resp *http.Response) (result Schedule,
 
 // ListByAutomationAccount retrieve a list of schedules.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client ScheduleClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result ScheduleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ScheduleClient", "ListByAutomationAccount", err.Error())
 	}
 
@@ -369,12 +378,14 @@ func (client ScheduleClient) ListByAutomationAccountComplete(ctx context.Context
 
 // Update update the schedule identified by schedule name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. scheduleName
-// is the schedule name. parameters is the parameters supplied to the update schedule operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// scheduleName is the schedule name. parameters is the parameters supplied to the update schedule operation.
 func (client ScheduleClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, scheduleName string, parameters ScheduleUpdateParameters) (result Schedule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ScheduleClient", "Update", err.Error())
 	}
 

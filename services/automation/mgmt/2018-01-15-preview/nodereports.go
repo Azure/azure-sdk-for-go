@@ -42,8 +42,8 @@ func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string) Node
 
 // Get retrieve the Dsc node report data by node id and report id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeID is the Dsc node id. reportID is the report id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeID is the Dsc node id. reportID is the report id.
 func (client NodeReportsClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string) (result DscNodeReport, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -84,7 +84,7 @@ func (client NodeReportsClient) GetPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -119,8 +119,8 @@ func (client NodeReportsClient) GetResponder(resp *http.Response) (result DscNod
 
 // GetContent retrieve the Dsc node reports by node id and report id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeID is the Dsc node id. reportID is the report id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeID is the Dsc node id. reportID is the report id.
 func (client NodeReportsClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string) (result SetObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -161,7 +161,7 @@ func (client NodeReportsClient) GetContentPreparer(ctx context.Context, resource
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -196,8 +196,9 @@ func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result
 
 // ListByNode retrieve the Dsc node report list by node id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeID is the parameters supplied to the list operation. filter is the filter to apply on the operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeID is the parameters supplied to the list operation. filter is the filter to apply on the
+// operation.
 func (client NodeReportsClient) ListByNode(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, filter string) (result DscNodeReportListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -238,7 +239,7 @@ func (client NodeReportsClient) ListByNodePreparer(ctx context.Context, resource
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

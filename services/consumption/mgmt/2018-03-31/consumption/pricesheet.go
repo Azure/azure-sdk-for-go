@@ -32,13 +32,13 @@ type PriceSheetClient struct {
 }
 
 // NewPriceSheetClient creates an instance of the PriceSheetClient client.
-func NewPriceSheetClient(subscriptionID string, grain Datagrain) PriceSheetClient {
-	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return NewPriceSheetClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPriceSheetClientWithBaseURI creates an instance of the PriceSheetClient client.
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) PriceSheetClient {
-	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID, grain)}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return PriceSheetClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014

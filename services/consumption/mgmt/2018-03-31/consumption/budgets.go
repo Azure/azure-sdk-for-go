@@ -32,13 +32,13 @@ type BudgetsClient struct {
 }
 
 // NewBudgetsClient creates an instance of the BudgetsClient client.
-func NewBudgetsClient(subscriptionID string, grain Datagrain) BudgetsClient {
-	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client.
-func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) BudgetsClient {
-	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID, grain)}
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update a budget. Update operation requires latest eTag to be set in the

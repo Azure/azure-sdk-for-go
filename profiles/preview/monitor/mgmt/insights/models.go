@@ -419,6 +419,7 @@ type AutoscaleSettingResourceCollectionIterator = original.AutoscaleSettingResou
 type AutoscaleSettingResourceCollectionPage = original.AutoscaleSettingResourceCollectionPage
 type AutoscaleSettingResourcePatch = original.AutoscaleSettingResourcePatch
 type AzureAppPushReceiver = original.AzureAppPushReceiver
+type AzureFunctionReceiver = original.AzureFunctionReceiver
 type Baseline = original.Baseline
 type BaselineMetadataValue = original.BaselineMetadataValue
 type BaselineProperties = original.BaselineProperties

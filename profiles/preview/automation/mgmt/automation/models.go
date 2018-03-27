@@ -189,11 +189,11 @@ func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStr
 
 type KeysClient = original.KeysClient
 
-func NewKeysClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
-	return original.NewKeysClient(subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
 }
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
-	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type LinkedWorkspaceClient = original.LinkedWorkspaceClient

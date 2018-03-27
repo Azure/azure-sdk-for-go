@@ -291,34 +291,6 @@ func PossibleJobStreamTypeValues() []JobStreamType {
 	return []JobStreamType{Any, Debug, Error, Output, Progress, Verbose, Warning}
 }
 
-// KeyName enumerates the values for key name.
-type KeyName string
-
-const (
-	// KeyNamePrimary ...
-	KeyNamePrimary KeyName = "primary"
-	// KeyNameSecondary ...
-	KeyNameSecondary KeyName = "secondary"
-)
-
-// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
-func PossibleKeyNameValues() []KeyName {
-	return []KeyName{KeyNamePrimary, KeyNameSecondary}
-}
-
-// KeyPermissions enumerates the values for key permissions.
-type KeyPermissions string
-
-const (
-	// Full ...
-	Full KeyPermissions = "Full"
-)
-
-// PossibleKeyPermissionsValues returns an array of possible values for the KeyPermissions const type.
-func PossibleKeyPermissionsValues() []KeyPermissions {
-	return []KeyPermissions{Full}
-}
-
 // ModuleProvisioningState enumerates the values for module provisioning state.
 type ModuleProvisioningState string
 
@@ -3315,73 +3287,6 @@ func (dcp DscConfigurationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DscConfigurationUpdateParameters the parameters supplied to the create or update configuration operation.
-type DscConfigurationUpdateParameters struct {
-	// DscConfigurationCreateOrUpdateProperties - Gets or sets configuration create or update properties.
-	*DscConfigurationCreateOrUpdateProperties `json:"properties,omitempty"`
-	// Name - Gets or sets name of the resource.
-	Name *string `json:"name,omitempty"`
-	// Tags - Gets or sets the tags attached to the resource.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for DscConfigurationUpdateParameters.
-func (dcup DscConfigurationUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dcup.DscConfigurationCreateOrUpdateProperties != nil {
-		objectMap["properties"] = dcup.DscConfigurationCreateOrUpdateProperties
-	}
-	if dcup.Name != nil {
-		objectMap["name"] = dcup.Name
-	}
-	if dcup.Tags != nil {
-		objectMap["tags"] = dcup.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for DscConfigurationUpdateParameters struct.
-func (dcup *DscConfigurationUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var dscConfigurationCreateOrUpdateProperties DscConfigurationCreateOrUpdateProperties
-				err = json.Unmarshal(*v, &dscConfigurationCreateOrUpdateProperties)
-				if err != nil {
-					return err
-				}
-				dcup.DscConfigurationCreateOrUpdateProperties = &dscConfigurationCreateOrUpdateProperties
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				dcup.Name = &name
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				dcup.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
 // DscMetaConfiguration definition of the DSC Meta Configuration.
 type DscMetaConfiguration struct {
 	// ConfigurationModeFrequencyMins - Gets or sets the ConfigurationModeFrequencyMins value of the meta configuration.
@@ -4814,23 +4719,6 @@ func (jsp JobStreamProperties) MarshalJSON() ([]byte, error) {
 		objectMap["value"] = jsp.Value
 	}
 	return json.Marshal(objectMap)
-}
-
-// Key automation key which is used to register a DSC Node
-type Key struct {
-	// KeyName - Automation key name. Possible values include: 'KeyNamePrimary', 'KeyNameSecondary'
-	KeyName KeyName `json:"keyName,omitempty"`
-	// Permissions - Automation key permissions. Possible values include: 'Full'
-	Permissions KeyPermissions `json:"permissions,omitempty"`
-	// Value - Value of the Automation Key used for registration.
-	Value *string `json:"value,omitempty"`
-}
-
-// KeyListResult ...
-type KeyListResult struct {
-	autorest.Response `json:"-"`
-	// Value - Lists the automation keys.
-	Value *[]Key `json:"value,omitempty"`
 }
 
 // LinkedWorkspace definition of the linked workspace.

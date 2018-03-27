@@ -26,19 +26,19 @@ import (
 	"net/http"
 )
 
-// Mode enumerates the values for mode.
-type Mode string
+// ImportMode enumerates the values for import mode.
+type ImportMode string
 
 const (
 	// Force ...
-	Force Mode = "Force"
+	Force ImportMode = "Force"
 	// NoForce ...
-	NoForce Mode = "NoForce"
+	NoForce ImportMode = "NoForce"
 )
 
-// PossibleModeValues returns an array of possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{Force, NoForce}
+// PossibleImportModeValues returns an array of possible values for the ImportMode const type.
+func PossibleImportModeValues() []ImportMode {
+	return []ImportMode{Force, NoForce}
 }
 
 // PasswordName enumerates the values for password name.
@@ -414,7 +414,7 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
 	// Mode - When Force, any existing target tags will be overwritten.  When NoForce, any existing target tags will fail the operation before any copying begins.
 	// NoForce is the default. Possible values include: 'NoForce', 'Force'
-	Mode Mode `json:"mode,omitempty"`
+	Mode ImportMode `json:"mode,omitempty"`
 }
 
 // ImportSource ...

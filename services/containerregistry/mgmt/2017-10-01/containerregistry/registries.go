@@ -367,7 +367,8 @@ func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupNam
 				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
 		{TargetValue: importParameters,
 			Constraints: []validation.Constraint{{Target: "importParameters.SourceRepository", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "importParameters.Source", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "importParameters.Source", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "importParameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("containerregistry.RegistriesClient", "ImportImage", err.Error())
 	}
 

@@ -83,7 +83,7 @@ func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/billingaccounts/{billingAccountId}/providers/microsoft.consumption/costallocationtags", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costAllocationTags", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -148,7 +148,7 @@ func (client CostAllocationTagsClient) GetPreparer(ctx context.Context, billingA
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/billingaccounts/{billingAccountId}/providers/microsoft.consumption/costallocationtags", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costAllocationTags", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

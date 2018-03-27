@@ -24,7 +24,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/satori/go.uuid"
-	"io"
 	"net/http"
 )
 
@@ -319,6 +318,25 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 	return []KeyPermissions{Full}
 }
 
+// LinuxUpdateClasses enumerates the values for linux update classes.
+type LinuxUpdateClasses string
+
+const (
+	// Critical ...
+	Critical LinuxUpdateClasses = "Critical"
+	// Other ...
+	Other LinuxUpdateClasses = "Other"
+	// Security ...
+	Security LinuxUpdateClasses = "Security"
+	// Unclassified ...
+	Unclassified LinuxUpdateClasses = "Unclassified"
+)
+
+// PossibleLinuxUpdateClassesValues returns an array of possible values for the LinuxUpdateClasses const type.
+func PossibleLinuxUpdateClassesValues() []LinuxUpdateClasses {
+	return []LinuxUpdateClasses{Critical, Other, Security, Unclassified}
+}
+
 // ModuleProvisioningState enumerates the values for module provisioning state.
 type ModuleProvisioningState string
 
@@ -360,6 +378,38 @@ const (
 // PossibleModuleProvisioningStateValues returns an array of possible values for the ModuleProvisioningState const type.
 func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
 	return []ModuleProvisioningState{ModuleProvisioningStateActivitiesStored, ModuleProvisioningStateCancelled, ModuleProvisioningStateConnectionTypeImported, ModuleProvisioningStateContentDownloaded, ModuleProvisioningStateContentRetrieved, ModuleProvisioningStateContentStored, ModuleProvisioningStateContentValidated, ModuleProvisioningStateCreated, ModuleProvisioningStateCreating, ModuleProvisioningStateFailed, ModuleProvisioningStateModuleDataStored, ModuleProvisioningStateModuleImportRunbookComplete, ModuleProvisioningStateRunningImportModuleRunbook, ModuleProvisioningStateStartingImportModuleRunbook, ModuleProvisioningStateSucceeded, ModuleProvisioningStateUpdating}
+}
+
+// OperatingSystemType enumerates the values for operating system type.
+type OperatingSystemType string
+
+const (
+	// Linux ...
+	Linux OperatingSystemType = "Linux"
+	// Windows ...
+	Windows OperatingSystemType = "Windows"
+)
+
+// PossibleOperatingSystemTypeValues returns an array of possible values for the OperatingSystemType const type.
+func PossibleOperatingSystemTypeValues() []OperatingSystemType {
+	return []OperatingSystemType{Linux, Windows}
+}
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Completed ...
+	Completed ProvisioningState = "Completed"
+	// Failed ...
+	Failed ProvisioningState = "Failed"
+	// Running ...
+	Running ProvisioningState = "Running"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Completed, Failed, Running}
 }
 
 // RunbookProvisioningState enumerates the values for runbook provisioning state.
@@ -474,6 +524,52 @@ const (
 // PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
 func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return []SkuNameEnum{Basic, Free}
+}
+
+// SourceType enumerates the values for source type.
+type SourceType string
+
+const (
+	// GitHub ...
+	GitHub SourceType = "GitHub"
+	// VsoGit ...
+	VsoGit SourceType = "VsoGit"
+	// VsoTfvc ...
+	VsoTfvc SourceType = "VsoTfvc"
+)
+
+// PossibleSourceTypeValues returns an array of possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{GitHub, VsoGit, VsoTfvc}
+}
+
+// WindowsUpdateClasses enumerates the values for windows update classes.
+type WindowsUpdateClasses string
+
+const (
+	// WindowsUpdateClassesCritical ...
+	WindowsUpdateClassesCritical WindowsUpdateClasses = "Critical"
+	// WindowsUpdateClassesDefinition ...
+	WindowsUpdateClassesDefinition WindowsUpdateClasses = "Definition"
+	// WindowsUpdateClassesFeaturePack ...
+	WindowsUpdateClassesFeaturePack WindowsUpdateClasses = "FeaturePack"
+	// WindowsUpdateClassesSecurity ...
+	WindowsUpdateClassesSecurity WindowsUpdateClasses = "Security"
+	// WindowsUpdateClassesServicePack ...
+	WindowsUpdateClassesServicePack WindowsUpdateClasses = "ServicePack"
+	// WindowsUpdateClassesTools ...
+	WindowsUpdateClassesTools WindowsUpdateClasses = "Tools"
+	// WindowsUpdateClassesUnclassified ...
+	WindowsUpdateClassesUnclassified WindowsUpdateClasses = "Unclassified"
+	// WindowsUpdateClassesUpdateRollup ...
+	WindowsUpdateClassesUpdateRollup WindowsUpdateClasses = "UpdateRollup"
+	// WindowsUpdateClassesUpdates ...
+	WindowsUpdateClassesUpdates WindowsUpdateClasses = "Updates"
+)
+
+// PossibleWindowsUpdateClassesValues returns an array of possible values for the WindowsUpdateClasses const type.
+func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
+	return []WindowsUpdateClasses{WindowsUpdateClassesCritical, WindowsUpdateClassesDefinition, WindowsUpdateClassesFeaturePack, WindowsUpdateClassesSecurity, WindowsUpdateClassesServicePack, WindowsUpdateClassesTools, WindowsUpdateClassesUnclassified, WindowsUpdateClassesUpdateRollup, WindowsUpdateClassesUpdates}
 }
 
 // Account definition of the automation account type.
@@ -1506,6 +1602,14 @@ func (cup *CertificateUpdateParameters) UnmarshalJSON(body []byte) error {
 type CertificateUpdateProperties struct {
 	// Description - Gets or sets the description of the certificate.
 	Description *string `json:"description,omitempty"`
+}
+
+// CollectionItemUpdateConfiguration object returned when requesting a collection of software update configuration
+type CollectionItemUpdateConfiguration struct {
+	// AzureVirtualMachines - List of azure resource Ids for azure virtual machines targeted by the software update configuration.
+	AzureVirtualMachines *[]string `json:"azureVirtualMachines,omitempty"`
+	// Duration - Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
+	Duration *string `json:"duration,omitempty"`
 }
 
 // Connection definition of the connection.
@@ -2611,6 +2715,55 @@ func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DscCompilationJobCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DscCompilationJobCreateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DscCompilationJobCreateFuture) Result(client DscCompilationJobClient) (dcj DscCompilationJob, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return dcj, azure.NewAsyncOpIncompleteError("automation.DscCompilationJobCreateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		dcj, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	dcj, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
 	// DscCompilationJobCreateProperties - Gets or sets the list of compilation job properties.
@@ -3400,27 +3553,11 @@ type DscMetaConfiguration struct {
 	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 }
 
-// DscNode definition of the dsc node type.
+// DscNode definition of a DscNode
 type DscNode struct {
 	autorest.Response `json:"-"`
-	// LastSeen - Gets or sets the last seen time of the node.
-	LastSeen *date.Time `json:"lastSeen,omitempty"`
-	// RegistrationTime - Gets or sets the registration time of the node.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
-	// IP - Gets or sets the ip of the node.
-	IP *string `json:"ip,omitempty"`
-	// AccountID - Gets or sets the account id of the node.
-	AccountID *string `json:"accountId,omitempty"`
-	// NodeConfiguration - Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
-	// Status - Gets or sets the status of the node.
-	Status *string `json:"status,omitempty"`
-	// NodeID - Gets or sets the node id.
-	NodeID *string `json:"nodeId,omitempty"`
-	// Etag - Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
-	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+	// DscNodeProperties - The properties of a DscNode.
+	*DscNodeProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -3429,27 +3566,210 @@ type DscNode struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DscNode.
+func (dn DscNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dn.DscNodeProperties != nil {
+		objectMap["properties"] = dn.DscNodeProperties
+	}
+	if dn.ID != nil {
+		objectMap["id"] = dn.ID
+	}
+	if dn.Name != nil {
+		objectMap["name"] = dn.Name
+	}
+	if dn.Type != nil {
+		objectMap["type"] = dn.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNode struct.
+func (dn *DscNode) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeProperties DscNodeProperties
+				err = json.Unmarshal(*v, &dscNodeProperties)
+				if err != nil {
+					return err
+				}
+				dn.DscNodeProperties = &dscNodeProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dn.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dn.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dn.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // DscNodeConfiguration definition of the dsc node configuration.
 type DscNodeConfiguration struct {
 	autorest.Response `json:"-"`
-	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// CreationTime - Gets or sets creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Configuration - Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// DscNodeConfigurationProperties - Gets or sets the configuration properties.
+	*DscNodeConfigurationProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeConfiguration.
+func (dnc DscNodeConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnc.DscNodeConfigurationProperties != nil {
+		objectMap["properties"] = dnc.DscNodeConfigurationProperties
+	}
+	if dnc.ID != nil {
+		objectMap["id"] = dnc.ID
+	}
+	if dnc.Name != nil {
+		objectMap["name"] = dnc.Name
+	}
+	if dnc.Type != nil {
+		objectMap["type"] = dnc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeConfiguration struct.
+func (dnc *DscNodeConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeConfigurationProperties DscNodeConfigurationProperties
+				err = json.Unmarshal(*v, &dscNodeConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				dnc.DscNodeConfigurationProperties = &dscNodeConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dnc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dnc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dnc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeConfigurationAssociationProperty the dsc nodeconfiguration property associated with the entity.
 type DscNodeConfigurationAssociationProperty struct {
 	// Name - Gets or sets the name of the dsc nodeconfiguration.
 	Name *string `json:"name,omitempty"`
+}
+
+// DscNodeConfigurationCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DscNodeConfigurationCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DscNodeConfigurationCreateOrUpdateFuture) Result(client DscNodeConfigurationClient) (dnc DscNodeConfiguration, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return dnc, azure.NewAsyncOpIncompleteError("automation.DscNodeConfigurationCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		dnc, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	dnc, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // DscNodeConfigurationCreateOrUpdateParameters the parameters supplied to the create or update node configuration
@@ -3463,6 +3783,19 @@ type DscNodeConfigurationCreateOrUpdateParameters struct {
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// NewNodeConfigurationBuildVersionRequired - If a new build version of NodeConfiguration is required.
 	NewNodeConfigurationBuildVersionRequired *bool `json:"newNodeConfigurationBuildVersionRequired,omitempty"`
+}
+
+// DscNodeConfigurationCreateOrUpdateParametersProperties the parameters supplied to the create or update node
+// configuration operation.
+type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
+	// Source - Gets or sets the source.
+	Source *ContentSource `json:"source,omitempty"`
+	// Name - Gets or sets the type of the parameter.
+	Name *string `json:"name,omitempty"`
+	// Configuration - Gets or sets the configuration of the node.
+	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeConfigurationListResult the response model for the list job operation.
@@ -3565,6 +3898,22 @@ func (page DscNodeConfigurationListResultPage) Values() []DscNodeConfiguration {
 		return nil
 	}
 	return *page.dnclr.Value
+}
+
+// DscNodeConfigurationProperties ...
+type DscNodeConfigurationProperties struct {
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// CreationTime - Gets or sets creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// Configuration - Gets or sets the configuration of the node.
+	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// Source - Source of node configuration.
+	Source *string `json:"source,omitempty"`
+	// NodeCount - Number of nodes with this nodeconfiguration assigned
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
@@ -3675,6 +4024,157 @@ func (page DscNodeListResultPage) Values() []DscNode {
 		return nil
 	}
 	return *page.dnlr.Value
+}
+
+// DscNodeProperties the properties of a DscNode
+type DscNodeProperties struct {
+	// LastSeen - Gets or sets the last seen time of the node.
+	LastSeen *date.Time `json:"lastSeen,omitempty"`
+	// RegistrationTime - Gets or sets the registration time of the node.
+	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
+	// IP - Gets or sets the ip of the node.
+	IP *string `json:"ip,omitempty"`
+	// AccountID - Gets or sets the account id of the node.
+	AccountID *string `json:"accountId,omitempty"`
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	// Status - Gets or sets the status of the node.
+	Status *string `json:"status,omitempty"`
+	// NodeID - Gets or sets the node id.
+	NodeID *string `json:"nodeId,omitempty"`
+	// Etag - Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
+	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeProperties.
+func (dnp DscNodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnp.LastSeen != nil {
+		objectMap["lastSeen"] = dnp.LastSeen
+	}
+	if dnp.RegistrationTime != nil {
+		objectMap["registrationTime"] = dnp.RegistrationTime
+	}
+	if dnp.IP != nil {
+		objectMap["ip"] = dnp.IP
+	}
+	if dnp.AccountID != nil {
+		objectMap["accountId"] = dnp.AccountID
+	}
+	if dnp.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnp.DscNodeConfigurationAssociationProperty
+	}
+	if dnp.Status != nil {
+		objectMap["status"] = dnp.Status
+	}
+	if dnp.NodeID != nil {
+		objectMap["nodeId"] = dnp.NodeID
+	}
+	if dnp.Etag != nil {
+		objectMap["etag"] = dnp.Etag
+	}
+	if dnp.ExtensionHandler != nil {
+		objectMap["extensionHandler"] = dnp.ExtensionHandler
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeProperties struct.
+func (dnp *DscNodeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "lastSeen":
+			if v != nil {
+				var lastSeen date.Time
+				err = json.Unmarshal(*v, &lastSeen)
+				if err != nil {
+					return err
+				}
+				dnp.LastSeen = &lastSeen
+			}
+		case "registrationTime":
+			if v != nil {
+				var registrationTime date.Time
+				err = json.Unmarshal(*v, &registrationTime)
+				if err != nil {
+					return err
+				}
+				dnp.RegistrationTime = &registrationTime
+			}
+		case "ip":
+			if v != nil {
+				var IP string
+				err = json.Unmarshal(*v, &IP)
+				if err != nil {
+					return err
+				}
+				dnp.IP = &IP
+			}
+		case "accountId":
+			if v != nil {
+				var accountID string
+				err = json.Unmarshal(*v, &accountID)
+				if err != nil {
+					return err
+				}
+				dnp.AccountID = &accountID
+			}
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnp.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		case "status":
+			if v != nil {
+				var status string
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				dnp.Status = &status
+			}
+		case "nodeId":
+			if v != nil {
+				var nodeID string
+				err = json.Unmarshal(*v, &nodeID)
+				if err != nil {
+					return err
+				}
+				dnp.NodeID = &nodeID
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				dnp.Etag = &etag
+			}
+		case "extensionHandler":
+			if v != nil {
+				var extensionHandler []DscNodeExtensionHandlerAssociationProperty
+				err = json.Unmarshal(*v, &extensionHandler)
+				if err != nil {
+					return err
+				}
+				dnp.ExtensionHandler = &extensionHandler
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeReport definition of the dsc node report type.
@@ -3828,6 +4328,46 @@ type DscNodeUpdateParameters struct {
 	NodeID *string `json:"nodeId,omitempty"`
 	// NodeConfiguration - Gets or sets the configuration of the node.
 	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	Properties        *DscNodeUpdateParametersProperties       `json:"properties,omitempty"`
+}
+
+// DscNodeUpdateParametersProperties ...
+type DscNodeUpdateParametersProperties struct {
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeUpdateParametersProperties.
+func (dnup DscNodeUpdateParametersProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnup.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnup.DscNodeConfigurationAssociationProperty
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeUpdateParametersProperties struct.
+func (dnup *DscNodeUpdateParametersProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnup.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscReportError definition of the dsc node report error type.
@@ -4029,20 +4569,30 @@ type HybridRunbookWorkerGroupUpdateParameters struct {
 // Job definition of the job.
 type Job struct {
 	autorest.Response `json:"-"`
-	// ID - Id of the resource.
-	ID *string `json:"id,omitempty"`
 	// JobProperties - The properties of the job.
 	*JobProperties `json:"properties,omitempty"`
+	// ID - Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Job.
 func (j Job) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if j.JobProperties != nil {
+		objectMap["properties"] = j.JobProperties
+	}
 	if j.ID != nil {
 		objectMap["id"] = j.ID
 	}
-	if j.JobProperties != nil {
-		objectMap["properties"] = j.JobProperties
+	if j.Name != nil {
+		objectMap["name"] = j.Name
+	}
+	if j.Type != nil {
+		objectMap["type"] = j.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -4056,15 +4606,6 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				j.ID = &ID
-			}
 		case "properties":
 			if v != nil {
 				var jobProperties JobProperties
@@ -4074,10 +4615,138 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 				}
 				j.JobProperties = &jobProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				j.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				j.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				j.Type = &typeVar
+			}
 		}
 	}
 
 	return nil
+}
+
+// JobCollectionItem job collection item properties.
+type JobCollectionItem struct {
+	// JobCollectionItemProperties - Job properties.
+	*JobCollectionItemProperties `json:"properties,omitempty"`
+	// ID - Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobCollectionItem.
+func (jci JobCollectionItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jci.JobCollectionItemProperties != nil {
+		objectMap["properties"] = jci.JobCollectionItemProperties
+	}
+	if jci.ID != nil {
+		objectMap["id"] = jci.ID
+	}
+	if jci.Name != nil {
+		objectMap["name"] = jci.Name
+	}
+	if jci.Type != nil {
+		objectMap["type"] = jci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for JobCollectionItem struct.
+func (jci *JobCollectionItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var jobCollectionItemProperties JobCollectionItemProperties
+				err = json.Unmarshal(*v, &jobCollectionItemProperties)
+				if err != nil {
+					return err
+				}
+				jci.JobCollectionItemProperties = &jobCollectionItemProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				jci.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				jci.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				jci.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// JobCollectionItemProperties job collection item properties.
+type JobCollectionItemProperties struct {
+	// Runbook - The runbook association.
+	Runbook *RunbookAssociationProperty `json:"runbook,omitempty"`
+	// JobID - The id of the job.
+	JobID *uuid.UUID `json:"jobId,omitempty"`
+	// CreationTime - The creation time of the job.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// Status - The status of the job. Possible values include: 'JobStatusNew', 'JobStatusActivating', 'JobStatusRunning', 'JobStatusCompleted', 'JobStatusFailed', 'JobStatusStopped', 'JobStatusBlocked', 'JobStatusSuspended', 'JobStatusDisconnected', 'JobStatusSuspending', 'JobStatusStopping', 'JobStatusResuming', 'JobStatusRemoving'
+	Status JobStatus `json:"status,omitempty"`
+	// StartTime - The start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The end time of the job.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// LastModifiedTime - The last modified time of the job.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// ProvisioningState - The current provisioning state of the job.
+	ProvisioningState *JobProvisioningStateProperty `json:"provisioningState,omitempty"`
 }
 
 // JobCreateParameters the parameters supplied to the create job operation.
@@ -4146,22 +4815,30 @@ func (jcp JobCreateProperties) MarshalJSON() ([]byte, error) {
 
 // JobListResult the response model for the list job operation.
 type JobListResult struct {
-	autorest.Response `json:"-"`
 	// Value - Gets or sets a list of jobs.
 	Value *[]Job `json:"value,omitempty"`
 	// NextLink - Gets or sets the next link.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// JobListResultIterator provides access to a complete listing of Job values.
-type JobListResultIterator struct {
+// JobListResultV2 the response model for the list job operation.
+type JobListResultV2 struct {
+	autorest.Response `json:"-"`
+	// Value - List of jobs.
+	Value *[]JobCollectionItem `json:"value,omitempty"`
+	// NextLink - The  link to the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// JobListResultV2Iterator provides access to a complete listing of JobCollectionItem values.
+type JobListResultV2Iterator struct {
 	i    int
-	page JobListResultPage
+	page JobListResultV2Page
 }
 
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *JobListResultIterator) Next() error {
+func (iter *JobListResultV2Iterator) Next() error {
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
@@ -4176,74 +4853,80 @@ func (iter *JobListResultIterator) Next() error {
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter JobListResultIterator) NotDone() bool {
+func (iter JobListResultV2Iterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
 // Response returns the raw server response from the last page request.
-func (iter JobListResultIterator) Response() JobListResult {
+func (iter JobListResultV2Iterator) Response() JobListResultV2 {
 	return iter.page.Response()
 }
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter JobListResultIterator) Value() Job {
+func (iter JobListResultV2Iterator) Value() JobCollectionItem {
 	if !iter.page.NotDone() {
-		return Job{}
+		return JobCollectionItem{}
 	}
 	return iter.page.Values()[iter.i]
 }
 
 // IsEmpty returns true if the ListResult contains no values.
-func (jlr JobListResult) IsEmpty() bool {
-	return jlr.Value == nil || len(*jlr.Value) == 0
+func (jlrv JobListResultV2) IsEmpty() bool {
+	return jlrv.Value == nil || len(*jlrv.Value) == 0
 }
 
-// jobListResultPreparer prepares a request to retrieve the next set of results.
+// jobListResultV2Preparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (jlr JobListResult) jobListResultPreparer() (*http.Request, error) {
-	if jlr.NextLink == nil || len(to.String(jlr.NextLink)) < 1 {
+func (jlrv JobListResultV2) jobListResultV2Preparer() (*http.Request, error) {
+	if jlrv.NextLink == nil || len(to.String(jlrv.NextLink)) < 1 {
 		return nil, nil
 	}
 	return autorest.Prepare(&http.Request{},
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(jlr.NextLink)))
+		autorest.WithBaseURL(to.String(jlrv.NextLink)))
 }
 
-// JobListResultPage contains a page of Job values.
-type JobListResultPage struct {
-	fn  func(JobListResult) (JobListResult, error)
-	jlr JobListResult
+// JobListResultV2Page contains a page of JobCollectionItem values.
+type JobListResultV2Page struct {
+	fn   func(JobListResultV2) (JobListResultV2, error)
+	jlrv JobListResultV2
 }
 
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *JobListResultPage) Next() error {
-	next, err := page.fn(page.jlr)
+func (page *JobListResultV2Page) Next() error {
+	next, err := page.fn(page.jlrv)
 	if err != nil {
 		return err
 	}
-	page.jlr = next
+	page.jlrv = next
 	return nil
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page JobListResultPage) NotDone() bool {
-	return !page.jlr.IsEmpty()
+func (page JobListResultV2Page) NotDone() bool {
+	return !page.jlrv.IsEmpty()
 }
 
 // Response returns the raw server response from the last page request.
-func (page JobListResultPage) Response() JobListResult {
-	return page.jlr
+func (page JobListResultV2Page) Response() JobListResultV2 {
+	return page.jlrv
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page JobListResultPage) Values() []Job {
-	if page.jlr.IsEmpty() {
+func (page JobListResultV2Page) Values() []JobCollectionItem {
+	if page.jlrv.IsEmpty() {
 		return nil
 	}
-	return *page.jlr.Value
+	return *page.jlrv.Value
+}
+
+// JobNavigation software update configuration machine run job navigation properties.
+type JobNavigation struct {
+	// ID - Id of the job associated with the software update configuration run
+	ID *string `json:"id,omitempty"`
 }
 
 // JobProperties definition of job properties.
@@ -4840,6 +5523,14 @@ type LinkedWorkspace struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// LinuxProperties linux specific update configuration.
+type LinuxProperties struct {
+	// IncludedPackageClassifications - Update classifications included in the software update configuration. Possible values include: 'Unclassified', 'Critical', 'Security', 'Other'
+	IncludedPackageClassifications LinuxUpdateClasses `json:"includedPackageClassifications,omitempty"`
+	// ExcludedPackageNameMasks - packages excluded from the software update configuration.
+	ExcludedPackageNameMasks *[]string `json:"excludedPackageNameMasks,omitempty"`
+}
+
 // Module definition of the module type.
 type Module struct {
 	autorest.Response `json:"-"`
@@ -5306,12 +5997,6 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
-}
-
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
 // Resource the core properties of ARM resources
@@ -6389,6 +7074,982 @@ type Sku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// SoftwareUpdateConfiguration software update configuration properties.
+type SoftwareUpdateConfiguration struct {
+	autorest.Response `json:"-"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// SoftwareUpdateConfigurationProperties - Software update configuration properties.
+	*SoftwareUpdateConfigurationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwareUpdateConfiguration.
+func (suc SoftwareUpdateConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if suc.Name != nil {
+		objectMap["name"] = suc.Name
+	}
+	if suc.ID != nil {
+		objectMap["id"] = suc.ID
+	}
+	if suc.Type != nil {
+		objectMap["type"] = suc.Type
+	}
+	if suc.SoftwareUpdateConfigurationProperties != nil {
+		objectMap["properties"] = suc.SoftwareUpdateConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SoftwareUpdateConfiguration struct.
+func (suc *SoftwareUpdateConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				suc.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				suc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				suc.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var softwareUpdateConfigurationProperties SoftwareUpdateConfigurationProperties
+				err = json.Unmarshal(*v, &softwareUpdateConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				suc.SoftwareUpdateConfigurationProperties = &softwareUpdateConfigurationProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareUpdateConfigurationCollectionItem software update configuration collection item properties.
+type SoftwareUpdateConfigurationCollectionItem struct {
+	// Name - Name of the software update configuration.
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id of the software update configuration
+	ID *string `json:"id,omitempty"`
+	// SoftwareUpdateConfigurationCollectionItemProperties - Software update configuration properties.
+	*SoftwareUpdateConfigurationCollectionItemProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationCollectionItem.
+func (succi SoftwareUpdateConfigurationCollectionItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if succi.Name != nil {
+		objectMap["name"] = succi.Name
+	}
+	if succi.ID != nil {
+		objectMap["id"] = succi.ID
+	}
+	if succi.SoftwareUpdateConfigurationCollectionItemProperties != nil {
+		objectMap["properties"] = succi.SoftwareUpdateConfigurationCollectionItemProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SoftwareUpdateConfigurationCollectionItem struct.
+func (succi *SoftwareUpdateConfigurationCollectionItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				succi.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				succi.ID = &ID
+			}
+		case "properties":
+			if v != nil {
+				var softwareUpdateConfigurationCollectionItemProperties SoftwareUpdateConfigurationCollectionItemProperties
+				err = json.Unmarshal(*v, &softwareUpdateConfigurationCollectionItemProperties)
+				if err != nil {
+					return err
+				}
+				succi.SoftwareUpdateConfigurationCollectionItemProperties = &softwareUpdateConfigurationCollectionItemProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareUpdateConfigurationCollectionItemProperties software update configuration collection item properties.
+type SoftwareUpdateConfigurationCollectionItemProperties struct {
+	// UpdateConfiguration - Update specific properties of the software update configuration.
+	UpdateConfiguration *CollectionItemUpdateConfiguration `json:"updateConfiguration,omitempty"`
+	// Frequency - execution frequency of the schedule associated with the software update configuration. Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month'
+	Frequency ScheduleFrequency `json:"frequency,omitempty"`
+	// StartTime - the start time of the update.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// CreationTime - Creation time of the software update configuration, which only appears in the response.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - Last time software update configuration was modified, which only appears in the response.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// NextRun - ext run time of the update.
+	NextRun *date.Time `json:"nextRun,omitempty"`
+}
+
+// SoftwareUpdateConfigurationListResult result of listing all software update configuration
+type SoftwareUpdateConfigurationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - outer object returned when listing all software update configurations
+	Value *[]SoftwareUpdateConfigurationCollectionItem `json:"value,omitempty"`
+}
+
+// SoftwareUpdateConfigurationMachineRun software update configuration machine run model.
+type SoftwareUpdateConfigurationMachineRun struct {
+	autorest.Response `json:"-"`
+	// Name - Name of the software update configuration machine run
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id of the software update configuration machine run
+	ID *string `json:"id,omitempty"`
+	// UpdateConfigurationMachineRunProperties - Software update configuration machine run properties.
+	*UpdateConfigurationMachineRunProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationMachineRun.
+func (sucmr SoftwareUpdateConfigurationMachineRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sucmr.Name != nil {
+		objectMap["name"] = sucmr.Name
+	}
+	if sucmr.ID != nil {
+		objectMap["id"] = sucmr.ID
+	}
+	if sucmr.UpdateConfigurationMachineRunProperties != nil {
+		objectMap["properties"] = sucmr.UpdateConfigurationMachineRunProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SoftwareUpdateConfigurationMachineRun struct.
+func (sucmr *SoftwareUpdateConfigurationMachineRun) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sucmr.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sucmr.ID = &ID
+			}
+		case "properties":
+			if v != nil {
+				var updateConfigurationMachineRunProperties UpdateConfigurationMachineRunProperties
+				err = json.Unmarshal(*v, &updateConfigurationMachineRunProperties)
+				if err != nil {
+					return err
+				}
+				sucmr.UpdateConfigurationMachineRunProperties = &updateConfigurationMachineRunProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareUpdateConfigurationMachineRunListResult result of listing all software update configuration machine runs
+type SoftwareUpdateConfigurationMachineRunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - outer object returned when listing all software update configuration machine runs
+	Value *[]SoftwareUpdateConfigurationMachineRun `json:"value,omitempty"`
+	// NextLink - link to next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SoftwareUpdateConfigurationProperties software update configuration properties.
+type SoftwareUpdateConfigurationProperties struct {
+	// UpdateConfiguration - update specific properties for the Software update configuration
+	UpdateConfiguration *UpdateConfiguration `json:"updateConfiguration,omitempty"`
+	// ScheduleInfo - Schedule information for the Software update configuration
+	ScheduleInfo *ScheduleProperties `json:"scheduleInfo,omitempty"`
+	// ProvisioningState - Provisioning state for the software update configuration, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Error - detailes of provisioning error
+	Error *ErrorResponse `json:"error,omitempty"`
+	// CreationTime - Creation time of theresource, which only appears in the response.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// CreatedBy - createdBy property, which only appears in the response.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+}
+
+// SoftwareUpdateConfigurationRun software update configuration Run properties.
+type SoftwareUpdateConfigurationRun struct {
+	autorest.Response `json:"-"`
+	// Name - Name of the software update configuration run.
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id of the software update configuration run
+	ID *string `json:"id,omitempty"`
+	// SoftwareUpdateConfigurationRunProperties - Software update configuration Run properties.
+	*SoftwareUpdateConfigurationRunProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwareUpdateConfigurationRun.
+func (sucr SoftwareUpdateConfigurationRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sucr.Name != nil {
+		objectMap["name"] = sucr.Name
+	}
+	if sucr.ID != nil {
+		objectMap["id"] = sucr.ID
+	}
+	if sucr.SoftwareUpdateConfigurationRunProperties != nil {
+		objectMap["properties"] = sucr.SoftwareUpdateConfigurationRunProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SoftwareUpdateConfigurationRun struct.
+func (sucr *SoftwareUpdateConfigurationRun) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sucr.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sucr.ID = &ID
+			}
+		case "properties":
+			if v != nil {
+				var softwareUpdateConfigurationRunProperties SoftwareUpdateConfigurationRunProperties
+				err = json.Unmarshal(*v, &softwareUpdateConfigurationRunProperties)
+				if err != nil {
+					return err
+				}
+				sucr.SoftwareUpdateConfigurationRunProperties = &softwareUpdateConfigurationRunProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareUpdateConfigurationRunListResult result of listing all software update configuration runs
+type SoftwareUpdateConfigurationRunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - outer object returned when listing all software update configuration runs
+	Value *[]SoftwareUpdateConfigurationRun `json:"value,omitempty"`
+	// NextLink - link to next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SoftwareUpdateConfigurationRunProperties software update configuration properties.
+type SoftwareUpdateConfigurationRunProperties struct {
+	// SoftwareUpdateConfiguration - software update configuration triggered this run
+	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
+	// Status - Status of the software update configuration run.
+	Status *string `json:"status,omitempty"`
+	// ConfiguredDuration - configured duration for the software update configuration run.
+	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
+	// OsType - Operating system target of the software update configuration triggered this run
+	OsType *string `json:"osType,omitempty"`
+	// StartTime - Etart time of the software update configuration run.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - End time of the software update configuration run.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// ComputerCount - Number of computers in the software update configuration run.
+	ComputerCount *int32 `json:"computerCount,omitempty"`
+	// FailedCount - Number of computers with failed status.
+	FailedCount *int32 `json:"failedCount,omitempty"`
+	// CreationTime - Creation time of theresource, which only appears in the response.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// CreatedBy - createdBy property, which only appears in the response.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+}
+
+// SourceControl definition of the source control.
+type SourceControl struct {
+	autorest.Response `json:"-"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// SourceControlProperties - Gets or sets the properties of the source control.
+	*SourceControlProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControl.
+func (sc SourceControl) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.Name != nil {
+		objectMap["name"] = sc.Name
+	}
+	if sc.ID != nil {
+		objectMap["id"] = sc.ID
+	}
+	if sc.Type != nil {
+		objectMap["type"] = sc.Type
+	}
+	if sc.SourceControlProperties != nil {
+		objectMap["properties"] = sc.SourceControlProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControl struct.
+func (sc *SourceControl) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sc.Name = &name
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sc.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var sourceControlProperties SourceControlProperties
+				err = json.Unmarshal(*v, &sourceControlProperties)
+				if err != nil {
+					return err
+				}
+				sc.SourceControlProperties = &sourceControlProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceControlCreateOrUpdateParameters the parameters supplied to the create or update source control operation.
+type SourceControlCreateOrUpdateParameters struct {
+	// SourceControlCreateOrUpdateProperties - Gets or sets the properties of the source control.
+	*SourceControlCreateOrUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlCreateOrUpdateParameters.
+func (sccoup SourceControlCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sccoup.SourceControlCreateOrUpdateProperties != nil {
+		objectMap["properties"] = sccoup.SourceControlCreateOrUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlCreateOrUpdateParameters struct.
+func (sccoup *SourceControlCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var sourceControlCreateOrUpdateProperties SourceControlCreateOrUpdateProperties
+				err = json.Unmarshal(*v, &sourceControlCreateOrUpdateProperties)
+				if err != nil {
+					return err
+				}
+				sccoup.SourceControlCreateOrUpdateProperties = &sourceControlCreateOrUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceControlCreateOrUpdateProperties the properties of the create source control operation.
+type SourceControlCreateOrUpdateProperties struct {
+	// RepoURL - Gets or sets the repo url of the source control.
+	RepoURL *string `json:"repoUrl,omitempty"`
+	// Branch - Gets or sets the repo branch of the source control. Include branch as empty string for VsoTfvc.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control. Path must be relative.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub, case sensitive. Possible values include: 'VsoGit', 'VsoTfvc', 'GitHub'
+	SourceType SourceType `json:"sourceType,omitempty"`
+	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
+	SecurityToken *string `json:"securityToken,omitempty"`
+	// Description - Gets or sets the user description of the source control.
+	Description *string `json:"description,omitempty"`
+}
+
+// SourceControlListResult the response model for the list source controls operation.
+type SourceControlListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of souce controls.
+	Value *[]SourceControl `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SourceControlListResultIterator provides access to a complete listing of SourceControl values.
+type SourceControlListResultIterator struct {
+	i    int
+	page SourceControlListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SourceControlListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SourceControlListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SourceControlListResultIterator) Response() SourceControlListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SourceControlListResultIterator) Value() SourceControl {
+	if !iter.page.NotDone() {
+		return SourceControl{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sclr SourceControlListResult) IsEmpty() bool {
+	return sclr.Value == nil || len(*sclr.Value) == 0
+}
+
+// sourceControlListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sclr SourceControlListResult) sourceControlListResultPreparer() (*http.Request, error) {
+	if sclr.NextLink == nil || len(to.String(sclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sclr.NextLink)))
+}
+
+// SourceControlListResultPage contains a page of SourceControl values.
+type SourceControlListResultPage struct {
+	fn   func(SourceControlListResult) (SourceControlListResult, error)
+	sclr SourceControlListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SourceControlListResultPage) Next() error {
+	next, err := page.fn(page.sclr)
+	if err != nil {
+		return err
+	}
+	page.sclr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SourceControlListResultPage) NotDone() bool {
+	return !page.sclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SourceControlListResultPage) Response() SourceControlListResult {
+	return page.sclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SourceControlListResultPage) Values() []SourceControl {
+	if page.sclr.IsEmpty() {
+		return nil
+	}
+	return *page.sclr.Value
+}
+
+// SourceControlProperties definition of the source control properties
+type SourceControlProperties struct {
+	// RepoURL - Gets or sets the repo url of the source control.
+	RepoURL *string `json:"repoUrl,omitempty"`
+	// Branch - Gets or sets the repo branch of the source control. Include branch as empty string for VsoTfvc.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SourceType - The source type. Must be one of VsoGit, VsoTfvc, GitHub. Possible values include: 'VsoGit', 'VsoTfvc', 'GitHub'
+	SourceType SourceType `json:"sourceType,omitempty"`
+	// Description - Gets or sets the description.
+	Description *string `json:"description,omitempty"`
+	// CreationTime - Gets or sets the creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// SourceControlSyncJob definition of the source control sync job.
+type SourceControlSyncJob struct {
+	autorest.Response `json:"-"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// ID - Resource id.
+	ID *string `json:"id,omitempty"`
+	// SourceControlSyncJobProperties - Gets the properties of the source control sync job.
+	*SourceControlSyncJobProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlSyncJob.
+func (scsj SourceControlSyncJob) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scsj.Name != nil {
+		objectMap["name"] = scsj.Name
+	}
+	if scsj.Type != nil {
+		objectMap["type"] = scsj.Type
+	}
+	if scsj.ID != nil {
+		objectMap["id"] = scsj.ID
+	}
+	if scsj.SourceControlSyncJobProperties != nil {
+		objectMap["properties"] = scsj.SourceControlSyncJobProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlSyncJob struct.
+func (scsj *SourceControlSyncJob) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				scsj.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				scsj.Type = &typeVar
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				scsj.ID = &ID
+			}
+		case "properties":
+			if v != nil {
+				var sourceControlSyncJobProperties SourceControlSyncJobProperties
+				err = json.Unmarshal(*v, &sourceControlSyncJobProperties)
+				if err != nil {
+					return err
+				}
+				scsj.SourceControlSyncJobProperties = &sourceControlSyncJobProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceControlSyncJobByID definition of the source control sync job.
+type SourceControlSyncJobByID struct {
+	autorest.Response `json:"-"`
+	// ID - Gets the id of the job.
+	ID *string `json:"id,omitempty"`
+	// SourceControlSyncJobByIDProperties - Gets the properties of the source control sync job.
+	*SourceControlSyncJobByIDProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlSyncJobByID.
+func (scsjbi SourceControlSyncJobByID) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scsjbi.ID != nil {
+		objectMap["id"] = scsjbi.ID
+	}
+	if scsjbi.SourceControlSyncJobByIDProperties != nil {
+		objectMap["properties"] = scsjbi.SourceControlSyncJobByIDProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlSyncJobByID struct.
+func (scsjbi *SourceControlSyncJobByID) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				scsjbi.ID = &ID
+			}
+		case "properties":
+			if v != nil {
+				var sourceControlSyncJobByIDProperties SourceControlSyncJobByIDProperties
+				err = json.Unmarshal(*v, &sourceControlSyncJobByIDProperties)
+				if err != nil {
+					return err
+				}
+				scsjbi.SourceControlSyncJobByIDProperties = &sourceControlSyncJobByIDProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceControlSyncJobByIDErrors error details of the source control sync job.
+type SourceControlSyncJobByIDErrors struct {
+	// Code - Gets the error code for the job.
+	Code *string `json:"code,omitempty"`
+	// Message - Gets the error message for the job.
+	Message *string `json:"message,omitempty"`
+}
+
+// SourceControlSyncJobByIDProperties definition of source control sync job properties.
+type SourceControlSyncJobByIDProperties struct {
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	// CreationTime - Gets the creation time of the job.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// StartTime - Gets the start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Gets the end time of the job.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// StartedBy - Gets the user who started the sync job.
+	StartedBy *string `json:"startedBy,omitempty"`
+	// Errors - Error details of the source control sync job.
+	Errors *SourceControlSyncJobByIDErrors `json:"errors,omitempty"`
+}
+
+// SourceControlSyncJobListResult the response model for the list source control sync jobs operation.
+type SourceControlSyncJobListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets a list of source control sync jobs.
+	Value *[]SourceControlSyncJob `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SourceControlSyncJobListResultIterator provides access to a complete listing of SourceControlSyncJob values.
+type SourceControlSyncJobListResultIterator struct {
+	i    int
+	page SourceControlSyncJobListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SourceControlSyncJobListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SourceControlSyncJobListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SourceControlSyncJobListResultIterator) Response() SourceControlSyncJobListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SourceControlSyncJobListResultIterator) Value() SourceControlSyncJob {
+	if !iter.page.NotDone() {
+		return SourceControlSyncJob{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (scsjlr SourceControlSyncJobListResult) IsEmpty() bool {
+	return scsjlr.Value == nil || len(*scsjlr.Value) == 0
+}
+
+// sourceControlSyncJobListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (scsjlr SourceControlSyncJobListResult) sourceControlSyncJobListResultPreparer() (*http.Request, error) {
+	if scsjlr.NextLink == nil || len(to.String(scsjlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(scsjlr.NextLink)))
+}
+
+// SourceControlSyncJobListResultPage contains a page of SourceControlSyncJob values.
+type SourceControlSyncJobListResultPage struct {
+	fn     func(SourceControlSyncJobListResult) (SourceControlSyncJobListResult, error)
+	scsjlr SourceControlSyncJobListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SourceControlSyncJobListResultPage) Next() error {
+	next, err := page.fn(page.scsjlr)
+	if err != nil {
+		return err
+	}
+	page.scsjlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SourceControlSyncJobListResultPage) NotDone() bool {
+	return !page.scsjlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SourceControlSyncJobListResultPage) Response() SourceControlSyncJobListResult {
+	return page.scsjlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SourceControlSyncJobListResultPage) Values() []SourceControlSyncJob {
+	if page.scsjlr.IsEmpty() {
+		return nil
+	}
+	return *page.scsjlr.Value
+}
+
+// SourceControlSyncJobProperties definition of source control sync job properties.
+type SourceControlSyncJobProperties struct {
+	// SourceControlSyncJobID - Gets the source control sync job id.
+	SourceControlSyncJobID *string `json:"sourceControlSyncJobId,omitempty"`
+	// CreationTime - Gets the creation time of the job.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// ProvisioningState - Gets the provisioning state of the job. Possible values include: 'Completed', 'Failed', 'Running'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// StartTime - Gets the start time of the job.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Gets the end time of the job.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// StartedBy - Gets the user who started the sync job.
+	StartedBy *string `json:"startedBy,omitempty"`
+}
+
+// SourceControlUpdateParameters the parameters supplied to the update source control operation.
+type SourceControlUpdateParameters struct {
+	// SourceControlUpdateProperties - Gets or sets the value of the source control.
+	*SourceControlUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlUpdateParameters.
+func (scup SourceControlUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scup.SourceControlUpdateProperties != nil {
+		objectMap["properties"] = scup.SourceControlUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SourceControlUpdateParameters struct.
+func (scup *SourceControlUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var sourceControlUpdateProperties SourceControlUpdateProperties
+				err = json.Unmarshal(*v, &sourceControlUpdateProperties)
+				if err != nil {
+					return err
+				}
+				scup.SourceControlUpdateProperties = &sourceControlUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SourceControlUpdateProperties the properties of the update source control
+type SourceControlUpdateProperties struct {
+	// Branch - Gets or sets the repo branch of the source control.
+	Branch *string `json:"branch,omitempty"`
+	// FolderPath - Gets or sets the folder path of the source control. Path must be relative.
+	FolderPath *string `json:"folderPath,omitempty"`
+	// AutoSync - Gets or sets auto async of the source control. Default is false.
+	AutoSync *bool `json:"autoSync,omitempty"`
+	// PublishRunbook - Gets or sets the auto publish of the source control. Default is true.
+	PublishRunbook *bool `json:"publishRunbook,omitempty"`
+	// SecurityToken - Gets or sets the authorization token for the repo of the source control.
+	SecurityToken *string `json:"securityToken,omitempty"`
+	// Description - Gets or sets the user description of the source control.
+	Description *string `json:"description,omitempty"`
+}
+
 // Statistics definition of the statistic.
 type Statistics struct {
 	// CounterProperty - Gets the property value of the statistic.
@@ -6556,6 +8217,62 @@ type TypeFieldListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets a list of fields.
 	Value *[]TypeField `json:"value,omitempty"`
+}
+
+// UpdateConfiguration update specifc properties of the software update configuration.
+type UpdateConfiguration struct {
+	// OperatingSystem - operating system of target machines. Possible values include: 'Windows', 'Linux'
+	OperatingSystem OperatingSystemType `json:"operatingSystem,omitempty"`
+	// Windows - Windows specific update configuration.
+	Windows *WindowsProperties `json:"windows,omitempty"`
+	// Linux - Linux specific update configuration.
+	Linux *LinuxProperties `json:"linux,omitempty"`
+	// Duration - Maximum time allowed for the software update configuration run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601
+	Duration *string `json:"duration,omitempty"`
+	// AzureVirtualMachines - List of azure resource Ids for azure virtual machines targeted by the software update configuration.
+	AzureVirtualMachines *[]string `json:"azureVirtualMachines,omitempty"`
+	// NonAzureComputerNames - List of names of non-azure machines targeted by the software update configuration.
+	NonAzureComputerNames *[]string `json:"nonAzureComputerNames,omitempty"`
+}
+
+// UpdateConfigurationMachineRunProperties software update configuration machine run properties.
+type UpdateConfigurationMachineRunProperties struct {
+	// TargetComputer - name of the updated computer
+	TargetComputer *string `json:"targetComputer,omitempty"`
+	// TargetComputerType - type of the updated computer.
+	TargetComputerType *string `json:"targetComputerType,omitempty"`
+	// SoftwareUpdateConfiguration - software update configuration triggered this run
+	SoftwareUpdateConfiguration *UpdateConfigurationNavigation `json:"softwareUpdateConfiguration,omitempty"`
+	// Status - Status of the software update configuration machine run.
+	Status *string `json:"status,omitempty"`
+	// OsType - Operating system target of the software update configuration triggered this run
+	OsType *string `json:"osType,omitempty"`
+	// CorrelationID - correlation id of the software update configuration machine run
+	CorrelationID *uuid.UUID `json:"correlationId,omitempty"`
+	// SourceComputerID - source computer id of the software update configuration machine run
+	SourceComputerID *uuid.UUID `json:"sourceComputerId,omitempty"`
+	// StartTime - Start time of the software update configuration machine run.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - End time of the software update configuration machine run.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// ConfiguredDuration - configured duration for the software update configuration run.
+	ConfiguredDuration *string `json:"configuredDuration,omitempty"`
+	// Job - Job associated with the software update configuration machine run
+	Job *JobNavigation `json:"job,omitempty"`
+	// CreationTime - Creation time of theresource, which only appears in the response.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// CreatedBy - createdBy property, which only appears in the response.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastModifiedTime - Last time resource was modified, which only appears in the response.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// LastModifiedBy - lastModifiedBy property, which only appears in the response.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+}
+
+// UpdateConfigurationNavigation software update configuration Run Navigation model.
+type UpdateConfigurationNavigation struct {
+	// Name - Name of the software update configuration triggered the software update configuration run
+	Name *string `json:"name,omitempty"`
 }
 
 // Usage definition of Usage.
@@ -7329,4 +9046,12 @@ func (wup WebhookUpdateProperties) MarshalJSON() ([]byte, error) {
 		objectMap["description"] = wup.Description
 	}
 	return json.Marshal(objectMap)
+}
+
+// WindowsProperties windows specific update configuration.
+type WindowsProperties struct {
+	// IncludedUpdateClassifications - Update classification included in the software update configuration. A comma separated string with required values. Possible values include: 'WindowsUpdateClassesUnclassified', 'WindowsUpdateClassesCritical', 'WindowsUpdateClassesSecurity', 'WindowsUpdateClassesUpdateRollup', 'WindowsUpdateClassesFeaturePack', 'WindowsUpdateClassesServicePack', 'WindowsUpdateClassesDefinition', 'WindowsUpdateClassesTools', 'WindowsUpdateClassesUpdates'
+	IncludedUpdateClassifications WindowsUpdateClasses `json:"includedUpdateClassifications,omitempty"`
+	// ExcludedKbNumbers - KB numbers excluded from the software update configuration.
+	ExcludedKbNumbers *[]string `json:"excludedKbNumbers,omitempty"`
 }

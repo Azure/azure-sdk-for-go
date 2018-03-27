@@ -24,7 +24,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/satori/go.uuid"
-	"io"
 	"net/http"
 )
 
@@ -6000,12 +5999,6 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ReadCloser ...
-type ReadCloser struct {
-	autorest.Response `json:"-"`
-	Value             *io.ReadCloser `json:"value,omitempty"`
-}
-
 // Resource the core properties of ARM resources
 type Resource struct {
 	// ID - Fully qualified resource Id for the resource
@@ -6322,7 +6315,7 @@ type RunbookDraftPublishFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
+func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (s String, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6330,10 +6323,10 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar au
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
+		return s, azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.PublishResponder(future.Response())
+		s, err = client.PublishResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -6355,7 +6348,7 @@ func (future RunbookDraftPublishFuture) Result(client RunbookDraftClient) (ar au
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.PublishResponder(resp)
+	s, err = client.PublishResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftPublishFuture", "Result", resp, "Failure responding to request")
 	}
@@ -6371,7 +6364,7 @@ type RunbookDraftReplaceContentFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (ar autorest.Response, err error) {
+func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (s String, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -6379,10 +6372,10 @@ func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient)
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
+		return s, azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.ReplaceContentResponder(future.Response())
+		s, err = client.ReplaceContentResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -6404,7 +6397,7 @@ func (future RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient)
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.ReplaceContentResponder(resp)
+	s, err = client.ReplaceContentResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", resp, "Failure responding to request")
 	}
@@ -7063,6 +7056,12 @@ type ScheduleUpdateProperties struct {
 	Description *string `json:"description,omitempty"`
 	// IsEnabled - Gets or sets a value indicating whether this schedule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // Sku the account SKU.

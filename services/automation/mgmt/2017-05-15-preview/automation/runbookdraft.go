@@ -257,13 +257,14 @@ func (client RunbookDraftClient) PublishSender(req *http.Request) (future Runboo
 
 // PublishResponder handles the response to the Publish request. The method always
 // closes the http.Response Body.
-func (client RunbookDraftClient) PublishResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RunbookDraftClient) PublishResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -336,13 +337,14 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 
 // ReplaceContentResponder handles the response to the ReplaceContent request. The method always
 // closes the http.Response Body.
-func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

@@ -42,13 +42,15 @@ func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string) C
 
 // CreateOrUpdate create a connectiontype.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // connectionTypeName is the parameters supplied to the create or update connectiontype operation. parameters is
 // the parameters supplied to the create or update connectiontype operation.
 func (client ConnectionTypeClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string, parameters ConnectionTypeCreateOrUpdateParameters) (result ConnectionType, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.ConnectionTypeCreateOrUpdateProperties", Name: validation.Null, Rule: true,
@@ -123,12 +125,14 @@ func (client ConnectionTypeClient) CreateOrUpdateResponder(resp *http.Response) 
 
 // Delete delete the connectiontype.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // connectionTypeName is the name of connectiontype.
 func (client ConnectionTypeClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ConnectionTypeClient", "Delete", err.Error())
 	}
 
@@ -196,12 +200,14 @@ func (client ConnectionTypeClient) DeleteResponder(resp *http.Response) (result 
 
 // Get retrieve the connectiontype identified by connectiontype name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // connectionTypeName is the name of connectiontype.
 func (client ConnectionTypeClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, connectionTypeName string) (result ConnectionType, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ConnectionTypeClient", "Get", err.Error())
 	}
 
@@ -270,11 +276,13 @@ func (client ConnectionTypeClient) GetResponder(resp *http.Response) (result Con
 
 // ListByAutomationAccount retrieve a list of connectiontypes.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client ConnectionTypeClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result ConnectionTypeListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.ConnectionTypeClient", "ListByAutomationAccount", err.Error())
 	}
 

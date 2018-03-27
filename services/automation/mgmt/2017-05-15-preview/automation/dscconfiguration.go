@@ -42,13 +42,15 @@ func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string)
 
 // CreateOrUpdate create the configuration identified by configuration name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // configurationName is the create or update parameters for configuration. parameters is the create or update
 // parameters for configuration.
 func (client DscConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.DscConfigurationCreateOrUpdateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.DscConfigurationCreateOrUpdateProperties.Source", Name: validation.Null, Rule: true,
@@ -128,12 +130,14 @@ func (client DscConfigurationClient) CreateOrUpdateResponder(resp *http.Response
 
 // Delete delete the dsc configuration identified by configuration name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // configurationName is the configuration name.
 func (client DscConfigurationClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "Delete", err.Error())
 	}
 
@@ -201,12 +205,14 @@ func (client DscConfigurationClient) DeleteResponder(resp *http.Response) (resul
 
 // Get retrieve the configuration identified by configuration name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // configurationName is the configuration name.
 func (client DscConfigurationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "Get", err.Error())
 	}
 
@@ -275,12 +281,14 @@ func (client DscConfigurationClient) GetResponder(resp *http.Response) (result D
 
 // GetContent retrieve the configuration script identified by configuration name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // configurationName is the configuration name.
 func (client DscConfigurationClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "GetContent", err.Error())
 	}
 
@@ -349,11 +357,13 @@ func (client DscConfigurationClient) GetContentResponder(resp *http.Response) (r
 
 // ListByAutomationAccount retrieve a list of configurations.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client DscConfigurationClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result DscConfigurationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "ListByAutomationAccount", err.Error())
 	}
 
@@ -449,16 +459,19 @@ func (client DscConfigurationClient) ListByAutomationAccountComplete(ctx context
 
 // Update create the configuration identified by configuration name.
 //
-// automationAccountName is the automation account name. configurationName is the create or update parameters for
-// configuration. parameters is the create or update parameters for configuration.
-func (client DscConfigurationClient) Update(ctx context.Context, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (result DscConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// configurationName is the create or update parameters for configuration. parameters is the create or update
+// parameters for configuration.
+func (client DscConfigurationClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, automationAccountName, configurationName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, automationAccountName, configurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "Update", nil, "Failure preparing request")
 		return
@@ -480,11 +493,11 @@ func (client DscConfigurationClient) Update(ctx context.Context, automationAccou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DscConfigurationClient) UpdatePreparer(ctx context.Context, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (*http.Request, error) {
+func (client DscConfigurationClient) UpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

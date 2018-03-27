@@ -43,12 +43,14 @@ func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
 
 // Create create a job of the runbook.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id. parameters is the parameters supplied to the create job operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id. parameters is the parameters supplied to the create job operation.
 func (client JobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID, parameters JobCreateParameters) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.JobCreateProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.JobCreateProperties.Runbook", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
@@ -122,12 +124,14 @@ func (client JobClient) CreateResponder(resp *http.Response) (result Job, err er
 
 // Get retrieve the job identified by job id.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Get", err.Error())
 	}
 
@@ -196,12 +200,14 @@ func (client JobClient) GetResponder(resp *http.Response) (result Job, err error
 
 // GetOutput retrieve the job output identified by job id.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) GetOutput(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "GetOutput", err.Error())
 	}
 
@@ -269,12 +275,14 @@ func (client JobClient) GetOutputResponder(resp *http.Response) (result ReadClos
 
 // GetRunbookContent retrieve the runbook content of the job identified by job id.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) GetRunbookContent(ctx context.Context, resourceGroupName string, automationAccountName string, jobID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "GetRunbookContent", err.Error())
 	}
 
@@ -342,12 +350,14 @@ func (client JobClient) GetRunbookContentResponder(resp *http.Response) (result 
 
 // ListByAutomationAccount retrieve a list of jobs.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. filter is
-// the filter to apply on the operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// filter is the filter to apply on the operation.
 func (client JobClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result JobListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "ListByAutomationAccount", err.Error())
 	}
 
@@ -446,12 +456,14 @@ func (client JobClient) ListByAutomationAccountComplete(ctx context.Context, res
 
 // Resume resume the job identified by jobId.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) Resume(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Resume", err.Error())
 	}
 
@@ -519,12 +531,14 @@ func (client JobClient) ResumeResponder(resp *http.Response) (result autorest.Re
 
 // Stop stop the job identified by jobId.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) Stop(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Stop", err.Error())
 	}
 
@@ -592,12 +606,14 @@ func (client JobClient) StopResponder(resp *http.Response) (result autorest.Resp
 
 // Suspend suspend the job identified by jobId.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. jobID is the
-// job id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// jobID is the job id.
 func (client JobClient) Suspend(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.JobClient", "Suspend", err.Error())
 	}
 

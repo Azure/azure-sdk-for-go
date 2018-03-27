@@ -42,13 +42,15 @@ func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) Crede
 
 // CreateOrUpdate create a credential.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // credentialName is the parameters supplied to the create or update credential operation. parameters is the
 // parameters supplied to the create or update credential operation.
 func (client CredentialClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialCreateOrUpdateParameters) (result Credential, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Name", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.CredentialCreateOrUpdateProperties", Name: validation.Null, Rule: true,
@@ -125,12 +127,14 @@ func (client CredentialClient) CreateOrUpdateResponder(resp *http.Response) (res
 
 // Delete delete the credential.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // credentialName is the name of credential.
 func (client CredentialClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.CredentialClient", "Delete", err.Error())
 	}
 
@@ -198,12 +202,14 @@ func (client CredentialClient) DeleteResponder(resp *http.Response) (result auto
 
 // Get retrieve the credential identified by credential name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // credentialName is the name of credential.
 func (client CredentialClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string) (result Credential, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.CredentialClient", "Get", err.Error())
 	}
 
@@ -272,11 +278,13 @@ func (client CredentialClient) GetResponder(resp *http.Response) (result Credent
 
 // ListByAutomationAccount retrieve a list of credentials.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client CredentialClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result CredentialListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.CredentialClient", "ListByAutomationAccount", err.Error())
 	}
 
@@ -372,13 +380,15 @@ func (client CredentialClient) ListByAutomationAccountComplete(ctx context.Conte
 
 // Update update a credential.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // credentialName is the parameters supplied to the Update credential operation. parameters is the parameters
 // supplied to the Update credential operation.
 func (client CredentialClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, credentialName string, parameters CredentialUpdateParameters) (result Credential, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.CredentialClient", "Update", err.Error())
 	}
 

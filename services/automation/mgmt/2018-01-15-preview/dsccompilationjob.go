@@ -43,10 +43,10 @@ func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string
 
 // Create creates the Dsc compilation job of the configuration.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// compilationJobID is the the DSC configuration Id. parameters is the parameters supplied to the create
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. compilationJobName is the the DSC configuration Id. parameters is the parameters supplied to the create
 // compilation job operation.
-func (client DscCompilationJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobID uuid.UUID, parameters DscCompilationJobCreateParameters) (result DscCompilationJob, err error) {
+func (client DscCompilationJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters) (result DscCompilationJobCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -58,37 +58,31 @@ func (client DscCompilationJobClient) Create(ctx context.Context, resourceGroupN
 		return result, validation.NewError("automation.DscCompilationJobClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, automationAccountName, compilationJobID, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, automationAccountName, compilationJobName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "Create", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client DscCompilationJobClient) CreatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobID uuid.UUID, parameters DscCompilationJobCreateParameters) (*http.Request, error) {
+func (client DscCompilationJobClient) CreatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string, parameters DscCompilationJobCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"compilationJobId":      autorest.Encode("path", compilationJobID),
+		"compilationJobName":    autorest.Encode("path", compilationJobName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -97,7 +91,7 @@ func (client DscCompilationJobClient) CreatePreparer(ctx context.Context, resour
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -105,9 +99,17 @@ func (client DscCompilationJobClient) CreatePreparer(ctx context.Context, resour
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client DscCompilationJobClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+func (client DscCompilationJobClient) CreateSender(req *http.Request) (future DscCompilationJobCreateFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -125,9 +127,9 @@ func (client DscCompilationJobClient) CreateResponder(resp *http.Response) (resu
 
 // Get retrieve the Dsc configuration compilation job identified by job id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// compilationJobID is the Dsc configuration compilation job id.
-func (client DscCompilationJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobID uuid.UUID) (result DscCompilationJob, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. compilationJobName is the the DSC configuration Id.
+func (client DscCompilationJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string) (result DscCompilationJob, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -136,7 +138,7 @@ func (client DscCompilationJobClient) Get(ctx context.Context, resourceGroupName
 		return result, validation.NewError("automation.DscCompilationJobClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, compilationJobID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, automationAccountName, compilationJobName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "Get", nil, "Failure preparing request")
 		return
@@ -158,15 +160,15 @@ func (client DscCompilationJobClient) Get(ctx context.Context, resourceGroupName
 }
 
 // GetPreparer prepares the Get request.
-func (client DscCompilationJobClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobID uuid.UUID) (*http.Request, error) {
+func (client DscCompilationJobClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string, compilationJobName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"compilationJobId":      autorest.Encode("path", compilationJobID),
+		"compilationJobName":    autorest.Encode("path", compilationJobName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -174,7 +176,7 @@ func (client DscCompilationJobClient) GetPreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/compilationjobs/{compilationJobName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -201,8 +203,8 @@ func (client DscCompilationJobClient) GetResponder(resp *http.Response) (result 
 
 // GetStream retrieve the job stream identified by job stream id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// jobID is the job id. jobStreamID is the job stream id.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. jobID is the job id. jobStreamID is the job stream id.
 func (client DscCompilationJobClient) GetStream(ctx context.Context, resourceGroupName string, automationAccountName string, jobID uuid.UUID, jobStreamID string) (result JobStream, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -243,7 +245,7 @@ func (client DscCompilationJobClient) GetStreamPreparer(ctx context.Context, res
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -278,8 +280,8 @@ func (client DscCompilationJobClient) GetStreamResponder(resp *http.Response) (r
 
 // ListByAutomationAccount retrieve a list of dsc compilation jobs.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// filter is the filter to apply on the operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. filter is the filter to apply on the operation.
 func (client DscCompilationJobClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result DscCompilationJobListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -319,7 +321,7 @@ func (client DscCompilationJobClient) ListByAutomationAccountPreparer(ctx contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

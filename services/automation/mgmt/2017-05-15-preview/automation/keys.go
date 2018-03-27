@@ -31,26 +31,28 @@ type KeysClient struct {
 }
 
 // NewKeysClient creates an instance of the KeysClient client.
-func NewKeysClient(subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
-	return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)
+func NewKeysClient(subscriptionID string) KeysClient {
+	return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewKeysClientWithBaseURI creates an instance of the KeysClient client.
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clientRequestID string, automationAccountName string) KeysClient {
-	return KeysClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clientRequestID, automationAccountName)}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return KeysClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByAutomationAccount retrieve the automation keys for an account.
 //
-// automationAccountName is the automation account name.
-func (client KeysClient) ListByAutomationAccount(ctx context.Context, automationAccountName string) (result KeyListResult, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+func (client KeysClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result KeyListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.KeysClient", "ListByAutomationAccount", err.Error())
 	}
 
-	req, err := client.ListByAutomationAccountPreparer(ctx, automationAccountName)
+	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.KeysClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
@@ -72,10 +74,10 @@ func (client KeysClient) ListByAutomationAccount(ctx context.Context, automation
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client KeysClient) ListByAutomationAccountPreparer(ctx context.Context, automationAccountName string) (*http.Request, error) {
+func (client KeysClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

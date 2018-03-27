@@ -42,12 +42,14 @@ func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string) Run
 
 // Get retrieve the runbook draft identified by runbook name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName
-// is the runbook name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// runbookName is the runbook name.
 func (client RunbookDraftClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result RunbookDraft, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.RunbookDraftClient", "Get", err.Error())
 	}
 
@@ -116,12 +118,14 @@ func (client RunbookDraftClient) GetResponder(resp *http.Response) (result Runbo
 
 // GetContent retrieve the content of runbook draft identified by runbook name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName
-// is the runbook name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// runbookName is the runbook name.
 func (client RunbookDraftClient) GetContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result String, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.RunbookDraftClient", "GetContent", err.Error())
 	}
 
@@ -190,12 +194,14 @@ func (client RunbookDraftClient) GetContentResponder(resp *http.Response) (resul
 
 // Publish publish runbook draft.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName
-// is the parameters supplied to the publish runbook operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// runbookName is the parameters supplied to the publish runbook operation.
 func (client RunbookDraftClient) Publish(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result RunbookDraftPublishFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.RunbookDraftClient", "Publish", err.Error())
 	}
 
@@ -253,24 +259,27 @@ func (client RunbookDraftClient) PublishSender(req *http.Request) (future Runboo
 
 // PublishResponder handles the response to the Publish request. The method always
 // closes the http.Response Body.
-func (client RunbookDraftClient) PublishResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RunbookDraftClient) PublishResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // ReplaceContent replaces the runbook draft content.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName
-// is the runbook name. runbookContent is the runbook draft content.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// runbookName is the runbook name. runbookContent is the runbook draft content.
 func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string) (result RunbookDraftReplaceContentFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.RunbookDraftClient", "ReplaceContent", err.Error())
 	}
 
@@ -330,24 +339,27 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 
 // ReplaceContentResponder handles the response to the ReplaceContent request. The method always
 // closes the http.Response Body.
-func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // UndoEdit undo draft edit to last known published state identified by runbook name.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name. runbookName
-// is the runbook name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
+// runbookName is the runbook name.
 func (client RunbookDraftClient) UndoEdit(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string) (result RunbookDraftUndoEditResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.RunbookDraftClient", "UndoEdit", err.Error())
 	}
 

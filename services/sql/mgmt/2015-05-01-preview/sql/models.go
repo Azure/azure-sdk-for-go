@@ -4541,6 +4541,480 @@ type LocationCapabilities struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+// ManagedInstance an Azure SQL managed instance.
+type ManagedInstance struct {
+	autorest.Response `json:"-"`
+	// Identity - The Azure Active Directory identity of the managed instance.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
+	// Sku - Managed instance sku
+	Sku *Sku `json:"sku,omitempty"`
+	// ManagedInstanceProperties - Resource properties.
+	*ManagedInstanceProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstance.
+func (mi ManagedInstance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mi.Identity != nil {
+		objectMap["identity"] = mi.Identity
+	}
+	if mi.Sku != nil {
+		objectMap["sku"] = mi.Sku
+	}
+	if mi.ManagedInstanceProperties != nil {
+		objectMap["properties"] = mi.ManagedInstanceProperties
+	}
+	if mi.Tags != nil {
+		objectMap["tags"] = mi.Tags
+	}
+	if mi.Location != nil {
+		objectMap["location"] = mi.Location
+	}
+	if mi.ID != nil {
+		objectMap["id"] = mi.ID
+	}
+	if mi.Name != nil {
+		objectMap["name"] = mi.Name
+	}
+	if mi.Type != nil {
+		objectMap["type"] = mi.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstance struct.
+func (mi *ManagedInstance) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				mi.Identity = &identity
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				mi.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var managedInstanceProperties ManagedInstanceProperties
+				err = json.Unmarshal(*v, &managedInstanceProperties)
+				if err != nil {
+					return err
+				}
+				mi.ManagedInstanceProperties = &managedInstanceProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mi.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				mi.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedInstanceListResult a list of managed instances.
+type ManagedInstanceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ManagedInstance `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedInstanceListResultIterator provides access to a complete listing of ManagedInstance values.
+type ManagedInstanceListResultIterator struct {
+	i    int
+	page ManagedInstanceListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedInstanceListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedInstanceListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedInstanceListResultIterator) Response() ManagedInstanceListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedInstanceListResultIterator) Value() ManagedInstance {
+	if !iter.page.NotDone() {
+		return ManagedInstance{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (milr ManagedInstanceListResult) IsEmpty() bool {
+	return milr.Value == nil || len(*milr.Value) == 0
+}
+
+// managedInstanceListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (milr ManagedInstanceListResult) managedInstanceListResultPreparer() (*http.Request, error) {
+	if milr.NextLink == nil || len(to.String(milr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(milr.NextLink)))
+}
+
+// ManagedInstanceListResultPage contains a page of ManagedInstance values.
+type ManagedInstanceListResultPage struct {
+	fn   func(ManagedInstanceListResult) (ManagedInstanceListResult, error)
+	milr ManagedInstanceListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedInstanceListResultPage) Next() error {
+	next, err := page.fn(page.milr)
+	if err != nil {
+		return err
+	}
+	page.milr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedInstanceListResultPage) NotDone() bool {
+	return !page.milr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedInstanceListResultPage) Response() ManagedInstanceListResult {
+	return page.milr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
+	if page.milr.IsEmpty() {
+		return nil
+	}
+	return *page.milr.Value
+}
+
+// ManagedInstanceProperties the properties of a managed instance.
+type ManagedInstanceProperties struct {
+	// FullyQualifiedDomainName - The fully qualified domain name of the managed instance.
+	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
+	// AdministratorLogin - Administrator username for the managed instance. Can only be specified when the managed instance is being created (and is required for creation).
+	AdministratorLogin *string `json:"administratorLogin,omitempty"`
+	// AdministratorLoginPassword - The administrator login password (required for managed instance creation).
+	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
+	// SubnetID - Subnet resource ID for the managed instance.
+	SubnetID *string `json:"subnetId,omitempty"`
+	// State - The state of the managed instance.
+	State *string `json:"state,omitempty"`
+	// LicenseType - The license type. Possible values are 'LicenseIncluded' and 'BasePrice'.
+	LicenseType *string `json:"licenseType,omitempty"`
+	// VCores - The number of VCores.
+	VCores *int32 `json:"vCores,omitempty"`
+	// StorageSizeInGB - The maximum storage size in GB.
+	StorageSizeInGB *int32 `json:"storageSizeInGB,omitempty"`
+}
+
+// ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedInstancesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedInstancesCreateOrUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return mi, azure.NewAsyncOpIncompleteError("sql.ManagedInstancesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		mi, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	mi, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedInstancesDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedInstancesDeleteFuture) Result(client ManagedInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.ManagedInstancesDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedInstancesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedInstancesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedInstancesUpdateFuture) Result(client ManagedInstancesClient) (mi ManagedInstance, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return mi, azure.NewAsyncOpIncompleteError("sql.ManagedInstancesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		mi, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	mi, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedInstanceUpdate an update request for an Azure SQL Database managed instance.
+type ManagedInstanceUpdate struct {
+	// Sku - Managed instance sku
+	Sku *Sku `json:"sku,omitempty"`
+	// ManagedInstanceProperties - Resource properties.
+	*ManagedInstanceProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceUpdate.
+func (miu ManagedInstanceUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miu.Sku != nil {
+		objectMap["sku"] = miu.Sku
+	}
+	if miu.ManagedInstanceProperties != nil {
+		objectMap["properties"] = miu.ManagedInstanceProperties
+	}
+	if miu.Tags != nil {
+		objectMap["tags"] = miu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstanceUpdate struct.
+func (miu *ManagedInstanceUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				miu.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var managedInstanceProperties ManagedInstanceProperties
+				err = json.Unmarshal(*v, &managedInstanceProperties)
+				if err != nil {
+					return err
+				}
+				miu.ManagedInstanceProperties = &managedInstanceProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				miu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // MaxSizeCapability the maximum size capability.
 type MaxSizeCapability struct {
 	// Limit - The maximum size limit (see 'unit' for the units).
@@ -4811,139 +5285,6 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-}
-
-// RecommendedElasticPool represents a recommented elastic pool.
-type RecommendedElasticPool struct {
-	autorest.Response `json:"-"`
-	// RecommendedElasticPoolProperties - The properites representing the resource.
-	*RecommendedElasticPoolProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RecommendedElasticPool.
-func (rep RecommendedElasticPool) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rep.RecommendedElasticPoolProperties != nil {
-		objectMap["properties"] = rep.RecommendedElasticPoolProperties
-	}
-	if rep.ID != nil {
-		objectMap["id"] = rep.ID
-	}
-	if rep.Name != nil {
-		objectMap["name"] = rep.Name
-	}
-	if rep.Type != nil {
-		objectMap["type"] = rep.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for RecommendedElasticPool struct.
-func (rep *RecommendedElasticPool) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var recommendedElasticPoolProperties RecommendedElasticPoolProperties
-				err = json.Unmarshal(*v, &recommendedElasticPoolProperties)
-				if err != nil {
-					return err
-				}
-				rep.RecommendedElasticPoolProperties = &recommendedElasticPoolProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				rep.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				rep.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				rep.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// RecommendedElasticPoolListMetricsResult represents the response to a list recommended elastic pool metrics
-// request.
-type RecommendedElasticPoolListMetricsResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of recommended elastic pools metrics.
-	Value *[]RecommendedElasticPoolMetric `json:"value,omitempty"`
-}
-
-// RecommendedElasticPoolListResult represents the response to a list recommended elastic pool request.
-type RecommendedElasticPoolListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of recommended elastic pools hosted in the server.
-	Value *[]RecommendedElasticPool `json:"value,omitempty"`
-}
-
-// RecommendedElasticPoolMetric represents recommended elastic pool metric.
-type RecommendedElasticPoolMetric struct {
-	// DateTime - The time of metric (ISO8601 format).
-	DateTime *date.Time `json:"dateTime,omitempty"`
-	// Dtu - Gets or sets the DTUs (Database Transaction Units). See https://azure.microsoft.com/documentation/articles/sql-database-what-is-a-dtu/
-	Dtu *float64 `json:"dtu,omitempty"`
-	// SizeGB - Gets or sets size in gigabytes.
-	SizeGB *float64 `json:"sizeGB,omitempty"`
-}
-
-// RecommendedElasticPoolProperties represents the properties of a recommented elastic pool.
-type RecommendedElasticPoolProperties struct {
-	// DatabaseEdition - The edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'ElasticPoolEditionBasic', 'ElasticPoolEditionStandard', 'ElasticPoolEditionPremium'
-	DatabaseEdition ElasticPoolEdition `json:"databaseEdition,omitempty"`
-	// Dtu - The DTU for the recommended elastic pool.
-	Dtu *float64 `json:"dtu,omitempty"`
-	// DatabaseDtuMin - The minimum DTU for the database.
-	DatabaseDtuMin *float64 `json:"databaseDtuMin,omitempty"`
-	// DatabaseDtuMax - The maximum DTU for the database.
-	DatabaseDtuMax *float64 `json:"databaseDtuMax,omitempty"`
-	// StorageMB - Gets storage size in megabytes.
-	StorageMB *float64 `json:"storageMB,omitempty"`
-	// ObservationPeriodStart - The observation period start (ISO8601 format).
-	ObservationPeriodStart *date.Time `json:"observationPeriodStart,omitempty"`
-	// ObservationPeriodEnd - The observation period start (ISO8601 format).
-	ObservationPeriodEnd *date.Time `json:"observationPeriodEnd,omitempty"`
-	// MaxObservedDtu - Gets maximum observed DTU.
-	MaxObservedDtu *float64 `json:"maxObservedDtu,omitempty"`
-	// MaxObservedStorageMB - Gets maximum observed storage in megabytes.
-	MaxObservedStorageMB *float64 `json:"maxObservedStorageMB,omitempty"`
-	// Databases - The list of databases in this pool. Expanded property
-	Databases *[]Database `json:"databases,omitempty"`
-	// Metrics - The list of databases housed in the server. Expanded property
-	Metrics *[]RecommendedElasticPoolMetric `json:"metrics,omitempty"`
 }
 
 // RecommendedIndex represents a database recommended index.
@@ -7175,6 +7516,20 @@ type ServiceTierAdvisorProperties struct {
 	OverallRecommendationServiceLevelObjectiveID *uuid.UUID `json:"overallRecommendationServiceLevelObjectiveId,omitempty"`
 	// Confidence - Gets or sets confidence for service tier advisor.
 	Confidence *float64 `json:"confidence,omitempty"`
+}
+
+// Sku an ARM Resource SKU.
+type Sku struct {
+	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	Name *string `json:"name,omitempty"`
+	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	Tier *string `json:"tier,omitempty"`
+	// Size - Size of the particular SKU
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - Capacity of the particular SKU.
+	Capacity *int32 `json:"capacity,omitempty"`
 }
 
 // SloUsageMetric a Slo Usage Metric.

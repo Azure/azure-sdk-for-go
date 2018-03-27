@@ -201,6 +201,21 @@ func PossibleCapabilityStatusValues() []CapabilityStatus {
 	return []CapabilityStatus{CapabilityStatusAvailable, CapabilityStatusDefault, CapabilityStatusDisabled, CapabilityStatusVisible}
 }
 
+// CatalogCollationType enumerates the values for catalog collation type.
+type CatalogCollationType string
+
+const (
+	// DATABASEDEFAULT ...
+	DATABASEDEFAULT CatalogCollationType = "DATABASE_DEFAULT"
+	// SQLLatin1GeneralCP1CIAS ...
+	SQLLatin1GeneralCP1CIAS CatalogCollationType = "SQL_Latin1_General_CP1_CI_AS"
+)
+
+// PossibleCatalogCollationTypeValues returns an array of possible values for the CatalogCollationType const type.
+func PossibleCatalogCollationTypeValues() []CatalogCollationType {
+	return []CatalogCollationType{DATABASEDEFAULT, SQLLatin1GeneralCP1CIAS}
+}
+
 // CheckNameAvailabilityReason enumerates the values for check name availability reason.
 type CheckNameAvailabilityReason string
 
@@ -404,6 +419,44 @@ const (
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{SystemAssigned}
+}
+
+// ManagedDatabaseCreateMode enumerates the values for managed database create mode.
+type ManagedDatabaseCreateMode string
+
+const (
+	// ManagedDatabaseCreateModeDefault ...
+	ManagedDatabaseCreateModeDefault ManagedDatabaseCreateMode = "Default"
+	// ManagedDatabaseCreateModePointInTimeRestore ...
+	ManagedDatabaseCreateModePointInTimeRestore ManagedDatabaseCreateMode = "PointInTimeRestore"
+	// ManagedDatabaseCreateModeRestoreExternalBackup ...
+	ManagedDatabaseCreateModeRestoreExternalBackup ManagedDatabaseCreateMode = "RestoreExternalBackup"
+)
+
+// PossibleManagedDatabaseCreateModeValues returns an array of possible values for the ManagedDatabaseCreateMode const type.
+func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
+	return []ManagedDatabaseCreateMode{ManagedDatabaseCreateModeDefault, ManagedDatabaseCreateModePointInTimeRestore, ManagedDatabaseCreateModeRestoreExternalBackup}
+}
+
+// ManagedDatabaseStatus enumerates the values for managed database status.
+type ManagedDatabaseStatus string
+
+const (
+	// Creating ...
+	Creating ManagedDatabaseStatus = "Creating"
+	// Inaccessible ...
+	Inaccessible ManagedDatabaseStatus = "Inaccessible"
+	// Offline ...
+	Offline ManagedDatabaseStatus = "Offline"
+	// Online ...
+	Online ManagedDatabaseStatus = "Online"
+	// Shutdown ...
+	Shutdown ManagedDatabaseStatus = "Shutdown"
+)
+
+// PossibleManagedDatabaseStatusValues returns an array of possible values for the ManagedDatabaseStatus const type.
+func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
+	return []ManagedDatabaseStatus{Creating, Inaccessible, Offline, Online, Shutdown}
 }
 
 // ManagementOperationState enumerates the values for management operation state.
@@ -920,17 +973,17 @@ func PossibleStorageKeyTypeValues() []StorageKeyType {
 type SyncAgentState string
 
 const (
-	// NeverConnected ...
-	NeverConnected SyncAgentState = "NeverConnected"
-	// Offline ...
-	Offline SyncAgentState = "Offline"
-	// Online ...
-	Online SyncAgentState = "Online"
+	// SyncAgentStateNeverConnected ...
+	SyncAgentStateNeverConnected SyncAgentState = "NeverConnected"
+	// SyncAgentStateOffline ...
+	SyncAgentStateOffline SyncAgentState = "Offline"
+	// SyncAgentStateOnline ...
+	SyncAgentStateOnline SyncAgentState = "Online"
 )
 
 // PossibleSyncAgentStateValues returns an array of possible values for the SyncAgentState const type.
 func PossibleSyncAgentStateValues() []SyncAgentState {
-	return []SyncAgentState{NeverConnected, Offline, Online}
+	return []SyncAgentState{SyncAgentStateNeverConnected, SyncAgentStateOffline, SyncAgentStateOnline}
 }
 
 // SyncConflictResolutionPolicy enumerates the values for sync conflict resolution policy.
@@ -1551,6 +1604,13 @@ type CheckNameAvailabilityResponse struct {
 	Name *string `json:"name,omitempty"`
 	// Reason - The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
 	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
+}
+
+// CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database restore
+// operation.
+type CompleteDatabaseRestoreDefinition struct {
+	// LastBackupName - The last backup name to apply
+	LastBackupName *string `json:"lastBackupName,omitempty"`
 }
 
 // CreateDatabaseRestorePointDefinition contains the information necessary to perform a create database restore
@@ -5132,6 +5192,495 @@ type LocationCapabilities struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// SupportedServerVersions - The list of supported server versions.
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+}
+
+// ManagedDatabase a managed database resource.
+type ManagedDatabase struct {
+	autorest.Response `json:"-"`
+	// ManagedDatabaseProperties - Resource properties.
+	*ManagedDatabaseProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedDatabase.
+func (md ManagedDatabase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if md.ManagedDatabaseProperties != nil {
+		objectMap["properties"] = md.ManagedDatabaseProperties
+	}
+	if md.Tags != nil {
+		objectMap["tags"] = md.Tags
+	}
+	if md.Location != nil {
+		objectMap["location"] = md.Location
+	}
+	if md.ID != nil {
+		objectMap["id"] = md.ID
+	}
+	if md.Name != nil {
+		objectMap["name"] = md.Name
+	}
+	if md.Type != nil {
+		objectMap["type"] = md.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedDatabase struct.
+func (md *ManagedDatabase) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedDatabaseProperties ManagedDatabaseProperties
+				err = json.Unmarshal(*v, &managedDatabaseProperties)
+				if err != nil {
+					return err
+				}
+				md.ManagedDatabaseProperties = &managedDatabaseProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				md.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				md.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				md.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				md.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				md.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedDatabaseListResult a list of managed databases.
+type ManagedDatabaseListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ManagedDatabase `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedDatabaseListResultIterator provides access to a complete listing of ManagedDatabase values.
+type ManagedDatabaseListResultIterator struct {
+	i    int
+	page ManagedDatabaseListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedDatabaseListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedDatabaseListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedDatabaseListResultIterator) Response() ManagedDatabaseListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedDatabaseListResultIterator) Value() ManagedDatabase {
+	if !iter.page.NotDone() {
+		return ManagedDatabase{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mdlr ManagedDatabaseListResult) IsEmpty() bool {
+	return mdlr.Value == nil || len(*mdlr.Value) == 0
+}
+
+// managedDatabaseListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mdlr ManagedDatabaseListResult) managedDatabaseListResultPreparer() (*http.Request, error) {
+	if mdlr.NextLink == nil || len(to.String(mdlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mdlr.NextLink)))
+}
+
+// ManagedDatabaseListResultPage contains a page of ManagedDatabase values.
+type ManagedDatabaseListResultPage struct {
+	fn   func(ManagedDatabaseListResult) (ManagedDatabaseListResult, error)
+	mdlr ManagedDatabaseListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedDatabaseListResultPage) Next() error {
+	next, err := page.fn(page.mdlr)
+	if err != nil {
+		return err
+	}
+	page.mdlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedDatabaseListResultPage) NotDone() bool {
+	return !page.mdlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedDatabaseListResultPage) Response() ManagedDatabaseListResult {
+	return page.mdlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedDatabaseListResultPage) Values() []ManagedDatabase {
+	if page.mdlr.IsEmpty() {
+		return nil
+	}
+	return *page.mdlr.Value
+}
+
+// ManagedDatabaseProperties the managed database's properties.
+type ManagedDatabaseProperties struct {
+	// Collation - Collation of the managed database.
+	Collation *string `json:"collation,omitempty"`
+	// Status - Status for the database. Possible values include: 'Online', 'Offline', 'Shutdown', 'Creating', 'Inaccessible'
+	Status ManagedDatabaseStatus `json:"status,omitempty"`
+	// CreationDate - Creation date of the database.
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// EarliestRestorePoint - Earliest restore point in time for point in time restore.
+	EarliestRestorePoint *date.Time `json:"earliestRestorePoint,omitempty"`
+	// RestorePointInTime - Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
+	// DefaultSecondaryLocation - Geo paired region.
+	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
+	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
+	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
+	// CreateMode - Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Possible values include: 'ManagedDatabaseCreateModeDefault', 'ManagedDatabaseCreateModeRestoreExternalBackup', 'ManagedDatabaseCreateModePointInTimeRestore'
+	CreateMode ManagedDatabaseCreateMode `json:"createMode,omitempty"`
+	// StorageContainerURI - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container where backups for this restore are stored.
+	StorageContainerURI *string `json:"storageContainerUri,omitempty"`
+	// SourceDatabaseID - The resource identifier of the source database associated with create operation of this database.
+	SourceDatabaseID *string `json:"sourceDatabaseId,omitempty"`
+	// StorageContainerSasToken - Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.
+	StorageContainerSasToken *string `json:"storageContainerSasToken,omitempty"`
+	// FailoverGroupID - Instance Failover Group resource identifier that this managed database belongs to.
+	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
+}
+
+// ManagedDatabasesCompleteRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedDatabasesCompleteRestoreFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedDatabasesCompleteRestoreFuture) Result(client ManagedDatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCompleteRestoreFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesCompleteRestoreFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.CompleteRestoreResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCompleteRestoreFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCompleteRestoreFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.CompleteRestoreResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCompleteRestoreFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedDatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedDatabasesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedDatabasesCreateOrUpdateFuture) Result(client ManagedDatabasesClient) (md ManagedDatabase, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return md, azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		md, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	md, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedDatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedDatabasesDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedDatabasesDeleteFuture) Result(client ManagedDatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedDatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ManagedDatabasesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ManagedDatabasesUpdateFuture) Result(client ManagedDatabasesClient) (md ManagedDatabase, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return md, azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		md, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	md, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabasesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedDatabaseUpdate an managed database update.
+type ManagedDatabaseUpdate struct {
+	// ManagedDatabaseProperties - Resource properties.
+	*ManagedDatabaseProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedDatabaseUpdate.
+func (mdu ManagedDatabaseUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdu.ManagedDatabaseProperties != nil {
+		objectMap["properties"] = mdu.ManagedDatabaseProperties
+	}
+	if mdu.Tags != nil {
+		objectMap["tags"] = mdu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedDatabaseUpdate struct.
+func (mdu *ManagedDatabaseUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedDatabaseProperties ManagedDatabaseProperties
+				err = json.Unmarshal(*v, &managedDatabaseProperties)
+				if err != nil {
+					return err
+				}
+				mdu.ManagedDatabaseProperties = &managedDatabaseProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mdu.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // MaxSizeCapability the maximum size limits for a database.
@@ -8827,7 +9376,7 @@ type SyncAgentProperties struct {
 	SyncDatabaseID *string `json:"syncDatabaseId,omitempty"`
 	// LastAliveTime - Last alive time of the sync agent.
 	LastAliveTime *date.Time `json:"lastAliveTime,omitempty"`
-	// State - State of the sync agent. Possible values include: 'Online', 'Offline', 'NeverConnected'
+	// State - State of the sync agent. Possible values include: 'SyncAgentStateOnline', 'SyncAgentStateOffline', 'SyncAgentStateNeverConnected'
 	State SyncAgentState `json:"state,omitempty"`
 	// IsUpToDate - If the sync agent version is up to date.
 	IsUpToDate *bool `json:"isUpToDate,omitempty"`

@@ -31,6 +31,8 @@ type CreateMode string
 const (
 	// CreateModeDefault ...
 	CreateModeDefault CreateMode = "Default"
+	// CreateModeGeoRestore ...
+	CreateModeGeoRestore CreateMode = "GeoRestore"
 	// CreateModePointInTimeRestore ...
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
 	// CreateModeServerPropertiesForCreate ...
@@ -39,7 +41,7 @@ const (
 
 // PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{CreateModeDefault, CreateModePointInTimeRestore, CreateModeServerPropertiesForCreate}
+	return []CreateMode{CreateModeDefault, CreateModeGeoRestore, CreateModePointInTimeRestore, CreateModeServerPropertiesForCreate}
 }
 
 // GeoRedundantBackup enumerates the values for geo redundant backup.
@@ -1126,6 +1128,7 @@ type ServerProperties struct {
 type BasicServerPropertiesForCreate interface {
 	AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool)
 	AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool)
+	AsServerPropertiesForGeoRestore() (*ServerPropertiesForGeoRestore, bool)
 	AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool)
 }
 
@@ -1137,7 +1140,7 @@ type ServerPropertiesForCreate struct {
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
 	// StorageProfile - Storage profile of a server.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore'
+	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeGeoRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
 }
 
@@ -1157,6 +1160,10 @@ func unmarshalBasicServerPropertiesForCreate(body []byte) (BasicServerProperties
 		var spfr ServerPropertiesForRestore
 		err := json.Unmarshal(body, &spfr)
 		return spfr, err
+	case string(CreateModeGeoRestore):
+		var spfgr ServerPropertiesForGeoRestore
+		err := json.Unmarshal(body, &spfgr)
+		return spfgr, err
 	default:
 		var spfc ServerPropertiesForCreate
 		err := json.Unmarshal(body, &spfc)
@@ -1211,6 +1218,11 @@ func (spfc ServerPropertiesForCreate) AsServerPropertiesForRestore() (*ServerPro
 	return nil, false
 }
 
+// AsServerPropertiesForGeoRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForCreate.
+func (spfc ServerPropertiesForCreate) AsServerPropertiesForGeoRestore() (*ServerPropertiesForGeoRestore, bool) {
+	return nil, false
+}
+
 // AsServerPropertiesForCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForCreate.
 func (spfc ServerPropertiesForCreate) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
 	return &spfc, true
@@ -1233,7 +1245,7 @@ type ServerPropertiesForDefaultCreate struct {
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
 	// StorageProfile - Storage profile of a server.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore'
+	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeGeoRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
 }
 
@@ -1272,6 +1284,11 @@ func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForRestore() (*S
 	return nil, false
 }
 
+// AsServerPropertiesForGeoRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForDefaultCreate.
+func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForGeoRestore() (*ServerPropertiesForGeoRestore, bool) {
+	return nil, false
+}
+
 // AsServerPropertiesForCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForDefaultCreate.
 func (spfdc ServerPropertiesForDefaultCreate) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
 	return nil, false
@@ -1282,7 +1299,69 @@ func (spfdc ServerPropertiesForDefaultCreate) AsBasicServerPropertiesForCreate()
 	return &spfdc, true
 }
 
-// ServerPropertiesForRestore the properties to a new server by restoring from a backup.
+// ServerPropertiesForGeoRestore the properties used to create a new server by restoring to a different region from
+// a geo replicated backup.
+type ServerPropertiesForGeoRestore struct {
+	// SourceServerID - The source server id to restore from.
+	SourceServerID *string `json:"sourceServerId,omitempty"`
+	// Version - Server version. Possible values include: 'NineFullStopFive', 'NineFullStopSix'
+	Version ServerVersion `json:"version,omitempty"`
+	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
+	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// StorageProfile - Storage profile of a server.
+	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeGeoRestore'
+	CreateMode CreateMode `json:"createMode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) MarshalJSON() ([]byte, error) {
+	spfgr.CreateMode = CreateModeGeoRestore
+	objectMap := make(map[string]interface{})
+	if spfgr.SourceServerID != nil {
+		objectMap["sourceServerId"] = spfgr.SourceServerID
+	}
+	if spfgr.Version != "" {
+		objectMap["version"] = spfgr.Version
+	}
+	if spfgr.SslEnforcement != "" {
+		objectMap["sslEnforcement"] = spfgr.SslEnforcement
+	}
+	if spfgr.StorageProfile != nil {
+		objectMap["storageProfile"] = spfgr.StorageProfile
+	}
+	if spfgr.CreateMode != "" {
+		objectMap["createMode"] = spfgr.CreateMode
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsServerPropertiesForDefaultCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) AsServerPropertiesForDefaultCreate() (*ServerPropertiesForDefaultCreate, bool) {
+	return nil, false
+}
+
+// AsServerPropertiesForRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool) {
+	return nil, false
+}
+
+// AsServerPropertiesForGeoRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) AsServerPropertiesForGeoRestore() (*ServerPropertiesForGeoRestore, bool) {
+	return &spfgr, true
+}
+
+// AsServerPropertiesForCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) AsServerPropertiesForCreate() (*ServerPropertiesForCreate, bool) {
+	return nil, false
+}
+
+// AsBasicServerPropertiesForCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForGeoRestore.
+func (spfgr ServerPropertiesForGeoRestore) AsBasicServerPropertiesForCreate() (BasicServerPropertiesForCreate, bool) {
+	return &spfgr, true
+}
+
+// ServerPropertiesForRestore the properties used to create a new server by restoring from a backup.
 type ServerPropertiesForRestore struct {
 	// SourceServerID - The source server id to restore from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
@@ -1294,7 +1373,7 @@ type ServerPropertiesForRestore struct {
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
 	// StorageProfile - Storage profile of a server.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore'
+	// CreateMode - Possible values include: 'CreateModeServerPropertiesForCreate', 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeGeoRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
 }
 
@@ -1331,6 +1410,11 @@ func (spfr ServerPropertiesForRestore) AsServerPropertiesForDefaultCreate() (*Se
 // AsServerPropertiesForRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForRestore.
 func (spfr ServerPropertiesForRestore) AsServerPropertiesForRestore() (*ServerPropertiesForRestore, bool) {
 	return &spfr, true
+}
+
+// AsServerPropertiesForGeoRestore is the BasicServerPropertiesForCreate implementation for ServerPropertiesForRestore.
+func (spfr ServerPropertiesForRestore) AsServerPropertiesForGeoRestore() (*ServerPropertiesForGeoRestore, bool) {
+	return nil, false
 }
 
 // AsServerPropertiesForCreate is the BasicServerPropertiesForCreate implementation for ServerPropertiesForRestore.

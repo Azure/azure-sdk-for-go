@@ -42,12 +42,14 @@ func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID
 
 // Delete delete a hybrid runbook worker group.
 //
-// resourceGroupName is the resource group name. automationAccountName is automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is automation account name.
 // hybridRunbookWorkerGroupName is the hybrid runbook worker group name
 func (client HybridRunbookWorkerGroupClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.HybridRunbookWorkerGroupClient", "Delete", err.Error())
 	}
 
@@ -115,12 +117,14 @@ func (client HybridRunbookWorkerGroupClient) DeleteResponder(resp *http.Response
 
 // Get retrieve a hybrid runbook worker group.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // hybridRunbookWorkerGroupName is the hybrid runbook worker group name
 func (client HybridRunbookWorkerGroupClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string) (result HybridRunbookWorkerGroup, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.HybridRunbookWorkerGroupClient", "Get", err.Error())
 	}
 
@@ -189,11 +193,13 @@ func (client HybridRunbookWorkerGroupClient) GetResponder(resp *http.Response) (
 
 // ListByAutomationAccount retrieve a list of hybrid runbook worker groups.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client HybridRunbookWorkerGroupClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result HybridRunbookWorkerGroupsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.HybridRunbookWorkerGroupClient", "ListByAutomationAccount", err.Error())
 	}
 
@@ -289,13 +295,15 @@ func (client HybridRunbookWorkerGroupClient) ListByAutomationAccountComplete(ctx
 
 // Update update a hybrid runbook worker group.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 // hybridRunbookWorkerGroupName is the hybrid runbook worker group name parameters is the hybrid runbook worker
 // group
 func (client HybridRunbookWorkerGroupClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, hybridRunbookWorkerGroupName string, parameters HybridRunbookWorkerGroupUpdateParameters) (result HybridRunbookWorkerGroup, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.HybridRunbookWorkerGroupClient", "Update", err.Error())
 	}
 

@@ -25,56 +25,54 @@ import (
 	"net/http"
 )
 
-// KeysClient is the automation Client
-type KeysClient struct {
+// UsagesClient is the automation Client
+type UsagesClient struct {
 	BaseClient
 }
 
-// NewKeysClient creates an instance of the KeysClient client.
-func NewKeysClient(subscriptionID string) KeysClient {
-	return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsagesClient creates an instance of the UsagesClient client.
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewKeysClientWithBaseURI creates an instance of the KeysClient client.
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
-	return KeysClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByAutomationAccount retrieve the automation keys for an account.
+// ListByAutomationAccount retrieve the usage for the account id.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-func (client KeysClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result KeyListResult, err error) {
+// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+func (client UsagesClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result UsageListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("automation.KeysClient", "ListByAutomationAccount", err.Error())
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automation.UsagesClient", "ListByAutomationAccount", err.Error())
 	}
 
 	req, err := client.ListByAutomationAccountPreparer(ctx, resourceGroupName, automationAccountName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.KeysClient", "ListByAutomationAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByAutomationAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.KeysClient", "ListByAutomationAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByAutomationAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.KeysClient", "ListByAutomationAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "automation.UsagesClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByAutomationAccountPreparer prepares the ListByAutomationAccount request.
-func (client KeysClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
+func (client UsagesClient) ListByAutomationAccountPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
@@ -87,23 +85,23 @@ func (client KeysClient) ListByAutomationAccountPreparer(ctx context.Context, re
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/listKeys", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/usages", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByAutomationAccountSender sends the ListByAutomationAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client KeysClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
+func (client UsagesClient) ListByAutomationAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAutomationAccountResponder handles the response to the ListByAutomationAccount request. The method always
 // closes the http.Response Body.
-func (client KeysClient) ListByAutomationAccountResponder(resp *http.Response) (result KeyListResult, err error) {
+func (client UsagesClient) ListByAutomationAccountResponder(resp *http.Response) (result UsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

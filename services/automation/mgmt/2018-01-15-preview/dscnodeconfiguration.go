@@ -42,10 +42,10 @@ func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID str
 
 // CreateOrUpdate create the node configuration identified by node configuration name.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeConfigurationName is the create or update parameters for configuration. parameters is the create or update
-// parameters for configuration.
-func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (result DscNodeConfiguration, err error) {
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeConfigurationName is the Dsc node configuration name. parameters is the create or update parameters
+// for configuration.
+func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParametersProperties) (result DscNodeConfigurationCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -69,23 +69,17 @@ func (client DscNodeConfigurationClient) CreateOrUpdate(ctx context.Context, res
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParameters) (*http.Request, error) {
+func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string, parameters DscNodeConfigurationCreateOrUpdateParametersProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"nodeConfigurationName": autorest.Encode("path", nodeConfigurationName),
@@ -93,7 +87,7 @@ func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Cont
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -110,9 +104,17 @@ func (client DscNodeConfigurationClient) CreateOrUpdatePreparer(ctx context.Cont
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DscNodeConfigurationClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+func (client DscNodeConfigurationClient) CreateOrUpdateSender(req *http.Request) (future DscNodeConfigurationCreateOrUpdateFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -121,7 +123,7 @@ func (client DscNodeConfigurationClient) CreateOrUpdateResponder(resp *http.Resp
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -130,8 +132,8 @@ func (client DscNodeConfigurationClient) CreateOrUpdateResponder(resp *http.Resp
 
 // Delete delete the Dsc node configurations by node configuration.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeConfigurationName is the Dsc node configuration name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeConfigurationName is the Dsc node configuration name.
 func (client DscNodeConfigurationClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -171,7 +173,7 @@ func (client DscNodeConfigurationClient) DeletePreparer(ctx context.Context, res
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -205,8 +207,8 @@ func (client DscNodeConfigurationClient) DeleteResponder(resp *http.Response) (r
 
 // Get retrieve the Dsc node configurations by node configuration.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// nodeConfigurationName is the Dsc node configuration name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. nodeConfigurationName is the Dsc node configuration name.
 func (client DscNodeConfigurationClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, nodeConfigurationName string) (result DscNodeConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -246,7 +248,7 @@ func (client DscNodeConfigurationClient) GetPreparer(ctx context.Context, resour
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -281,8 +283,8 @@ func (client DscNodeConfigurationClient) GetResponder(resp *http.Response) (resu
 
 // ListByAutomationAccount retrieve a list of dsc node configurations.
 //
-// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
-// filter is the filter to apply on the operation.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the name of the automation
+// account. filter is the filter to apply on the operation.
 func (client DscNodeConfigurationClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result DscNodeConfigurationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -322,7 +324,7 @@ func (client DscNodeConfigurationClient) ListByAutomationAccountPreparer(ctx con
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-10-31"
+	const APIVersion = "2018-01-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

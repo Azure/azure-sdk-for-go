@@ -2715,6 +2715,55 @@ func (dcj *DscCompilationJob) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DscCompilationJobCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DscCompilationJobCreateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DscCompilationJobCreateFuture) Result(client DscCompilationJobClient) (dcj DscCompilationJob, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return dcj, azure.NewAsyncOpIncompleteError("automation.DscCompilationJobCreateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		dcj, err = client.CreateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	dcj, err = client.CreateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // DscCompilationJobCreateParameters the parameters supplied to the create compilation job operation.
 type DscCompilationJobCreateParameters struct {
 	// DscCompilationJobCreateProperties - Gets or sets the list of compilation job properties.
@@ -3504,27 +3553,11 @@ type DscMetaConfiguration struct {
 	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 }
 
-// DscNode definition of the dsc node type.
+// DscNode definition of a DscNode
 type DscNode struct {
 	autorest.Response `json:"-"`
-	// LastSeen - Gets or sets the last seen time of the node.
-	LastSeen *date.Time `json:"lastSeen,omitempty"`
-	// RegistrationTime - Gets or sets the registration time of the node.
-	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
-	// IP - Gets or sets the ip of the node.
-	IP *string `json:"ip,omitempty"`
-	// AccountID - Gets or sets the account id of the node.
-	AccountID *string `json:"accountId,omitempty"`
-	// NodeConfiguration - Gets or sets the configuration of the node.
-	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
-	// Status - Gets or sets the status of the node.
-	Status *string `json:"status,omitempty"`
-	// NodeID - Gets or sets the node id.
-	NodeID *string `json:"nodeId,omitempty"`
-	// Etag - Gets or sets the etag of the resource.
-	Etag *string `json:"etag,omitempty"`
-	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
-	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+	// DscNodeProperties - The properties of a DscNode.
+	*DscNodeProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
@@ -3533,27 +3566,210 @@ type DscNode struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DscNode.
+func (dn DscNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dn.DscNodeProperties != nil {
+		objectMap["properties"] = dn.DscNodeProperties
+	}
+	if dn.ID != nil {
+		objectMap["id"] = dn.ID
+	}
+	if dn.Name != nil {
+		objectMap["name"] = dn.Name
+	}
+	if dn.Type != nil {
+		objectMap["type"] = dn.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNode struct.
+func (dn *DscNode) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeProperties DscNodeProperties
+				err = json.Unmarshal(*v, &dscNodeProperties)
+				if err != nil {
+					return err
+				}
+				dn.DscNodeProperties = &dscNodeProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dn.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dn.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dn.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // DscNodeConfiguration definition of the dsc node configuration.
 type DscNodeConfiguration struct {
 	autorest.Response `json:"-"`
-	// LastModifiedTime - Gets or sets the last modified time.
-	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
-	// CreationTime - Gets or sets creation time.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// Configuration - Gets or sets the configuration of the node.
-	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// DscNodeConfigurationProperties - Gets or sets the configuration properties.
+	*DscNodeConfigurationProperties `json:"properties,omitempty"`
 	// ID - Fully qualified resource Id for the resource
 	ID *string `json:"id,omitempty"`
 	// Name - The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeConfiguration.
+func (dnc DscNodeConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnc.DscNodeConfigurationProperties != nil {
+		objectMap["properties"] = dnc.DscNodeConfigurationProperties
+	}
+	if dnc.ID != nil {
+		objectMap["id"] = dnc.ID
+	}
+	if dnc.Name != nil {
+		objectMap["name"] = dnc.Name
+	}
+	if dnc.Type != nil {
+		objectMap["type"] = dnc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeConfiguration struct.
+func (dnc *DscNodeConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dscNodeConfigurationProperties DscNodeConfigurationProperties
+				err = json.Unmarshal(*v, &dscNodeConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				dnc.DscNodeConfigurationProperties = &dscNodeConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dnc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dnc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dnc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeConfigurationAssociationProperty the dsc nodeconfiguration property associated with the entity.
 type DscNodeConfigurationAssociationProperty struct {
 	// Name - Gets or sets the name of the dsc nodeconfiguration.
 	Name *string `json:"name,omitempty"`
+}
+
+// DscNodeConfigurationCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DscNodeConfigurationCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DscNodeConfigurationCreateOrUpdateFuture) Result(client DscNodeConfigurationClient) (dnc DscNodeConfiguration, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return dnc, azure.NewAsyncOpIncompleteError("automation.DscNodeConfigurationCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		dnc, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	dnc, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automation.DscNodeConfigurationCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // DscNodeConfigurationCreateOrUpdateParameters the parameters supplied to the create or update node configuration
@@ -3567,6 +3783,19 @@ type DscNodeConfigurationCreateOrUpdateParameters struct {
 	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
 	// NewNodeConfigurationBuildVersionRequired - If a new build version of NodeConfiguration is required.
 	NewNodeConfigurationBuildVersionRequired *bool `json:"newNodeConfigurationBuildVersionRequired,omitempty"`
+}
+
+// DscNodeConfigurationCreateOrUpdateParametersProperties the parameters supplied to the create or update node
+// configuration operation.
+type DscNodeConfigurationCreateOrUpdateParametersProperties struct {
+	// Source - Gets or sets the source.
+	Source *ContentSource `json:"source,omitempty"`
+	// Name - Gets or sets the type of the parameter.
+	Name *string `json:"name,omitempty"`
+	// Configuration - Gets or sets the configuration of the node.
+	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeConfigurationListResult the response model for the list job operation.
@@ -3669,6 +3898,22 @@ func (page DscNodeConfigurationListResultPage) Values() []DscNodeConfiguration {
 		return nil
 	}
 	return *page.dnclr.Value
+}
+
+// DscNodeConfigurationProperties ...
+type DscNodeConfigurationProperties struct {
+	// LastModifiedTime - Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// CreationTime - Gets or sets creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// Configuration - Gets or sets the configuration of the node.
+	Configuration *DscConfigurationAssociationProperty `json:"configuration,omitempty"`
+	// Source - Source of node configuration.
+	Source *string `json:"source,omitempty"`
+	// NodeCount - Number of nodes with this nodeconfiguration assigned
+	NodeCount *int64 `json:"nodeCount,omitempty"`
+	// IncrementNodeConfigurationBuild - If a new build version of NodeConfiguration is required.
+	IncrementNodeConfigurationBuild *bool `json:"incrementNodeConfigurationBuild,omitempty"`
 }
 
 // DscNodeExtensionHandlerAssociationProperty the dsc extensionHandler property associated with the node
@@ -3779,6 +4024,157 @@ func (page DscNodeListResultPage) Values() []DscNode {
 		return nil
 	}
 	return *page.dnlr.Value
+}
+
+// DscNodeProperties the properties of a DscNode
+type DscNodeProperties struct {
+	// LastSeen - Gets or sets the last seen time of the node.
+	LastSeen *date.Time `json:"lastSeen,omitempty"`
+	// RegistrationTime - Gets or sets the registration time of the node.
+	RegistrationTime *date.Time `json:"registrationTime,omitempty"`
+	// IP - Gets or sets the ip of the node.
+	IP *string `json:"ip,omitempty"`
+	// AccountID - Gets or sets the account id of the node.
+	AccountID *string `json:"accountId,omitempty"`
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	// Status - Gets or sets the status of the node.
+	Status *string `json:"status,omitempty"`
+	// NodeID - Gets or sets the node id.
+	NodeID *string `json:"nodeId,omitempty"`
+	// Etag - Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// ExtensionHandler - Gets or sets the list of extensionHandler properties for a Node.
+	ExtensionHandler *[]DscNodeExtensionHandlerAssociationProperty `json:"extensionHandler,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeProperties.
+func (dnp DscNodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnp.LastSeen != nil {
+		objectMap["lastSeen"] = dnp.LastSeen
+	}
+	if dnp.RegistrationTime != nil {
+		objectMap["registrationTime"] = dnp.RegistrationTime
+	}
+	if dnp.IP != nil {
+		objectMap["ip"] = dnp.IP
+	}
+	if dnp.AccountID != nil {
+		objectMap["accountId"] = dnp.AccountID
+	}
+	if dnp.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnp.DscNodeConfigurationAssociationProperty
+	}
+	if dnp.Status != nil {
+		objectMap["status"] = dnp.Status
+	}
+	if dnp.NodeID != nil {
+		objectMap["nodeId"] = dnp.NodeID
+	}
+	if dnp.Etag != nil {
+		objectMap["etag"] = dnp.Etag
+	}
+	if dnp.ExtensionHandler != nil {
+		objectMap["extensionHandler"] = dnp.ExtensionHandler
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeProperties struct.
+func (dnp *DscNodeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "lastSeen":
+			if v != nil {
+				var lastSeen date.Time
+				err = json.Unmarshal(*v, &lastSeen)
+				if err != nil {
+					return err
+				}
+				dnp.LastSeen = &lastSeen
+			}
+		case "registrationTime":
+			if v != nil {
+				var registrationTime date.Time
+				err = json.Unmarshal(*v, &registrationTime)
+				if err != nil {
+					return err
+				}
+				dnp.RegistrationTime = &registrationTime
+			}
+		case "ip":
+			if v != nil {
+				var IP string
+				err = json.Unmarshal(*v, &IP)
+				if err != nil {
+					return err
+				}
+				dnp.IP = &IP
+			}
+		case "accountId":
+			if v != nil {
+				var accountID string
+				err = json.Unmarshal(*v, &accountID)
+				if err != nil {
+					return err
+				}
+				dnp.AccountID = &accountID
+			}
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnp.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		case "status":
+			if v != nil {
+				var status string
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				dnp.Status = &status
+			}
+		case "nodeId":
+			if v != nil {
+				var nodeID string
+				err = json.Unmarshal(*v, &nodeID)
+				if err != nil {
+					return err
+				}
+				dnp.NodeID = &nodeID
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				dnp.Etag = &etag
+			}
+		case "extensionHandler":
+			if v != nil {
+				var extensionHandler []DscNodeExtensionHandlerAssociationProperty
+				err = json.Unmarshal(*v, &extensionHandler)
+				if err != nil {
+					return err
+				}
+				dnp.ExtensionHandler = &extensionHandler
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscNodeReport definition of the dsc node report type.
@@ -3932,6 +4328,46 @@ type DscNodeUpdateParameters struct {
 	NodeID *string `json:"nodeId,omitempty"`
 	// NodeConfiguration - Gets or sets the configuration of the node.
 	NodeConfiguration *DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+	Properties        *DscNodeUpdateParametersProperties       `json:"properties,omitempty"`
+}
+
+// DscNodeUpdateParametersProperties ...
+type DscNodeUpdateParametersProperties struct {
+	// DscNodeConfigurationAssociationProperty - Gets or sets the configuration of the node.
+	*DscNodeConfigurationAssociationProperty `json:"nodeConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DscNodeUpdateParametersProperties.
+func (dnup DscNodeUpdateParametersProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dnup.DscNodeConfigurationAssociationProperty != nil {
+		objectMap["nodeConfiguration"] = dnup.DscNodeConfigurationAssociationProperty
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DscNodeUpdateParametersProperties struct.
+func (dnup *DscNodeUpdateParametersProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nodeConfiguration":
+			if v != nil {
+				var dscNodeConfigurationAssociationProperty DscNodeConfigurationAssociationProperty
+				err = json.Unmarshal(*v, &dscNodeConfigurationAssociationProperty)
+				if err != nil {
+					return err
+				}
+				dnup.DscNodeConfigurationAssociationProperty = &dscNodeConfigurationAssociationProperty
+			}
+		}
+	}
+
+	return nil
 }
 
 // DscReportError definition of the dsc node report error type.

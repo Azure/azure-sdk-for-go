@@ -42,11 +42,13 @@ func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient 
 
 // ListByAutomationAccount retrieve the automation keys for an account.
 //
-// resourceGroupName is the resource group name. automationAccountName is the automation account name.
+// resourceGroupName is name of an Azure Resource group. automationAccountName is the automation account name.
 func (client KeysClient) ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string) (result KeyListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.KeysClient", "ListByAutomationAccount", err.Error())
 	}
 

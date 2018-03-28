@@ -714,10 +714,10 @@ type BasicConnectToSourceSQLServerTaskOutput interface {
 // ConnectToSourceSQLServerTaskOutput output for the task that validates connection to SQL Server and also
 // validates source server requirements
 type ConnectToSourceSQLServerTaskOutput struct {
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
-	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 func unmarshalBasicConnectToSourceSQLServerTaskOutput(body []byte) (BasicConnectToSourceSQLServerTaskOutput, error) {
@@ -765,11 +765,11 @@ func unmarshalBasicConnectToSourceSQLServerTaskOutputArray(body []byte) ([]Basic
 func (ctsssto ConnectToSourceSQLServerTaskOutput) MarshalJSON() ([]byte, error) {
 	ctsssto.ResultType = ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
 	objectMap := make(map[string]interface{})
-	if ctsssto.ResultType != "" {
-		objectMap["resultType"] = ctsssto.ResultType
-	}
 	if ctsssto.ID != nil {
 		objectMap["id"] = ctsssto.ID
+	}
+	if ctsssto.ResultType != "" {
+		objectMap["resultType"] = ctsssto.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -807,10 +807,10 @@ type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	CompatibilityLevel DatabaseCompatLevel `json:"compatibilityLevel,omitempty"`
 	// DatabaseState - State of the database. Possible values include: 'Online', 'Restoring', 'Recovering', 'RecoveryPending', 'Suspect', 'Emergency', 'Offline', 'Copying', 'OfflineSecondary'
 	DatabaseState DatabaseState `json:"databaseState,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
-	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputDatabaseLevel.
@@ -832,11 +832,11 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) MarshalJSON() (
 	if ctssstodl.DatabaseState != "" {
 		objectMap["databaseState"] = ctssstodl.DatabaseState
 	}
-	if ctssstodl.ResultType != "" {
-		objectMap["resultType"] = ctssstodl.ResultType
-	}
 	if ctssstodl.ID != nil {
 		objectMap["id"] = ctssstodl.ID
+	}
+	if ctssstodl.ResultType != "" {
+		objectMap["resultType"] = ctssstodl.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -872,10 +872,10 @@ type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	SourceServerBrandVersion *string `json:"sourceServerBrandVersion,omitempty"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
-	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput', 'ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput'
+	ResultType ResultTypeBasicConnectToSourceSQLServerTaskOutput `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToSourceSQLServerTaskOutputTaskLevel.
@@ -894,11 +894,11 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]by
 	if ctssstotl.ValidationErrors != nil {
 		objectMap["validationErrors"] = ctssstotl.ValidationErrors
 	}
-	if ctssstotl.ResultType != "" {
-		objectMap["resultType"] = ctssstotl.ResultType
-	}
 	if ctssstotl.ID != nil {
 		objectMap["id"] = ctssstotl.ID
+	}
+	if ctssstotl.ResultType != "" {
+		objectMap["resultType"] = ctssstotl.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1059,19 +1059,22 @@ type ConnectToTargetSQLDbTaskInput struct {
 // ConnectToTargetSQLDbTaskOutput output for the task that validates connection to SQL DB and target server
 // requirements
 type ConnectToTargetSQLDbTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 	// Databases - Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
 	// TargetServerVersion - Version of the target server
 	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
 	// TargetServerBrandVersion - Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectToTargetSQLDbTaskOutput.
 func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if cttsdto.ID != nil {
+		objectMap["id"] = cttsdto.ID
+	}
 	if cttsdto.Databases != nil {
 		objectMap["databases"] = cttsdto.Databases
 	}
@@ -1080,9 +1083,6 @@ func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	}
 	if cttsdto.TargetServerBrandVersion != nil {
 		objectMap["targetServerBrandVersion"] = cttsdto.TargetServerBrandVersion
-	}
-	if cttsdto.ID != nil {
-		objectMap["id"] = cttsdto.ID
 	}
 	return json.Marshal(objectMap)
 }
@@ -1374,25 +1374,25 @@ type GetUserTablesSQLTaskInput struct {
 
 // GetUserTablesSQLTaskOutput output of the task that collects user tables for the given list of databases
 type GetUserTablesSQLTaskOutput struct {
+	// ID - Result identifier
+	ID *string `json:"id,omitempty"`
 	// DatabasesToTables - Mapping from database name to list of tables
 	DatabasesToTables map[string][]DatabaseTable `json:"databasesToTables"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GetUserTablesSQLTaskOutput.
 func (gutsto GetUserTablesSQLTaskOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if gutsto.ID != nil {
+		objectMap["id"] = gutsto.ID
+	}
 	if gutsto.DatabasesToTables != nil {
 		objectMap["databasesToTables"] = gutsto.DatabasesToTables
 	}
 	if gutsto.ValidationErrors != nil {
 		objectMap["validationErrors"] = gutsto.ValidationErrors
-	}
-	if gutsto.ID != nil {
-		objectMap["id"] = gutsto.ID
 	}
 	return json.Marshal(objectMap)
 }
@@ -1521,10 +1521,10 @@ type BasicMigrateSQLServerSQLDbTaskOutput interface {
 // MigrateSQLServerSQLDbTaskOutput output for the task that migrates on-prem SQL Server databases to Azure SQL
 // Database
 type MigrateSQLServerSQLDbTaskOutput struct {
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 func unmarshalBasicMigrateSQLServerSQLDbTaskOutput(body []byte) (BasicMigrateSQLServerSQLDbTaskOutput, error) {
@@ -1580,11 +1580,11 @@ func unmarshalBasicMigrateSQLServerSQLDbTaskOutputArray(body []byte) ([]BasicMig
 func (msssdto MigrateSQLServerSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	msssdto.ResultType = ResultTypeMigrateSQLServerSQLDbTaskOutput
 	objectMap := make(map[string]interface{})
-	if msssdto.ResultType != "" {
-		objectMap["resultType"] = msssdto.ResultType
-	}
 	if msssdto.ID != nil {
 		objectMap["id"] = msssdto.ID
+	}
+	if msssdto.ResultType != "" {
+		objectMap["resultType"] = msssdto.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1649,10 +1649,10 @@ type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
 	// ObjectSummary - Summary of object results in the migration
 	ObjectSummary map[string]*DataItemMigrationSummaryResult `json:"objectSummary"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputDatabaseLevel.
@@ -1701,11 +1701,11 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) MarshalJSON() ([]b
 	if msssdtodl.ObjectSummary != nil {
 		objectMap["objectSummary"] = msssdtodl.ObjectSummary
 	}
-	if msssdtodl.ResultType != "" {
-		objectMap["resultType"] = msssdtodl.ResultType
-	}
 	if msssdtodl.ID != nil {
 		objectMap["id"] = msssdtodl.ID
+	}
+	if msssdtodl.ResultType != "" {
+		objectMap["resultType"] = msssdtodl.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1744,10 +1744,10 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicMigrateSQLS
 type MigrateSQLServerSQLDbTaskOutputError struct {
 	// Error - Migration error
 	Error *ReportableException `json:"error,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputError.
@@ -1757,11 +1757,11 @@ func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) MarshalJSON() ([]byte, erro
 	if msssdtoe.Error != nil {
 		objectMap["error"] = msssdtoe.Error
 	}
-	if msssdtoe.ResultType != "" {
-		objectMap["resultType"] = msssdtoe.ResultType
-	}
 	if msssdtoe.ID != nil {
 		objectMap["id"] = msssdtoe.ID
+	}
+	if msssdtoe.ResultType != "" {
+		objectMap["resultType"] = msssdtoe.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1826,10 +1826,10 @@ type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
 	// ExceptionsAndWarnings - Migration exceptions and warnings.
 	ExceptionsAndWarnings *[]ReportableException `json:"exceptionsAndWarnings,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputMigrationLevel.
@@ -1878,11 +1878,11 @@ func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) MarshalJSON() ([]
 	if msssdtoml.ExceptionsAndWarnings != nil {
 		objectMap["exceptionsAndWarnings"] = msssdtoml.ExceptionsAndWarnings
 	}
-	if msssdtoml.ResultType != "" {
-		objectMap["resultType"] = msssdtoml.ResultType
-	}
 	if msssdtoml.ID != nil {
 		objectMap["id"] = msssdtoml.ID
+	}
+	if msssdtoml.ResultType != "" {
+		objectMap["resultType"] = msssdtoml.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1937,10 +1937,10 @@ type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
 	// ResultPrefix - Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
-	ResultType ResultType `json:"resultType,omitempty"`
 	// ID - Result identifier
 	ID *string `json:"id,omitempty"`
+	// ResultType - Possible values include: 'ResultTypeMigrateSQLServerSQLDbTaskOutput', 'ResultTypeErrorOutput', 'ResultTypeTableLevelOutput', 'ResultTypeDatabaseLevelOutput', 'ResultTypeMigrationLevelOutput'
+	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateSQLServerSQLDbTaskOutputTableLevel.
@@ -1974,11 +1974,11 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) MarshalJSON() ([]byte
 	if msssdtotl.ResultPrefix != nil {
 		objectMap["resultPrefix"] = msssdtotl.ResultPrefix
 	}
-	if msssdtotl.ResultType != "" {
-		objectMap["resultType"] = msssdtotl.ResultType
-	}
 	if msssdtotl.ID != nil {
 		objectMap["id"] = msssdtotl.ID
+	}
+	if msssdtotl.ResultType != "" {
+		objectMap["resultType"] = msssdtotl.ResultType
 	}
 	return json.Marshal(objectMap)
 }
@@ -4090,12 +4090,6 @@ func (page TaskListPage) Values() []ProjectTask {
 		return nil
 	}
 	return *page.tl.Value
-}
-
-// TaskOutput base class for all DMS task outputs
-type TaskOutput struct {
-	// ID - Result identifier
-	ID *string `json:"id,omitempty"`
 }
 
 // TrackedResource ARM tracked top level resource.

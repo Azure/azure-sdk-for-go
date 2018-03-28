@@ -104,7 +104,8 @@ func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result
 }
 
 // List lists the enrollment accounts the caller has access to.
-func (client EnrollmentAccountsClient) List(ctx context.Context) (result EnrollmentAccountListResult, err error) {
+func (client EnrollmentAccountsClient) List(ctx context.Context) (result EnrollmentAccountListResultPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", nil, "Failure preparing request")
@@ -113,12 +114,12 @@ func (client EnrollmentAccountsClient) List(ctx context.Context) (result Enrollm
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.ealr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.ealr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", resp, "Failure responding to request")
 	}
@@ -158,5 +159,32 @@ func (client EnrollmentAccountsClient) ListResponder(resp *http.Response) (resul
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client EnrollmentAccountsClient) listNextResults(lastResults EnrollmentAccountListResult) (result EnrollmentAccountListResult, err error) {
+	req, err := lastResults.enrollmentAccountListResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client EnrollmentAccountsClient) ListComplete(ctx context.Context) (result EnrollmentAccountListResultIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }

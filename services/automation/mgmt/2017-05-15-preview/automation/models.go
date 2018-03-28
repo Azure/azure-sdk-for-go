@@ -6546,7 +6546,7 @@ type ScheduleProperties struct {
 	// NextRunOffsetMinutes - Gets or sets the next run time's offset in minutes.
 	NextRunOffsetMinutes *float64 `json:"nextRunOffsetMinutes,omitempty"`
 	// Interval - Gets or sets the interval of the schedule.
-	Interval *int32 `json:"interval,omitempty"`
+	Interval *[]byte `json:"interval,omitempty"`
 	// Frequency - Gets or sets the frequency of the schedule. Possible values include: 'OneTime', 'Day', 'Hour', 'Week', 'Month'
 	Frequency ScheduleFrequency `json:"frequency,omitempty"`
 	// TimeZone - Gets or sets the time zone of the schedule.

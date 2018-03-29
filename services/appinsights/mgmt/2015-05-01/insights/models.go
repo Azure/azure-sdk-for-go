@@ -785,6 +785,16 @@ type ComponentPurgeStatusResponse struct {
 	Status PurgeState `json:"status,omitempty"`
 }
 
+// ErrorFieldContract error Field contract.
+type ErrorFieldContract struct {
+	// Code - Property level error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Human-readable representation of property-level error.
+	Message *string `json:"message,omitempty"`
+	// Target - Property name.
+	Target *string `json:"target,omitempty"`
+}
+
 // ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The reason
 // is provided in the error message.
 type ErrorResponse struct {
@@ -1403,6 +1413,23 @@ func (w *Workbook) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// WorkbookErrorResponse error message body that will indicate why the operation failed.
+type WorkbookErrorResponse struct {
+	// Code - Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	Code *string `json:"code,omitempty"`
+	// Message - Human-readable representation of the error.
+	Message *string `json:"message,omitempty"`
+	// Details - The list of invalid fields send in request, in case of validation error.
+	Details *[]ErrorFieldContract `json:"details,omitempty"`
+}
+
+// WorkbookListResult workbook list result.
+type WorkbookListResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of workbooks.
+	Value *[]Workbook `json:"value,omitempty"`
 }
 
 // WorkbookProperties properties that contain a workbook.

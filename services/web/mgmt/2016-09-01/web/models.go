@@ -7398,7 +7398,7 @@ type DetectorDefinitionProperties struct {
 
 // DetectorInfo definition of Detector
 type DetectorInfo struct {
-	// Description - Description
+	// Description - Short description of the detector and its purpose
 	Description *string `json:"description,omitempty"`
 	// Category - Support Category
 	Category *string `json:"category,omitempty"`
@@ -14218,7 +14218,7 @@ type Rendering struct {
 	RenderingType RenderingType `json:"renderingType,omitempty"`
 	// Title - Title of data
 	Title *string `json:"title,omitempty"`
-	// Description - Description
+	// Description - Description of the data that will help it be interpreted
 	Description *string `json:"description,omitempty"`
 }
 

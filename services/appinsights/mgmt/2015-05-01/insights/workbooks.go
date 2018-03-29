@@ -249,12 +249,11 @@ func (client WorkbooksClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// DeleteLink delete a workbook.
+// DeleteLink delete a link between a source resource and workbook resource.
 //
-// resourceName is the name of the Application Insights component resource. sourceID is azure Resource Id that will
-// fetch all linked workbooks. category is category of workbook to return.
-func (client WorkbooksClient) DeleteLink(ctx context.Context, resourceName string, sourceID string, category CategoryType) (result autorest.Response, err error) {
-	req, err := client.DeleteLinkPreparer(ctx, resourceName, sourceID, category)
+// resourceID is azure Resource Id or any target workbook resource id. category is category of workbook to return.
+func (client WorkbooksClient) DeleteLink(ctx context.Context, resourceID string, category CategoryType) (result autorest.Response, err error) {
+	req, err := client.DeleteLinkPreparer(ctx, resourceID, category)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "DeleteLink", nil, "Failure preparing request")
 		return
@@ -276,22 +275,18 @@ func (client WorkbooksClient) DeleteLink(ctx context.Context, resourceName strin
 }
 
 // DeleteLinkPreparer prepares the DeleteLink request.
-func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceName string, sourceID string, category CategoryType) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceName": autorest.Encode("path", resourceName),
-	}
-
+func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceID string, category CategoryType) (*http.Request, error) {
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"category":    autorest.Encode("query", category),
-		"sourceId":    autorest.Encode("query", sourceID),
+		"resourceId":  autorest.Encode("query", resourceID),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/microsoft.insights/workbooks", pathParameters),
+		autorest.WithPath("/providers/microsoft.insights/workbooks"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

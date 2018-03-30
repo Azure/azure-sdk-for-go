@@ -5408,6 +5408,218 @@ type BackupSchedule struct {
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 }
 
+// BillingMeter app Service billing entity that contains information about meter which the Azure billing system
+// utilizes to charge users for services.
+type BillingMeter struct {
+	// BillingMeterProperties - BillingMeter resource specific properties
+	*BillingMeterProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BillingMeter.
+func (bm BillingMeter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bm.BillingMeterProperties != nil {
+		objectMap["properties"] = bm.BillingMeterProperties
+	}
+	if bm.ID != nil {
+		objectMap["id"] = bm.ID
+	}
+	if bm.Name != nil {
+		objectMap["name"] = bm.Name
+	}
+	if bm.Kind != nil {
+		objectMap["kind"] = bm.Kind
+	}
+	if bm.Type != nil {
+		objectMap["type"] = bm.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BillingMeter struct.
+func (bm *BillingMeter) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var billingMeterProperties BillingMeterProperties
+				err = json.Unmarshal(*v, &billingMeterProperties)
+				if err != nil {
+					return err
+				}
+				bm.BillingMeterProperties = &billingMeterProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				bm.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				bm.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				bm.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				bm.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BillingMeterCollection collection of Billing Meters
+type BillingMeterCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of Billing Meters.
+	Value *[]BillingMeter `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// BillingMeterCollectionIterator provides access to a complete listing of BillingMeter values.
+type BillingMeterCollectionIterator struct {
+	i    int
+	page BillingMeterCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *BillingMeterCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter BillingMeterCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter BillingMeterCollectionIterator) Response() BillingMeterCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter BillingMeterCollectionIterator) Value() BillingMeter {
+	if !iter.page.NotDone() {
+		return BillingMeter{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (bmc BillingMeterCollection) IsEmpty() bool {
+	return bmc.Value == nil || len(*bmc.Value) == 0
+}
+
+// billingMeterCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (bmc BillingMeterCollection) billingMeterCollectionPreparer() (*http.Request, error) {
+	if bmc.NextLink == nil || len(to.String(bmc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(bmc.NextLink)))
+}
+
+// BillingMeterCollectionPage contains a page of BillingMeter values.
+type BillingMeterCollectionPage struct {
+	fn  func(BillingMeterCollection) (BillingMeterCollection, error)
+	bmc BillingMeterCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *BillingMeterCollectionPage) Next() error {
+	next, err := page.fn(page.bmc)
+	if err != nil {
+		return err
+	}
+	page.bmc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page BillingMeterCollectionPage) NotDone() bool {
+	return !page.bmc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page BillingMeterCollectionPage) Response() BillingMeterCollection {
+	return page.bmc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page BillingMeterCollectionPage) Values() []BillingMeter {
+	if page.bmc.IsEmpty() {
+		return nil
+	}
+	return *page.bmc.Value
+}
+
+// BillingMeterProperties billingMeter resource specific properties
+type BillingMeterProperties struct {
+	// MeterID - Meter GUID onboarded in Commerce
+	MeterID *string `json:"meterId,omitempty"`
+	// BillingLocation - Azure Location of billable resource
+	BillingLocation *string `json:"billingLocation,omitempty"`
+	// ShortName - Short Name from App Service Azure pricing Page
+	ShortName *string `json:"shortName,omitempty"`
+	// FriendlyName - Friendly name of the meter
+	FriendlyName *string `json:"friendlyName,omitempty"`
+	// ResourceType - App Service resource type meter used for
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+
 // Capability describes the capabilities/features allowed for a specific SKU.
 type Capability struct {
 	// Name - Name of the SKU capability.

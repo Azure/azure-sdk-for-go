@@ -1338,8 +1338,12 @@ func (client AppsClient) CreateMSDeployOperationSlotResponder(resp *http.Respons
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is unique name of the app to
 // create or update. To create or update a deployment slot, use the {slot} parameter. siteEnvelope is a JSON
-// representation of the app properties. See example.
-func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site) (result AppsCreateOrUpdateFuture, err error) {
+// representation of the app properties. See example. skipDNSRegistration is if true web app hostname is not
+// registered with DNS on creation. This parameter is
+// only used for app creation. skipCustomDomainVerification is if true, custom (non *.azurewebsites.net) domains
+// associated with web app are not verified. forceDNSRegistration is if true, web app hostname is force registered
+// with DNS. TTLInSeconds is time to live in seconds for web app's default domain name.
+func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (result AppsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1363,7 +1367,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 		return result, validation.NewError("web.AppsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, name, siteEnvelope)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -1379,7 +1383,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1389,6 +1393,18 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skipDNSRegistration != nil {
+		queryParameters["skipDnsRegistration"] = autorest.Encode("query", *skipDNSRegistration)
+	}
+	if skipCustomDomainVerification != nil {
+		queryParameters["skipCustomDomainVerification"] = autorest.Encode("query", *skipCustomDomainVerification)
+	}
+	if forceDNSRegistration != nil {
+		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
+	}
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -3015,8 +3031,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotResponder(resp *http.Re
 // resourceGroupName is name of the resource group to which the resource belongs. name is name of the app to
 // delete. deleteMetrics is if true, web app metrics are also deleted. deleteEmptyServerFarm is specify true if the
 // App Service plan will be empty after app deletion and you want to delete the empty App Service plan. By default,
-// the empty App Service plan is not deleted.
-func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, name string, deleteMetrics *bool, deleteEmptyServerFarm *bool) (result autorest.Response, err error) {
+// the empty App Service plan is not deleted. skipDNSRegistration is if true, DNS registration is skipped.
+func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, name string, deleteMetrics *bool, deleteEmptyServerFarm *bool, skipDNSRegistration *bool) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -3025,7 +3041,7 @@ func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, n
 		return result, validation.NewError("web.AppsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, name, deleteMetrics, deleteEmptyServerFarm, skipDNSRegistration)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -3047,7 +3063,7 @@ func (client AppsClient) Delete(ctx context.Context, resourceGroupName string, n
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName string, name string, deleteMetrics *bool, deleteEmptyServerFarm *bool) (*http.Request, error) {
+func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName string, name string, deleteMetrics *bool, deleteEmptyServerFarm *bool, skipDNSRegistration *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -3063,6 +3079,9 @@ func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 	}
 	if deleteEmptyServerFarm != nil {
 		queryParameters["deleteEmptyServerFarm"] = autorest.Encode("query", *deleteEmptyServerFarm)
+	}
+	if skipDNSRegistration != nil {
+		queryParameters["skipDnsRegistration"] = autorest.Encode("query", *skipDNSRegistration)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -23350,8 +23369,12 @@ func (client AppsClient) SyncRepositorySlotResponder(resp *http.Response) (resul
 //
 // resourceGroupName is name of the resource group to which the resource belongs. name is unique name of the app to
 // create or update. To create or update a deployment slot, use the {slot} parameter. siteEnvelope is a JSON
-// representation of the app properties. See example.
-func (client AppsClient) Update(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource) (result Site, err error) {
+// representation of the app properties. See example. skipDNSRegistration is if true web app hostname is not
+// registered with DNS on creation. This parameter is
+// only used for app creation. skipCustomDomainVerification is if true, custom (non *.azurewebsites.net) domains
+// associated with web app are not verified. forceDNSRegistration is if true, web app hostname is force registered
+// with DNS. TTLInSeconds is time to live in seconds for web app's default domain name.
+func (client AppsClient) Update(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (result Site, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -23360,7 +23383,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, n
 		return result, validation.NewError("web.AppsClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, name, siteEnvelope)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, name, siteEnvelope, skipDNSRegistration, skipCustomDomainVerification, forceDNSRegistration, TTLInSeconds)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "Update", nil, "Failure preparing request")
 		return
@@ -23382,7 +23405,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, n
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource) (*http.Request, error) {
+func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, skipDNSRegistration *bool, skipCustomDomainVerification *bool, forceDNSRegistration *bool, TTLInSeconds string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -23392,6 +23415,18 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 	const APIVersion = "2016-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skipDNSRegistration != nil {
+		queryParameters["skipDnsRegistration"] = autorest.Encode("query", *skipDNSRegistration)
+	}
+	if skipCustomDomainVerification != nil {
+		queryParameters["skipCustomDomainVerification"] = autorest.Encode("query", *skipCustomDomainVerification)
+	}
+	if forceDNSRegistration != nil {
+		queryParameters["forceDnsRegistration"] = autorest.Encode("query", *forceDNSRegistration)
+	}
+	if len(TTLInSeconds) > 0 {
+		queryParameters["ttlInSeconds"] = autorest.Encode("query", TTLInSeconds)
 	}
 
 	preparer := autorest.CreatePreparer(

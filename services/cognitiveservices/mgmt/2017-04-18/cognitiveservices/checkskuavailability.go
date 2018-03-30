@@ -31,13 +31,13 @@ type CheckSkuAvailabilityClient struct {
 }
 
 // NewCheckSkuAvailabilityClient creates an instance of the CheckSkuAvailabilityClient client.
-func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return NewCheckSkuAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
+	return NewCheckSkuAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCheckSkuAvailabilityClientWithBaseURI creates an instance of the CheckSkuAvailabilityClient client.
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return CheckSkuAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
+	return CheckSkuAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List check available SKUs.

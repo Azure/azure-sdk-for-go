@@ -31,13 +31,13 @@ type AccountsClient struct {
 }
 
 // NewAccountsClient creates an instance of the AccountsClient client.
-func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
-	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAccountsClientWithBaseURI creates an instance of the AccountsClient client.
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
-	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
@@ -274,8 +274,9 @@ func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result
 // GetUsages get usages for the requested Cognitive Services account
 //
 // resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account.
-func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName string, accountName string) (result UsagesResult, err error) {
+// Cognitive Services account. filter is an OData filter expression that describes a subset of usages to return.
+// The supported parameter is name.value (name of the metric, can have an or of multiple names).
+func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result UsagesResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -284,7 +285,7 @@ func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName st
 		return result, validation.NewError("cognitiveservices.AccountsClient", "GetUsages", err.Error())
 	}
 
-	req, err := client.GetUsagesPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.GetUsagesPreparer(ctx, resourceGroupName, accountName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cognitiveservices.AccountsClient", "GetUsages", nil, "Failure preparing request")
 		return
@@ -306,7 +307,7 @@ func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName st
 }
 
 // GetUsagesPreparer prepares the GetUsages request.
-func (client AccountsClient) GetUsagesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client AccountsClient) GetUsagesPreparer(ctx context.Context, resourceGroupName string, accountName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -317,8 +318,8 @@ func (client AccountsClient) GetUsagesPreparer(ctx context.Context, resourceGrou
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", client.Filter)
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(

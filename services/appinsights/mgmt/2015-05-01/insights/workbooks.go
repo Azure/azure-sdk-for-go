@@ -148,6 +148,10 @@ func (client WorkbooksClient) CreateLink(ctx context.Context, linkProperties Lin
 
 // CreateLinkPreparer prepares the CreateLink request.
 func (client WorkbooksClient) CreateLinkPreparer(ctx context.Context, linkProperties LinkProperties) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -157,7 +161,7 @@ func (client WorkbooksClient) CreateLinkPreparer(ctx context.Context, linkProper
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/microsoft.insights/workbooks"),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
 		autorest.WithJSON(linkProperties),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -167,7 +171,7 @@ func (client WorkbooksClient) CreateLinkPreparer(ctx context.Context, linkProper
 // http.Response Body if it receives an error.
 func (client WorkbooksClient) CreateLinkSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateLinkResponder handles the response to the CreateLink request. The method always
@@ -276,6 +280,10 @@ func (client WorkbooksClient) DeleteLink(ctx context.Context, resourceID string,
 
 // DeleteLinkPreparer prepares the DeleteLink request.
 func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceID string, category CategoryType) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -286,7 +294,7 @@ func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/microsoft.insights/workbooks"),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -295,7 +303,7 @@ func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceID
 // http.Response Body if it receives an error.
 func (client WorkbooksClient) DeleteLinkSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteLinkResponder handles the response to the DeleteLink request. The method always
@@ -482,6 +490,10 @@ func (client WorkbooksClient) ListBySourceID(ctx context.Context, sourceID strin
 
 // ListBySourceIDPreparer prepares the ListBySourceID request.
 func (client WorkbooksClient) ListBySourceIDPreparer(ctx context.Context, sourceID string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -498,7 +510,7 @@ func (client WorkbooksClient) ListBySourceIDPreparer(ctx context.Context, source
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/microsoft.insights/workbooks"),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -507,7 +519,7 @@ func (client WorkbooksClient) ListBySourceIDPreparer(ctx context.Context, source
 // http.Response Body if it receives an error.
 func (client WorkbooksClient) ListBySourceIDSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListBySourceIDResponder handles the response to the ListBySourceID request. The method always
@@ -518,6 +530,76 @@ func (client WorkbooksClient) ListBySourceIDResponder(resp *http.Response) (resu
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListBySourceID1 gets a workbook link by a workbook resource name.
+//
+// resourceName is the name of the Application Insights component resource. canFetchContent is flag indicating
+// whether or not to return the full content for each applicable workbook. If false, only return summary content
+// for workbooks.
+func (client WorkbooksClient) ListBySourceID1(ctx context.Context, resourceName string, canFetchContent *bool) (result Workbook, err error) {
+	req, err := client.ListBySourceID1Preparer(ctx, resourceName, canFetchContent)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySourceID1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListBySourceID1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListBySourceID1Preparer prepares the ListBySourceID1 request.
+func (client WorkbooksClient) ListBySourceID1Preparer(ctx context.Context, resourceName string, canFetchContent *bool) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceName":   autorest.Encode("path", resourceName),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if canFetchContent != nil {
+		queryParameters["canFetchContent"] = autorest.Encode("query", *canFetchContent)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/{resourceName}/links", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListBySourceID1Sender sends the ListBySourceID1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkbooksClient) ListBySourceID1Sender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListBySourceID1Responder handles the response to the ListBySourceID1 request. The method always
+// closes the http.Response Body.
+func (client WorkbooksClient) ListBySourceID1Responder(resp *http.Response) (result Workbook, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -619,6 +701,10 @@ func (client WorkbooksClient) UpdateLink(ctx context.Context, linkProperties Lin
 
 // UpdateLinkPreparer prepares the UpdateLink request.
 func (client WorkbooksClient) UpdateLinkPreparer(ctx context.Context, linkProperties LinkProperties) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -628,7 +714,7 @@ func (client WorkbooksClient) UpdateLinkPreparer(ctx context.Context, linkProper
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/microsoft.insights/workbooks"),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
 		autorest.WithJSON(linkProperties),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -638,7 +724,7 @@ func (client WorkbooksClient) UpdateLinkPreparer(ctx context.Context, linkProper
 // http.Response Body if it receives an error.
 func (client WorkbooksClient) UpdateLinkSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+		azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateLinkResponder handles the response to the UpdateLink request. The method always

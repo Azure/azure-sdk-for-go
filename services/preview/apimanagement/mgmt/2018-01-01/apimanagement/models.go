@@ -369,6 +369,11 @@ func PossibleNotificationNameValues() []NotificationName {
 type PolicyContentFormat string
 
 const (
+	// Rawxml The contents are inline and Content type is a non XML encoded policy document.
+	Rawxml PolicyContentFormat = "rawxml"
+	// RawxmlLink The policy document is not Xml encoded and is hosted on a http endpoint accessible from the
+	// API Management service.
+	RawxmlLink PolicyContentFormat = "rawxml-link"
 	// XML The contents are inline and Content type is an XML document.
 	XML PolicyContentFormat = "xml"
 	// XMLLink The policy XML document is hosted on a http endpoint accessible from the API Management service.
@@ -377,7 +382,7 @@ const (
 
 // PossiblePolicyContentFormatValues returns an array of possible values for the PolicyContentFormat const type.
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {
-	return []PolicyContentFormat{XML, XMLLink}
+	return []PolicyContentFormat{Rawxml, RawxmlLink, XML, XMLLink}
 }
 
 // PolicyScopeContract enumerates the values for policy scope contract.
@@ -5242,7 +5247,7 @@ func (pc *PolicyContract) UnmarshalJSON(body []byte) error {
 type PolicyContractProperties struct {
 	// PolicyContent - Json escaped Xml Encoded contents of the Policy.
 	PolicyContent *string `json:"policyContent,omitempty"`
-	// ContentFormat - Format of the policyContent. Possible values include: 'XML', 'XMLLink'
+	// ContentFormat - Format of the policyContent. Possible values include: 'XML', 'XMLLink', 'Rawxml', 'RawxmlLink'
 	ContentFormat PolicyContentFormat `json:"contentFormat,omitempty"`
 }
 

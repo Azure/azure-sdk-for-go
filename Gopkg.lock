@@ -11,8 +11,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "ed4b7f5bf1ec0c9ede1fda2681d96771282f2862"
-  version = "v10.4.0"
+  revision = "cd2702d0255126f3d64a7cef703e1341f22bc0ac"
+  version = "v10.5.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -142,8 +142,8 @@
     ".",
     "mem"
   ]
-  revision = "bb8f1927f2a9d3ab41c9340aa034f6b803f4359c"
-  version = "v1.0.2"
+  revision = "63644898a8da0bc22138abf860edaf5277b6102e"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/spf13/cast"
@@ -154,8 +154,8 @@
 [[projects]]
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "7b2c5ac9fc04fc5efafb60700713d4fa609b777b"
-  version = "v0.0.1"
+  revision = "a1f051bc3eba734da4772d60e2d677f47cf93ef4"
+  version = "v0.0.2"
 
 [[projects]]
   branch = "master"
@@ -182,13 +182,13 @@
     "pkcs12",
     "pkcs12/internal/rc2"
   ]
-  revision = "88942b9c40a4c9d203b82b3731787b672d6e809b"
+  revision = "12892e8c234f4fe6f6803f052061de9057903bb2"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "13d03a9a82fba647c21a0ef8fba44a795d0f0835"
+  revision = "378d26f46672a356c46195c28f61bdb4c0a781dd"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -210,7 +210,7 @@
     "go/ast/astutil",
     "imports"
   ]
-  revision = "77106db15f689a60e7d4e085d967ac557b918fb2"
+  revision = "ac136b6c2db7c4d43955e4bc7174db36dc0539c0"
 
 [[projects]]
   branch = "v1"
@@ -221,12 +221,12 @@
 [[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "86f5ed62f8a0ee96bd888d2efdfd6d4fb100a4eb"
-  version = "v2.2.0"
+  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b50dce089292d6dce440c432747832361380d51c805deb02d869b321988f08bf"
+  inputs-digest = "6be643bc5015514e89d484bc9603903c8af565628b9c8f8ab7bf9dcb2e60be2b"
   solver-name = "gps-cdcl"
   solver-version = 1

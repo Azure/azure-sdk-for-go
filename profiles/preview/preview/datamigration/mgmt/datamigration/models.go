@@ -19,7 +19,7 @@
 
 package datamigration
 
-import original "github.com/Azure/azure-sdk-for-go/services/datamigration/mgmt/2017-11-15-preview/datamigration"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-03-31-preview/datamigration"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -123,6 +123,40 @@ func PossibleErrorTypeValues() []ErrorType {
 	return original.PossibleErrorTypeValues()
 }
 
+type LoginMigrationStage = original.LoginMigrationStage
+
+const (
+	LoginMigrationStageAssignRoleMembership       LoginMigrationStage = original.LoginMigrationStageAssignRoleMembership
+	LoginMigrationStageAssignRoleOwnership        LoginMigrationStage = original.LoginMigrationStageAssignRoleOwnership
+	LoginMigrationStageCompleted                  LoginMigrationStage = original.LoginMigrationStageCompleted
+	LoginMigrationStageEstablishObjectPermissions LoginMigrationStage = original.LoginMigrationStageEstablishObjectPermissions
+	LoginMigrationStageEstablishServerPermissions LoginMigrationStage = original.LoginMigrationStageEstablishServerPermissions
+	LoginMigrationStageEstablishUserMapping       LoginMigrationStage = original.LoginMigrationStageEstablishUserMapping
+	LoginMigrationStageInitialize                 LoginMigrationStage = original.LoginMigrationStageInitialize
+	LoginMigrationStageLoginMigration             LoginMigrationStage = original.LoginMigrationStageLoginMigration
+	LoginMigrationStageNone                       LoginMigrationStage = original.LoginMigrationStageNone
+)
+
+func PossibleLoginMigrationStageValues() []LoginMigrationStage {
+	return original.PossibleLoginMigrationStageValues()
+}
+
+type LoginType = original.LoginType
+
+const (
+	AsymmetricKey LoginType = original.AsymmetricKey
+	Certificate   LoginType = original.Certificate
+	ExternalGroup LoginType = original.ExternalGroup
+	ExternalUser  LoginType = original.ExternalUser
+	SQLLogin      LoginType = original.SQLLogin
+	WindowsGroup  LoginType = original.WindowsGroup
+	WindowsUser   LoginType = original.WindowsUser
+)
+
+func PossibleLoginTypeValues() []LoginType {
+	return original.PossibleLoginTypeValues()
+}
+
 type MigrationState = original.MigrationState
 
 const (
@@ -209,6 +243,7 @@ type ProjectTargetPlatform = original.ProjectTargetPlatform
 
 const (
 	ProjectTargetPlatformSQLDB   ProjectTargetPlatform = original.ProjectTargetPlatformSQLDB
+	ProjectTargetPlatformSQLMI   ProjectTargetPlatform = original.ProjectTargetPlatformSQLMI
 	ProjectTargetPlatformUnknown ProjectTargetPlatform = original.ProjectTargetPlatformUnknown
 )
 
@@ -266,13 +301,30 @@ func PossibleResultTypeValues() []ResultType {
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
 
 const (
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeAgentJobLevelOutput
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput                ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput                   ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeLoginLevelOutput
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 )
 
 func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
 	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
+}
+
+type ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutput
+
+const (
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput             ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeAgentJobLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput             ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeDatabaseLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput                     ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeErrorOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput                ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeLoginLevelOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrateSQLServerSQLMITaskOutput
+	ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput            ResultTypeBasicMigrateSQLServerSQLMITaskOutput = original.ResultTypeBasicMigrateSQLServerSQLMITaskOutputResultTypeMigrationLevelOutput
+)
+
+func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultTypeBasicMigrateSQLServerSQLMITaskOutput {
+	return original.PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues()
 }
 
 type ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroup
@@ -349,11 +401,14 @@ func PossibleTaskStateValues() []TaskState {
 type TaskType = original.TaskType
 
 const (
-	TaskTypeConnectToSourceSQLServer TaskType = original.TaskTypeConnectToSourceSQLServer
-	TaskTypeConnectToTargetSQLDb     TaskType = original.TaskTypeConnectToTargetSQLDb
-	TaskTypeGetUserTablesSQL         TaskType = original.TaskTypeGetUserTablesSQL
-	TaskTypeMigrateSQLServerSQLDb    TaskType = original.TaskTypeMigrateSQLServerSQLDb
-	TaskTypeUnknown                  TaskType = original.TaskTypeUnknown
+	TaskTypeConnectToSourceSQLServer                    TaskType = original.TaskTypeConnectToSourceSQLServer
+	TaskTypeConnectToTargetAzureSQLDbMI                 TaskType = original.TaskTypeConnectToTargetAzureSQLDbMI
+	TaskTypeConnectToTargetSQLDb                        TaskType = original.TaskTypeConnectToTargetSQLDb
+	TaskTypeGetUserTablesSQL                            TaskType = original.TaskTypeGetUserTablesSQL
+	TaskTypeMigrateSQLServerAzureSQLDbMI                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI
+	TaskTypeMigrateSQLServerSQLDb                       TaskType = original.TaskTypeMigrateSQLServerSQLDb
+	TaskTypeUnknown                                     TaskType = original.TaskTypeUnknown
+	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
 )
 
 func PossibleTaskTypeValues() []TaskType {
@@ -404,17 +459,23 @@ type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
 type AvailableServiceSkuCapacity = original.AvailableServiceSkuCapacity
 type AvailableServiceSkuSku = original.AvailableServiceSkuSku
+type BlobShare = original.BlobShare
 type BasicConnectionInfo = original.BasicConnectionInfo
 type ConnectionInfo = original.ConnectionInfo
 type ConnectToSourceSQLServerTaskInput = original.ConnectToSourceSQLServerTaskInput
 type BasicConnectToSourceSQLServerTaskOutput = original.BasicConnectToSourceSQLServerTaskOutput
 type ConnectToSourceSQLServerTaskOutput = original.ConnectToSourceSQLServerTaskOutput
+type ConnectToSourceSQLServerTaskOutputAgentJobLevel = original.ConnectToSourceSQLServerTaskOutputAgentJobLevel
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel = original.ConnectToSourceSQLServerTaskOutputDatabaseLevel
+type ConnectToSourceSQLServerTaskOutputLoginLevel = original.ConnectToSourceSQLServerTaskOutputLoginLevel
 type ConnectToSourceSQLServerTaskOutputTaskLevel = original.ConnectToSourceSQLServerTaskOutputTaskLevel
 type ConnectToSourceSQLServerTaskProperties = original.ConnectToSourceSQLServerTaskProperties
 type ConnectToTargetSQLDbTaskInput = original.ConnectToTargetSQLDbTaskInput
 type ConnectToTargetSQLDbTaskOutput = original.ConnectToTargetSQLDbTaskOutput
 type ConnectToTargetSQLDbTaskProperties = original.ConnectToTargetSQLDbTaskProperties
+type ConnectToTargetSQLMITaskInput = original.ConnectToTargetSQLMITaskInput
+type ConnectToTargetSQLMITaskOutput = original.ConnectToTargetSQLMITaskOutput
+type ConnectToTargetSQLMITaskProperties = original.ConnectToTargetSQLMITaskProperties
 type Database = original.Database
 type DatabaseFileInfo = original.DatabaseFileInfo
 type DatabaseFileInput = original.DatabaseFileInput
@@ -426,6 +487,7 @@ type DataIntegrityValidationResult = original.DataIntegrityValidationResult
 type DataItemMigrationSummaryResult = original.DataItemMigrationSummaryResult
 type Error = original.Error
 type ExecutionStatistics = original.ExecutionStatistics
+type FileShare = original.FileShare
 type GetUserTablesSQLTaskInput = original.GetUserTablesSQLTaskInput
 type GetUserTablesSQLTaskOutput = original.GetUserTablesSQLTaskOutput
 type GetUserTablesSQLTaskProperties = original.GetUserTablesSQLTaskProperties
@@ -438,6 +500,18 @@ type MigrateSQLServerSQLDbTaskOutputError = original.MigrateSQLServerSQLDbTaskOu
 type MigrateSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSQLServerSQLDbTaskOutputMigrationLevel
 type MigrateSQLServerSQLDbTaskOutputTableLevel = original.MigrateSQLServerSQLDbTaskOutputTableLevel
 type MigrateSQLServerSQLDbTaskProperties = original.MigrateSQLServerSQLDbTaskProperties
+type MigrateSQLServerSQLMIDatabaseInput = original.MigrateSQLServerSQLMIDatabaseInput
+type MigrateSQLServerSQLMITaskInput = original.MigrateSQLServerSQLMITaskInput
+type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
+type MigrateSQLServerSQLMITaskOutput = original.MigrateSQLServerSQLMITaskOutput
+type MigrateSQLServerSQLMITaskOutputAgentJobLevel = original.MigrateSQLServerSQLMITaskOutputAgentJobLevel
+type MigrateSQLServerSQLMITaskOutputDatabaseLevel = original.MigrateSQLServerSQLMITaskOutputDatabaseLevel
+type MigrateSQLServerSQLMITaskOutputError = original.MigrateSQLServerSQLMITaskOutputError
+type MigrateSQLServerSQLMITaskOutputLoginLevel = original.MigrateSQLServerSQLMITaskOutputLoginLevel
+type MigrateSQLServerSQLMITaskOutputMigrationLevel = original.MigrateSQLServerSQLMITaskOutputMigrationLevel
+type MigrateSQLServerSQLMITaskProperties = original.MigrateSQLServerSQLMITaskProperties
+type MigrateSQLServerSQLServerDatabaseInput = original.MigrateSQLServerSQLServerDatabaseInput
+type MigrationEligibilityInfo = original.MigrationEligibilityInfo
 type MigrationReportResult = original.MigrationReportResult
 type MigrationTableMetadata = original.MigrationTableMetadata
 type MigrationValidationDatabaseLevelResult = original.MigrationValidationDatabaseLevelResult
@@ -497,10 +571,14 @@ type ServiceStatusResponse = original.ServiceStatusResponse
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SQLConnectionInfo = original.SQLConnectionInfo
 type SQLMigrationTaskInput = original.SQLMigrationTaskInput
+type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
 type TrackedResource = original.TrackedResource
+type ValidateMigrationInputSQLServerSQLMITaskInput = original.ValidateMigrationInputSQLServerSQLMITaskInput
+type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigrationInputSQLServerSQLMITaskOutput
+type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
 type OperationsClient = original.OperationsClient

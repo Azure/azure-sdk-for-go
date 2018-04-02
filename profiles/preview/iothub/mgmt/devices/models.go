@@ -19,7 +19,7 @@
 
 package devices
 
-import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices"
+import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-01-22/devices"
 
 type CertificatesClient = original.CertificatesClient
 
@@ -236,6 +236,7 @@ type IotHubQuotaMetricInfoListResultIterator = original.IotHubQuotaMetricInfoLis
 type IotHubQuotaMetricInfoListResultPage = original.IotHubQuotaMetricInfoListResultPage
 type IotHubResourceCreateOrUpdateFuture = original.IotHubResourceCreateOrUpdateFuture
 type IotHubResourceDeleteFuture = original.IotHubResourceDeleteFuture
+type IotHubResourceUpdateFuture = original.IotHubResourceUpdateFuture
 type IotHubSkuDescription = original.IotHubSkuDescription
 type IotHubSkuDescriptionListResult = original.IotHubSkuDescriptionListResult
 type IotHubSkuDescriptionListResultIterator = original.IotHubSkuDescriptionListResultIterator
@@ -269,6 +270,7 @@ type SharedAccessSignatureAuthorizationRuleListResult = original.SharedAccessSig
 type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedAccessSignatureAuthorizationRuleListResultIterator
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
 type StorageEndpointProperties = original.StorageEndpointProperties
+type TagsResource = original.TagsResource
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {

@@ -92,6 +92,7 @@ type CreateMode = original.CreateMode
 
 const (
 	CreateModeDefault                   CreateMode = original.CreateModeDefault
+	CreateModeGeoRestore                CreateMode = original.CreateModeGeoRestore
 	CreateModePointInTimeRestore        CreateMode = original.CreateModePointInTimeRestore
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
@@ -202,6 +203,7 @@ type ServerProperties = original.ServerProperties
 type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
+type ServerPropertiesForGeoRestore = original.ServerPropertiesForGeoRestore
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture

@@ -909,6 +909,7 @@ const (
 	TypePrestoSource                   TypeBasicCopySource = original.TypePrestoSource
 	TypeQuickBooksSource               TypeBasicCopySource = original.TypeQuickBooksSource
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
+	TypeResponsysSource                TypeBasicCopySource = original.TypeResponsysSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
@@ -983,6 +984,7 @@ const (
 	TypePrestoObject                   TypeBasicDataset = original.TypePrestoObject
 	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
 	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
+	TypeResponsysObject                TypeBasicDataset = original.TypeResponsysObject
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
@@ -1110,6 +1112,7 @@ const (
 	TypePostgreSQL               TypeBasicLinkedService = original.TypePostgreSQL
 	TypePresto                   TypeBasicLinkedService = original.TypePresto
 	TypeQuickBooks               TypeBasicLinkedService = original.TypeQuickBooks
+	TypeResponsys                TypeBasicLinkedService = original.TypeResponsys
 	TypeSalesforce               TypeBasicLinkedService = original.TypeSalesforce
 	TypeSalesforceMarketingCloud TypeBasicLinkedService = original.TypeSalesforceMarketingCloud
 	TypeSapBW                    TypeBasicLinkedService = original.TypeSapBW
@@ -1526,6 +1529,10 @@ type RelationalSource = original.RelationalSource
 type RelationalTableDataset = original.RelationalTableDataset
 type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeProperties
 type Resource = original.Resource
+type ResponsysLinkedService = original.ResponsysLinkedService
+type ResponsysLinkedServiceTypeProperties = original.ResponsysLinkedServiceTypeProperties
+type ResponsysObjectDataset = original.ResponsysObjectDataset
+type ResponsysSource = original.ResponsysSource
 type RetryPolicy = original.RetryPolicy
 type SalesforceLinkedService = original.SalesforceLinkedService
 type SalesforceLinkedServiceTypeProperties = original.SalesforceLinkedServiceTypeProperties

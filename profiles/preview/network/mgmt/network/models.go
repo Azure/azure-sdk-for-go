@@ -19,7 +19,7 @@
 
 package network
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-01-01/network"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-02-01/network"
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 
@@ -79,6 +79,15 @@ func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID strin
 	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type DdosProtectionPlansClient = original.DdosProtectionPlansClient
+
+func NewDdosProtectionPlansClient(subscriptionID string) DdosProtectionPlansClient {
+	return original.NewDdosProtectionPlansClient(subscriptionID)
+}
+func NewDdosProtectionPlansClientWithBaseURI(baseURI string, subscriptionID string) DdosProtectionPlansClient {
+	return original.NewDdosProtectionPlansClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 
 func NewDefaultSecurityRulesClient(subscriptionID string) DefaultSecurityRulesClient {
@@ -97,6 +106,15 @@ func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subsc
 	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type ExpressRouteCircuitConnectionsClient = original.ExpressRouteCircuitConnectionsClient
+
+func NewExpressRouteCircuitConnectionsClient(subscriptionID string) ExpressRouteCircuitConnectionsClient {
+	return original.NewExpressRouteCircuitConnectionsClient(subscriptionID)
+}
+func NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitConnectionsClient {
+	return original.NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
 
 func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
@@ -113,6 +131,24 @@ func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsCl
 }
 func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
 	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ExpressRouteCrossConnectionPeeringsClient = original.ExpressRouteCrossConnectionPeeringsClient
+
+func NewExpressRouteCrossConnectionPeeringsClient(subscriptionID string) ExpressRouteCrossConnectionPeeringsClient {
+	return original.NewExpressRouteCrossConnectionPeeringsClient(subscriptionID)
+}
+func NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCrossConnectionPeeringsClient {
+	return original.NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ExpressRouteCrossConnectionsClient = original.ExpressRouteCrossConnectionsClient
+
+func NewExpressRouteCrossConnectionsClient(subscriptionID string) ExpressRouteCrossConnectionsClient {
+	return original.NewExpressRouteCrossConnectionsClient(subscriptionID)
+}
+func NewExpressRouteCrossConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCrossConnectionsClient {
+	return original.NewExpressRouteCrossConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
@@ -459,6 +495,18 @@ func PossibleBgpPeerStateValues() []BgpPeerState {
 	return original.PossibleBgpPeerStateValues()
 }
 
+type CircuitConnectionStatus = original.CircuitConnectionStatus
+
+const (
+	Connected    CircuitConnectionStatus = original.Connected
+	Connecting   CircuitConnectionStatus = original.Connecting
+	Disconnected CircuitConnectionStatus = original.Disconnected
+)
+
+func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
+	return original.PossibleCircuitConnectionStatusValues()
+}
+
 type ConnectionState = original.ConnectionState
 
 const (
@@ -584,18 +632,6 @@ func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeerin
 	return original.PossibleExpressRouteCircuitPeeringStateValues()
 }
 
-type ExpressRouteCircuitPeeringType = original.ExpressRouteCircuitPeeringType
-
-const (
-	AzurePrivatePeering ExpressRouteCircuitPeeringType = original.AzurePrivatePeering
-	AzurePublicPeering  ExpressRouteCircuitPeeringType = original.AzurePublicPeering
-	MicrosoftPeering    ExpressRouteCircuitPeeringType = original.MicrosoftPeering
-)
-
-func PossibleExpressRouteCircuitPeeringTypeValues() []ExpressRouteCircuitPeeringType {
-	return original.PossibleExpressRouteCircuitPeeringTypeValues()
-}
-
 type ExpressRouteCircuitSkuFamily = original.ExpressRouteCircuitSkuFamily
 
 const (
@@ -618,14 +654,39 @@ func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
 	return original.PossibleExpressRouteCircuitSkuTierValues()
 }
 
+type ExpressRoutePeeringState = original.ExpressRoutePeeringState
+
+const (
+	ExpressRoutePeeringStateDisabled ExpressRoutePeeringState = original.ExpressRoutePeeringStateDisabled
+	ExpressRoutePeeringStateEnabled  ExpressRoutePeeringState = original.ExpressRoutePeeringStateEnabled
+)
+
+func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
+	return original.PossibleExpressRoutePeeringStateValues()
+}
+
+type ExpressRoutePeeringType = original.ExpressRoutePeeringType
+
+const (
+	AzurePrivatePeering ExpressRoutePeeringType = original.AzurePrivatePeering
+	AzurePublicPeering  ExpressRoutePeeringType = original.AzurePublicPeering
+	MicrosoftPeering    ExpressRoutePeeringType = original.MicrosoftPeering
+)
+
+func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
+	return original.PossibleExpressRoutePeeringTypeValues()
+}
+
 type IkeEncryption = original.IkeEncryption
 
 const (
-	AES128 IkeEncryption = original.AES128
-	AES192 IkeEncryption = original.AES192
-	AES256 IkeEncryption = original.AES256
-	DES    IkeEncryption = original.DES
-	DES3   IkeEncryption = original.DES3
+	AES128    IkeEncryption = original.AES128
+	AES192    IkeEncryption = original.AES192
+	AES256    IkeEncryption = original.AES256
+	DES       IkeEncryption = original.DES
+	DES3      IkeEncryption = original.DES3
+	GCMAES128 IkeEncryption = original.GCMAES128
+	GCMAES256 IkeEncryption = original.GCMAES256
 )
 
 func PossibleIkeEncryptionValues() []IkeEncryption {
@@ -635,10 +696,12 @@ func PossibleIkeEncryptionValues() []IkeEncryption {
 type IkeIntegrity = original.IkeIntegrity
 
 const (
-	MD5    IkeIntegrity = original.MD5
-	SHA1   IkeIntegrity = original.SHA1
-	SHA256 IkeIntegrity = original.SHA256
-	SHA384 IkeIntegrity = original.SHA384
+	IkeIntegrityGCMAES128 IkeIntegrity = original.IkeIntegrityGCMAES128
+	IkeIntegrityGCMAES256 IkeIntegrity = original.IkeIntegrityGCMAES256
+	IkeIntegrityMD5       IkeIntegrity = original.IkeIntegrityMD5
+	IkeIntegritySHA1      IkeIntegrity = original.IkeIntegritySHA1
+	IkeIntegritySHA256    IkeIntegrity = original.IkeIntegritySHA256
+	IkeIntegritySHA384    IkeIntegrity = original.IkeIntegritySHA384
 )
 
 func PossibleIkeIntegrityValues() []IkeIntegrity {
@@ -827,9 +890,11 @@ const (
 	PfsGroupECP384  PfsGroup = original.PfsGroupECP384
 	PfsGroupNone    PfsGroup = original.PfsGroupNone
 	PfsGroupPFS1    PfsGroup = original.PfsGroupPFS1
+	PfsGroupPFS14   PfsGroup = original.PfsGroupPFS14
 	PfsGroupPFS2    PfsGroup = original.PfsGroupPFS2
 	PfsGroupPFS2048 PfsGroup = original.PfsGroupPFS2048
 	PfsGroupPFS24   PfsGroup = original.PfsGroupPFS24
+	PfsGroupPFSMM   PfsGroup = original.PfsGroupPFSMM
 )
 
 func PossiblePfsGroupValues() []PfsGroup {
@@ -1049,9 +1114,9 @@ func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
 type VirtualNetworkPeeringState = original.VirtualNetworkPeeringState
 
 const (
-	Connected    VirtualNetworkPeeringState = original.Connected
-	Disconnected VirtualNetworkPeeringState = original.Disconnected
-	Initiated    VirtualNetworkPeeringState = original.Initiated
+	VirtualNetworkPeeringStateConnected    VirtualNetworkPeeringState = original.VirtualNetworkPeeringStateConnected
+	VirtualNetworkPeeringStateDisconnected VirtualNetworkPeeringState = original.VirtualNetworkPeeringStateDisconnected
+	VirtualNetworkPeeringStateInitiated    VirtualNetworkPeeringState = original.VirtualNetworkPeeringStateInitiated
 )
 
 func PossibleVirtualNetworkPeeringStateValues() []VirtualNetworkPeeringState {
@@ -1197,6 +1262,13 @@ type ConnectivityInformation = original.ConnectivityInformation
 type ConnectivityIssue = original.ConnectivityIssue
 type ConnectivityParameters = original.ConnectivityParameters
 type ConnectivitySource = original.ConnectivitySource
+type DdosProtectionPlan = original.DdosProtectionPlan
+type DdosProtectionPlanListResult = original.DdosProtectionPlanListResult
+type DdosProtectionPlanListResultIterator = original.DdosProtectionPlanListResultIterator
+type DdosProtectionPlanListResultPage = original.DdosProtectionPlanListResultPage
+type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesFormat
+type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
+type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
 type DhcpOptions = original.DhcpOptions
 type Dimension = original.Dimension
 type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
@@ -1217,6 +1289,10 @@ type ExpressRouteCircuitArpTable = original.ExpressRouteCircuitArpTable
 type ExpressRouteCircuitAuthorization = original.ExpressRouteCircuitAuthorization
 type ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture = original.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture
 type ExpressRouteCircuitAuthorizationsDeleteFuture = original.ExpressRouteCircuitAuthorizationsDeleteFuture
+type ExpressRouteCircuitConnection = original.ExpressRouteCircuitConnection
+type ExpressRouteCircuitConnectionPropertiesFormat = original.ExpressRouteCircuitConnectionPropertiesFormat
+type ExpressRouteCircuitConnectionsCreateOrUpdateFuture = original.ExpressRouteCircuitConnectionsCreateOrUpdateFuture
+type ExpressRouteCircuitConnectionsDeleteFuture = original.ExpressRouteCircuitConnectionsDeleteFuture
 type ExpressRouteCircuitListResult = original.ExpressRouteCircuitListResult
 type ExpressRouteCircuitListResultIterator = original.ExpressRouteCircuitListResultIterator
 type ExpressRouteCircuitListResultPage = original.ExpressRouteCircuitListResultPage
@@ -1229,6 +1305,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat = original.ExpressRouteCircuitPe
 type ExpressRouteCircuitPeeringsCreateOrUpdateFuture = original.ExpressRouteCircuitPeeringsCreateOrUpdateFuture
 type ExpressRouteCircuitPeeringsDeleteFuture = original.ExpressRouteCircuitPeeringsDeleteFuture
 type ExpressRouteCircuitPropertiesFormat = original.ExpressRouteCircuitPropertiesFormat
+type ExpressRouteCircuitReference = original.ExpressRouteCircuitReference
 type ExpressRouteCircuitRoutesTable = original.ExpressRouteCircuitRoutesTable
 type ExpressRouteCircuitRoutesTableSummary = original.ExpressRouteCircuitRoutesTableSummary
 type ExpressRouteCircuitsArpTableListResult = original.ExpressRouteCircuitsArpTableListResult
@@ -1243,6 +1320,25 @@ type ExpressRouteCircuitsRoutesTableListResult = original.ExpressRouteCircuitsRo
 type ExpressRouteCircuitsRoutesTableSummaryListResult = original.ExpressRouteCircuitsRoutesTableSummaryListResult
 type ExpressRouteCircuitStats = original.ExpressRouteCircuitStats
 type ExpressRouteCircuitsUpdateTagsFuture = original.ExpressRouteCircuitsUpdateTagsFuture
+type ExpressRouteCrossConnection = original.ExpressRouteCrossConnection
+type ExpressRouteCrossConnectionListResult = original.ExpressRouteCrossConnectionListResult
+type ExpressRouteCrossConnectionListResultIterator = original.ExpressRouteCrossConnectionListResultIterator
+type ExpressRouteCrossConnectionListResultPage = original.ExpressRouteCrossConnectionListResultPage
+type ExpressRouteCrossConnectionPeering = original.ExpressRouteCrossConnectionPeering
+type ExpressRouteCrossConnectionPeeringList = original.ExpressRouteCrossConnectionPeeringList
+type ExpressRouteCrossConnectionPeeringListIterator = original.ExpressRouteCrossConnectionPeeringListIterator
+type ExpressRouteCrossConnectionPeeringListPage = original.ExpressRouteCrossConnectionPeeringListPage
+type ExpressRouteCrossConnectionPeeringProperties = original.ExpressRouteCrossConnectionPeeringProperties
+type ExpressRouteCrossConnectionPeeringsCreateOrUpdateFuture = original.ExpressRouteCrossConnectionPeeringsCreateOrUpdateFuture
+type ExpressRouteCrossConnectionPeeringsDeleteFuture = original.ExpressRouteCrossConnectionPeeringsDeleteFuture
+type ExpressRouteCrossConnectionProperties = original.ExpressRouteCrossConnectionProperties
+type ExpressRouteCrossConnectionRoutesTableSummary = original.ExpressRouteCrossConnectionRoutesTableSummary
+type ExpressRouteCrossConnectionsCreateOrUpdateFuture = original.ExpressRouteCrossConnectionsCreateOrUpdateFuture
+type ExpressRouteCrossConnectionsListArpTableFuture = original.ExpressRouteCrossConnectionsListArpTableFuture
+type ExpressRouteCrossConnectionsListRoutesTableFuture = original.ExpressRouteCrossConnectionsListRoutesTableFuture
+type ExpressRouteCrossConnectionsListRoutesTableSummaryFuture = original.ExpressRouteCrossConnectionsListRoutesTableSummaryFuture
+type ExpressRouteCrossConnectionsRoutesTableSummaryListResult = original.ExpressRouteCrossConnectionsRoutesTableSummaryListResult
+type ExpressRouteCrossConnectionsUpdateTagsFuture = original.ExpressRouteCrossConnectionsUpdateTagsFuture
 type ExpressRouteServiceProvider = original.ExpressRouteServiceProvider
 type ExpressRouteServiceProviderBandwidthsOffered = original.ExpressRouteServiceProviderBandwidthsOffered
 type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProviderListResult
@@ -1432,8 +1528,6 @@ type Topology = original.Topology
 type TopologyAssociation = original.TopologyAssociation
 type TopologyParameters = original.TopologyParameters
 type TopologyResource = original.TopologyResource
-type TrafficAnalyticsConfigurationProperties = original.TrafficAnalyticsConfigurationProperties
-type TrafficAnalyticsProperties = original.TrafficAnalyticsProperties
 type TroubleshootingDetails = original.TroubleshootingDetails
 type TroubleshootingParameters = original.TroubleshootingParameters
 type TroubleshootingProperties = original.TroubleshootingProperties
@@ -1478,9 +1572,11 @@ type VirtualNetworkGatewaysGenerateVpnProfileFuture = original.VirtualNetworkGat
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture = original.VirtualNetworkGatewaysGetAdvertisedRoutesFuture
 type VirtualNetworkGatewaysGetBgpPeerStatusFuture = original.VirtualNetworkGatewaysGetBgpPeerStatusFuture
 type VirtualNetworkGatewaysGetLearnedRoutesFuture = original.VirtualNetworkGatewaysGetLearnedRoutesFuture
+type VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture = original.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture = original.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture
 type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysResetFuture = original.VirtualNetworkGatewaysResetFuture
+type VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture = original.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture
 type VirtualNetworkGatewaysUpdateTagsFuture = original.VirtualNetworkGatewaysUpdateTagsFuture
 type VirtualNetworkListResult = original.VirtualNetworkListResult
 type VirtualNetworkListResultIterator = original.VirtualNetworkListResultIterator
@@ -1502,6 +1598,7 @@ type VirtualNetworksUpdateTagsFuture = original.VirtualNetworksUpdateTagsFuture
 type VirtualNetworkUsage = original.VirtualNetworkUsage
 type VirtualNetworkUsageName = original.VirtualNetworkUsageName
 type VpnClientConfiguration = original.VpnClientConfiguration
+type VpnClientIPsecParameters = original.VpnClientIPsecParameters
 type VpnClientParameters = original.VpnClientParameters
 type VpnClientRevokedCertificate = original.VpnClientRevokedCertificate
 type VpnClientRevokedCertificatePropertiesFormat = original.VpnClientRevokedCertificatePropertiesFormat

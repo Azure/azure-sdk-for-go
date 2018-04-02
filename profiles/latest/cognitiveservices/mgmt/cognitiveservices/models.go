@@ -23,20 +23,20 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mg
 
 type AccountsClient = original.AccountsClient
 
-func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID, filter)
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 
-func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
+func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID)
 }
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
 }
 
 const (
@@ -45,11 +45,11 @@ const (
 
 type BaseClient = original.BaseClient
 
-func New(subscriptionID string, filter string) BaseClient {
-	return original.New(subscriptionID, filter)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type KeyName = original.KeyName
@@ -194,11 +194,11 @@ type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, filter)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

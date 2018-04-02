@@ -7,9 +7,16 @@
       "use": "@microsoft.azure/autorest.go@~2.1.95",
       "go": "",
       "verbose": "",
-      "sdkrel:go-sdk-folder": ".",
+      "sdkrel:go-sdk-folder": "./src/github.com/Azure/azure-sdk-for-go",
       "multiapi": "",
       "use-onever": ""
+    },
+    "repotag": "azure-sdk-for-go",
+    "envs": {
+      "sdkrel:GOPATH": "."
+    },
+    "advanced_options": {
+      "sdkrel:clone_dir": "./src/github.com/Azure/azure-sdk-for-go"
     },
     "version": "0.2.0"
   }

@@ -399,28 +399,25 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 
 // ImportImageParameters ...
 type ImportImageParameters struct {
-	// SourceRepository - Repository name of the source image.
-	SourceRepository *string `json:"sourceRepository,omitempty"`
-	// SourceTag - The tag name of the source image.  When both source tag and source manifest are omitted the 'latest' tag will be used.
-	// Exclusive with SourceManifestDigest.
-	SourceTag *string `json:"sourceTag,omitempty"`
-	// SourceManifestDigest - The manifest sha of the source image. Exclusive with SourceTag.
-	SourceManifestDigest *string `json:"sourceManifestDigest,omitempty"`
 	// Source - The source of the image.
 	Source *ImportSource `json:"source,omitempty"`
-	// TargetTags - List of strings of the form repo[:tag].  When tag is omitted the source will be used (or 'latest' if source tag is also omitted.)
+	// TargetTags - List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is also omitted.)
 	TargetTags *[]string `json:"targetTags,omitempty"`
-	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy.  No tag will be created.
+	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy. No tag will be created.
 	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
-	// Mode - When Force, any existing target tags will be overwritten.  When NoForce, any existing target tags will fail the operation before any copying begins.
-	// NoForce is the default. Possible values include: 'NoForce', 'Force'
+	// Mode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins. Possible values include: 'NoForce', 'Force'
 	Mode ImportMode `json:"mode,omitempty"`
 }
 
 // ImportSource ...
 type ImportSource struct {
-	// ResourceID - The resource identifier of the source Azure Container Registry.
+	// ResourceID - The resource identifier of the target Azure Container Registry.
 	ResourceID *string `json:"resourceId,omitempty"`
+	// SourceImage - Repository name of the source image.
+	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
+	// Specify an image by tag ('hello-world:latest').
+	// Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
+	SourceImage *string `json:"sourceImage,omitempty"`
 }
 
 // OperationDefinition the definition of a container registry operation.

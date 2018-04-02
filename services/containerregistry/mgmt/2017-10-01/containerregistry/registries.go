@@ -354,25 +354,26 @@ func (client RegistriesClient) GetResponder(resp *http.Response) (result Registr
 	return
 }
 
-// ImportImage copies an image to this registry from the specified registry.
+// ImportImage copies an image to this container registry from the specified container registry.
 //
 // resourceGroupName is the name of the resource group to which the container registry belongs. registryName is the
-// name of the container registry. importParameters is the parameters specifying the image to copy and the source
-// registry.
-func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupName string, registryName string, importParameters ImportImageParameters) (result RegistriesImportImageFuture, err error) {
+// name of the container registry. parameters is the parameters specifying the image to copy and the source
+// container registry.
+func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters) (result RegistriesImportImageFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
 				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
-		{TargetValue: importParameters,
-			Constraints: []validation.Constraint{{Target: "importParameters.SourceRepository", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "importParameters.Source", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "importParameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Source", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.Source.SourceImage", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("containerregistry.RegistriesClient", "ImportImage", err.Error())
 	}
 
-	req, err := client.ImportImagePreparer(ctx, resourceGroupName, registryName, importParameters)
+	req, err := client.ImportImagePreparer(ctx, resourceGroupName, registryName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", nil, "Failure preparing request")
 		return
@@ -388,7 +389,7 @@ func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupNam
 }
 
 // ImportImagePreparer prepares the ImportImage request.
-func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resourceGroupName string, registryName string, importParameters ImportImageParameters) (*http.Request, error) {
+func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"registryName":      autorest.Encode("path", registryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -405,7 +406,7 @@ func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resource
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importImage", pathParameters),
-		autorest.WithJSON(importParameters),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

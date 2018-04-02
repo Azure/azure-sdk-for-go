@@ -401,7 +401,7 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 type ImportImageParameters struct {
 	// Source - The source of the image.
 	Source *ImportSource `json:"source,omitempty"`
-	// TargetTags - List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is also omitted.)
+	// TargetTags - List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is also omitted).
 	TargetTags *[]string `json:"targetTags,omitempty"`
 	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy. No tag will be created.
 	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`

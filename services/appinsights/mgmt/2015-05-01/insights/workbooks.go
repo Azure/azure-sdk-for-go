@@ -43,21 +43,23 @@ func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) Workbo
 // Create create a new workbook.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. workbookProperties is properties that need to be specified to create a new workbook.
-func (client WorkbooksClient) Create(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (result Workbook, err error) {
+// component resource. workbookPayload is properties that need to be specified to create a new workbook or link.
+func (client WorkbooksClient) Create(ctx context.Context, resourceGroupName string, resourceName string, workbookPayload WorkbookPayload) (result Workbook, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: workbookProperties,
-			Constraints: []validation.Constraint{{Target: "workbookProperties.WorkbookProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "workbookProperties.WorkbookProperties.Name", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "workbookProperties.WorkbookProperties.SerializedData", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "workbookProperties.WorkbookProperties.WorkbookID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "workbookProperties.WorkbookProperties.Category", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "workbookProperties.WorkbookProperties.UserID", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: workbookPayload,
+			Constraints: []validation.Constraint{{Target: "workbookPayload.Workbook", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "workbookPayload.Workbook.WorkbookProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "workbookPayload.Workbook.WorkbookProperties.Name", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "workbookPayload.Workbook.WorkbookProperties.SerializedData", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "workbookPayload.Workbook.WorkbookProperties.WorkbookID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "workbookPayload.Workbook.WorkbookProperties.Category", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "workbookPayload.Workbook.WorkbookProperties.UserID", Name: validation.Null, Rule: true, Chain: nil},
+					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("insights.WorkbooksClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, resourceName, workbookProperties)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, resourceName, workbookPayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "Create", nil, "Failure preparing request")
 		return
@@ -79,7 +81,7 @@ func (client WorkbooksClient) Create(ctx context.Context, resourceGroupName stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client WorkbooksClient) CreatePreparer(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (*http.Request, error) {
+func (client WorkbooksClient) CreatePreparer(ctx context.Context, resourceGroupName string, resourceName string, workbookPayload WorkbookPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -96,7 +98,7 @@ func (client WorkbooksClient) CreatePreparer(ctx context.Context, resourceGroupN
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}", pathParameters),
-		autorest.WithJSON(workbookProperties),
+		autorest.WithJSON(workbookPayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -118,71 +120,6 @@ func (client WorkbooksClient) CreateResponder(resp *http.Response) (result Workb
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// CreateLink create a new workbook link.
-//
-// linkProperties is properties that need to be specified to create a workbook link.
-func (client WorkbooksClient) CreateLink(ctx context.Context, linkProperties LinkProperties) (result autorest.Response, err error) {
-	req, err := client.CreateLinkPreparer(ctx, linkProperties)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "CreateLink", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CreateLinkSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "CreateLink", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreateLinkResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "CreateLink", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CreateLinkPreparer prepares the CreateLink request.
-func (client WorkbooksClient) CreateLinkPreparer(ctx context.Context, linkProperties LinkProperties) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
-		autorest.WithJSON(linkProperties),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateLinkSender sends the CreateLink request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbooksClient) CreateLinkSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CreateLinkResponder handles the response to the CreateLink request. The method always
-// closes the http.Response Body.
-func (client WorkbooksClient) CreateLinkResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -244,71 +181,6 @@ func (client WorkbooksClient) DeleteSender(req *http.Request) (*http.Response, e
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client WorkbooksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteLink delete a link between a source resource and workbook resource.
-//
-// resourceID is azure Resource Id or any target workbook resource id. category is category of workbook to return.
-func (client WorkbooksClient) DeleteLink(ctx context.Context, resourceID string, category CategoryType) (result autorest.Response, err error) {
-	req, err := client.DeleteLinkPreparer(ctx, resourceID, category)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "DeleteLink", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteLinkSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "DeleteLink", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteLinkResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "DeleteLink", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteLinkPreparer prepares the DeleteLink request.
-func (client WorkbooksClient) DeleteLinkPreparer(ctx context.Context, resourceID string, category CategoryType) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-		"category":    autorest.Encode("query", category),
-		"resourceId":  autorest.Encode("query", resourceID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteLinkSender sends the DeleteLink request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbooksClient) DeleteLinkSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteLinkResponder handles the response to the DeleteLink request. The method always
-// closes the http.Response Body.
-func (client WorkbooksClient) DeleteLinkResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -385,88 +257,17 @@ func (client WorkbooksClient) GetResponder(resp *http.Response) (result Workbook
 	return
 }
 
-// List gets a list of workbooks.
+// ListByResourceGroup get all Workbooks defined within a specified subscriptionId. It will get a list of workbooks or
+// linked workbooks based on $filter clause. If sourceId is specified, it will get a list of linked workbboks. If a
+// targetId is specified, it will get a list of workboks. When a targetId is specified, a resourceName is not required.
+// Even if it is provided, it will be ignored.
 //
-// sourceID is azure Resource Id that will fetch all linked workbooks. category is category of workbook to return.
-// tags is tags presents on each workbook returned. canFetchContent is flag indicating whether or not to return the
-// full content for each applicable workbook. If false, only return summary content for workbooks.
-func (client WorkbooksClient) List(ctx context.Context, sourceID string, category CategoryType, tags []string, canFetchContent *bool) (result ListWorkbook, err error) {
-	req, err := client.ListPreparer(ctx, sourceID, category, tags, canFetchContent)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client WorkbooksClient) ListPreparer(ctx context.Context, sourceID string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-		"category":    autorest.Encode("query", category),
-		"sourceId":    autorest.Encode("query", sourceID),
-	}
-	if tags != nil && len(tags) > 0 {
-		queryParameters["tags"] = autorest.Encode("query", tags, ",")
-	}
-	if canFetchContent != nil {
-		queryParameters["canFetchContent"] = autorest.Encode("query", *canFetchContent)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbooksClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client WorkbooksClient) ListResponder(resp *http.Response) (result ListWorkbook, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListByResourceGroup get all Workbooks defined within a specified resource group and category.
-//
-// resourceGroupName is the name of the resource group. location is the name of location where workbook is stored.
-// category is category of workbook to return. tags is tags presents on each workbook returned. canFetchContent is
-// flag indicating whether or not to return the full content for each applicable workbook. If false, only return
-// summary content for workbooks.
-func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, location string, category CategoryType, tags []string, canFetchContent *bool) (result WorkbookListResult, err error) {
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, location, category, tags, canFetchContent)
+// location is the name of location where workbook is stored. category is category of workbook to return.
+// resourceID is azure Resource id or any target workbook resource id. tags is tags presents on each workbook
+// returned. canFetchContent is flag indicating whether or not to return the full content for each applicable
+// workbook. If false, only return summary content for workbooks.
+func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, location string, category CategoryType, resourceID string, tags []string, canFetchContent *bool) (result WorkbookListResult, err error) {
+	req, err := client.ListByResourceGroupPreparer(ctx, location, category, resourceID, tags, canFetchContent)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -488,10 +289,9 @@ func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceG
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, location string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
+func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, location string, category CategoryType, resourceID string, tags []string, canFetchContent *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-05-01"
@@ -499,6 +299,7 @@ func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, r
 		"api-version": APIVersion,
 		"category":    autorest.Encode("query", category),
 		"location":    autorest.Encode("query", location),
+		"resourceId":  autorest.Encode("query", resourceID),
 	}
 	if tags != nil && len(tags) > 0 {
 		queryParameters["tags"] = autorest.Encode("query", tags, ",")
@@ -510,7 +311,7 @@ func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -535,82 +336,12 @@ func (client WorkbooksClient) ListByResourceGroupResponder(resp *http.Response) 
 	return
 }
 
-// ListBySourceID gets a workbook link by a workbook resource name.
-//
-// resourceName is the name of the Application Insights component resource. canFetchContent is flag indicating
-// whether or not to return the full content for each applicable workbook. If false, only return summary content
-// for workbooks.
-func (client WorkbooksClient) ListBySourceID(ctx context.Context, resourceName string, canFetchContent *bool) (result Workbook, err error) {
-	req, err := client.ListBySourceIDPreparer(ctx, resourceName, canFetchContent)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListBySourceIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListBySourceIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListBySourceID", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListBySourceIDPreparer prepares the ListBySourceID request.
-func (client WorkbooksClient) ListBySourceIDPreparer(ctx context.Context, resourceName string, canFetchContent *bool) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceName":   autorest.Encode("path", resourceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if canFetchContent != nil {
-		queryParameters["canFetchContent"] = autorest.Encode("query", *canFetchContent)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/{resourceName}/links", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListBySourceIDSender sends the ListBySourceID request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbooksClient) ListBySourceIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListBySourceIDResponder handles the response to the ListBySourceID request. The method always
-// closes the http.Response Body.
-func (client WorkbooksClient) ListBySourceIDResponder(resp *http.Response) (result Workbook, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Update updates a workbook that has already been added.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. workbookProperties is properties that need to be specified to create a new workbook.
-func (client WorkbooksClient) Update(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (result Workbook, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceName, workbookProperties)
+// component resource. workbookPayload is properties that need to be specified to create a new workbook or link.
+func (client WorkbooksClient) Update(ctx context.Context, resourceGroupName string, resourceName string, workbookPayload WorkbookPayload) (result Workbook, err error) {
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceName, workbookPayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "Update", nil, "Failure preparing request")
 		return
@@ -632,7 +363,7 @@ func (client WorkbooksClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // UpdatePreparer prepares the Update request.
-func (client WorkbooksClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (*http.Request, error) {
+func (client WorkbooksClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, workbookPayload WorkbookPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -649,7 +380,7 @@ func (client WorkbooksClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}", pathParameters),
-		autorest.WithJSON(workbookProperties),
+		autorest.WithJSON(workbookPayload),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -664,72 +395,6 @@ func (client WorkbooksClient) UpdateSender(req *http.Request) (*http.Response, e
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
 func (client WorkbooksClient) UpdateResponder(resp *http.Response) (result Workbook, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// UpdateLink updates a workbook that has already been added.
-//
-// linkProperties is properties that need to be specified to create a workbook link.
-func (client WorkbooksClient) UpdateLink(ctx context.Context, linkProperties LinkProperties) (result Workbook, err error) {
-	req, err := client.UpdateLinkPreparer(ctx, linkProperties)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "UpdateLink", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UpdateLinkSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "UpdateLink", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateLinkResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "UpdateLink", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdateLinkPreparer prepares the UpdateLink request.
-func (client WorkbooksClient) UpdateLinkPreparer(ctx context.Context, linkProperties LinkProperties) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/links", pathParameters),
-		autorest.WithJSON(linkProperties),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateLinkSender sends the UpdateLink request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbooksClient) UpdateLinkSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateLinkResponder handles the response to the UpdateLink request. The method always
-// closes the http.Response Body.
-func (client WorkbooksClient) UpdateLinkResponder(resp *http.Response) (result Workbook, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

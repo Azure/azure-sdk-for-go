@@ -846,12 +846,6 @@ type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
 }
 
-// ListWorkbook ...
-type ListWorkbook struct {
-	autorest.Response `json:"-"`
-	Value             *[]Workbook `json:"value,omitempty"`
-}
-
 // ListWorkItemConfiguration ...
 type ListWorkItemConfiguration struct {
 	autorest.Response `json:"-"`
@@ -1440,6 +1434,14 @@ type WorkbookListResult struct {
 	autorest.Response `json:"-"`
 	// Value - An array of workbooks.
 	Value *[]Workbook `json:"value,omitempty"`
+}
+
+// WorkbookPayload this wraps either Workbook definition or LinkReource properties.
+type WorkbookPayload struct {
+	// Workbook - Workbook properties. If provided, it will be used to create new workbook.
+	Workbook *Workbook `json:"workbook,omitempty"`
+	// LinkResource - LinkProperties. If provided, it will be used to create a link.
+	LinkResource *LinkProperties `json:"linkResource,omitempty"`
 }
 
 // WorkbookProperties properties that contain a workbook.

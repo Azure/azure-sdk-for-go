@@ -129,6 +129,19 @@ func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
 	return []LocalTimestampFormat{Embedded, Iana, TimeSpan}
 }
 
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// String ...
+	String PropertyType = "String"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{String}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -156,19 +169,19 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ReferenceDataKeyPropertyType string
 
 const (
-	// Bool ...
-	Bool ReferenceDataKeyPropertyType = "Bool"
-	// DateTime ...
-	DateTime ReferenceDataKeyPropertyType = "DateTime"
-	// Double ...
-	Double ReferenceDataKeyPropertyType = "Double"
-	// String ...
-	String ReferenceDataKeyPropertyType = "String"
+	// ReferenceDataKeyPropertyTypeBool ...
+	ReferenceDataKeyPropertyTypeBool ReferenceDataKeyPropertyType = "Bool"
+	// ReferenceDataKeyPropertyTypeDateTime ...
+	ReferenceDataKeyPropertyTypeDateTime ReferenceDataKeyPropertyType = "DateTime"
+	// ReferenceDataKeyPropertyTypeDouble ...
+	ReferenceDataKeyPropertyTypeDouble ReferenceDataKeyPropertyType = "Double"
+	// ReferenceDataKeyPropertyTypeString ...
+	ReferenceDataKeyPropertyTypeString ReferenceDataKeyPropertyType = "String"
 )
 
 // PossibleReferenceDataKeyPropertyTypeValues returns an array of possible values for the ReferenceDataKeyPropertyType const type.
 func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
-	return []ReferenceDataKeyPropertyType{Bool, DateTime, Double, String}
+	return []ReferenceDataKeyPropertyType{ReferenceDataKeyPropertyTypeBool, ReferenceDataKeyPropertyTypeDateTime, ReferenceDataKeyPropertyTypeDouble, ReferenceDataKeyPropertyTypeString}
 }
 
 // SkuName enumerates the values for sku name.
@@ -522,6 +535,17 @@ type EnvironmentCreationProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
+	// PartitionKeyProperties - The list of partition keys according to which the data in the environment will be ordered.
+	PartitionKeyProperties *[]EnvironmentInfoProperty `json:"partitionKeyProperties,omitempty"`
+}
+
+// EnvironmentInfoProperty the structure of the property that a environment info can have. An environment can have
+// multiple such properties.
+type EnvironmentInfoProperty struct {
+	// Name - The name of the property.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the property. Possible values include: 'String'
+	Type PropertyType `json:"type,omitempty"`
 }
 
 // EnvironmentListResponse the response of the List Environments operation.
@@ -537,6 +561,8 @@ type EnvironmentMutableProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
+	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment.
+	PartitionKeyProperties *[]EnvironmentInfoProperty `json:"partitionKeyProperties,omitempty"`
 }
 
 // EnvironmentResource an environment is a set of time-series data avaliable for query, and is the top level Azure
@@ -669,6 +695,8 @@ type EnvironmentResourceProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
+	// PartitionKeyProperties - The list of partition keys according to which the data in the environment will be ordered.
+	PartitionKeyProperties *[]EnvironmentInfoProperty `json:"partitionKeyProperties,omitempty"`
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - The time the resource was created.
@@ -2115,7 +2143,7 @@ type ReferenceDataSetCreationProperties struct {
 type ReferenceDataSetKeyProperty struct {
 	// Name - The name of the key property.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the key property. Possible values include: 'String', 'Double', 'Bool', 'DateTime'
+	// Type - The type of the key property. Possible values include: 'ReferenceDataKeyPropertyTypeString', 'ReferenceDataKeyPropertyTypeDouble', 'ReferenceDataKeyPropertyTypeBool', 'ReferenceDataKeyPropertyTypeDateTime'
 	Type ReferenceDataKeyPropertyType `json:"type,omitempty"`
 }
 

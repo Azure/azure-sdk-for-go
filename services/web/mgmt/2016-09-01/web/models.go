@@ -7823,7 +7823,7 @@ type DetectorResponseProperties struct {
 	// Metadata - metadata for the detector
 	Metadata *DetectorInfo `json:"metadata,omitempty"`
 	// Dataset - Data Set
-	Dataset *DiagnosticData `json:"dataset,omitempty"`
+	Dataset *[]Solution `json:"dataset,omitempty"`
 }
 
 // DiagnosticAnalysis class representing a diagnostic analysis done on an application

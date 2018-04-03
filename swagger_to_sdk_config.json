@@ -1,7 +1,7 @@
 {
   "meta": {
     "after_scripts": [
-      "gofmt -w ./services/"
+      "gofmt -w ./src/github.com/Azure/azure-sdk-for-go/services/"
     ],
     "autorest_options": {
       "use": "@microsoft.azure/autorest.go@~2.1.95",

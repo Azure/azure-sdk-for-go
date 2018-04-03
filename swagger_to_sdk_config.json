@@ -11,6 +11,13 @@
       "multiapi": "",
       "use-onever": ""
     },
+    "repotag": "azure-sdk-for-go",
+    "envs": {
+      "sdkrel:GOPATH": "../../../.."
+    },
+    "advanced_options": {
+      "clone_dir": "./src/github.com/Azure/azure-sdk-for-go"
+    },
     "version": "0.2.0"
   }
 }

@@ -1,7 +1,8 @@
 {
   "meta": {
     "after_scripts": [
-      "gofmt -w ./services/"
+      "gofmt -w ./services/",
+      "echo $env:GOPATH"
     ],
     "autorest_options": {
       "use": "@microsoft.azure/autorest.go@~2.1.95",
@@ -13,10 +14,10 @@
     },
     "repotag": "azure-sdk-for-go",
     "envs": {
-      "sdkrel:GOPATH": "."
+      "sdkrel:GOPATH": "../../../.."
     },
     "advanced_options": {
-      "sdkrel:clone_dir": "./src/github.com/Azure/azure-sdk-for-go"
+      "clone_dir": "./src/github.com/Azure/azure-sdk-for-go"
     },
     "version": "0.2.0"
   }

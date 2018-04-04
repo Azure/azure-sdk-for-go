@@ -564,6 +564,7 @@ type Phone struct {
 // PII personal Identifier Information details.
 type PII struct {
 	Email   *[]Email   `json:"Email,omitempty"`
+	SSN     *[]SSN     `json:"SSN,omitempty"`
 	IPA     *[]IPA     `json:"IPA,omitempty"`
 	Phone   *[]Phone   `json:"Phone,omitempty"`
 	Address *[]Address `json:"Address,omitempty"`
@@ -645,6 +646,14 @@ type Screen struct {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// SSN detected SSN details.
+type SSN struct {
+	// Text - Detected SSN in the input text content.
+	Text *string `json:"Text,omitempty"`
+	// Index - Index(Location) of the SSN in the input text content.
+	Index *int32 `json:"Index,omitempty"`
 }
 
 // Status status properties.

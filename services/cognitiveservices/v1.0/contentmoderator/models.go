@@ -137,35 +137,11 @@ type Candidate struct {
 
 // Classification the classification details of the text.
 type Classification struct {
-	// Category1 - The category1 score details of the text. <a href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-	Category1 *ClassificationCategory1 `json:"Category1,omitempty"`
-	// Category2 - The category2 score details of the text. <a href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-	Category2 *ClassificationCategory2 `json:"Category2,omitempty"`
-	// Category3 - The category3 score details of the text. <a href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-	Category3 *ClassificationCategory3 `json:"Category3,omitempty"`
+	Category1 *Score `json:"Category1,omitempty"`
+	Category2 *Score `json:"Category2,omitempty"`
+	Category3 *Score `json:"Category3,omitempty"`
 	// ReviewRecommended - The review recommended flag.
 	ReviewRecommended *bool `json:"ReviewRecommended,omitempty"`
-}
-
-// ClassificationCategory1 the category1 score details of the text. <a
-// href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-type ClassificationCategory1 struct {
-	// Score - The category1 score.
-	Score *float64 `json:"Score,omitempty"`
-}
-
-// ClassificationCategory2 the category2 score details of the text. <a
-// href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-type ClassificationCategory2 struct {
-	// Score - The category2 score.
-	Score *float64 `json:"Score,omitempty"`
-}
-
-// ClassificationCategory3 the category3 score details of the text. <a
-// href="https://aka.ms/textClassifyCategories">Click here</a> for more details on category classification.
-type ClassificationCategory3 struct {
-	// Score - The category3 score.
-	Score *float64 `json:"Score,omitempty"`
 }
 
 // Content ...
@@ -564,6 +540,7 @@ type Phone struct {
 // PII personal Identifier Information details.
 type PII struct {
 	Email   *[]Email   `json:"Email,omitempty"`
+	SSN     *[]SSN     `json:"SSN,omitempty"`
 	IPA     *[]IPA     `json:"IPA,omitempty"`
 	Phone   *[]Phone   `json:"Phone,omitempty"`
 	Address *[]Address `json:"Address,omitempty"`
@@ -617,6 +594,13 @@ type Review struct {
 	CallbackEndpoint *string `json:"CallbackEndpoint,omitempty"`
 }
 
+// Score the classification score details of the text. <a href="https://aka.ms/textClassifyCategories">Click
+// here</a> for more details on category classification.
+type Score struct {
+	// Score - The category score.
+	Score *float64 `json:"Score,omitempty"`
+}
+
 // Screen the response for a Screen text request.
 type Screen struct {
 	autorest.Response `json:"-"`
@@ -645,6 +629,14 @@ type Screen struct {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// SSN detected SSN details.
+type SSN struct {
+	// Text - Detected SSN in the input text content.
+	Text *string `json:"Text,omitempty"`
+	// Index - Index(Location) of the SSN in the input text content.
+	Index *int32 `json:"Index,omitempty"`
 }
 
 // Status status properties.

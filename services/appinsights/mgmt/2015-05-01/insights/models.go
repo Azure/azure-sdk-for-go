@@ -846,6 +846,12 @@ type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
 }
 
+// ListWorkbook ...
+type ListWorkbook struct {
+	autorest.Response `json:"-"`
+	Value             *[]Workbook `json:"value,omitempty"`
+}
+
 // ListWorkItemConfiguration ...
 type ListWorkItemConfiguration struct {
 	autorest.Response `json:"-"`
@@ -1419,29 +1425,14 @@ func (w *Workbook) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// WorkbookErrorResponse error message body that will indicate why the operation failed.
-type WorkbookErrorResponse struct {
+// WorkbookError error message body that will indicate why the operation failed.
+type WorkbookError struct {
 	// Code - Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
 	Code *string `json:"code,omitempty"`
 	// Message - Human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
 	// Details - The list of invalid fields send in request, in case of validation error.
 	Details *[]ErrorFieldContract `json:"details,omitempty"`
-}
-
-// WorkbookListResult workbook list result.
-type WorkbookListResult struct {
-	autorest.Response `json:"-"`
-	// Value - An array of workbooks.
-	Value *[]Workbook `json:"value,omitempty"`
-}
-
-// WorkbookPayload this wraps either Workbook definition or LinkReource properties.
-type WorkbookPayload struct {
-	// Workbook - Workbook properties. If provided, it will be used to create new workbook.
-	Workbook *Workbook `json:"workbook,omitempty"`
-	// LinkResource - LinkProperties. If provided, it will be used to create a link.
-	LinkResource *LinkProperties `json:"linkResource,omitempty"`
 }
 
 // WorkbookProperties properties that contain a workbook.
@@ -1466,6 +1457,13 @@ type WorkbookProperties struct {
 	UserID *string `json:"userId,omitempty"`
 	// SourceResourceID - Optional resourceId for a source resource.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// Workbooks workbook list result.
+type Workbooks struct {
+	autorest.Response `json:"-"`
+	// Value - An array of workbooks.
+	Value *[]Workbook `json:"value,omitempty"`
 }
 
 // WorkItemConfiguration work item configuration associated with an application insights resource.

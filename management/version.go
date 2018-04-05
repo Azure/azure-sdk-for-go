@@ -17,5 +17,5 @@ package management
 //  limitations under the License.
 
 var (
-	sdkVersion = "v12.5.0-beta"
+	sdkVersion = "v12.6.0-beta"
 )

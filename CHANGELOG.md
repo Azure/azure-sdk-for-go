@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## `v12.5.0-beta`
+## `v12.6.0-beta`
 
 ### Changes
 

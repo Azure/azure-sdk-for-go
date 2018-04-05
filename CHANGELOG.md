@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v15.0.1`
+
+Fixing some build issues, and temporarily reverting CI.
+
 ## `v15.0.0`
 
 NOTE: There is a new subdirectory, ./services/preview, which going forward will be used for segregating pre-GA packages.

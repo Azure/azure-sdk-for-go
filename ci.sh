@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 REALEXITSTATUS=0
 if [[ $MODE == 'default' ]]; then
     bash rungas.sh

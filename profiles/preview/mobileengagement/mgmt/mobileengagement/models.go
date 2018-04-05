@@ -21,73 +21,6 @@ package mobileengagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/mobileengagement/mgmt/2014-12-01/mobileengagement"
 
-type AppCollectionsClient = original.AppCollectionsClient
-
-func NewAppCollectionsClient(subscriptionID string) AppCollectionsClient {
-	return original.NewAppCollectionsClient(subscriptionID)
-}
-func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) AppCollectionsClient {
-	return original.NewAppCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type AppsClient = original.AppsClient
-
-func NewAppsClient(subscriptionID string) AppsClient {
-	return original.NewAppsClient(subscriptionID)
-}
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
-	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type CampaignsClient = original.CampaignsClient
-
-func NewCampaignsClient(subscriptionID string) CampaignsClient {
-	return original.NewCampaignsClient(subscriptionID)
-}
-func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) CampaignsClient {
-	return original.NewCampaignsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DevicesClient = original.DevicesClient
-
-func NewDevicesClient(subscriptionID string) DevicesClient {
-	return original.NewDevicesClient(subscriptionID)
-}
-func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
-	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ExportTasksClient = original.ExportTasksClient
-
-func NewExportTasksClient(subscriptionID string) ExportTasksClient {
-	return original.NewExportTasksClient(subscriptionID)
-}
-func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) ExportTasksClient {
-	return original.NewExportTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ImportTasksClient = original.ImportTasksClient
-
-func NewImportTasksClient(subscriptionID string) ImportTasksClient {
-	return original.NewImportTasksClient(subscriptionID)
-}
-func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) ImportTasksClient {
-	return original.NewImportTasksClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AudienceOperators = original.AudienceOperators
 
 const (
@@ -408,6 +341,70 @@ type ScreenSizeCriterion = original.ScreenSizeCriterion
 type SegmentCriterion = original.SegmentCriterion
 type StringTagCriterion = original.StringTagCriterion
 type SupportedPlatformsListResult = original.SupportedPlatformsListResult
+type ExportTasksClient = original.ExportTasksClient
+
+func NewExportTasksClient(subscriptionID string) ExportTasksClient {
+	return original.NewExportTasksClient(subscriptionID)
+}
+func NewExportTasksClientWithBaseURI(baseURI string, subscriptionID string) ExportTasksClient {
+	return original.NewExportTasksClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type AppCollectionsClient = original.AppCollectionsClient
+
+func NewAppCollectionsClient(subscriptionID string) AppCollectionsClient {
+	return original.NewAppCollectionsClient(subscriptionID)
+}
+func NewAppCollectionsClientWithBaseURI(baseURI string, subscriptionID string) AppCollectionsClient {
+	return original.NewAppCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ImportTasksClient = original.ImportTasksClient
+
+func NewImportTasksClient(subscriptionID string) ImportTasksClient {
+	return original.NewImportTasksClient(subscriptionID)
+}
+func NewImportTasksClientWithBaseURI(baseURI string, subscriptionID string) ImportTasksClient {
+	return original.NewImportTasksClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AppsClient = original.AppsClient
+
+func NewAppsClient(subscriptionID string) AppsClient {
+	return original.NewAppsClient(subscriptionID)
+}
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type CampaignsClient = original.CampaignsClient
+
+func NewCampaignsClient(subscriptionID string) CampaignsClient {
+	return original.NewCampaignsClient(subscriptionID)
+}
+func NewCampaignsClientWithBaseURI(baseURI string, subscriptionID string) CampaignsClient {
+	return original.NewCampaignsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type SupportedPlatformsClient = original.SupportedPlatformsClient
 
 func NewSupportedPlatformsClient(subscriptionID string) SupportedPlatformsClient {
@@ -416,9 +413,12 @@ func NewSupportedPlatformsClient(subscriptionID string) SupportedPlatformsClient
 func NewSupportedPlatformsClientWithBaseURI(baseURI string, subscriptionID string) SupportedPlatformsClient {
 	return original.NewSupportedPlatformsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type DevicesClient = original.DevicesClient
+
+func NewDevicesClient(subscriptionID string) DevicesClient {
+	return original.NewDevicesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
+	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
 }

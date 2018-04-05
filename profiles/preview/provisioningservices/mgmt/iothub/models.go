@@ -21,37 +21,6 @@ package iothub
 
 import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DpsCertificateClient = original.DpsCertificateClient
-
-func NewDpsCertificateClient(subscriptionID string) DpsCertificateClient {
-	return original.NewDpsCertificateClient(subscriptionID)
-}
-func NewDpsCertificateClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificateClient {
-	return original.NewDpsCertificateClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type IotDpsResourceClient = original.IotDpsResourceClient
-
-func NewIotDpsResourceClient(subscriptionID string) IotDpsResourceClient {
-	return original.NewIotDpsResourceClient(subscriptionID)
-}
-func NewIotDpsResourceClientWithBaseURI(baseURI string, subscriptionID string) IotDpsResourceClient {
-	return original.NewIotDpsResourceClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccessRightsDescription = original.AccessRightsDescription
 
 const (
@@ -169,6 +138,45 @@ type TagsResource = original.TagsResource
 type VerificationCodeRequest = original.VerificationCodeRequest
 type VerificationCodeResponse = original.VerificationCodeResponse
 type VerificationCodeResponseProperties = original.VerificationCodeResponseProperties
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type IotDpsResourceClient = original.IotDpsResourceClient
+
+func NewIotDpsResourceClient(subscriptionID string) IotDpsResourceClient {
+	return original.NewIotDpsResourceClient(subscriptionID)
+}
+func NewIotDpsResourceClientWithBaseURI(baseURI string, subscriptionID string) IotDpsResourceClient {
+	return original.NewIotDpsResourceClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DpsCertificateClient = original.DpsCertificateClient
+
+func NewDpsCertificateClient(subscriptionID string) DpsCertificateClient {
+	return original.NewDpsCertificateClient(subscriptionID)
+}
+func NewDpsCertificateClientWithBaseURI(baseURI string, subscriptionID string) DpsCertificateClient {
+	return original.NewDpsCertificateClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -176,10 +184,4 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

@@ -21,136 +21,6 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2018-03-01/insights"
 
-type ActionGroupsClient = original.ActionGroupsClient
-
-func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
-	return original.NewActionGroupsClient(subscriptionID)
-}
-func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
-	return original.NewActionGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ActivityLogAlertsClient = original.ActivityLogAlertsClient
-
-func NewActivityLogAlertsClient(subscriptionID string) ActivityLogAlertsClient {
-	return original.NewActivityLogAlertsClient(subscriptionID)
-}
-func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogAlertsClient {
-	return original.NewActivityLogAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ActivityLogsClient = original.ActivityLogsClient
-
-func NewActivityLogsClient(subscriptionID string) ActivityLogsClient {
-	return original.NewActivityLogsClient(subscriptionID)
-}
-func NewActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogsClient {
-	return original.NewActivityLogsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
-
-func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
-	return original.NewAlertRuleIncidentsClient(subscriptionID)
-}
-func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
-	return original.NewAlertRuleIncidentsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type AlertRulesClient = original.AlertRulesClient
-
-func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClient(subscriptionID)
-}
-func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
-	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type AutoscaleSettingsClient = original.AutoscaleSettingsClient
-
-func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
-	return original.NewAutoscaleSettingsClient(subscriptionID)
-}
-func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
-	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DiagnosticSettingsClient = original.DiagnosticSettingsClient
-
-func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClient(subscriptionID)
-}
-func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
-	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
-
-func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
-}
-func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
-	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type EventCategoriesClient = original.EventCategoriesClient
-
-func NewEventCategoriesClient(subscriptionID string) EventCategoriesClient {
-	return original.NewEventCategoriesClient(subscriptionID)
-}
-func NewEventCategoriesClientWithBaseURI(baseURI string, subscriptionID string) EventCategoriesClient {
-	return original.NewEventCategoriesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LogProfilesClient = original.LogProfilesClient
-
-func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClient(subscriptionID)
-}
-func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
-	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type MetricBaselineClient = original.MetricBaselineClient
-
-func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
-	return original.NewMetricBaselineClient(subscriptionID)
-}
-func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
-	return original.NewMetricBaselineClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type MetricDefinitionsClient = original.MetricDefinitionsClient
-
-func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
-	return original.NewMetricDefinitionsClient(subscriptionID)
-}
-func NewMetricDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) MetricDefinitionsClient {
-	return original.NewMetricDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type MetricsClient = original.MetricsClient
-
-func NewMetricsClient(subscriptionID string) MetricsClient {
-	return original.NewMetricsClient(subscriptionID)
-}
-func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsClient {
-	return original.NewMetricsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AggregationType = original.AggregationType
 
 const (
@@ -493,13 +363,106 @@ type TimeWindow = original.TimeWindow
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+
+type AlertRulesClient = original.AlertRulesClient
+
+func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
+	return original.NewAlertRulesClient(subscriptionID)
+}
+func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) AlertRulesClient {
+	return original.NewAlertRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type MetricDefinitionsClient = original.MetricDefinitionsClient
+
+func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
+	return original.NewMetricDefinitionsClient(subscriptionID)
+}
+func NewMetricDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) MetricDefinitionsClient {
+	return original.NewMetricDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type MetricsClient = original.MetricsClient
+
+func NewMetricsClient(subscriptionID string) MetricsClient {
+	return original.NewMetricsClient(subscriptionID)
+}
+func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsClient {
+	return original.NewMetricsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ActionGroupsClient = original.ActionGroupsClient
+
+func NewActionGroupsClient(subscriptionID string) ActionGroupsClient {
+	return original.NewActionGroupsClient(subscriptionID)
+}
+func NewActionGroupsClientWithBaseURI(baseURI string, subscriptionID string) ActionGroupsClient {
+	return original.NewActionGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type LogProfilesClient = original.LogProfilesClient
+
+func NewLogProfilesClient(subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClient(subscriptionID)
+}
+func NewLogProfilesClientWithBaseURI(baseURI string, subscriptionID string) LogProfilesClient {
+	return original.NewLogProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type EventCategoriesClient = original.EventCategoriesClient
+
+func NewEventCategoriesClient(subscriptionID string) EventCategoriesClient {
+	return original.NewEventCategoriesClient(subscriptionID)
+}
+func NewEventCategoriesClientWithBaseURI(baseURI string, subscriptionID string) EventCategoriesClient {
+	return original.NewEventCategoriesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AlertRuleIncidentsClient = original.AlertRuleIncidentsClient
+
+func NewAlertRuleIncidentsClient(subscriptionID string) AlertRuleIncidentsClient {
+	return original.NewAlertRuleIncidentsClient(subscriptionID)
+}
+func NewAlertRuleIncidentsClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleIncidentsClient {
+	return original.NewAlertRuleIncidentsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type MetricBaselineClient = original.MetricBaselineClient
+
+func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
+	return original.NewMetricBaselineClient(subscriptionID)
+}
+func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
+	return original.NewMetricBaselineClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
+
+func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
+}
+func NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsCategoryClient {
+	return original.NewDiagnosticSettingsCategoryClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type TenantActivityLogsClient = original.TenantActivityLogsClient
@@ -510,9 +473,48 @@ func NewTenantActivityLogsClient(subscriptionID string) TenantActivityLogsClient
 func NewTenantActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) TenantActivityLogsClient {
 	return original.NewTenantActivityLogsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ActivityLogAlertsClient = original.ActivityLogAlertsClient
+
+func NewActivityLogAlertsClient(subscriptionID string) ActivityLogAlertsClient {
+	return original.NewActivityLogAlertsClient(subscriptionID)
+}
+func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogAlertsClient {
+	return original.NewActivityLogAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ActivityLogsClient = original.ActivityLogsClient
+
+func NewActivityLogsClient(subscriptionID string) ActivityLogsClient {
+	return original.NewActivityLogsClient(subscriptionID)
+}
+func NewActivityLogsClientWithBaseURI(baseURI string, subscriptionID string) ActivityLogsClient {
+	return original.NewActivityLogsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DiagnosticSettingsClient = original.DiagnosticSettingsClient
+
+func NewDiagnosticSettingsClient(subscriptionID string) DiagnosticSettingsClient {
+	return original.NewDiagnosticSettingsClient(subscriptionID)
+}
+func NewDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticSettingsClient {
+	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AutoscaleSettingsClient = original.AutoscaleSettingsClient
+
+func NewAutoscaleSettingsClient(subscriptionID string) AutoscaleSettingsClient {
+	return original.NewAutoscaleSettingsClient(subscriptionID)
+}
+func NewAutoscaleSettingsClientWithBaseURI(baseURI string, subscriptionID string) AutoscaleSettingsClient {
+	return original.NewAutoscaleSettingsClientWithBaseURI(baseURI, subscriptionID)
 }

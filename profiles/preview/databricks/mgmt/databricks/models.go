@@ -21,19 +21,6 @@ package databricks
 
 import original "github.com/Azure/azure-sdk-for-go/services/databricks/mgmt/2018-04-01/databricks"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -76,6 +63,19 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type WorkspacesClient = original.WorkspacesClient

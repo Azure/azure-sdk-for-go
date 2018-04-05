@@ -21,19 +21,6 @@ package recoveryservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AuthType = original.AuthType
 
 const (
@@ -145,13 +132,41 @@ type VaultListPage = original.VaultListPage
 type VaultProperties = original.VaultProperties
 type VaultUsage = original.VaultUsage
 type VaultUsageList = original.VaultUsageList
-type OperationsClient = original.OperationsClient
+type VaultCertificatesClient = original.VaultCertificatesClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewVaultCertificatesClient(subscriptionID string) VaultCertificatesClient {
+	return original.NewVaultCertificatesClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewVaultCertificatesClientWithBaseURI(baseURI string, subscriptionID string) VaultCertificatesClient {
+	return original.NewVaultCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type VaultsClient = original.VaultsClient
+
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return original.NewVaultsClient(subscriptionID)
+}
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type RegisteredIdentitiesClient = original.RegisteredIdentitiesClient
@@ -163,13 +178,13 @@ func NewRegisteredIdentitiesClientWithBaseURI(baseURI string, subscriptionID str
 	return original.NewRegisteredIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ReplicationUsagesClient = original.ReplicationUsagesClient
+type OperationsClient = original.OperationsClient
 
-func NewReplicationUsagesClient(subscriptionID string) ReplicationUsagesClient {
-	return original.NewReplicationUsagesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewReplicationUsagesClientWithBaseURI(baseURI string, subscriptionID string) ReplicationUsagesClient {
-	return original.NewReplicationUsagesClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type UsagesClient = original.UsagesClient
@@ -181,15 +196,6 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type VaultCertificatesClient = original.VaultCertificatesClient
-
-func NewVaultCertificatesClient(subscriptionID string) VaultCertificatesClient {
-	return original.NewVaultCertificatesClient(subscriptionID)
-}
-func NewVaultCertificatesClientWithBaseURI(baseURI string, subscriptionID string) VaultCertificatesClient {
-	return original.NewVaultCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type VaultExtendedInfoClient = original.VaultExtendedInfoClient
 
 func NewVaultExtendedInfoClient(subscriptionID string) VaultExtendedInfoClient {
@@ -199,17 +205,11 @@ func NewVaultExtendedInfoClientWithBaseURI(baseURI string, subscriptionID string
 	return original.NewVaultExtendedInfoClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type VaultsClient = original.VaultsClient
+type ReplicationUsagesClient = original.ReplicationUsagesClient
 
-func NewVaultsClient(subscriptionID string) VaultsClient {
-	return original.NewVaultsClient(subscriptionID)
+func NewReplicationUsagesClient(subscriptionID string) ReplicationUsagesClient {
+	return original.NewReplicationUsagesClient(subscriptionID)
 }
-func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
-	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewReplicationUsagesClientWithBaseURI(baseURI string, subscriptionID string) ReplicationUsagesClient {
+	return original.NewReplicationUsagesClientWithBaseURI(baseURI, subscriptionID)
 }

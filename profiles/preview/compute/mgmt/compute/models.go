@@ -21,62 +21,13 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-04-01/compute"
 
-type AvailabilitySetsClient = original.AvailabilitySetsClient
+type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
 
-func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClient(subscriptionID)
+func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
+	return original.NewVirtualMachineExtensionsClient(subscriptionID)
 }
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type ContainerServicesClient = original.ContainerServicesClient
-
-func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClient(subscriptionID)
-}
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DisksClient = original.DisksClient
-
-func NewDisksClient(subscriptionID string) DisksClient {
-	return original.NewDisksClient(subscriptionID)
-}
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
-	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ImagesClient = original.ImagesClient
-
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return original.NewImagesClient(subscriptionID)
-}
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LogAnalyticsClient = original.LogAnalyticsClient
-
-func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
-	return original.NewLogAnalyticsClient(subscriptionID)
-}
-func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
-	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
+	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccessLevel = original.AccessLevel
@@ -906,22 +857,28 @@ type VirtualMachineUpdate = original.VirtualMachineUpdate
 type WindowsConfiguration = original.WindowsConfiguration
 type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
-type OperationsClient = original.OperationsClient
+type VirtualMachineSizesClient = original.VirtualMachineSizesClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 
-type ResourceSkusClient = original.ResourceSkusClient
+type ContainerServicesClient = original.ContainerServicesClient
 
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
+func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClient(subscriptionID)
 }
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type SnapshotsClient = original.SnapshotsClient
@@ -933,57 +890,6 @@ func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) Snapsh
 	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type UsageClient = original.UsageClient
-
-func NewUsageClient(subscriptionID string) UsageClient {
-	return original.NewUsageClient(subscriptionID)
-}
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
-
-func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClient(subscriptionID)
-}
-func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
-
-func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
-	return original.NewVirtualMachineExtensionsClient(subscriptionID)
-}
-func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
-	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualMachineImagesClient = original.VirtualMachineImagesClient
-
-func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClient(subscriptionID)
-}
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
-
-func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClient(subscriptionID)
-}
-func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type VirtualMachinesClient = original.VirtualMachinesClient
 
 func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
@@ -993,22 +899,13 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExtensionsClient
+type AvailabilitySetsClient = original.AvailabilitySetsClient
 
-func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID)
+func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClient(subscriptionID)
 }
-func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualMachineScaleSetRollingUpgradesClient = original.VirtualMachineScaleSetRollingUpgradesClient
-
-func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID)
-}
-func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
@@ -1020,6 +917,55 @@ func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID 
 	return original.NewVirtualMachineScaleSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
+
+func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClient(subscriptionID)
+}
+func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualMachineScaleSetRollingUpgradesClient = original.VirtualMachineScaleSetRollingUpgradesClient
+
+func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ImagesClient = original.ImagesClient
+
+func NewImagesClient(subscriptionID string) ImagesClient {
+	return original.NewImagesClient(subscriptionID)
+}
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualMachineImagesClient = original.VirtualMachineImagesClient
+
+func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClient(subscriptionID)
+}
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
@@ -1029,11 +975,65 @@ func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionI
 	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type LogAnalyticsClient = original.LogAnalyticsClient
 
-func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClient(subscriptionID)
+func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
+	return original.NewLogAnalyticsClient(subscriptionID)
 }
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID)
+func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
+	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExtensionsClient
+
+func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ResourceSkusClient = original.ResourceSkusClient
+
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DisksClient = original.DisksClient
+
+func NewDisksClient(subscriptionID string) DisksClient {
+	return original.NewDisksClient(subscriptionID)
+}
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
+	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type UsageClient = original.UsageClient
+
+func NewUsageClient(subscriptionID string) UsageClient {
+	return original.NewUsageClient(subscriptionID)
+}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
+
+func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClient(subscriptionID)
+}
+func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID)
 }

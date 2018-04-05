@@ -21,19 +21,6 @@ package msi
 
 import original "github.com/Azure/azure-sdk-for-go/services/msi/mgmt/2015-08-31-preview/msi"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type UserAssignedIdentities = original.UserAssignedIdentities
 
 const (
@@ -56,13 +43,12 @@ type OperationListResultPage = original.OperationListResultPage
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
 type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListResultPage
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
@@ -73,9 +59,25 @@ func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentiti
 func NewUserAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -21,46 +21,6 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-type BitLockerKeysClient = original.BitLockerKeysClient
-
-func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
-}
-func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string, acceptLanguage string) BaseClient {
-	return original.New(subscriptionID, acceptLanguage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
-type JobsClient = original.JobsClient
-
-func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClient(subscriptionID, acceptLanguage)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
-type LocationsClient = original.LocationsClient
-
-func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID, acceptLanguage)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
 type DriveState = original.DriveState
 
 const (
@@ -103,6 +63,36 @@ type ReturnShipping = original.ReturnShipping
 type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+
+type BitLockerKeysClient = original.BitLockerKeysClient
+
+func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
+}
+func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
@@ -111,9 +101,21 @@ func NewOperationsClient(subscriptionID string, acceptLanguage string) Operation
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type JobsClient = original.JobsClient
+
+func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClient(subscriptionID, acceptLanguage)
 }
-func Version() string {
-	return original.Version()
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+
+type LocationsClient = original.LocationsClient
+
+func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID, acceptLanguage)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

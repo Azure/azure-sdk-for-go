@@ -19,10 +19,11 @@ package automation
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
-	"net/http"
 )
 
 // DscConfigurationClient is the automation Client
@@ -451,14 +452,14 @@ func (client DscConfigurationClient) ListByAutomationAccountComplete(ctx context
 //
 // automationAccountName is the automation account name. configurationName is the create or update parameters for
 // configuration. parameters is the create or update parameters for configuration.
-func (client DscConfigurationClient) Update(ctx context.Context, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (result DscConfiguration, err error) {
+func (client DscConfigurationClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (result DscConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automation.DscConfigurationClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, automationAccountName, configurationName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, automationAccountName, configurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscConfigurationClient", "Update", nil, "Failure preparing request")
 		return
@@ -480,11 +481,11 @@ func (client DscConfigurationClient) Update(ctx context.Context, automationAccou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DscConfigurationClient) UpdatePreparer(ctx context.Context, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (*http.Request, error) {
+func (client DscConfigurationClient) UpdatePreparer(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters *DscConfigurationUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
 		"configurationName":     autorest.Encode("path", configurationName),
-		"resourceGroupName":     autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 

@@ -40,6 +40,25 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	return []ApplicationType{Other, Web}
 }
 
+// CategoryType enumerates the values for category type.
+type CategoryType string
+
+const (
+	// CategoryTypePerformance ...
+	CategoryTypePerformance CategoryType = "performance"
+	// CategoryTypeRetention ...
+	CategoryTypeRetention CategoryType = "retention"
+	// CategoryTypeTSG ...
+	CategoryTypeTSG CategoryType = "TSG"
+	// CategoryTypeWorkbook ...
+	CategoryTypeWorkbook CategoryType = "workbook"
+)
+
+// PossibleCategoryTypeValues returns an array of possible values for the CategoryType const type.
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{CategoryTypePerformance, CategoryTypeRetention, CategoryTypeTSG, CategoryTypeWorkbook}
+}
+
 // FavoriteSourceType enumerates the values for favorite source type.
 type FavoriteSourceType string
 
@@ -121,6 +140,21 @@ const (
 // PossibleRequestSourceValues returns an array of possible values for the RequestSource const type.
 func PossibleRequestSourceValues() []RequestSource {
 	return []RequestSource{Rest}
+}
+
+// SharedTypeKind enumerates the values for shared type kind.
+type SharedTypeKind string
+
+const (
+	// SharedTypeKindShared ...
+	SharedTypeKindShared SharedTypeKind = "shared"
+	// SharedTypeKindUser ...
+	SharedTypeKindUser SharedTypeKind = "user"
+)
+
+// PossibleSharedTypeKindValues returns an array of possible values for the SharedTypeKind const type.
+func PossibleSharedTypeKindValues() []SharedTypeKind {
+	return []SharedTypeKind{SharedTypeKindShared, SharedTypeKindUser}
 }
 
 // WebTestKind enumerates the values for web test kind.
@@ -751,6 +785,16 @@ type ComponentPurgeStatusResponse struct {
 	Status PurgeState `json:"status,omitempty"`
 }
 
+// ErrorFieldContract error Field contract.
+type ErrorFieldContract struct {
+	// Code - Property level error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Human-readable representation of property-level error.
+	Message *string `json:"message,omitempty"`
+	// Target - Property name.
+	Target *string `json:"target,omitempty"`
+}
+
 // ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The reason
 // is provided in the error message.
 type ErrorResponse struct {
@@ -766,6 +810,16 @@ type InnerError struct {
 	Diagnosticcontext *string `json:"diagnosticcontext,omitempty"`
 	// Time - Request time
 	Time *date.Time `json:"time,omitempty"`
+}
+
+// LinkProperties contains a sourceId and workbook resource id to link two resources.
+type LinkProperties struct {
+	// SourceID - The source Azure resource id
+	SourceID *string `json:"sourceId,omitempty"`
+	// TargetID - The workbook Azure resource id
+	TargetID *string `json:"targetId,omitempty"`
+	// Category - The category of workbook
+	Category *string `json:"category,omitempty"`
 }
 
 // ListAnnotation ...
@@ -790,6 +844,12 @@ type ListApplicationInsightsComponentFavorite struct {
 type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
+}
+
+// ListWorkbook ...
+type ListWorkbook struct {
+	autorest.Response `json:"-"`
+	Value             *[]Workbook `json:"value,omitempty"`
 }
 
 // ListWorkItemConfiguration ...
@@ -1239,6 +1299,171 @@ type WebTestProperties struct {
 type WebTestPropertiesConfiguration struct {
 	// WebTest - The XML specification of a WebTest to run against an application.
 	WebTest *string `json:"WebTest,omitempty"`
+}
+
+// Workbook an Application Insights workbook definition.
+type Workbook struct {
+	autorest.Response `json:"-"`
+	// Kind - The kind of workbook. Choices are user and shared. Possible values include: 'SharedTypeKindUser', 'SharedTypeKindShared'
+	Kind SharedTypeKind `json:"kind,omitempty"`
+	// WorkbookProperties - Metadata describing a web test for an Azure resource.
+	*WorkbookProperties `json:"properties,omitempty"`
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Workbook.
+func (w Workbook) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if w.Kind != "" {
+		objectMap["kind"] = w.Kind
+	}
+	if w.WorkbookProperties != nil {
+		objectMap["properties"] = w.WorkbookProperties
+	}
+	if w.ID != nil {
+		objectMap["id"] = w.ID
+	}
+	if w.Name != nil {
+		objectMap["name"] = w.Name
+	}
+	if w.Type != nil {
+		objectMap["type"] = w.Type
+	}
+	if w.Location != nil {
+		objectMap["location"] = w.Location
+	}
+	if w.Tags != nil {
+		objectMap["tags"] = w.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Workbook struct.
+func (w *Workbook) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "kind":
+			if v != nil {
+				var kind SharedTypeKind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				w.Kind = kind
+			}
+		case "properties":
+			if v != nil {
+				var workbookProperties WorkbookProperties
+				err = json.Unmarshal(*v, &workbookProperties)
+				if err != nil {
+					return err
+				}
+				w.WorkbookProperties = &workbookProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				w.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				w.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				w.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				w.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				w.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// WorkbookError error message body that will indicate why the operation failed.
+type WorkbookError struct {
+	// Code - Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	Code *string `json:"code,omitempty"`
+	// Message - Human-readable representation of the error.
+	Message *string `json:"message,omitempty"`
+	// Details - The list of invalid fields send in request, in case of validation error.
+	Details *[]ErrorFieldContract `json:"details,omitempty"`
+}
+
+// WorkbookProperties properties that contain a workbook.
+type WorkbookProperties struct {
+	// Name - The user-defined name of the workbook.
+	Name *string `json:"name,omitempty"`
+	// SerializedData - Configuration of this particular workbook. Configuration data is a string containing valid JSON
+	SerializedData *string `json:"serializedData,omitempty"`
+	// Version - This instance's version of the data model. This can change as new features are added that can be marked workbook.
+	Version *string `json:"version,omitempty"`
+	// WorkbookID - Internally assigned unique id of the workbook definition.
+	WorkbookID *string `json:"workbookId,omitempty"`
+	// SharedTypeKind - Enum indicating if this workbook definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'SharedTypeKindUser', 'SharedTypeKindShared'
+	SharedTypeKind SharedTypeKind `json:"kind,omitempty"`
+	// TimeModified - Date and time in UTC of the last modification that was made to this workbook definition.
+	TimeModified *string `json:"timeModified,omitempty"`
+	// Category - Workbook category, as defined by the user at creation time.
+	Category *string `json:"category,omitempty"`
+	// Tags - A list of 0 or more tags that are associated with this workbook definition
+	Tags *[]string `json:"tags,omitempty"`
+	// UserID - Unique user id of the specific user that owns this workbook.
+	UserID *string `json:"userId,omitempty"`
+	// SourceResourceID - Optional resourceId for a source resource.
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// Workbooks workbook list result.
+type Workbooks struct {
+	autorest.Response `json:"-"`
+	// Value - An array of workbooks.
+	Value *[]Workbook `json:"value,omitempty"`
 }
 
 // WorkItemConfiguration work item configuration associated with an application insights resource.

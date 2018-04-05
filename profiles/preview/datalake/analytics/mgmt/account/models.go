@@ -30,55 +30,6 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type ComputePoliciesClient = original.ComputePoliciesClient
-
-func NewComputePoliciesClient(subscriptionID string) ComputePoliciesClient {
-	return original.NewComputePoliciesClient(subscriptionID)
-}
-func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) ComputePoliciesClient {
-	return original.NewComputePoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DataLakeStoreAccountsClient = original.DataLakeStoreAccountsClient
-
-func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClient(subscriptionID)
-}
-func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type FirewallRulesClient = original.FirewallRulesClient
-
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LocationsClient = original.LocationsClient
-
-func NewLocationsClient(subscriptionID string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AADObjectType = original.AADObjectType
 
 const (
@@ -262,6 +213,36 @@ type UpdateFirewallRuleWithAccountParameters = original.UpdateFirewallRuleWithAc
 type UpdateStorageAccountParameters = original.UpdateStorageAccountParameters
 type UpdateStorageAccountProperties = original.UpdateStorageAccountProperties
 type UpdateStorageAccountWithAccountParameters = original.UpdateStorageAccountWithAccountParameters
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type DataLakeStoreAccountsClient = original.DataLakeStoreAccountsClient
+
+func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClient(subscriptionID)
+}
+func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -269,6 +250,24 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ComputePoliciesClient = original.ComputePoliciesClient
+
+func NewComputePoliciesClient(subscriptionID string) ComputePoliciesClient {
+	return original.NewComputePoliciesClient(subscriptionID)
+}
+func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) ComputePoliciesClient {
+	return original.NewComputePoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type LocationsClient = original.LocationsClient
+
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type StorageAccountsClient = original.StorageAccountsClient
@@ -279,9 +278,12 @@ func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
 func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountsClient {
 	return original.NewStorageAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type FirewallRulesClient = original.FirewallRulesClient
+
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
 }

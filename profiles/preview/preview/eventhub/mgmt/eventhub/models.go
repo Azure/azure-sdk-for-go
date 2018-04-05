@@ -21,6 +21,39 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 
+type Cluster = original.Cluster
+type ClusterListResult = original.ClusterListResult
+type ClusterListResultIterator = original.ClusterListResultIterator
+type ClusterListResultPage = original.ClusterListResultPage
+type ClusterProperties = original.ClusterProperties
+type ClusterQuotaConfigurationProperties = original.ClusterQuotaConfigurationProperties
+type ClusterSku = original.ClusterSku
+type ClustersPatchFuture = original.ClustersPatchFuture
+type ErrorResponse = original.ErrorResponse
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
+type Resource = original.Resource
+type TrackedResource = original.TrackedResource
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type ConfigurationClient = original.ConfigurationClient
+
+func NewConfigurationClient(subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClient(subscriptionID)
+}
+func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -43,31 +76,6 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ConfigurationClient = original.ConfigurationClient
-
-func NewConfigurationClient(subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClient(subscriptionID)
-}
-func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type Cluster = original.Cluster
-type ClusterListResult = original.ClusterListResult
-type ClusterListResultIterator = original.ClusterListResultIterator
-type ClusterListResultPage = original.ClusterListResultPage
-type ClusterProperties = original.ClusterProperties
-type ClusterQuotaConfigurationProperties = original.ClusterQuotaConfigurationProperties
-type ClusterSku = original.ClusterSku
-type ClustersPatchFuture = original.ClustersPatchFuture
-type ErrorResponse = original.ErrorResponse
-type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
-type Resource = original.Resource
-type TrackedResource = original.TrackedResource
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -75,10 +83,4 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

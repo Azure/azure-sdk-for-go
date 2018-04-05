@@ -21,58 +21,10 @@ package apimanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
 
-type APIClient = original.APIClient
+type PropertyClient = original.PropertyClient
 
-func NewAPIClient() APIClient {
-	return original.NewAPIClient()
-}
-
-type APIExportClient = original.APIExportClient
-
-func NewAPIExportClient() APIExportClient {
-	return original.NewAPIExportClient()
-}
-
-type APIOperationClient = original.APIOperationClient
-
-func NewAPIOperationClient() APIOperationClient {
-	return original.NewAPIOperationClient()
-}
-
-type APIOperationPolicyClient = original.APIOperationPolicyClient
-
-func NewAPIOperationPolicyClient() APIOperationPolicyClient {
-	return original.NewAPIOperationPolicyClient()
-}
-
-type APIPolicyClient = original.APIPolicyClient
-
-func NewAPIPolicyClient() APIPolicyClient {
-	return original.NewAPIPolicyClient()
-}
-
-type APIProductClient = original.APIProductClient
-
-func NewAPIProductClient() APIProductClient {
-	return original.NewAPIProductClient()
-}
-
-type APISchemaClient = original.APISchemaClient
-
-func NewAPISchemaClient() APISchemaClient {
-	return original.NewAPISchemaClient()
-}
-
-type AuthorizationServerClient = original.AuthorizationServerClient
-
-func NewAuthorizationServerClient() AuthorizationServerClient {
-	return original.NewAuthorizationServerClient()
-}
-
-type BackendClient = original.BackendClient
-
-func NewBackendClient() BackendClient {
-	return original.NewBackendClient()
+func NewPropertyClient() PropertyClient {
+	return original.NewPropertyClient()
 }
 
 type CertificateClient = original.CertificateClient
@@ -81,49 +33,10 @@ func NewCertificateClient() CertificateClient {
 	return original.NewCertificateClient()
 }
 
-type BaseClient = original.BaseClient
+type SubscriptionClient = original.SubscriptionClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
-
-type DelegationSettingsClient = original.DelegationSettingsClient
-
-func NewDelegationSettingsClient() DelegationSettingsClient {
-	return original.NewDelegationSettingsClient()
-}
-
-type EmailTemplateClient = original.EmailTemplateClient
-
-func NewEmailTemplateClient() EmailTemplateClient {
-	return original.NewEmailTemplateClient()
-}
-
-type GroupClient = original.GroupClient
-
-func NewGroupClient() GroupClient {
-	return original.NewGroupClient()
-}
-
-type GroupUserClient = original.GroupUserClient
-
-func NewGroupUserClient() GroupUserClient {
-	return original.NewGroupUserClient()
-}
-
-type IdentityProviderClient = original.IdentityProviderClient
-
-func NewIdentityProviderClient() IdentityProviderClient {
-	return original.NewIdentityProviderClient()
-}
-
-type LoggerClient = original.LoggerClient
-
-func NewLoggerClient() LoggerClient {
-	return original.NewLoggerClient()
+func NewSubscriptionClient() SubscriptionClient {
+	return original.NewSubscriptionClient()
 }
 
 type APIType = original.APIType
@@ -518,58 +431,28 @@ type UserTokenParameters = original.UserTokenParameters
 type UserTokenResult = original.UserTokenResult
 type UserUpdateParameters = original.UserUpdateParameters
 type X509CertificateName = original.X509CertificateName
-type OpenIDConnectProviderClient = original.OpenIDConnectProviderClient
+type UserGroupClient = original.UserGroupClient
 
-func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
-	return original.NewOpenIDConnectProviderClient()
+func NewUserGroupClient() UserGroupClient {
+	return original.NewUserGroupClient()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 
-type PolicyClient = original.PolicyClient
+type EmailTemplateClient = original.EmailTemplateClient
 
-func NewPolicyClient() PolicyClient {
-	return original.NewPolicyClient()
+func NewEmailTemplateClient() EmailTemplateClient {
+	return original.NewEmailTemplateClient()
 }
 
-type PolicySnippetsClient = original.PolicySnippetsClient
+type BackendClient = original.BackendClient
 
-func NewPolicySnippetsClient() PolicySnippetsClient {
-	return original.NewPolicySnippetsClient()
-}
-
-type ProductClient = original.ProductClient
-
-func NewProductClient() ProductClient {
-	return original.NewProductClient()
-}
-
-type ProductAPIClient = original.ProductAPIClient
-
-func NewProductAPIClient() ProductAPIClient {
-	return original.NewProductAPIClient()
-}
-
-type ProductGroupClient = original.ProductGroupClient
-
-func NewProductGroupClient() ProductGroupClient {
-	return original.NewProductGroupClient()
-}
-
-type ProductPolicyClient = original.ProductPolicyClient
-
-func NewProductPolicyClient() ProductPolicyClient {
-	return original.NewProductPolicyClient()
-}
-
-type ProductSubscriptionsClient = original.ProductSubscriptionsClient
-
-func NewProductSubscriptionsClient() ProductSubscriptionsClient {
-	return original.NewProductSubscriptionsClient()
-}
-
-type PropertyClient = original.PropertyClient
-
-func NewPropertyClient() PropertyClient {
-	return original.NewPropertyClient()
+func NewBackendClient() BackendClient {
+	return original.NewBackendClient()
 }
 
 type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
@@ -578,70 +461,22 @@ func NewQuotaByCounterKeysClient() QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient()
 }
 
-type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
-
-func NewQuotaByPeriodKeysClient() QuotaByPeriodKeysClient {
-	return original.NewQuotaByPeriodKeysClient()
-}
-
-type RegionsClient = original.RegionsClient
-
-func NewRegionsClient() RegionsClient {
-	return original.NewRegionsClient()
-}
-
-type ReportsClient = original.ReportsClient
-
-func NewReportsClient() ReportsClient {
-	return original.NewReportsClient()
-}
-
-type SignInSettingsClient = original.SignInSettingsClient
-
-func NewSignInSettingsClient() SignInSettingsClient {
-	return original.NewSignInSettingsClient()
-}
-
-type SignUpSettingsClient = original.SignUpSettingsClient
-
-func NewSignUpSettingsClient() SignUpSettingsClient {
-	return original.NewSignUpSettingsClient()
-}
-
-type SubscriptionClient = original.SubscriptionClient
-
-func NewSubscriptionClient() SubscriptionClient {
-	return original.NewSubscriptionClient()
-}
-
-type TenantAccessClient = original.TenantAccessClient
-
-func NewTenantAccessClient() TenantAccessClient {
-	return original.NewTenantAccessClient()
-}
-
-type TenantAccessGitClient = original.TenantAccessGitClient
-
-func NewTenantAccessGitClient() TenantAccessGitClient {
-	return original.NewTenantAccessGitClient()
-}
-
-type TenantConfigurationClient = original.TenantConfigurationClient
-
-func NewTenantConfigurationClient() TenantConfigurationClient {
-	return original.NewTenantConfigurationClient()
-}
-
 type UserClient = original.UserClient
 
 func NewUserClient() UserClient {
 	return original.NewUserClient()
 }
 
-type UserGroupClient = original.UserGroupClient
+type PolicySnippetsClient = original.PolicySnippetsClient
 
-func NewUserGroupClient() UserGroupClient {
-	return original.NewUserGroupClient()
+func NewPolicySnippetsClient() PolicySnippetsClient {
+	return original.NewPolicySnippetsClient()
+}
+
+type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
+
+func NewQuotaByPeriodKeysClient() QuotaByPeriodKeysClient {
+	return original.NewQuotaByPeriodKeysClient()
 }
 
 type UserIdentitiesClient = original.UserIdentitiesClient
@@ -650,14 +485,179 @@ func NewUserIdentitiesClient() UserIdentitiesClient {
 	return original.NewUserIdentitiesClient()
 }
 
+type APIPolicyClient = original.APIPolicyClient
+
+func NewAPIPolicyClient() APIPolicyClient {
+	return original.NewAPIPolicyClient()
+}
+
+type LoggerClient = original.LoggerClient
+
+func NewLoggerClient() LoggerClient {
+	return original.NewLoggerClient()
+}
+
+type PolicyClient = original.PolicyClient
+
+func NewPolicyClient() PolicyClient {
+	return original.NewPolicyClient()
+}
+
+type APIExportClient = original.APIExportClient
+
+func NewAPIExportClient() APIExportClient {
+	return original.NewAPIExportClient()
+}
+
+type AuthorizationServerClient = original.AuthorizationServerClient
+
+func NewAuthorizationServerClient() AuthorizationServerClient {
+	return original.NewAuthorizationServerClient()
+}
+
+type ProductAPIClient = original.ProductAPIClient
+
+func NewProductAPIClient() ProductAPIClient {
+	return original.NewProductAPIClient()
+}
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
+}
+
 type UserSubscriptionClient = original.UserSubscriptionClient
 
 func NewUserSubscriptionClient() UserSubscriptionClient {
 	return original.NewUserSubscriptionClient()
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type RegionsClient = original.RegionsClient
+
+func NewRegionsClient() RegionsClient {
+	return original.NewRegionsClient()
 }
-func Version() string {
-	return original.Version()
+
+type TenantConfigurationClient = original.TenantConfigurationClient
+
+func NewTenantConfigurationClient() TenantConfigurationClient {
+	return original.NewTenantConfigurationClient()
+}
+
+type ProductClient = original.ProductClient
+
+func NewProductClient() ProductClient {
+	return original.NewProductClient()
+}
+
+type ReportsClient = original.ReportsClient
+
+func NewReportsClient() ReportsClient {
+	return original.NewReportsClient()
+}
+
+type IdentityProviderClient = original.IdentityProviderClient
+
+func NewIdentityProviderClient() IdentityProviderClient {
+	return original.NewIdentityProviderClient()
+}
+
+type GroupClient = original.GroupClient
+
+func NewGroupClient() GroupClient {
+	return original.NewGroupClient()
+}
+
+type APIOperationClient = original.APIOperationClient
+
+func NewAPIOperationClient() APIOperationClient {
+	return original.NewAPIOperationClient()
+}
+
+type DelegationSettingsClient = original.DelegationSettingsClient
+
+func NewDelegationSettingsClient() DelegationSettingsClient {
+	return original.NewDelegationSettingsClient()
+}
+
+type TenantAccessClient = original.TenantAccessClient
+
+func NewTenantAccessClient() TenantAccessClient {
+	return original.NewTenantAccessClient()
+}
+
+type SignUpSettingsClient = original.SignUpSettingsClient
+
+func NewSignUpSettingsClient() SignUpSettingsClient {
+	return original.NewSignUpSettingsClient()
+}
+
+type APIClient = original.APIClient
+
+func NewAPIClient() APIClient {
+	return original.NewAPIClient()
+}
+
+type APIOperationPolicyClient = original.APIOperationPolicyClient
+
+func NewAPIOperationPolicyClient() APIOperationPolicyClient {
+	return original.NewAPIOperationPolicyClient()
+}
+
+type TenantAccessGitClient = original.TenantAccessGitClient
+
+func NewTenantAccessGitClient() TenantAccessGitClient {
+	return original.NewTenantAccessGitClient()
+}
+
+type APISchemaClient = original.APISchemaClient
+
+func NewAPISchemaClient() APISchemaClient {
+	return original.NewAPISchemaClient()
+}
+
+type ProductGroupClient = original.ProductGroupClient
+
+func NewProductGroupClient() ProductGroupClient {
+	return original.NewProductGroupClient()
+}
+
+type SignInSettingsClient = original.SignInSettingsClient
+
+func NewSignInSettingsClient() SignInSettingsClient {
+	return original.NewSignInSettingsClient()
+}
+
+type ProductPolicyClient = original.ProductPolicyClient
+
+func NewProductPolicyClient() ProductPolicyClient {
+	return original.NewProductPolicyClient()
+}
+
+type GroupUserClient = original.GroupUserClient
+
+func NewGroupUserClient() GroupUserClient {
+	return original.NewGroupUserClient()
+}
+
+type ProductSubscriptionsClient = original.ProductSubscriptionsClient
+
+func NewProductSubscriptionsClient() ProductSubscriptionsClient {
+	return original.NewProductSubscriptionsClient()
+}
+
+type APIProductClient = original.APIProductClient
+
+func NewAPIProductClient() APIProductClient {
+	return original.NewAPIProductClient()
+}
+
+type OpenIDConnectProviderClient = original.OpenIDConnectProviderClient
+
+func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
+	return original.NewOpenIDConnectProviderClient()
 }

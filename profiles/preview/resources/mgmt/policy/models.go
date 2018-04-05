@@ -21,37 +21,6 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-06-01-preview/policy"
 
-type AssignmentsClient = original.AssignmentsClient
-
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DefinitionsClient = original.DefinitionsClient
-
-func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClient(subscriptionID)
-}
-func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type Mode = original.Mode
 
 const (
@@ -94,6 +63,21 @@ type SetDefinitionListResultIterator = original.SetDefinitionListResultIterator
 type SetDefinitionListResultPage = original.SetDefinitionListResultPage
 type SetDefinitionProperties = original.SetDefinitionProperties
 type Sku = original.Sku
+type DefinitionsClient = original.DefinitionsClient
+
+func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
+	return original.NewDefinitionsClient(subscriptionID)
+}
+func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
+	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
 type SetDefinitionsClient = original.SetDefinitionsClient
 
 func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
@@ -102,9 +86,25 @@ func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
 func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
 	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type AssignmentsClient = original.AssignmentsClient
+
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

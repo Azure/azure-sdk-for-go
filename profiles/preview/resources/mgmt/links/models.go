@@ -21,19 +21,6 @@ package links
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type Filter = original.Filter
 
 const (
@@ -50,6 +37,14 @@ type ResourceLinkProperties = original.ResourceLinkProperties
 type ResourceLinkResult = original.ResourceLinkResult
 type ResourceLinkResultIterator = original.ResourceLinkResultIterator
 type ResourceLinkResultPage = original.ResourceLinkResultPage
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
 type ResourceLinksClient = original.ResourceLinksClient
 
 func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
@@ -58,9 +53,16 @@ func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
 func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

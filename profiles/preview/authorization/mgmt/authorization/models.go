@@ -21,28 +21,6 @@ package authorization
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2018-01-01-preview/authorization"
 
-type ClassicAdministratorsClient = original.ClassicAdministratorsClient
-
-func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClient(subscriptionID)
-}
-func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
-	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ClassicAdministrator = original.ClassicAdministrator
 type ClassicAdministratorListResult = original.ClassicAdministratorListResult
 type ClassicAdministratorListResultIterator = original.ClassicAdministratorListResultIterator
@@ -72,6 +50,36 @@ type RoleDefinitionListResult = original.RoleDefinitionListResult
 type RoleDefinitionListResultIterator = original.RoleDefinitionListResultIterator
 type RoleDefinitionListResultPage = original.RoleDefinitionListResultPage
 type RoleDefinitionProperties = original.RoleDefinitionProperties
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type RoleDefinitionsClient = original.RoleDefinitionsClient
+
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
+}
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type PermissionsClient = original.PermissionsClient
 
 func NewPermissionsClient(subscriptionID string) PermissionsClient {
@@ -99,17 +107,11 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type RoleDefinitionsClient = original.RoleDefinitionsClient
+type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClient(subscriptionID)
+func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClient(subscriptionID)
 }
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewClassicAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ClassicAdministratorsClient {
+	return original.NewClassicAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }

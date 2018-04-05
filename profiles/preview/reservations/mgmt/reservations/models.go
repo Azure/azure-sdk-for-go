@@ -21,19 +21,6 @@ package reservations
 
 import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type AppliedScopeType = original.AppliedScopeType
 
 const (
@@ -274,6 +261,23 @@ type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type Client = original.Client
+
+func NewClient() Client {
+	return original.NewClient()
+}
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
+}
+
 type OperationClient = original.OperationClient
 
 func NewOperationClient() OperationClient {
@@ -292,17 +296,15 @@ func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 	return original.NewOrderClientWithBaseURI(baseURI)
 }
 
-type Client = original.Client
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewClient() Client {
-	return original.NewClient()
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
 }
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

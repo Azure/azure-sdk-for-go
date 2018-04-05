@@ -21,28 +21,6 @@ package infrastructureinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2016-05-01/infrastructureinsights"
 
-type AlertsClient = original.AlertsClient
-
-func NewAlertsClient(subscriptionID string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID)
-}
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type MetricsSourceType = original.MetricsSourceType
 
 const (
@@ -96,6 +74,45 @@ type ServiceHealthListIterator = original.ServiceHealthListIterator
 type ServiceHealthListPage = original.ServiceHealthListPage
 type ServiceHealthModel = original.ServiceHealthModel
 type UsageMetrics = original.UsageMetrics
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type ServiceHealthsClient = original.ServiceHealthsClient
+
+func NewServiceHealthsClient(subscriptionID string) ServiceHealthsClient {
+	return original.NewServiceHealthsClient(subscriptionID)
+}
+func NewServiceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ServiceHealthsClient {
+	return original.NewServiceHealthsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AlertsClient = original.AlertsClient
+
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type RegionHealthsClient = original.RegionHealthsClient
 
 func NewRegionHealthsClient(subscriptionID string) RegionHealthsClient {
@@ -112,19 +129,4 @@ func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
 }
 func NewResourceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthsClient {
 	return original.NewResourceHealthsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ServiceHealthsClient = original.ServiceHealthsClient
-
-func NewServiceHealthsClient(subscriptionID string) ServiceHealthsClient {
-	return original.NewServiceHealthsClient(subscriptionID)
-}
-func NewServiceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ServiceHealthsClient {
-	return original.NewServiceHealthsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

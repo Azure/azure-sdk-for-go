@@ -21,28 +21,6 @@ package customsearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
-type CustomInstanceClient = original.CustomInstanceClient
-
-func NewCustomInstanceClient() CustomInstanceClient {
-	return original.NewCustomInstanceClient()
-}
-func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
-	return original.NewCustomInstanceClientWithBaseURI(baseURI)
-}
-
 type ErrorCode = original.ErrorCode
 
 const (
@@ -149,4 +127,26 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+
+type CustomInstanceClient = original.CustomInstanceClient
+
+func NewCustomInstanceClient() CustomInstanceClient {
+	return original.NewCustomInstanceClient()
+}
+func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
+	return original.NewCustomInstanceClientWithBaseURI(baseURI)
 }

@@ -21,33 +21,6 @@ package batch
 
 import original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
 
-type AccountClient = original.AccountClient
-
-func NewAccountClient(subscriptionID string) AccountClient {
-	return original.NewAccountClient(subscriptionID)
-}
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ApplicationClient = original.ApplicationClient
-
-func NewApplicationClient(subscriptionID string) ApplicationClient {
-	return original.NewApplicationClient(subscriptionID)
-}
-func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
-	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ApplicationPackageClient = original.ApplicationPackageClient
-
-func NewApplicationPackageClient(subscriptionID string) ApplicationPackageClient {
-	return original.NewApplicationPackageClient(subscriptionID)
-}
-func NewApplicationPackageClientWithBaseURI(baseURI string, subscriptionID string) ApplicationPackageClient {
-	return original.NewApplicationPackageClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CertificateClient = original.CertificateClient
 
 func NewCertificateClient(subscriptionID string) CertificateClient {
@@ -55,28 +28,6 @@ func NewCertificateClient(subscriptionID string) CertificateClient {
 }
 func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
 	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type LocationClient = original.LocationClient
-
-func NewLocationClient(subscriptionID string) LocationClient {
-	return original.NewLocationClient(subscriptionID)
-}
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
-	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccountKeyType = original.AccountKeyType
@@ -393,6 +344,36 @@ type UserAccount = original.UserAccount
 type UserIdentity = original.UserIdentity
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ApplicationPackageClient = original.ApplicationPackageClient
+
+func NewApplicationPackageClient(subscriptionID string) ApplicationPackageClient {
+	return original.NewApplicationPackageClient(subscriptionID)
+}
+func NewApplicationPackageClientWithBaseURI(baseURI string, subscriptionID string) ApplicationPackageClient {
+	return original.NewApplicationPackageClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -402,6 +383,33 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type LocationClient = original.LocationClient
+
+func NewLocationClient(subscriptionID string) LocationClient {
+	return original.NewLocationClient(subscriptionID)
+}
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
+	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ApplicationClient = original.ApplicationClient
+
+func NewApplicationClient(subscriptionID string) ApplicationClient {
+	return original.NewApplicationClient(subscriptionID)
+}
+func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AccountClient = original.AccountClient
+
+func NewAccountClient(subscriptionID string) AccountClient {
+	return original.NewAccountClient(subscriptionID)
+}
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type PoolClient = original.PoolClient
 
 func NewPoolClient(subscriptionID string) PoolClient {
@@ -409,10 +417,4 @@ func NewPoolClient(subscriptionID string) PoolClient {
 }
 func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
 	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

@@ -21,19 +21,6 @@ package newssearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/newssearch"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type ErrorCode = original.ErrorCode
 
 const (
@@ -158,6 +145,27 @@ type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TrendingTopics = original.TrendingTopics
 type VideoObject = original.VideoObject
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+
 type NewsClient = original.NewsClient
 
 func NewNewsClient() NewsClient {
@@ -165,10 +173,4 @@ func NewNewsClient() NewsClient {
 }
 func NewNewsClientWithBaseURI(baseURI string) NewsClient {
 	return original.NewNewsClientWithBaseURI(baseURI)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

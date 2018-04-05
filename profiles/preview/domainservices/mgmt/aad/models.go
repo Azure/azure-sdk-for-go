@@ -21,37 +21,6 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-
-func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClient(subscriptionID)
-}
-func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DomainServicesClient = original.DomainServicesClient
-
-func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClient(subscriptionID)
-}
-func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -92,4 +61,35 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type DomainServiceOperationsClient = original.DomainServiceOperationsClient
+
+func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClient(subscriptionID)
+}
+func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type DomainServicesClient = original.DomainServicesClient
+
+func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClient(subscriptionID)
+}
+func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
 }

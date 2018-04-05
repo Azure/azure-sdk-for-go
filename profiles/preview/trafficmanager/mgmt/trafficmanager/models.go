@@ -21,46 +21,6 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type EndpointsClient = original.EndpointsClient
-
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
-}
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type GeographicHierarchiesClient = original.GeographicHierarchiesClient
-
-func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchiesClient {
-	return original.NewGeographicHierarchiesClient(subscriptionID)
-}
-func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
-	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type HeatMapClient = original.HeatMapClient
-
-func NewHeatMapClient(subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClient(subscriptionID)
-}
-func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
 const (
@@ -161,13 +121,34 @@ type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type TrafficFlow = original.TrafficFlow
 type UserMetricsKeyModel = original.UserMetricsKeyModel
-type ProfilesClient = original.ProfilesClient
 
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+
+type HeatMapClient = original.HeatMapClient
+
+func NewHeatMapClient(subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClient(subscriptionID)
+}
+func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type UserMetricsKeysClient = original.UserMetricsKeysClient
@@ -178,9 +159,30 @@ func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
 func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
 	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type GeographicHierarchiesClient = original.GeographicHierarchiesClient
+
+func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchiesClient {
+	return original.NewGeographicHierarchiesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
+	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ProfilesClient = original.ProfilesClient
+
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
+}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type EndpointsClient = original.EndpointsClient
+
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
+}
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }

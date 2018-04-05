@@ -21,25 +21,6 @@ package job
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2017-09-01-preview/job"
 
-const (
-	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaJobDNSSuffix)
-}
-
-type Client = original.Client
-
-func NewClient() Client {
-	return original.NewClient()
-}
-
 type CompileMode = original.CompileMode
 
 const (
@@ -194,10 +175,12 @@ type UpdateFuture = original.UpdateFuture
 type UpdateJobParameters = original.UpdateJobParameters
 type USQLJobProperties = original.USQLJobProperties
 type YieldFuture = original.YieldFuture
-type PipelineClient = original.PipelineClient
 
-func NewPipelineClient() PipelineClient {
-	return original.NewPipelineClient()
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 
 type RecurrenceClient = original.RecurrenceClient
@@ -205,9 +188,28 @@ type RecurrenceClient = original.RecurrenceClient
 func NewRecurrenceClient() RecurrenceClient {
 	return original.NewRecurrenceClient()
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
 }
-func Version() string {
-	return original.Version()
+func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaJobDNSSuffix)
+}
+
+type Client = original.Client
+
+func NewClient() Client {
+	return original.NewClient()
+}
+
+type PipelineClient = original.PipelineClient
+
+func NewPipelineClient() PipelineClient {
+	return original.NewPipelineClient()
 }

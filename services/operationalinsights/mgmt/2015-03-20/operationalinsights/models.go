@@ -696,8 +696,10 @@ type WorkspacePurgeBody struct {
 type WorkspacePurgeBodyFilters struct {
 	// Column - The column of the table over which the given query should run
 	Column *string `json:"column,omitempty"`
-	// Filter - A query to to run over the provided table and column to purge the corresponding data.
-	Filter *string `json:"filter,omitempty"`
+	// Operator - A query operator to evaluate over the provided column and value(s).
+	Operator *string `json:"operator,omitempty"`
+	// Value - the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values.
+	Value interface{} `json:"value,omitempty"`
 }
 
 // WorkspacePurgeResponse response containing operationId for a specific purge action.

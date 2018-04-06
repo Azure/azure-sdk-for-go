@@ -114,6 +114,76 @@ func PossibleFlowTypeValues() []FlowType {
 	return []FlowType{Bluefield}
 }
 
+// ItemScope enumerates the values for item scope.
+type ItemScope string
+
+const (
+	// ItemScopeShared ...
+	ItemScopeShared ItemScope = "shared"
+	// ItemScopeUser ...
+	ItemScopeUser ItemScope = "user"
+)
+
+// PossibleItemScopeValues returns an array of possible values for the ItemScope const type.
+func PossibleItemScopeValues() []ItemScope {
+	return []ItemScope{ItemScopeShared, ItemScopeUser}
+}
+
+// ItemScopePath enumerates the values for item scope path.
+type ItemScopePath string
+
+const (
+	// AnalyticsItems ...
+	AnalyticsItems ItemScopePath = "analyticsItems"
+	// MyanalyticsItems ...
+	MyanalyticsItems ItemScopePath = "myanalyticsItems"
+)
+
+// PossibleItemScopePathValues returns an array of possible values for the ItemScopePath const type.
+func PossibleItemScopePathValues() []ItemScopePath {
+	return []ItemScopePath{AnalyticsItems, MyanalyticsItems}
+}
+
+// ItemType enumerates the values for item type.
+type ItemType string
+
+const (
+	// Folder ...
+	Folder ItemType = "folder"
+	// Function ...
+	Function ItemType = "function"
+	// Query ...
+	Query ItemType = "query"
+	// Recent ...
+	Recent ItemType = "recent"
+)
+
+// PossibleItemTypeValues returns an array of possible values for the ItemType const type.
+func PossibleItemTypeValues() []ItemType {
+	return []ItemType{Folder, Function, Query, Recent}
+}
+
+// ItemTypeParameter enumerates the values for item type parameter.
+type ItemTypeParameter string
+
+const (
+	// ItemTypeParameterFolder ...
+	ItemTypeParameterFolder ItemTypeParameter = "folder"
+	// ItemTypeParameterFunction ...
+	ItemTypeParameterFunction ItemTypeParameter = "function"
+	// ItemTypeParameterNone ...
+	ItemTypeParameterNone ItemTypeParameter = "none"
+	// ItemTypeParameterQuery ...
+	ItemTypeParameterQuery ItemTypeParameter = "query"
+	// ItemTypeParameterRecent ...
+	ItemTypeParameterRecent ItemTypeParameter = "recent"
+)
+
+// PossibleItemTypeParameterValues returns an array of possible values for the ItemTypeParameter const type.
+func PossibleItemTypeParameterValues() []ItemTypeParameter {
+	return []ItemTypeParameter{ItemTypeParameterFolder, ItemTypeParameterFunction, ItemTypeParameterNone, ItemTypeParameterQuery, ItemTypeParameterRecent}
+}
+
 // PurgeState enumerates the values for purge state.
 type PurgeState string
 
@@ -329,6 +399,36 @@ func (aic *ApplicationInsightsComponent) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ApplicationInsightsComponentAnalyticsItem properties that define an Analytics item that is associated to an
+// Application Insights component.
+type ApplicationInsightsComponentAnalyticsItem struct {
+	autorest.Response `json:"-"`
+	// ID - Internally assigned unique id of the item definition.
+	ID *string `json:"Id,omitempty"`
+	// Name - The user-defined name of the item.
+	Name *string `json:"Name,omitempty"`
+	// Content - The content of this item
+	Content *string `json:"Content,omitempty"`
+	// Version - This instance's version of the data model. This can change as new features are added.
+	Version *string `json:"Version,omitempty"`
+	// Scope - Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'ItemScopeShared', 'ItemScopeUser'
+	Scope ItemScope `json:"Scope,omitempty"`
+	// Type - Enum indicating the type of the Analytics item. Possible values include: 'Query', 'Function', 'Folder', 'Recent'
+	Type ItemType `json:"Type,omitempty"`
+	// TimeCreated - Date and time in UTC when this item was created.
+	TimeCreated *string `json:"TimeCreated,omitempty"`
+	// TimeModified - Date and time in UTC of the last modification that was made to this item.
+	TimeModified *string                                              `json:"TimeModified,omitempty"`
+	Properties   *ApplicationInsightsComponentAnalyticsItemProperties `json:"Properties,omitempty"`
+}
+
+// ApplicationInsightsComponentAnalyticsItemProperties a set of properties that can be defined in the context of a
+// specific item type. Each type may have its own properties.
+type ApplicationInsightsComponentAnalyticsItemProperties struct {
+	// FunctionAlias - A function alias, used when the type of the item is Function
+	FunctionAlias *string `json:"functionAlias,omitempty"`
 }
 
 // ApplicationInsightsComponentAPIKey properties that define an API key of an Application Insights Component.
@@ -826,6 +926,12 @@ type LinkProperties struct {
 type ListAnnotation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Annotation `json:"value,omitempty"`
+}
+
+// ListApplicationInsightsComponentAnalyticsItem ...
+type ListApplicationInsightsComponentAnalyticsItem struct {
+	autorest.Response `json:"-"`
+	Value             *[]ApplicationInsightsComponentAnalyticsItem `json:"value,omitempty"`
 }
 
 // ListApplicationInsightsComponentExportConfiguration ...

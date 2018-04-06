@@ -7129,6 +7129,35 @@ type DataTableResponseObject struct {
 	Rows *[][]string `json:"rows,omitempty"`
 }
 
+// DefaultErrorResponse app Service error response.
+type DefaultErrorResponse struct {
+	// Error - Error model.
+	Error *DefaultErrorResponseError `json:"error,omitempty"`
+}
+
+// DefaultErrorResponseError error model.
+type DefaultErrorResponseError struct {
+	// Code - Standardized string to programmatically identify the error.
+	Code *string `json:"code,omitempty"`
+	// Message - Detailed error description and debugging information.
+	Message *string `json:"message,omitempty"`
+	// Target - Detailed error description and debugging information.
+	Target  *string                                 `json:"target,omitempty"`
+	Details *[]DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	// Innererror - More information to debug error.
+	Innererror *string `json:"innererror,omitempty"`
+}
+
+// DefaultErrorResponseErrorDetailsItem detailed errors.
+type DefaultErrorResponseErrorDetailsItem struct {
+	// Code - Standardized string to programmatically identify the error.
+	Code *string `json:"code,omitempty"`
+	// Message - Detailed error description and debugging information.
+	Message *string `json:"message,omitempty"`
+	// Target - Detailed error description and debugging information.
+	Target *string `json:"target,omitempty"`
+}
+
 // DeletedSite a deleted app.
 type DeletedSite struct {
 	// ID - Numeric id for the deleted site
@@ -9243,31 +9272,6 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-	// Error - Error model.
-	Error *ErrorResponseError `json:"error,omitempty"`
-}
-
-// ErrorResponseError error model.
-type ErrorResponseError struct {
-	// Code - Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty"`
-	// Message - Detailed error description and debugging information.
-	Message *string `json:"message,omitempty"`
-	// Target - Detailed error description and debugging information.
-	Target  *string                          `json:"target,omitempty"`
-	Details *[]ErrorResponseErrorDetailsItem `json:"details,omitempty"`
-	// Innererror - More information to debug error.
-	Innererror *string `json:"innererror,omitempty"`
-}
-
-// ErrorResponseErrorDetailsItem detailed errors.
-type ErrorResponseErrorDetailsItem struct {
-	// Code - Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty"`
-	// Message - Detailed error description and debugging information.
-	Message *string `json:"message,omitempty"`
-	// Target - Detailed error description and debugging information.
-	Target *string `json:"target,omitempty"`
 }
 
 // Experiments routing rules in production experiments.

@@ -11390,41 +11390,9 @@ func (amsls *AzureMySQLLinkedService) UnmarshalJSON(body []byte) error {
 // AzureMySQLLinkedServiceTypeProperties azure MySQL database linked service properties.
 type AzureMySQLLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for AzureMySQLLinkedServiceTypeProperties struct.
-func (amslstp *AzureMySQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				amslstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				amslstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // AzureMySQLSource a copy activity Azure MySQL source.
@@ -12627,41 +12595,9 @@ func (apsls *AzurePostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
 // AzurePostgreSQLLinkedServiceTypeProperties azure PostgreSQL linked service properties.
 type AzurePostgreSQLLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for AzurePostgreSQLLinkedServiceTypeProperties struct.
-func (apslstp *AzurePostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				apslstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				apslstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // AzurePostgreSQLSource a copy activity Azure PostgreSQL source.
@@ -14952,7 +14888,7 @@ func (asdls *AzureSQLDatabaseLinkedService) UnmarshalJSON(body []byte) error {
 // AzureSQLDatabaseLinkedServiceTypeProperties azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// ServicePrincipalID - The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with resultType string).
 	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
 	// ServicePrincipalKey - The key of the service principal used to authenticate against Azure SQL Database.
@@ -14974,7 +14910,8 @@ func (asdlstp *AzureSQLDatabaseLinkedServiceTypeProperties) UnmarshalJSON(body [
 		switch k {
 		case "connectionString":
 			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
+				var connectionString interface{}
+				err = json.Unmarshal(*v, &connectionString)
 				if err != nil {
 					return err
 				}
@@ -15511,7 +15448,7 @@ func (asdls *AzureSQLDWLinkedService) UnmarshalJSON(body []byte) error {
 // AzureSQLDWLinkedServiceTypeProperties azure SQL Data Warehouse linked service properties.
 type AzureSQLDWLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// ServicePrincipalID - The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
 	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
 	// ServicePrincipalKey - The key of the service principal used to authenticate against Azure SQL Data Warehouse.
@@ -15533,7 +15470,8 @@ func (asdlstp *AzureSQLDWLinkedServiceTypeProperties) UnmarshalJSON(body []byte)
 		switch k {
 		case "connectionString":
 			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
+				var connectionString interface{}
+				err = json.Unmarshal(*v, &connectionString)
 				if err != nil {
 					return err
 				}
@@ -16910,7 +16848,7 @@ func (asls *AzureStorageLinkedService) UnmarshalJSON(body []byte) error {
 // AzureStorageLinkedServiceTypeProperties azure Storage linked service properties.
 type AzureStorageLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string. It is mutually exclusive with sasUri property.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// SasURI - SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
 	SasURI BasicSecretBase `json:"sasUri,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
@@ -16928,7 +16866,8 @@ func (aslstp *AzureStorageLinkedServiceTypeProperties) UnmarshalJSON(body []byte
 		switch k {
 		case "connectionString":
 			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
+				var connectionString interface{}
+				err = json.Unmarshal(*v, &connectionString)
 				if err != nil {
 					return err
 				}
@@ -22888,41 +22827,9 @@ func (cdls *CosmosDbLinkedService) UnmarshalJSON(body []byte) error {
 // CosmosDbLinkedServiceTypeProperties cosmosDB linked service properties.
 type CosmosDbLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for CosmosDbLinkedServiceTypeProperties struct.
-func (cdlstp *CosmosDbLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				cdlstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				cdlstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // CouchbaseLinkedService couchbase server linked service.
@@ -23415,41 +23322,9 @@ func (cls *CouchbaseLinkedService) UnmarshalJSON(body []byte) error {
 // CouchbaseLinkedServiceTypeProperties couchbase server linked service properties.
 type CouchbaseLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for CouchbaseLinkedServiceTypeProperties struct.
-func (clstp *CouchbaseLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				clstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				clstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // CouchbaseSource a copy activity Couchbase server source.
@@ -28918,41 +28793,9 @@ func (dls *DrillLinkedService) UnmarshalJSON(body []byte) error {
 // DrillLinkedServiceTypeProperties drill server linked service properties.
 type DrillLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for DrillLinkedServiceTypeProperties struct.
-func (dlstp *DrillLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				dlstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				dlstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // DrillSource a copy activity Drill server source.
@@ -38051,41 +37894,9 @@ func (gls *GreenplumLinkedService) UnmarshalJSON(body []byte) error {
 // GreenplumLinkedServiceTypeProperties greenplum Database linked service properties.
 type GreenplumLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for GreenplumLinkedServiceTypeProperties struct.
-func (glstp *GreenplumLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				glstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				glstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // GreenplumSource a copy activity Greenplum Database source.
@@ -54862,41 +54673,9 @@ func (mdls *MariaDBLinkedService) UnmarshalJSON(body []byte) error {
 // MariaDBLinkedServiceTypeProperties mariaDB server linked service properties.
 type MariaDBLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for MariaDBLinkedServiceTypeProperties struct.
-func (mdlstp *MariaDBLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				mdlstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				mdlstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // MariaDBSource a copy activity MariaDB server source.
@@ -59204,41 +58983,9 @@ func (nls *NetezzaLinkedService) UnmarshalJSON(body []byte) error {
 // NetezzaLinkedServiceTypeProperties netezza linked service properties.
 type NetezzaLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for NetezzaLinkedServiceTypeProperties struct.
-func (nlstp *NetezzaLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				nlstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				nlstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // NetezzaSource a copy activity Netezza source.
@@ -61320,7 +61067,7 @@ func (ols *OdbcLinkedService) UnmarshalJSON(body []byte) error {
 // OdbcLinkedServiceTypeProperties ODBC linked service properties.
 type OdbcLinkedServiceTypeProperties struct {
 	// ConnectionString - The non-access credential portion of the connection string as well as an optional encrypted credential.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// AuthenticationType - Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
 	AuthenticationType interface{} `json:"authenticationType,omitempty"`
 	// Credential - The access credential portion of the connection string specified in driver-specific property-value format.
@@ -61344,7 +61091,8 @@ func (olstp *OdbcLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "connectionString":
 			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
+				var connectionString interface{}
+				err = json.Unmarshal(*v, &connectionString)
 				if err != nil {
 					return err
 				}
@@ -62161,41 +61909,9 @@ func (ols *OracleLinkedService) UnmarshalJSON(body []byte) error {
 // OracleLinkedServiceTypeProperties oracle database linked service properties.
 type OracleLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for OracleLinkedServiceTypeProperties struct.
-func (olstp *OracleLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				olstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				olstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // OracleSink a copy activity Oracle sink.
@@ -83394,7 +83110,7 @@ func (ssls *SQLServerLinkedService) UnmarshalJSON(body []byte) error {
 // SQLServerLinkedServiceTypeProperties SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// UserName - The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
 	UserName interface{} `json:"userName,omitempty"`
 	// Password - The on-premises Windows authentication password.
@@ -83414,7 +83130,8 @@ func (sslstp *SQLServerLinkedServiceTypeProperties) UnmarshalJSON(body []byte) e
 		switch k {
 		case "connectionString":
 			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
+				var connectionString interface{}
+				err = json.Unmarshal(*v, &connectionString)
 				if err != nil {
 					return err
 				}
@@ -88695,41 +88412,9 @@ func (vls *VerticaLinkedService) UnmarshalJSON(body []byte) error {
 // VerticaLinkedServiceTypeProperties vertica linked service properties.
 type VerticaLinkedServiceTypeProperties struct {
 	// ConnectionString - An ODBC connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for VerticaLinkedServiceTypeProperties struct.
-func (vlstp *VerticaLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				vlstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				vlstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // VerticaSource a copy activity Vertica source.

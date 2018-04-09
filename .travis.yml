@@ -11,6 +11,9 @@ matrix:
   allow_failures:
     - go: master
 
+env:
+  - IGNORE_BREAKING_CHANGES=true
+
 install:
   - go get -u github.com/golang/lint/golint
   - go get -u github.com/golang/dep/cmd/dep
@@ -23,3 +26,4 @@ script:
   - test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"
   - go vet $(go list ./... | grep -v vendor)
   - go test $(sh ./findTestedPackages.sh)
+  - go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES

@@ -244,7 +244,7 @@ func (client AnalyticsItemClient) ListPreparer(ctx context.Context, resourceGrou
 	if len(string(typeParameter)) > 0 {
 		queryParameters["type"] = autorest.Encode("query", typeParameter)
 	} else {
-		queryParameters["type"] = autorest.Encode("query", "None")
+		queryParameters["type"] = autorest.Encode("query", "none")
 	}
 	if includeContent != nil {
 		queryParameters["includeContent"] = autorest.Encode("query", *includeContent)

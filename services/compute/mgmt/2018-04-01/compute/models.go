@@ -576,6 +576,21 @@ func PossibleUpgradeStateValues() []UpgradeState {
 	return []UpgradeState{UpgradeStateCancelled, UpgradeStateCompleted, UpgradeStateFaulted, UpgradeStateRollingForward}
 }
 
+// VirtualMachineEvictionPolicyTypes enumerates the values for virtual machine eviction policy types.
+type VirtualMachineEvictionPolicyTypes string
+
+const (
+	// Deallocate ...
+	Deallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
+	// Delete ...
+	Delete VirtualMachineEvictionPolicyTypes = "Delete"
+)
+
+// PossibleVirtualMachineEvictionPolicyTypesValues returns an array of possible values for the VirtualMachineEvictionPolicyTypes const type.
+func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
+	return []VirtualMachineEvictionPolicyTypes{Deallocate, Delete}
+}
+
 // VirtualMachinePriorityTypes enumerates the values for virtual machine priority types.
 type VirtualMachinePriorityTypes string
 
@@ -3492,13 +3507,13 @@ type Plan struct {
 
 // PlatformImageReference a reference that identifies a CRP-PIR image or a UserVMImage.
 type PlatformImageReference struct {
-	// Publisher - Publisher
+	// Publisher - Image publisher
 	Publisher *string `json:"publisher,omitempty"`
-	// Offer - Offer
+	// Offer - Offer type
 	Offer *string `json:"offer,omitempty"`
-	// Sku - Sku
+	// Sku - Sku type
 	Sku *string `json:"sku,omitempty"`
-	// Version - Version
+	// Version - Version of the image
 	Version *string `json:"version,omitempty"`
 	// URI - Specifies the virtual hard disk's uri.
 	URI *string `json:"uri,omitempty"`
@@ -8731,6 +8746,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for virtual machines in the low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.

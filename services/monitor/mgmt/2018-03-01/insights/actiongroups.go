@@ -185,6 +185,7 @@ func (client ActionGroupsClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // EnableReceiver enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled.
+// This operation is only supported for Email or SMS receivers.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 // enableRequest is the receiver to re-enable.

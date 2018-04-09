@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## `v15.1.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|datamigration | 2018-03-31-preview |
+|devices | 2018-01-22 |
+|network | 2018-02-01 |
+|cognitiveservices | customvision |
+
+## Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|compute | 2015-06-15<br/>2016-03-30<br/>2016-04-30-preview<br/>2017-03-30<br/>2018-04-01 |
+|datafactory | 2017-09-01-preview |
+|insights | 2018-03-01 |
+|mysql | 2017-12-01 |
+|postgresql | 2017-12-01 |
+|web | 2016-09-01 |
+
 ## `v15.0.1`
 
 Fixing some build issues, and temporarily reverting CI.

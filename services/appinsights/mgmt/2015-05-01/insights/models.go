@@ -20,6 +20,7 @@ package insights
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -733,22 +734,70 @@ type ComponentPurgeBody struct {
 type ComponentPurgeBodyFilters struct {
 	// Column - The column of the table over which the given query should run
 	Column *string `json:"column,omitempty"`
-	// Filter - A query to to run over the provided table and column to purge the corresponding data.
-	Filter *string `json:"filter,omitempty"`
+	// Operator - A query operator to evaluate over the provided column and value(s).
+	Operator *string `json:"operator,omitempty"`
+	// Value - the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or array of values.
+	Value interface{} `json:"value,omitempty"`
 }
 
 // ComponentPurgeResponse response containing operationId for a specific purge action.
 type ComponentPurgeResponse struct {
-	autorest.Response `json:"-"`
 	// OperationID - Id to use when querying for status for a particular purge operation.
 	OperationID *string `json:"operationId,omitempty"`
 }
 
 // ComponentPurgeStatusResponse response containing status for a specific purge operation.
 type ComponentPurgeStatusResponse struct {
-	autorest.Response `json:"-"`
 	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
 	Status PurgeState `json:"status,omitempty"`
+}
+
+// ComponentsPurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ComponentsPurgeFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ComponentsPurgeFuture) Result(client ComponentsClient) (so SetObject, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return so, azure.NewAsyncOpIncompleteError("insights.ComponentsPurgeFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		so, err = client.PurgeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	so, err = client.PurgeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // ErrorResponse error reponse indicates Insights service is not able to process the incoming request. The reason

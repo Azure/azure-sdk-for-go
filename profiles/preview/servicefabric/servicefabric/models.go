@@ -21,6 +21,19 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.1/servicefabric"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+
 type ApplicationDefinitionKind = original.ApplicationDefinitionKind
 
 const (
@@ -1769,17 +1782,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

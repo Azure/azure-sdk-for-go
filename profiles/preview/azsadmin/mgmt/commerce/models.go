@@ -21,27 +21,6 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2015-06-01-preview/commerce"
 
-type Resource = original.Resource
-type UsageAggregate = original.UsageAggregate
-type UsageAggregateModel = original.UsageAggregateModel
-type UsageAggregatePage = original.UsageAggregatePage
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-type SubscriberUsageAggregatesClient = original.SubscriberUsageAggregatesClient
-
-func NewSubscriberUsageAggregatesClient(subscriptionID string) SubscriberUsageAggregatesClient {
-	return original.NewSubscriberUsageAggregatesClient(subscriptionID)
-}
-func NewSubscriberUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) SubscriberUsageAggregatesClient {
-	return original.NewSubscriberUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -53,4 +32,23 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type Resource = original.Resource
+type UsageAggregate = original.UsageAggregate
+type UsageAggregateModel = original.UsageAggregateModel
+type UsageAggregatePage = original.UsageAggregatePage
+type SubscriberUsageAggregatesClient = original.SubscriberUsageAggregatesClient
+
+func NewSubscriberUsageAggregatesClient(subscriptionID string) SubscriberUsageAggregatesClient {
+	return original.NewSubscriberUsageAggregatesClient(subscriptionID)
+}
+func NewSubscriberUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) SubscriberUsageAggregatesClient {
+	return original.NewSubscriberUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

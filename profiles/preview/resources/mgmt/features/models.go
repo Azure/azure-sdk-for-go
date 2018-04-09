@@ -21,28 +21,6 @@ package features
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features"
 
-type OperationsListResult = original.OperationsListResult
-type OperationsListResultIterator = original.OperationsListResultIterator
-type OperationsListResultPage = original.OperationsListResultPage
-type Properties = original.Properties
-type Result = original.Result
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-type Client = original.Client
-
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -54,4 +32,26 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type Client = original.Client
+
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsListResult = original.OperationsListResult
+type OperationsListResultIterator = original.OperationsListResultIterator
+type OperationsListResultPage = original.OperationsListResultPage
+type Properties = original.Properties
+type Result = original.Result
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

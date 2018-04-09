@@ -5483,6 +5483,132 @@ func (future VirtualMachineExtensionsDeleteFuture) Result(client VirtualMachineE
 	return
 }
 
+// VirtualMachineExtensionsListResult the List Extension operation response
+type VirtualMachineExtensionsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of extensions
+	Value *[]VirtualMachineExtension `json:"value,omitempty"`
+}
+
+// VirtualMachineExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachineExtensionsUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualMachineExtensionsUpdateFuture) Result(client VirtualMachineExtensionsClient) (vme VirtualMachineExtension, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return vme, azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		vme, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	vme, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineExtensionsUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// VirtualMachineExtensionUpdate describes a Virtual Machine Extension.
+type VirtualMachineExtensionUpdate struct {
+	*VirtualMachineExtensionUpdateProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineExtensionUpdate.
+func (vmeu VirtualMachineExtensionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmeu.VirtualMachineExtensionUpdateProperties != nil {
+		objectMap["properties"] = vmeu.VirtualMachineExtensionUpdateProperties
+	}
+	if vmeu.Tags != nil {
+		objectMap["tags"] = vmeu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineExtensionUpdate struct.
+func (vmeu *VirtualMachineExtensionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var virtualMachineExtensionUpdateProperties VirtualMachineExtensionUpdateProperties
+				err = json.Unmarshal(*v, &virtualMachineExtensionUpdateProperties)
+				if err != nil {
+					return err
+				}
+				vmeu.VirtualMachineExtensionUpdateProperties = &virtualMachineExtensionUpdateProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vmeu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// VirtualMachineExtensionUpdateProperties describes the properties of a Virtual Machine Extension.
+type VirtualMachineExtensionUpdateProperties struct {
+	// ForceUpdateTag - How the extension handler should be forced to update even if the extension configuration has not changed.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	// Publisher - The name of the extension handler publisher.
+	Publisher *string `json:"publisher,omitempty"`
+	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
+	Type *string `json:"type,omitempty"`
+	// TypeHandlerVersion - Specifies the version of the script handler.
+	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	// AutoUpgradeMinorVersion - Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
+	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	// Settings - Json formatted public settings for the extension.
+	Settings interface{} `json:"settings,omitempty"`
+	// ProtectedSettings - The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+}
+
 // VirtualMachineHealthStatus the health status of the VM.
 type VirtualMachineHealthStatus struct {
 	// Status - The health status information for the VM.

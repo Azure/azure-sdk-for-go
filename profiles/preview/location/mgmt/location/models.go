@@ -30,6 +30,19 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type KeyType = original.KeyType
 
 const (
@@ -61,17 +74,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

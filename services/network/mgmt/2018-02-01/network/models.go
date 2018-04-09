@@ -678,30 +678,38 @@ const (
 	DES IkeEncryption = "DES"
 	// DES3 ...
 	DES3 IkeEncryption = "DES3"
+	// GCMAES128 ...
+	GCMAES128 IkeEncryption = "GCMAES128"
+	// GCMAES256 ...
+	GCMAES256 IkeEncryption = "GCMAES256"
 )
 
 // PossibleIkeEncryptionValues returns an array of possible values for the IkeEncryption const type.
 func PossibleIkeEncryptionValues() []IkeEncryption {
-	return []IkeEncryption{AES128, AES192, AES256, DES, DES3}
+	return []IkeEncryption{AES128, AES192, AES256, DES, DES3, GCMAES128, GCMAES256}
 }
 
 // IkeIntegrity enumerates the values for ike integrity.
 type IkeIntegrity string
 
 const (
-	// MD5 ...
-	MD5 IkeIntegrity = "MD5"
-	// SHA1 ...
-	SHA1 IkeIntegrity = "SHA1"
-	// SHA256 ...
-	SHA256 IkeIntegrity = "SHA256"
-	// SHA384 ...
-	SHA384 IkeIntegrity = "SHA384"
+	// IkeIntegrityGCMAES128 ...
+	IkeIntegrityGCMAES128 IkeIntegrity = "GCMAES128"
+	// IkeIntegrityGCMAES256 ...
+	IkeIntegrityGCMAES256 IkeIntegrity = "GCMAES256"
+	// IkeIntegrityMD5 ...
+	IkeIntegrityMD5 IkeIntegrity = "MD5"
+	// IkeIntegritySHA1 ...
+	IkeIntegritySHA1 IkeIntegrity = "SHA1"
+	// IkeIntegritySHA256 ...
+	IkeIntegritySHA256 IkeIntegrity = "SHA256"
+	// IkeIntegritySHA384 ...
+	IkeIntegritySHA384 IkeIntegrity = "SHA384"
 )
 
 // PossibleIkeIntegrityValues returns an array of possible values for the IkeIntegrity const type.
 func PossibleIkeIntegrityValues() []IkeIntegrity {
-	return []IkeIntegrity{MD5, SHA1, SHA256, SHA384}
+	return []IkeIntegrity{IkeIntegrityGCMAES128, IkeIntegrityGCMAES256, IkeIntegrityMD5, IkeIntegritySHA1, IkeIntegritySHA256, IkeIntegritySHA384}
 }
 
 // IPAllocationMethod enumerates the values for ip allocation method.
@@ -990,17 +998,21 @@ const (
 	PfsGroupNone PfsGroup = "None"
 	// PfsGroupPFS1 ...
 	PfsGroupPFS1 PfsGroup = "PFS1"
+	// PfsGroupPFS14 ...
+	PfsGroupPFS14 PfsGroup = "PFS14"
 	// PfsGroupPFS2 ...
 	PfsGroupPFS2 PfsGroup = "PFS2"
 	// PfsGroupPFS2048 ...
 	PfsGroupPFS2048 PfsGroup = "PFS2048"
 	// PfsGroupPFS24 ...
 	PfsGroupPFS24 PfsGroup = "PFS24"
+	// PfsGroupPFSMM ...
+	PfsGroupPFSMM PfsGroup = "PFSMM"
 )
 
 // PossiblePfsGroupValues returns an array of possible values for the PfsGroup const type.
 func PossiblePfsGroupValues() []PfsGroup {
-	return []PfsGroup{PfsGroupECP256, PfsGroupECP384, PfsGroupNone, PfsGroupPFS1, PfsGroupPFS2, PfsGroupPFS2048, PfsGroupPFS24}
+	return []PfsGroup{PfsGroupECP256, PfsGroupECP384, PfsGroupNone, PfsGroupPFS1, PfsGroupPFS14, PfsGroupPFS2, PfsGroupPFS2048, PfsGroupPFS24, PfsGroupPFSMM}
 }
 
 // ProbeProtocol enumerates the values for probe protocol.
@@ -10041,13 +10053,13 @@ type IpsecPolicy struct {
 	IpsecEncryption IpsecEncryption `json:"ipsecEncryption,omitempty"`
 	// IpsecIntegrity - The IPSec integrity algorithm (IKE phase 1). Possible values include: 'IpsecIntegrityMD5', 'IpsecIntegritySHA1', 'IpsecIntegritySHA256', 'IpsecIntegrityGCMAES128', 'IpsecIntegrityGCMAES192', 'IpsecIntegrityGCMAES256'
 	IpsecIntegrity IpsecIntegrity `json:"ipsecIntegrity,omitempty"`
-	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256'
+	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'
 	IkeEncryption IkeEncryption `json:"ikeEncryption,omitempty"`
-	// IkeIntegrity - The IKE integrity algorithm (IKE phase 2). Possible values include: 'MD5', 'SHA1', 'SHA256', 'SHA384'
+	// IkeIntegrity - The IKE integrity algorithm (IKE phase 2). Possible values include: 'IkeIntegrityMD5', 'IkeIntegritySHA1', 'IkeIntegritySHA256', 'IkeIntegritySHA384', 'IkeIntegrityGCMAES256', 'IkeIntegrityGCMAES128'
 	IkeIntegrity IkeIntegrity `json:"ikeIntegrity,omitempty"`
 	// DhGroup - The DH Groups used in IKE Phase 1 for initial SA. Possible values include: 'None', 'DHGroup1', 'DHGroup2', 'DHGroup14', 'DHGroup2048', 'ECP256', 'ECP384', 'DHGroup24'
 	DhGroup DhGroup `json:"dhGroup,omitempty"`
-	// PfsGroup - The DH Groups used in IKE Phase 2 for new child SA. Possible values include: 'PfsGroupNone', 'PfsGroupPFS1', 'PfsGroupPFS2', 'PfsGroupPFS2048', 'PfsGroupECP256', 'PfsGroupECP384', 'PfsGroupPFS24'
+	// PfsGroup - The Pfs Groups used in IKE Phase 2 for new child SA. Possible values include: 'PfsGroupNone', 'PfsGroupPFS1', 'PfsGroupPFS2', 'PfsGroupPFS2048', 'PfsGroupECP256', 'PfsGroupECP384', 'PfsGroupPFS24', 'PfsGroupPFS14', 'PfsGroupPFSMM'
 	PfsGroup PfsGroup `json:"pfsGroup,omitempty"`
 }
 
@@ -17419,6 +17431,55 @@ func (future VirtualNetworkGatewaysGetLearnedRoutesFuture) Result(client Virtual
 	return
 }
 
+// VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return vcipp, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		vcipp, err = client.GetVpnclientIpsecParametersResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	vcipp, err = client.GetVpnclientIpsecParametersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // VirtualNetworkGatewaysGetVpnProfilePackageURLFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture struct {
@@ -17523,6 +17584,55 @@ func (future VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGate
 	vng, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return vcipp, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		vcipp, err = client.SetVpnclientIpsecParametersResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	vcipp, err = client.SetVpnclientIpsecParametersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -18284,10 +18394,33 @@ type VpnClientConfiguration struct {
 	VpnClientRevokedCertificates *[]VpnClientRevokedCertificate `json:"vpnClientRevokedCertificates,omitempty"`
 	// VpnClientProtocols - VpnClientProtocols for Virtual network gateway.
 	VpnClientProtocols *[]VpnClientProtocol `json:"vpnClientProtocols,omitempty"`
+	// VpnClientIpsecPolicies - VpnClientIpsecPolicies for virtual network gateway P2S client.
+	VpnClientIpsecPolicies *[]IpsecPolicy `json:"vpnClientIpsecPolicies,omitempty"`
 	// RadiusServerAddress - The radius server address property of the VirtualNetworkGateway resource for vpn client connection.
 	RadiusServerAddress *string `json:"radiusServerAddress,omitempty"`
 	// RadiusServerSecret - The radius secret property of the VirtualNetworkGateway resource for vpn client connection.
 	RadiusServerSecret *string `json:"radiusServerSecret,omitempty"`
+}
+
+// VpnClientIPsecParameters an IPSec parameters for a virtual network gateway P2S connection.
+type VpnClientIPsecParameters struct {
+	autorest.Response `json:"-"`
+	// SaLifeTimeSeconds - The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
+	SaLifeTimeSeconds *int32 `json:"saLifeTimeSeconds,omitempty"`
+	// SaDataSizeKilobytes - The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for P2S client..
+	SaDataSizeKilobytes *int32 `json:"saDataSizeKilobytes,omitempty"`
+	// IpsecEncryption - The IPSec encryption algorithm (IKE phase 1). Possible values include: 'IpsecEncryptionNone', 'IpsecEncryptionDES', 'IpsecEncryptionDES3', 'IpsecEncryptionAES128', 'IpsecEncryptionAES192', 'IpsecEncryptionAES256', 'IpsecEncryptionGCMAES128', 'IpsecEncryptionGCMAES192', 'IpsecEncryptionGCMAES256'
+	IpsecEncryption IpsecEncryption `json:"ipsecEncryption,omitempty"`
+	// IpsecIntegrity - The IPSec integrity algorithm (IKE phase 1). Possible values include: 'IpsecIntegrityMD5', 'IpsecIntegritySHA1', 'IpsecIntegritySHA256', 'IpsecIntegrityGCMAES128', 'IpsecIntegrityGCMAES192', 'IpsecIntegrityGCMAES256'
+	IpsecIntegrity IpsecIntegrity `json:"ipsecIntegrity,omitempty"`
+	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'
+	IkeEncryption IkeEncryption `json:"ikeEncryption,omitempty"`
+	// IkeIntegrity - The IKE integrity algorithm (IKE phase 2). Possible values include: 'IkeIntegrityMD5', 'IkeIntegritySHA1', 'IkeIntegritySHA256', 'IkeIntegritySHA384', 'IkeIntegrityGCMAES256', 'IkeIntegrityGCMAES128'
+	IkeIntegrity IkeIntegrity `json:"ikeIntegrity,omitempty"`
+	// DhGroup - The DH Groups used in IKE Phase 1 for initial SA. Possible values include: 'None', 'DHGroup1', 'DHGroup2', 'DHGroup14', 'DHGroup2048', 'ECP256', 'ECP384', 'DHGroup24'
+	DhGroup DhGroup `json:"dhGroup,omitempty"`
+	// PfsGroup - The Pfs Groups used in IKE Phase 2 for new child SA. Possible values include: 'PfsGroupNone', 'PfsGroupPFS1', 'PfsGroupPFS2', 'PfsGroupPFS2048', 'PfsGroupECP256', 'PfsGroupECP384', 'PfsGroupPFS24', 'PfsGroupPFS14', 'PfsGroupPFSMM'
+	PfsGroup PfsGroup `json:"pfsGroup,omitempty"`
 }
 
 // VpnClientParameters vpn Client Parameters for package generation

@@ -21,6 +21,37 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type CommitmentAssociationsClient = original.CommitmentAssociationsClient
+
+func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClient(subscriptionID)
+}
+func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type Client = original.Client
+
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
@@ -80,14 +111,6 @@ type SkuCapacity = original.SkuCapacity
 type SkuCost = original.SkuCost
 type SkuListResult = original.SkuListResult
 type SkuRestrictions = original.SkuRestrictions
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
 type SkusClient = original.SkusClient
 
 func NewSkusClient(subscriptionID string) SkusClient {
@@ -97,37 +120,6 @@ func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient 
 	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type CommitmentAssociationsClient = original.CommitmentAssociationsClient
-
-func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClient(subscriptionID)
-}
-func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type Client = original.Client
-
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type UsageHistoryClient = original.UsageHistoryClient
 
 func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
@@ -135,4 +127,10 @@ func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
 }
 func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) UsageHistoryClient {
 	return original.NewUsageHistoryClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

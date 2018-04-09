@@ -21,13 +21,26 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-01-01/eventgrid"
 
-type TopicTypesClient = original.TopicTypesClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
-	return original.NewTopicTypesClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) TopicTypesClient {
-	return original.NewTopicTypesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type EventSubscriptionsClient = original.EventSubscriptionsClient
+
+func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
+	return original.NewEventSubscriptionsClient(subscriptionID)
+}
+func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
+	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type EndpointType = original.EndpointType
@@ -133,34 +146,13 @@ type TopicUpdateParameters = original.TopicUpdateParameters
 type TrackedResource = original.TrackedResource
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
+type OperationsClient = original.OperationsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type EventSubscriptionsClient = original.EventSubscriptionsClient
-
-func NewEventSubscriptionsClient(subscriptionID string) EventSubscriptionsClient {
-	return original.NewEventSubscriptionsClient(subscriptionID)
-}
-func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) EventSubscriptionsClient {
-	return original.NewEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type TopicsClient = original.TopicsClient
@@ -172,11 +164,17 @@ func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsCli
 	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type OperationsClient = original.OperationsClient
+type TopicTypesClient = original.TopicTypesClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
+	return original.NewTopicTypesClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewTopicTypesClientWithBaseURI(baseURI string, subscriptionID string) TopicTypesClient {
+	return original.NewTopicTypesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

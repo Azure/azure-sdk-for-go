@@ -21,6 +21,45 @@ package contentmoderator
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator"
 
+type BaseClient = original.BaseClient
+
+func New(baseURL AzureRegionBaseURL) BaseClient {
+	return original.New(baseURL)
+}
+func NewWithoutDefaults(baseURL AzureRegionBaseURL) BaseClient {
+	return original.NewWithoutDefaults(baseURL)
+}
+
+type ImageModerationClient = original.ImageModerationClient
+
+func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient {
+	return original.NewImageModerationClient(baseURL)
+}
+
+type ListManagementImageClient = original.ListManagementImageClient
+
+func NewListManagementImageClient(baseURL AzureRegionBaseURL) ListManagementImageClient {
+	return original.NewListManagementImageClient(baseURL)
+}
+
+type ListManagementImageListsClient = original.ListManagementImageListsClient
+
+func NewListManagementImageListsClient(baseURL AzureRegionBaseURL) ListManagementImageListsClient {
+	return original.NewListManagementImageListsClient(baseURL)
+}
+
+type ListManagementTermClient = original.ListManagementTermClient
+
+func NewListManagementTermClient(baseURL AzureRegionBaseURL) ListManagementTermClient {
+	return original.NewListManagementTermClient(baseURL)
+}
+
+type ListManagementTermListsClient = original.ListManagementTermListsClient
+
+func NewListManagementTermListsClient(baseURL AzureRegionBaseURL) ListManagementTermListsClient {
+	return original.NewListManagementTermListsClient(baseURL)
+}
+
 type AzureRegionBaseURL = original.AzureRegionBaseURL
 
 const (
@@ -131,12 +170,10 @@ type TranscriptModerationBodyItemTermsItem = original.TranscriptModerationBodyIt
 type VideoFrameBodyItem = original.VideoFrameBodyItem
 type VideoFrameBodyItemMetadataItem = original.VideoFrameBodyItemMetadataItem
 type VideoFrameBodyItemReviewerResultTagsItem = original.VideoFrameBodyItemReviewerResultTagsItem
+type ReviewsClient = original.ReviewsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
+	return original.NewReviewsClient(baseURL)
 }
 
 type TextModerationClient = original.TextModerationClient
@@ -144,48 +181,9 @@ type TextModerationClient = original.TextModerationClient
 func NewTextModerationClient(baseURL AzureRegionBaseURL) TextModerationClient {
 	return original.NewTextModerationClient(baseURL)
 }
-
-type ReviewsClient = original.ReviewsClient
-
-func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
-	return original.NewReviewsClient(baseURL)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-
-type ListManagementImageListsClient = original.ListManagementImageListsClient
-
-func NewListManagementImageListsClient(baseURL AzureRegionBaseURL) ListManagementImageListsClient {
-	return original.NewListManagementImageListsClient(baseURL)
-}
-
-type ImageModerationClient = original.ImageModerationClient
-
-func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient {
-	return original.NewImageModerationClient(baseURL)
-}
-
-type BaseClient = original.BaseClient
-
-func New(baseURL AzureRegionBaseURL) BaseClient {
-	return original.New(baseURL)
-}
-func NewWithoutDefaults(baseURL AzureRegionBaseURL) BaseClient {
-	return original.NewWithoutDefaults(baseURL)
-}
-
-type ListManagementTermListsClient = original.ListManagementTermListsClient
-
-func NewListManagementTermListsClient(baseURL AzureRegionBaseURL) ListManagementTermListsClient {
-	return original.NewListManagementTermListsClient(baseURL)
-}
-
-type ListManagementTermClient = original.ListManagementTermClient
-
-func NewListManagementTermClient(baseURL AzureRegionBaseURL) ListManagementTermClient {
-	return original.NewListManagementTermClient(baseURL)
-}
-
-type ListManagementImageClient = original.ListManagementImageClient
-
-func NewListManagementImageClient(baseURL AzureRegionBaseURL) ListManagementImageClient {
-	return original.NewListManagementImageClient(baseURL)
+func Version() string {
+	return original.Version()
 }

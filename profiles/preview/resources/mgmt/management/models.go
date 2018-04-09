@@ -21,6 +21,37 @@ package managementgroups
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-01-01-preview/management"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(operationResultID string, skiptoken string) BaseClient {
+	return original.New(operationResultID, skiptoken)
+}
+func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
+	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+
+type EntitiesClient = original.EntitiesClient
+
+func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClient(operationResultID, skiptoken)
+}
+func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+
+type Client = original.Client
+
+func NewClient(operationResultID string, skiptoken string) Client {
+	return original.NewClient(operationResultID, skiptoken)
+}
+func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
+	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+
 type Permissions = original.Permissions
 
 const (
@@ -138,21 +169,13 @@ type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
+type OperationsClient = original.OperationsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClient(operationResultID, skiptoken)
 }
-func Version() string {
-	return original.Version()
-}
-
-type Client = original.Client
-
-func NewClient(operationResultID string, skiptoken string) Client {
-	return original.NewClient(operationResultID, skiptoken)
-}
-func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
 }
 
 type SubscriptionsClient = original.SubscriptionsClient
@@ -163,34 +186,9 @@ func NewSubscriptionsClient(operationResultID string, skiptoken string) Subscrip
 func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skiptoken)
 }
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(operationResultID string, skiptoken string) BaseClient {
-	return original.New(operationResultID, skiptoken)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-
-type OperationsClient = original.OperationsClient
-
-func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skiptoken)
-}
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-
-type EntitiesClient = original.EntitiesClient
-
-func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skiptoken)
-}
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func Version() string {
+	return original.Version()
 }

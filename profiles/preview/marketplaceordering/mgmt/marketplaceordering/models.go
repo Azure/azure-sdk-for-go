@@ -21,24 +21,6 @@ package marketplaceordering
 
 import original "github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering"
 
-type AgreementProperties = original.AgreementProperties
-type AgreementTerms = original.AgreementTerms
-type ErrorResponse = original.ErrorResponse
-type ErrorResponseError = original.ErrorResponseError
-type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
-type Resource = original.Resource
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -61,6 +43,16 @@ func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID st
 	return original.NewMarketplaceAgreementsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type AgreementProperties = original.AgreementProperties
+type AgreementTerms = original.AgreementTerms
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
+type Operation = original.Operation
+type OperationDisplay = original.OperationDisplay
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
+type Resource = original.Resource
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -68,4 +60,10 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

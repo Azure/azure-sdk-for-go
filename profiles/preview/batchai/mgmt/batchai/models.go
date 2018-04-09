@@ -21,6 +21,46 @@ package batchai
 
 import original "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-03-01/batchai"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ClustersClient = original.ClustersClient
+
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
+}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type FileServersClient = original.FileServersClient
+
+func NewFileServersClient(subscriptionID string) FileServersClient {
+	return original.NewFileServersClient(subscriptionID)
+}
+func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) FileServersClient {
+	return original.NewFileServersClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type JobsClient = original.JobsClient
+
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type AllocationState = original.AllocationState
 
 const (
@@ -255,45 +295,6 @@ type Usage = original.Usage
 type UsageName = original.UsageName
 type UserAccountSettings = original.UserAccountSettings
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type ClustersClient = original.ClustersClient
-
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
-}
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type FileServersClient = original.FileServersClient
-
-func NewFileServersClient(subscriptionID string) FileServersClient {
-	return original.NewFileServersClient(subscriptionID)
-}
-func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) FileServersClient {
-	return original.NewFileServersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
@@ -303,15 +304,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type JobsClient = original.JobsClient
-
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type UsageClient = original.UsageClient
 
 func NewUsageClient(subscriptionID string) UsageClient {
@@ -319,4 +311,10 @@ func NewUsageClient(subscriptionID string) UsageClient {
 }
 func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
 	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

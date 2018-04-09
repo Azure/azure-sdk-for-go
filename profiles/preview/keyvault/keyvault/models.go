@@ -21,6 +21,15 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault"
 
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
+}
+
 type ActionType = original.ActionType
 
 const (
@@ -240,13 +249,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
 }

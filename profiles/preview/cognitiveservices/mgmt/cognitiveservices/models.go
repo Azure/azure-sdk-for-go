@@ -30,6 +30,28 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter 
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 
+type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
+
+func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
+}
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string, filter string) BaseClient {
+	return original.New(subscriptionID, filter)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
+}
+
 type KeyName = original.KeyName
 
 const (
@@ -170,27 +192,6 @@ type ResourceAndSku = original.ResourceAndSku
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string, filter string) BaseClient {
-	return original.New(subscriptionID, filter)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
-}
-
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
@@ -199,12 +200,9 @@ func NewOperationsClient(subscriptionID string, filter string) OperationsClient 
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-
-type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
-
-func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
+func Version() string {
+	return original.Version()
 }

@@ -21,6 +21,28 @@ package subscription
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+
+type FactoryClient = original.FactoryClient
+
+func NewFactoryClient() FactoryClient {
+	return original.NewFactoryClient()
+}
+func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
+	return original.NewFactoryClientWithBaseURI(baseURI)
+}
+
 type OfferType = original.OfferType
 
 const (
@@ -79,45 +101,6 @@ type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
-
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-
-type FactoryClient = original.FactoryClient
-
-func NewFactoryClient() FactoryClient {
-	return original.NewFactoryClient()
-}
-func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
-	return original.NewFactoryClientWithBaseURI(baseURI)
-}
-
-type SubscriptionsClient = original.SubscriptionsClient
-
-func NewSubscriptionsClient() SubscriptionsClient {
-	return original.NewSubscriptionsClient()
-}
-func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient() OperationsClient {
@@ -136,6 +119,15 @@ func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
 	return original.NewOperationsGroupClientWithBaseURI(baseURI)
 }
 
+type SubscriptionsClient = original.SubscriptionsClient
+
+func NewSubscriptionsClient() SubscriptionsClient {
+	return original.NewSubscriptionsClient()
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI)
+}
+
 type TenantsClient = original.TenantsClient
 
 func NewTenantsClient() TenantsClient {
@@ -143,4 +135,10 @@ func NewTenantsClient() TenantsClient {
 }
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

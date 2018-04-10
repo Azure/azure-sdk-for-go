@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v15.1.1`
+
+### Bug Fixes
+
+- Drain the response body when retrying a request.
+- Avoid allocating when draining a response body.
+
 ## `v15.1.0`
 
 ### New Services

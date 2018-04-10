@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// ClustersClient is the azure Service Fabric Resource Provider API Client
+// ClustersClient is the service Fabric Management Client
 type ClustersClient struct {
 	BaseClient
 }

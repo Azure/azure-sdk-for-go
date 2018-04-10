@@ -31,121 +31,20 @@ type ServiceClient struct {
 }
 
 // NewServiceClient creates an instance of the ServiceClient client.
-func NewServiceClient(location string, subscriptionID string) ServiceClient {
-	return NewServiceClientWithBaseURI(DefaultBaseURI, location, subscriptionID)
+func NewServiceClient(subscriptionID string) ServiceClient {
+	return NewServiceClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewServiceClientWithBaseURI creates an instance of the ServiceClient client.
-func NewServiceClientWithBaseURI(baseURI string, location string, subscriptionID string) ServiceClient {
-	return ServiceClient{NewWithBaseURI(baseURI, location, subscriptionID)}
-}
-
-// AvailableSkus this method provides the list of available skus for the given subscription and location.
-//
-// availableSkuRequest is filters for showing the available skus.
-func (client ServiceClient) AvailableSkus(ctx context.Context, availableSkuRequest AvailableSkuRequest) (result AvailableSkusResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: availableSkuRequest,
-			Constraints: []validation.Constraint{{Target: "availableSkuRequest.TransferType", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "availableSkuRequest.Country", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "availableSkuRequest.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("databox.ServiceClient", "AvailableSkus", err.Error())
-	}
-
-	result.fn = client.availableSkusNextResults
-	req, err := client.AvailableSkusPreparer(ctx, availableSkuRequest)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "AvailableSkus", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.AvailableSkusSender(req)
-	if err != nil {
-		result.asr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "AvailableSkus", resp, "Failure sending request")
-		return
-	}
-
-	result.asr, err = client.AvailableSkusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "AvailableSkus", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AvailableSkusPreparer prepares the AvailableSkus request.
-func (client ServiceClient) AvailableSkusPreparer(ctx context.Context, availableSkuRequest AvailableSkuRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", client.Location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/availableSkus", pathParameters),
-		autorest.WithJSON(availableSkuRequest),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// AvailableSkusSender sends the AvailableSkus request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceClient) AvailableSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// AvailableSkusResponder handles the response to the AvailableSkus request. The method always
-// closes the http.Response Body.
-func (client ServiceClient) AvailableSkusResponder(resp *http.Response) (result AvailableSkusResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// availableSkusNextResults retrieves the next set of results, if any.
-func (client ServiceClient) availableSkusNextResults(lastResults AvailableSkusResult) (result AvailableSkusResult, err error) {
-	req, err := lastResults.availableSkusResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "databox.ServiceClient", "availableSkusNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.AvailableSkusSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "databox.ServiceClient", "availableSkusNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.AvailableSkusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "availableSkusNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// AvailableSkusComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ServiceClient) AvailableSkusComplete(ctx context.Context, availableSkuRequest AvailableSkuRequest) (result AvailableSkusResultIterator, err error) {
-	result.page, err = client.AvailableSkus(ctx, availableSkuRequest)
-	return
+func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
+	return ServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetServiceHealth this method returns the health of partner services.
-func (client ServiceClient) GetServiceHealth(ctx context.Context) (result ServiceHealthResponseList, err error) {
-	req, err := client.GetServiceHealthPreparer(ctx)
+//
+// location is the location of the resource
+func (client ServiceClient) GetServiceHealth(ctx context.Context, location string) (result ServiceHealthResponseList, err error) {
+	req, err := client.GetServiceHealthPreparer(ctx, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetServiceHealth", nil, "Failure preparing request")
 		return
@@ -167,9 +66,9 @@ func (client ServiceClient) GetServiceHealth(ctx context.Context) (result Servic
 }
 
 // GetServiceHealthPreparer prepares the GetServiceHealth request.
-func (client ServiceClient) GetServiceHealthPreparer(ctx context.Context) (*http.Request, error) {
+func (client ServiceClient) GetServiceHealthPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", client.Location),
+		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -206,12 +105,115 @@ func (client ServiceClient) GetServiceHealthResponder(resp *http.Response) (resu
 	return
 }
 
+// ListAvailableSkus this method provides the list of available skus for the given subscription and location.
+//
+// location is the location of the resource availableSkuRequest is filters for showing the available skus.
+func (client ServiceClient) ListAvailableSkus(ctx context.Context, location string, availableSkuRequest AvailableSkuRequest) (result AvailableSkusResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: availableSkuRequest,
+			Constraints: []validation.Constraint{{Target: "availableSkuRequest.TransferType", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "availableSkuRequest.Country", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "availableSkuRequest.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("databox.ServiceClient", "ListAvailableSkus", err.Error())
+	}
+
+	result.fn = client.listAvailableSkusNextResults
+	req, err := client.ListAvailableSkusPreparer(ctx, location, availableSkuRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAvailableSkusSender(req)
+	if err != nil {
+		result.asr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", resp, "Failure sending request")
+		return
+	}
+
+	result.asr, err = client.ListAvailableSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ListAvailableSkus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAvailableSkusPreparer prepares the ListAvailableSkus request.
+func (client ServiceClient) ListAvailableSkusPreparer(ctx context.Context, location string, availableSkuRequest AvailableSkuRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.DataBox/locations/{location}/availableSkus", pathParameters),
+		autorest.WithJSON(availableSkuRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAvailableSkusSender sends the ListAvailableSkus request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServiceClient) ListAvailableSkusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListAvailableSkusResponder handles the response to the ListAvailableSkus request. The method always
+// closes the http.Response Body.
+func (client ServiceClient) ListAvailableSkusResponder(resp *http.Response) (result AvailableSkusResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAvailableSkusNextResults retrieves the next set of results, if any.
+func (client ServiceClient) listAvailableSkusNextResults(lastResults AvailableSkusResult) (result AvailableSkusResult, err error) {
+	req, err := lastResults.availableSkusResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAvailableSkusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAvailableSkusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "listAvailableSkusNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAvailableSkusComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServiceClient) ListAvailableSkusComplete(ctx context.Context, location string, availableSkuRequest AvailableSkuRequest) (result AvailableSkusResultIterator, err error) {
+	result.page, err = client.ListAvailableSkus(ctx, location, availableSkuRequest)
+	return
+}
+
 // RegionAvailability this method returns the list of supported service regions and regions for destination storage
 // accounts
 //
-// regionAvailabilityInput is country Code and Device Type.
-func (client ServiceClient) RegionAvailability(ctx context.Context, regionAvailabilityInput RegionAvailabilityInput) (result RegionAvailabilityResponse, err error) {
-	req, err := client.RegionAvailabilityPreparer(ctx, regionAvailabilityInput)
+// location is the location of the resource regionAvailabilityInput is country Code and Device Type.
+func (client ServiceClient) RegionAvailability(ctx context.Context, location string, regionAvailabilityInput RegionAvailabilityInput) (result RegionAvailabilityResponse, err error) {
+	req, err := client.RegionAvailabilityPreparer(ctx, location, regionAvailabilityInput)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "RegionAvailability", nil, "Failure preparing request")
 		return
@@ -233,9 +235,9 @@ func (client ServiceClient) RegionAvailability(ctx context.Context, regionAvaila
 }
 
 // RegionAvailabilityPreparer prepares the RegionAvailability request.
-func (client ServiceClient) RegionAvailabilityPreparer(ctx context.Context, regionAvailabilityInput RegionAvailabilityInput) (*http.Request, error) {
+func (client ServiceClient) RegionAvailabilityPreparer(ctx context.Context, location string, regionAvailabilityInput RegionAvailabilityInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", client.Location),
+		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -276,8 +278,8 @@ func (client ServiceClient) RegionAvailabilityResponder(resp *http.Response) (re
 
 // ValidateAddressMethod this method validates the customer shipping address and provide alternate addresses if any.
 //
-// validateAddress is shipping address of the customer.
-func (client ServiceClient) ValidateAddressMethod(ctx context.Context, validateAddress ValidateAddress) (result AddressValidationOutput, err error) {
+// location is the location of the resource validateAddress is shipping address of the customer.
+func (client ServiceClient) ValidateAddressMethod(ctx context.Context, location string, validateAddress ValidateAddress) (result AddressValidationOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: validateAddress,
 			Constraints: []validation.Constraint{{Target: "validateAddress.ShippingAddress", Name: validation.Null, Rule: false,
@@ -288,7 +290,7 @@ func (client ServiceClient) ValidateAddressMethod(ctx context.Context, validateA
 		return result, validation.NewError("databox.ServiceClient", "ValidateAddressMethod", err.Error())
 	}
 
-	req, err := client.ValidateAddressMethodPreparer(ctx, validateAddress)
+	req, err := client.ValidateAddressMethodPreparer(ctx, location, validateAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "ValidateAddressMethod", nil, "Failure preparing request")
 		return
@@ -310,9 +312,9 @@ func (client ServiceClient) ValidateAddressMethod(ctx context.Context, validateA
 }
 
 // ValidateAddressMethodPreparer prepares the ValidateAddressMethod request.
-func (client ServiceClient) ValidateAddressMethodPreparer(ctx context.Context, validateAddress ValidateAddress) (*http.Request, error) {
+func (client ServiceClient) ValidateAddressMethodPreparer(ctx context.Context, location string, validateAddress ValidateAddress) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", client.Location),
+		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 

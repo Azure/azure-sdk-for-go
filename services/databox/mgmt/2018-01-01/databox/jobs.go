@@ -31,13 +31,13 @@ type JobsClient struct {
 }
 
 // NewJobsClient creates an instance of the JobsClient client.
-func NewJobsClient(location string, subscriptionID string) JobsClient {
-	return NewJobsClientWithBaseURI(DefaultBaseURI, location, subscriptionID)
+func NewJobsClient(subscriptionID string) JobsClient {
+	return NewJobsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobsClientWithBaseURI creates an instance of the JobsClient client.
-func NewJobsClientWithBaseURI(baseURI string, location string, subscriptionID string) JobsClient {
-	return JobsClient{NewWithBaseURI(baseURI, location, subscriptionID)}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return JobsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // BookShipmentPickUp book shipment pick up.

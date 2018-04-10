@@ -31,13 +31,13 @@ type ListSecretsClient struct {
 }
 
 // NewListSecretsClient creates an instance of the ListSecretsClient client.
-func NewListSecretsClient(location string, subscriptionID string) ListSecretsClient {
-	return NewListSecretsClientWithBaseURI(DefaultBaseURI, location, subscriptionID)
+func NewListSecretsClient(subscriptionID string) ListSecretsClient {
+	return NewListSecretsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewListSecretsClientWithBaseURI creates an instance of the ListSecretsClient client.
-func NewListSecretsClientWithBaseURI(baseURI string, location string, subscriptionID string) ListSecretsClient {
-	return ListSecretsClient{NewWithBaseURI(baseURI, location, subscriptionID)}
+func NewListSecretsClientWithBaseURI(baseURI string, subscriptionID string) ListSecretsClient {
+	return ListSecretsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByJobs this method gets the unencrypted secrets related to the job.

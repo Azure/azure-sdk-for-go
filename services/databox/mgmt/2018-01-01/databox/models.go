@@ -2114,18 +2114,23 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // ServiceHealthResponse response of the GetServiceHealth api.
 type ServiceHealthResponse struct {
-	ConnectorType *string    `json:"connectorType,omitempty"`
-	StartTime     *date.Time `json:"startTime,omitempty"`
-	EndTime       *date.Time `json:"endTime,omitempty"`
-	Status        *bool      `json:"status,omitempty"`
+	// ConnectorType - Name of the connector.
+	ConnectorType *string `json:"connectorType,omitempty"`
+	// StartTime - Time when the action was triggered.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Time when the action got completed.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Status - Status of the service.
+	Status *bool `json:"status,omitempty"`
 }
 
 // ServiceHealthResponseList list of service health response.
 type ServiceHealthResponseList struct {
 	autorest.Response `json:"-"`
-	ServiceVersion    *string `json:"serviceVersion,omitempty"`
 	// Dependencies - List of ServiceHealthResponse.
 	Dependencies *[]ServiceHealthResponse `json:"dependencies,omitempty"`
+	// ServiceVersion - Version of the service.
+	ServiceVersion *string `json:"serviceVersion,omitempty"`
 }
 
 // ShareCredentialDetails credential details of the shares in account.
@@ -2188,9 +2193,9 @@ type ShippingLabelDetails struct {
 	ShippingLabelSasURI *string `json:"shippingLabelSasUri,omitempty"`
 }
 
-// Sku the sku type.
+// Sku the Sku.
 type Sku struct {
-	// Name - The sku name. Optional for job resource creation and update.
+	// Name - The sku name.
 	Name *string `json:"name,omitempty"`
 	// DisplayName - The display name of the sku.
 	DisplayName *string `json:"displayName,omitempty"`

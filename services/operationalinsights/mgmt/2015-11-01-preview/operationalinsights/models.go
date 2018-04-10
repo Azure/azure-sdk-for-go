@@ -96,6 +96,8 @@ type SkuNameEnum string
 const (
 	// Free ...
 	Free SkuNameEnum = "Free"
+	// PerGB2018
+	PerGB2018 SkuNameEnum = "PerGB2018"
 	// PerNode ...
 	PerNode SkuNameEnum = "PerNode"
 	// Premium ...
@@ -110,7 +112,7 @@ const (
 
 // PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
 func PossibleSkuNameEnumValues() []SkuNameEnum {
-	return []SkuNameEnum{Free, PerNode, Premium, Standalone, Standard, Unlimited}
+	return []SkuNameEnum{Free, PerGB2018, PerNode, Premium, Standalone, Standard, Unlimited}
 }
 
 // DataSource datasources under OMS Workspace.
@@ -653,7 +655,7 @@ type SharedKeys struct {
 
 // Sku the SKU (tier) of a workspace.
 type Sku struct {
-	// Name - The name of the SKU. Possible values include: 'Free', 'Standard', 'Premium', 'Unlimited', 'PerNode', 'Standalone'
+	// Name - The name of the SKU. Possible values include: 'Free', 'Standard', 'Premium', 'Unlimited', 'PerGB2018', PerNode', 'Standalone'
 	Name SkuNameEnum `json:"name,omitempty"`
 }
 

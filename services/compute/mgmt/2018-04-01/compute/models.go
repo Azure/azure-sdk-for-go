@@ -3505,20 +3505,6 @@ type Plan struct {
 	PromotionCode *string `json:"promotionCode,omitempty"`
 }
 
-// PlatformImageReference a reference that identifies a CRP-PIR image or a UserVMImage.
-type PlatformImageReference struct {
-	// Publisher - Image publisher
-	Publisher *string `json:"publisher,omitempty"`
-	// Offer - Offer type
-	Offer *string `json:"offer,omitempty"`
-	// Sku - Sku type
-	Sku *string `json:"sku,omitempty"`
-	// Version - Version of the image
-	Version *string `json:"version,omitempty"`
-	// URI - Specifies the virtual hard disk's uri.
-	URI *string `json:"uri,omitempty"`
-}
-
 // PurchasePlan used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
 type PurchasePlan struct {
 	// Publisher - The publisher ID.
@@ -4893,10 +4879,10 @@ type UpgradeOperationHistoricalStatusInfoProperties struct {
 	Progress *RollingUpgradeProgressInfo `json:"progress,omitempty"`
 	// Error - Error Details for this upgrade if there are any.
 	Error *APIError `json:"error,omitempty"`
-	// StartedBy - Error Details for this upgrade if there are any. Possible values include: 'Unknown', 'User', 'Platform'
+	// StartedBy - Invoker of the Upgrade Operation. Possible values include: 'Unknown', 'User', 'Platform'
 	StartedBy UpgradeOperationInvoker `json:"startedBy,omitempty"`
-	// TargetImageReference - Error Details for this upgrade if there are any.
-	TargetImageReference *PlatformImageReference `json:"targetImageReference,omitempty"`
+	// TargetImageReference - Image Reference details
+	TargetImageReference *ImageReference `json:"targetImageReference,omitempty"`
 }
 
 // UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.
@@ -4905,7 +4891,7 @@ type UpgradeOperationHistoryStatus struct {
 	Code UpgradeState `json:"code,omitempty"`
 	// StartTime - Start time of the upgrade.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - Start time of the upgrade.
+	// EndTime - End time of the upgrade.
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 

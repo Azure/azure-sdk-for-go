@@ -120,6 +120,7 @@ func (ds *DefaultSender) Send(c *Client, req *http.Request) (resp *http.Response
 		if err != nil || !autorest.ResponseHasStatusCode(resp, ds.ValidStatusCodes...) {
 			return resp, err
 		}
+		readAndCloseBody(resp.Body)
 		autorest.DelayForBackoff(ds.RetryDuration, attempts, req.Cancel)
 		ds.attempts = attempts
 	}

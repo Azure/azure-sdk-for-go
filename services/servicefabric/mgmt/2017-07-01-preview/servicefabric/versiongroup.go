@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// VersionClient is the azure Service Fabric Resource Provider API Client
+// VersionClient is the service Fabric Management Client
 type VersionClient struct {
 	BaseClient
 }

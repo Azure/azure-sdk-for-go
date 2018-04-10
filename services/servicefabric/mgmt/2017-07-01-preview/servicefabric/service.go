@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// ServiceClient is the azure Service Fabric Resource Provider API Client
+// ServiceClient is the service Fabric Management Client
 type ServiceClient struct {
 	BaseClient
 }

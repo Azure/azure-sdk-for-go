@@ -39,10 +39,10 @@ func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
 	return ClusterVersionsClient{NewWithBaseURI(baseURI)}
 }
 
-// Get get cluster code versions by location
+// Get gets information about an available Service Fabric cluster code version.
 //
-// location is the location for the cluster code versions, this is different from cluster location subscriptionID
-// is the customer subscription identifier clusterVersion is the cluster code version
+// location is the location for the cluster code versions. This is different from cluster location. subscriptionID
+// is the customer subscription identifier. clusterVersion is the cluster code version.
 func (client ClusterVersionsClient) Get(ctx context.Context, location string, subscriptionID string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
 	req, err := client.GetPreparer(ctx, location, subscriptionID, clusterVersion)
 	if err != nil {
@@ -73,7 +73,7 @@ func (client ClusterVersionsClient) GetPreparer(ctx context.Context, location st
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -106,11 +106,11 @@ func (client ClusterVersionsClient) GetResponder(resp *http.Response) (result Cl
 	return
 }
 
-// GetByEnvironment get cluster code versions by environment
+// GetByEnvironment gets information about an available Service Fabric cluster code version by environment.
 //
-// location is the location for the cluster code versions, this is different from cluster location environment is
-// cluster operating system, the default means all subscriptionID is the customer subscription identifier
-// clusterVersion is the cluster code version
+// location is the location for the cluster code versions. This is different from cluster location. environment is
+// the operating system of the cluster. The default means all. subscriptionID is the customer subscription
+// identifier. clusterVersion is the cluster code version.
 func (client ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment string, subscriptionID string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
 	req, err := client.GetByEnvironmentPreparer(ctx, location, environment, subscriptionID, clusterVersion)
 	if err != nil {
@@ -142,7 +142,7 @@ func (client ClusterVersionsClient) GetByEnvironmentPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -175,10 +175,10 @@ func (client ClusterVersionsClient) GetByEnvironmentResponder(resp *http.Respons
 	return
 }
 
-// List list cluster code versions by location
+// List gets all available code versions for Service Fabric cluster resources by location.
 //
-// location is the location for the cluster code versions, this is different from cluster location subscriptionID
-// is the customer subscription identifier
+// location is the location for the cluster code versions. This is different from cluster location. subscriptionID
+// is the customer subscription identifier.
 func (client ClusterVersionsClient) List(ctx context.Context, location string, subscriptionID string) (result ClusterCodeVersionsListResult, err error) {
 	req, err := client.ListPreparer(ctx, location, subscriptionID)
 	if err != nil {
@@ -208,7 +208,7 @@ func (client ClusterVersionsClient) ListPreparer(ctx context.Context, location s
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -241,10 +241,11 @@ func (client ClusterVersionsClient) ListResponder(resp *http.Response) (result C
 	return
 }
 
-// ListByEnvironment list cluster code versions by environment
+// ListByEnvironment gets all available code versions for Service Fabric cluster resources by environment.
 //
-// location is the location for the cluster code versions, this is different from cluster location environment is
-// cluster operating system, the default means all subscriptionID is the customer subscription identifier
+// location is the location for the cluster code versions. This is different from cluster location. environment is
+// the operating system of the cluster. The default means all. subscriptionID is the customer subscription
+// identifier.
 func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment string, subscriptionID string) (result ClusterCodeVersionsListResult, err error) {
 	req, err := client.ListByEnvironmentPreparer(ctx, location, environment, subscriptionID)
 	if err != nil {
@@ -275,7 +276,7 @@ func (client ClusterVersionsClient) ListByEnvironmentPreparer(ctx context.Contex
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

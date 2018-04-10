@@ -606,6 +606,83 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 	return
 }
 
+// GetMessagingPlan gets messaging plan for specified namespace.
+//
+// resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace
+// name
+func (client NamespacesClient) GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string) (result MessagingPlan, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("eventhub.NamespacesClient", "GetMessagingPlan", err.Error())
+	}
+
+	req, err := client.GetMessagingPlanPreparer(ctx, resourceGroupName, namespaceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetMessagingPlan", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetMessagingPlanSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetMessagingPlan", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetMessagingPlanResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.NamespacesClient", "GetMessagingPlan", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMessagingPlanPreparer prepares the GetMessagingPlan request.
+func (client NamespacesClient) GetMessagingPlanPreparer(ctx context.Context, resourceGroupName string, namespaceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/messagingplan", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetMessagingPlanSender sends the GetMessagingPlan request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) GetMessagingPlanSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetMessagingPlanResponder handles the response to the GetMessagingPlan request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) GetMessagingPlanResponder(resp *http.Response) (result MessagingPlan, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List lists all the available Namespaces within a subscription, irrespective of the resource groups.
 func (client NamespacesClient) List(ctx context.Context) (result EHNamespaceListResultPage, err error) {
 	result.fn = client.listNextResults

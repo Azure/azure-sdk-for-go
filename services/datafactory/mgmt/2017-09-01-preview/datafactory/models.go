@@ -11389,7 +11389,7 @@ func (amsls *AzureMySQLLinkedService) UnmarshalJSON(body []byte) error {
 
 // AzureMySQLLinkedServiceTypeProperties azure MySQL database linked service properties.
 type AzureMySQLLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -12594,7 +12594,7 @@ func (apsls *AzurePostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
 
 // AzurePostgreSQLLinkedServiceTypeProperties azure PostgreSQL linked service properties.
 type AzurePostgreSQLLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -14887,7 +14887,7 @@ func (asdls *AzureSQLDatabaseLinkedService) UnmarshalJSON(body []byte) error {
 
 // AzureSQLDatabaseLinkedServiceTypeProperties azure SQL Database linked service properties.
 type AzureSQLDatabaseLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// ServicePrincipalID - The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with resultType string).
 	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
@@ -15447,7 +15447,7 @@ func (asdls *AzureSQLDWLinkedService) UnmarshalJSON(body []byte) error {
 
 // AzureSQLDWLinkedServiceTypeProperties azure SQL Data Warehouse linked service properties.
 type AzureSQLDWLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// ServicePrincipalID - The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
 	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
@@ -16847,7 +16847,7 @@ func (asls *AzureStorageLinkedService) UnmarshalJSON(body []byte) error {
 
 // AzureStorageLinkedServiceTypeProperties azure Storage linked service properties.
 type AzureStorageLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string. It is mutually exclusive with sasUri property.
+	// ConnectionString - The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// SasURI - SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
 	SasURI BasicSecretBase `json:"sasUri,omitempty"`
@@ -22826,7 +22826,7 @@ func (cdls *CosmosDbLinkedService) UnmarshalJSON(body []byte) error {
 
 // CosmosDbLinkedServiceTypeProperties cosmosDB linked service properties.
 type CosmosDbLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -23321,7 +23321,7 @@ func (cls *CouchbaseLinkedService) UnmarshalJSON(body []byte) error {
 
 // CouchbaseLinkedServiceTypeProperties couchbase server linked service properties.
 type CouchbaseLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -28792,7 +28792,7 @@ func (dls *DrillLinkedService) UnmarshalJSON(body []byte) error {
 
 // DrillLinkedServiceTypeProperties drill server linked service properties.
 type DrillLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -37893,7 +37893,7 @@ func (gls *GreenplumLinkedService) UnmarshalJSON(body []byte) error {
 
 // GreenplumLinkedServiceTypeProperties greenplum Database linked service properties.
 type GreenplumLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -54672,7 +54672,7 @@ func (mdls *MariaDBLinkedService) UnmarshalJSON(body []byte) error {
 
 // MariaDBLinkedServiceTypeProperties mariaDB server linked service properties.
 type MariaDBLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -58982,7 +58982,7 @@ func (nls *NetezzaLinkedService) UnmarshalJSON(body []byte) error {
 
 // NetezzaLinkedServiceTypeProperties netezza linked service properties.
 type NetezzaLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -61066,7 +61066,7 @@ func (ols *OdbcLinkedService) UnmarshalJSON(body []byte) error {
 
 // OdbcLinkedServiceTypeProperties ODBC linked service properties.
 type OdbcLinkedServiceTypeProperties struct {
-	// ConnectionString - The non-access credential portion of the connection string as well as an optional encrypted credential.
+	// ConnectionString - The non-access credential portion of the connection string as well as an optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// AuthenticationType - Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
 	AuthenticationType interface{} `json:"authenticationType,omitempty"`
@@ -61908,7 +61908,7 @@ func (ols *OracleLinkedService) UnmarshalJSON(body []byte) error {
 
 // OracleLinkedServiceTypeProperties oracle database linked service properties.
 type OracleLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
@@ -83109,7 +83109,7 @@ func (ssls *SQLServerLinkedService) UnmarshalJSON(body []byte) error {
 
 // SQLServerLinkedServiceTypeProperties SQL Server linked service properties.
 type SQLServerLinkedServiceTypeProperties struct {
-	// ConnectionString - The connection string.
+	// ConnectionString - The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// UserName - The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
 	UserName interface{} `json:"userName,omitempty"`
@@ -88411,7 +88411,7 @@ func (vls *VerticaLinkedService) UnmarshalJSON(body []byte) error {
 
 // VerticaLinkedServiceTypeProperties vertica linked service properties.
 type VerticaLinkedServiceTypeProperties struct {
-	// ConnectionString - An ODBC connection string.
+	// ConnectionString - An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`

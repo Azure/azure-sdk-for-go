@@ -124,6 +124,99 @@ type EnrollmentAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// EnrollmentAccountListResultIterator provides access to a complete listing of EnrollmentAccount values.
+type EnrollmentAccountListResultIterator struct {
+	i    int
+	page EnrollmentAccountListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EnrollmentAccountListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EnrollmentAccountListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EnrollmentAccountListResultIterator) Response() EnrollmentAccountListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EnrollmentAccountListResultIterator) Value() EnrollmentAccount {
+	if !iter.page.NotDone() {
+		return EnrollmentAccount{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ealr EnrollmentAccountListResult) IsEmpty() bool {
+	return ealr.Value == nil || len(*ealr.Value) == 0
+}
+
+// enrollmentAccountListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ealr EnrollmentAccountListResult) enrollmentAccountListResultPreparer() (*http.Request, error) {
+	if ealr.NextLink == nil || len(to.String(ealr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ealr.NextLink)))
+}
+
+// EnrollmentAccountListResultPage contains a page of EnrollmentAccount values.
+type EnrollmentAccountListResultPage struct {
+	fn   func(EnrollmentAccountListResult) (EnrollmentAccountListResult, error)
+	ealr EnrollmentAccountListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EnrollmentAccountListResultPage) Next() error {
+	next, err := page.fn(page.ealr)
+	if err != nil {
+		return err
+	}
+	page.ealr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EnrollmentAccountListResultPage) NotDone() bool {
+	return !page.ealr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EnrollmentAccountListResultPage) Response() EnrollmentAccountListResult {
+	return page.ealr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EnrollmentAccountListResultPage) Values() []EnrollmentAccount {
+	if page.ealr.IsEmpty() {
+		return nil
+	}
+	return *page.ealr.Value
+}
+
 // EnrollmentAccountProperties the properties of the enrollment account.
 type EnrollmentAccountProperties struct {
 	// PrincipalName - The account owner's principal name.

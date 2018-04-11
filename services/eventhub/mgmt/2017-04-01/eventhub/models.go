@@ -1239,6 +1239,127 @@ func (page ListResultPage) Values() []Model {
 	return *page.lr.Value
 }
 
+// MessagingPlan messaging Plan for the namespace
+type MessagingPlan struct {
+	autorest.Response        `json:"-"`
+	*MessagingPlanProperties `json:"properties,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MessagingPlan.
+func (mp MessagingPlan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.MessagingPlanProperties != nil {
+		objectMap["properties"] = mp.MessagingPlanProperties
+	}
+	if mp.Location != nil {
+		objectMap["location"] = mp.Location
+	}
+	if mp.Tags != nil {
+		objectMap["tags"] = mp.Tags
+	}
+	if mp.ID != nil {
+		objectMap["id"] = mp.ID
+	}
+	if mp.Name != nil {
+		objectMap["name"] = mp.Name
+	}
+	if mp.Type != nil {
+		objectMap["type"] = mp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MessagingPlan struct.
+func (mp *MessagingPlan) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var messagingPlanProperties MessagingPlanProperties
+				err = json.Unmarshal(*v, &messagingPlanProperties)
+				if err != nil {
+					return err
+				}
+				mp.MessagingPlanProperties = &messagingPlanProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				mp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mp.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MessagingPlanProperties ...
+type MessagingPlanProperties struct {
+	// Sku - Sku type
+	Sku *int32 `json:"sku,omitempty"`
+	// SelectedEventHubUnit - Selected event hub unit
+	SelectedEventHubUnit *int32 `json:"selectedEventHubUnit,omitempty"`
+	// UpdatedAt - The exact time the messaging plan was updated.
+	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
+	// Revision - revision number
+	Revision *int64 `json:"revision,omitempty"`
+}
+
 // MessagingRegions messaging Region
 type MessagingRegions struct {
 	Properties *MessagingRegionsProperties `json:"properties,omitempty"`

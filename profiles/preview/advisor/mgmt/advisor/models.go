@@ -21,17 +21,13 @@ package advisor
 
 import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ConfigurationsClient = original.ConfigurationsClient
@@ -104,13 +100,21 @@ type SuppressionContractListResult = original.SuppressionContractListResult
 type SuppressionContractListResultIterator = original.SuppressionContractListResultIterator
 type SuppressionContractListResultPage = original.SuppressionContractListResultPage
 type SuppressionProperties = original.SuppressionProperties
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+
+type SuppressionsClient = original.SuppressionsClient
+
+func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
+	return original.NewSuppressionsClient(subscriptionID)
+}
+func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) SuppressionsClient {
+	return original.NewSuppressionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type RecommendationsClient = original.RecommendationsClient
@@ -122,17 +126,15 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type SuppressionsClient = original.SuppressionsClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
-	return original.NewSuppressionsClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewSuppressionsClientWithBaseURI(baseURI string, subscriptionID string) SuppressionsClient {
-	return original.NewSuppressionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

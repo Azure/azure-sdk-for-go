@@ -24,19 +24,6 @@ import (
 	"github.com/satori/uuid"
 )
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID uuid.UUID) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type Client = original.Client
 
 func NewClient(subscriptionID uuid.UUID) Client {
@@ -44,6 +31,15 @@ func NewClient(subscriptionID uuid.UUID) Client {
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type NameUnavailabilityReason = original.NameUnavailabilityReason
@@ -104,17 +100,23 @@ type Resource = original.Resource
 type SkuInfo = original.SkuInfo
 type StorageContainerProperties = original.StorageContainerProperties
 type UpdateFuture = original.UpdateFuture
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID uuid.UUID) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

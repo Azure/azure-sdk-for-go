@@ -21,35 +21,31 @@ package servicebus
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type RegionsClient = original.RegionsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewRegionsClient(subscriptionID string) RegionsClient {
+	return original.NewRegionsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
+	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
+type OperationsClient = original.OperationsClient
 
-func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
-	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
-	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type EventHubsClient = original.EventHubsClient
+type NamespacesClient = original.NamespacesClient
 
-func NewEventHubsClient(subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClient(subscriptionID)
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
 }
-func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccessRights = original.AccessRights
@@ -127,6 +123,18 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return original.PossibleProvisioningStateDRValues()
 }
 
+type ProvisioningStateMC = original.ProvisioningStateMC
+
+const (
+	ProvisioningStateMCAccepted  ProvisioningStateMC = original.ProvisioningStateMCAccepted
+	ProvisioningStateMCFailed    ProvisioningStateMC = original.ProvisioningStateMCFailed
+	ProvisioningStateMCSucceeded ProvisioningStateMC = original.ProvisioningStateMCSucceeded
+)
+
+func PossibleProvisioningStateMCValues() []ProvisioningStateMC {
+	return original.PossibleProvisioningStateMCValues()
+}
+
 type RoleDisasterRecovery = original.RoleDisasterRecovery
 
 const (
@@ -199,6 +207,11 @@ type EventHubListResultIterator = original.EventHubListResultIterator
 type EventHubListResultPage = original.EventHubListResultPage
 type EventhubProperties = original.EventhubProperties
 type MessageCountDetails = original.MessageCountDetails
+type MigrationConfigListResult = original.MigrationConfigListResult
+type MigrationConfigListResultIterator = original.MigrationConfigListResultIterator
+type MigrationConfigListResultPage = original.MigrationConfigListResultPage
+type MigrationConfigProperties = original.MigrationConfigProperties
+type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
@@ -249,33 +262,6 @@ type SBTopicProperties = original.SBTopicProperties
 type SQLFilter = original.SQLFilter
 type SQLRuleAction = original.SQLRuleAction
 type TrackedResource = original.TrackedResource
-type NamespacesClient = original.NamespacesClient
-
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type OperationsClient = original.OperationsClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
-
-func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingRegionsClient {
-	return original.NewPremiumMessagingRegionsClient(subscriptionID)
-}
-func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
-	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type QueuesClient = original.QueuesClient
 
 func NewQueuesClient(subscriptionID string) QueuesClient {
@@ -285,22 +271,22 @@ func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesCli
 	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type RegionsClient = original.RegionsClient
+type MigrationConfigClient = original.MigrationConfigClient
 
-func NewRegionsClient(subscriptionID string) RegionsClient {
-	return original.NewRegionsClient(subscriptionID)
+func NewMigrationConfigClient(subscriptionID string) MigrationConfigClient {
+	return original.NewMigrationConfigClient(subscriptionID)
 }
-func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
-	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
+func NewMigrationConfigClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigClient {
+	return original.NewMigrationConfigClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type RulesClient = original.RulesClient
+type MigrationConfigurationsClient = original.MigrationConfigurationsClient
 
-func NewRulesClient(subscriptionID string) RulesClient {
-	return original.NewRulesClient(subscriptionID)
+func NewMigrationConfigurationsClient(subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClient(subscriptionID)
 }
-func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
-	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewMigrationConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type SubscriptionsClient = original.SubscriptionsClient
@@ -312,6 +298,21 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
+
+func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingRegionsClient {
+	return original.NewPremiumMessagingRegionsClient(subscriptionID)
+}
+func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
+	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+
 type TopicsClient = original.TopicsClient
 
 func NewTopicsClient(subscriptionID string) TopicsClient {
@@ -320,9 +321,43 @@ func NewTopicsClient(subscriptionID string) TopicsClient {
 func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
 	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+
+type RulesClient = original.RulesClient
+
+func NewRulesClient(subscriptionID string) RulesClient {
+	return original.NewRulesClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
+	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
+
+func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
+	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
+}
+func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
+	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type EventHubsClient = original.EventHubsClient
+
+func NewEventHubsClient(subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClient(subscriptionID)
+}
+func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }

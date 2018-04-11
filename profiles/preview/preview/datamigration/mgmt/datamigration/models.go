@@ -21,17 +21,31 @@ package datamigration
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-03-31-preview/datamigration"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type UsagesClient = original.UsagesClient
+
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
+}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ServicesClient = original.ServicesClient
+
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AuthenticationType = original.AuthenticationType
@@ -581,13 +595,19 @@ type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigration
 type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
-type OperationsClient = original.OperationsClient
+type ResourceSkusClient = original.ResourceSkusClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 
 type ProjectsClient = original.ProjectsClient
@@ -599,24 +619,6 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) Project
 	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ResourceSkusClient = original.ResourceSkusClient
-
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ServicesClient = original.ServicesClient
-
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type TasksClient = original.TasksClient
 
 func NewTasksClient(subscriptionID string) TasksClient {
@@ -626,17 +628,15 @@ func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClien
 	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type UsagesClient = original.UsagesClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -391,6 +391,23 @@ func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 	return []CircuitConnectionStatus{Connected, Connecting, Disconnected}
 }
 
+// ConnectionMonitorSourceStatus enumerates the values for connection monitor source status.
+type ConnectionMonitorSourceStatus string
+
+const (
+	// Active ...
+	Active ConnectionMonitorSourceStatus = "Active"
+	// Inactive ...
+	Inactive ConnectionMonitorSourceStatus = "Inactive"
+	// Uknown ...
+	Uknown ConnectionMonitorSourceStatus = "Uknown"
+)
+
+// PossibleConnectionMonitorSourceStatusValues returns an array of possible values for the ConnectionMonitorSourceStatus const type.
+func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStatus {
+	return []ConnectionMonitorSourceStatus{Active, Inactive, Uknown}
+}
+
 // ConnectionState enumerates the values for connection state.
 type ConnectionState string
 
@@ -492,15 +509,15 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 type EffectiveRouteState string
 
 const (
-	// Active ...
-	Active EffectiveRouteState = "Active"
-	// Invalid ...
-	Invalid EffectiveRouteState = "Invalid"
+	// EffectiveRouteStateActive ...
+	EffectiveRouteStateActive EffectiveRouteState = "Active"
+	// EffectiveRouteStateInvalid ...
+	EffectiveRouteStateInvalid EffectiveRouteState = "Invalid"
 )
 
 // PossibleEffectiveRouteStateValues returns an array of possible values for the EffectiveRouteState const type.
 func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
-	return []EffectiveRouteState{Active, Invalid}
+	return []EffectiveRouteState{EffectiveRouteStateActive, EffectiveRouteStateInvalid}
 }
 
 // EffectiveSecurityRuleProtocol enumerates the values for effective security rule protocol.
@@ -634,6 +651,19 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	return []ExpressRoutePeeringType{AzurePrivatePeering, AzurePublicPeering, MicrosoftPeering}
 }
 
+// HTTPMethod enumerates the values for http method.
+type HTTPMethod string
+
+const (
+	// Get ...
+	Get HTTPMethod = "Get"
+)
+
+// PossibleHTTPMethodValues returns an array of possible values for the HTTPMethod const type.
+func PossibleHTTPMethodValues() []HTTPMethod {
+	return []HTTPMethod{Get}
+}
+
 // IkeEncryption enumerates the values for ike encryption.
 type IkeEncryption string
 
@@ -695,6 +725,21 @@ const (
 // PossibleIPAllocationMethodValues returns an array of possible values for the IPAllocationMethod const type.
 func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 	return []IPAllocationMethod{Dynamic, Static}
+}
+
+// IPFlowProtocol enumerates the values for ip flow protocol.
+type IPFlowProtocol string
+
+const (
+	// IPFlowProtocolTCP ...
+	IPFlowProtocolTCP IPFlowProtocol = "TCP"
+	// IPFlowProtocolUDP ...
+	IPFlowProtocolUDP IPFlowProtocol = "UDP"
+)
+
+// PossibleIPFlowProtocolValues returns an array of possible values for the IPFlowProtocol const type.
+func PossibleIPFlowProtocolValues() []IPFlowProtocol {
+	return []IPFlowProtocol{IPFlowProtocolTCP, IPFlowProtocolUDP}
 }
 
 // IpsecEncryption enumerates the values for ipsec encryption.
@@ -1004,15 +1049,19 @@ func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 type Protocol string
 
 const (
+	// ProtocolHTTP ...
+	ProtocolHTTP Protocol = "Http"
+	// ProtocolHTTPS ...
+	ProtocolHTTPS Protocol = "Https"
+	// ProtocolIcmp ...
+	ProtocolIcmp Protocol = "Icmp"
 	// ProtocolTCP ...
-	ProtocolTCP Protocol = "TCP"
-	// ProtocolUDP ...
-	ProtocolUDP Protocol = "UDP"
+	ProtocolTCP Protocol = "Tcp"
 )
 
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
-	return []Protocol{ProtocolTCP, ProtocolUDP}
+	return []Protocol{ProtocolHTTP, ProtocolHTTPS, ProtocolIcmp, ProtocolTCP}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -4897,6 +4946,8 @@ type ConnectionMonitorParameters struct {
 // ConnectionMonitorQueryResult list of connection states snaphots.
 type ConnectionMonitorQueryResult struct {
 	autorest.Response `json:"-"`
+	// SourceStatus - Status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'
+	SourceStatus ConnectionMonitorSourceStatus `json:"sourceStatus,omitempty"`
 	// States - Information about connection states.
 	States *[]ConnectionStateSnapshot `json:"states,omitempty"`
 }
@@ -5381,6 +5432,9 @@ type ConnectivityIssue struct {
 type ConnectivityParameters struct {
 	Source      *ConnectivitySource      `json:"source,omitempty"`
 	Destination *ConnectivityDestination `json:"destination,omitempty"`
+	// Protocol - Network protocol. Possible values include: 'ProtocolTCP', 'ProtocolHTTP', 'ProtocolHTTPS', 'ProtocolIcmp'
+	Protocol              Protocol               `json:"protocol,omitempty"`
+	ProtocolConfiguration *ProtocolConfiguration `json:"protocolConfiguration,omitempty"`
 }
 
 // ConnectivitySource parameters that define the source of the connection.
@@ -5836,7 +5890,7 @@ type EffectiveRoute struct {
 	Name *string `json:"name,omitempty"`
 	// Source - Who created the route. Possible values are: 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'. Possible values include: 'EffectiveRouteSourceUnknown', 'EffectiveRouteSourceUser', 'EffectiveRouteSourceVirtualNetworkGateway', 'EffectiveRouteSourceDefault'
 	Source EffectiveRouteSource `json:"source,omitempty"`
-	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'Active', 'Invalid'
+	// State - The value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'EffectiveRouteStateActive', 'EffectiveRouteStateInvalid'
 	State EffectiveRouteState `json:"state,omitempty"`
 	// AddressPrefix - The address prefixes of the effective routes in CIDR notation.
 	AddressPrefix *[]string `json:"addressPrefix,omitempty"`
@@ -8634,6 +8688,24 @@ type GatewayRouteListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of gateway routes
 	Value *[]GatewayRoute `json:"value,omitempty"`
+}
+
+// HTTPConfiguration HTTP configuration of the connectivity check.
+type HTTPConfiguration struct {
+	// Method - HTTP method. Possible values include: 'Get'
+	Method HTTPMethod `json:"method,omitempty"`
+	// Headers - List of HTTP headers.
+	Headers *[]HTTPHeader `json:"headers,omitempty"`
+	// ValidStatusCodes - Valid status codes.
+	ValidStatusCodes *[]int32 `json:"validStatusCodes,omitempty"`
+}
+
+// HTTPHeader describes the HTTP header.
+type HTTPHeader struct {
+	// Name - The name in HTTP header.
+	Name *string `json:"name,omitempty"`
+	// Value - The value in HTTP header.
+	Value *string `json:"value,omitempty"`
 }
 
 // InboundNatPool inbound NAT pool of the load balancer.
@@ -12378,6 +12450,11 @@ type ProbePropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// ProtocolConfiguration configuration of the protocol.
+type ProtocolConfiguration struct {
+	HTTPConfiguration *HTTPConfiguration `json:"HTTPConfiguration,omitempty"`
+}
+
 // PublicIPAddress public IP address resource.
 type PublicIPAddress struct {
 	autorest.Response `json:"-"`
@@ -15736,8 +15813,8 @@ type VerificationIPFlowParameters struct {
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 	// Direction - The direction of the packet represented as a 5-tuple. Possible values include: 'Inbound', 'Outbound'
 	Direction Direction `json:"direction,omitempty"`
-	// Protocol - Protocol to be verified on. Possible values include: 'ProtocolTCP', 'ProtocolUDP'
-	Protocol Protocol `json:"protocol,omitempty"`
+	// Protocol - Protocol to be verified on. Possible values include: 'IPFlowProtocolTCP', 'IPFlowProtocolUDP'
+	Protocol IPFlowProtocol `json:"protocol,omitempty"`
 	// LocalPort - The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.
 	LocalPort *string `json:"localPort,omitempty"`
 	// RemotePort - The remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.

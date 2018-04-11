@@ -61,15 +61,6 @@ func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventH
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type MessagingPlanClient = original.MessagingPlanClient
-
-func NewMessagingPlanClient(subscriptionID string) MessagingPlanClient {
-	return original.NewMessagingPlanClient(subscriptionID)
-}
-func NewMessagingPlanClientWithBaseURI(baseURI string, subscriptionID string) MessagingPlanClient {
-	return original.NewMessagingPlanClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccessRights = original.AccessRights
 
 const (
@@ -213,8 +204,6 @@ type ErrorResponse = original.ErrorResponse
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
-type MessagingPlan = original.MessagingPlan
-type MessagingPlanproperties = original.MessagingPlanproperties
 type MessagingRegions = original.MessagingRegions
 type MessagingRegionsListResult = original.MessagingRegionsListResult
 type MessagingRegionsListResultIterator = original.MessagingRegionsListResultIterator

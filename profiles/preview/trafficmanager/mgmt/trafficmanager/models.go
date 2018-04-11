@@ -21,26 +21,13 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type UserMetricsKeysClient = original.UserMetricsKeysClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type EndpointsClient = original.EndpointsClient
-
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
-}
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
@@ -50,15 +37,6 @@ func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchies
 }
 func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
 	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type HeatMapClient = original.HeatMapClient
-
-func NewHeatMapClient(subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClient(subscriptionID)
-}
-func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
-	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type EndpointMonitorStatus = original.EndpointMonitorStatus
@@ -169,18 +147,40 @@ func NewProfilesClient(subscriptionID string) ProfilesClient {
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UserMetricsKeysClient = original.UserMetricsKeysClient
-
-func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClient(subscriptionID)
-}
-func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+
+type EndpointsClient = original.EndpointsClient
+
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
+}
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type HeatMapClient = original.HeatMapClient
+
+func NewHeatMapClient(subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClient(subscriptionID)
+}
+func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
+	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

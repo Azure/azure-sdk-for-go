@@ -119,6 +119,28 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	return original.PossibleQuotaUsageStatusValues()
 }
 
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
+)
+
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
+
 type SkuName = original.SkuName
 
 const (
@@ -189,6 +211,12 @@ type OperationEntityListResultIterator = original.OperationEntityListResultItera
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
+type ResourceSku = original.ResourceSku
+type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
+type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusResult = original.ResourceSkusResult
+type ResourceSkusResultIterator = original.ResourceSkusResultIterator
+type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
@@ -199,6 +227,15 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ResourceSkusClient = original.ResourceSkusClient
+
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

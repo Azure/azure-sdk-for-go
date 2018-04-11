@@ -135,6 +135,19 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	return original.PossibleApplicationTypeValues()
 }
 
+type CategoryType = original.CategoryType
+
+const (
+	CategoryTypePerformance CategoryType = original.CategoryTypePerformance
+	CategoryTypeRetention   CategoryType = original.CategoryTypeRetention
+	CategoryTypeTSG         CategoryType = original.CategoryTypeTSG
+	CategoryTypeWorkbook    CategoryType = original.CategoryTypeWorkbook
+)
+
+func PossibleCategoryTypeValues() []CategoryType {
+	return original.PossibleCategoryTypeValues()
+}
+
 type FavoriteSourceType = original.FavoriteSourceType
 
 const (
@@ -194,6 +207,17 @@ func PossibleRequestSourceValues() []RequestSource {
 	return original.PossibleRequestSourceValues()
 }
 
+type SharedTypeKind = original.SharedTypeKind
+
+const (
+	SharedTypeKindShared SharedTypeKind = original.SharedTypeKindShared
+	SharedTypeKindUser   SharedTypeKind = original.SharedTypeKindUser
+)
+
+func PossibleSharedTypeKindValues() []SharedTypeKind {
+	return original.PossibleSharedTypeKindValues()
+}
+
 type WebTestKind = original.WebTestKind
 
 const (
@@ -233,12 +257,15 @@ type ComponentPurgeBody = original.ComponentPurgeBody
 type ComponentPurgeBodyFilters = original.ComponentPurgeBodyFilters
 type ComponentPurgeResponse = original.ComponentPurgeResponse
 type ComponentPurgeStatusResponse = original.ComponentPurgeStatusResponse
+type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type InnerError = original.InnerError
+type LinkProperties = original.LinkProperties
 type ListAnnotation = original.ListAnnotation
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
 type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
+type ListWorkbook = original.ListWorkbook
 type ListWorkItemConfiguration = original.ListWorkItemConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -255,6 +282,10 @@ type WebTestListResultIterator = original.WebTestListResultIterator
 type WebTestListResultPage = original.WebTestListResultPage
 type WebTestProperties = original.WebTestProperties
 type WebTestPropertiesConfiguration = original.WebTestPropertiesConfiguration
+type Workbook = original.Workbook
+type WorkbookError = original.WorkbookError
+type WorkbookProperties = original.WorkbookProperties
+type Workbooks = original.Workbooks
 type WorkItemConfiguration = original.WorkItemConfiguration
 type WorkItemConfigurationError = original.WorkItemConfigurationError
 type WorkItemCreateConfiguration = original.WorkItemCreateConfiguration
@@ -298,6 +329,24 @@ func NewWebTestsClient(subscriptionID string) WebTestsClient {
 }
 func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
 	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WorkbookClient = original.WorkbookClient
+
+func NewWorkbookClient(subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClient(subscriptionID)
+}
+func NewWorkbookClientWithBaseURI(baseURI string, subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WorkbooksClient = original.WorkbooksClient
+
+func NewWorkbooksClient(subscriptionID string) WorkbooksClient {
+	return original.NewWorkbooksClient(subscriptionID)
+}
+func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) WorkbooksClient {
+	return original.NewWorkbooksClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type WorkItemConfigurationsClient = original.WorkItemConfigurationsClient

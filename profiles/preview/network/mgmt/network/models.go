@@ -507,6 +507,18 @@ func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 	return original.PossibleCircuitConnectionStatusValues()
 }
 
+type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
+
+const (
+	Active   ConnectionMonitorSourceStatus = original.Active
+	Inactive ConnectionMonitorSourceStatus = original.Inactive
+	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+)
+
+func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStatus {
+	return original.PossibleConnectionMonitorSourceStatusValues()
+}
+
 type ConnectionState = original.ConnectionState
 
 const (
@@ -576,8 +588,8 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	Active  EffectiveRouteState = original.Active
-	Invalid EffectiveRouteState = original.Invalid
+	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
+	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
 )
 
 func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
@@ -677,6 +689,16 @@ func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	return original.PossibleExpressRoutePeeringTypeValues()
 }
 
+type HTTPMethod = original.HTTPMethod
+
+const (
+	Get HTTPMethod = original.Get
+)
+
+func PossibleHTTPMethodValues() []HTTPMethod {
+	return original.PossibleHTTPMethodValues()
+}
+
 type IkeEncryption = original.IkeEncryption
 
 const (
@@ -717,6 +739,17 @@ const (
 
 func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 	return original.PossibleIPAllocationMethodValues()
+}
+
+type IPFlowProtocol = original.IPFlowProtocol
+
+const (
+	IPFlowProtocolTCP IPFlowProtocol = original.IPFlowProtocolTCP
+	IPFlowProtocolUDP IPFlowProtocol = original.IPFlowProtocolUDP
+)
+
+func PossibleIPFlowProtocolValues() []IPFlowProtocol {
+	return original.PossibleIPFlowProtocolValues()
 }
 
 type IpsecEncryption = original.IpsecEncryption
@@ -926,8 +959,10 @@ func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
 type Protocol = original.Protocol
 
 const (
-	ProtocolTCP Protocol = original.ProtocolTCP
-	ProtocolUDP Protocol = original.ProtocolUDP
+	ProtocolHTTP  Protocol = original.ProtocolHTTP
+	ProtocolHTTPS Protocol = original.ProtocolHTTPS
+	ProtocolIcmp  Protocol = original.ProtocolIcmp
+	ProtocolTCP   Protocol = original.ProtocolTCP
 )
 
 func PossibleProtocolValues() []Protocol {
@@ -1352,6 +1387,8 @@ type FrontendIPConfiguration = original.FrontendIPConfiguration
 type FrontendIPConfigurationPropertiesFormat = original.FrontendIPConfigurationPropertiesFormat
 type GatewayRoute = original.GatewayRoute
 type GatewayRouteListResult = original.GatewayRouteListResult
+type HTTPConfiguration = original.HTTPConfiguration
+type HTTPHeader = original.HTTPHeader
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
 type InboundNatRule = original.InboundNatRule
@@ -1447,6 +1484,7 @@ type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
+type ProtocolConfiguration = original.ProtocolConfiguration
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
 type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture

@@ -427,6 +427,17 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
 
+type VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypes
+
+const (
+	Deallocate VirtualMachineEvictionPolicyTypes = original.Deallocate
+	Delete     VirtualMachineEvictionPolicyTypes = original.Delete
+)
+
+func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
+	return original.PossibleVirtualMachineEvictionPolicyTypesValues()
+}
+
 type VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypes
 
 const (

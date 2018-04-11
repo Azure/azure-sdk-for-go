@@ -57,6 +57,78 @@ func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExp
 	return original.NewAPIExportClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type APIIssuAttachmentClient = original.APIIssuAttachmentClient
+
+func NewAPIIssuAttachmentClient(subscriptionID string) APIIssuAttachmentClient {
+	return original.NewAPIIssuAttachmentClient(subscriptionID)
+}
+func NewAPIIssuAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuAttachmentClient {
+	return original.NewAPIIssuAttachmentClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssuCommentClient = original.APIIssuCommentClient
+
+func NewAPIIssuCommentClient(subscriptionID string) APIIssuCommentClient {
+	return original.NewAPIIssuCommentClient(subscriptionID)
+}
+func NewAPIIssuCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuCommentClient {
+	return original.NewAPIIssuCommentClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssueClient = original.APIIssueClient
+
+func NewAPIIssueClient(subscriptionID string) APIIssueClient {
+	return original.NewAPIIssueClient(subscriptionID)
+}
+func NewAPIIssueClientWithBaseURI(baseURI string, subscriptionID string) APIIssueClient {
+	return original.NewAPIIssueClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssueAttachmentClient = original.APIIssueAttachmentClient
+
+func NewAPIIssueAttachmentClient(subscriptionID string) APIIssueAttachmentClient {
+	return original.NewAPIIssueAttachmentClient(subscriptionID)
+}
+func NewAPIIssueAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentClient {
+	return original.NewAPIIssueAttachmentClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssueAttachmentsClient = original.APIIssueAttachmentsClient
+
+func NewAPIIssueAttachmentsClient(subscriptionID string) APIIssueAttachmentsClient {
+	return original.NewAPIIssueAttachmentsClient(subscriptionID)
+}
+func NewAPIIssueAttachmentsClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentsClient {
+	return original.NewAPIIssueAttachmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssueCommentClient = original.APIIssueCommentClient
+
+func NewAPIIssueCommentClient(subscriptionID string) APIIssueCommentClient {
+	return original.NewAPIIssueCommentClient(subscriptionID)
+}
+func NewAPIIssueCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssueCommentClient {
+	return original.NewAPIIssueCommentClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssueCommentsClient = original.APIIssueCommentsClient
+
+func NewAPIIssueCommentsClient(subscriptionID string) APIIssueCommentsClient {
+	return original.NewAPIIssueCommentsClient(subscriptionID)
+}
+func NewAPIIssueCommentsClientWithBaseURI(baseURI string, subscriptionID string) APIIssueCommentsClient {
+	return original.NewAPIIssueCommentsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type APIIssuesClient = original.APIIssuesClient
+
+func NewAPIIssuesClient(subscriptionID string) APIIssuesClient {
+	return original.NewAPIIssuesClient(subscriptionID)
+}
+func NewAPIIssuesClientWithBaseURI(baseURI string, subscriptionID string) APIIssuesClient {
+	return original.NewAPIIssuesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type APIOperationClient = original.APIOperationClient
 
 func NewAPIOperationClient(subscriptionID string) APIOperationClient {
@@ -516,6 +588,20 @@ func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
 }
 
+type State = original.State
+
+const (
+	Closed   State = original.Closed
+	Open     State = original.Open
+	Proposed State = original.Proposed
+	Removed  State = original.Removed
+	Resolved State = original.Resolved
+)
+
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+
 type StoreName = original.StoreName
 
 const (
@@ -706,6 +792,21 @@ type IdentityProviderContractProperties = original.IdentityProviderContractPrope
 type IdentityProviderList = original.IdentityProviderList
 type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
 type IdentityProviderUpdateProperties = original.IdentityProviderUpdateProperties
+type IssueAttachmentCollection = original.IssueAttachmentCollection
+type IssueAttachmentCollectionIterator = original.IssueAttachmentCollectionIterator
+type IssueAttachmentCollectionPage = original.IssueAttachmentCollectionPage
+type IssueAttachmentContract = original.IssueAttachmentContract
+type IssueAttachmentContractProperties = original.IssueAttachmentContractProperties
+type IssueCollection = original.IssueCollection
+type IssueCollectionIterator = original.IssueCollectionIterator
+type IssueCollectionPage = original.IssueCollectionPage
+type IssueCommentCollection = original.IssueCommentCollection
+type IssueCommentCollectionIterator = original.IssueCommentCollectionIterator
+type IssueCommentCollectionPage = original.IssueCommentCollectionPage
+type IssueCommentContract = original.IssueCommentContract
+type IssueCommentContractProperties = original.IssueCommentContractProperties
+type IssueContract = original.IssueContract
+type IssueContractProperties = original.IssueContractProperties
 type LoggerCollection = original.LoggerCollection
 type LoggerCollectionIterator = original.LoggerCollectionIterator
 type LoggerCollectionPage = original.LoggerCollectionPage

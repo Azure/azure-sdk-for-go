@@ -471,8 +471,10 @@ func PossibleNotificationNameValues() []NotificationName {
 type PolicyContentFormat = original.PolicyContentFormat
 
 const (
-	XML     PolicyContentFormat = original.XML
-	XMLLink PolicyContentFormat = original.XMLLink
+	Rawxml     PolicyContentFormat = original.Rawxml
+	RawxmlLink PolicyContentFormat = original.RawxmlLink
+	XML        PolicyContentFormat = original.XML
+	XMLLink    PolicyContentFormat = original.XMLLink
 )
 
 func PossiblePolicyContentFormatValues() []PolicyContentFormat {

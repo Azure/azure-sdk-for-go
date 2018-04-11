@@ -55,6 +55,8 @@ func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) Invoice
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
+type EnrollmentAccountListResultIterator = original.EnrollmentAccountListResultIterator
+type EnrollmentAccountListResultPage = original.EnrollmentAccountListResultPage
 type EnrollmentAccountProperties = original.EnrollmentAccountProperties
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse

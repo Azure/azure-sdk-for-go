@@ -21,6 +21,15 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
+type AnalyticsItemClient = original.AnalyticsItemClient
+
+func NewAnalyticsItemClient(subscriptionID string) AnalyticsItemClient {
+	return original.NewAnalyticsItemClient(subscriptionID)
+}
+func NewAnalyticsItemClientWithBaseURI(baseURI string, subscriptionID string) AnalyticsItemClient {
+	return original.NewAnalyticsItemClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type AnnotationsClient = original.AnnotationsClient
 
 func NewAnnotationsClient(subscriptionID string) AnnotationsClient {
@@ -186,6 +195,55 @@ func PossibleFlowTypeValues() []FlowType {
 	return original.PossibleFlowTypeValues()
 }
 
+type ItemScope = original.ItemScope
+
+const (
+	ItemScopeShared ItemScope = original.ItemScopeShared
+	ItemScopeUser   ItemScope = original.ItemScopeUser
+)
+
+func PossibleItemScopeValues() []ItemScope {
+	return original.PossibleItemScopeValues()
+}
+
+type ItemScopePath = original.ItemScopePath
+
+const (
+	AnalyticsItems   ItemScopePath = original.AnalyticsItems
+	MyanalyticsItems ItemScopePath = original.MyanalyticsItems
+)
+
+func PossibleItemScopePathValues() []ItemScopePath {
+	return original.PossibleItemScopePathValues()
+}
+
+type ItemType = original.ItemType
+
+const (
+	Folder   ItemType = original.Folder
+	Function ItemType = original.Function
+	Query    ItemType = original.Query
+	Recent   ItemType = original.Recent
+)
+
+func PossibleItemTypeValues() []ItemType {
+	return original.PossibleItemTypeValues()
+}
+
+type ItemTypeParameter = original.ItemTypeParameter
+
+const (
+	ItemTypeParameterFolder   ItemTypeParameter = original.ItemTypeParameterFolder
+	ItemTypeParameterFunction ItemTypeParameter = original.ItemTypeParameterFunction
+	ItemTypeParameterNone     ItemTypeParameter = original.ItemTypeParameterNone
+	ItemTypeParameterQuery    ItemTypeParameter = original.ItemTypeParameterQuery
+	ItemTypeParameterRecent   ItemTypeParameter = original.ItemTypeParameterRecent
+)
+
+func PossibleItemTypeParameterValues() []ItemTypeParameter {
+	return original.PossibleItemTypeParameterValues()
+}
+
 type PurgeState = original.PurgeState
 
 const (
@@ -233,6 +291,8 @@ type Annotation = original.Annotation
 type AnnotationError = original.AnnotationError
 type APIKeyRequest = original.APIKeyRequest
 type ApplicationInsightsComponent = original.ApplicationInsightsComponent
+type ApplicationInsightsComponentAnalyticsItem = original.ApplicationInsightsComponentAnalyticsItem
+type ApplicationInsightsComponentAnalyticsItemProperties = original.ApplicationInsightsComponentAnalyticsItemProperties
 type ApplicationInsightsComponentAPIKey = original.ApplicationInsightsComponentAPIKey
 type ApplicationInsightsComponentAPIKeyListResult = original.ApplicationInsightsComponentAPIKeyListResult
 type ApplicationInsightsComponentAvailableFeatures = original.ApplicationInsightsComponentAvailableFeatures
@@ -257,11 +317,13 @@ type ComponentPurgeBody = original.ComponentPurgeBody
 type ComponentPurgeBodyFilters = original.ComponentPurgeBodyFilters
 type ComponentPurgeResponse = original.ComponentPurgeResponse
 type ComponentPurgeStatusResponse = original.ComponentPurgeStatusResponse
+type ComponentsPurgeFuture = original.ComponentsPurgeFuture
 type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type InnerError = original.InnerError
 type LinkProperties = original.LinkProperties
 type ListAnnotation = original.ListAnnotation
+type ListApplicationInsightsComponentAnalyticsItem = original.ListApplicationInsightsComponentAnalyticsItem
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
 type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration

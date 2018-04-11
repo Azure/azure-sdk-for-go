@@ -21,17 +21,13 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccessKeyName = original.AccessKeyName
@@ -82,15 +78,6 @@ func Version() string {
 	return original.Version()
 }
 
-type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
-
-func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClient(subscriptionID)
-}
-func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type WorkspacesClient = original.WorkspacesClient
 
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
@@ -98,4 +85,17 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

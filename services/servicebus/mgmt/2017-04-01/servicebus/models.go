@@ -134,6 +134,23 @@ func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return []ProvisioningStateDR{Accepted, Failed, Succeeded}
 }
 
+// ProvisioningStateMC enumerates the values for provisioning state mc.
+type ProvisioningStateMC string
+
+const (
+	// ProvisioningStateMCAccepted ...
+	ProvisioningStateMCAccepted ProvisioningStateMC = "Accepted"
+	// ProvisioningStateMCFailed ...
+	ProvisioningStateMCFailed ProvisioningStateMC = "Failed"
+	// ProvisioningStateMCSucceeded ...
+	ProvisioningStateMCSucceeded ProvisioningStateMC = "Succeeded"
+)
+
+// PossibleProvisioningStateMCValues returns an array of possible values for the ProvisioningStateMC const type.
+func PossibleProvisioningStateMCValues() []ProvisioningStateMC {
+	return []ProvisioningStateMC{ProvisioningStateMCAccepted, ProvisioningStateMCFailed, ProvisioningStateMCSucceeded}
+}
+
 // RoleDisasterRecovery enumerates the values for role disaster recovery.
 type RoleDisasterRecovery string
 
@@ -818,6 +835,200 @@ type MessageCountDetails struct {
 	TransferMessageCount *int64 `json:"transferMessageCount,omitempty"`
 	// TransferDeadLetterMessageCount - Number of messages transferred into dead letters.
 	TransferDeadLetterMessageCount *int64 `json:"transferDeadLetterMessageCount,omitempty"`
+}
+
+// MigrationConfigListResult the result of the List migrationConfigurations operation.
+type MigrationConfigListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of Migration Configs
+	Value *[]MigrationConfigProperties `json:"value,omitempty"`
+	// NextLink - Link to the next set of results. Not empty if Value contains incomplete list of migrationConfigurations
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MigrationConfigListResultIterator provides access to a complete listing of MigrationConfigProperties values.
+type MigrationConfigListResultIterator struct {
+	i    int
+	page MigrationConfigListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MigrationConfigListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MigrationConfigListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MigrationConfigListResultIterator) Response() MigrationConfigListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MigrationConfigListResultIterator) Value() MigrationConfigProperties {
+	if !iter.page.NotDone() {
+		return MigrationConfigProperties{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mclr MigrationConfigListResult) IsEmpty() bool {
+	return mclr.Value == nil || len(*mclr.Value) == 0
+}
+
+// migrationConfigListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mclr MigrationConfigListResult) migrationConfigListResultPreparer() (*http.Request, error) {
+	if mclr.NextLink == nil || len(to.String(mclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mclr.NextLink)))
+}
+
+// MigrationConfigListResultPage contains a page of MigrationConfigProperties values.
+type MigrationConfigListResultPage struct {
+	fn   func(MigrationConfigListResult) (MigrationConfigListResult, error)
+	mclr MigrationConfigListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MigrationConfigListResultPage) Next() error {
+	next, err := page.fn(page.mclr)
+	if err != nil {
+		return err
+	}
+	page.mclr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MigrationConfigListResultPage) NotDone() bool {
+	return !page.mclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MigrationConfigListResultPage) Response() MigrationConfigListResult {
+	return page.mclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MigrationConfigListResultPage) Values() []MigrationConfigProperties {
+	if page.mclr.IsEmpty() {
+		return nil
+	}
+	return *page.mclr.Value
+}
+
+// MigrationConfigProperties single item in List or Get Migration Config operation
+type MigrationConfigProperties struct {
+	autorest.Response `json:"-"`
+	// MigrationConfigPropertiesProperties - Properties required to the Create Or Update MigrationConfig
+	*MigrationConfigPropertiesProperties `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrationConfigProperties.
+func (mcp MigrationConfigProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcp.MigrationConfigPropertiesProperties != nil {
+		objectMap["properties"] = mcp.MigrationConfigPropertiesProperties
+	}
+	if mcp.ID != nil {
+		objectMap["id"] = mcp.ID
+	}
+	if mcp.Name != nil {
+		objectMap["name"] = mcp.Name
+	}
+	if mcp.Type != nil {
+		objectMap["type"] = mcp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MigrationConfigProperties struct.
+func (mcp *MigrationConfigProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var migrationConfigPropertiesProperties MigrationConfigPropertiesProperties
+				err = json.Unmarshal(*v, &migrationConfigPropertiesProperties)
+				if err != nil {
+					return err
+				}
+				mcp.MigrationConfigPropertiesProperties = &migrationConfigPropertiesProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mcp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mcp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mcp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MigrationConfigPropertiesProperties properties required to the Create Or Update MigrationConfig
+type MigrationConfigPropertiesProperties struct {
+	// ProvisioningState - Provisioning state of Migration Config - possible values 'Accepted' or 'Succeeded' or 'Failed'. Possible values include: 'ProvisioningStateMCAccepted', 'ProvisioningStateMCSucceeded', 'ProvisioningStateMCFailed'
+	ProvisioningState ProvisioningStateMC `json:"provisioningState,omitempty"`
+	// PrimaryNamespaceName - Existing premium Namespace name which has no entities, will be used for migration
+	PrimaryNamespaceName *string `json:"primaryNamespaceName,omitempty"`
+	// PostMigrationName - Name to access connection strings of the Primary Namespace after migration
+	PostMigrationName *string `json:"postMigrationName,omitempty"`
 }
 
 // NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

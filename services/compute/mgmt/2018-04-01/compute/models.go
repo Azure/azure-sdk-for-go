@@ -540,6 +540,21 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{Automatic, Manual, Rolling}
 }
 
+// VirtualMachineEvictionPolicyTypes enumerates the values for virtual machine eviction policy types.
+type VirtualMachineEvictionPolicyTypes string
+
+const (
+	// Deallocate ...
+	Deallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
+	// Delete ...
+	Delete VirtualMachineEvictionPolicyTypes = "Delete"
+)
+
+// PossibleVirtualMachineEvictionPolicyTypesValues returns an array of possible values for the VirtualMachineEvictionPolicyTypes const type.
+func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
+	return []VirtualMachineEvictionPolicyTypes{Deallocate, Delete}
+}
+
 // VirtualMachinePriorityTypes enumerates the values for virtual machine priority types.
 type VirtualMachinePriorityTypes string
 
@@ -8543,6 +8558,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for virtual machines in the low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.

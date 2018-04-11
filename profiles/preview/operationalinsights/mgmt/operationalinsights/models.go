@@ -21,35 +21,13 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type DataSourcesClient = original.DataSourcesClient
-
-func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClient(subscriptionID)
-}
-func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LinkedServicesClient = original.LinkedServicesClient
-
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type DataSourceKind = original.DataSourceKind
@@ -95,7 +73,6 @@ type SkuNameEnum = original.SkuNameEnum
 
 const (
 	Free       SkuNameEnum = original.Free
-	PerGB2018  SkuNameEnum = original.PerGB2018
 	PerNode    SkuNameEnum = original.PerNode
 	Premium    SkuNameEnum = original.Premium
 	Standalone SkuNameEnum = original.Standalone
@@ -136,19 +113,21 @@ type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListUsagesResult = original.WorkspaceListUsagesResult
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+
+type LinkedServicesClient = original.LinkedServicesClient
+
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type WorkspacesClient = original.WorkspacesClient
@@ -158,4 +137,26 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DataSourcesClient = original.DataSourcesClient
+
+func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
+	return original.NewDataSourcesClient(subscriptionID)
+}
+func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
+	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

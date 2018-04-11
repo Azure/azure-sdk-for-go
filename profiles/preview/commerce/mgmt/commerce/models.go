@@ -21,17 +21,13 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/commerce/mgmt/2015-06-01-preview/commerce"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type UsageAggregatesClient = original.UsageAggregatesClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
+	return original.NewUsageAggregatesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
+	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AggregationGranularity = original.AggregationGranularity
@@ -73,6 +69,14 @@ type UsageAggregationListResult = original.UsageAggregationListResult
 type UsageAggregationListResultIterator = original.UsageAggregationListResultIterator
 type UsageAggregationListResultPage = original.UsageAggregationListResultPage
 type UsageSample = original.UsageSample
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
 type RateCardClient = original.RateCardClient
 
 func NewRateCardClient(subscriptionID string) RateCardClient {
@@ -82,17 +86,15 @@ func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCar
 	return original.NewRateCardClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type UsageAggregatesClient = original.UsageAggregatesClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
-	return original.NewUsageAggregatesClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
-	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

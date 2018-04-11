@@ -21,44 +21,22 @@ package resources
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-02-01/resources"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type TagsClient = original.TagsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type DeploymentOperationsClient = original.DeploymentOperationsClient
+type Client = original.Client
 
-func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClient(subscriptionID)
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
 }
-func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DeploymentsClient = original.DeploymentsClient
-
-func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClient(subscriptionID)
-}
-func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type GroupsClient = original.GroupsClient
-
-func NewGroupsClient(subscriptionID string) GroupsClient {
-	return original.NewGroupsClient(subscriptionID)
-}
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type DeploymentMode = original.DeploymentMode
@@ -166,6 +144,41 @@ type TemplateLink = original.TemplateLink
 type UpdateByIDFuture = original.UpdateByIDFuture
 type UpdateFuture = original.UpdateFuture
 type ValidateMoveResourcesFuture = original.ValidateMoveResourcesFuture
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
+type DeploymentOperationsClient = original.DeploymentOperationsClient
+
+func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClient(subscriptionID)
+}
+func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type DeploymentsClient = original.DeploymentsClient
+
+func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClient(subscriptionID)
+}
+func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type GroupsClient = original.GroupsClient
+
+func NewGroupsClient(subscriptionID string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type ProvidersClient = original.ProvidersClient
 
 func NewProvidersClient(subscriptionID string) ProvidersClient {
@@ -175,26 +188,15 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 	return original.NewProvidersClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type Client = original.Client
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
+type BaseClient = original.BaseClient
 
-type TagsClient = original.TagsClient
-
-func NewTagsClient(subscriptionID string) TagsClient {
-	return original.NewTagsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

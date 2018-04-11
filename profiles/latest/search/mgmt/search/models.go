@@ -21,6 +21,24 @@ package search
 
 import original "github.com/Azure/azure-sdk-for-go/services/search/mgmt/2015-08-19/search"
 
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ServicesClient = original.ServicesClient
+
+func NewServicesClient(subscriptionID string) ServicesClient {
+	return original.NewServicesClient(subscriptionID)
+}
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type AdminKeysClient = original.AdminKeysClient
 
 func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
@@ -28,19 +46,6 @@ func NewAdminKeysClient(subscriptionID string) AdminKeysClient {
 }
 func NewAdminKeysClientWithBaseURI(baseURI string, subscriptionID string) AdminKeysClient {
 	return original.NewAdminKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type AdminKeyKind = original.AdminKeyKind
@@ -133,13 +138,12 @@ type ServiceListResult = original.ServiceListResult
 type ServiceProperties = original.ServiceProperties
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type Sku = original.Sku
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 
 type QueryKeysClient = original.QueryKeysClient
@@ -151,17 +155,15 @@ func NewQueryKeysClientWithBaseURI(baseURI string, subscriptionID string) QueryK
 	return original.NewQueryKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ServicesClient = original.ServicesClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

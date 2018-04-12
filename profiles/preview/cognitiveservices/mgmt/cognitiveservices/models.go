@@ -21,13 +21,13 @@ package cognitiveservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
-type AccountsClient = original.AccountsClient
+type OperationsClient = original.OperationsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
@@ -37,19 +37,6 @@ func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityCl
 }
 func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
 	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type KeyName = original.KeyName
@@ -220,15 +207,6 @@ type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
-type OperationsClient = original.OperationsClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ResourceSkusClient = original.ResourceSkusClient
 
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
@@ -242,4 +220,26 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type AccountsClient = original.AccountsClient
+
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

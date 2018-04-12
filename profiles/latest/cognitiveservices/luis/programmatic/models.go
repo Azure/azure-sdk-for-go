@@ -21,27 +21,6 @@ package programmatic
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/programmatic"
 
-type AppsClient = original.AppsClient
-
-func NewAppsClient(azureRegion AzureRegions) AppsClient {
-	return original.NewAppsClient(azureRegion)
-}
-
-type BaseClient = original.BaseClient
-
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-
-type ExamplesClient = original.ExamplesClient
-
-func NewExamplesClient(azureRegion AzureRegions) ExamplesClient {
-	return original.NewExamplesClient(azureRegion)
-}
-
 type FeaturesClient = original.FeaturesClient
 
 func NewFeaturesClient(azureRegion AzureRegions) FeaturesClient {
@@ -52,6 +31,18 @@ type ModelClient = original.ModelClient
 
 func NewModelClient(azureRegion AzureRegions) ModelClient {
 	return original.NewModelClient(azureRegion)
+}
+
+type VersionsClient = original.VersionsClient
+
+func NewVersionsClient(azureRegion AzureRegions) VersionsClient {
+	return original.NewVersionsClient(azureRegion)
+}
+
+type AppsClient = original.AppsClient
+
+func NewAppsClient(azureRegion AzureRegions) AppsClient {
+	return original.NewAppsClient(azureRegion)
 }
 
 type AzureRegions = original.AzureRegions
@@ -294,6 +285,29 @@ type UUID = original.UUID
 type VersionInfo = original.VersionInfo
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+
+type ExamplesClient = original.ExamplesClient
+
+func NewExamplesClient(azureRegion AzureRegions) ExamplesClient {
+	return original.NewExamplesClient(azureRegion)
+}
+
+type BaseClient = original.BaseClient
+
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+
 type PermissionsClient = original.PermissionsClient
 
 func NewPermissionsClient(azureRegion AzureRegions) PermissionsClient {
@@ -304,16 +318,4 @@ type TrainClient = original.TrainClient
 
 func NewTrainClient(azureRegion AzureRegions) TrainClient {
 	return original.NewTrainClient(azureRegion)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-
-type VersionsClient = original.VersionsClient
-
-func NewVersionsClient(azureRegion AzureRegions) VersionsClient {
-	return original.NewVersionsClient(azureRegion)
 }

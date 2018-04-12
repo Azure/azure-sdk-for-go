@@ -21,35 +21,13 @@ package containerinstance
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-02-01-preview/containerinstance"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type ContainerGroupsClient = original.ContainerGroupsClient
-
-func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClient(subscriptionID)
-}
-func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ContainerGroupUsageClient = original.ContainerGroupUsageClient
-
-func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClient(subscriptionID)
-}
-func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ContainerLogsClient = original.ContainerLogsClient
@@ -59,6 +37,15 @@ func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
 }
 func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) ContainerLogsClient {
 	return original.NewContainerLogsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+
+func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClient(subscriptionID)
+}
+func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
@@ -152,13 +139,21 @@ type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type Volume = original.Volume
 type VolumeMount = original.VolumeMount
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+
+type ContainerGroupsClient = original.ContainerGroupsClient
+
+func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClient(subscriptionID)
+}
+func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type StartContainerClient = original.StartContainerClient
@@ -169,9 +164,16 @@ func NewStartContainerClient(subscriptionID string) StartContainerClient {
 func NewStartContainerClientWithBaseURI(baseURI string, subscriptionID string) StartContainerClient {
 	return original.NewStartContainerClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

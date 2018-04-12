@@ -1759,7 +1759,7 @@ type ResourceAttributes struct {
 	Sku *string `json:"sku,omitempty"`
 }
 
-// Tag the tag.
+// Tag the tag resource.
 type Tag struct {
 	// Key - Tag key.
 	Key *string `json:"key,omitempty"`
@@ -1767,7 +1767,7 @@ type Tag struct {
 
 // TagProperties the properties of the tag.
 type TagProperties struct {
-	// Tags - Tags.
+	// Tags - A list of Tag.
 	Tags *[]Tag `json:"tags,omitempty"`
 }
 

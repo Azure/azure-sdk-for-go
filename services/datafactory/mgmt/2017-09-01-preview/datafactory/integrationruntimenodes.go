@@ -32,13 +32,13 @@ type IntegrationRuntimeNodesClient struct {
 }
 
 // NewIntegrationRuntimeNodesClient creates an instance of the IntegrationRuntimeNodesClient client.
-func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeNodesClient {
-	return NewIntegrationRuntimeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewIntegrationRuntimeNodesClient(subscriptionID string, locationID string) IntegrationRuntimeNodesClient {
+	return NewIntegrationRuntimeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
 }
 
 // NewIntegrationRuntimeNodesClientWithBaseURI creates an instance of the IntegrationRuntimeNodesClient client.
-func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
-	return IntegrationRuntimeNodesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string, locationID string) IntegrationRuntimeNodesClient {
+	return IntegrationRuntimeNodesClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
 }
 
 // Delete deletes a self-hosted integration runtime node.

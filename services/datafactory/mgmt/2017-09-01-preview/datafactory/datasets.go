@@ -32,13 +32,13 @@ type DatasetsClient struct {
 }
 
 // NewDatasetsClient creates an instance of the DatasetsClient client.
-func NewDatasetsClient(subscriptionID string) DatasetsClient {
-	return NewDatasetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDatasetsClient(subscriptionID string, locationID string) DatasetsClient {
+	return NewDatasetsClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
 }
 
 // NewDatasetsClientWithBaseURI creates an instance of the DatasetsClient client.
-func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
-	return DatasetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string, locationID string) DatasetsClient {
+	return DatasetsClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
 }
 
 // CreateOrUpdate creates or updates a dataset.

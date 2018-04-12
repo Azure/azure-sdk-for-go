@@ -21,26 +21,31 @@ package notificationhubs
 
 import original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type Client = original.Client
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type HubsClient = original.HubsClient
+type NameClient = original.NameClient
 
-func NewHubsClient(subscriptionID string) HubsClient {
-	return original.NewHubsClient(subscriptionID)
+func NewNameClient(subscriptionID string) NameClient {
+	return original.NewNameClient(subscriptionID)
 }
-func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
-	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
+	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type NamespacesClient = original.NamespacesClient
+
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccessRights = original.AccessRights
@@ -121,35 +126,32 @@ type Sku = original.Sku
 type SubResource = original.SubResource
 type WnsCredential = original.WnsCredential
 type WnsCredentialProperties = original.WnsCredentialProperties
-type NameClient = original.NameClient
 
-func NewNameClient(subscriptionID string) NameClient {
-	return original.NewNameClient(subscriptionID)
-}
-func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
-	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type NamespacesClient = original.NamespacesClient
-
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type Client = original.Client
-
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+
+type HubsClient = original.HubsClient
+
+func NewHubsClient(subscriptionID string) HubsClient {
+	return original.NewHubsClient(subscriptionID)
+}
+func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
+	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -11,20 +11,10 @@ env:
   global:
     - DEP_VERSION="0.4.1"
     - DEP_SHA=31144e465e52ffbc0035248a10ddea61a09bf28b00784fd3fdd9882c8cbb2315
-  matrix:
-    - MODE=default
-    - MODE=breaking
+    - IGNORE_BREAKING_CHANGES=true
 
 matrix:
-  exclude:
-  - go: 1.8.x
-    env: MODE=breaking
-  - go: 1.9.x
-    env: MODE=breaking
-  - go: master
-    env: MODE=breaking
   allow_failures:
-    - env: MODE=breaking
     - go: master
 
 before_install:
@@ -35,16 +25,10 @@ install:
   - dep ensure
 
 script:
-  - >-
-    if [[ $MODE == 'default' ]]; then
-      bash rungas.sh
-      grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
-      test -z "$(go build $(go list ./... | grep -v vendor) | tee /dev/stderr)"
-      test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"
-      go vet $(go list ./... | grep -v vendor)
-      go test $(sh ./findTestedPackages.sh)
-    fi
-  - >-
-    if [[ $MODE == 'breaking' ]]; then
-      go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges
-    fi
+  - bash rungas.sh
+  - grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee /dev/stderr | test -z "$(< /dev/stdin)"
+  - go build $(go list ./... | grep -v vendor)
+  - test -z "$(go fmt $(go list ./... | grep -v vendor) | tee /dev/stderr)"
+  - go vet $(go list ./... | grep -v vendor)
+  - go test $(sh ./findTestedPackages.sh)
+  - go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES

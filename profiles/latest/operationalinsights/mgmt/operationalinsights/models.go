@@ -21,17 +21,22 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string, purgeID string) BaseClient {
-	return original.New(subscriptionID, purgeID)
+func NewOperationsClient(subscriptionID string, purgeID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, purgeID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, purgeID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, purgeID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+type SavedSearchesClient = original.SavedSearchesClient
+
+func NewSavedSearchesClient(subscriptionID string, purgeID string) SavedSearchesClient {
+	return original.NewSavedSearchesClient(subscriptionID, purgeID)
+}
+func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) SavedSearchesClient {
+	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID, purgeID)
 }
 
 type PurgeState = original.PurgeState
@@ -102,32 +107,7 @@ type WorkspacePurgeResponse = original.WorkspacePurgeResponse
 type WorkspacePurgeStatusResponse = original.WorkspacePurgeStatusResponse
 type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
 type WorkspacesPurgeFuture = original.WorkspacesPurgeFuture
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string, purgeID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, purgeID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, purgeID)
-}
-
-type SavedSearchesClient = original.SavedSearchesClient
-
-func NewSavedSearchesClient(subscriptionID string, purgeID string) SavedSearchesClient {
-	return original.NewSavedSearchesClient(subscriptionID, purgeID)
-}
-func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) SavedSearchesClient {
-	return original.NewSavedSearchesClientWithBaseURI(baseURI, subscriptionID, purgeID)
-}
-
-type StorageInsightsClient = original.StorageInsightsClient
-
-func NewStorageInsightsClient(subscriptionID string, purgeID string) StorageInsightsClient {
-	return original.NewStorageInsightsClient(subscriptionID, purgeID)
-}
-func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) StorageInsightsClient {
-	return original.NewStorageInsightsClientWithBaseURI(baseURI, subscriptionID, purgeID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -142,4 +122,26 @@ func NewWorkspacesClient(subscriptionID string, purgeID string) WorkspacesClient
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+type StorageInsightsClient = original.StorageInsightsClient
+
+func NewStorageInsightsClient(subscriptionID string, purgeID string) StorageInsightsClient {
+	return original.NewStorageInsightsClient(subscriptionID, purgeID)
+}
+func NewStorageInsightsClientWithBaseURI(baseURI string, subscriptionID string, purgeID string) StorageInsightsClient {
+	return original.NewStorageInsightsClientWithBaseURI(baseURI, subscriptionID, purgeID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string, purgeID string) BaseClient {
+	return original.New(subscriptionID, purgeID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, purgeID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, purgeID)
 }

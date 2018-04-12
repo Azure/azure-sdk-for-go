@@ -103,6 +103,17 @@ func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
 
+type PriceHidden = original.PriceHidden
+
+const (
+	False PriceHidden = original.False
+	True  PriceHidden = original.True
+)
+
+func PossiblePriceHiddenValues() []PriceHidden {
+	return original.PossiblePriceHiddenValues()
+}
+
 type TimeGrainType = original.TimeGrainType
 
 const (

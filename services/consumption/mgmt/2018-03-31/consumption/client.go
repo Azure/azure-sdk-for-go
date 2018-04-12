@@ -59,32 +59,32 @@ func NewWithBaseURI(baseURI string, billingAccountID string, departmentID string
 	}
 }
 
-// BalancesByBillingAccount gets the balances for a scope by billingAccountId. Balances are available via this API only
-// for May 1, 2014 or later.
-func (client BaseClient) BalancesByBillingAccount(ctx context.Context) (result Balance, err error) {
-	req, err := client.BalancesByBillingAccountPreparer(ctx)
+// GetBalancesByBillingAccount gets the balances for a scope by billingAccountId. Balances are available via this API
+// only for May 1, 2014 or later.
+func (client BaseClient) GetBalancesByBillingAccount(ctx context.Context) (result Balance, err error) {
+	req, err := client.GetBalancesByBillingAccountPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "GetBalancesByBillingAccount", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.BalancesByBillingAccountSender(req)
+	resp, err := client.GetBalancesByBillingAccountSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "GetBalancesByBillingAccount", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.BalancesByBillingAccountResponder(resp)
+	result, err = client.GetBalancesByBillingAccountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "GetBalancesByBillingAccount", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// BalancesByBillingAccountPreparer prepares the BalancesByBillingAccount request.
-func (client BaseClient) BalancesByBillingAccountPreparer(ctx context.Context) (*http.Request, error) {
+// GetBalancesByBillingAccountPreparer prepares the GetBalancesByBillingAccount request.
+func (client BaseClient) GetBalancesByBillingAccountPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
@@ -102,16 +102,16 @@ func (client BaseClient) BalancesByBillingAccountPreparer(ctx context.Context) (
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// BalancesByBillingAccountSender sends the BalancesByBillingAccount request. The method will close the
+// GetBalancesByBillingAccountSender sends the GetBalancesByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) BalancesByBillingAccountSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetBalancesByBillingAccountSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// BalancesByBillingAccountResponder handles the response to the BalancesByBillingAccount request. The method always
+// GetBalancesByBillingAccountResponder handles the response to the GetBalancesByBillingAccount request. The method always
 // closes the http.Response Body.
-func (client BaseClient) BalancesByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
+func (client BaseClient) GetBalancesByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

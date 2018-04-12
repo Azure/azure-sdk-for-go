@@ -91,6 +91,21 @@ func PossibleOperatorTypeValues() []OperatorType {
 	return []OperatorType{EqualTo, GreaterThan, GreaterThanOrEqualTo}
 }
 
+// PriceHidden enumerates the values for price hidden.
+type PriceHidden string
+
+const (
+	// False ...
+	False PriceHidden = "False"
+	// True ...
+	True PriceHidden = "True"
+)
+
+// PossiblePriceHiddenValues returns an array of possible values for the PriceHidden const type.
+func PossiblePriceHiddenValues() []PriceHidden {
+	return []PriceHidden{False, True}
+}
+
 // TimeGrainType enumerates the values for time grain type.
 type TimeGrainType string
 
@@ -229,8 +244,8 @@ type BalanceProperties struct {
 	AzureMarketplaceServiceCharges *decimal.Decimal `json:"azureMarketplaceServiceCharges,omitempty"`
 	// BillingFrequency - The billing frequency. Possible values include: 'Month', 'Quarter', 'Year'
 	BillingFrequency BillingFrequency `json:"billingFrequency,omitempty"`
-	// PriceHidden - Price is hidden or not.
-	PriceHidden *bool `json:"priceHidden,omitempty"`
+	// PriceHidden - Price is hidden or not. Possible values include: 'True', 'False'
+	PriceHidden PriceHidden `json:"priceHidden,omitempty"`
 	// NewPurchasesDetails - List of new purchases.
 	NewPurchasesDetails *[]BalancePropertiesNewPurchasesDetailsItem `json:"newPurchasesDetails,omitempty"`
 	// AdjustmentDetails - List of Adjustments (Promo credit, SIE credit etc.).

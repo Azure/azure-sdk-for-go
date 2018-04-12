@@ -1767,11 +1767,11 @@ type Tag struct {
 
 // TagProperties the properties of the tag.
 type TagProperties struct {
-	// CostTags - Tags.
-	CostTags *[]Tag `json:"costTags,omitempty"`
+	// Tags - Tags.
+	Tags *[]Tag `json:"tags,omitempty"`
 }
 
-// Tags a tag resource.
+// Tags a resource listing all tags.
 type Tags struct {
 	autorest.Response `json:"-"`
 	*TagProperties    `json:"properties,omitempty"`

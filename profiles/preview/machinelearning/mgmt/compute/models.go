@@ -21,28 +21,6 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-08-01-preview/compute"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type MachineLearningComputeClient = original.MachineLearningComputeClient
-
-func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClient(subscriptionID)
-}
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AgentVMSizeTypes = original.AgentVMSizeTypes
 
 const (
@@ -205,6 +183,14 @@ type StorageAccountCredentials = original.StorageAccountCredentials
 type StorageAccountProperties = original.StorageAccountProperties
 type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 
 func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
@@ -213,9 +199,25 @@ func NewOperationalizationClustersClient(subscriptionID string) Operationalizati
 func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
 	return original.NewOperationalizationClustersClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+type MachineLearningComputeClient = original.MachineLearningComputeClient
+
+func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

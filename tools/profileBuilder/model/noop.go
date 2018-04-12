@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package model_test
+package model
 
 // This file intentionally left blank, so that CI from go1.8 and earlier can pass.

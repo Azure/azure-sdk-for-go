@@ -21,17 +21,94 @@ package siterecovery
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type TargetComputeSizesClient = original.TargetComputeSizesClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return original.New(subscriptionID, resourceGroupName, resourceName)
+func NewTargetComputeSizesClient(subscriptionID string, resourceGroupName string, resourceName string) TargetComputeSizesClient {
+	return original.NewTargetComputeSizesClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewTargetComputeSizesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) TargetComputeSizesClient {
+	return original.NewTargetComputeSizesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationPoliciesClient = original.ReplicationPoliciesClient
+
+func NewReplicationPoliciesClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
+	return original.NewReplicationPoliciesClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
+	return original.NewReplicationPoliciesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationVaultHealthClient = original.ReplicationVaultHealthClient
+
+func NewReplicationVaultHealthClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
+	return original.NewReplicationVaultHealthClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationVaultHealthClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
+	return original.NewReplicationVaultHealthClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationProtectedItemsClient = original.ReplicationProtectedItemsClient
+
+func NewReplicationProtectedItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
+	return original.NewReplicationProtectedItemsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
+	return original.NewReplicationProtectedItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationStorageClassificationsClient = original.ReplicationStorageClassificationsClient
+
+func NewReplicationStorageClassificationsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
+	return original.NewReplicationStorageClassificationsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationStorageClassificationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
+	return original.NewReplicationStorageClassificationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationRecoveryServicesProvidersClient = original.ReplicationRecoveryServicesProvidersClient
+
+func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
+	return original.NewReplicationRecoveryServicesProvidersClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
+	return original.NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationJobsClient = original.ReplicationJobsClient
+
+func NewReplicationJobsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
+	return original.NewReplicationJobsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
+	return original.NewReplicationJobsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationProtectableItemsClient = original.ReplicationProtectableItemsClient
+
+func NewReplicationProtectableItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
+	return original.NewReplicationProtectableItemsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationProtectableItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
+	return original.NewReplicationProtectableItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+type ReplicationProtectionContainerMappingsClient = original.ReplicationProtectionContainerMappingsClient
+
+func NewReplicationProtectionContainerMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
+	return original.NewReplicationProtectionContainerMappingsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
+	return original.NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
 type A2ARpRecoveryPointType = original.A2ARpRecoveryPointType
@@ -1108,67 +1185,12 @@ type VMwareDetails = original.VMwareDetails
 type VMwareV2FabricCreationInput = original.VMwareV2FabricCreationInput
 type VMwareV2FabricSpecificDetails = original.VMwareV2FabricSpecificDetails
 type VMwareVirtualMachineDetails = original.VMwareVirtualMachineDetails
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, resourceGroupName, resourceName)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type RecoveryPointsClient = original.RecoveryPointsClient
-
-func NewRecoveryPointsClient(subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
-	return original.NewRecoveryPointsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
-	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationAlertSettingsClient = original.ReplicationAlertSettingsClient
-
-func NewReplicationAlertSettingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
-	return original.NewReplicationAlertSettingsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationAlertSettingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
-	return original.NewReplicationAlertSettingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationEventsClient = original.ReplicationEventsClient
-
-func NewReplicationEventsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
-	return original.NewReplicationEventsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationEventsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
-	return original.NewReplicationEventsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationFabricsClient = original.ReplicationFabricsClient
-
-func NewReplicationFabricsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
-	return original.NewReplicationFabricsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationFabricsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
-	return original.NewReplicationFabricsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationJobsClient = original.ReplicationJobsClient
-
-func NewReplicationJobsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
-	return original.NewReplicationJobsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
-	return original.NewReplicationJobsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationLogicalNetworksClient = original.ReplicationLogicalNetworksClient
-
-func NewReplicationLogicalNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
-	return original.NewReplicationLogicalNetworksClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
-	return original.NewReplicationLogicalNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func Version() string {
+	return original.Version()
 }
 
 type ReplicationNetworkMappingsClient = original.ReplicationNetworkMappingsClient
@@ -1180,49 +1202,31 @@ func NewReplicationNetworkMappingsClientWithBaseURI(baseURI string, subscription
 	return original.NewReplicationNetworkMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-type ReplicationNetworksClient = original.ReplicationNetworksClient
+type ReplicationAlertSettingsClient = original.ReplicationAlertSettingsClient
 
-func NewReplicationNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
-	return original.NewReplicationNetworksClient(subscriptionID, resourceGroupName, resourceName)
+func NewReplicationAlertSettingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
+	return original.NewReplicationAlertSettingsClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewReplicationNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
-	return original.NewReplicationNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationPoliciesClient = original.ReplicationPoliciesClient
-
-func NewReplicationPoliciesClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
-	return original.NewReplicationPoliciesClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
-	return original.NewReplicationPoliciesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewReplicationAlertSettingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
+	return original.NewReplicationAlertSettingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-type ReplicationProtectableItemsClient = original.ReplicationProtectableItemsClient
+type RecoveryPointsClient = original.RecoveryPointsClient
 
-func NewReplicationProtectableItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
-	return original.NewReplicationProtectableItemsClient(subscriptionID, resourceGroupName, resourceName)
+func NewRecoveryPointsClient(subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
+	return original.NewRecoveryPointsClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewReplicationProtectableItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
-	return original.NewReplicationProtectableItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationProtectedItemsClient = original.ReplicationProtectedItemsClient
-
-func NewReplicationProtectedItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
-	return original.NewReplicationProtectedItemsClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
-	return original.NewReplicationProtectedItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
+	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-type ReplicationProtectionContainerMappingsClient = original.ReplicationProtectionContainerMappingsClient
+type ReplicationEventsClient = original.ReplicationEventsClient
 
-func NewReplicationProtectionContainerMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
-	return original.NewReplicationProtectionContainerMappingsClient(subscriptionID, resourceGroupName, resourceName)
+func NewReplicationEventsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
+	return original.NewReplicationEventsClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
-	return original.NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewReplicationEventsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
+	return original.NewReplicationEventsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
 type ReplicationProtectionContainersClient = original.ReplicationProtectionContainersClient
@@ -1234,6 +1238,15 @@ func NewReplicationProtectionContainersClientWithBaseURI(baseURI string, subscri
 	return original.NewReplicationProtectionContainersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
+type ReplicationFabricsClient = original.ReplicationFabricsClient
+
+func NewReplicationFabricsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
+	return original.NewReplicationFabricsClient(subscriptionID, resourceGroupName, resourceName)
+}
+func NewReplicationFabricsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
+	return original.NewReplicationFabricsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
 type ReplicationRecoveryPlansClient = original.ReplicationRecoveryPlansClient
 
 func NewReplicationRecoveryPlansClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryPlansClient {
@@ -1241,15 +1254,6 @@ func NewReplicationRecoveryPlansClient(subscriptionID string, resourceGroupName 
 }
 func NewReplicationRecoveryPlansClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryPlansClient {
 	return original.NewReplicationRecoveryPlansClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type ReplicationRecoveryServicesProvidersClient = original.ReplicationRecoveryServicesProvidersClient
-
-func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
-	return original.NewReplicationRecoveryServicesProvidersClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
-	return original.NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
 type ReplicationStorageClassificationMappingsClient = original.ReplicationStorageClassificationMappingsClient
@@ -1261,22 +1265,35 @@ func NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI string
 	return original.NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-type ReplicationStorageClassificationsClient = original.ReplicationStorageClassificationsClient
+type ReplicationNetworksClient = original.ReplicationNetworksClient
 
-func NewReplicationStorageClassificationsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
-	return original.NewReplicationStorageClassificationsClient(subscriptionID, resourceGroupName, resourceName)
+func NewReplicationNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
+	return original.NewReplicationNetworksClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewReplicationStorageClassificationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
-	return original.NewReplicationStorageClassificationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewReplicationNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
+	return original.NewReplicationNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
-type ReplicationVaultHealthClient = original.ReplicationVaultHealthClient
+type ReplicationLogicalNetworksClient = original.ReplicationLogicalNetworksClient
 
-func NewReplicationVaultHealthClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
-	return original.NewReplicationVaultHealthClient(subscriptionID, resourceGroupName, resourceName)
+func NewReplicationLogicalNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
+	return original.NewReplicationLogicalNetworksClient(subscriptionID, resourceGroupName, resourceName)
 }
-func NewReplicationVaultHealthClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
-	return original.NewReplicationVaultHealthClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
+	return original.NewReplicationLogicalNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
+	return original.New(subscriptionID, resourceGroupName, resourceName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
 
 type ReplicationvCentersClient = original.ReplicationvCentersClient
@@ -1286,19 +1303,4 @@ func NewReplicationvCentersClient(subscriptionID string, resourceGroupName strin
 }
 func NewReplicationvCentersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationvCentersClient {
 	return original.NewReplicationvCentersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
-type TargetComputeSizesClient = original.TargetComputeSizesClient
-
-func NewTargetComputeSizesClient(subscriptionID string, resourceGroupName string, resourceName string) TargetComputeSizesClient {
-	return original.NewTargetComputeSizesClient(subscriptionID, resourceGroupName, resourceName)
-}
-func NewTargetComputeSizesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) TargetComputeSizesClient {
-	return original.NewTargetComputeSizesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

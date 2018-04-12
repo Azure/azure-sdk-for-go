@@ -21,26 +21,22 @@ package streamanalytics
 
 import original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type FunctionsClient = original.FunctionsClient
+type TransformationsClient = original.TransformationsClient
 
-func NewFunctionsClient(subscriptionID string) FunctionsClient {
-	return original.NewFunctionsClient(subscriptionID)
+func NewTransformationsClient(subscriptionID string) TransformationsClient {
+	return original.NewTransformationsClient(subscriptionID)
 }
-func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) FunctionsClient {
-	return original.NewFunctionsClientWithBaseURI(baseURI, subscriptionID)
+func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) TransformationsClient {
+	return original.NewTransformationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type InputsClient = original.InputsClient
@@ -353,13 +349,28 @@ type SubscriptionQuotaProperties = original.SubscriptionQuotaProperties
 type SubscriptionQuotasListResult = original.SubscriptionQuotasListResult
 type Transformation = original.Transformation
 type TransformationProperties = original.TransformationProperties
-type OperationsClient = original.OperationsClient
+type FunctionsClient = original.FunctionsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewFunctionsClient(subscriptionID string) FunctionsClient {
+	return original.NewFunctionsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) FunctionsClient {
+	return original.NewFunctionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type SubscriptionsClient = original.SubscriptionsClient
+
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
+}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 
 type OutputsClient = original.OutputsClient
@@ -380,26 +391,15 @@ func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) St
 	return original.NewStreamingJobsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type SubscriptionsClient = original.SubscriptionsClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(subscriptionID)
-}
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
+type BaseClient = original.BaseClient
 
-type TransformationsClient = original.TransformationsClient
-
-func NewTransformationsClient(subscriptionID string) TransformationsClient {
-	return original.NewTransformationsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) TransformationsClient {
-	return original.NewTransformationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

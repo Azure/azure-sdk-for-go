@@ -33394,6 +33394,18 @@ type FactoryProperties struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - Version of the factory.
 	Version *string `json:"version,omitempty"`
+	// VstsConfiguration - VSTS repo information of the factory.
+	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
+}
+
+// FactoryRepoUpdate factory's VSTS repo information.
+type FactoryRepoUpdate struct {
+	// FactoryID - The factory id.
+	FactoryID *string `json:"factoryId,omitempty"`
+	// ResourceGroupName - The resource group name.
+	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	// VstsConfiguration - VSTS repo information of the factory.
+	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
 }
 
 // FactoryUpdateParameters parameters for updating a factory resource.
@@ -33414,6 +33426,24 @@ func (fup FactoryUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap["identity"] = fup.Identity
 	}
 	return json.Marshal(objectMap)
+}
+
+// FactoryVSTSConfiguration factory's VSTS repo information.
+type FactoryVSTSConfiguration struct {
+	// AccountName - VSTS account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// ProjectName - VSTS project name.
+	ProjectName *string `json:"projectName,omitempty"`
+	// RepositoryName - VSTS repository name.
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// CollaborationBranch - VSTS collaboration branch.
+	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	// RootFolder - VSTS root folder.
+	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - VSTS last commit id.
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// TenantID - VSTS tenant id.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // FileServerLinkedService file system linked service.

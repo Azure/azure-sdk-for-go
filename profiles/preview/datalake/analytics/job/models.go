@@ -21,17 +21,10 @@ package job
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2017-09-01-preview/job"
 
-const (
-	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
-)
+type PipelineClient = original.PipelineClient
 
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaJobDNSSuffix)
+func NewPipelineClient() PipelineClient {
+	return original.NewPipelineClient()
 }
 
 type Client = original.Client
@@ -194,12 +187,6 @@ type UpdateFuture = original.UpdateFuture
 type UpdateJobParameters = original.UpdateJobParameters
 type USQLJobProperties = original.USQLJobProperties
 type YieldFuture = original.YieldFuture
-type PipelineClient = original.PipelineClient
-
-func NewPipelineClient() PipelineClient {
-	return original.NewPipelineClient()
-}
-
 type RecurrenceClient = original.RecurrenceClient
 
 func NewRecurrenceClient() RecurrenceClient {
@@ -210,4 +197,17 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaJobDNSSuffix)
 }

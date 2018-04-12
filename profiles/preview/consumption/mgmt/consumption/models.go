@@ -21,6 +21,42 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-03-31/consumption"
 
+type TagsClient = original.TagsClient
+
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
+}
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type PriceSheetClient = original.PriceSheetClient
+
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
+}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ReservationsSummariesClient = original.ReservationsSummariesClient
+
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClient(subscriptionID)
+}
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type BudgetsClient = original.BudgetsClient
 
 func NewBudgetsClient(subscriptionID string) BudgetsClient {
@@ -30,35 +66,13 @@ func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsC
 	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type CostTagsClient = original.CostTagsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewCostTagsClient(subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type CostAllocationTagsClient = original.CostAllocationTagsClient
-
-func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClient(subscriptionID)
-}
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type MarketplacesClient = original.MarketplacesClient
-
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClient(subscriptionID)
-}
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
+func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type CategoryType = original.CategoryType
@@ -113,9 +127,9 @@ type BudgetsListResult = original.BudgetsListResult
 type BudgetsListResultIterator = original.BudgetsListResultIterator
 type BudgetsListResultPage = original.BudgetsListResultPage
 type BudgetTimePeriod = original.BudgetTimePeriod
-type CostAllocationTag = original.CostAllocationTag
-type CostAllocationTagProperties = original.CostAllocationTagProperties
-type CostAllocationTags = original.CostAllocationTags
+type CostTag = original.CostTag
+type CostTagProperties = original.CostTagProperties
+type CostTags = original.CostTags
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -153,27 +167,20 @@ type ReservationSummariesListResultPage = original.ReservationSummariesListResul
 type ReservationSummariesProperties = original.ReservationSummariesProperties
 type Resource = original.Resource
 type ResourceAttributes = original.ResourceAttributes
+type Tag = original.Tag
+type TagProperties = original.TagProperties
+type Tags = original.Tags
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type PriceSheetClient = original.PriceSheetClient
-
-func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClient(subscriptionID)
-}
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 
 type ReservationRecommendationsClient = original.ReservationRecommendationsClient
@@ -185,22 +192,13 @@ func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscription
 	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ReservationsDetailsClient = original.ReservationsDetailsClient
+type MarketplacesClient = original.MarketplacesClient
 
-func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID)
+func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClient(subscriptionID)
 }
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-
-func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(subscriptionID)
-}
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type UsageDetailsClient = original.UsageDetailsClient
@@ -211,9 +209,25 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID)
+}
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }

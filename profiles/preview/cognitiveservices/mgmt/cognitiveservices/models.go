@@ -23,20 +23,20 @@ import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mg
 
 type AccountsClient = original.AccountsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
+func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID, filter)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
 
-func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID)
+func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
 }
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 
 const (
@@ -45,11 +45,11 @@ const (
 
 type BaseClient = original.BaseClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, filter string) BaseClient {
+	return original.New(subscriptionID, filter)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
 }
 
 type KeyName = original.KeyName
@@ -117,28 +117,6 @@ const (
 
 func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	return original.PossibleQuotaUsageStatusValues()
-}
-
-type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
-
-const (
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
-	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
-)
-
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
-}
-
-type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
-
-const (
-	Location ResourceSkuRestrictionsType = original.Location
-	Zone     ResourceSkuRestrictionsType = original.Zone
-)
-
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
 
 type SkuName = original.SkuName
@@ -211,31 +189,16 @@ type OperationEntityListResultIterator = original.OperationEntityListResultItera
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
-type ResourceSku = original.ResourceSku
-type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
-type ResourceSkuRestrictions = original.ResourceSkuRestrictions
-type ResourceSkusResult = original.ResourceSkusResult
-type ResourceSkusResultIterator = original.ResourceSkusResultIterator
-type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, filter)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ResourceSkusClient = original.ResourceSkusClient
-
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

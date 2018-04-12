@@ -95,7 +95,6 @@ type SkuNameEnum = original.SkuNameEnum
 
 const (
 	Free       SkuNameEnum = original.Free
-	PerGB2018  SkuNameEnum = original.PerGB2018
 	PerNode    SkuNameEnum = original.PerNode
 	Premium    SkuNameEnum = original.Premium
 	Standalone SkuNameEnum = original.Standalone

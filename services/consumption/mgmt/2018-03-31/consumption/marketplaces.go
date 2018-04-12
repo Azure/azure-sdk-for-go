@@ -32,17 +32,17 @@ type MarketplacesClient struct {
 }
 
 // NewMarketplacesClient creates an instance of the MarketplacesClient client.
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewMarketplacesClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesClient {
+	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
 }
 
 // NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client.
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewMarketplacesClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesClient {
+	return MarketplacesClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
 }
 
-// List lists the marketplaces for a scope by subscriptionId. Marketplaces are available via this API only for May 1,
-// 2014 or later.
+// List lists the marketplaces for a scope by subscriptionId and current billing period. Marketplaces are available via
+// this API only for May 1, 2014 or later.
 //
 // filter is may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
 // time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',

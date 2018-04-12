@@ -21,7 +21,10 @@ package consumption
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"net/http"
 )
 
 const (
@@ -32,20 +35,89 @@ const (
 // BaseClient is the base client for Consumption.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI             string
+	BillingAccountID    string
+	DepartmentID        string
+	EnrollmentAccountID string
+	SubscriptionID      string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:              autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:             baseURI,
+		BillingAccountID:    billingAccountID,
+		DepartmentID:        departmentID,
+		EnrollmentAccountID: enrollmentAccountID,
+		SubscriptionID:      subscriptionID,
 	}
+}
+
+// BalancesByBillingAccount gets the balances for a scope by billingAccountId. Balances are available via this API only
+// for May 1, 2014 or later.
+func (client BaseClient) BalancesByBillingAccount(ctx context.Context) (result Balance, err error) {
+	req, err := client.BalancesByBillingAccountPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.BalancesByBillingAccountSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.BalancesByBillingAccountResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "BalancesByBillingAccount", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// BalancesByBillingAccountPreparer prepares the BalancesByBillingAccount request.
+func (client BaseClient) BalancesByBillingAccountPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
+	}
+
+	const APIVersion = "2018-03-31"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/balances", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BalancesByBillingAccountSender sends the BalancesByBillingAccount request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) BalancesByBillingAccountSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// BalancesByBillingAccountResponder handles the response to the BalancesByBillingAccount request. The method always
+// closes the http.Response Body.
+func (client BaseClient) BalancesByBillingAccountResponder(resp *http.Response) (result Balance, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

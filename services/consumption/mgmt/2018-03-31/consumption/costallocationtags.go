@@ -31,23 +31,22 @@ type CostAllocationTagsClient struct {
 }
 
 // NewCostAllocationTagsClient creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
-	return NewCostAllocationTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCostAllocationTagsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostAllocationTagsClient {
+	return NewCostAllocationTagsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
 }
 
 // NewCostAllocationTagsClientWithBaseURI creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
-	return CostAllocationTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCostAllocationTagsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostAllocationTagsClient {
+	return CostAllocationTagsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update cost allocation tags assiciated with a billing account. Update
 // operation requires latest eTag to be set in the request mandatorily. You may obtain the latest eTag by performing a
 // get operation. Create operation does not require eTag.
 //
-// billingAccountID is azure Billing Account ID. parameters is parameters supplied to the Create cost allocation
-// tags operation.
-func (client CostAllocationTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostAllocationTags) (result CostAllocationTags, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, billingAccountID, parameters)
+// parameters is parameters supplied to the Create cost allocation tags operation.
+func (client CostAllocationTagsClient) CreateOrUpdate(ctx context.Context, parameters CostAllocationTags) (result CostAllocationTags, err error) {
+	req, err := client.CreateOrUpdatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -69,9 +68,9 @@ func (client CostAllocationTagsClient) CreateOrUpdate(ctx context.Context, billi
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostAllocationTags) (*http.Request, error) {
+func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Context, parameters CostAllocationTags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -110,10 +109,8 @@ func (client CostAllocationTagsClient) CreateOrUpdateResponder(resp *http.Respon
 }
 
 // Get get cost allocation tags for a billing account.
-//
-// billingAccountID is azure Billing Account ID.
-func (client CostAllocationTagsClient) Get(ctx context.Context, billingAccountID string) (result CostAllocationTags, err error) {
-	req, err := client.GetPreparer(ctx, billingAccountID)
+func (client CostAllocationTagsClient) Get(ctx context.Context) (result CostAllocationTags, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", nil, "Failure preparing request")
 		return
@@ -135,9 +132,9 @@ func (client CostAllocationTagsClient) Get(ctx context.Context, billingAccountID
 }
 
 // GetPreparer prepares the Get request.
-func (client CostAllocationTagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client CostAllocationTagsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"

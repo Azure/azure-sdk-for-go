@@ -32,13 +32,13 @@ type IntegrationRuntimesClient struct {
 }
 
 // NewIntegrationRuntimesClient creates an instance of the IntegrationRuntimesClient client.
-func NewIntegrationRuntimesClient(subscriptionID string, locationID string) IntegrationRuntimesClient {
-	return NewIntegrationRuntimesClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
+	return NewIntegrationRuntimesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIntegrationRuntimesClientWithBaseURI creates an instance of the IntegrationRuntimesClient client.
-func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string, locationID string) IntegrationRuntimesClient {
-	return IntegrationRuntimesClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
+	return IntegrationRuntimesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an integration runtime.

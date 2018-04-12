@@ -32,13 +32,13 @@ type LinkedServicesClient struct {
 }
 
 // NewLinkedServicesClient creates an instance of the LinkedServicesClient client.
-func NewLinkedServicesClient(subscriptionID string, locationID string) LinkedServicesClient {
-	return NewLinkedServicesClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return NewLinkedServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewLinkedServicesClientWithBaseURI creates an instance of the LinkedServicesClient client.
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string, locationID string) LinkedServicesClient {
-	return LinkedServicesClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return LinkedServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a linked service.

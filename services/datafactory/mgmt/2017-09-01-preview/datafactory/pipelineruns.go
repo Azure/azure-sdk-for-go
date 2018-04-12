@@ -32,13 +32,13 @@ type PipelineRunsClient struct {
 }
 
 // NewPipelineRunsClient creates an instance of the PipelineRunsClient client.
-func NewPipelineRunsClient(subscriptionID string, locationID string) PipelineRunsClient {
-	return NewPipelineRunsClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
+	return NewPipelineRunsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPipelineRunsClientWithBaseURI creates an instance of the PipelineRunsClient client.
-func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string, locationID string) PipelineRunsClient {
-	return PipelineRunsClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
+	return PipelineRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get get a pipeline run by its run ID.

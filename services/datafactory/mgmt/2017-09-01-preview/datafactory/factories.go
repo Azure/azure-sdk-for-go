@@ -32,13 +32,13 @@ type FactoriesClient struct {
 }
 
 // NewFactoriesClient creates an instance of the FactoriesClient client.
-func NewFactoriesClient(subscriptionID string, locationID string) FactoriesClient {
-	return NewFactoriesClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewFactoriesClient(subscriptionID string) FactoriesClient {
+	return NewFactoriesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewFactoriesClientWithBaseURI creates an instance of the FactoriesClient client.
-func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string, locationID string) FactoriesClient {
-	return FactoriesClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string) FactoriesClient {
+	return FactoriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CancelPipelineRun cancel a pipeline run by its run ID.

@@ -31,20 +31,20 @@ type ConfigureFactoryRepoClient struct {
 }
 
 // NewConfigureFactoryRepoClient creates an instance of the ConfigureFactoryRepoClient client.
-func NewConfigureFactoryRepoClient(subscriptionID string, locationID string) ConfigureFactoryRepoClient {
-	return NewConfigureFactoryRepoClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewConfigureFactoryRepoClient(subscriptionID string) ConfigureFactoryRepoClient {
+	return NewConfigureFactoryRepoClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewConfigureFactoryRepoClientWithBaseURI creates an instance of the ConfigureFactoryRepoClient client.
-func NewConfigureFactoryRepoClientWithBaseURI(baseURI string, subscriptionID string, locationID string) ConfigureFactoryRepoClient {
-	return ConfigureFactoryRepoClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewConfigureFactoryRepoClientWithBaseURI(baseURI string, subscriptionID string) ConfigureFactoryRepoClient {
+	return ConfigureFactoryRepoClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Update updates a factory's repo information.
 //
-// factoryRepoUpdate is update factory repo request definition.
-func (client ConfigureFactoryRepoClient) Update(ctx context.Context, factoryRepoUpdate FactoryRepoUpdate) (result Factory, err error) {
-	req, err := client.UpdatePreparer(ctx, factoryRepoUpdate)
+// locationID is the location identifier. factoryRepoUpdate is update factory repo request definition.
+func (client ConfigureFactoryRepoClient) Update(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate) (result Factory, err error) {
+	req, err := client.UpdatePreparer(ctx, locationID, factoryRepoUpdate)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.ConfigureFactoryRepoClient", "Update", nil, "Failure preparing request")
 		return
@@ -66,9 +66,9 @@ func (client ConfigureFactoryRepoClient) Update(ctx context.Context, factoryRepo
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ConfigureFactoryRepoClient) UpdatePreparer(ctx context.Context, factoryRepoUpdate FactoryRepoUpdate) (*http.Request, error) {
+func (client ConfigureFactoryRepoClient) UpdatePreparer(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"locationId":     autorest.Encode("path", client.LocationID),
+		"locationId":     autorest.Encode("path", locationID),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 

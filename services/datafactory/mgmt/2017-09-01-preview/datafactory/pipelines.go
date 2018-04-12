@@ -32,13 +32,13 @@ type PipelinesClient struct {
 }
 
 // NewPipelinesClient creates an instance of the PipelinesClient client.
-func NewPipelinesClient(subscriptionID string, locationID string) PipelinesClient {
-	return NewPipelinesClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewPipelinesClient(subscriptionID string) PipelinesClient {
+	return NewPipelinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPipelinesClientWithBaseURI creates an instance of the PipelinesClient client.
-func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string, locationID string) PipelinesClient {
-	return PipelinesClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
+	return PipelinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a pipeline.

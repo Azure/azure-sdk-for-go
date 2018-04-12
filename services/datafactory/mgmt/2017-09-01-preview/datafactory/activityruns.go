@@ -33,13 +33,13 @@ type ActivityRunsClient struct {
 }
 
 // NewActivityRunsClient creates an instance of the ActivityRunsClient client.
-func NewActivityRunsClient(subscriptionID string, locationID string) ActivityRunsClient {
-	return NewActivityRunsClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
+	return NewActivityRunsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewActivityRunsClientWithBaseURI creates an instance of the ActivityRunsClient client.
-func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string, locationID string) ActivityRunsClient {
-	return ActivityRunsClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
+	return ActivityRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByPipelineRun list activity runs based on input filter conditions.

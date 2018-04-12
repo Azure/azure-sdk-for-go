@@ -33,13 +33,13 @@ type TriggersClient struct {
 }
 
 // NewTriggersClient creates an instance of the TriggersClient client.
-func NewTriggersClient(subscriptionID string, locationID string) TriggersClient {
-	return NewTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID, locationID)
+func NewTriggersClient(subscriptionID string) TriggersClient {
+	return NewTriggersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTriggersClientWithBaseURI creates an instance of the TriggersClient client.
-func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string, locationID string) TriggersClient {
-	return TriggersClient{NewWithBaseURI(baseURI, subscriptionID, locationID)}
+func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) TriggersClient {
+	return TriggersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a trigger.

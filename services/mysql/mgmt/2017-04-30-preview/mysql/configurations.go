@@ -25,7 +25,8 @@ import (
 )
 
 // ConfigurationsClient is the the Microsoft Azure management API provides create, read, update, and delete
-// functionality for Azure MySQL resources including servers, databases, firewall rules, log files and configurations.
+// functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and
+// configurations.
 type ConfigurationsClient struct {
 	BaseClient
 }

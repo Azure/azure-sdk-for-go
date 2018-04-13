@@ -21,19 +21,6 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-10-01-preview/sql"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 
 func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
@@ -41,15 +28,6 @@ func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient
 }
 func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
 	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
-
-func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClient(subscriptionID)
-}
-func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ManagementOperationState = original.ManagementOperationState
@@ -85,4 +63,26 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
+
+func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClient(subscriptionID)
+}
+func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

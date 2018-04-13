@@ -21,35 +21,13 @@ package timeseriesinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
-type AccessPoliciesClient = original.AccessPoliciesClient
+type OperationsClient = original.OperationsClient
 
-func NewAccessPoliciesClient(subscriptionID string) AccessPoliciesClient {
-	return original.NewAccessPoliciesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AccessPoliciesClient {
-	return original.NewAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type EnvironmentsClient = original.EnvironmentsClient
-
-func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClient(subscriptionID)
-}
-func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
-	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type EventSourcesClient = original.EventSourcesClient
@@ -59,6 +37,15 @@ func NewEventSourcesClient(subscriptionID string) EventSourcesClient {
 }
 func NewEventSourcesClientWithBaseURI(baseURI string, subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AccessPoliciesClient = original.AccessPoliciesClient
+
+func NewAccessPoliciesClient(subscriptionID string) AccessPoliciesClient {
+	return original.NewAccessPoliciesClient(subscriptionID)
+}
+func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AccessPoliciesClient {
+	return original.NewAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AccessPolicyRole = original.AccessPolicyRole
@@ -133,6 +120,16 @@ func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
 	return original.PossibleLocalTimestampFormatValues()
 }
 
+type PropertyType = original.PropertyType
+
+const (
+	String PropertyType = original.String
+)
+
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
+}
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -151,10 +148,10 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyType
 
 const (
-	Bool     ReferenceDataKeyPropertyType = original.Bool
-	DateTime ReferenceDataKeyPropertyType = original.DateTime
-	Double   ReferenceDataKeyPropertyType = original.Double
-	String   ReferenceDataKeyPropertyType = original.String
+	ReferenceDataKeyPropertyTypeBool     ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeBool
+	ReferenceDataKeyPropertyTypeDateTime ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeDateTime
+	ReferenceDataKeyPropertyTypeDouble   ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeDouble
+	ReferenceDataKeyPropertyTypeString   ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeString
 )
 
 func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
@@ -235,6 +232,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type PartitionKeyProperty = original.PartitionKeyProperty
 type ReferenceDataSetCreateOrUpdateParameters = original.ReferenceDataSetCreateOrUpdateParameters
 type ReferenceDataSetCreationProperties = original.ReferenceDataSetCreationProperties
 type ReferenceDataSetKeyProperty = original.ReferenceDataSetKeyProperty
@@ -246,13 +244,34 @@ type Resource = original.Resource
 type ResourceProperties = original.ResourceProperties
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+
+type EnvironmentsClient = original.EnvironmentsClient
+
+func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClient(subscriptionID)
+}
+func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
+	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 
 type ReferenceDataSetsClient = original.ReferenceDataSetsClient
@@ -262,10 +281,4 @@ func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
 }
 func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ReferenceDataSetsClient {
 	return original.NewReferenceDataSetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

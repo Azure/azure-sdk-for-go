@@ -21,17 +21,22 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ReservationsSummariesClient = original.ReservationsSummariesClient
+
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClient(subscriptionID)
+}
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type Datagrain = original.Datagrain
@@ -65,31 +70,12 @@ type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-
-func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID)
-}
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-
-func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(subscriptionID)
-}
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 
 type UsageDetailsClient = original.UsageDetailsClient
@@ -100,9 +86,25 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID)
+}
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }

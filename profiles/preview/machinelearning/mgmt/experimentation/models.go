@@ -21,26 +21,13 @@ package experimentation
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-05-01-preview/experimentation"
 
-type AccountsClient = original.AccountsClient
+type OperationsClient = original.OperationsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ProvisioningState = original.ProvisioningState
@@ -84,13 +71,12 @@ type WorkspaceListResultPage = original.WorkspaceListResultPage
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdateParameters
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 
 type ProjectsClient = original.ProjectsClient
@@ -101,12 +87,6 @@ func NewProjectsClient(subscriptionID string) ProjectsClient {
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
 	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
 
 type WorkspacesClient = original.WorkspacesClient
 
@@ -115,4 +95,26 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type AccountsClient = original.AccountsClient
+
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

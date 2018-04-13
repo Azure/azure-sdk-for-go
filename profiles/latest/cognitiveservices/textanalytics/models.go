@@ -21,15 +21,6 @@ package textanalytics
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/textanalytics"
 
-type BaseClient = original.BaseClient
-
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-
 type AzureRegions = original.AzureRegions
 
 const (
@@ -71,4 +62,13 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type BaseClient = original.BaseClient
+
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
 }

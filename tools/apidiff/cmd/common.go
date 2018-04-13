@@ -19,7 +19,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -203,7 +202,7 @@ func processArgsAndClone(args []string) (cln repo.WorkingTree, err error) {
 		return
 	}
 
-	tempRepoDir := path.Join(os.TempDir(), fmt.Sprintf("apidiff-%v", time.Now().Unix()))
+	tempRepoDir := filepath.Join(os.TempDir(), fmt.Sprintf("apidiff-%v", time.Now().Unix()))
 	if copyRepoFlag {
 		vprintf("copying '%s' into '%s'...\n", src.Root(), tempRepoDir)
 		err = ioext.CopyDir(src.Root(), tempRepoDir)

@@ -21,6 +21,15 @@ package logic
 
 import original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic"
 
+type WorkflowRunsClient = original.WorkflowRunsClient
+
+func NewWorkflowRunsClient(subscriptionID string) WorkflowRunsClient {
+	return original.NewWorkflowRunsClient(subscriptionID)
+}
+func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunsClient {
+	return original.NewWorkflowRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type AgreementsClient = original.AgreementsClient
 
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
@@ -30,44 +39,58 @@ func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) Agree
 	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type CertificatesClient = original.CertificatesClient
+type SchemasClient = original.SchemasClient
 
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
+func NewSchemasClient(subscriptionID string) SchemasClient {
+	return original.NewSchemasClient(subscriptionID)
 }
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewSchemasClientWithBaseURI(baseURI string, subscriptionID string) SchemasClient {
+	return original.NewSchemasClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type IntegrationAccountsClient = original.IntegrationAccountsClient
+type SessionsClient = original.SessionsClient
 
-func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClient(subscriptionID)
+func NewSessionsClient(subscriptionID string) SessionsClient {
+	return original.NewSessionsClient(subscriptionID)
 }
-func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewSessionsClientWithBaseURI(baseURI string, subscriptionID string) SessionsClient {
+	return original.NewSessionsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type MapsClient = original.MapsClient
+type WorkflowTriggersClient = original.WorkflowTriggersClient
 
-func NewMapsClient(subscriptionID string) MapsClient {
-	return original.NewMapsClient(subscriptionID)
+func NewWorkflowTriggersClient(subscriptionID string) WorkflowTriggersClient {
+	return original.NewWorkflowTriggersClient(subscriptionID)
 }
-func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
-	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
+func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggersClient {
+	return original.NewWorkflowTriggersClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WorkflowRunActionsClient = original.WorkflowRunActionsClient
+
+func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
+	return original.NewWorkflowRunActionsClient(subscriptionID)
+}
+func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsClient {
+	return original.NewWorkflowRunActionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type PartnersClient = original.PartnersClient
+
+func NewPartnersClient(subscriptionID string) PartnersClient {
+	return original.NewPartnersClient(subscriptionID)
+}
+func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) PartnersClient {
+	return original.NewPartnersClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WorkflowsClient = original.WorkflowsClient
+
+func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
+	return original.NewWorkflowsClient(subscriptionID)
+}
+func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
+	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type AgreementType = original.AgreementType
@@ -636,31 +659,13 @@ type X12SchemaReference = original.X12SchemaReference
 type X12SecuritySettings = original.X12SecuritySettings
 type X12ValidationOverride = original.X12ValidationOverride
 type X12ValidationSettings = original.X12ValidationSettings
-type PartnersClient = original.PartnersClient
+type WorkflowVersionsClient = original.WorkflowVersionsClient
 
-func NewPartnersClient(subscriptionID string) PartnersClient {
-	return original.NewPartnersClient(subscriptionID)
+func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
+	return original.NewWorkflowVersionsClient(subscriptionID)
 }
-func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) PartnersClient {
-	return original.NewPartnersClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type SchemasClient = original.SchemasClient
-
-func NewSchemasClient(subscriptionID string) SchemasClient {
-	return original.NewSchemasClient(subscriptionID)
-}
-func NewSchemasClientWithBaseURI(baseURI string, subscriptionID string) SchemasClient {
-	return original.NewSchemasClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type SessionsClient = original.SessionsClient
-
-func NewSessionsClient(subscriptionID string) SessionsClient {
-	return original.NewSessionsClient(subscriptionID)
-}
-func NewSessionsClientWithBaseURI(baseURI string, subscriptionID string) SessionsClient {
-	return original.NewSessionsClientWithBaseURI(baseURI, subscriptionID)
+func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsClient {
+	return original.NewWorkflowVersionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -669,31 +674,13 @@ func Version() string {
 	return original.Version()
 }
 
-type WorkflowRunActionsClient = original.WorkflowRunActionsClient
+type CertificatesClient = original.CertificatesClient
 
-func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
-	return original.NewWorkflowRunActionsClient(subscriptionID)
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
 }
-func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsClient {
-	return original.NewWorkflowRunActionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type WorkflowRunsClient = original.WorkflowRunsClient
-
-func NewWorkflowRunsClient(subscriptionID string) WorkflowRunsClient {
-	return original.NewWorkflowRunsClient(subscriptionID)
-}
-func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunsClient {
-	return original.NewWorkflowRunsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type WorkflowsClient = original.WorkflowsClient
-
-func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
-	return original.NewWorkflowsClient(subscriptionID)
-}
-func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
-	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
@@ -705,20 +692,33 @@ func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID
 	return original.NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type WorkflowTriggersClient = original.WorkflowTriggersClient
+type IntegrationAccountsClient = original.IntegrationAccountsClient
 
-func NewWorkflowTriggersClient(subscriptionID string) WorkflowTriggersClient {
-	return original.NewWorkflowTriggersClient(subscriptionID)
+func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClient(subscriptionID)
 }
-func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggersClient {
-	return original.NewWorkflowTriggersClientWithBaseURI(baseURI, subscriptionID)
+func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type WorkflowVersionsClient = original.WorkflowVersionsClient
+type MapsClient = original.MapsClient
 
-func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
-	return original.NewWorkflowVersionsClient(subscriptionID)
+func NewMapsClient(subscriptionID string) MapsClient {
+	return original.NewMapsClient(subscriptionID)
 }
-func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowVersionsClient {
-	return original.NewWorkflowVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
+	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

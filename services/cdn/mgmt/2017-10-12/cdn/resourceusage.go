@@ -31,13 +31,13 @@ type ResourceUsageClient struct {
 }
 
 // NewResourceUsageClient creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
-	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewResourceUsageClient(subscriptionID string, resourceGroupName string) ResourceUsageClient {
+	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
 }
 
 // NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
-	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) ResourceUsageClient {
+	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
 // List check the quota and actual usage of the CDN profiles under the given subscription.

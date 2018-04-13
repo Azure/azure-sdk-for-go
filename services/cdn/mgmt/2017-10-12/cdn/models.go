@@ -25,6 +25,21 @@ import (
 	"net/http"
 )
 
+// Action enumerates the values for action.
+type Action string
+
+const (
+	// Allow ...
+	Allow Action = "Allow"
+	// Block ...
+	Block Action = "Block"
+)
+
+// PossibleActionValues returns an array of possible values for the Action const type.
+func PossibleActionValues() []Action {
+	return []Action{Allow, Block}
+}
+
 // CacheBehavior enumerates the values for cache behavior.
 type CacheBehavior string
 
@@ -132,21 +147,6 @@ const (
 // PossibleEndpointResourceStateValues returns an array of possible values for the EndpointResourceState const type.
 func PossibleEndpointResourceStateValues() []EndpointResourceState {
 	return []EndpointResourceState{EndpointResourceStateCreating, EndpointResourceStateDeleting, EndpointResourceStateRunning, EndpointResourceStateStarting, EndpointResourceStateStopped, EndpointResourceStateStopping}
-}
-
-// GeoFilterActions enumerates the values for geo filter actions.
-type GeoFilterActions string
-
-const (
-	// Allow ...
-	Allow GeoFilterActions = "Allow"
-	// Block ...
-	Block GeoFilterActions = "Block"
-)
-
-// PossibleGeoFilterActionsValues returns an array of possible values for the GeoFilterActions const type.
-func PossibleGeoFilterActionsValues() []GeoFilterActions {
-	return []GeoFilterActions{Allow, Block}
 }
 
 // MatchType enumerates the values for match type.
@@ -1948,7 +1948,7 @@ type GeoFilter struct {
 	// RelativePath - Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
 	RelativePath *string `json:"relativePath,omitempty"`
 	// Action - Action of the geo filter, i.e. allow or block access. Possible values include: 'Block', 'Allow'
-	Action GeoFilterActions `json:"action,omitempty"`
+	Action Action `json:"action,omitempty"`
 	// CountryCodes - Two letter country codes defining user country access in a geo filter, e.g. AU, MX, US.
 	CountryCodes *[]string `json:"countryCodes,omitempty"`
 }

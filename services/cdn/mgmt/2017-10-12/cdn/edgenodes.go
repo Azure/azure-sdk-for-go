@@ -31,13 +31,13 @@ type EdgeNodesClient struct {
 }
 
 // NewEdgeNodesClient creates an instance of the EdgeNodesClient client.
-func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
-	return NewEdgeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewEdgeNodesClient(subscriptionID string, resourceGroupName string) EdgeNodesClient {
+	return NewEdgeNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
 }
 
 // NewEdgeNodesClientWithBaseURI creates an instance of the EdgeNodesClient client.
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
-	return EdgeNodesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) EdgeNodesClient {
+	return EdgeNodesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
 // List edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.

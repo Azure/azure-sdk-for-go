@@ -21,25 +21,6 @@ package filesystem
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/2016-11-01/filesystem"
 
-const (
-	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
-)
-
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
-}
-
-type Client = original.Client
-
-func NewClient() Client {
-	return original.NewClient()
-}
-
 type AppendModeType = original.AppendModeType
 
 const (
@@ -135,4 +116,23 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type Client = original.Client
+
+func NewClient() Client {
+	return original.NewClient()
+}
+
+const (
+	DefaultAdlsFileSystemDNSSuffix = original.DefaultAdlsFileSystemDNSSuffix
+)
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
 }

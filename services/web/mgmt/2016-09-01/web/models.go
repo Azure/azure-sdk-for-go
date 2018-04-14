@@ -11218,6 +11218,8 @@ type MigrateMySQLStatusProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 	// LocalMySQLEnabled - True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+	// HTTP20Enabled - Is HTTP2 enabled?
+	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 }
 
 // MSDeploy mSDeploy ARM PUT information
@@ -16779,8 +16781,6 @@ type SitePatchResourceProperties struct {
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
-	// HTTP20Enabled - Is HTTP2 enabled?
-	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 }
 
 // SitePhpErrorLogFlag used for getting PHP error logging flag.

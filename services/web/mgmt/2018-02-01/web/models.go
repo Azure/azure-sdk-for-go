@@ -135,6 +135,8 @@ type BackupRestoreOperationType string
 const (
 	// BackupRestoreOperationTypeClone ...
 	BackupRestoreOperationTypeClone BackupRestoreOperationType = "Clone"
+	// BackupRestoreOperationTypeCloudFS ...
+	BackupRestoreOperationTypeCloudFS BackupRestoreOperationType = "CloudFS"
 	// BackupRestoreOperationTypeDefault ...
 	BackupRestoreOperationTypeDefault BackupRestoreOperationType = "Default"
 	// BackupRestoreOperationTypeRelocation ...
@@ -145,7 +147,7 @@ const (
 
 // PossibleBackupRestoreOperationTypeValues returns an array of possible values for the BackupRestoreOperationType const type.
 func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
-	return []BackupRestoreOperationType{BackupRestoreOperationTypeClone, BackupRestoreOperationTypeDefault, BackupRestoreOperationTypeRelocation, BackupRestoreOperationTypeSnapshot}
+	return []BackupRestoreOperationType{BackupRestoreOperationTypeClone, BackupRestoreOperationTypeCloudFS, BackupRestoreOperationTypeDefault, BackupRestoreOperationTypeRelocation, BackupRestoreOperationTypeSnapshot}
 }
 
 // BuiltInAuthenticationProvider enumerates the values for built in authentication provider.
@@ -737,11 +739,13 @@ type ManagedServiceIdentityType string
 const (
 	// SystemAssigned ...
 	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// UserAssigned ...
+	UserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns an array of possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{SystemAssigned}
+	return []ManagedServiceIdentityType{SystemAssigned, UserAssigned}
 }
 
 // MSDeployLogEntryType enumerates the values for ms deploy log entry type.
@@ -3219,6 +3223,8 @@ type AppServiceEnvironment struct {
 	ClusterSettings *[]NameValuePair `json:"clusterSettings,omitempty"`
 	// UserWhitelistedIPRanges - User added ip ranges to whitelist on ASE db
 	UserWhitelistedIPRanges *[]string `json:"userWhitelistedIpRanges,omitempty"`
+	// HasLinuxWorkers - Flag that displays whether an ASE has linux workers or not
+	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty"`
 }
 
 // AppServiceEnvironmentCollection collection of App Service Environments.
@@ -3541,6 +3547,104 @@ func (aser *AppServiceEnvironmentResource) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// AppServiceEnvironmentsChangeVnetAllFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AppServiceEnvironmentsChangeVnetAllFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppServiceEnvironmentsChangeVnetAllFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetAllFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return acp, azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsChangeVnetAllFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		acp, err = client.ChangeVnetResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetAllFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetAllFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	acp, err = client.ChangeVnetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetAllFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// AppServiceEnvironmentsChangeVnetFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AppServiceEnvironmentsChangeVnetFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppServiceEnvironmentsChangeVnetFuture) Result(client AppServiceEnvironmentsClient) (acp AppCollectionPage, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return acp, azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsChangeVnetFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		acp, err = client.ChangeVnetResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	acp, err = client.ChangeVnetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsChangeVnetFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // AppServiceEnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4271,8 +4375,6 @@ func (asppr *AppServicePlanPatchResource) UnmarshalJSON(body []byte) error {
 
 // AppServicePlanPatchResourceProperties appServicePlanPatchResource resource specific properties
 type AppServicePlanPatchResourceProperties struct {
-	// Name - Name for the App Service plan.
-	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
@@ -4300,6 +4402,8 @@ type AppServicePlanPatchResourceProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
+	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	IsXenon *bool `json:"isXenon,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -4310,8 +4414,6 @@ type AppServicePlanPatchResourceProperties struct {
 
 // AppServicePlanProperties appServicePlan resource specific properties
 type AppServicePlanProperties struct {
-	// Name - Name for the App Service plan.
-	Name *string `json:"name,omitempty"`
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 	// Status - App Service plan status. Possible values include: 'StatusOptionsReady', 'StatusOptionsPending', 'StatusOptionsCreating'
@@ -4339,6 +4441,8 @@ type AppServicePlanProperties struct {
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
 	Reserved *bool `json:"reserved,omitempty"`
+	// IsXenon - If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
+	IsXenon *bool `json:"isXenon,omitempty"`
 	// TargetWorkerCount - Scaling worker count.
 	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
 	// TargetWorkerSizeID - Scaling worker size ID.
@@ -4688,28 +4792,29 @@ func (future AppsMigrateStorageFuture) Result(client AppsClient) (smr StorageMig
 	return
 }
 
-// AppsRecoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type AppsRecoverFuture struct {
+// AppsRestoreFromBackupBlobFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsRestoreFromBackupBlobFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AppsRecoverFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+func (future AppsRestoreFromBackupBlobFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("web.AppsRecoverFuture")
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreFromBackupBlobFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.RecoverResponder(future.Response())
+		ar, err = client.RestoreFromBackupBlobResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsRecoverFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -4726,38 +4831,39 @@ func (future AppsRecoverFuture) Result(client AppsClient) (ar autorest.Response,
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.RecoverResponder(resp)
+	ar, err = client.RestoreFromBackupBlobResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// AppsRecoverSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type AppsRecoverSlotFuture struct {
+// AppsRestoreFromBackupBlobSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsRestoreFromBackupBlobSlotFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AppsRecoverSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+func (future AppsRestoreFromBackupBlobSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverSlotFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobSlotFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("web.AppsRecoverSlotFuture")
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreFromBackupBlobSlotFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.RecoverSlotResponder(future.Response())
+		ar, err = client.RestoreFromBackupBlobSlotResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "web.AppsRecoverSlotFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobSlotFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -4774,12 +4880,12 @@ func (future AppsRecoverSlotFuture) Result(client AppsClient) (ar autorest.Respo
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverSlotFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobSlotFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.RecoverSlotResponder(resp)
+	ar, err = client.RestoreFromBackupBlobSlotResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsRecoverSlotFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromBackupBlobSlotFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -4792,7 +4898,7 @@ type AppsRestoreFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AppsRestoreFuture) Result(client AppsClient) (rr RestoreResponse, err error) {
+func (future AppsRestoreFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4800,10 +4906,10 @@ func (future AppsRestoreFuture) Result(client AppsClient) (rr RestoreResponse, e
 		return
 	}
 	if !done {
-		return rr, azure.NewAsyncOpIncompleteError("web.AppsRestoreFuture")
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		rr, err = client.RestoreResponder(future.Response())
+		ar, err = client.RestoreResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -4825,7 +4931,7 @@ func (future AppsRestoreFuture) Result(client AppsClient) (rr RestoreResponse, e
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	rr, err = client.RestoreResponder(resp)
+	ar, err = client.RestoreResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreFuture", "Result", resp, "Failure responding to request")
 	}
@@ -4840,7 +4946,7 @@ type AppsRestoreSlotFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AppsRestoreSlotFuture) Result(client AppsClient) (rr RestoreResponse, err error) {
+func (future AppsRestoreSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4848,10 +4954,10 @@ func (future AppsRestoreSlotFuture) Result(client AppsClient) (rr RestoreRespons
 		return
 	}
 	if !done {
-		return rr, azure.NewAsyncOpIncompleteError("web.AppsRestoreSlotFuture")
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreSlotFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		rr, err = client.RestoreSlotResponder(future.Response())
+		ar, err = client.RestoreSlotResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -4873,9 +4979,106 @@ func (future AppsRestoreSlotFuture) Result(client AppsClient) (rr RestoreRespons
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	rr, err = client.RestoreSlotResponder(resp)
+	ar, err = client.RestoreSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsRestoreSlotFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// AppsRestoreSnapshotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type AppsRestoreSnapshotFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppsRestoreSnapshotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreSnapshotFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.RestoreSnapshotResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.RestoreSnapshotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// AppsRestoreSnapshotSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsRestoreSnapshotSlotFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppsRestoreSnapshotSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreSnapshotSlotFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.RestoreSnapshotSlotResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotSlotFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotSlotFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.RestoreSnapshotSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreSnapshotSlotFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -5377,8 +5580,6 @@ func (br *BackupRequest) UnmarshalJSON(body []byte) error {
 
 // BackupRequestProperties backupRequest resource specific properties
 type BackupRequestProperties struct {
-	// BackupRequestName - Name of the backup.
-	BackupRequestName *string `json:"name,omitempty"`
 	// Enabled - True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// StorageAccountURL - SAS URL to the container.
@@ -5387,8 +5588,6 @@ type BackupRequestProperties struct {
 	BackupSchedule *BackupSchedule `json:"backupSchedule,omitempty"`
 	// Databases - Databases included in the backup.
 	Databases *[]DatabaseBackupSetting `json:"databases,omitempty"`
-	// Type - Type of the backup. Possible values include: 'BackupRestoreOperationTypeDefault', 'BackupRestoreOperationTypeClone', 'BackupRestoreOperationTypeRelocation', 'BackupRestoreOperationTypeSnapshot'
-	Type BackupRestoreOperationType `json:"type,omitempty"`
 }
 
 // BackupSchedule description of a backup schedule. Describes how often should be the backup performed and what
@@ -5507,7 +5706,7 @@ func (bm *BillingMeter) UnmarshalJSON(body []byte) error {
 // BillingMeterCollection collection of Billing Meters
 type BillingMeterCollection struct {
 	autorest.Response `json:"-"`
-	// Value - Collection of Billing Meters.
+	// Value - Collection of resources.
 	Value *[]BillingMeter `json:"value,omitempty"`
 	// NextLink - Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -5616,7 +5815,7 @@ type BillingMeterProperties struct {
 	ShortName *string `json:"shortName,omitempty"`
 	// FriendlyName - Friendly name of the meter
 	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ResourceType - App Service resource type meter used for
+	// ResourceType - App Service ResourceType meter used for
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
@@ -6078,8 +6277,8 @@ func (coa *CertificateOrderAction) UnmarshalJSON(body []byte) error {
 
 // CertificateOrderActionProperties certificateOrderAction resource specific properties
 type CertificateOrderActionProperties struct {
-	// Type - Action type. Possible values include: 'CertificateIssued', 'CertificateOrderCanceled', 'CertificateOrderCreated', 'CertificateRevoked', 'DomainValidationComplete', 'FraudDetected', 'OrgNameChange', 'OrgValidationComplete', 'SanDrop', 'FraudCleared', 'CertificateExpired', 'CertificateExpirationWarning', 'FraudDocumentationRequired', 'Unknown'
-	Type CertificateOrderActionType `json:"type,omitempty"`
+	// ActionType - Action type. Possible values include: 'CertificateIssued', 'CertificateOrderCanceled', 'CertificateOrderCreated', 'CertificateRevoked', 'DomainValidationComplete', 'FraudDetected', 'OrgNameChange', 'OrgValidationComplete', 'SanDrop', 'FraudCleared', 'CertificateExpired', 'CertificateExpirationWarning', 'FraudDocumentationRequired', 'Unknown'
+	ActionType CertificateOrderActionType `json:"actionType,omitempty"`
 	// CreatedAt - Time at which the certificate action was performed.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 }
@@ -6217,8 +6416,6 @@ type CertificatePatchResourceProperties struct {
 	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
 	// KeyVaultSecretStatus - Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
 	KeyVaultSecretStatus KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty"`
-	// GeoRegion - Region of the certificate.
-	GeoRegion *string `json:"geoRegion,omitempty"`
 	// ServerFarmID - Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 }
@@ -6261,8 +6458,6 @@ type CertificateProperties struct {
 	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
 	// KeyVaultSecretStatus - Status of the Key Vault secret. Possible values include: 'KeyVaultSecretStatusInitialized', 'KeyVaultSecretStatusWaitingOnCertificateOrder', 'KeyVaultSecretStatusSucceeded', 'KeyVaultSecretStatusCertificateOrderFailed', 'KeyVaultSecretStatusOperationNotPermittedOnKeyVault', 'KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultSecretStatusKeyVaultDoesNotExist', 'KeyVaultSecretStatusKeyVaultSecretDoesNotExist', 'KeyVaultSecretStatusUnknownError', 'KeyVaultSecretStatusExternalPrivateKey', 'KeyVaultSecretStatusUnknown'
 	KeyVaultSecretStatus KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty"`
-	// GeoRegion - Region of the certificate.
-	GeoRegion *string `json:"geoRegion,omitempty"`
 	// ServerFarmID - Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 }
@@ -6294,8 +6489,6 @@ type CloningInfo struct {
 	TrafficManagerProfileID *string `json:"trafficManagerProfileId,omitempty"`
 	// TrafficManagerProfileName - Name of Traffic Manager profile to create. This is only needed if Traffic Manager profile does not already exist.
 	TrafficManagerProfileName *string `json:"trafficManagerProfileName,omitempty"`
-	// IgnoreQuotas - <code>true</code> if quotas should be ignored; otherwise, <code>false</code>.
-	IgnoreQuotas *bool `json:"ignoreQuotas,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CloningInfo.
@@ -6330,9 +6523,6 @@ func (ci CloningInfo) MarshalJSON() ([]byte, error) {
 	}
 	if ci.TrafficManagerProfileName != nil {
 		objectMap["trafficManagerProfileName"] = ci.TrafficManagerProfileName
-	}
-	if ci.IgnoreQuotas != nil {
-		objectMap["ignoreQuotas"] = ci.IgnoreQuotas
 	}
 	return json.Marshal(objectMap)
 }
@@ -6618,23 +6808,21 @@ type ContinuousWebJobProperties struct {
 	// Status - Job status. Possible values include: 'Initializing', 'Starting', 'Running', 'PendingRestart', 'Stopped'
 	Status ContinuousWebJobStatus `json:"status,omitempty"`
 	// DetailedStatus - Detailed status.
-	DetailedStatus *string `json:"detailedStatus,omitempty"`
+	DetailedStatus *string `json:"detailed_status,omitempty"`
 	// LogURL - Log URL.
-	LogURL *string `json:"logUrl,omitempty"`
-	// Name - Job name. Used as job identifier in ARM resource URI.
-	Name *string `json:"name,omitempty"`
+	LogURL *string `json:"log_url,omitempty"`
 	// RunCommand - Run command.
-	RunCommand *string `json:"runCommand,omitempty"`
+	RunCommand *string `json:"run_command,omitempty"`
 	// URL - Job URL.
 	URL *string `json:"url,omitempty"`
 	// ExtraInfoURL - Extra Info URL.
-	ExtraInfoURL *string `json:"extraInfoUrl,omitempty"`
-	// JobType - Job type. Possible values include: 'Continuous', 'Triggered'
-	JobType JobType `json:"jobType,omitempty"`
+	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	// WebJobType - Job type. Possible values include: 'Continuous', 'Triggered'
+	WebJobType JobType `json:"web_job_type,omitempty"`
 	// Error - Error information.
 	Error *string `json:"error,omitempty"`
 	// UsingSdk - Using SDK?
-	UsingSdk *bool `json:"usingSdk,omitempty"`
+	UsingSdk *bool `json:"using_sdk,omitempty"`
 	// Settings - Job settings.
 	Settings map[string]interface{} `json:"settings"`
 }
@@ -6646,31 +6834,28 @@ func (cwj ContinuousWebJobProperties) MarshalJSON() ([]byte, error) {
 		objectMap["status"] = cwj.Status
 	}
 	if cwj.DetailedStatus != nil {
-		objectMap["detailedStatus"] = cwj.DetailedStatus
+		objectMap["detailed_status"] = cwj.DetailedStatus
 	}
 	if cwj.LogURL != nil {
-		objectMap["logUrl"] = cwj.LogURL
-	}
-	if cwj.Name != nil {
-		objectMap["name"] = cwj.Name
+		objectMap["log_url"] = cwj.LogURL
 	}
 	if cwj.RunCommand != nil {
-		objectMap["runCommand"] = cwj.RunCommand
+		objectMap["run_command"] = cwj.RunCommand
 	}
 	if cwj.URL != nil {
 		objectMap["url"] = cwj.URL
 	}
 	if cwj.ExtraInfoURL != nil {
-		objectMap["extraInfoUrl"] = cwj.ExtraInfoURL
+		objectMap["extra_info_url"] = cwj.ExtraInfoURL
 	}
-	if cwj.JobType != "" {
-		objectMap["jobType"] = cwj.JobType
+	if cwj.WebJobType != "" {
+		objectMap["web_job_type"] = cwj.WebJobType
 	}
 	if cwj.Error != nil {
 		objectMap["error"] = cwj.Error
 	}
 	if cwj.UsingSdk != nil {
-		objectMap["usingSdk"] = cwj.UsingSdk
+		objectMap["using_sdk"] = cwj.UsingSdk
 	}
 	if cwj.Settings != nil {
 		objectMap["settings"] = cwj.Settings
@@ -7121,16 +7306,16 @@ type DefaultErrorResponseErrorDetailsItem struct {
 
 // DeletedSite a deleted app.
 type DeletedSite struct {
-	// ID - Numeric id for the deleted site
-	ID *int32 `json:"id,omitempty"`
+	// DeletedSiteID - Numeric id for the deleted site
+	DeletedSiteID *int32 `json:"deletedSiteId,omitempty"`
 	// DeletedTimestamp - Time in UTC when the app was deleted.
 	DeletedTimestamp *string `json:"deletedTimestamp,omitempty"`
 	// Subscription - Subscription containing the deleted site
 	Subscription *string `json:"subscription,omitempty"`
 	// ResourceGroup - ResourceGroup that contained the deleted site
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
-	// Name - Name of the deleted site
-	Name *string `json:"name,omitempty"`
+	// DeletedSiteName - Name of the deleted site
+	DeletedSiteName *string `json:"deletedSiteName,omitempty"`
 	// Slot - Slot of the deleted site
 	Slot *string `json:"slot,omitempty"`
 }
@@ -7449,8 +7634,6 @@ type DeploymentLocations struct {
 
 // DeploymentProperties deployment resource specific properties
 type DeploymentProperties struct {
-	// ID - Identifier for deployment.
-	ID *string `json:"id,omitempty"`
 	// Status - Deployment status.
 	Status *int32 `json:"status,omitempty"`
 	// Message - Details about deployment status.
@@ -7460,11 +7643,11 @@ type DeploymentProperties struct {
 	// Deployer - Who performed the deployment.
 	Deployer *string `json:"deployer,omitempty"`
 	// AuthorEmail - Author email.
-	AuthorEmail *string `json:"authorEmail,omitempty"`
+	AuthorEmail *string `json:"author_email,omitempty"`
 	// StartTime - Start time.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *date.Time `json:"start_time,omitempty"`
 	// EndTime - End time.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *date.Time `json:"end_time,omitempty"`
 	// Active - True if deployment is currently active, false if completed and null if not started.
 	Active *bool `json:"active,omitempty"`
 	// Details - Details on deployment.
@@ -9001,14 +9184,6 @@ type ErrorEntity struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponse error Response.
-type ErrorResponse struct {
-	// Code - Error code.
-	Code *string `json:"code,omitempty"`
-	// Message - Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
-}
-
 // Experiments routing rules in production experiments.
 type Experiments struct {
 	// RampUpRules - List of ramp-up rules.
@@ -9235,18 +9410,16 @@ func (page FunctionEnvelopeCollectionPage) Values() []FunctionEnvelope {
 
 // FunctionEnvelopeProperties functionEnvelope resource specific properties
 type FunctionEnvelopeProperties struct {
-	// Name - Function name.
-	Name *string `json:"name,omitempty"`
 	// FunctionAppID - Function App ID.
-	FunctionAppID *string `json:"functionAppId,omitempty"`
+	FunctionAppID *string `json:"function_app_id,omitempty"`
 	// ScriptRootPathHref - Script root path URI.
-	ScriptRootPathHref *string `json:"scriptRootPathHref,omitempty"`
+	ScriptRootPathHref *string `json:"script_root_path_href,omitempty"`
 	// ScriptHref - Script URI.
-	ScriptHref *string `json:"scriptHref,omitempty"`
+	ScriptHref *string `json:"script_href,omitempty"`
 	// ConfigHref - Config URI.
-	ConfigHref *string `json:"configHref,omitempty"`
+	ConfigHref *string `json:"config_href,omitempty"`
 	// SecretsFileHref - Secrets file URI.
-	SecretsFileHref *string `json:"secretsFileHref,omitempty"`
+	SecretsFileHref *string `json:"secrets_file_href,omitempty"`
 	// Href - Function URI.
 	Href *string `json:"href,omitempty"`
 	// Config - Config information.
@@ -9254,29 +9427,26 @@ type FunctionEnvelopeProperties struct {
 	// Files - File list.
 	Files map[string]*string `json:"files"`
 	// TestData - Test data used when testing via the Azure Portal.
-	TestData *string `json:"testData,omitempty"`
+	TestData *string `json:"test_data,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FunctionEnvelopeProperties.
 func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fe.Name != nil {
-		objectMap["name"] = fe.Name
-	}
 	if fe.FunctionAppID != nil {
-		objectMap["functionAppId"] = fe.FunctionAppID
+		objectMap["function_app_id"] = fe.FunctionAppID
 	}
 	if fe.ScriptRootPathHref != nil {
-		objectMap["scriptRootPathHref"] = fe.ScriptRootPathHref
+		objectMap["script_root_path_href"] = fe.ScriptRootPathHref
 	}
 	if fe.ScriptHref != nil {
-		objectMap["scriptHref"] = fe.ScriptHref
+		objectMap["script_href"] = fe.ScriptHref
 	}
 	if fe.ConfigHref != nil {
-		objectMap["configHref"] = fe.ConfigHref
+		objectMap["config_href"] = fe.ConfigHref
 	}
 	if fe.SecretsFileHref != nil {
-		objectMap["secretsFileHref"] = fe.SecretsFileHref
+		objectMap["secrets_file_href"] = fe.SecretsFileHref
 	}
 	if fe.Href != nil {
 		objectMap["href"] = fe.Href
@@ -9286,7 +9456,7 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 		objectMap["files"] = fe.Files
 	}
 	if fe.TestData != nil {
-		objectMap["testData"] = fe.TestData
+		objectMap["test_data"] = fe.TestData
 	}
 	return json.Marshal(objectMap)
 }
@@ -9392,7 +9562,7 @@ type FunctionSecretsProperties struct {
 	// Key - Secret key.
 	Key *string `json:"key,omitempty"`
 	// TriggerURL - Trigger URL.
-	TriggerURL *string `json:"triggerUrl,omitempty"`
+	TriggerURL *string `json:"trigger_url,omitempty"`
 }
 
 // GeoRegion geographical region.
@@ -9594,8 +9764,6 @@ func (page GeoRegionCollectionPage) Values() []GeoRegion {
 
 // GeoRegionProperties geoRegion resource specific properties
 type GeoRegionProperties struct {
-	// Name - Region name.
-	Name *string `json:"name,omitempty"`
 	// Description - Region description.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - Display name for region.
@@ -10760,20 +10928,18 @@ func (page JobCollectionPage) Values() []Job {
 
 // JobProperties webJob resource specific properties
 type JobProperties struct {
-	// Name - Job name. Used as job identifier in ARM resource URI.
-	Name *string `json:"name,omitempty"`
 	// RunCommand - Run command.
-	RunCommand *string `json:"runCommand,omitempty"`
+	RunCommand *string `json:"run_command,omitempty"`
 	// URL - Job URL.
 	URL *string `json:"url,omitempty"`
 	// ExtraInfoURL - Extra Info URL.
-	ExtraInfoURL *string `json:"extraInfoUrl,omitempty"`
-	// JobType - Job type. Possible values include: 'Continuous', 'Triggered'
-	JobType JobType `json:"jobType,omitempty"`
+	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	// WebJobType - Job type. Possible values include: 'Continuous', 'Triggered'
+	WebJobType JobType `json:"web_job_type,omitempty"`
 	// Error - Error information.
 	Error *string `json:"error,omitempty"`
 	// UsingSdk - Using SDK?
-	UsingSdk *bool `json:"usingSdk,omitempty"`
+	UsingSdk *bool `json:"using_sdk,omitempty"`
 	// Settings - Job settings.
 	Settings map[string]interface{} `json:"settings"`
 }
@@ -10781,26 +10947,23 @@ type JobProperties struct {
 // MarshalJSON is the custom marshaler for JobProperties.
 func (j JobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if j.Name != nil {
-		objectMap["name"] = j.Name
-	}
 	if j.RunCommand != nil {
-		objectMap["runCommand"] = j.RunCommand
+		objectMap["run_command"] = j.RunCommand
 	}
 	if j.URL != nil {
 		objectMap["url"] = j.URL
 	}
 	if j.ExtraInfoURL != nil {
-		objectMap["extraInfoUrl"] = j.ExtraInfoURL
+		objectMap["extra_info_url"] = j.ExtraInfoURL
 	}
-	if j.JobType != "" {
-		objectMap["jobType"] = j.JobType
+	if j.WebJobType != "" {
+		objectMap["web_job_type"] = j.WebJobType
 	}
 	if j.Error != nil {
 		objectMap["error"] = j.Error
 	}
 	if j.UsingSdk != nil {
-		objectMap["usingSdk"] = j.UsingSdk
+		objectMap["using_sdk"] = j.UsingSdk
 	}
 	if j.Settings != nil {
 		objectMap["settings"] = j.Settings
@@ -10860,12 +11023,14 @@ type LocalizableString struct {
 
 // ManagedServiceIdentity managed service identity.
 type ManagedServiceIdentity struct {
-	// Type - Type of managed service identity. Possible values include: 'SystemAssigned'
+	// Type - Type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned'
 	Type ManagedServiceIdentityType `json:"type,omitempty"`
 	// TenantID - Tenant of managed service identity.
 	TenantID *string `json:"tenantId,omitempty"`
 	// PrincipalID - Principal Id of managed service identity.
 	PrincipalID *string `json:"principalId,omitempty"`
+	// IdentityIds - Array of UserAssigned managed service identities.
+	IdentityIds *[]string `json:"identityIds,omitempty"`
 }
 
 // MetricAvailabilily metric availability and retention.
@@ -10980,8 +11145,6 @@ func (md *MetricDefinition) UnmarshalJSON(body []byte) error {
 
 // MetricDefinitionProperties metricDefinition resource specific properties
 type MetricDefinitionProperties struct {
-	// Name - Name of the metric.
-	Name *string `json:"name,omitempty"`
 	// Unit - Unit of the metric.
 	Unit *string `json:"unit,omitempty"`
 	// PrimaryAggregationType - Primary aggregation type.
@@ -11218,8 +11381,6 @@ type MigrateMySQLStatusProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 	// LocalMySQLEnabled - True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
-	// HTTP20Enabled - Is HTTP2 enabled?
-	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 }
 
 // MSDeploy mSDeploy ARM PUT information
@@ -11965,8 +12126,6 @@ type PerfMonSample struct {
 	InstanceName *string `json:"instanceName,omitempty"`
 	// Value - Value of counter at a certain time.
 	Value *float64 `json:"value,omitempty"`
-	// CoreCount - Core Count of worker. Not a data member
-	CoreCount *int32 `json:"coreCount,omitempty"`
 }
 
 // PerfMonSet metric information.
@@ -12312,8 +12471,6 @@ type PremierAddOnOfferProperties struct {
 	Product *string `json:"product,omitempty"`
 	// Vendor - Premier add on offer Vendor.
 	Vendor *string `json:"vendor,omitempty"`
-	// Name - Premier add on offer Name.
-	Name *string `json:"name,omitempty"`
 	// PromoCodeRequired - <code>true</code> if promotion code is required; otherwise, <code>false</code>.
 	PromoCodeRequired *bool `json:"promoCodeRequired,omitempty"`
 	// Quota - Premier add on offer Quota.
@@ -12338,46 +12495,134 @@ type PremierAddOnProperties struct {
 	Product *string `json:"product,omitempty"`
 	// Vendor - Premier add on Vendor.
 	Vendor *string `json:"vendor,omitempty"`
-	// PremierAddOnName - Premier add on Name.
-	PremierAddOnName *string `json:"name,omitempty"`
-	// Location - Premier add on Location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Premier add on Tags.
-	Tags map[string]*string `json:"tags"`
 	// MarketplacePublisher - Premier add on Marketplace publisher.
 	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
 	// MarketplaceOffer - Premier add on Marketplace offer.
 	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PremierAddOnProperties.
-func (pao PremierAddOnProperties) MarshalJSON() ([]byte, error) {
+// PrivateAccess description of the parameters of Private Access for a Web Site.
+type PrivateAccess struct {
+	autorest.Response `json:"-"`
+	// PrivateAccessProperties - PrivateAccess resource specific properties
+	*PrivateAccessProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateAccess.
+func (pa PrivateAccess) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pao.Sku != nil {
-		objectMap["sku"] = pao.Sku
+	if pa.PrivateAccessProperties != nil {
+		objectMap["properties"] = pa.PrivateAccessProperties
 	}
-	if pao.Product != nil {
-		objectMap["product"] = pao.Product
+	if pa.ID != nil {
+		objectMap["id"] = pa.ID
 	}
-	if pao.Vendor != nil {
-		objectMap["vendor"] = pao.Vendor
+	if pa.Name != nil {
+		objectMap["name"] = pa.Name
 	}
-	if pao.PremierAddOnName != nil {
-		objectMap["name"] = pao.PremierAddOnName
+	if pa.Kind != nil {
+		objectMap["kind"] = pa.Kind
 	}
-	if pao.Location != nil {
-		objectMap["location"] = pao.Location
-	}
-	if pao.Tags != nil {
-		objectMap["tags"] = pao.Tags
-	}
-	if pao.MarketplacePublisher != nil {
-		objectMap["marketplacePublisher"] = pao.MarketplacePublisher
-	}
-	if pao.MarketplaceOffer != nil {
-		objectMap["marketplaceOffer"] = pao.MarketplaceOffer
+	if pa.Type != nil {
+		objectMap["type"] = pa.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateAccess struct.
+func (pa *PrivateAccess) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateAccessProperties PrivateAccessProperties
+				err = json.Unmarshal(*v, &privateAccessProperties)
+				if err != nil {
+					return err
+				}
+				pa.PrivateAccessProperties = &privateAccessProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pa.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pa.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateAccessProperties privateAccess resource specific properties
+type PrivateAccessProperties struct {
+	// Enabled - Whether private access is enabled or not.
+	Enabled *bool `json:"enabled,omitempty"`
+	// VirtualNetworks - The Virtual Networks (and subnets) allowed to access the site privately.
+	VirtualNetworks *[]PrivateAccessVirtualNetwork `json:"virtualNetworks,omitempty"`
+}
+
+// PrivateAccessSubnet description of a Virtual Network subnet that is useable for private site access.
+type PrivateAccessSubnet struct {
+	// Name - The name of the subnet.
+	Name *string `json:"name,omitempty"`
+	// Key - The key (ID) of the subnet.
+	Key *int32 `json:"key,omitempty"`
+}
+
+// PrivateAccessVirtualNetwork description of a Virtual Network that is useable for private site access.
+type PrivateAccessVirtualNetwork struct {
+	// Name - The name of the Virtual Network.
+	Name *string `json:"name,omitempty"`
+	// Key - The key (ID) of the Virtual Network.
+	Key *int32 `json:"key,omitempty"`
+	// ResourceID - The ARM uri of the Virtual Network
+	ResourceID *string `json:"resourceId,omitempty"`
+	// Subnets - A List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean that all subnets are allowed within this Virtual Network.
+	Subnets *[]PrivateAccessSubnet `json:"subnets,omitempty"`
 }
 
 // ProcessInfo process Information.
@@ -12580,20 +12825,20 @@ func (page ProcessInfoCollectionPage) Values() []ProcessInfo {
 
 // ProcessInfoProperties processInfo resource specific properties
 type ProcessInfoProperties struct {
-	// ID - ARM Identifier for deployment.
-	ID *int32 `json:"id,omitempty"`
-	// Name - Deployment name.
-	Name *string `json:"name,omitempty"`
+	// Identifier - ARM Identifier for deployment.
+	Identifier *int32 `json:"identifier,omitempty"`
+	// DeploymentName - Deployment name.
+	DeploymentName *string `json:"deployment_name,omitempty"`
 	// Href - HRef URI.
 	Href *string `json:"href,omitempty"`
-	// MiniDump - Minidump URI.
-	MiniDump *string `json:"miniDump,omitempty"`
+	// Minidump - Minidump URI.
+	Minidump *string `json:"minidump,omitempty"`
 	// IsProfileRunning - Is profile running?
-	IsProfileRunning *bool `json:"isProfileRunning,omitempty"`
+	IsProfileRunning *bool `json:"is_profile_running,omitempty"`
 	// IsIisProfileRunning - Is the IIS Profile running?
-	IsIisProfileRunning *bool `json:"isIisProfileRunning,omitempty"`
+	IsIisProfileRunning *bool `json:"is_iis_profile_running,omitempty"`
 	// IisProfileTimeoutInSeconds - IIS Profile timeout (seconds).
-	IisProfileTimeoutInSeconds *float64 `json:"iisProfileTimeoutInSeconds,omitempty"`
+	IisProfileTimeoutInSeconds *float64 `json:"iis_profile_timeout_in_seconds,omitempty"`
 	// Parent - Parent process.
 	Parent *string `json:"parent,omitempty"`
 	// Children - Child process list.
@@ -12601,55 +12846,55 @@ type ProcessInfoProperties struct {
 	// Threads - Thread list.
 	Threads *[]ProcessThreadInfo `json:"threads,omitempty"`
 	// OpenFileHandles - List of open files.
-	OpenFileHandles *[]string `json:"openFileHandles,omitempty"`
+	OpenFileHandles *[]string `json:"open_file_handles,omitempty"`
 	// Modules - List of modules.
 	Modules *[]ProcessModuleInfo `json:"modules,omitempty"`
 	// FileName - File name of this process.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string `json:"file_name,omitempty"`
 	// CommandLine - Command line.
-	CommandLine *string `json:"commandLine,omitempty"`
+	CommandLine *string `json:"command_line,omitempty"`
 	// UserName - User name.
-	UserName *string `json:"userName,omitempty"`
+	UserName *string `json:"user_name,omitempty"`
 	// HandleCount - Handle count.
-	HandleCount *int32 `json:"handleCount,omitempty"`
+	HandleCount *int32 `json:"handle_count,omitempty"`
 	// ModuleCount - Module count.
-	ModuleCount *int32 `json:"moduleCount,omitempty"`
+	ModuleCount *int32 `json:"module_count,omitempty"`
 	// ThreadCount - Thread count.
-	ThreadCount *int32 `json:"threadCount,omitempty"`
+	ThreadCount *int32 `json:"thread_count,omitempty"`
 	// StartTime - Start time.
-	StartTime *date.Time `json:"startTime,omitempty"`
-	// TotalProcessorTime - Total CPU time.
-	TotalProcessorTime *string `json:"totalProcessorTime,omitempty"`
-	// UserProcessorTime - User CPU time.
-	UserProcessorTime *string `json:"userProcessorTime,omitempty"`
-	// PrivilegedProcessorTime - Privileged CPU time.
-	PrivilegedProcessorTime *string `json:"privilegedProcessorTime,omitempty"`
-	// WorkingSet64 - Working set.
-	WorkingSet64 *int64 `json:"workingSet64,omitempty"`
-	// PeakWorkingSet64 - Peak working set.
-	PeakWorkingSet64 *int64 `json:"peakWorkingSet64,omitempty"`
-	// PrivateMemorySize64 - Private memory size.
-	PrivateMemorySize64 *int64 `json:"privateMemorySize64,omitempty"`
-	// VirtualMemorySize64 - Virtual memory size.
-	VirtualMemorySize64 *int64 `json:"virtualMemorySize64,omitempty"`
-	// PeakVirtualMemorySize64 - Peak virtual memory usage.
-	PeakVirtualMemorySize64 *int64 `json:"peakVirtualMemorySize64,omitempty"`
-	// PagedSystemMemorySize64 - Paged system memory.
-	PagedSystemMemorySize64 *int64 `json:"pagedSystemMemorySize64,omitempty"`
-	// NonpagedSystemMemorySize64 - Non-paged system memory.
-	NonpagedSystemMemorySize64 *int64 `json:"nonpagedSystemMemorySize64,omitempty"`
-	// PagedMemorySize64 - Paged memory.
-	PagedMemorySize64 *int64 `json:"pagedMemorySize64,omitempty"`
-	// PeakPagedMemorySize64 - Peak paged memory.
-	PeakPagedMemorySize64 *int64 `json:"peakPagedMemorySize64,omitempty"`
+	StartTime *date.Time `json:"start_time,omitempty"`
+	// TotalCPUTime - Total CPU time.
+	TotalCPUTime *string `json:"total_cpu_time,omitempty"`
+	// UserCPUTime - User CPU time.
+	UserCPUTime *string `json:"user_cpu_time,omitempty"`
+	// PrivilegedCPUTime - Privileged CPU time.
+	PrivilegedCPUTime *string `json:"privileged_cpu_time,omitempty"`
+	// WorkingSet - Working set.
+	WorkingSet *int64 `json:"working_set,omitempty"`
+	// PeakWorkingSet - Peak working set.
+	PeakWorkingSet *int64 `json:"peak_working_set,omitempty"`
+	// PrivateMemory - Private memory size.
+	PrivateMemory *int64 `json:"private_memory,omitempty"`
+	// VirtualMemory - Virtual memory size.
+	VirtualMemory *int64 `json:"virtual_memory,omitempty"`
+	// PeakVirtualMemory - Peak virtual memory usage.
+	PeakVirtualMemory *int64 `json:"peak_virtual_memory,omitempty"`
+	// PagedSystemMemory - Paged system memory.
+	PagedSystemMemory *int64 `json:"paged_system_memory,omitempty"`
+	// NonPagedSystemMemory - Non-paged system memory.
+	NonPagedSystemMemory *int64 `json:"non_paged_system_memory,omitempty"`
+	// PagedMemory - Paged memory.
+	PagedMemory *int64 `json:"paged_memory,omitempty"`
+	// PeakPagedMemory - Peak paged memory.
+	PeakPagedMemory *int64 `json:"peak_paged_memory,omitempty"`
 	// TimeStamp - Time stamp.
-	TimeStamp *date.Time `json:"timeStamp,omitempty"`
+	TimeStamp *date.Time `json:"time_stamp,omitempty"`
 	// EnvironmentVariables - List of environment variables.
-	EnvironmentVariables map[string]*string `json:"environmentVariables"`
+	EnvironmentVariables map[string]*string `json:"environment_variables"`
 	// IsScmSite - Is this the SCM site?
-	IsScmSite *bool `json:"isScmSite,omitempty"`
-	// IsWebJob - Is this a Web Job?
-	IsWebJob *bool `json:"isWebJob,omitempty"`
+	IsScmSite *bool `json:"is_scm_site,omitempty"`
+	// IsWebjob - Is this a Web Job?
+	IsWebjob *bool `json:"is_webjob,omitempty"`
 	// Description - Description of process.
 	Description *string `json:"description,omitempty"`
 }
@@ -12657,26 +12902,26 @@ type ProcessInfoProperties struct {
 // MarshalJSON is the custom marshaler for ProcessInfoProperties.
 func (pi ProcessInfoProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pi.ID != nil {
-		objectMap["id"] = pi.ID
+	if pi.Identifier != nil {
+		objectMap["identifier"] = pi.Identifier
 	}
-	if pi.Name != nil {
-		objectMap["name"] = pi.Name
+	if pi.DeploymentName != nil {
+		objectMap["deployment_name"] = pi.DeploymentName
 	}
 	if pi.Href != nil {
 		objectMap["href"] = pi.Href
 	}
-	if pi.MiniDump != nil {
-		objectMap["miniDump"] = pi.MiniDump
+	if pi.Minidump != nil {
+		objectMap["minidump"] = pi.Minidump
 	}
 	if pi.IsProfileRunning != nil {
-		objectMap["isProfileRunning"] = pi.IsProfileRunning
+		objectMap["is_profile_running"] = pi.IsProfileRunning
 	}
 	if pi.IsIisProfileRunning != nil {
-		objectMap["isIisProfileRunning"] = pi.IsIisProfileRunning
+		objectMap["is_iis_profile_running"] = pi.IsIisProfileRunning
 	}
 	if pi.IisProfileTimeoutInSeconds != nil {
-		objectMap["iisProfileTimeoutInSeconds"] = pi.IisProfileTimeoutInSeconds
+		objectMap["iis_profile_timeout_in_seconds"] = pi.IisProfileTimeoutInSeconds
 	}
 	if pi.Parent != nil {
 		objectMap["parent"] = pi.Parent
@@ -12688,79 +12933,79 @@ func (pi ProcessInfoProperties) MarshalJSON() ([]byte, error) {
 		objectMap["threads"] = pi.Threads
 	}
 	if pi.OpenFileHandles != nil {
-		objectMap["openFileHandles"] = pi.OpenFileHandles
+		objectMap["open_file_handles"] = pi.OpenFileHandles
 	}
 	if pi.Modules != nil {
 		objectMap["modules"] = pi.Modules
 	}
 	if pi.FileName != nil {
-		objectMap["fileName"] = pi.FileName
+		objectMap["file_name"] = pi.FileName
 	}
 	if pi.CommandLine != nil {
-		objectMap["commandLine"] = pi.CommandLine
+		objectMap["command_line"] = pi.CommandLine
 	}
 	if pi.UserName != nil {
-		objectMap["userName"] = pi.UserName
+		objectMap["user_name"] = pi.UserName
 	}
 	if pi.HandleCount != nil {
-		objectMap["handleCount"] = pi.HandleCount
+		objectMap["handle_count"] = pi.HandleCount
 	}
 	if pi.ModuleCount != nil {
-		objectMap["moduleCount"] = pi.ModuleCount
+		objectMap["module_count"] = pi.ModuleCount
 	}
 	if pi.ThreadCount != nil {
-		objectMap["threadCount"] = pi.ThreadCount
+		objectMap["thread_count"] = pi.ThreadCount
 	}
 	if pi.StartTime != nil {
-		objectMap["startTime"] = pi.StartTime
+		objectMap["start_time"] = pi.StartTime
 	}
-	if pi.TotalProcessorTime != nil {
-		objectMap["totalProcessorTime"] = pi.TotalProcessorTime
+	if pi.TotalCPUTime != nil {
+		objectMap["total_cpu_time"] = pi.TotalCPUTime
 	}
-	if pi.UserProcessorTime != nil {
-		objectMap["userProcessorTime"] = pi.UserProcessorTime
+	if pi.UserCPUTime != nil {
+		objectMap["user_cpu_time"] = pi.UserCPUTime
 	}
-	if pi.PrivilegedProcessorTime != nil {
-		objectMap["privilegedProcessorTime"] = pi.PrivilegedProcessorTime
+	if pi.PrivilegedCPUTime != nil {
+		objectMap["privileged_cpu_time"] = pi.PrivilegedCPUTime
 	}
-	if pi.WorkingSet64 != nil {
-		objectMap["workingSet64"] = pi.WorkingSet64
+	if pi.WorkingSet != nil {
+		objectMap["working_set"] = pi.WorkingSet
 	}
-	if pi.PeakWorkingSet64 != nil {
-		objectMap["peakWorkingSet64"] = pi.PeakWorkingSet64
+	if pi.PeakWorkingSet != nil {
+		objectMap["peak_working_set"] = pi.PeakWorkingSet
 	}
-	if pi.PrivateMemorySize64 != nil {
-		objectMap["privateMemorySize64"] = pi.PrivateMemorySize64
+	if pi.PrivateMemory != nil {
+		objectMap["private_memory"] = pi.PrivateMemory
 	}
-	if pi.VirtualMemorySize64 != nil {
-		objectMap["virtualMemorySize64"] = pi.VirtualMemorySize64
+	if pi.VirtualMemory != nil {
+		objectMap["virtual_memory"] = pi.VirtualMemory
 	}
-	if pi.PeakVirtualMemorySize64 != nil {
-		objectMap["peakVirtualMemorySize64"] = pi.PeakVirtualMemorySize64
+	if pi.PeakVirtualMemory != nil {
+		objectMap["peak_virtual_memory"] = pi.PeakVirtualMemory
 	}
-	if pi.PagedSystemMemorySize64 != nil {
-		objectMap["pagedSystemMemorySize64"] = pi.PagedSystemMemorySize64
+	if pi.PagedSystemMemory != nil {
+		objectMap["paged_system_memory"] = pi.PagedSystemMemory
 	}
-	if pi.NonpagedSystemMemorySize64 != nil {
-		objectMap["nonpagedSystemMemorySize64"] = pi.NonpagedSystemMemorySize64
+	if pi.NonPagedSystemMemory != nil {
+		objectMap["non_paged_system_memory"] = pi.NonPagedSystemMemory
 	}
-	if pi.PagedMemorySize64 != nil {
-		objectMap["pagedMemorySize64"] = pi.PagedMemorySize64
+	if pi.PagedMemory != nil {
+		objectMap["paged_memory"] = pi.PagedMemory
 	}
-	if pi.PeakPagedMemorySize64 != nil {
-		objectMap["peakPagedMemorySize64"] = pi.PeakPagedMemorySize64
+	if pi.PeakPagedMemory != nil {
+		objectMap["peak_paged_memory"] = pi.PeakPagedMemory
 	}
 	if pi.TimeStamp != nil {
-		objectMap["timeStamp"] = pi.TimeStamp
+		objectMap["time_stamp"] = pi.TimeStamp
 	}
 	if pi.EnvironmentVariables != nil {
-		objectMap["environmentVariables"] = pi.EnvironmentVariables
+		objectMap["environment_variables"] = pi.EnvironmentVariables
 	}
 	if pi.IsScmSite != nil {
-		objectMap["isScmSite"] = pi.IsScmSite
+		objectMap["is_scm_site"] = pi.IsScmSite
 	}
-	if pi.IsWebJob != nil {
-		objectMap["isWebJob"] = pi.IsWebJob
+	if pi.IsWebjob != nil {
+		objectMap["is_webjob"] = pi.IsWebjob
 	}
 	if pi.Description != nil {
 		objectMap["description"] = pi.Description
@@ -12969,25 +13214,25 @@ func (page ProcessModuleInfoCollectionPage) Values() []ProcessModuleInfo {
 // ProcessModuleInfoProperties processModuleInfo resource specific properties
 type ProcessModuleInfoProperties struct {
 	// BaseAddress - Base address. Used as module identifier in ARM resource URI.
-	BaseAddress *string `json:"baseAddress,omitempty"`
+	BaseAddress *string `json:"base_address,omitempty"`
 	// FileName - File name.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string `json:"file_name,omitempty"`
 	// Href - HRef URI.
 	Href *string `json:"href,omitempty"`
 	// FilePath - File path.
-	FilePath *string `json:"filePath,omitempty"`
+	FilePath *string `json:"file_path,omitempty"`
 	// ModuleMemorySize - Module memory size.
-	ModuleMemorySize *int32 `json:"moduleMemorySize,omitempty"`
+	ModuleMemorySize *int32 `json:"module_memory_size,omitempty"`
 	// FileVersion - File version.
-	FileVersion *string `json:"fileVersion,omitempty"`
+	FileVersion *string `json:"file_version,omitempty"`
 	// FileDescription - File description.
-	FileDescription *string `json:"fileDescription,omitempty"`
+	FileDescription *string `json:"file_description,omitempty"`
 	// Product - Product name.
 	Product *string `json:"product,omitempty"`
 	// ProductVersion - Product version.
-	ProductVersion *string `json:"productVersion,omitempty"`
+	ProductVersion *string `json:"product_version,omitempty"`
 	// IsDebug - Is debug?
-	IsDebug *bool `json:"isDebug,omitempty"`
+	IsDebug *bool `json:"is_debug,omitempty"`
 	// Language - Module language (locale).
 	Language *string `json:"language,omitempty"`
 }
@@ -13192,32 +13437,32 @@ func (page ProcessThreadInfoCollectionPage) Values() []ProcessThreadInfo {
 
 // ProcessThreadInfoProperties processThreadInfo resource specific properties
 type ProcessThreadInfoProperties struct {
-	// ID - ARM Identifier for deployment.
-	ID *int32 `json:"id,omitempty"`
+	// Identifier - Site extension ID.
+	Identifier *int32 `json:"identifier,omitempty"`
 	// Href - HRef URI.
 	Href *string `json:"href,omitempty"`
 	// Process - Process URI.
 	Process *string `json:"process,omitempty"`
 	// StartAddress - Start address.
-	StartAddress *string `json:"startAddress,omitempty"`
+	StartAddress *string `json:"start_address,omitempty"`
 	// CurrentPriority - Current thread priority.
-	CurrentPriority *int32 `json:"currentPriority,omitempty"`
+	CurrentPriority *int32 `json:"current_priority,omitempty"`
 	// PriorityLevel - Thread priority level.
-	PriorityLevel *string `json:"priorityLevel,omitempty"`
+	PriorityLevel *string `json:"priority_level,omitempty"`
 	// BasePriority - Base priority.
-	BasePriority *int32 `json:"basePriority,omitempty"`
+	BasePriority *int32 `json:"base_priority,omitempty"`
 	// StartTime - Start time.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *date.Time `json:"start_time,omitempty"`
 	// TotalProcessorTime - Total processor time.
-	TotalProcessorTime *string `json:"totalProcessorTime,omitempty"`
+	TotalProcessorTime *string `json:"total_processor_time,omitempty"`
 	// UserProcessorTime - User processor time.
-	UserProcessorTime *string `json:"userProcessorTime,omitempty"`
+	UserProcessorTime *string `json:"user_processor_time,omitempty"`
 	// PriviledgedProcessorTime - Priviledged processor time.
-	PriviledgedProcessorTime *string `json:"priviledgedProcessorTime,omitempty"`
+	PriviledgedProcessorTime *string `json:"priviledged_processor_time,omitempty"`
 	// State - Thread state.
 	State *string `json:"state,omitempty"`
 	// WaitReason - Wait reason.
-	WaitReason *string `json:"waitReason,omitempty"`
+	WaitReason *string `json:"wait_reason,omitempty"`
 }
 
 // ProxyOnlyResource azure proxy only resource. This resource is not tracked by Azure Resource Manager.
@@ -13798,10 +14043,14 @@ type RecommendationProperties struct {
 	Level NotificationLevel `json:"level,omitempty"`
 	// Channels - List of channels that this recommendation can apply. Possible values include: 'Notification', 'API', 'Email', 'Webhook', 'All'
 	Channels Channels `json:"channels,omitempty"`
-	// Tags - The list of category tags that this recommendation belongs to.
-	Tags *[]string `json:"tags,omitempty"`
+	// CategoryTags - The list of category tags that this recommendation belongs to.
+	CategoryTags *[]string `json:"categoryTags,omitempty"`
 	// ActionName - Name of action recommended by this object.
 	ActionName *string `json:"actionName,omitempty"`
+	// Enabled - True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
+	Enabled *int32 `json:"enabled,omitempty"`
+	// States - The list of states of this recommendation. If it's null then it shoud be considered "Active".
+	States *[]string `json:"states,omitempty"`
 	// StartTime - The beginning time in UTC of a range that the recommendation refers to.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time in UTC of a range that the recommendation refers to.
@@ -13922,8 +14171,8 @@ func (rr *RecommendationRule) UnmarshalJSON(body []byte) error {
 
 // RecommendationRuleProperties recommendationRule resource specific properties
 type RecommendationRuleProperties struct {
-	// Name - Unique name of the rule.
-	Name *string `json:"name,omitempty"`
+	// RecommendationName - Unique name of the rule.
+	RecommendationName *string `json:"recommendationName,omitempty"`
 	// DisplayName - UI friendly name of the rule.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Message - Localized name of the rule (Good for UI).
@@ -13939,8 +14188,8 @@ type RecommendationRuleProperties struct {
 	Level NotificationLevel `json:"level,omitempty"`
 	// Channels - List of available channels that this rule applies. Possible values include: 'Notification', 'API', 'Email', 'Webhook', 'All'
 	Channels Channels `json:"channels,omitempty"`
-	// Tags - An array of category tags that the rule contains.
-	Tags *[]string `json:"tags,omitempty"`
+	// CategoryTags - The list of category tags that this recommendation rule belongs to.
+	CategoryTags *[]string `json:"categoryTags,omitempty"`
 	// IsDynamic - True if this is associated with a dynamically added rule
 	IsDynamic *bool `json:"isDynamic,omitempty"`
 	// ExtensionName - Extension name of the portal if exists. Applicable to dynamic rule only.
@@ -14420,212 +14669,6 @@ func (page ResourceCollectionPage) Values() []string {
 	return *page.rc.Value
 }
 
-// ResourceHealthMetadata used for getting ResourceHealthCheck settings.
-type ResourceHealthMetadata struct {
-	autorest.Response `json:"-"`
-	// ResourceHealthMetadataProperties - ResourceHealthMetadata resource specific properties
-	*ResourceHealthMetadataProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
-	Name *string `json:"name,omitempty"`
-	// Kind - Kind of resource.
-	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceHealthMetadata.
-func (rhm ResourceHealthMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rhm.ResourceHealthMetadataProperties != nil {
-		objectMap["properties"] = rhm.ResourceHealthMetadataProperties
-	}
-	if rhm.ID != nil {
-		objectMap["id"] = rhm.ID
-	}
-	if rhm.Name != nil {
-		objectMap["name"] = rhm.Name
-	}
-	if rhm.Kind != nil {
-		objectMap["kind"] = rhm.Kind
-	}
-	if rhm.Type != nil {
-		objectMap["type"] = rhm.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ResourceHealthMetadata struct.
-func (rhm *ResourceHealthMetadata) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var resourceHealthMetadataProperties ResourceHealthMetadataProperties
-				err = json.Unmarshal(*v, &resourceHealthMetadataProperties)
-				if err != nil {
-					return err
-				}
-				rhm.ResourceHealthMetadataProperties = &resourceHealthMetadataProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				rhm.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				rhm.Name = &name
-			}
-		case "kind":
-			if v != nil {
-				var kind string
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				rhm.Kind = &kind
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				rhm.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// ResourceHealthMetadataCollection collection of resource health metadata.
-type ResourceHealthMetadataCollection struct {
-	autorest.Response `json:"-"`
-	// Value - Collection of resources.
-	Value *[]ResourceHealthMetadata `json:"value,omitempty"`
-	// NextLink - Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ResourceHealthMetadataCollectionIterator provides access to a complete listing of ResourceHealthMetadata values.
-type ResourceHealthMetadataCollectionIterator struct {
-	i    int
-	page ResourceHealthMetadataCollectionPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ResourceHealthMetadataCollectionIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ResourceHealthMetadataCollectionIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ResourceHealthMetadataCollectionIterator) Response() ResourceHealthMetadataCollection {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ResourceHealthMetadataCollectionIterator) Value() ResourceHealthMetadata {
-	if !iter.page.NotDone() {
-		return ResourceHealthMetadata{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (rhmc ResourceHealthMetadataCollection) IsEmpty() bool {
-	return rhmc.Value == nil || len(*rhmc.Value) == 0
-}
-
-// resourceHealthMetadataCollectionPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (rhmc ResourceHealthMetadataCollection) resourceHealthMetadataCollectionPreparer() (*http.Request, error) {
-	if rhmc.NextLink == nil || len(to.String(rhmc.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(rhmc.NextLink)))
-}
-
-// ResourceHealthMetadataCollectionPage contains a page of ResourceHealthMetadata values.
-type ResourceHealthMetadataCollectionPage struct {
-	fn   func(ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error)
-	rhmc ResourceHealthMetadataCollection
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ResourceHealthMetadataCollectionPage) Next() error {
-	next, err := page.fn(page.rhmc)
-	if err != nil {
-		return err
-	}
-	page.rhmc = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ResourceHealthMetadataCollectionPage) NotDone() bool {
-	return !page.rhmc.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ResourceHealthMetadataCollectionPage) Response() ResourceHealthMetadataCollection {
-	return page.rhmc
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ResourceHealthMetadataCollectionPage) Values() []ResourceHealthMetadata {
-	if page.rhmc.IsEmpty() {
-		return nil
-	}
-	return *page.rhmc.Value
-}
-
-// ResourceHealthMetadataProperties resourceHealthMetadata resource specific properties
-type ResourceHealthMetadataProperties struct {
-	// Category - The category that the resource matches in the RHC Policy File
-	Category *string `json:"category,omitempty"`
-	// SignalAvailability - Is there a health signal for the resource
-	SignalAvailability *bool `json:"signalAvailability,omitempty"`
-}
-
 // ResourceMetric object representing a metric for any resource .
 type ResourceMetric struct {
 	// Name - Name of metric.
@@ -14958,8 +15001,6 @@ func (page ResourceMetricDefinitionCollectionPage) Values() []ResourceMetricDefi
 
 // ResourceMetricDefinitionProperties resourceMetricDefinition resource specific properties
 type ResourceMetricDefinitionProperties struct {
-	// Name - Name of the metric.
-	Name *ResourceMetricName `json:"name,omitempty"`
 	// Unit - Unit of the metric.
 	Unit *string `json:"unit,omitempty"`
 	// PrimaryAggregationType - Primary aggregation type.
@@ -14968,8 +15009,6 @@ type ResourceMetricDefinitionProperties struct {
 	MetricAvailabilities *[]ResourceMetricAvailability `json:"metricAvailabilities,omitempty"`
 	// ResourceURI - Resource URI.
 	ResourceURI *string `json:"resourceUri,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
 	// Properties - Resource metric definition properties.
 	Properties map[string]*string `json:"properties"`
 }
@@ -14977,9 +15016,6 @@ type ResourceMetricDefinitionProperties struct {
 // MarshalJSON is the custom marshaler for ResourceMetricDefinitionProperties.
 func (rmd ResourceMetricDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rmd.Name != nil {
-		objectMap["name"] = rmd.Name
-	}
 	if rmd.Unit != nil {
 		objectMap["unit"] = rmd.Unit
 	}
@@ -14991,9 +15027,6 @@ func (rmd ResourceMetricDefinitionProperties) MarshalJSON() ([]byte, error) {
 	}
 	if rmd.ResourceURI != nil {
 		objectMap["resourceUri"] = rmd.ResourceURI
-	}
-	if rmd.ID != nil {
-		objectMap["id"] = rmd.ID
 	}
 	if rmd.Properties != nil {
 		objectMap["properties"] = rmd.Properties
@@ -15177,114 +15210,12 @@ type RestoreRequestProperties struct {
 	IgnoreDatabases *bool `json:"ignoreDatabases,omitempty"`
 	// AppServicePlan - Specify app service plan that will own restored site.
 	AppServicePlan *string `json:"appServicePlan,omitempty"`
-	// OperationType - Operation type. Possible values include: 'BackupRestoreOperationTypeDefault', 'BackupRestoreOperationTypeClone', 'BackupRestoreOperationTypeRelocation', 'BackupRestoreOperationTypeSnapshot'
+	// OperationType - Operation type. Possible values include: 'BackupRestoreOperationTypeDefault', 'BackupRestoreOperationTypeClone', 'BackupRestoreOperationTypeRelocation', 'BackupRestoreOperationTypeSnapshot', 'BackupRestoreOperationTypeCloudFS'
 	OperationType BackupRestoreOperationType `json:"operationType,omitempty"`
 	// AdjustConnectionStrings - <code>true</code> if SiteConfig.ConnectionStrings should be set in new app; otherwise, <code>false</code>.
 	AdjustConnectionStrings *bool `json:"adjustConnectionStrings,omitempty"`
 	// HostingEnvironment - App Service Environment name, if needed (only when restoring an app to an App Service Environment).
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
-}
-
-// RestoreResponse response for an app restore request.
-type RestoreResponse struct {
-	autorest.Response `json:"-"`
-	// RestoreResponseProperties - RestoreResponse resource specific properties
-	*RestoreResponseProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
-	Name *string `json:"name,omitempty"`
-	// Kind - Kind of resource.
-	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for RestoreResponse.
-func (rr RestoreResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rr.RestoreResponseProperties != nil {
-		objectMap["properties"] = rr.RestoreResponseProperties
-	}
-	if rr.ID != nil {
-		objectMap["id"] = rr.ID
-	}
-	if rr.Name != nil {
-		objectMap["name"] = rr.Name
-	}
-	if rr.Kind != nil {
-		objectMap["kind"] = rr.Kind
-	}
-	if rr.Type != nil {
-		objectMap["type"] = rr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for RestoreResponse struct.
-func (rr *RestoreResponse) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var restoreResponseProperties RestoreResponseProperties
-				err = json.Unmarshal(*v, &restoreResponseProperties)
-				if err != nil {
-					return err
-				}
-				rr.RestoreResponseProperties = &restoreResponseProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				rr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				rr.Name = &name
-			}
-		case "kind":
-			if v != nil {
-				var kind string
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				rr.Kind = &kind
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				rr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// RestoreResponseProperties restoreResponse resource specific properties
-type RestoreResponseProperties struct {
-	// OperationID - When server starts the restore process, it will return an operation ID identifying that particular restore operation.
-	OperationID *string `json:"operationId,omitempty"`
 }
 
 // ServiceSpecification resource metrics service provided by Microsoft.Insights resource provider.
@@ -15569,6 +15500,8 @@ type SiteAuthSettingsProperties struct {
 	// This URI is a case-sensitive identifier for the token issuer.
 	// More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
 	Issuer *string `json:"issuer,omitempty"`
+	// ValidateIssuer - Gets a value indicating whether the issuer should be a valid HTTPS url and be validated as such.
+	ValidateIssuer *bool `json:"validateIssuer,omitempty"`
 	// AllowedAudiences - Allowed audience values to consider when validating JWTs issued by
 	// Azure Active Directory. Note that the <code>ClientID</code> value is always considered an
 	// allowed audience, regardless of this setting.
@@ -15660,6 +15593,8 @@ type SiteConfig struct {
 	NodeVersion *string `json:"nodeVersion,omitempty"`
 	// LinuxFxVersion - Linux App Framework and version
 	LinuxFxVersion *string `json:"linuxFxVersion,omitempty"`
+	// XenonFxVersion - Xenon App Framework and version
+	XenonFxVersion *string `json:"xenonFxVersion,omitempty"`
 	// RequestTracingEnabled - <code>true</code> if request tracing is enabled; otherwise, <code>false</code>.
 	RequestTracingEnabled *bool `json:"requestTracingEnabled,omitempty"`
 	// RequestTracingExpirationTime - Request tracing expiration time.
@@ -15730,6 +15665,10 @@ type SiteConfig struct {
 	AutoSwapSlotName *string `json:"autoSwapSlotName,omitempty"`
 	// LocalMySQLEnabled - <code>true</code> to enable local MySQL; otherwise, <code>false</code>.
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+	// ManagedServiceIdentityID - Managed Service Identity Id
+	ManagedServiceIdentityID *int32 `json:"managedServiceIdentityId,omitempty"`
+	// XManagedServiceIdentityID - Explicit Managed Service Identity Id
+	XManagedServiceIdentityID *int32 `json:"xManagedServiceIdentityId,omitempty"`
 	// IPSecurityRestrictions - IP security restrictions.
 	IPSecurityRestrictions *[]IPSecurityRestriction `json:"ipSecurityRestrictions,omitempty"`
 	// HTTP20Enabled - Http20Enabled: configures a web site to allow clients to connect over http2.0
@@ -16139,8 +16078,8 @@ func (page SiteConfigurationSnapshotInfoCollectionPage) Values() []SiteConfigura
 type SiteConfigurationSnapshotInfoProperties struct {
 	// Time - The time the snapshot was taken.
 	Time *date.Time `json:"time,omitempty"`
-	// ID - The id of the snapshot
-	ID *int32 `json:"id,omitempty"`
+	// SnapshotID - The id of the snapshot
+	SnapshotID *int32 `json:"snapshotId,omitempty"`
 }
 
 // SiteExtensionInfo site Extension Information.
@@ -16343,12 +16282,11 @@ func (page SiteExtensionInfoCollectionPage) Values() []SiteExtensionInfo {
 
 // SiteExtensionInfoProperties siteExtensionInfo resource specific properties
 type SiteExtensionInfoProperties struct {
-	// ID - Site extension ID.
-	ID *string `json:"id,omitempty"`
-	// Title - Site extension title.
-	Title *string `json:"title,omitempty"`
-	// Type - Site extension type. Possible values include: 'Gallery', 'WebRoot'
-	Type SiteExtensionType `json:"type,omitempty"`
+	// ExtensionID - Site extension ID.
+	ExtensionID *string `json:"extension_id,omitempty"`
+	Title       *string `json:"title,omitempty"`
+	// ExtensionType - Site extension type. Possible values include: 'Gallery', 'WebRoot'
+	ExtensionType SiteExtensionType `json:"extension_type,omitempty"`
 	// Summary - Summary description.
 	Summary *string `json:"summary,omitempty"`
 	// Description - Detailed description.
@@ -16356,29 +16294,29 @@ type SiteExtensionInfoProperties struct {
 	// Version - Version information.
 	Version *string `json:"version,omitempty"`
 	// ExtensionURL - Extension URL.
-	ExtensionURL *string `json:"extensionUrl,omitempty"`
+	ExtensionURL *string `json:"extension_url,omitempty"`
 	// ProjectURL - Project URL.
-	ProjectURL *string `json:"projectUrl,omitempty"`
+	ProjectURL *string `json:"project_url,omitempty"`
 	// IconURL - Icon URL.
-	IconURL *string `json:"iconUrl,omitempty"`
+	IconURL *string `json:"icon_url,omitempty"`
 	// LicenseURL - License URL.
-	LicenseURL *string `json:"licenseUrl,omitempty"`
+	LicenseURL *string `json:"license_url,omitempty"`
 	// FeedURL - Feed URL.
-	FeedURL *string `json:"feedUrl,omitempty"`
+	FeedURL *string `json:"feed_url,omitempty"`
 	// Authors - List of authors.
 	Authors *[]string `json:"authors,omitempty"`
-	// InstallationArgs - Installer command line parameters.
-	InstallationArgs *string `json:"installationArgs,omitempty"`
+	// InstallerCommandLineParams - Installer command line parameters.
+	InstallerCommandLineParams *string `json:"installer_command_line_params,omitempty"`
 	// PublishedDateTime - Published timestamp.
-	PublishedDateTime *date.Time `json:"publishedDateTime,omitempty"`
+	PublishedDateTime *date.Time `json:"published_date_time,omitempty"`
 	// DownloadCount - Count of downloads.
-	DownloadCount *int32 `json:"downloadCount,omitempty"`
+	DownloadCount *int32 `json:"download_count,omitempty"`
 	// LocalIsLatestVersion - <code>true</code> if the local version is the latest version; <code>false</code> otherwise.
-	LocalIsLatestVersion *bool `json:"localIsLatestVersion,omitempty"`
+	LocalIsLatestVersion *bool `json:"local_is_latest_version,omitempty"`
 	// LocalPath - Local path.
-	LocalPath *string `json:"localPath,omitempty"`
+	LocalPath *string `json:"local_path,omitempty"`
 	// InstalledDateTime - Installed timestamp.
-	InstalledDateTime *date.Time `json:"installedDateTime,omitempty"`
+	InstalledDateTime *date.Time `json:"installed_date_time,omitempty"`
 	// ProvisioningState - Provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Comment - Site Extension comment.
@@ -16482,8 +16420,8 @@ func (si *SiteInstance) UnmarshalJSON(body []byte) error {
 
 // SiteInstanceProperties siteInstance resource specific properties
 type SiteInstanceProperties struct {
-	// Name - Name of instance.
-	Name *string `json:"name,omitempty"`
+	// SiteInstanceName - Name of instance.
+	SiteInstanceName *string `json:"siteInstanceName,omitempty"`
 }
 
 // SiteLimits metric limits set on an app.
@@ -16734,6 +16672,8 @@ type SitePatchResourceProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
+	// IsXenon - Hyper-V sandbox.
+	IsXenon *bool `json:"isXenon,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
@@ -16914,6 +16854,8 @@ type SiteProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 	// Reserved - <code>true</code> if reserved; otherwise, <code>false</code>.
 	Reserved *bool `json:"reserved,omitempty"`
+	// IsXenon - Hyper-V sandbox.
+	IsXenon *bool `json:"isXenon,omitempty"`
 	// LastModifiedTimeUtc - Last time the app was modified, in UTC. Read-only.
 	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
 	// SiteConfig - Configuration of the app.
@@ -17546,8 +17488,8 @@ func (page SlotDifferenceCollectionPage) Values() []SlotDifference {
 
 // SlotDifferenceProperties slotDifference resource specific properties
 type SlotDifferenceProperties struct {
-	// Type - Type of the difference: Information, Warning or Error.
-	Type *string `json:"type,omitempty"`
+	// Level - Level of the difference: Information, Warning or Error.
+	Level *string `json:"level,omitempty"`
 	// SettingType - The type of the setting: General, AppSetting or ConnectionString.
 	SettingType *string `json:"settingType,omitempty"`
 	// DiffRule - Rule that describes how to process the setting difference during a slot swap.
@@ -17895,6 +17837,16 @@ type SnapshotRecoveryRequestProperties struct {
 	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
 }
 
+// SnapshotRecoverySource specifies the web app that snapshot contents will be retrieved from.
+type SnapshotRecoverySource struct {
+	// Location - Geographical location of the source web app, e.g. SouthEastAsia, SouthCentralUS
+	Location *string `json:"location,omitempty"`
+	// ID - ARM resource ID of the source app.
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
+	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+	ID *string `json:"id,omitempty"`
+}
+
 // SnapshotRecoveryTarget specifies the web app that snapshot contents will be written to.
 type SnapshotRecoveryTarget struct {
 	// Location - Geographical location of the target web app, e.g. SouthEastAsia, SouthCentralUS
@@ -17903,6 +17855,117 @@ type SnapshotRecoveryTarget struct {
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
 	ID *string `json:"id,omitempty"`
+}
+
+// SnapshotRestoreRequest details about app recovery operation.
+type SnapshotRestoreRequest struct {
+	// SnapshotRestoreRequestProperties - SnapshotRestoreRequest resource specific properties
+	*SnapshotRestoreRequestProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotRestoreRequest.
+func (srr SnapshotRestoreRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srr.SnapshotRestoreRequestProperties != nil {
+		objectMap["properties"] = srr.SnapshotRestoreRequestProperties
+	}
+	if srr.ID != nil {
+		objectMap["id"] = srr.ID
+	}
+	if srr.Name != nil {
+		objectMap["name"] = srr.Name
+	}
+	if srr.Kind != nil {
+		objectMap["kind"] = srr.Kind
+	}
+	if srr.Type != nil {
+		objectMap["type"] = srr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SnapshotRestoreRequest struct.
+func (srr *SnapshotRestoreRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var snapshotRestoreRequestProperties SnapshotRestoreRequestProperties
+				err = json.Unmarshal(*v, &snapshotRestoreRequestProperties)
+				if err != nil {
+					return err
+				}
+				srr.SnapshotRestoreRequestProperties = &snapshotRestoreRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				srr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				srr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				srr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				srr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SnapshotRestoreRequestProperties snapshotRestoreRequest resource specific properties
+type SnapshotRestoreRequestProperties struct {
+	// SnapshotTime - Point in time in which the app restore should be done, formatted as a DateTime string.
+	SnapshotTime *string `json:"snapshotTime,omitempty"`
+	// RecoverySource - Optional. Specifies the web app that snapshot contents will be retrieved from.
+	// If empty, the targeted web app will be used as the source.
+	RecoverySource *SnapshotRecoverySource `json:"recoverySource,omitempty"`
+	// Overwrite - If <code>true</code> the restore operation can overwrite source app; otherwise, <code>false</code>.
+	Overwrite *bool `json:"overwrite,omitempty"`
+	// RecoverConfiguration - If true, site configuration, in addition to content, will be reverted.
+	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
+	// IgnoreConflictingHostNames - If true, custom hostname conflicts will be ignored when recovering to a target web app.
+	// This setting is only necessary when RecoverConfiguration is enabled.
+	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
 }
 
 // Solution class Representing Solution for problems detected.
@@ -18123,8 +18186,6 @@ func (page SourceControlCollectionPage) Values() []SourceControl {
 
 // SourceControlProperties sourceControl resource specific properties
 type SourceControlProperties struct {
-	// Name - Name or source control type.
-	Name *string `json:"name,omitempty"`
 	// Token - OAuth access token.
 	Token *string `json:"token,omitempty"`
 	// TokenSecret - OAuth access token secret.
@@ -18169,7 +18230,7 @@ type StampCapacity struct {
 	Unit *string `json:"unit,omitempty"`
 	// ComputeMode - Shared/dedicated workers. Possible values include: 'ComputeModeOptionsShared', 'ComputeModeOptionsDedicated', 'ComputeModeOptionsDynamic'
 	ComputeMode ComputeModeOptions `json:"computeMode,omitempty"`
-	// WorkerSize - Size of the machines. Possible values include: 'Default', 'Small', 'Medium', 'Large', 'D1', 'D2', 'D3'
+	// WorkerSize - Size of the machines. Possible values include: 'Small', 'Medium', 'Large', 'D1', 'D2', 'D3', 'Default'
 	WorkerSize WorkerSizeOptions `json:"workerSize,omitempty"`
 	// WorkerSizeID - Size ID of machines:
 	// 0 - Small
@@ -18183,6 +18244,8 @@ type StampCapacity struct {
 	IsApplicableForAllComputeModes *bool `json:"isApplicableForAllComputeModes,omitempty"`
 	// SiteMode - Shared or Dedicated.
 	SiteMode *string `json:"siteMode,omitempty"`
+	// IsLinux - Is this a linux stamp capacity
+	IsLinux *bool `json:"isLinux,omitempty"`
 }
 
 // StampCapacityCollection collection of stamp capacities.
@@ -18874,8 +18937,6 @@ func (page TopLevelDomainCollectionPage) Values() []TopLevelDomain {
 
 // TopLevelDomainProperties topLevelDomain resource specific properties
 type TopLevelDomainProperties struct {
-	// DomainName - Name of the top level domain.
-	DomainName *string `json:"name,omitempty"`
 	// Privacy - If <code>true</code>, then the top level domain supports domain privacy; otherwise, <code>false</code>.
 	Privacy *bool `json:"privacy,omitempty"`
 }
@@ -19080,8 +19141,8 @@ func (page TriggeredJobHistoryCollectionPage) Values() []TriggeredJobHistory {
 
 // TriggeredJobHistoryProperties triggeredJobHistory resource specific properties
 type TriggeredJobHistoryProperties struct {
-	// TriggeredJobRuns - List of triggered web job runs.
-	TriggeredJobRuns *[]TriggeredJobRun `json:"triggeredJobRuns,omitempty"`
+	// Runs - List of triggered web job runs.
+	Runs *[]TriggeredJobRun `json:"runs,omitempty"`
 }
 
 // TriggeredJobRun triggered Web Job Run Information.
@@ -19181,26 +19242,26 @@ func (tjr *TriggeredJobRun) UnmarshalJSON(body []byte) error {
 
 // TriggeredJobRunProperties triggeredJobRun resource specific properties
 type TriggeredJobRunProperties struct {
-	// ID - Job ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Job name.
-	Name *string `json:"name,omitempty"`
+	// WebJobID - Job ID.
+	WebJobID *string `json:"web_job_id,omitempty"`
+	// WebJobName - Job name.
+	WebJobName *string `json:"web_job_name,omitempty"`
 	// Status - Job status. Possible values include: 'TriggeredWebJobStatusSuccess', 'TriggeredWebJobStatusFailed', 'TriggeredWebJobStatusError'
 	Status TriggeredWebJobStatus `json:"status,omitempty"`
 	// StartTime - Start time.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *date.Time `json:"start_time,omitempty"`
 	// EndTime - End time.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *date.Time `json:"end_time,omitempty"`
 	// Duration - Job duration.
 	Duration *string `json:"duration,omitempty"`
 	// OutputURL - Output URL.
-	OutputURL *string `json:"outputUrl,omitempty"`
+	OutputURL *string `json:"output_url,omitempty"`
 	// ErrorURL - Error URL.
-	ErrorURL *string `json:"errorUrl,omitempty"`
+	ErrorURL *string `json:"error_url,omitempty"`
 	// URL - Job URL.
 	URL *string `json:"url,omitempty"`
 	// JobName - Job name.
-	JobName *string `json:"jobName,omitempty"`
+	JobName *string `json:"job_name,omitempty"`
 	// Trigger - Job trigger.
 	Trigger *string `json:"trigger,omitempty"`
 }
@@ -19406,25 +19467,23 @@ func (page TriggeredWebJobCollectionPage) Values() []TriggeredWebJob {
 // TriggeredWebJobProperties triggeredWebJob resource specific properties
 type TriggeredWebJobProperties struct {
 	// LatestRun - Latest job run information.
-	LatestRun *TriggeredJobRun `json:"latestRun,omitempty"`
+	LatestRun *TriggeredJobRun `json:"latest_run,omitempty"`
 	// HistoryURL - History URL.
-	HistoryURL *string `json:"historyUrl,omitempty"`
+	HistoryURL *string `json:"history_url,omitempty"`
 	// SchedulerLogsURL - Scheduler Logs URL.
-	SchedulerLogsURL *string `json:"schedulerLogsUrl,omitempty"`
-	// Name - Job name. Used as job identifier in ARM resource URI.
-	Name *string `json:"name,omitempty"`
+	SchedulerLogsURL *string `json:"scheduler_logs_url,omitempty"`
 	// RunCommand - Run command.
-	RunCommand *string `json:"runCommand,omitempty"`
+	RunCommand *string `json:"run_command,omitempty"`
 	// URL - Job URL.
 	URL *string `json:"url,omitempty"`
 	// ExtraInfoURL - Extra Info URL.
-	ExtraInfoURL *string `json:"extraInfoUrl,omitempty"`
-	// JobType - Job type. Possible values include: 'Continuous', 'Triggered'
-	JobType JobType `json:"jobType,omitempty"`
+	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	// WebJobType - Job type. Possible values include: 'Continuous', 'Triggered'
+	WebJobType JobType `json:"web_job_type,omitempty"`
 	// Error - Error information.
 	Error *string `json:"error,omitempty"`
 	// UsingSdk - Using SDK?
-	UsingSdk *bool `json:"usingSdk,omitempty"`
+	UsingSdk *bool `json:"using_sdk,omitempty"`
 	// Settings - Job settings.
 	Settings map[string]interface{} `json:"settings"`
 }
@@ -19433,34 +19492,31 @@ type TriggeredWebJobProperties struct {
 func (twj TriggeredWebJobProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if twj.LatestRun != nil {
-		objectMap["latestRun"] = twj.LatestRun
+		objectMap["latest_run"] = twj.LatestRun
 	}
 	if twj.HistoryURL != nil {
-		objectMap["historyUrl"] = twj.HistoryURL
+		objectMap["history_url"] = twj.HistoryURL
 	}
 	if twj.SchedulerLogsURL != nil {
-		objectMap["schedulerLogsUrl"] = twj.SchedulerLogsURL
-	}
-	if twj.Name != nil {
-		objectMap["name"] = twj.Name
+		objectMap["scheduler_logs_url"] = twj.SchedulerLogsURL
 	}
 	if twj.RunCommand != nil {
-		objectMap["runCommand"] = twj.RunCommand
+		objectMap["run_command"] = twj.RunCommand
 	}
 	if twj.URL != nil {
 		objectMap["url"] = twj.URL
 	}
 	if twj.ExtraInfoURL != nil {
-		objectMap["extraInfoUrl"] = twj.ExtraInfoURL
+		objectMap["extra_info_url"] = twj.ExtraInfoURL
 	}
-	if twj.JobType != "" {
-		objectMap["jobType"] = twj.JobType
+	if twj.WebJobType != "" {
+		objectMap["web_job_type"] = twj.WebJobType
 	}
 	if twj.Error != nil {
 		objectMap["error"] = twj.Error
 	}
 	if twj.UsingSdk != nil {
-		objectMap["usingSdk"] = twj.UsingSdk
+		objectMap["using_sdk"] = twj.UsingSdk
 	}
 	if twj.Settings != nil {
 		objectMap["settings"] = twj.Settings
@@ -19669,8 +19725,6 @@ func (page UsageCollectionPage) Values() []Usage {
 type UsageProperties struct {
 	// DisplayName - Friendly name shown in the UI.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Name - Name of the quota.
-	Name *string `json:"name,omitempty"`
 	// ResourceName - Name of the quota resource.
 	ResourceName *string `json:"resourceName,omitempty"`
 	// Unit - Units of measurement for the quota resource.
@@ -19785,8 +19839,6 @@ func (u *User) UnmarshalJSON(body []byte) error {
 
 // UserProperties user resource specific properties
 type UserProperties struct {
-	// UserName - Username
-	UserName *string `json:"name,omitempty"`
 	// PublishingUserName - Username used for publishing.
 	PublishingUserName *string `json:"publishingUserName,omitempty"`
 	// PublishingPassword - Password used for publishing.
@@ -19795,6 +19847,8 @@ type UserProperties struct {
 	PublishingPasswordHash *string `json:"publishingPasswordHash,omitempty"`
 	// PublishingPasswordHashSalt - Password hash salt used for publishing.
 	PublishingPasswordHashSalt *string `json:"publishingPasswordHashSalt,omitempty"`
+	// ScmURI - Url of SCM site.
+	ScmURI *string `json:"scmUri,omitempty"`
 }
 
 // ValidateProperties app properties used for validation.
@@ -20376,8 +20430,6 @@ func (vr *VnetRoute) UnmarshalJSON(body []byte) error {
 
 // VnetRouteProperties vnetRoute resource specific properties
 type VnetRouteProperties struct {
-	// VnetRouteName - The name of this route. This is only returned by the server and does not need to be set by the client.
-	VnetRouteName *string `json:"name,omitempty"`
 	// StartAddress - The starting address for this route. This may also include a CIDR notation, in which case the end address must not be specified.
 	StartAddress *string `json:"startAddress,omitempty"`
 	// EndAddress - The ending address for this route. If the start address is specified in CIDR notation, this must be omitted.

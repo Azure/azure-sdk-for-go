@@ -330,3 +330,228 @@ func (client APIIssueAttachmentClient) GetResponder(resp *http.Response) (result
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// Head gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
+// identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
+// within an Issue. Must be unique in the current Issue.
+func (client APIIssueAttachmentClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: apiid,
+			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+		{TargetValue: issueID,
+			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "issueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: attachmentID,
+			Constraints: []validation.Constraint{{Target: "attachmentID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "attachmentID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "attachmentID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.APIIssueAttachmentClient", "Head", err.Error())
+	}
+
+	req, err := client.HeadPreparer(ctx, resourceGroupName, serviceName, apiid, issueID, attachmentID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.HeadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.HeadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// HeadPreparer prepares the Head request.
+func (client APIIssueAttachmentClient) HeadPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"apiId":             autorest.Encode("path", apiid),
+		"attachmentId":      autorest.Encode("path", attachmentID),
+		"issueId":           autorest.Encode("path", issueID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// HeadSender sends the Head request. The method will close the
+// http.Response Body if it receives an error.
+func (client APIIssueAttachmentClient) HeadSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// HeadResponder handles the response to the Head request. The method always
+// closes the http.Response Body.
+func (client APIIssueAttachmentClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// ListByService lists all comments for the Issue assosiated with the specified API.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
+// identifier. Must be unique in the current API Management service instance. filter is | Field       | Supported
+// operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
+func (client APIIssueAttachmentClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (result IssueAttachmentCollectionPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: apiid,
+			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+		{TargetValue: issueID,
+			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
+				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "issueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("apimanagement.APIIssueAttachmentClient", "ListByService", err.Error())
+	}
+
+	result.fn = client.listByServiceNextResults
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, apiid, issueID, filter, top, skip)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "ListByService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByServiceSender(req)
+	if err != nil {
+		result.iac.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "ListByService", resp, "Failure sending request")
+		return
+	}
+
+	result.iac, err = client.ListByServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "ListByService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByServicePreparer prepares the ListByService request.
+func (client APIIssueAttachmentClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"apiId":             autorest.Encode("path", apiid),
+		"issueId":           autorest.Encode("path", issueID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByServiceSender sends the ListByService request. The method will close the
+// http.Response Body if it receives an error.
+func (client APIIssueAttachmentClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByServiceResponder handles the response to the ListByService request. The method always
+// closes the http.Response Body.
+func (client APIIssueAttachmentClient) ListByServiceResponder(resp *http.Response) (result IssueAttachmentCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByServiceNextResults retrieves the next set of results, if any.
+func (client APIIssueAttachmentClient) listByServiceNextResults(lastResults IssueAttachmentCollection) (result IssueAttachmentCollection, err error) {
+	req, err := lastResults.issueAttachmentCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "listByServiceNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "listByServiceNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client APIIssueAttachmentClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (result IssueAttachmentCollectionIterator, err error) {
+	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, apiid, issueID, filter, top, skip)
+	return
+}

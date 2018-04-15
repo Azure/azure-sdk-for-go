@@ -84,15 +84,6 @@ func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return original.NewSignUpSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type APIIssuCommentClient = original.APIIssuCommentClient
-
-func NewAPIIssuCommentClient(subscriptionID string) APIIssuCommentClient {
-	return original.NewAPIIssuCommentClient(subscriptionID)
-}
-func NewAPIIssuCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuCommentClient {
-	return original.NewAPIIssuCommentClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type APIDiagnosticClient = original.APIDiagnosticClient
 
 func NewAPIDiagnosticClient(subscriptionID string) APIDiagnosticClient {
@@ -136,24 +127,6 @@ func NewTenantConfigurationClient(subscriptionID string) TenantConfigurationClie
 }
 func NewTenantConfigurationClientWithBaseURI(baseURI string, subscriptionID string) TenantConfigurationClient {
 	return original.NewTenantConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type APIIssuAttachmentClient = original.APIIssuAttachmentClient
-
-func NewAPIIssuAttachmentClient(subscriptionID string) APIIssuAttachmentClient {
-	return original.NewAPIIssuAttachmentClient(subscriptionID)
-}
-func NewAPIIssuAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssuAttachmentClient {
-	return original.NewAPIIssuAttachmentClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type APIIssueAttachmentsClient = original.APIIssueAttachmentsClient
-
-func NewAPIIssueAttachmentsClient(subscriptionID string) APIIssueAttachmentsClient {
-	return original.NewAPIIssueAttachmentsClient(subscriptionID)
-}
-func NewAPIIssueAttachmentsClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentsClient {
-	return original.NewAPIIssueAttachmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type PolicySnippetsClient = original.PolicySnippetsClient
@@ -1008,15 +981,6 @@ func NewDiagnosticClientWithBaseURI(baseURI string, subscriptionID string) Diagn
 	return original.NewDiagnosticClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type APIIssuesClient = original.APIIssuesClient
-
-func NewAPIIssuesClient(subscriptionID string) APIIssuesClient {
-	return original.NewAPIIssuesClient(subscriptionID)
-}
-func NewAPIIssuesClientWithBaseURI(baseURI string, subscriptionID string) APIIssuesClient {
-	return original.NewAPIIssuesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type OpenIDConnectProviderClient = original.OpenIDConnectProviderClient
 
 func NewOpenIDConnectProviderClient(subscriptionID string) OpenIDConnectProviderClient {
@@ -1105,15 +1069,6 @@ func NewAPIProductClient(subscriptionID string) APIProductClient {
 }
 func NewAPIProductClientWithBaseURI(baseURI string, subscriptionID string) APIProductClient {
 	return original.NewAPIProductClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type APIIssueCommentsClient = original.APIIssueCommentsClient
-
-func NewAPIIssueCommentsClient(subscriptionID string) APIIssueCommentsClient {
-	return original.NewAPIIssueCommentsClient(subscriptionID)
-}
-func NewAPIIssueCommentsClientWithBaseURI(baseURI string, subscriptionID string) APIIssueCommentsClient {
-	return original.NewAPIIssueCommentsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type APIIssueAttachmentClient = original.APIIssueAttachmentClient

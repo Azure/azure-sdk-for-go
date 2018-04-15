@@ -398,3 +398,132 @@ func (client APIIssueClient) HeadResponder(resp *http.Response) (result autorest
 	result.Response = resp
 	return
 }
+
+// ListByService lists all issues assosiated with the specified API.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions               |
+// |-------------|------------------------|-----------------------------------|
+// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// | state        | eq                     |                                   |
+// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
+func (client APIIssueClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result IssueCollectionPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: serviceName,
+			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
+		{TargetValue: apiid,
+			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "apiid", Name: validation.Pattern, Rule: `(^[\w]+$)|(^[\w][\w\-]+[\w]$)`, Chain: nil}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("apimanagement.APIIssueClient", "ListByService", err.Error())
+	}
+
+	result.fn = client.listByServiceNextResults
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "ListByService", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByServiceSender(req)
+	if err != nil {
+		result.ic.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "ListByService", resp, "Failure sending request")
+		return
+	}
+
+	result.ic, err = client.ListByServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "ListByService", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByServicePreparer prepares the ListByService request.
+func (client APIIssueClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"apiId":             autorest.Encode("path", apiid),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByServiceSender sends the ListByService request. The method will close the
+// http.Response Body if it receives an error.
+func (client APIIssueClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByServiceResponder handles the response to the ListByService request. The method always
+// closes the http.Response Body.
+func (client APIIssueClient) ListByServiceResponder(resp *http.Response) (result IssueCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByServiceNextResults retrieves the next set of results, if any.
+func (client APIIssueClient) listByServiceNextResults(lastResults IssueCollection) (result IssueCollection, err error) {
+	req, err := lastResults.issueCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "listByServiceNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByServiceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "listByServiceNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByServiceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "listByServiceNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client APIIssueClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result IssueCollectionIterator, err error) {
+	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	return
+}

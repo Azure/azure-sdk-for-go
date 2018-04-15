@@ -21,6 +21,15 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-10-01-preview/sql"
 
+type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerabilityAssessmentScansClient
+
+func NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
+	return original.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID)
+}
+func NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
+	return original.NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 
 func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
@@ -45,11 +54,40 @@ func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
 }
 
+type VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanState
+
+const (
+	VulnerabilityAssessmentScanStateFailed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailed
+	VulnerabilityAssessmentScanStateFailedToRun VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailedToRun
+	VulnerabilityAssessmentScanStateInProgress  VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateInProgress
+	VulnerabilityAssessmentScanStatePassed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStatePassed
+)
+
+func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
+	return original.PossibleVulnerabilityAssessmentScanStateValues()
+}
+
+type VulnerabilityAssessmentScanTriggerType = original.VulnerabilityAssessmentScanTriggerType
+
+const (
+	OnDemand  VulnerabilityAssessmentScanTriggerType = original.OnDemand
+	Recurring VulnerabilityAssessmentScanTriggerType = original.Recurring
+)
+
+func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
+	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
+}
+
 type DatabaseOperation = original.DatabaseOperation
 type DatabaseOperationListResult = original.DatabaseOperationListResult
 type DatabaseOperationListResultIterator = original.DatabaseOperationListResultIterator
 type DatabaseOperationListResultPage = original.DatabaseOperationListResultPage
 type DatabaseOperationProperties = original.DatabaseOperationProperties
+type DatabaseVulnerabilityAssessment = original.DatabaseVulnerabilityAssessment
+type DatabaseVulnerabilityAssessmentProperties = original.DatabaseVulnerabilityAssessmentProperties
+type DatabaseVulnerabilityAssessmentScanExportProperties = original.DatabaseVulnerabilityAssessmentScanExportProperties
+type DatabaseVulnerabilityAssessmentScansExecuteFuture = original.DatabaseVulnerabilityAssessmentScansExecuteFuture
+type DatabaseVulnerabilityAssessmentScansExport = original.DatabaseVulnerabilityAssessmentScansExport
 type ElasticPoolOperation = original.ElasticPoolOperation
 type ElasticPoolOperationListResult = original.ElasticPoolOperationListResult
 type ElasticPoolOperationListResultIterator = original.ElasticPoolOperationListResultIterator
@@ -57,6 +95,14 @@ type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResul
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type Sku = original.Sku
+type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAssessmentRecurringScansProperties
+type VulnerabilityAssessmentScanError = original.VulnerabilityAssessmentScanError
+type VulnerabilityAssessmentScanRecord = original.VulnerabilityAssessmentScanRecord
+type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessmentScanRecordListResult
+type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
+type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
+type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

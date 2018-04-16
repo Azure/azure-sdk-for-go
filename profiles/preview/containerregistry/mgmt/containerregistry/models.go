@@ -21,17 +21,22 @@ package containerregistry
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ReplicationsClient = original.ReplicationsClient
+
+func NewReplicationsClient(subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClient(subscriptionID)
+}
+func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type PasswordName = original.PasswordName
@@ -179,15 +184,6 @@ type WebhooksCreateFuture = original.WebhooksCreateFuture
 type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
-type OperationsClient = original.OperationsClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type RegistriesClient = original.RegistriesClient
 
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
@@ -195,15 +191,6 @@ func NewRegistriesClient(subscriptionID string) RegistriesClient {
 }
 func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ReplicationsClient = original.ReplicationsClient
-
-func NewReplicationsClient(subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClient(subscriptionID)
-}
-func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -219,4 +206,17 @@ func NewWebhooksClient(subscriptionID string) WebhooksClient {
 }
 func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
 	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

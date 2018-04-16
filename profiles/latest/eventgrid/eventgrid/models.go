@@ -21,15 +21,6 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
-type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
-
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest
@@ -61,4 +52,13 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type BaseClient = original.BaseClient
+
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
 }

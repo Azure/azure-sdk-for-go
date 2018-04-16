@@ -21,11 +21,7 @@ package managementpartner
 
 import original "github.com/Azure/azure-sdk-for-go/services/managementpartner/mgmt/2018-02-01/managementpartner"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type OperationClient = original.OperationClient
 type Code = original.Code
 
 const (
@@ -50,20 +46,25 @@ type OperationListPage = original.OperationListPage
 type OperationResponse = original.OperationResponse
 type PartnerProperties = original.PartnerProperties
 type PartnerResponse = original.PartnerResponse
-type OperationClient = original.OperationClient
 type PartnerClient = original.PartnerClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewPartnerClient() PartnerClient {
+	return original.NewPartnerClient()
+}
+func NewPartnerClientWithBaseURI(baseURI string) PartnerClient {
+	return original.NewPartnerClientWithBaseURI(baseURI)
+}
 func New() BaseClient {
 	return original.New()
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
-}
-func PossibleCodeValues() []Code {
-	return original.PossibleCodeValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
@@ -71,11 +72,11 @@ func NewOperationClient() OperationClient {
 func NewOperationClientWithBaseURI(baseURI string) OperationClient {
 	return original.NewOperationClientWithBaseURI(baseURI)
 }
-func NewPartnerClient() PartnerClient {
-	return original.NewPartnerClient()
+func PossibleCodeValues() []Code {
+	return original.PossibleCodeValues()
 }
-func NewPartnerClientWithBaseURI(baseURI string) PartnerClient {
-	return original.NewPartnerClientWithBaseURI(baseURI)
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

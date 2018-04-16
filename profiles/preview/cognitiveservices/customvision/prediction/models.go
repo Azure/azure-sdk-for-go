@@ -30,15 +30,15 @@ type ImagePredictionResultModel = original.ImagePredictionResultModel
 type ImageTagPredictionModel = original.ImageTagPredictionModel
 type ImageURL = original.ImageURL
 
-func New(aPIKey string) BaseClient {
-	return original.New(aPIKey)
-}
-func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
-	return original.NewWithBaseURI(baseURI, aPIKey)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func New(aPIKey string) BaseClient {
+	return original.New(aPIKey)
+}
+func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
+	return original.NewWithBaseURI(baseURI, aPIKey)
 }

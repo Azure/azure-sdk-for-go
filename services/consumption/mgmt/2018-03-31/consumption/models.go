@@ -341,22 +341,22 @@ type BudgetTimePeriod struct {
 	EndDate *date.Time `json:"endDate,omitempty"`
 }
 
-// CostAllocationTag the cost allocation tag.
-type CostAllocationTag struct {
-	// Key - Cost allocation tag key.
+// CostTag the cost tag.
+type CostTag struct {
+	// Key - Cost tag key.
 	Key *string `json:"key,omitempty"`
 }
 
-// CostAllocationTagProperties the properties of the cost allocation tag.
-type CostAllocationTagProperties struct {
-	// CostAllocationTags - Cost allocation tags.
-	CostAllocationTags *[]CostAllocationTag `json:"costAllocationTags,omitempty"`
+// CostTagProperties the properties of the cost tag.
+type CostTagProperties struct {
+	// CostTags - Cost tags.
+	CostTags *[]CostTag `json:"costTags,omitempty"`
 }
 
-// CostAllocationTags a cost allocation tag resource.
-type CostAllocationTags struct {
-	autorest.Response            `json:"-"`
-	*CostAllocationTagProperties `json:"properties,omitempty"`
+// CostTags a cost tag resource.
+type CostTags struct {
+	autorest.Response  `json:"-"`
+	*CostTagProperties `json:"properties,omitempty"`
 	// ID - Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -367,29 +367,29 @@ type CostAllocationTags struct {
 	ETag *string `json:"eTag,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for CostAllocationTags.
-func (cat CostAllocationTags) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for CostTags.
+func (ct CostTags) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cat.CostAllocationTagProperties != nil {
-		objectMap["properties"] = cat.CostAllocationTagProperties
+	if ct.CostTagProperties != nil {
+		objectMap["properties"] = ct.CostTagProperties
 	}
-	if cat.ID != nil {
-		objectMap["id"] = cat.ID
+	if ct.ID != nil {
+		objectMap["id"] = ct.ID
 	}
-	if cat.Name != nil {
-		objectMap["name"] = cat.Name
+	if ct.Name != nil {
+		objectMap["name"] = ct.Name
 	}
-	if cat.Type != nil {
-		objectMap["type"] = cat.Type
+	if ct.Type != nil {
+		objectMap["type"] = ct.Type
 	}
-	if cat.ETag != nil {
-		objectMap["eTag"] = cat.ETag
+	if ct.ETag != nil {
+		objectMap["eTag"] = ct.ETag
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for CostAllocationTags struct.
-func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for CostTags struct.
+func (ct *CostTags) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -399,12 +399,12 @@ func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var costAllocationTagProperties CostAllocationTagProperties
-				err = json.Unmarshal(*v, &costAllocationTagProperties)
+				var costTagProperties CostTagProperties
+				err = json.Unmarshal(*v, &costTagProperties)
 				if err != nil {
 					return err
 				}
-				cat.CostAllocationTagProperties = &costAllocationTagProperties
+				ct.CostTagProperties = &costTagProperties
 			}
 		case "id":
 			if v != nil {
@@ -413,7 +413,7 @@ func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				cat.ID = &ID
+				ct.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -422,7 +422,7 @@ func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				cat.Name = &name
+				ct.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -431,7 +431,7 @@ func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				cat.Type = &typeVar
+				ct.Type = &typeVar
 			}
 		case "eTag":
 			if v != nil {
@@ -440,7 +440,7 @@ func (cat *CostAllocationTags) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				cat.ETag = &eTag
+				ct.ETag = &eTag
 			}
 		}
 	}
@@ -1757,6 +1757,113 @@ type ResourceAttributes struct {
 	Location *string `json:"location,omitempty"`
 	// Sku - Resource sku
 	Sku *string `json:"sku,omitempty"`
+}
+
+// Tag the tag resource.
+type Tag struct {
+	// Key - Tag key.
+	Key *string `json:"key,omitempty"`
+}
+
+// TagProperties the properties of the tag.
+type TagProperties struct {
+	// Tags - A list of Tag.
+	Tags *[]Tag `json:"tags,omitempty"`
+}
+
+// Tags a resource listing all tags.
+type Tags struct {
+	autorest.Response `json:"-"`
+	*TagProperties    `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// ETag - eTag of the resource. To handle concurrent update scenarion, this field will be used to determine whether the user is updating the latest version or not.
+	ETag *string `json:"eTag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.TagProperties != nil {
+		objectMap["properties"] = t.TagProperties
+	}
+	if t.ID != nil {
+		objectMap["id"] = t.ID
+	}
+	if t.Name != nil {
+		objectMap["name"] = t.Name
+	}
+	if t.Type != nil {
+		objectMap["type"] = t.Type
+	}
+	if t.ETag != nil {
+		objectMap["eTag"] = t.ETag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Tags struct.
+func (t *Tags) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tagProperties TagProperties
+				err = json.Unmarshal(*v, &tagProperties)
+				if err != nil {
+					return err
+				}
+				t.TagProperties = &tagProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
+		case "eTag":
+			if v != nil {
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
+				if err != nil {
+					return err
+				}
+				t.ETag = &eTag
+			}
+		}
+	}
+
+	return nil
 }
 
 // UsageDetail an usage detail resource.

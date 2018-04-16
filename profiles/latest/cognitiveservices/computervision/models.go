@@ -21,7 +21,6 @@ package computervision
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/computervision"
 
-type BaseClient = original.BaseClient
 type AzureRegions = original.AzureRegions
 
 const (
@@ -168,7 +167,14 @@ type RecognitionResult = original.RecognitionResult
 type TagResult = original.TagResult
 type TextOperationResult = original.TextOperationResult
 type Word = original.Word
+type BaseClient = original.BaseClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New(azureRegion AzureRegions) BaseClient {
 	return original.New(azureRegion)
 }
@@ -201,10 +207,4 @@ func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
 }
 func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
 	return original.PossibleVisualFeatureTypesValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

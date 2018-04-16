@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type VideosClient = original.VideosClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -166,13 +167,24 @@ type VideoDetails = original.VideoDetails
 type VideoObject = original.VideoObject
 type Videos = original.Videos
 type VideosModule = original.VideosModule
-type VideosClient = original.VideosClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New() BaseClient {
 	return original.New()
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewVideosClient() VideosClient {
+	return original.NewVideosClient()
+}
+func NewVideosClientWithBaseURI(baseURI string) VideosClient {
+	return original.NewVideosClientWithBaseURI(baseURI)
 }
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
@@ -206,16 +218,4 @@ func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
 }
 func PossibleVideoResolutionValues() []VideoResolution {
 	return original.PossibleVideoResolutionValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewVideosClient() VideosClient {
-	return original.NewVideosClient()
-}
-func NewVideosClientWithBaseURI(baseURI string) VideosClient {
-	return original.NewVideosClientWithBaseURI(baseURI)
 }

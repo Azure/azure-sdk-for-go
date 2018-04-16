@@ -22,12 +22,7 @@ package policy
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-06-01-preview/policy"
 
 type AssignmentsClient = original.AssignmentsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type SetDefinitionsClient = original.SetDefinitionsClient
 type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
@@ -63,19 +58,30 @@ type SetDefinitionListResultIterator = original.SetDefinitionListResultIterator
 type SetDefinitionListResultPage = original.SetDefinitionListResultPage
 type SetDefinitionProperties = original.SetDefinitionProperties
 type Sku = original.Sku
-type SetDefinitionsClient = original.SetDefinitionsClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClient(subscriptionID)
 }
 func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
 	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
+	return original.NewSetDefinitionsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
+	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)
@@ -88,12 +94,6 @@ func PossibleModeValues() []Mode {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
-}
-func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
-	return original.NewSetDefinitionsClient(subscriptionID)
-}
-func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
-	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

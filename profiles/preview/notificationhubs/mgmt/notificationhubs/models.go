@@ -21,12 +21,16 @@ package notificationhubs
 
 import original "github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs"
 
+type HubsClient = original.HubsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type HubsClient = original.HubsClient
+type Client = original.Client
+type NameClient = original.NameClient
+type NamespacesClient = original.NamespacesClient
 type AccessRights = original.AccessRights
 
 const (
@@ -93,21 +97,12 @@ type Sku = original.Sku
 type SubResource = original.SubResource
 type WnsCredential = original.WnsCredential
 type WnsCredentialProperties = original.WnsCredentialProperties
-type NameClient = original.NameClient
-type NamespacesClient = original.NamespacesClient
-type Client = original.Client
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewHubsClient(subscriptionID string) HubsClient {
-	return original.NewHubsClient(subscriptionID)
-}
-func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
-	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
@@ -118,17 +113,23 @@ func PossibleNamespaceTypeValues() []NamespaceType {
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
-func NewNameClient(subscriptionID string) NameClient {
-	return original.NewNameClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
-	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
+func NewHubsClient(subscriptionID string) HubsClient {
+	return original.NewHubsClient(subscriptionID)
 }
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
+	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
@@ -136,9 +137,9 @@ func NewClient(subscriptionID string) Client {
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewNameClient(subscriptionID string) NameClient {
+	return original.NewNameClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewNameClientWithBaseURI(baseURI string, subscriptionID string) NameClient {
+	return original.NewNameClientWithBaseURI(baseURI, subscriptionID)
 }

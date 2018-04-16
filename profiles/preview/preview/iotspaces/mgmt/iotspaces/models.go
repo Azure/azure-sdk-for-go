@@ -24,12 +24,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type Client = original.Client
 type NameUnavailabilityReason = original.NameUnavailabilityReason
 
 const (
@@ -76,8 +70,36 @@ type Resource = original.Resource
 type SkuInfo = original.SkuInfo
 type StorageContainerProperties = original.StorageContainerProperties
 type UpdateFuture = original.UpdateFuture
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type Client = original.Client
 type OperationsClient = original.OperationsClient
 
+func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
+	return original.PossibleNameUnavailabilityReasonValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuValues() []Sku {
+	return original.PossibleSkuValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID uuid.UUID) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -89,25 +111,4 @@ func NewClient(subscriptionID uuid.UUID) Client {
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
-	return original.PossibleNameUnavailabilityReasonValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleSkuValues() []Sku {
-	return original.PossibleSkuValues()
-}
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

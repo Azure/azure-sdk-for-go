@@ -1385,12 +1385,6 @@ type WaitForPrimarySwapSafetyCheck = original.WaitForPrimarySwapSafetyCheck
 type WaitForReconfigurationSafetyCheck = original.WaitForReconfigurationSafetyCheck
 type WaitingChaosEvent = original.WaitingChaosEvent
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
 func PossibleApplicationDefinitionKindValues() []ApplicationDefinitionKind {
 	return original.PossibleApplicationDefinitionKindValues()
 }
@@ -1684,4 +1678,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

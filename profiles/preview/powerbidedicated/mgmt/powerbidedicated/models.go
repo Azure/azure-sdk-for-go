@@ -21,13 +21,12 @@ package powerbidedicated
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
 
-type CapacitiesClient = original.CapacitiesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -90,19 +89,19 @@ type ResourceSku = original.ResourceSku
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
-type OperationsClient = original.OperationsClient
+type CapacitiesClient = original.CapacitiesClient
 
-func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClient(subscriptionID)
-}
-func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -113,15 +112,15 @@ func PossibleSkuTierValues() []SkuTier {
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClient(subscriptionID)
+}
+func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
 }

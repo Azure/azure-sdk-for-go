@@ -30,13 +30,13 @@ type VirtualMachineExtensionsClient struct {
 }
 
 // NewVirtualMachineExtensionsClient creates an instance of the VirtualMachineExtensionsClient client.
-func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
-	return NewVirtualMachineExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineExtensionsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionsClient {
+	return NewVirtualMachineExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineExtensionsClientWithBaseURI creates an instance of the VirtualMachineExtensionsClient client.
-func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
-	return VirtualMachineExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionsClient {
+	return VirtualMachineExtensionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // CreateOrUpdate the operation to create or update the extension.

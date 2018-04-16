@@ -540,6 +540,42 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{Automatic, Manual, Rolling}
 }
 
+// UpgradeOperationInvoker enumerates the values for upgrade operation invoker.
+type UpgradeOperationInvoker string
+
+const (
+	// Platform ...
+	Platform UpgradeOperationInvoker = "Platform"
+	// Unknown ...
+	Unknown UpgradeOperationInvoker = "Unknown"
+	// User ...
+	User UpgradeOperationInvoker = "User"
+)
+
+// PossibleUpgradeOperationInvokerValues returns an array of possible values for the UpgradeOperationInvoker const type.
+func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
+	return []UpgradeOperationInvoker{Platform, Unknown, User}
+}
+
+// UpgradeState enumerates the values for upgrade state.
+type UpgradeState string
+
+const (
+	// UpgradeStateCancelled ...
+	UpgradeStateCancelled UpgradeState = "Cancelled"
+	// UpgradeStateCompleted ...
+	UpgradeStateCompleted UpgradeState = "Completed"
+	// UpgradeStateFaulted ...
+	UpgradeStateFaulted UpgradeState = "Faulted"
+	// UpgradeStateRollingForward ...
+	UpgradeStateRollingForward UpgradeState = "RollingForward"
+)
+
+// PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
+func PossibleUpgradeStateValues() []UpgradeState {
+	return []UpgradeState{UpgradeStateCancelled, UpgradeStateCompleted, UpgradeStateFaulted, UpgradeStateRollingForward}
+}
+
 // VirtualMachineEvictionPolicyTypes enumerates the values for virtual machine eviction policy types.
 type VirtualMachineEvictionPolicyTypes string
 
@@ -1445,9 +1481,8 @@ type ContainerServiceLinuxProfile struct {
 type ContainerServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - the list of container services.
-	Value *[]ContainerService `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of container service results.
-	NextLink *string `json:"nextLink,omitempty"`
+	Value    *[]ContainerService `json:"value,omitempty"`
+	NextLink *string             `json:"nextLink,omitempty"`
 }
 
 // ContainerServiceListResultIterator provides access to a complete listing of ContainerService values.
@@ -1561,9 +1596,7 @@ type ContainerServiceOrchestratorProfile struct {
 
 // ContainerServiceProperties properties of the container service.
 type ContainerServiceProperties struct {
-	// ProvisioningState - the current deployment or provisioning state, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// OrchestratorProfile - Properties of the orchestrator.
+	ProvisioningState   *string                              `json:"provisioningState,omitempty"`
 	OrchestratorProfile *ContainerServiceOrchestratorProfile `json:"orchestratorProfile,omitempty"`
 	// CustomProfile - Properties for custom clusters.
 	CustomProfile *ContainerServiceCustomProfile `json:"customProfile,omitempty"`
@@ -1703,8 +1736,7 @@ type ContainerServiceSSHPublicKey struct {
 // ContainerServiceVMDiagnostics profile for diagnostics on the container service VMs.
 type ContainerServiceVMDiagnostics struct {
 	// Enabled - Whether the VM diagnostic agent is provisioned on the VM.
-	Enabled *bool `json:"enabled,omitempty"`
-	// StorageURI - The URI of the storage account where diagnostics are stored.
+	Enabled    *bool   `json:"enabled,omitempty"`
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 
@@ -4825,6 +4857,40 @@ func (ur UpdateResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UpgradeOperationHistoricalStatusInfo virtual Machine Scale Set OS Upgrade History operation response.
+type UpgradeOperationHistoricalStatusInfo struct {
+	// Properties - Information about the properties of the upgrade operation.
+	Properties *UpgradeOperationHistoricalStatusInfoProperties `json:"properties,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+}
+
+// UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale Set.
+type UpgradeOperationHistoricalStatusInfoProperties struct {
+	// RunningStatus - Information about the overall status of the upgrade operation.
+	RunningStatus *UpgradeOperationHistoryStatus `json:"runningStatus,omitempty"`
+	// Progress - Counts of the VM's in each state.
+	Progress *RollingUpgradeProgressInfo `json:"progress,omitempty"`
+	// Error - Error Details for this upgrade if there are any.
+	Error *APIError `json:"error,omitempty"`
+	// StartedBy - Invoker of the Upgrade Operation. Possible values include: 'Unknown', 'User', 'Platform'
+	StartedBy UpgradeOperationInvoker `json:"startedBy,omitempty"`
+	// TargetImageReference - Image Reference details
+	TargetImageReference *ImageReference `json:"targetImageReference,omitempty"`
+}
+
+// UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.
+type UpgradeOperationHistoryStatus struct {
+	// Code - Code indicating the current status of the upgrade. Possible values include: 'UpgradeStateRollingForward', 'UpgradeStateCancelled', 'UpgradeStateCompleted', 'UpgradeStateFaulted'
+	Code UpgradeState `json:"code,omitempty"`
+	// StartTime - Start time of the upgrade.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - End time of the upgrade.
+	EndTime *date.Time `json:"endTime,omitempty"`
+}
+
 // UpgradePolicy describes an upgrade policy - automatic, manual, or rolling.
 type UpgradePolicy struct {
 	// Mode - Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are  automatically updated at the same time. Possible values include: 'Automatic', 'Manual', 'Rolling'
@@ -6519,6 +6585,110 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 	// LoadBalancerInboundNatPools - Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer
 	LoadBalancerInboundNatPools *[]SubResource `json:"loadBalancerInboundNatPools,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistory list of Virtual Machine Scale Set OS Upgrade History operation
+// response.
+type VirtualMachineScaleSetListOSUpgradeHistory struct {
+	autorest.Response `json:"-"`
+	// Value - The list of OS upgrades performed on the virtual machine scale set.
+	Value *[]UpgradeOperationHistoricalStatusInfo `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of history of upgrades.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryIterator provides access to a complete listing of
+// UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryIterator struct {
+	i    int
+	page VirtualMachineScaleSetListOSUpgradeHistoryPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *VirtualMachineScaleSetListOSUpgradeHistoryIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Value() UpgradeOperationHistoricalStatusInfo {
+	if !iter.page.NotDone() {
+		return UpgradeOperationHistoricalStatusInfo{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) IsEmpty() bool {
+	return vmsslouh.Value == nil || len(*vmsslouh.Value) == 0
+}
+
+// virtualMachineScaleSetListOSUpgradeHistoryPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) virtualMachineScaleSetListOSUpgradeHistoryPreparer() (*http.Request, error) {
+	if vmsslouh.NextLink == nil || len(to.String(vmsslouh.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(vmsslouh.NextLink)))
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryPage contains a page of UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryPage struct {
+	fn       func(VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)
+	vmsslouh VirtualMachineScaleSetListOSUpgradeHistory
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *VirtualMachineScaleSetListOSUpgradeHistoryPage) Next() error {
+	next, err := page.fn(page.vmsslouh)
+	if err != nil {
+		return err
+	}
+	page.vmsslouh = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) NotDone() bool {
+	return !page.vmsslouh.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return page.vmsslouh
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOperationHistoricalStatusInfo {
+	if page.vmsslouh.IsEmpty() {
+		return nil
+	}
+	return *page.vmsslouh.Value
 }
 
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.

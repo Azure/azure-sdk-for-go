@@ -1158,9 +1158,8 @@ type ContainerServiceLinuxProfile struct {
 type ContainerServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - the list of container services.
-	Value *[]ContainerService `json:"value,omitempty"`
-	// NextLink - The URL to get the next set of container service results.
-	NextLink *string `json:"nextLink,omitempty"`
+	Value    *[]ContainerService `json:"value,omitempty"`
+	NextLink *string             `json:"nextLink,omitempty"`
 }
 
 // ContainerServiceListResultIterator provides access to a complete listing of ContainerService values.
@@ -1274,9 +1273,7 @@ type ContainerServiceOrchestratorProfile struct {
 
 // ContainerServiceProperties properties of the container service.
 type ContainerServiceProperties struct {
-	// ProvisioningState - the current deployment or provisioning state, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// OrchestratorProfile - Properties of the orchestrator.
+	ProvisioningState   *string                              `json:"provisioningState,omitempty"`
 	OrchestratorProfile *ContainerServiceOrchestratorProfile `json:"orchestratorProfile,omitempty"`
 	// CustomProfile - Properties for custom clusters.
 	CustomProfile *ContainerServiceCustomProfile `json:"customProfile,omitempty"`
@@ -1416,8 +1413,7 @@ type ContainerServiceSSHPublicKey struct {
 // ContainerServiceVMDiagnostics profile for diagnostics on the container service VMs.
 type ContainerServiceVMDiagnostics struct {
 	// Enabled - Whether the VM diagnostic agent is provisioned on the VM.
-	Enabled *bool `json:"enabled,omitempty"`
-	// StorageURI - The URI of the storage account where diagnostics are stored.
+	Enabled    *bool   `json:"enabled,omitempty"`
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 

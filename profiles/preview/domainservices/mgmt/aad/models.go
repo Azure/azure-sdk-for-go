@@ -26,8 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -54,12 +52,14 @@ type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
+type DomainServiceOperationsClient = original.DomainServiceOperationsClient
+type DomainServicesClient = original.DomainServicesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func PossibleExternalAccessValues() []ExternalAccess {
+	return original.PossibleExternalAccessValues()
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func PossibleLdapsValues() []Ldaps {
+	return original.PossibleLdapsValues()
 }
 func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
 	return original.NewDomainServiceOperationsClient(subscriptionID)
@@ -67,21 +67,21 @@ func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperat
 func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
 	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClient(subscriptionID)
 }
 func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleExternalAccessValues() []ExternalAccess {
-	return original.PossibleExternalAccessValues()
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func PossibleLdapsValues() []Ldaps {
-	return original.PossibleLdapsValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

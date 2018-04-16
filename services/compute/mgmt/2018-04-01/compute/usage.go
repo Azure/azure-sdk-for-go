@@ -31,13 +31,13 @@ type UsageClient struct {
 }
 
 // NewUsageClient creates an instance of the UsageClient client.
-func NewUsageClient(subscriptionID string) UsageClient {
-	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewUsageClient(subscriptionID string, resourceGroupName string, diskName string) UsageClient {
+	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewUsageClientWithBaseURI creates an instance of the UsageClient client.
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) UsageClient {
+	return UsageClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // List gets, for the specified location, the current compute resource usage information as well as the limits for

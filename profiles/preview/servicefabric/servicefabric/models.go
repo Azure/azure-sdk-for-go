@@ -21,11 +21,6 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.1/servicefabric"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ApplicationDefinitionKind = original.ApplicationDefinitionKind
 
 const (
@@ -1384,6 +1379,12 @@ type WaitForPrimaryPlacementSafetyCheck = original.WaitForPrimaryPlacementSafety
 type WaitForPrimarySwapSafetyCheck = original.WaitForPrimarySwapSafetyCheck
 type WaitForReconfigurationSafetyCheck = original.WaitForReconfigurationSafetyCheck
 type WaitingChaosEvent = original.WaitingChaosEvent
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New() BaseClient {
 	return original.New()

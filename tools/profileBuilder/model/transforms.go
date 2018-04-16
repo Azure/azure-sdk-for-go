@@ -34,7 +34,6 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strings"
 	"time"
 
@@ -200,12 +199,6 @@ func updateAliasPackageUserAgent(x interface{}, profileName string) interface{} 
 	}
 
 	*retResults = updated
-
-	file := cast.ModelFile()
-	sort.SliceStable(file.Decls, func(i, j int) bool {
-		return file.Decls[i].Pos() < file.Decls[j].Pos()
-	})
-
 	return x
 }
 
@@ -311,8 +304,6 @@ func writeAliasPackage(x interface{}, outputLocation string, outputLog, errLog *
 	outputLog.Printf("Writing File: %s", outputPath)
 
 	file := cast.ModelFile()
-
-	outputLog.Printf("Writing File: %s", outputPath)
 
 	var b bytes.Buffer
 	printer.Fprint(&b, files, file)

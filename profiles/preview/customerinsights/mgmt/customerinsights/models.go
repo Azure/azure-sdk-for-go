@@ -21,20 +21,13 @@ package customerinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights"
 
-type AuthorizationPoliciesClient = original.AuthorizationPoliciesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ConnectorMappingsClient = original.ConnectorMappingsClient
+type OperationsClient = original.OperationsClient
 type ConnectorsClient = original.ConnectorsClient
-type HubsClient = original.HubsClient
-type ImagesClient = original.ImagesClient
-type InteractionsClient = original.InteractionsClient
-type KpiClient = original.KpiClient
-type LinksClient = original.LinksClient
 type CalculationWindowTypes = original.CalculationWindowTypes
 
 const (
@@ -383,15 +376,21 @@ type WidgetTypeListResult = original.WidgetTypeListResult
 type WidgetTypeListResultIterator = original.WidgetTypeListResultIterator
 type WidgetTypeListResultPage = original.WidgetTypeListResultPage
 type WidgetTypeResourceFormat = original.WidgetTypeResourceFormat
-type OperationsClient = original.OperationsClient
+type LinksClient = original.LinksClient
 type PredictionsClient = original.PredictionsClient
-type ProfilesClient = original.ProfilesClient
-type RelationshipLinksClient = original.RelationshipLinksClient
+type ImagesClient = original.ImagesClient
+type WidgetTypesClient = original.WidgetTypesClient
+type HubsClient = original.HubsClient
+type ConnectorMappingsClient = original.ConnectorMappingsClient
+type KpiClient = original.KpiClient
 type RelationshipsClient = original.RelationshipsClient
+type AuthorizationPoliciesClient = original.AuthorizationPoliciesClient
+type RelationshipLinksClient = original.RelationshipLinksClient
+type InteractionsClient = original.InteractionsClient
+type ViewsClient = original.ViewsClient
 type RoleAssignmentsClient = original.RoleAssignmentsClient
 type RolesClient = original.RolesClient
-type ViewsClient = original.ViewsClient
-type WidgetTypesClient = original.WidgetTypesClient
+type ProfilesClient = original.ProfilesClient
 
 func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPoliciesClient {
 	return original.NewAuthorizationPoliciesClient(subscriptionID)
@@ -399,11 +398,11 @@ func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPolicies
 func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
 	return original.NewAuthorizationPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewHubsClient(subscriptionID string) HubsClient {
+	return original.NewHubsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
+	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 	return original.NewConnectorMappingsClient(subscriptionID)
@@ -411,23 +410,35 @@ func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
 func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
 	return original.NewConnectorMappingsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewConnectorsClient(subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClient(subscriptionID)
+func NewKpiClient(subscriptionID string) KpiClient {
+	return original.NewKpiClient(subscriptionID)
 }
-func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
+func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
+	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewHubsClient(subscriptionID string) HubsClient {
-	return original.NewHubsClient(subscriptionID)
+func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
+	return original.NewRelationshipsClient(subscriptionID)
 }
-func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
-	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) RelationshipsClient {
+	return original.NewRelationshipsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return original.NewImagesClient(subscriptionID)
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
 }
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
+	return original.NewRelationshipLinksClient(subscriptionID)
+}
+func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
+	return original.NewRelationshipLinksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInteractionsClient(subscriptionID string) InteractionsClient {
 	return original.NewInteractionsClient(subscriptionID)
@@ -435,17 +446,47 @@ func NewInteractionsClient(subscriptionID string) InteractionsClient {
 func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) InteractionsClient {
 	return original.NewInteractionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewKpiClient(subscriptionID string) KpiClient {
-	return original.NewKpiClient(subscriptionID)
+func NewViewsClient(subscriptionID string) ViewsClient {
+	return original.NewViewsClient(subscriptionID)
 }
-func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
-	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
+func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClient {
+	return original.NewViewsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
+}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRolesClient(subscriptionID string) RolesClient {
+	return original.NewRolesClient(subscriptionID)
+}
+func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClient {
+	return original.NewRolesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLinksClient(subscriptionID string) LinksClient {
 	return original.NewLinksClient(subscriptionID)
 }
 func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
 	return original.NewLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorsClient(subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClient(subscriptionID)
+}
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleCalculationWindowTypesValues() []CalculationWindowTypes {
 	return original.PossibleCalculationWindowTypesValues()
@@ -507,59 +548,17 @@ func PossibleRoleTypesValues() []RoleTypes {
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewPredictionsClient(subscriptionID string) PredictionsClient {
 	return original.NewPredictionsClient(subscriptionID)
 }
 func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) PredictionsClient {
 	return original.NewPredictionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
+func NewImagesClient(subscriptionID string) ImagesClient {
+	return original.NewImagesClient(subscriptionID)
 }
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
-	return original.NewRelationshipLinksClient(subscriptionID)
-}
-func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
-	return original.NewRelationshipLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
-	return original.NewRelationshipsClient(subscriptionID)
-}
-func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) RelationshipsClient {
-	return original.NewRelationshipsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
-}
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRolesClient(subscriptionID string) RolesClient {
-	return original.NewRolesClient(subscriptionID)
-}
-func NewRolesClientWithBaseURI(baseURI string, subscriptionID string) RolesClient {
-	return original.NewRolesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewViewsClient(subscriptionID string) ViewsClient {
-	return original.NewViewsClient(subscriptionID)
-}
-func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClient {
-	return original.NewViewsClientWithBaseURI(baseURI, subscriptionID)
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
 	return original.NewWidgetTypesClient(subscriptionID)

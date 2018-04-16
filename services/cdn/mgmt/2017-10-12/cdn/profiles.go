@@ -32,31 +32,31 @@ type ProfilesClient struct {
 }
 
 // NewProfilesClient creates an instance of the ProfilesClient client.
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewProfilesClient(subscriptionID string, resourceGroupName string) ProfilesClient {
+	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName)
 }
 
 // NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client.
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string) ProfilesClient {
+	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName)}
 }
 
 // Create creates a new CDN profile with a profile name under the specified subscription and resource group.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group. profile is profile properties needed to create a new profile.
-func (client ProfilesClient) Create(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (result ProfilesCreateFuture, err error) {
+// profileName is name of the CDN profile which is unique within the resource group. profile is profile properties
+// needed to create a new profile.
+func (client ProfilesClient) Create(ctx context.Context, profileName string, profile Profile) (result ProfilesCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: profile,
 			Constraints: []validation.Constraint{{Target: "profile.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, profileName, profile)
+	req, err := client.CreatePreparer(ctx, profileName, profile)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", nil, "Failure preparing request")
 		return
@@ -72,10 +72,10 @@ func (client ProfilesClient) Create(ctx context.Context, resourceGroupName strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProfilesClient) CreatePreparer(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (*http.Request, error) {
+func (client ProfilesClient) CreatePreparer(ctx context.Context, profileName string, profile Profile) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -125,18 +125,17 @@ func (client ProfilesClient) CreateResponder(resp *http.Response) (result Profil
 // Delete deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion
 // of all of the sub-resources including endpoints, origins and custom domains.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group.
-func (client ProfilesClient) Delete(ctx context.Context, resourceGroupName string, profileName string) (result ProfilesDeleteFuture, err error) {
+// profileName is name of the CDN profile which is unique within the resource group.
+func (client ProfilesClient) Delete(ctx context.Context, profileName string) (result ProfilesDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, profileName)
+	req, err := client.DeletePreparer(ctx, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -152,10 +151,10 @@ func (client ProfilesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ProfilesClient) DeletePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) DeletePreparer(ctx context.Context, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -204,18 +203,17 @@ func (client ProfilesClient) DeleteResponder(resp *http.Response) (result autore
 // in a standard profile; rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile. The
 // SSO URI changes approximately every 10 minutes.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group.
-func (client ProfilesClient) GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string) (result SsoURI, err error) {
+// profileName is name of the CDN profile which is unique within the resource group.
+func (client ProfilesClient) GenerateSsoURI(ctx context.Context, profileName string) (result SsoURI, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "GenerateSsoURI", err.Error())
 	}
 
-	req, err := client.GenerateSsoURIPreparer(ctx, resourceGroupName, profileName)
+	req, err := client.GenerateSsoURIPreparer(ctx, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", nil, "Failure preparing request")
 		return
@@ -237,10 +235,10 @@ func (client ProfilesClient) GenerateSsoURI(ctx context.Context, resourceGroupNa
 }
 
 // GenerateSsoURIPreparer prepares the GenerateSsoURI request.
-func (client ProfilesClient) GenerateSsoURIPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) GenerateSsoURIPreparer(ctx context.Context, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -279,18 +277,17 @@ func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (resul
 
 // Get gets a CDN profile with the specified profile name under the specified subscription and resource group.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group.
-func (client ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string) (result Profile, err error) {
+// profileName is name of the CDN profile which is unique within the resource group.
+func (client ProfilesClient) Get(ctx context.Context, profileName string) (result Profile, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, profileName)
+	req, err := client.GetPreparer(ctx, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", nil, "Failure preparing request")
 		return
@@ -312,10 +309,10 @@ func (client ProfilesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client ProfilesClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) GetPreparer(ctx context.Context, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -443,19 +440,17 @@ func (client ProfilesClient) ListComplete(ctx context.Context) (result ProfileLi
 }
 
 // ListByResourceGroup lists all of the CDN profiles within a resource group.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription.
-func (client ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ProfileListResultPage, err error) {
+func (client ProfilesClient) ListByResourceGroup(ctx context.Context) (result ProfileListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -477,9 +472,9 @@ func (client ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGr
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ProfilesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -538,26 +533,25 @@ func (client ProfilesClient) listByResourceGroupNextResults(lastResults ProfileL
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProfilesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ProfileListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+func (client ProfilesClient) ListByResourceGroupComplete(ctx context.Context) (result ProfileListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx)
 	return
 }
 
 // ListResourceUsage checks the quota and actual usage of endpoints under the given CDN profile.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group.
-func (client ProfilesClient) ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultPage, err error) {
+// profileName is name of the CDN profile which is unique within the resource group.
+func (client ProfilesClient) ListResourceUsage(ctx context.Context, profileName string) (result ResourceUsageListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "ListResourceUsage", err.Error())
 	}
 
 	result.fn = client.listResourceUsageNextResults
-	req, err := client.ListResourceUsagePreparer(ctx, resourceGroupName, profileName)
+	req, err := client.ListResourceUsagePreparer(ctx, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListResourceUsage", nil, "Failure preparing request")
 		return
@@ -579,10 +573,10 @@ func (client ProfilesClient) ListResourceUsage(ctx context.Context, resourceGrou
 }
 
 // ListResourceUsagePreparer prepares the ListResourceUsage request.
-func (client ProfilesClient) ListResourceUsagePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) ListResourceUsagePreparer(ctx context.Context, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -641,26 +635,25 @@ func (client ProfilesClient) listResourceUsageNextResults(lastResults ResourceUs
 }
 
 // ListResourceUsageComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProfilesClient) ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultIterator, err error) {
-	result.page, err = client.ListResourceUsage(ctx, resourceGroupName, profileName)
+func (client ProfilesClient) ListResourceUsageComplete(ctx context.Context, profileName string) (result ResourceUsageListResultIterator, err error) {
+	result.page, err = client.ListResourceUsage(ctx, profileName)
 	return
 }
 
 // ListSupportedOptimizationTypes gets the supported optimization types for the current profile. A user can create an
 // endpoint with an optimization type from the listed values.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group.
-func (client ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string) (result SupportedOptimizationTypesListResult, err error) {
+// profileName is name of the CDN profile which is unique within the resource group.
+func (client ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, profileName string) (result SupportedOptimizationTypesListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "ListSupportedOptimizationTypes", err.Error())
 	}
 
-	req, err := client.ListSupportedOptimizationTypesPreparer(ctx, resourceGroupName, profileName)
+	req, err := client.ListSupportedOptimizationTypesPreparer(ctx, profileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListSupportedOptimizationTypes", nil, "Failure preparing request")
 		return
@@ -682,10 +675,10 @@ func (client ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context,
 }
 
 // ListSupportedOptimizationTypesPreparer prepares the ListSupportedOptimizationTypes request.
-func (client ProfilesClient) ListSupportedOptimizationTypesPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) ListSupportedOptimizationTypesPreparer(ctx context.Context, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -725,19 +718,18 @@ func (client ProfilesClient) ListSupportedOptimizationTypesResponder(resp *http.
 // Update updates an existing CDN profile with the specified profile name under the specified subscription and resource
 // group.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. profileName is name of the CDN
-// profile which is unique within the resource group. profileUpdateParameters is profile properties needed to
-// update an existing profile.
-func (client ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (result ProfilesUpdateFuture, err error) {
+// profileName is name of the CDN profile which is unique within the resource group. profileUpdateParameters is
+// profile properties needed to update an existing profile.
+func (client ProfilesClient) Update(ctx context.Context, profileName string, profileUpdateParameters ProfileUpdateParameters) (result ProfilesUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		{TargetValue: client.ResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("cdn.ProfilesClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, profileName, profileUpdateParameters)
+	req, err := client.UpdatePreparer(ctx, profileName, profileUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", nil, "Failure preparing request")
 		return
@@ -753,10 +745,10 @@ func (client ProfilesClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ProfilesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (*http.Request, error) {
+func (client ProfilesClient) UpdatePreparer(ctx context.Context, profileName string, profileUpdateParameters ProfileUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

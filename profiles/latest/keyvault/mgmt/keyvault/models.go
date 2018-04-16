@@ -21,11 +21,8 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type VaultsClient = original.VaultsClient
 type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
 
 const (
@@ -160,14 +157,18 @@ type VaultPatchParameters = original.VaultPatchParameters
 type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
-type OperationsClient = original.OperationsClient
-type VaultsClient = original.VaultsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return original.NewVaultsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return original.PossibleAccessPolicyUpdateKindValues()
@@ -193,21 +194,21 @@ func PossibleSkuNameValues() []SkuName {
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return original.PossibleStoragePermissionsValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVaultsClient(subscriptionID string) VaultsClient {
-	return original.NewVaultsClient(subscriptionID)
-}
-func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
-	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

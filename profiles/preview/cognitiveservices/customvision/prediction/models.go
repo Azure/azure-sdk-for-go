@@ -21,14 +21,15 @@ package prediction
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.1/customvision/prediction"
 
+type ImagePredictionResultModel = original.ImagePredictionResultModel
+type ImageTagPredictionModel = original.ImageTagPredictionModel
+type ImageURL = original.ImageURL
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ImagePredictionResultModel = original.ImagePredictionResultModel
-type ImageTagPredictionModel = original.ImageTagPredictionModel
-type ImageURL = original.ImageURL
 
 func New(aPIKey string) BaseClient {
 	return original.New(aPIKey)

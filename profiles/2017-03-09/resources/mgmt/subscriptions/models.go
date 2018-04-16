@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type TenantsClient = original.TenantsClient
 type SpendingLimit = original.SpendingLimit
 
 const (
@@ -56,25 +57,24 @@ type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
 type Client = original.Client
-type TenantsClient = original.TenantsClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 func NewClient() Client {
 	return original.NewClient()
 }
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/2017-03-09"
+}
+func Version() string {
+	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
@@ -82,9 +82,9 @@ func NewTenantsClient() TenantsClient {
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/2017-03-09"
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
 }
-func Version() string {
-	return original.Version()
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }

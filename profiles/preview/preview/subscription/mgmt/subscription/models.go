@@ -26,7 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type FactoryClient = original.FactoryClient
+type TenantsClient = original.TenantsClient
+type OperationsClient = original.OperationsClient
 type OfferType = original.OfferType
 
 const (
@@ -73,22 +74,39 @@ type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
-type OperationsClient = original.OperationsClient
 type OperationsGroupClient = original.OperationsGroupClient
 type SubscriptionsClient = original.SubscriptionsClient
-type TenantsClient = original.TenantsClient
+type FactoryClient = original.FactoryClient
 
-func New() BaseClient {
-	return original.New()
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func Version() string {
+	return original.Version()
 }
 func NewFactoryClient() FactoryClient {
 	return original.NewFactoryClient()
 }
 func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
 	return original.NewFactoryClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewTenantsClient() TenantsClient {
+	return original.NewTenantsClient()
+}
+func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
+	return original.NewTenantsClientWithBaseURI(baseURI)
+}
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
+}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
 func PossibleOfferTypeValues() []OfferType {
 	return original.PossibleOfferTypeValues()
@@ -98,12 +116,6 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
-}
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
-}
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
 }
 func NewOperationsGroupClient() OperationsGroupClient {
 	return original.NewOperationsGroupClient()
@@ -116,16 +128,4 @@ func NewSubscriptionsClient() SubscriptionsClient {
 }
 func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI)
-}
-func NewTenantsClient() TenantsClient {
-	return original.NewTenantsClient()
-}
-func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
-	return original.NewTenantsClientWithBaseURI(baseURI)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

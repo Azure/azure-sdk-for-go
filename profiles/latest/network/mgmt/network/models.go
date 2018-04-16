@@ -21,98 +21,13 @@ package network
 
 import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-01-01/network"
 
-type ApplicationGatewaysClient = original.ApplicationGatewaysClient
+type PublicIPAddressesClient = original.PublicIPAddressesClient
 
-func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
-	return original.NewApplicationGatewaysClient(subscriptionID)
+func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClient(subscriptionID)
 }
-func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
-	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
-
-func NewApplicationSecurityGroupsClient(subscriptionID string) ApplicationSecurityGroupsClient {
-	return original.NewApplicationSecurityGroupsClient(subscriptionID)
-}
-func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationSecurityGroupsClient {
-	return original.NewApplicationSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type AvailableEndpointServicesClient = original.AvailableEndpointServicesClient
-
-func NewAvailableEndpointServicesClient(subscriptionID string) AvailableEndpointServicesClient {
-	return original.NewAvailableEndpointServicesClient(subscriptionID)
-}
-func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionID string) AvailableEndpointServicesClient {
-	return original.NewAvailableEndpointServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient
-
-func NewBgpServiceCommunitiesClient(subscriptionID string) BgpServiceCommunitiesClient {
-	return original.NewBgpServiceCommunitiesClient(subscriptionID)
-}
-func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID string) BgpServiceCommunitiesClient {
-	return original.NewBgpServiceCommunitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type ConnectionMonitorsClient = original.ConnectionMonitorsClient
-
-func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient {
-	return original.NewConnectionMonitorsClient(subscriptionID)
-}
-func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
-	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
-
-func NewDefaultSecurityRulesClient(subscriptionID string) DefaultSecurityRulesClient {
-	return original.NewDefaultSecurityRulesClient(subscriptionID)
-}
-func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) DefaultSecurityRulesClient {
-	return original.NewDefaultSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
-
-func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
-}
-func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
-
-func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
-}
-func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
-
-func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClient(subscriptionID)
-}
-func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
+func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
@@ -124,22 +39,22 @@ func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscripti
 	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type InboundNatRulesClient = original.InboundNatRulesClient
+type SubnetsClient = original.SubnetsClient
 
-func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
-	return original.NewInboundNatRulesClient(subscriptionID)
+func NewSubnetsClient(subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClient(subscriptionID)
 }
-func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) InboundNatRulesClient {
-	return original.NewInboundNatRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
+type OperationsClient = original.OperationsClient
 
-func NewInterfaceIPConfigurationsClient(subscriptionID string) InterfaceIPConfigurationsClient {
-	return original.NewInterfaceIPConfigurationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceIPConfigurationsClient {
-	return original.NewInterfaceIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type InterfaceLoadBalancersClient = original.InterfaceLoadBalancersClient
@@ -151,31 +66,40 @@ func NewInterfaceLoadBalancersClientWithBaseURI(baseURI string, subscriptionID s
 	return original.NewInterfaceLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type InterfacesClient = original.InterfacesClient
+type UsagesClient = original.UsagesClient
 
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
 }
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
-
-func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string) LoadBalancerBackendAddressPoolsClient {
-	return original.NewLoadBalancerBackendAddressPoolsClient(subscriptionID)
-}
-func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerBackendAddressPoolsClient {
-	return original.NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI, subscriptionID)
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
+type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
 
-func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
-	return original.NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID)
+func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
+	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
 }
-func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
-	return original.NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
+	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
+
+func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
+}
+func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ConnectionMonitorsClient = original.ConnectionMonitorsClient
+
+func NewConnectionMonitorsClient(subscriptionID string) ConnectionMonitorsClient {
+	return original.NewConnectionMonitorsClient(subscriptionID)
+}
+func NewConnectionMonitorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionMonitorsClient {
+	return original.NewConnectionMonitorsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type LoadBalancerLoadBalancingRulesClient = original.LoadBalancerLoadBalancingRulesClient
@@ -187,22 +111,40 @@ func NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI string, subscrip
 	return original.NewLoadBalancerLoadBalancingRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
+type LoadBalancerBackendAddressPoolsClient = original.LoadBalancerBackendAddressPoolsClient
 
-func NewLoadBalancerNetworkInterfacesClient(subscriptionID string) LoadBalancerNetworkInterfacesClient {
-	return original.NewLoadBalancerNetworkInterfacesClient(subscriptionID)
+func NewLoadBalancerBackendAddressPoolsClient(subscriptionID string) LoadBalancerBackendAddressPoolsClient {
+	return original.NewLoadBalancerBackendAddressPoolsClient(subscriptionID)
 }
-func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerNetworkInterfacesClient {
-	return original.NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI, subscriptionID)
+func NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerBackendAddressPoolsClient {
+	return original.NewLoadBalancerBackendAddressPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type LoadBalancerProbesClient = original.LoadBalancerProbesClient
+type VirtualNetworkPeeringsClient = original.VirtualNetworkPeeringsClient
 
-func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
-	return original.NewLoadBalancerProbesClient(subscriptionID)
+func NewVirtualNetworkPeeringsClient(subscriptionID string) VirtualNetworkPeeringsClient {
+	return original.NewVirtualNetworkPeeringsClient(subscriptionID)
 }
-func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerProbesClient {
-	return original.NewLoadBalancerProbesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkPeeringsClient {
+	return original.NewVirtualNetworkPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
+
+func NewApplicationSecurityGroupsClient(subscriptionID string) ApplicationSecurityGroupsClient {
+	return original.NewApplicationSecurityGroupsClient(subscriptionID)
+}
+func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationSecurityGroupsClient {
+	return original.NewApplicationSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type InterfacesClient = original.InterfacesClient
+
+func NewInterfacesClient(subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClient(subscriptionID)
+}
+func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type LoadBalancersClient = original.LoadBalancersClient
@@ -212,15 +154,6 @@ func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 }
 func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
-
-func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
-	return original.NewLocalNetworkGatewaysClient(subscriptionID)
-}
-func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
-	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type Access = original.Access
@@ -1522,13 +1455,73 @@ type WatchersGetVMSecurityRulesFuture = original.WatchersGetVMSecurityRulesFutur
 type WatchersListAvailableProvidersFuture = original.WatchersListAvailableProvidersFuture
 type WatchersSetFlowLogConfigurationFuture = original.WatchersSetFlowLogConfigurationFuture
 type WatchersVerifyIPFlowFuture = original.WatchersVerifyIPFlowFuture
-type OperationsClient = original.OperationsClient
+type InterfaceIPConfigurationsClient = original.InterfaceIPConfigurationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewInterfaceIPConfigurationsClient(subscriptionID string) InterfaceIPConfigurationsClient {
+	return original.NewInterfaceIPConfigurationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) InterfaceIPConfigurationsClient {
+	return original.NewInterfaceIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type LoadBalancerFrontendIPConfigurationsClient = original.LoadBalancerFrontendIPConfigurationsClient
+
+func NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
+	return original.NewLoadBalancerFrontendIPConfigurationsClient(subscriptionID)
+}
+func NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerFrontendIPConfigurationsClient {
+	return original.NewLoadBalancerFrontendIPConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
+
+func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
+}
+func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient
+
+func NewBgpServiceCommunitiesClient(subscriptionID string) BgpServiceCommunitiesClient {
+	return original.NewBgpServiceCommunitiesClient(subscriptionID)
+}
+func NewBgpServiceCommunitiesClientWithBaseURI(baseURI string, subscriptionID string) BgpServiceCommunitiesClient {
+	return original.NewBgpServiceCommunitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualNetworksClient = original.VirtualNetworksClient
+
+func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClient(subscriptionID)
+}
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type RouteFilterRulesClient = original.RouteFilterRulesClient
+
+func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
+	return original.NewRouteFilterRulesClient(subscriptionID)
+}
+func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string) RouteFilterRulesClient {
+	return original.NewRouteFilterRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+
+type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
+
+func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClient(subscriptionID)
+}
+func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type PacketCapturesClient = original.PacketCapturesClient
@@ -1540,22 +1533,31 @@ func NewPacketCapturesClientWithBaseURI(baseURI string, subscriptionID string) P
 	return original.NewPacketCapturesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type PublicIPAddressesClient = original.PublicIPAddressesClient
+type LoadBalancerProbesClient = original.LoadBalancerProbesClient
 
-func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClient(subscriptionID)
+func NewLoadBalancerProbesClient(subscriptionID string) LoadBalancerProbesClient {
+	return original.NewLoadBalancerProbesClient(subscriptionID)
 }
-func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
+func NewLoadBalancerProbesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerProbesClient {
+	return original.NewLoadBalancerProbesClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type RouteFilterRulesClient = original.RouteFilterRulesClient
+type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 
-func NewRouteFilterRulesClient(subscriptionID string) RouteFilterRulesClient {
-	return original.NewRouteFilterRulesClient(subscriptionID)
+func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
+	return original.NewApplicationGatewaysClient(subscriptionID)
 }
-func NewRouteFilterRulesClientWithBaseURI(baseURI string, subscriptionID string) RouteFilterRulesClient {
-	return original.NewRouteFilterRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
+	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
+
+func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
+	return original.NewLocalNetworkGatewaysClient(subscriptionID)
+}
+func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
+	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type RouteFiltersClient = original.RouteFiltersClient
@@ -1565,6 +1567,51 @@ func NewRouteFiltersClient(subscriptionID string) RouteFiltersClient {
 }
 func NewRouteFiltersClientWithBaseURI(baseURI string, subscriptionID string) RouteFiltersClient {
 	return original.NewRouteFiltersClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type InboundNatRulesClient = original.InboundNatRulesClient
+
+func NewInboundNatRulesClient(subscriptionID string) InboundNatRulesClient {
+	return original.NewInboundNatRulesClient(subscriptionID)
+}
+func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) InboundNatRulesClient {
+	return original.NewInboundNatRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
+
+func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
+}
+func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type SecurityRulesClient = original.SecurityRulesClient
+
+func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
+	return original.NewSecurityRulesClient(subscriptionID)
+}
+func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
+	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type LoadBalancerNetworkInterfacesClient = original.LoadBalancerNetworkInterfacesClient
+
+func NewLoadBalancerNetworkInterfacesClient(subscriptionID string) LoadBalancerNetworkInterfacesClient {
+	return original.NewLoadBalancerNetworkInterfacesClient(subscriptionID)
+}
+func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancerNetworkInterfacesClient {
+	return original.NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WatchersClient = original.WatchersClient
+
+func NewWatchersClient(subscriptionID string) WatchersClient {
+	return original.NewWatchersClient(subscriptionID)
+}
+func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
+	return original.NewWatchersClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type RoutesClient = original.RoutesClient
@@ -1585,6 +1632,28 @@ func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) Rout
 	return original.NewRouteTablesClientWithBaseURI(baseURI, subscriptionID)
 }
 
+type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
+
+func NewDefaultSecurityRulesClient(subscriptionID string) DefaultSecurityRulesClient {
+	return original.NewDefaultSecurityRulesClient(subscriptionID)
+}
+func NewDefaultSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) DefaultSecurityRulesClient {
+	return original.NewDefaultSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
 type SecurityGroupsClient = original.SecurityGroupsClient
 
 func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
@@ -1594,80 +1663,11 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return original.NewSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type SecurityRulesClient = original.SecurityRulesClient
+type AvailableEndpointServicesClient = original.AvailableEndpointServicesClient
 
-func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
-	return original.NewSecurityRulesClient(subscriptionID)
+func NewAvailableEndpointServicesClient(subscriptionID string) AvailableEndpointServicesClient {
+	return original.NewAvailableEndpointServicesClient(subscriptionID)
 }
-func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
-	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type SubnetsClient = original.SubnetsClient
-
-func NewSubnetsClient(subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClient(subscriptionID)
-}
-func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type UsagesClient = original.UsagesClient
-
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
-}
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-
-type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
-
-func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
-}
-func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
-	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
-
-func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
-}
-func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualNetworkPeeringsClient = original.VirtualNetworkPeeringsClient
-
-func NewVirtualNetworkPeeringsClient(subscriptionID string) VirtualNetworkPeeringsClient {
-	return original.NewVirtualNetworkPeeringsClient(subscriptionID)
-}
-func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkPeeringsClient {
-	return original.NewVirtualNetworkPeeringsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type VirtualNetworksClient = original.VirtualNetworksClient
-
-func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClient(subscriptionID)
-}
-func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type WatchersClient = original.WatchersClient
-
-func NewWatchersClient(subscriptionID string) WatchersClient {
-	return original.NewWatchersClient(subscriptionID)
-}
-func NewWatchersClientWithBaseURI(baseURI string, subscriptionID string) WatchersClient {
-	return original.NewWatchersClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailableEndpointServicesClientWithBaseURI(baseURI string, subscriptionID string) AvailableEndpointServicesClient {
+	return original.NewAvailableEndpointServicesClientWithBaseURI(baseURI, subscriptionID)
 }

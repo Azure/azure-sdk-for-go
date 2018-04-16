@@ -21,17 +21,31 @@ package relay
 
 import original "github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type OperationsClient = original.OperationsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type WCFRelaysClient = original.WCFRelaysClient
+
+func NewWCFRelaysClient(subscriptionID string) WCFRelaysClient {
+	return original.NewWCFRelaysClient(subscriptionID)
+}
+func NewWCFRelaysClientWithBaseURI(baseURI string, subscriptionID string) WCFRelaysClient {
+	return original.NewWCFRelaysClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type NamespacesClient = original.NamespacesClient
+
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type HybridConnectionsClient = original.HybridConnectionsClient
@@ -154,23 +168,7 @@ type WcfRelayProperties = original.WcfRelayProperties
 type WcfRelaysListResult = original.WcfRelaysListResult
 type WcfRelaysListResultIterator = original.WcfRelaysListResultIterator
 type WcfRelaysListResultPage = original.WcfRelaysListResultPage
-type NamespacesClient = original.NamespacesClient
 
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type OperationsClient = original.OperationsClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -178,11 +176,15 @@ func Version() string {
 	return original.Version()
 }
 
-type WCFRelaysClient = original.WCFRelaysClient
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
 
-func NewWCFRelaysClient(subscriptionID string) WCFRelaysClient {
-	return original.NewWCFRelaysClient(subscriptionID)
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWCFRelaysClientWithBaseURI(baseURI string, subscriptionID string) WCFRelaysClient {
-	return original.NewWCFRelaysClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

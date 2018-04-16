@@ -21,19 +21,6 @@ package training
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.2/customvision/training"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(aPIKey string) BaseClient {
-	return original.New(aPIKey)
-}
-func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
-	return original.NewWithBaseURI(baseURI, aPIKey)
-}
-
 type OrderBy = original.OrderBy
 
 const (
@@ -134,4 +121,17 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(aPIKey string) BaseClient {
+	return original.New(aPIKey)
+}
+func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
+	return original.NewWithBaseURI(baseURI, aPIKey)
 }

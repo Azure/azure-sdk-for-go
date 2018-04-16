@@ -20,6 +20,7 @@ package sql
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -496,4 +497,190 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// ShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ShortTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		strp, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	strp, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ShortTermRetentionPoliciesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ShortTermRetentionPoliciesUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		strp, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	strp, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ShortTermRetentionPolicy a short term retention policy resource.
+type ShortTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// ShortTermRetentionPolicyProperties - Resource properties.
+	*ShortTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShortTermRetentionPolicy.
+func (strp ShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if strp.ShortTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = strp.ShortTermRetentionPolicyProperties
+	}
+	if strp.ID != nil {
+		objectMap["id"] = strp.ID
+	}
+	if strp.Name != nil {
+		objectMap["name"] = strp.Name
+	}
+	if strp.Type != nil {
+		objectMap["type"] = strp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ShortTermRetentionPolicy struct.
+func (strp *ShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var shortTermRetentionPolicyProperties ShortTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &shortTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				strp.ShortTermRetentionPolicyProperties = &shortTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				strp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				strp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				strp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ShortTermRetentionPolicyProperties properties of a short term retention policy
+type ShortTermRetentionPolicyProperties struct {
+	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
 }

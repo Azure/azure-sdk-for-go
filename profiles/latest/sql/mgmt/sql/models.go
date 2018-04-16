@@ -21,17 +21,21 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2014-04-01/sql"
 
+type DatabaseThreatDetectionPoliciesClient = original.DatabaseThreatDetectionPoliciesClient
+type RecommendedElasticPoolsClient = original.RecommendedElasticPoolsClient
+type ElasticPoolsClient = original.ElasticPoolsClient
+type ElasticPoolDatabaseActivitiesClient = original.ElasticPoolDatabaseActivitiesClient
+type ServiceTierAdvisorsClient = original.ServiceTierAdvisorsClient
+type ServersClient = original.ServersClient
+type TransparentDataEncryptionsClient = original.TransparentDataEncryptionsClient
+type DatabasesClient = original.DatabasesClient
+type ReplicationLinksClient = original.ReplicationLinksClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type DatabasesClient = original.DatabasesClient
-type DatabaseThreatDetectionPoliciesClient = original.DatabaseThreatDetectionPoliciesClient
-type ElasticPoolActivitiesClient = original.ElasticPoolActivitiesClient
-type ElasticPoolDatabaseActivitiesClient = original.ElasticPoolDatabaseActivitiesClient
-type ElasticPoolsClient = original.ElasticPoolsClient
-type FirewallRulesClient = original.FirewallRulesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -330,18 +334,15 @@ type TransparentDataEncryptionActivity = original.TransparentDataEncryptionActiv
 type TransparentDataEncryptionActivityListResult = original.TransparentDataEncryptionActivityListResult
 type TransparentDataEncryptionActivityProperties = original.TransparentDataEncryptionActivityProperties
 type TransparentDataEncryptionProperties = original.TransparentDataEncryptionProperties
-type RecommendedElasticPoolsClient = original.RecommendedElasticPoolsClient
-type ReplicationLinksClient = original.ReplicationLinksClient
-type ServersClient = original.ServersClient
-type ServiceTierAdvisorsClient = original.ServiceTierAdvisorsClient
+type FirewallRulesClient = original.FirewallRulesClient
+type ElasticPoolActivitiesClient = original.ElasticPoolActivitiesClient
 type TransparentDataEncryptionActivitiesClient = original.TransparentDataEncryptionActivitiesClient
-type TransparentDataEncryptionsClient = original.TransparentDataEncryptionsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewTransparentDataEncryptionsClient(subscriptionID string) TransparentDataEncryptionsClient {
+	return original.NewTransparentDataEncryptionsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionsClient {
+	return original.NewTransparentDataEncryptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -349,11 +350,29 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDatabaseThreatDetectionPoliciesClient(subscriptionID string) DatabaseThreatDetectionPoliciesClient {
-	return original.NewDatabaseThreatDetectionPoliciesClient(subscriptionID)
+func NewReplicationLinksClient(subscriptionID string) ReplicationLinksClient {
+	return original.NewReplicationLinksClient(subscriptionID)
 }
-func NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseThreatDetectionPoliciesClient {
-	return original.NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ReplicationLinksClient {
+	return original.NewReplicationLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceTierAdvisorsClient(subscriptionID string) ServiceTierAdvisorsClient {
+	return original.NewServiceTierAdvisorsClient(subscriptionID)
+}
+func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) ServiceTierAdvisorsClient {
+	return original.NewServiceTierAdvisorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServersClient(subscriptionID string) ServersClient {
+	return original.NewServersClient(subscriptionID)
+}
+func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
+	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewElasticPoolActivitiesClient(subscriptionID string) ElasticPoolActivitiesClient {
 	return original.NewElasticPoolActivitiesClient(subscriptionID)
@@ -361,23 +380,17 @@ func NewElasticPoolActivitiesClient(subscriptionID string) ElasticPoolActivities
 func NewElasticPoolActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolActivitiesClient {
 	return original.NewElasticPoolActivitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewElasticPoolDatabaseActivitiesClient(subscriptionID string) ElasticPoolDatabaseActivitiesClient {
-	return original.NewElasticPoolDatabaseActivitiesClient(subscriptionID)
+func NewTransparentDataEncryptionActivitiesClient(subscriptionID string) TransparentDataEncryptionActivitiesClient {
+	return original.NewTransparentDataEncryptionActivitiesClient(subscriptionID)
 }
-func NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolDatabaseActivitiesClient {
-	return original.NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI, subscriptionID)
+func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionActivitiesClient {
+	return original.NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
-	return original.NewElasticPoolsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
-	return original.NewElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
@@ -439,45 +452,33 @@ func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEn
 func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
 	return original.PossibleTransparentDataEncryptionStatusValues()
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func NewRecommendedElasticPoolsClient(subscriptionID string) RecommendedElasticPoolsClient {
 	return original.NewRecommendedElasticPoolsClient(subscriptionID)
 }
 func NewRecommendedElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) RecommendedElasticPoolsClient {
 	return original.NewRecommendedElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReplicationLinksClient(subscriptionID string) ReplicationLinksClient {
-	return original.NewReplicationLinksClient(subscriptionID)
+func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
+	return original.NewElasticPoolsClient(subscriptionID)
 }
-func NewReplicationLinksClientWithBaseURI(baseURI string, subscriptionID string) ReplicationLinksClient {
-	return original.NewReplicationLinksClientWithBaseURI(baseURI, subscriptionID)
+func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
+	return original.NewElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServersClient(subscriptionID string) ServersClient {
-	return original.NewServersClient(subscriptionID)
+func NewElasticPoolDatabaseActivitiesClient(subscriptionID string) ElasticPoolDatabaseActivitiesClient {
+	return original.NewElasticPoolDatabaseActivitiesClient(subscriptionID)
 }
-func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
-	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+func NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolDatabaseActivitiesClient {
+	return original.NewElasticPoolDatabaseActivitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServiceTierAdvisorsClient(subscriptionID string) ServiceTierAdvisorsClient {
-	return original.NewServiceTierAdvisorsClient(subscriptionID)
+func NewDatabaseThreatDetectionPoliciesClient(subscriptionID string) DatabaseThreatDetectionPoliciesClient {
+	return original.NewDatabaseThreatDetectionPoliciesClient(subscriptionID)
 }
-func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) ServiceTierAdvisorsClient {
-	return original.NewServiceTierAdvisorsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTransparentDataEncryptionActivitiesClient(subscriptionID string) TransparentDataEncryptionActivitiesClient {
-	return original.NewTransparentDataEncryptionActivitiesClient(subscriptionID)
-}
-func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionActivitiesClient {
-	return original.NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTransparentDataEncryptionsClient(subscriptionID string) TransparentDataEncryptionsClient {
-	return original.NewTransparentDataEncryptionsClient(subscriptionID)
-}
-func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) TransparentDataEncryptionsClient {
-	return original.NewTransparentDataEncryptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
+func NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseThreatDetectionPoliciesClient {
+	return original.NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type PipelineClient = original.PipelineClient
 type Client = original.Client
 type CompileMode = original.CompileMode
 
@@ -136,14 +137,22 @@ type StateAuditRecord = original.StateAuditRecord
 type Statistics = original.Statistics
 type StatisticsVertexStage = original.StatisticsVertexStage
 type USQLJobProperties = original.USQLJobProperties
-type PipelineClient = original.PipelineClient
 type RecurrenceClient = original.RecurrenceClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New() BaseClient {
 	return original.New()
 }
 func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
 	return original.NewWithoutDefaults(adlaJobDNSSuffix)
+}
+func NewPipelineClient() PipelineClient {
+	return original.NewPipelineClient()
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -172,15 +181,6 @@ func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties
 func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()
 }
-func NewPipelineClient() PipelineClient {
-	return original.NewPipelineClient()
-}
 func NewRecurrenceClient() RecurrenceClient {
 	return original.NewRecurrenceClient()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

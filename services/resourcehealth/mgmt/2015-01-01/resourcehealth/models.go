@@ -236,7 +236,7 @@ type OperationDisplay struct {
 	Provider *string `json:"provider,omitempty"`
 	// Resource - Resource name.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation.
+	// Operation - Operation name.
 	Operation *string `json:"operation,omitempty"`
 	// Description - Description of the operation.
 	Description *string `json:"description,omitempty"`

@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// ClustersClient is the client for the Clusters methods of the Servicefabric service.
+// ClustersClient is the service Fabric Management Client
 type ClustersClient struct {
 	BaseClient
 }

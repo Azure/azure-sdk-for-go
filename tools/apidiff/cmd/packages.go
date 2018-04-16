@@ -48,8 +48,14 @@ func init() {
 	rootCmd.AddCommand(packagesCmd)
 }
 
+// ExecPackagesCmd is the programmatic interface for the packages command.
+func ExecPackagesCmd(pkgDir string, commitSeq string, flags CommandFlags) (CommitPkgsReport, error) {
+	flags.apply()
+	return thePackagesCmd([]string{pkgDir, commitSeq})
+}
+
 // split into its own func as we can't call os.Exit from it (the defer won't get executed)
-func thePackagesCmd(args []string) (rpt commitPkgsReport, err error) {
+func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 	cloneRepo, err := processArgsAndClone(args)
 	if err != nil {
 		return
@@ -173,15 +179,15 @@ type pkgsList map[string][]string
 // contains a collection of package reports, it's structured as "package":"apiversion":pkgReport
 type modifiedPackages map[string]map[string]pkgReport
 
-// represents a collection of reports, one for each commit hash
-type commitPkgsReport struct {
+// CommitPkgsReport represents a collection of reports, one for each commit hash.
+type CommitPkgsReport struct {
 	AffectedPackages pkgsList              `json:"affectedPackages"`
 	BreakingChanges  []string              `json:"breakingChanges,omitempty"`
 	CommitsReports   map[string]pkgsReport `json:"deltas"`
 }
 
 // returns true if the report contains no data
-func (c commitPkgsReport) isEmpty() bool {
+func (c CommitPkgsReport) isEmpty() bool {
 	for _, r := range c.CommitsReports {
 		if !r.isEmpty() {
 			return false
@@ -191,7 +197,7 @@ func (c commitPkgsReport) isEmpty() bool {
 }
 
 // returns true if the report contains breaking changes
-func (c commitPkgsReport) hasBreakingChanges() bool {
+func (c CommitPkgsReport) hasBreakingChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.hasBreakingChanges() {
 			return true
@@ -201,7 +207,7 @@ func (c commitPkgsReport) hasBreakingChanges() bool {
 }
 
 // returns true if the package contains additive changes
-func (c commitPkgsReport) hasAdditiveChanges() bool {
+func (c CommitPkgsReport) hasAdditiveChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.hasAdditiveChanges() {
 			return true
@@ -211,7 +217,7 @@ func (c commitPkgsReport) hasAdditiveChanges() bool {
 }
 
 // updates the collection of affected packages with the packages that were touched in the specified commit
-func (c *commitPkgsReport) updateAffectedPackages(commit string, r pkgsReport) {
+func (c *CommitPkgsReport) updateAffectedPackages(commit string, r pkgsReport) {
 	if c.AffectedPackages == nil {
 		c.AffectedPackages = map[string][]string{}
 	}

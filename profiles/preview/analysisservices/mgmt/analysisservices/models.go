@@ -26,6 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type ServersClient = original.ServersClient
 type ConnectionMode = original.ConnectionMode
 
 const (
@@ -112,15 +114,7 @@ type ServerUpdateParameters = original.ServerUpdateParameters
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
-type OperationsClient = original.OperationsClient
-type ServersClient = original.ServersClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func PossibleConnectionModeValues() []ConnectionMode {
 	return original.PossibleConnectionModeValues()
 }
@@ -136,6 +130,18 @@ func PossibleStateValues() []State {
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -147,10 +153,4 @@ func NewServersClient(subscriptionID string) ServersClient {
 }
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

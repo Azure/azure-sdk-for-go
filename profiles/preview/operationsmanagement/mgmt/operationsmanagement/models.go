@@ -21,13 +21,6 @@ package operationsmanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationsmanagement/mgmt/2015-11-01-preview/operationsmanagement"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ManagementAssociationsClient = original.ManagementAssociationsClient
-type ManagementConfigurationsClient = original.ManagementConfigurationsClient
 type ArmTemplateParameter = original.ArmTemplateParameter
 type CodeMessageError = original.CodeMessageError
 type CodeMessageErrorError = original.CodeMessageErrorError
@@ -44,9 +37,35 @@ type Solution = original.Solution
 type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
+type ManagementConfigurationsClient = original.ManagementConfigurationsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ManagementAssociationsClient = original.ManagementAssociationsClient
 type OperationsClient = original.OperationsClient
 type SolutionsClient = original.SolutionsClient
 
+func NewSolutionsClient(subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
+	return original.NewSolutionsClient(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
+	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewManagementConfigurationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
+	return original.NewManagementConfigurationsClient(subscriptionID, providerName, resourceType, resourceName)
+}
+func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
+	return original.NewManagementConfigurationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
+}
 func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
 	return original.New(subscriptionID, providerName, resourceType, resourceName)
 }
@@ -59,27 +78,9 @@ func NewManagementAssociationsClient(subscriptionID string, providerName string,
 func NewManagementAssociationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementAssociationsClient {
 	return original.NewManagementAssociationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
 }
-func NewManagementConfigurationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return original.NewManagementConfigurationsClient(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewManagementConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) ManagementConfigurationsClient {
-	return original.NewManagementConfigurationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
 func NewOperationsClient(subscriptionID string, providerName string, resourceType string, resourceName string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, providerName, resourceType, resourceName)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
-func NewSolutionsClient(subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return original.NewSolutionsClient(subscriptionID, providerName, resourceType, resourceName)
-}
-func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, providerName string, resourceType string, resourceName string) SolutionsClient {
-	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, providerName, resourceType, resourceName)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

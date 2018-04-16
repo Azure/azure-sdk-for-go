@@ -21,13 +21,12 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-10-01-preview/policy"
 
-type AssignmentsClient = original.AssignmentsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type AssignmentsClient = original.AssignmentsClient
 type DefinitionsClient = original.DefinitionsClient
 type Type = original.Type
 
@@ -48,17 +47,23 @@ type DefinitionListResultIterator = original.DefinitionListResultIterator
 type DefinitionListResultPage = original.DefinitionListResultPage
 type DefinitionProperties = original.DefinitionProperties
 
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/2017-03-09"
 }
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)
@@ -68,10 +73,4 @@ func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) Defi
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/2017-03-09"
-}
-func Version() string {
-	return original.Version()
 }

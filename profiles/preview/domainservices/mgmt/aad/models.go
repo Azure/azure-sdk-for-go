@@ -21,13 +21,14 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
 
+type DomainServiceOperationsClient = original.DomainServiceOperationsClient
+type DomainServicesClient = original.DomainServicesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-type DomainServicesClient = original.DomainServicesClient
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -55,17 +56,11 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClient(subscriptionID)
-}
-func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClient(subscriptionID)
@@ -73,15 +68,21 @@ func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
 func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
 }
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleExternalAccessValues() []ExternalAccess {
 	return original.PossibleExternalAccessValues()
 }
 func PossibleLdapsValues() []Ldaps {
 	return original.PossibleLdapsValues()
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

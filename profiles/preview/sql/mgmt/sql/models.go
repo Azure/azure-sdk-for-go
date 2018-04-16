@@ -51,6 +51,11 @@ type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResul
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type ShortTermRetentionPoliciesCreateOrUpdateFuture = original.ShortTermRetentionPoliciesCreateOrUpdateFuture
+type ShortTermRetentionPoliciesUpdateFuture = original.ShortTermRetentionPoliciesUpdateFuture
+type ShortTermRetentionPolicy = original.ShortTermRetentionPolicy
+type ShortTermRetentionPolicyProperties = original.ShortTermRetentionPolicyProperties
+type ShortTermRetentionPoliciesClient = original.ShortTermRetentionPoliciesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -72,6 +77,12 @@ func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID st
 }
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
+}
+func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClient(subscriptionID)
+}
+func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

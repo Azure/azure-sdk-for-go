@@ -21,28 +21,6 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-05-01/trafficmanager"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
-type EndpointsClient = original.EndpointsClient
-
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
-}
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
 
 func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchiesClient {
@@ -159,4 +137,26 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+
+type EndpointsClient = original.EndpointsClient
+
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
+}
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

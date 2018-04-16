@@ -21,6 +21,15 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-10-01-preview/sql"
 
+type RestorableDroppedDatabaseShortTermRetentionPoliciesClient = original.RestorableDroppedDatabaseShortTermRetentionPoliciesClient
+
+func NewRestorableDroppedDatabaseShortTermRetentionPoliciesClient(subscriptionID string) RestorableDroppedDatabaseShortTermRetentionPoliciesClient {
+	return original.NewRestorableDroppedDatabaseShortTermRetentionPoliciesClient(subscriptionID)
+}
+func NewRestorableDroppedDatabaseShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) RestorableDroppedDatabaseShortTermRetentionPoliciesClient {
+	return original.NewRestorableDroppedDatabaseShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 
 func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
@@ -57,6 +66,12 @@ type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResul
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type RestorableDroppedDatabaseShortTermRetentionPoliciesCreateOrUpdateFuture = original.RestorableDroppedDatabaseShortTermRetentionPoliciesCreateOrUpdateFuture
+type RestorableDroppedDatabaseShortTermRetentionPoliciesUpdateFuture = original.RestorableDroppedDatabaseShortTermRetentionPoliciesUpdateFuture
+type ShortTermRetentionPoliciesCreateOrUpdateFuture = original.ShortTermRetentionPoliciesCreateOrUpdateFuture
+type ShortTermRetentionPoliciesUpdateFuture = original.ShortTermRetentionPoliciesUpdateFuture
+type ShortTermRetentionPolicy = original.ShortTermRetentionPolicy
+type ShortTermRetentionPolicyProperties = original.ShortTermRetentionPolicyProperties
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -85,4 +100,13 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+
+type ShortTermRetentionPoliciesClient = original.ShortTermRetentionPoliciesClient
+
+func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClient(subscriptionID)
+}
+func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }

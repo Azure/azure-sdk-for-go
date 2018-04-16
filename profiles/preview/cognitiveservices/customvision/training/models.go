@@ -105,12 +105,6 @@ type Tag = original.Tag
 type TagList = original.TagList
 type TagPerformance = original.TagPerformance
 
-func New(aPIKey string) BaseClient {
-	return original.New(aPIKey)
-}
-func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
-	return original.NewWithBaseURI(baseURI, aPIKey)
-}
 func PossibleOrderByValues() []OrderBy {
 	return original.PossibleOrderByValues()
 }
@@ -128,4 +122,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(aPIKey string) BaseClient {
+	return original.New(aPIKey)
+}
+func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
+	return original.NewWithBaseURI(baseURI, aPIKey)
 }

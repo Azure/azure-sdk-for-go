@@ -26,6 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ResourceLinksClient = original.ResourceLinksClient
 type Filter = original.Filter
 
 const (
@@ -38,26 +39,25 @@ type ResourceLinkProperties = original.ResourceLinkProperties
 type ResourceLinkResult = original.ResourceLinkResult
 type ResourceLinkResultIterator = original.ResourceLinkResultIterator
 type ResourceLinkResultPage = original.ResourceLinkResultPage
-type ResourceLinksClient = original.ResourceLinksClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleFilterValues() []Filter {
-	return original.PossibleFilterValues()
-}
 func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClient(subscriptionID)
 }
 func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleFilterValues() []Filter {
+	return original.PossibleFilterValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

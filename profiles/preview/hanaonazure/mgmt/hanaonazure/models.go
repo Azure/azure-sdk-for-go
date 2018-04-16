@@ -21,12 +21,7 @@ package hanaonazure
 
 import original "github.com/Azure/azure-sdk-for-go/services/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type HanaInstancesClient = original.HanaInstancesClient
+type OperationsClient = original.OperationsClient
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -60,7 +55,13 @@ type OperationList = original.OperationList
 type OSProfile = original.OSProfile
 type Resource = original.Resource
 type StorageProfile = original.StorageProfile
-type OperationsClient = original.OperationsClient
+type HanaInstancesClient = original.HanaInstancesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -68,11 +69,11 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
-	return original.NewHanaInstancesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
-	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
 	return original.PossibleHanaHardwareTypeNamesEnumValues()
@@ -80,11 +81,11 @@ func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
 func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
 	return original.PossibleHanaInstanceSizeNamesEnumValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
+	return original.NewHanaInstancesClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
+	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

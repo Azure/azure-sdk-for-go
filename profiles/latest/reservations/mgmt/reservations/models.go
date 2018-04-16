@@ -26,6 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type Client = original.Client
+type OperationClient = original.OperationClient
 type AppliedScopeType = original.AppliedScopeType
 
 const (
@@ -230,15 +232,13 @@ type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
-type OperationClient = original.OperationClient
 type OrderClient = original.OrderClient
-type Client = original.Client
 
-func New() BaseClient {
-	return original.New()
+func NewOperationClient() OperationClient {
+	return original.NewOperationClient()
 }
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
+func NewOperationClientWithBaseURI(baseURI string) OperationClient {
+	return original.NewOperationClientWithBaseURI(baseURI)
 }
 func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return original.PossibleAppliedScopeTypeValues()
@@ -267,27 +267,27 @@ func PossibleStatusCodeValues() []StatusCode {
 func PossibleTermValues() []Term {
 	return original.PossibleTermValues()
 }
-func NewOperationClient() OperationClient {
-	return original.NewOperationClient()
-}
-func NewOperationClientWithBaseURI(baseURI string) OperationClient {
-	return original.NewOperationClientWithBaseURI(baseURI)
-}
 func NewOrderClient() OrderClient {
 	return original.NewOrderClient()
 }
 func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 	return original.NewOrderClientWithBaseURI(baseURI)
 }
-func NewClient() Client {
-	return original.NewClient()
-}
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }

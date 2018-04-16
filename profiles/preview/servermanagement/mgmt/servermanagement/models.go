@@ -21,12 +21,6 @@ package servermanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/servermanagement/mgmt/2016-07-01-preview/servermanagement"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type GatewayClient = original.GatewayClient
 type CredentialDataFormat = original.CredentialDataFormat
 
 const (
@@ -116,8 +110,15 @@ type SessionParametersProperties = original.SessionParametersProperties
 type SessionResource = original.SessionResource
 type SessionResourceProperties = original.SessionResourceProperties
 type VersionServermanagement = original.VersionServermanagement
-type NodeClient = original.NodeClient
 type PowerShellClient = original.PowerShellClient
+type NodeClient = original.NodeClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type GatewayClient = original.GatewayClient
 type SessionClient = original.SessionClient
 
 func New(subscriptionID string) BaseClient {
@@ -131,6 +132,12 @@ func NewGatewayClient(subscriptionID string) GatewayClient {
 }
 func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
 	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSessionClient(subscriptionID string) SessionClient {
+	return original.NewSessionClient(subscriptionID)
+}
+func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionClient {
+	return original.NewSessionClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleCredentialDataFormatValues() []CredentialDataFormat {
 	return original.PossibleCredentialDataFormatValues()
@@ -150,11 +157,11 @@ func PossibleRetentionPeriodValues() []RetentionPeriod {
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
-func NewNodeClient(subscriptionID string) NodeClient {
-	return original.NewNodeClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient {
-	return original.NewNodeClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewPowerShellClient(subscriptionID string) PowerShellClient {
 	return original.NewPowerShellClient(subscriptionID)
@@ -162,15 +169,9 @@ func NewPowerShellClient(subscriptionID string) PowerShellClient {
 func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) PowerShellClient {
 	return original.NewPowerShellClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSessionClient(subscriptionID string) SessionClient {
-	return original.NewSessionClient(subscriptionID)
+func NewNodeClient(subscriptionID string) NodeClient {
+	return original.NewNodeClient(subscriptionID)
 }
-func NewSessionClientWithBaseURI(baseURI string, subscriptionID string) SessionClient {
-	return original.NewSessionClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient {
+	return original.NewNodeClientWithBaseURI(baseURI, subscriptionID)
 }

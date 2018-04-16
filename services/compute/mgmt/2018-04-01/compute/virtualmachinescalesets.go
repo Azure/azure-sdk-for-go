@@ -31,13 +31,13 @@ type VirtualMachineScaleSetsClient struct {
 }
 
 // NewVirtualMachineScaleSetsClient creates an instance of the VirtualMachineScaleSetsClient client.
-func NewVirtualMachineScaleSetsClient(subscriptionID string) VirtualMachineScaleSetsClient {
-	return NewVirtualMachineScaleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineScaleSetsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetsClient {
+	return NewVirtualMachineScaleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineScaleSetsClientWithBaseURI creates an instance of the VirtualMachineScaleSetsClient client.
-func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetsClient {
-	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetsClient {
+	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // CreateOrUpdate create or update a VM scale set.
@@ -552,6 +552,100 @@ func (client VirtualMachineScaleSetsClient) GetInstanceViewResponder(resp *http.
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetOSUpgradeHistory gets list of OS upgrades on a VM scale set instance.
+//
+// resourceGroupName is the name of the resource group. VMScaleSetName is the name of the VM scale set.
+func (client VirtualMachineScaleSetsClient) GetOSUpgradeHistory(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result VirtualMachineScaleSetListOSUpgradeHistoryPage, err error) {
+	result.fn = client.getOSUpgradeHistoryNextResults
+	req, err := client.GetOSUpgradeHistoryPreparer(ctx, resourceGroupName, VMScaleSetName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "GetOSUpgradeHistory", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetOSUpgradeHistorySender(req)
+	if err != nil {
+		result.vmsslouh.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "GetOSUpgradeHistory", resp, "Failure sending request")
+		return
+	}
+
+	result.vmsslouh, err = client.GetOSUpgradeHistoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "GetOSUpgradeHistory", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetOSUpgradeHistoryPreparer prepares the GetOSUpgradeHistory request.
+func (client VirtualMachineScaleSetsClient) GetOSUpgradeHistoryPreparer(ctx context.Context, resourceGroupName string, VMScaleSetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmScaleSetName":    autorest.Encode("path", VMScaleSetName),
+	}
+
+	const APIVersion = "2017-12-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osUpgradeHistory", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetOSUpgradeHistorySender sends the GetOSUpgradeHistory request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualMachineScaleSetsClient) GetOSUpgradeHistorySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetOSUpgradeHistoryResponder handles the response to the GetOSUpgradeHistory request. The method always
+// closes the http.Response Body.
+func (client VirtualMachineScaleSetsClient) GetOSUpgradeHistoryResponder(resp *http.Response) (result VirtualMachineScaleSetListOSUpgradeHistory, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// getOSUpgradeHistoryNextResults retrieves the next set of results, if any.
+func (client VirtualMachineScaleSetsClient) getOSUpgradeHistoryNextResults(lastResults VirtualMachineScaleSetListOSUpgradeHistory) (result VirtualMachineScaleSetListOSUpgradeHistory, err error) {
+	req, err := lastResults.virtualMachineScaleSetListOSUpgradeHistoryPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "getOSUpgradeHistoryNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.GetOSUpgradeHistorySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "getOSUpgradeHistoryNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.GetOSUpgradeHistoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "getOSUpgradeHistoryNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// GetOSUpgradeHistoryComplete enumerates all values, automatically crossing page boundaries as required.
+func (client VirtualMachineScaleSetsClient) GetOSUpgradeHistoryComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result VirtualMachineScaleSetListOSUpgradeHistoryIterator, err error) {
+	result.page, err = client.GetOSUpgradeHistory(ctx, resourceGroupName, VMScaleSetName)
 	return
 }
 

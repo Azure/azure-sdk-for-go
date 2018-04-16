@@ -21,6 +21,7 @@ package visualstudio
 
 import original "github.com/Azure/azure-sdk-for-go/services/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 
+type ProjectsClient = original.ProjectsClient
 type AccountsClient = original.AccountsClient
 
 const (
@@ -28,6 +29,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 type ExtensionsClient = original.ExtensionsClient
 type AccountResource = original.AccountResource
 type AccountResourceListResult = original.AccountResourceListResult
@@ -45,9 +47,25 @@ type ProjectResource = original.ProjectResource
 type ProjectResourceListResult = original.ProjectResourceListResult
 type ProjectsCreateFuture = original.ProjectsCreateFuture
 type Resource = original.Resource
-type OperationsClient = original.OperationsClient
-type ProjectsClient = original.ProjectsClient
 
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClient(subscriptionID)
+}
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewProjectsClient(subscriptionID string) ProjectsClient {
+	return original.NewProjectsClient(subscriptionID)
+}
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
+	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -60,27 +78,9 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewExtensionsClient(subscriptionID string) ExtensionsClient {
-	return original.NewExtensionsClient(subscriptionID)
-}
-func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
-	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProjectsClient(subscriptionID string) ProjectsClient {
-	return original.NewProjectsClient(subscriptionID)
-}
-func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
-	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

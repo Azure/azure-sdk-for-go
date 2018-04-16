@@ -31,14 +31,14 @@ type VirtualMachineScaleSetRollingUpgradesClient struct {
 
 // NewVirtualMachineScaleSetRollingUpgradesClient creates an instance of the
 // VirtualMachineScaleSetRollingUpgradesClient client.
-func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
+	return NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI creates an instance of the
 // VirtualMachineScaleSetRollingUpgradesClient client.
-func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return VirtualMachineScaleSetRollingUpgradesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
+	return VirtualMachineScaleSetRollingUpgradesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // Cancel cancels the current virtual machine scale set rolling upgrade.

@@ -28,6 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 type AvailabilityStateValues = original.AvailabilityStateValues
 
 const (
@@ -57,8 +58,19 @@ type RecommendedAction = original.RecommendedAction
 type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
-type OperationsClient = original.OperationsClient
 
+func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
+	return original.PossibleAvailabilityStateValuesValues()
+}
+func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
+	return original.PossibleReasonChronicityTypesValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
 	return original.NewAvailabilityStatusesClient(subscriptionID)
 }
@@ -71,21 +83,9 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
-	return original.PossibleAvailabilityStateValuesValues()
-}
-func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
-	return original.PossibleReasonChronicityTypesValues()
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

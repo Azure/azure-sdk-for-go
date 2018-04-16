@@ -21,11 +21,6 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type AccessKeyName = original.AccessKeyName
 
 const (
@@ -58,26 +53,32 @@ type WorkspaceCollectionAccessKeys = original.WorkspaceCollectionAccessKeys
 type WorkspaceCollectionList = original.WorkspaceCollectionList
 type WorkspaceCollectionsDeleteFuture = original.WorkspaceCollectionsDeleteFuture
 type WorkspaceList = original.WorkspaceList
-type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 type WorkspacesClient = original.WorkspacesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAccessKeyNameValues() []AccessKeyName {
-	return original.PossibleAccessKeyNameValues()
-}
-func PossibleCheckNameReasonValues() []CheckNameReason {
-	return original.PossibleCheckNameReasonValues()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
+
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClient(subscriptionID)
+}
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
 	return original.NewWorkspaceCollectionsClient(subscriptionID)
@@ -85,9 +86,9 @@ func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsCl
 func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
 	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClient(subscriptionID)
+func PossibleAccessKeyNameValues() []AccessKeyName {
+	return original.PossibleAccessKeyNameValues()
 }
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+func PossibleCheckNameReasonValues() []CheckNameReason {
+	return original.PossibleCheckNameReasonValues()
 }

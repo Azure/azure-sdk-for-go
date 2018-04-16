@@ -28,8 +28,9 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type JobsClient = original.JobsClient
+type OperationsClient = original.OperationsClient
 type LocationsClient = original.LocationsClient
+type JobsClient = original.JobsClient
 type DriveState = original.DriveState
 
 const (
@@ -68,8 +69,28 @@ type ReturnShipping = original.ReturnShipping
 type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
-type OperationsClient = original.OperationsClient
 
+func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID, acceptLanguage)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClient(subscriptionID, acceptLanguage)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func PossibleDriveStateValues() []DriveState {
+	return original.PossibleDriveStateValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
 	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
 }
@@ -82,30 +103,9 @@ func New(subscriptionID string, acceptLanguage string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClient(subscriptionID, acceptLanguage)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID, acceptLanguage)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func PossibleDriveStateValues() []DriveState {
-	return original.PossibleDriveStateValues()
-}
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

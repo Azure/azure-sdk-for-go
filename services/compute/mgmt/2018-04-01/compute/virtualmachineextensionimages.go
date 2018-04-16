@@ -30,14 +30,14 @@ type VirtualMachineExtensionImagesClient struct {
 }
 
 // NewVirtualMachineExtensionImagesClient creates an instance of the VirtualMachineExtensionImagesClient client.
-func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
-	return NewVirtualMachineExtensionImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineExtensionImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return NewVirtualMachineExtensionImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineExtensionImagesClientWithBaseURI creates an instance of the VirtualMachineExtensionImagesClient
 // client.
-func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
-	return VirtualMachineExtensionImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return VirtualMachineExtensionImagesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // Get gets a virtual machine extension image.

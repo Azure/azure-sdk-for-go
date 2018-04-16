@@ -21,13 +21,8 @@ package scheduler
 
 import original "github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type JobCollectionsClient = original.JobCollectionsClient
 type JobsClient = original.JobsClient
+type JobCollectionsClient = original.JobCollectionsClient
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -188,24 +183,12 @@ type ServiceBusTopicMessage = original.ServiceBusTopicMessage
 type Sku = original.Sku
 type StorageQueueMessage = original.StorageQueueMessage
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
-	return original.NewJobCollectionsClient(subscriptionID)
-}
-func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) JobCollectionsClient {
-	return original.NewJobCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
 }
@@ -250,4 +233,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobCollectionsClient(subscriptionID string) JobCollectionsClient {
+	return original.NewJobCollectionsClient(subscriptionID)
+}
+func NewJobCollectionsClientWithBaseURI(baseURI string, subscriptionID string) JobCollectionsClient {
+	return original.NewJobCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }

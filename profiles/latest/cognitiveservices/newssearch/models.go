@@ -152,15 +152,15 @@ func PossibleTextFormatValues() []TextFormat {
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
-func NewNewsClient() NewsClient {
-	return original.NewNewsClient()
-}
-func NewNewsClientWithBaseURI(baseURI string) NewsClient {
-	return original.NewNewsClientWithBaseURI(baseURI)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewNewsClient() NewsClient {
+	return original.NewNewsClient()
+}
+func NewNewsClientWithBaseURI(baseURI string) NewsClient {
+	return original.NewNewsClientWithBaseURI(baseURI)
 }

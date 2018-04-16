@@ -21,13 +21,6 @@ package billing
 
 import original "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2018-03-01-preview/billing"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type EnrollmentAccountsClient = original.EnrollmentAccountsClient
-type InvoicesClient = original.InvoicesClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
@@ -52,14 +45,22 @@ type PeriodsListResult = original.PeriodsListResult
 type PeriodsListResultIterator = original.PeriodsListResultIterator
 type PeriodsListResultPage = original.PeriodsListResultPage
 type Resource = original.Resource
+type EnrollmentAccountsClient = original.EnrollmentAccountsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
+type InvoicesClient = original.InvoicesClient
 type PeriodsClient = original.PeriodsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClient(subscriptionID)
@@ -67,11 +68,11 @@ func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInvoicesClient(subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -79,15 +80,15 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInvoicesClient(subscriptionID string) InvoicesClient {
+	return original.NewInvoicesClient(subscriptionID)
+}
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
+	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPeriodsClient(subscriptionID string) PeriodsClient {
 	return original.NewPeriodsClient(subscriptionID)
 }
 func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
 	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

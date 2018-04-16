@@ -21,11 +21,6 @@ package websearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/websearch"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type AnswerType = original.AnswerType
 
 const (
@@ -174,12 +169,12 @@ type BasicWebWebGrouping = original.BasicWebWebGrouping
 type WebWebGrouping = original.WebWebGrouping
 type WebClient = original.WebClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func PossibleAnswerTypeValues() []AnswerType {
 	return original.PossibleAnswerTypeValues()
 }
@@ -215,4 +210,10 @@ func NewWebClient() WebClient {
 }
 func NewWebClientWithBaseURI(baseURI string) WebClient {
 	return original.NewWebClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

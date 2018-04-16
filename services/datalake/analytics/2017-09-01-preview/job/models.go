@@ -195,9 +195,9 @@ func PossibleTypeEnumValues() []TypeEnum {
 
 // BaseJobParameters data Lake Analytics Job Parameters base class for build and submit.
 type BaseJobParameters struct {
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Properties - the job specific properties.
+	// Properties - The job specific properties.
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
@@ -235,11 +235,11 @@ func (bjp *BaseJobParameters) UnmarshalJSON(body []byte) error {
 
 // BuildJobParameters the parameters used to build a new Data Lake Analytics job.
 type BuildJobParameters struct {
-	// Name - the friendly name of the job to build.
+	// Name - The friendly name of the job to build.
 	Name *string `json:"name,omitempty"`
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Properties - the job specific properties.
+	// Properties - The job specific properties.
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
@@ -334,19 +334,19 @@ func (future CancelFuture) Result(client Client) (ar autorest.Response, err erro
 
 // CreateJobParameters the parameters used to submit a new Data Lake Analytics job.
 type CreateJobParameters struct {
-	// Name - the friendly name of the job to submit.
+	// Name - The friendly name of the job to submit.
 	Name *string `json:"name,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism to use for this job. This must be greater than 0, if set to less than 0 it will default to 1.
+	// DegreeOfParallelism - The degree of parallelism to use for this job. This must be greater than 0, if set to less than 0 it will default to 1.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// Priority - the priority value to use for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
+	// Priority - The priority value to use for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// LogFilePatterns - the list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
+	// LogFilePatterns - The list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
-	// Related - the recurring job relationship information properties.
+	// Related - The recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Properties - the job specific properties.
+	// Properties - The job specific properties.
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
@@ -436,9 +436,9 @@ type BasicCreateJobProperties interface {
 
 // CreateJobProperties the common Data Lake Analytics job properties for job submission.
 type CreateJobProperties struct {
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
 	// Type - Possible values include: 'TypeBasicCreateJobPropertiesTypeCreateJobProperties', 'TypeBasicCreateJobPropertiesTypeUSQL', 'TypeBasicCreateJobPropertiesTypeScope'
 	Type TypeBasicCreateJobProperties `json:"type,omitempty"`
@@ -524,21 +524,21 @@ func (cjp CreateJobProperties) AsBasicCreateJobProperties() (BasicCreateJobPrope
 // CreateScopeJobParameters the parameters used to submit a new Data Lake Analytics Scope job. (Only for use
 // internally with Scope job type.)
 type CreateScopeJobParameters struct {
-	// Tags - the key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
+	// Tags - The key-value pairs used to add additional metadata to the job information.
 	Tags map[string]*string `json:"tags"`
-	// Name - the friendly name of the job to submit.
+	// Name - The friendly name of the job to submit.
 	Name *string `json:"name,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism to use for this job. This must be greater than 0, if set to less than 0 it will default to 1.
+	// DegreeOfParallelism - The degree of parallelism to use for this job. This must be greater than 0, if set to less than 0 it will default to 1.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// Priority - the priority value to use for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
+	// Priority - The priority value to use for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// LogFilePatterns - the list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
+	// LogFilePatterns - The list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
-	// Related - the recurring job relationship information properties.
+	// Related - The recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Properties - the job specific properties.
+	// Properties - The job specific properties.
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
@@ -656,15 +656,16 @@ func (csjp *CreateScopeJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CreateScopeJobProperties scope job properties used when submitting Scope jobs.
+// CreateScopeJobProperties scope job properties used when submitting Scope jobs. (Only for use internally with
+// Scope job type.)
 type CreateScopeJobProperties struct {
-	// Resources - the list of resources that are required by the job.
+	// Resources - The list of resources that are required by the job.
 	Resources *[]ScopeJobResource `json:"resources,omitempty"`
-	// Notifier - the list of email addresses, separated by semi-colons, to notify when the job reaches a terminal state.
+	// Notifier - The list of email addresses, separated by semi-colons, to notify when the job reaches a terminal state.
 	Notifier *string `json:"notifier,omitempty"`
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
 	// Type - Possible values include: 'TypeBasicCreateJobPropertiesTypeCreateJobProperties', 'TypeBasicCreateJobPropertiesTypeUSQL', 'TypeBasicCreateJobPropertiesTypeScope'
 	Type TypeBasicCreateJobProperties `json:"type,omitempty"`
@@ -714,11 +715,11 @@ func (csjp CreateScopeJobProperties) AsBasicCreateJobProperties() (BasicCreateJo
 
 // CreateUSQLJobProperties u-SQL job properties used when submitting U-SQL jobs.
 type CreateUSQLJobProperties struct {
-	// CompileMode - the specific compilation mode for the job used during execution. If this is not specified during submission, the server will determine the optimal compilation mode. Possible values include: 'Semantic', 'Full', 'SingleBox'
+	// CompileMode - The specific compilation mode for the job used during execution. If this is not specified during submission, the server will determine the optimal compilation mode. Possible values include: 'Semantic', 'Full', 'SingleBox'
 	CompileMode CompileMode `json:"compileMode,omitempty"`
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
 	// Type - Possible values include: 'TypeBasicCreateJobPropertiesTypeCreateJobProperties', 'TypeBasicCreateJobPropertiesTypeUSQL', 'TypeBasicCreateJobPropertiesTypeScope'
 	Type TypeBasicCreateJobProperties `json:"type,omitempty"`
@@ -766,77 +767,77 @@ func (cusjp CreateUSQLJobProperties) AsBasicCreateJobProperties() (BasicCreateJo
 // DataPath a Data Lake Analytics job data path item.
 type DataPath struct {
 	autorest.Response `json:"-"`
-	// JobID - the id of the job this data is for.
+	// JobID - The ID of the job this data is for.
 	JobID *uuid.UUID `json:"jobId,omitempty"`
-	// Command - the command that this job data relates to.
+	// Command - The command that this job data relates to.
 	Command *string `json:"command,omitempty"`
-	// Paths - the list of paths to all of the job data.
+	// Paths - The list of paths to all of the job data.
 	Paths *[]string `json:"paths,omitempty"`
 }
 
 // Diagnostics error diagnostic information for failed jobs.
 type Diagnostics struct {
-	// ColumnNumber - the column where the error occured.
-	ColumnNumber *int32 `json:"columnNumber,omitempty"`
-	// End - the ending index of the error.
-	End *int32 `json:"end,omitempty"`
-	// LineNumber - the line number the error occured on.
-	LineNumber *int32 `json:"lineNumber,omitempty"`
-	// Message - the error message.
+	// Message - The error message.
 	Message *string `json:"message,omitempty"`
-	// Severity - the severity of the error. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
+	// Severity - The severity of the error. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
 	Severity SeverityTypes `json:"severity,omitempty"`
-	// Start - the starting index of the error.
+	// LineNumber - The line number the error occured on.
+	LineNumber *int32 `json:"lineNumber,omitempty"`
+	// ColumnNumber - The column where the error occured.
+	ColumnNumber *int32 `json:"columnNumber,omitempty"`
+	// Start - The starting index of the error.
 	Start *int32 `json:"start,omitempty"`
+	// End - The ending index of the error.
+	End *int32 `json:"end,omitempty"`
 }
 
 // ErrorDetails the Data Lake Analytics job error details.
 type ErrorDetails struct {
-	// Description - the error message description
-	Description *string `json:"description,omitempty"`
-	// Details - the details of the error message.
-	Details *string `json:"details,omitempty"`
-	// EndOffset - the end offset in the job where the error was found.
-	EndOffset *int32 `json:"endOffset,omitempty"`
-	// ErrorID - the specific identifier for the type of error encountered in the job.
+	// ErrorID - The specific identifier for the type of error encountered in the job.
 	ErrorID *string `json:"errorId,omitempty"`
-	// FilePath - the path to any supplemental error files, if any.
-	FilePath *string `json:"filePath,omitempty"`
-	// HelpLink - the link to MSDN or Azure help for this type of error, if any.
-	HelpLink *string `json:"helpLink,omitempty"`
-	// InternalDiagnostics - the internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
-	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
-	// LineNumber - the specific line number in the job where the error occured.
-	LineNumber *int32 `json:"lineNumber,omitempty"`
-	// Message - the user friendly error message for the failure.
-	Message *string `json:"message,omitempty"`
-	// Resolution - the recommended resolution for the failure, if any.
-	Resolution *string `json:"resolution,omitempty"`
-	// InnerError - the inner error of this specific job error message, if any.
-	InnerError *InnerError `json:"innerError,omitempty"`
-	// Severity - the severity level of the failure. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
+	// Severity - The severity level of the failure. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
 	Severity SeverityTypes `json:"severity,omitempty"`
-	// Source - the ultimate source of the failure (usually either SYSTEM or USER).
+	// Source - The ultimate source of the failure (usually either SYSTEM or USER).
 	Source *string `json:"source,omitempty"`
-	// StartOffset - the start offset in the job where the error was found
+	// Message - The user friendly error message for the failure.
+	Message *string `json:"message,omitempty"`
+	// Description - The error message description.
+	Description *string `json:"description,omitempty"`
+	// Details - The details of the error message.
+	Details *string `json:"details,omitempty"`
+	// LineNumber - The specific line number in the job where the error occured.
+	LineNumber *int32 `json:"lineNumber,omitempty"`
+	// StartOffset - The start offset in the job where the error was found
 	StartOffset *int32 `json:"startOffset,omitempty"`
+	// EndOffset - The end offset in the job where the error was found.
+	EndOffset *int32 `json:"endOffset,omitempty"`
+	// Resolution - The recommended resolution for the failure, if any.
+	Resolution *string `json:"resolution,omitempty"`
+	// FilePath - The path to any supplemental error files, if any.
+	FilePath *string `json:"filePath,omitempty"`
+	// HelpLink - The link to MSDN or Azure help for this type of error, if any.
+	HelpLink *string `json:"helpLink,omitempty"`
+	// InternalDiagnostics - The internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
+	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
+	// InnerError - The inner error of this specific job error message, if any.
+	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
 // HiveJobProperties hive job properties used when retrieving Hive jobs.
 type HiveJobProperties struct {
-	// LogsLocation - the Hive logs location
+	// LogsLocation - The Hive logs location.
 	LogsLocation *string `json:"logsLocation,omitempty"`
-	// OutputLocation - the location of Hive job output files (both execution output and results)
+	// OutputLocation - The location of Hive job output files (both execution output and results).
 	OutputLocation *string `json:"outputLocation,omitempty"`
-	// StatementCount - the number of statements that will be run based on the script
+	// StatementCount - The number of statements that will be run based on the script.
 	StatementCount *int32 `json:"statementCount,omitempty"`
-	// ExecutedStatementCount - the number of statements that have been run based on the script
+	// ExecutedStatementCount - The number of statements that have been run based on the script.
 	ExecutedStatementCount *int32 `json:"executedStatementCount,omitempty"`
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeScope', 'TypeHive'
+	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive', 'TypeScope'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -873,14 +874,14 @@ func (hjp HiveJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
-// AsScopeJobProperties is the BasicProperties implementation for HiveJobProperties.
-func (hjp HiveJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
-	return nil, false
-}
-
 // AsHiveJobProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return &hjp, true
+}
+
+// AsScopeJobProperties is the BasicProperties implementation for HiveJobProperties.
+func (hjp HiveJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
+	return nil, false
 }
 
 // AsProperties is the BasicProperties implementation for HiveJobProperties.
@@ -896,9 +897,9 @@ func (hjp HiveJobProperties) AsBasicProperties() (BasicProperties, bool) {
 // InfoListResult list of JobInfo items.
 type InfoListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the list of JobInfo items.
+	// Value - The list of JobInfo items.
 	Value *[]InformationBasic `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -998,41 +999,41 @@ func (page InfoListResultPage) Values() []InformationBasic {
 // Information the extended Data Lake Analytics job information properties returned when retrieving a specific job.
 type Information struct {
 	autorest.Response `json:"-"`
-	// ErrorMessage - the error message details for the job, if the job failed.
+	// ErrorMessage - The error message details for the job, if the job failed.
 	ErrorMessage *[]ErrorDetails `json:"errorMessage,omitempty"`
-	// StateAuditRecords - the job state audit records, indicating when various operations have been performed on this job.
+	// StateAuditRecords - The job state audit records, indicating when various operations have been performed on this job.
 	StateAuditRecords *[]StateAuditRecord `json:"stateAuditRecords,omitempty"`
-	// Properties - the job specific properties.
+	// Properties - The job specific properties.
 	Properties BasicProperties `json:"properties,omitempty"`
-	// JobID - the job's unique identifier (a GUID).
+	// JobID - The job's unique identifier (a GUID).
 	JobID *uuid.UUID `json:"jobId,omitempty"`
-	// Name - the friendly name of the job.
+	// Name - The friendly name of the job.
 	Name *string `json:"name,omitempty"`
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Submitter - the user or account that submitted the job.
+	// Submitter - The user or account that submitted the job.
 	Submitter *string `json:"submitter,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
+	// DegreeOfParallelism - The degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// Priority - the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
+	// Priority - The priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// SubmitTime - the time the job was submitted to the service.
+	// SubmitTime - The time the job was submitted to the service.
 	SubmitTime *date.Time `json:"submitTime,omitempty"`
-	// StartTime - the start time of the job.
+	// StartTime - The start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - the completion time of the job.
+	// EndTime - The completion time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// State - the job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
+	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
 	State State `json:"state,omitempty"`
-	// Result - the result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
+	// Result - The result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
 	Result Result `json:"result,omitempty"`
-	// LogFolder - the log folder path to use in the following format: adl://<accountName>.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
+	// LogFolder - The log folder path to use in the following format: adl://<accountName>.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
 	LogFolder *string `json:"logFolder,omitempty"`
-	// LogFilePatterns - the list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
+	// LogFilePatterns - The list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
-	// Related - the recurring job relationship information properties.
+	// Related - The recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
-	// Tags - the key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
+	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1272,35 +1273,35 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 
 // InformationBasic the common Data Lake Analytics job information properties.
 type InformationBasic struct {
-	// JobID - the job's unique identifier (a GUID).
+	// JobID - The job's unique identifier (a GUID).
 	JobID *uuid.UUID `json:"jobId,omitempty"`
-	// Name - the friendly name of the job.
+	// Name - The friendly name of the job.
 	Name *string `json:"name,omitempty"`
-	// Type - the job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
+	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
 	Type TypeEnum `json:"type,omitempty"`
-	// Submitter - the user or account that submitted the job.
+	// Submitter - The user or account that submitted the job.
 	Submitter *string `json:"submitter,omitempty"`
-	// DegreeOfParallelism - the degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
+	// DegreeOfParallelism - The degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// Priority - the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
+	// Priority - The priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// SubmitTime - the time the job was submitted to the service.
+	// SubmitTime - The time the job was submitted to the service.
 	SubmitTime *date.Time `json:"submitTime,omitempty"`
-	// StartTime - the start time of the job.
+	// StartTime - The start time of the job.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - the completion time of the job.
+	// EndTime - The completion time of the job.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// State - the job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
+	// State - The job state. When the job is in the Ended state, refer to Result and ErrorMessage for details. Possible values include: 'StateAccepted', 'StateCompiling', 'StateEnded', 'StateNew', 'StateQueued', 'StateRunning', 'StateScheduling', 'StateStarting', 'StatePaused', 'StateWaitingForCapacity'
 	State State `json:"state,omitempty"`
-	// Result - the result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
+	// Result - The result of job execution or the current result of the running job. Possible values include: 'None', 'Succeeded', 'Cancelled', 'Failed'
 	Result Result `json:"result,omitempty"`
-	// LogFolder - the log folder path to use in the following format: adl://<accountName>.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
+	// LogFolder - The log folder path to use in the following format: adl://<accountName>.azuredatalakestore.net/system/jobservice/jobs/Usql/2016/03/13/17/18/5fe51957-93bc-4de0-8ddc-c5a4753b068b/logs/.
 	LogFolder *string `json:"logFolder,omitempty"`
-	// LogFilePatterns - the list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
+	// LogFilePatterns - The list of log file name patterns to find in the logFolder. '*' is the only matching character allowed. Example format: jobExecution*.log or *mylog*.txt
 	LogFilePatterns *[]string `json:"logFilePatterns,omitempty"`
-	// Related - the recurring job relationship information properties.
+	// Related - The recurring job relationship information properties.
 	Related *RelationshipProperties `json:"related,omitempty"`
-	// Tags - the key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
+	// Tags - The key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -1357,29 +1358,29 @@ func (ib InformationBasic) MarshalJSON() ([]byte, error) {
 
 // InnerError the Data Lake Analytics job error details.
 type InnerError struct {
-	// DiagnosticCode - the diagnostic error code.
-	DiagnosticCode *int32 `json:"diagnosticCode,omitempty"`
-	// Severity - the severity level of the failure. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
-	Severity SeverityTypes `json:"severity,omitempty"`
-	// Details - the details of the error message.
-	Details *string `json:"details,omitempty"`
-	// Component - the component that failed.
-	Component *string `json:"component,omitempty"`
-	// ErrorID - the specific identifier for the type of error encountered in the job.
+	// ErrorID - The specific identifier for the type of error encountered in the job.
 	ErrorID *string `json:"errorId,omitempty"`
-	// HelpLink - the link to MSDN or Azure help for this type of error, if any.
-	HelpLink *string `json:"helpLink,omitempty"`
-	// InternalDiagnostics - the internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
-	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
-	// Message - the user friendly error message for the failure.
-	Message *string `json:"message,omitempty"`
-	// Resolution - the recommended resolution for the failure, if any.
-	Resolution *string `json:"resolution,omitempty"`
-	// Source - the ultimate source of the failure (usually either SYSTEM or USER).
+	// Severity - The severity level of the failure. Possible values include: 'Warning', 'Error', 'Info', 'SevereWarning', 'Deprecated', 'UserWarning'
+	Severity SeverityTypes `json:"severity,omitempty"`
+	// Source - The ultimate source of the failure (usually either SYSTEM or USER).
 	Source *string `json:"source,omitempty"`
-	// Description - the error message description
+	// Message - The user friendly error message for the failure.
+	Message *string `json:"message,omitempty"`
+	// Description - The error message description.
 	Description *string `json:"description,omitempty"`
-	// InnerError - the inner error of this specific job error message, if any.
+	// Details - The details of the error message.
+	Details *string `json:"details,omitempty"`
+	// DiagnosticCode - The diagnostic error code.
+	DiagnosticCode *int32 `json:"diagnosticCode,omitempty"`
+	// Component - The component that failed.
+	Component *string `json:"component,omitempty"`
+	// Resolution - The recommended resolution for the failure, if any.
+	Resolution *string `json:"resolution,omitempty"`
+	// HelpLink - The link to MSDN or Azure help for this type of error, if any.
+	HelpLink *string `json:"helpLink,omitempty"`
+	// InternalDiagnostics - The internal diagnostic stack trace if the user requesting the job error details has sufficient permissions it will be retrieved, otherwise it will be empty.
+	InternalDiagnostics *string `json:"internalDiagnostics,omitempty"`
+	// InnerError - The inner error of this specific job error message, if any.
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
@@ -1387,38 +1388,38 @@ type InnerError struct {
 // a pipeline.
 type PipelineInformation struct {
 	autorest.Response `json:"-"`
-	// PipelineID - the job relationship pipeline identifier (a GUID).
+	// PipelineID - The job relationship pipeline identifier (a GUID).
 	PipelineID *uuid.UUID `json:"pipelineId,omitempty"`
-	// PipelineName - the friendly name of the job relationship pipeline, which does not need to be unique.
+	// PipelineName - The friendly name of the job relationship pipeline, which does not need to be unique.
 	PipelineName *string `json:"pipelineName,omitempty"`
-	// PipelineURI - the pipeline uri, unique, links to the originating service for this pipeline.
+	// PipelineURI - The pipeline uri, unique, links to the originating service for this pipeline.
 	PipelineURI *string `json:"pipelineUri,omitempty"`
-	// NumJobsFailed - the number of jobs in this pipeline that have failed.
+	// NumJobsFailed - The number of jobs in this pipeline that have failed.
 	NumJobsFailed *int32 `json:"numJobsFailed,omitempty"`
-	// NumJobsCanceled - the number of jobs in this pipeline that have been canceled.
+	// NumJobsCanceled - The number of jobs in this pipeline that have been canceled.
 	NumJobsCanceled *int32 `json:"numJobsCanceled,omitempty"`
-	// NumJobsSucceeded - the number of jobs in this pipeline that have succeeded.
+	// NumJobsSucceeded - The number of jobs in this pipeline that have succeeded.
 	NumJobsSucceeded *int32 `json:"numJobsSucceeded,omitempty"`
-	// AuHoursFailed - the number of job execution hours that resulted in failed jobs.
+	// AuHoursFailed - The number of job execution hours that resulted in failed jobs.
 	AuHoursFailed *float64 `json:"auHoursFailed,omitempty"`
-	// AuHoursCanceled - the number of job execution hours that resulted in canceled jobs.
+	// AuHoursCanceled - The number of job execution hours that resulted in canceled jobs.
 	AuHoursCanceled *float64 `json:"auHoursCanceled,omitempty"`
-	// AuHoursSucceeded - the number of job execution hours that resulted in successful jobs.
+	// AuHoursSucceeded - The number of job execution hours that resulted in successful jobs.
 	AuHoursSucceeded *float64 `json:"auHoursSucceeded,omitempty"`
-	// LastSubmitTime - the last time a job in this pipeline was submitted.
+	// LastSubmitTime - The last time a job in this pipeline was submitted.
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
-	// Runs - the list of recurrence identifiers representing each run of this pipeline.
+	// Runs - The list of recurrence identifiers representing each run of this pipeline.
 	Runs *[]PipelineRunInformation `json:"runs,omitempty"`
-	// Recurrences - the list of recurrence identifiers representing each run of this pipeline.
+	// Recurrences - The list of recurrence identifiers representing each run of this pipeline.
 	Recurrences *[]uuid.UUID `json:"recurrences,omitempty"`
 }
 
 // PipelineInformationListResult list of job pipeline information items.
 type PipelineInformationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the list of job pipeline information items.
+	// Value - The list of job pipeline information items.
 	Value *[]PipelineInformation `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1517,27 +1518,27 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 
 // PipelineRunInformation run info for a specific job pipeline.
 type PipelineRunInformation struct {
-	// RunID - the run identifier of an instance of pipeline executions (a GUID).
+	// RunID - The run identifier of an instance of pipeline executions (a GUID).
 	RunID *uuid.UUID `json:"runId,omitempty"`
-	// LastSubmitTime - the time this instance was last submitted.
+	// LastSubmitTime - The time this instance was last submitted.
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
 // BasicProperties the common Data Lake Analytics job properties.
 type BasicProperties interface {
 	AsUSQLJobProperties() (*USQLJobProperties, bool)
-	AsScopeJobProperties() (*ScopeJobProperties, bool)
 	AsHiveJobProperties() (*HiveJobProperties, bool)
+	AsScopeJobProperties() (*ScopeJobProperties, bool)
 	AsProperties() (*Properties, bool)
 }
 
 // Properties the common Data Lake Analytics job properties.
 type Properties struct {
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeScope', 'TypeHive'
+	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive', 'TypeScope'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -1553,14 +1554,14 @@ func unmarshalBasicProperties(body []byte) (BasicProperties, error) {
 		var usjp USQLJobProperties
 		err := json.Unmarshal(body, &usjp)
 		return usjp, err
-	case string(TypeScope):
-		var sjp ScopeJobProperties
-		err := json.Unmarshal(body, &sjp)
-		return sjp, err
 	case string(TypeHive):
 		var hjp HiveJobProperties
 		err := json.Unmarshal(body, &hjp)
 		return hjp, err
+	case string(TypeScope):
+		var sjp ScopeJobProperties
+		err := json.Unmarshal(body, &sjp)
+		return sjp, err
 	default:
 		var p Properties
 		err := json.Unmarshal(body, &p)
@@ -1607,13 +1608,13 @@ func (p Properties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
-// AsScopeJobProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
+// AsHiveJobProperties is the BasicProperties implementation for Properties.
+func (p Properties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
 }
 
-// AsHiveJobProperties is the BasicProperties implementation for Properties.
-func (p Properties) AsHiveJobProperties() (*HiveJobProperties, bool) {
+// AsScopeJobProperties is the BasicProperties implementation for Properties.
+func (p Properties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return nil, false
 }
 
@@ -1630,32 +1631,32 @@ func (p Properties) AsBasicProperties() (BasicProperties, bool) {
 // RecurrenceInformation recurrence job information for a specific recurrence.
 type RecurrenceInformation struct {
 	autorest.Response `json:"-"`
-	// RecurrenceID - the recurrence identifier (a GUID), unique per activity/script, regardless of iterations. This is something to link different occurrences of the same job together.
+	// RecurrenceID - The recurrence identifier (a GUID), unique per activity/script, regardless of iterations. This is something to link different occurrences of the same job together.
 	RecurrenceID *uuid.UUID `json:"recurrenceId,omitempty"`
-	// RecurrenceName - the recurrence name, user friendly name for the correlation between jobs.
+	// RecurrenceName - The recurrence name, user friendly name for the correlation between jobs.
 	RecurrenceName *string `json:"recurrenceName,omitempty"`
-	// NumJobsFailed - the number of jobs in this recurrence that have failed.
+	// NumJobsFailed - The number of jobs in this recurrence that have failed.
 	NumJobsFailed *int32 `json:"numJobsFailed,omitempty"`
-	// NumJobsCanceled - the number of jobs in this recurrence that have been canceled.
+	// NumJobsCanceled - The number of jobs in this recurrence that have been canceled.
 	NumJobsCanceled *int32 `json:"numJobsCanceled,omitempty"`
-	// NumJobsSucceeded - the number of jobs in this recurrence that have succeeded.
+	// NumJobsSucceeded - The number of jobs in this recurrence that have succeeded.
 	NumJobsSucceeded *int32 `json:"numJobsSucceeded,omitempty"`
-	// AuHoursFailed - the number of job execution hours that resulted in failed jobs.
+	// AuHoursFailed - The number of job execution hours that resulted in failed jobs.
 	AuHoursFailed *float64 `json:"auHoursFailed,omitempty"`
-	// AuHoursCanceled - the number of job execution hours that resulted in canceled jobs.
+	// AuHoursCanceled - The number of job execution hours that resulted in canceled jobs.
 	AuHoursCanceled *float64 `json:"auHoursCanceled,omitempty"`
-	// AuHoursSucceeded - the number of job execution hours that resulted in successful jobs.
+	// AuHoursSucceeded - The number of job execution hours that resulted in successful jobs.
 	AuHoursSucceeded *float64 `json:"auHoursSucceeded,omitempty"`
-	// LastSubmitTime - the last time a job in this recurrence was submitted.
+	// LastSubmitTime - The last time a job in this recurrence was submitted.
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
 // RecurrenceInformationListResult list of job recurrence information items.
 type RecurrenceInformationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the list of job recurrence information items.
+	// Value - The list of job recurrence information items.
 	Value *[]RecurrenceInformation `json:"value,omitempty"`
-	// NextLink - the link (url) to the next page of results.
+	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1755,66 +1756,66 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 // RelationshipProperties job relationship information properties including pipeline information, correlation
 // information, etc.
 type RelationshipProperties struct {
-	// PipelineID - the job relationship pipeline identifier (a GUID).
+	// PipelineID - The job relationship pipeline identifier (a GUID).
 	PipelineID *uuid.UUID `json:"pipelineId,omitempty"`
-	// PipelineName - the friendly name of the job relationship pipeline, which does not need to be unique.
+	// PipelineName - The friendly name of the job relationship pipeline, which does not need to be unique.
 	PipelineName *string `json:"pipelineName,omitempty"`
-	// PipelineURI - the pipeline uri, unique, links to the originating service for this pipeline.
+	// PipelineURI - The pipeline uri, unique, links to the originating service for this pipeline.
 	PipelineURI *string `json:"pipelineUri,omitempty"`
-	// RunID - the run identifier (a GUID), unique identifier of the iteration of this pipeline.
+	// RunID - The run identifier (a GUID), unique identifier of the iteration of this pipeline.
 	RunID *uuid.UUID `json:"runId,omitempty"`
-	// RecurrenceID - the recurrence identifier (a GUID), unique per activity/script, regardless of iterations. This is something to link different occurrences of the same job together.
+	// RecurrenceID - The recurrence identifier (a GUID), unique per activity/script, regardless of iterations. This is something to link different occurrences of the same job together.
 	RecurrenceID *uuid.UUID `json:"recurrenceId,omitempty"`
-	// RecurrenceName - the recurrence name, user friendly name for the correlation between jobs.
+	// RecurrenceName - The recurrence name, user friendly name for the correlation between jobs.
 	RecurrenceName *string `json:"recurrenceName,omitempty"`
 }
 
 // Resource the Data Lake Analytics job resources.
 type Resource struct {
-	// Name - the name of the resource.
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// ResourcePath - the path to the resource.
+	// ResourcePath - The path to the resource.
 	ResourcePath *string `json:"resourcePath,omitempty"`
-	// Type - the job resource type. Possible values include: 'VertexResource', 'JobManagerResource', 'StatisticsResource', 'VertexResourceInUserFolder', 'JobManagerResourceInUserFolder', 'StatisticsResourceInUserFolder'
+	// Type - The job resource type. Possible values include: 'VertexResource', 'JobManagerResource', 'StatisticsResource', 'VertexResourceInUserFolder', 'JobManagerResourceInUserFolder', 'StatisticsResourceInUserFolder'
 	Type ResourceType `json:"type,omitempty"`
 }
 
 // ResourceUsageStatistics the statistics information for resource usage.
 type ResourceUsageStatistics struct {
-	// Average - the average value.
+	// Average - The average value.
 	Average *float64 `json:"average,omitempty"`
-	// Minimum - the minimum value.
+	// Minimum - The minimum value.
 	Minimum *int64 `json:"minimum,omitempty"`
-	// Maximum - the maximum value.
+	// Maximum - The maximum value.
 	Maximum *int64 `json:"maximum,omitempty"`
 }
 
 // ScopeJobProperties scope job properties used when submitting and retrieving Scope jobs. (Only for use internally
 // with Scope job type.)
 type ScopeJobProperties struct {
-	// Resources - the list of resources that are required by the job
+	// Resources - The list of resources that are required by the job.
 	Resources *[]ScopeJobResource `json:"resources,omitempty"`
-	// UserAlgebraPath - the algebra file path after the job has completed
+	// UserAlgebraPath - The algebra file path after the job has completed.
 	UserAlgebraPath *string `json:"userAlgebraPath,omitempty"`
-	// Notifier - the list of email addresses, separated by semi-colons, to notify when the job reaches a terminal state.
+	// Notifier - The list of email addresses, separated by semi-colons, to notify when the job reaches a terminal state.
 	Notifier *string `json:"notifier,omitempty"`
-	// TotalCompilationTime - the total time this job spent compiling. This value should not be set by the user and will be ignored if it is.
+	// TotalCompilationTime - The total time this job spent compiling. This value should not be set by the user and will be ignored if it is.
 	TotalCompilationTime *string `json:"totalCompilationTime,omitempty"`
-	// TotalPausedTime - the total time this job spent paused. This value should not be set by the user and will be ignored if it is.
-	TotalPausedTime *string `json:"totalPausedTime,omitempty"`
-	// TotalQueuedTime - the total time this job spent queued. This value should not be set by the user and will be ignored if it is.
+	// TotalQueuedTime - The total time this job spent queued. This value should not be set by the user and will be ignored if it is.
 	TotalQueuedTime *string `json:"totalQueuedTime,omitempty"`
-	// TotalRunningTime - the total time this job spent executing. This value should not be set by the user and will be ignored if it is.
+	// TotalRunningTime - The total time this job spent executing. This value should not be set by the user and will be ignored if it is.
 	TotalRunningTime *string `json:"totalRunningTime,omitempty"`
-	// RootProcessNodeID - the ID used to identify the job manager coordinating job execution. This value should not be set by the user and will be ignored if it is.
+	// TotalPausedTime - The total time this job spent paused. This value should not be set by the user and will be ignored if it is.
+	TotalPausedTime *string `json:"totalPausedTime,omitempty"`
+	// RootProcessNodeID - The ID used to identify the job manager coordinating job execution. This value should not be set by the user and will be ignored if it is.
 	RootProcessNodeID *string `json:"rootProcessNodeId,omitempty"`
-	// YarnApplicationID - the ID used to identify the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
+	// YarnApplicationID - The ID used to identify the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
 	YarnApplicationID *string `json:"yarnApplicationId,omitempty"`
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeScope', 'TypeHive'
+	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive', 'TypeScope'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -1834,14 +1835,14 @@ func (sjp ScopeJobProperties) MarshalJSON() ([]byte, error) {
 	if sjp.TotalCompilationTime != nil {
 		objectMap["totalCompilationTime"] = sjp.TotalCompilationTime
 	}
-	if sjp.TotalPausedTime != nil {
-		objectMap["totalPausedTime"] = sjp.TotalPausedTime
-	}
 	if sjp.TotalQueuedTime != nil {
 		objectMap["totalQueuedTime"] = sjp.TotalQueuedTime
 	}
 	if sjp.TotalRunningTime != nil {
 		objectMap["totalRunningTime"] = sjp.TotalRunningTime
+	}
+	if sjp.TotalPausedTime != nil {
+		objectMap["totalPausedTime"] = sjp.TotalPausedTime
 	}
 	if sjp.RootProcessNodeID != nil {
 		objectMap["rootProcessNodeId"] = sjp.RootProcessNodeID
@@ -1866,14 +1867,14 @@ func (sjp ScopeJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
-// AsScopeJobProperties is the BasicProperties implementation for ScopeJobProperties.
-func (sjp ScopeJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
-	return &sjp, true
-}
-
 // AsHiveJobProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
+}
+
+// AsScopeJobProperties is the BasicProperties implementation for ScopeJobProperties.
+func (sjp ScopeJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
+	return &sjp, true
 }
 
 // AsProperties is the BasicProperties implementation for ScopeJobProperties.
@@ -1888,94 +1889,94 @@ func (sjp ScopeJobProperties) AsBasicProperties() (BasicProperties, bool) {
 
 // ScopeJobResource the Scope job resources. (Only for use internally with Scope job type.)
 type ScopeJobResource struct {
-	// Name - the name of the resource.
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Path - the path to the resource.
+	// Path - The path to the resource.
 	Path *string `json:"path,omitempty"`
 }
 
 // StateAuditRecord the Data Lake Analytics job state audit records for tracking the lifecycle of a job.
 type StateAuditRecord struct {
-	// NewState - the new state the job is in.
+	// NewState - The new state the job is in.
 	NewState *string `json:"newState,omitempty"`
-	// TimeStamp - the time stamp that the state change took place.
+	// TimeStamp - The time stamp that the state change took place.
 	TimeStamp *date.Time `json:"timeStamp,omitempty"`
-	// RequestedByUser - the user who requests the change.
+	// RequestedByUser - The user who requests the change.
 	RequestedByUser *string `json:"requestedByUser,omitempty"`
-	// Details - the details of the audit log.
+	// Details - The details of the audit log.
 	Details *string `json:"details,omitempty"`
 }
 
 // Statistics the Data Lake Analytics job execution statistics.
 type Statistics struct {
 	autorest.Response `json:"-"`
-	// LastUpdateTimeUtc - the last update time for the statistics.
+	// LastUpdateTimeUtc - The last update time for the statistics.
 	LastUpdateTimeUtc *date.Time `json:"lastUpdateTimeUtc,omitempty"`
-	// FinalizingTimeUtc - the job finalizing start time.
+	// FinalizingTimeUtc - The job finalizing start time.
 	FinalizingTimeUtc *date.Time `json:"finalizingTimeUtc,omitempty"`
-	// Stages - the list of stages for the job.
+	// Stages - The list of stages for the job.
 	Stages *[]StatisticsVertexStage `json:"stages,omitempty"`
 }
 
 // StatisticsVertex the detailed information for a vertex.
 type StatisticsVertex struct {
-	// Name - the name of the vertex.
+	// Name - The name of the vertex.
 	Name *string `json:"name,omitempty"`
-	// VertexID - the id of the vertex.
+	// VertexID - The id of the vertex.
 	VertexID *uuid.UUID `json:"vertexId,omitempty"`
-	// ExecutionTime - the amount of execution time of the vertex.
+	// ExecutionTime - The amount of execution time of the vertex.
 	ExecutionTime *string `json:"executionTime,omitempty"`
-	// DataRead - the amount of data read of the vertex, in bytes.
+	// DataRead - The amount of data read of the vertex, in bytes.
 	DataRead *int64 `json:"dataRead,omitempty"`
-	// PeakMemUsage - the amount of peak memory usage of the vertex, in bytes.
+	// PeakMemUsage - The amount of peak memory usage of the vertex, in bytes.
 	PeakMemUsage *int64 `json:"peakMemUsage,omitempty"`
 }
 
 // StatisticsVertexStage the Data Lake Analytics job statistics vertex stage information.
 type StatisticsVertexStage struct {
-	// DataRead - the amount of data read, in bytes.
+	// DataRead - The amount of data read, in bytes.
 	DataRead *int64 `json:"dataRead,omitempty"`
-	// DataReadCrossPod - the amount of data read across multiple pods, in bytes.
+	// DataReadCrossPod - The amount of data read across multiple pods, in bytes.
 	DataReadCrossPod *int64 `json:"dataReadCrossPod,omitempty"`
-	// DataReadIntraPod - the amount of data read in one pod, in bytes.
+	// DataReadIntraPod - The amount of data read in one pod, in bytes.
 	DataReadIntraPod *int64 `json:"dataReadIntraPod,omitempty"`
-	// DataToRead - the amount of data remaining to be read, in bytes.
+	// DataToRead - The amount of data remaining to be read, in bytes.
 	DataToRead *int64 `json:"dataToRead,omitempty"`
-	// DataWritten - the amount of data written, in bytes.
+	// DataWritten - The amount of data written, in bytes.
 	DataWritten *int64 `json:"dataWritten,omitempty"`
-	// DuplicateDiscardCount - the number of duplicates that were discarded.
+	// DuplicateDiscardCount - The number of duplicates that were discarded.
 	DuplicateDiscardCount *int32 `json:"duplicateDiscardCount,omitempty"`
-	// FailedCount - the number of failures that occured in this stage.
+	// FailedCount - The number of failures that occured in this stage.
 	FailedCount *int32 `json:"failedCount,omitempty"`
-	// MaxVertexDataRead - the maximum amount of data read in a single vertex, in bytes.
+	// MaxVertexDataRead - The maximum amount of data read in a single vertex, in bytes.
 	MaxVertexDataRead *int64 `json:"maxVertexDataRead,omitempty"`
-	// MinVertexDataRead - the minimum amount of data read in a single vertex, in bytes.
+	// MinVertexDataRead - The minimum amount of data read in a single vertex, in bytes.
 	MinVertexDataRead *int64 `json:"minVertexDataRead,omitempty"`
-	// ReadFailureCount - the number of read failures in this stage.
+	// ReadFailureCount - The number of read failures in this stage.
 	ReadFailureCount *int32 `json:"readFailureCount,omitempty"`
-	// RevocationCount - the number of vertices that were revoked during this stage.
+	// RevocationCount - The number of vertices that were revoked during this stage.
 	RevocationCount *int32 `json:"revocationCount,omitempty"`
-	// RunningCount - the number of currently running vertices in this stage.
+	// RunningCount - The number of currently running vertices in this stage.
 	RunningCount *int32 `json:"runningCount,omitempty"`
-	// ScheduledCount - the number of currently scheduled vertices in this stage
+	// ScheduledCount - The number of currently scheduled vertices in this stage.
 	ScheduledCount *int32 `json:"scheduledCount,omitempty"`
-	// StageName - the name of this stage in job execution.
+	// StageName - The name of this stage in job execution.
 	StageName *string `json:"stageName,omitempty"`
-	// SucceededCount - the number of vertices that succeeded in this stage.
+	// SucceededCount - The number of vertices that succeeded in this stage.
 	SucceededCount *int32 `json:"succeededCount,omitempty"`
-	// TempDataWritten - the amount of temporary data written, in bytes.
+	// TempDataWritten - The amount of temporary data written, in bytes.
 	TempDataWritten *int64 `json:"tempDataWritten,omitempty"`
-	// TotalCount - the total vertex count for this stage.
+	// TotalCount - The total vertex count for this stage.
 	TotalCount *int32 `json:"totalCount,omitempty"`
-	// TotalFailedTime - the amount of time that failed vertices took up in this stage.
+	// TotalFailedTime - The amount of time that failed vertices took up in this stage.
 	TotalFailedTime *string `json:"totalFailedTime,omitempty"`
-	// TotalProgress - the current progress of this stage, as a percentage.
+	// TotalProgress - The current progress of this stage, as a percentage.
 	TotalProgress *int32 `json:"totalProgress,omitempty"`
-	// TotalSucceededTime - the amount of time all successful vertices took in this stage.
+	// TotalSucceededTime - The amount of time all successful vertices took in this stage.
 	TotalSucceededTime *string `json:"totalSucceededTime,omitempty"`
-	// TotalPeakMemUsage - the sum of the peak memory usage of all the vertices in the stage, in bytes.
+	// TotalPeakMemUsage - The sum of the peak memory usage of all the vertices in the stage, in bytes.
 	TotalPeakMemUsage *int64 `json:"totalPeakMemUsage,omitempty"`
-	// TotalExecutionTime - the sum of the total execution time of all the vertices in the stage.
+	// TotalExecutionTime - The sum of the total execution time of all the vertices in the stage.
 	TotalExecutionTime *string `json:"totalExecutionTime,omitempty"`
 	// MaxDataReadVertex - the vertex with the maximum amount of data read.
 	MaxDataReadVertex *StatisticsVertex `json:"maxDataReadVertex,omitempty"`
@@ -1983,19 +1984,19 @@ type StatisticsVertexStage struct {
 	MaxExecutionTimeVertex *StatisticsVertex `json:"maxExecutionTimeVertex,omitempty"`
 	// MaxPeakMemUsageVertex - the vertex with the maximum peak memory usage.
 	MaxPeakMemUsageVertex *StatisticsVertex `json:"maxPeakMemUsageVertex,omitempty"`
-	// EstimatedVertexCPUCoreCount - the estimated vertex CPU core count.
+	// EstimatedVertexCPUCoreCount - The estimated vertex CPU core count.
 	EstimatedVertexCPUCoreCount *int32 `json:"estimatedVertexCpuCoreCount,omitempty"`
-	// EstimatedVertexPeakCPUCoreCount - the estimated vertex peak CPU core count.
+	// EstimatedVertexPeakCPUCoreCount - The estimated vertex peak CPU core count.
 	EstimatedVertexPeakCPUCoreCount *int32 `json:"estimatedVertexPeakCpuCoreCount,omitempty"`
-	// EstimatedVertexMemSize - the estimated vertex memory size, in bytes.
+	// EstimatedVertexMemSize - The estimated vertex memory size, in bytes.
 	EstimatedVertexMemSize *int64 `json:"estimatedVertexMemSize,omitempty"`
-	// AllocatedContainerCPUCoreCount - the statistics information for the allocated container CPU core count.
+	// AllocatedContainerCPUCoreCount - The statistics information for the allocated container CPU core count.
 	AllocatedContainerCPUCoreCount *ResourceUsageStatistics `json:"allocatedContainerCpuCoreCount,omitempty"`
-	// AllocatedContainerMemSize - the statistics information for the allocated container memory size.
+	// AllocatedContainerMemSize - The statistics information for the allocated container memory size.
 	AllocatedContainerMemSize *ResourceUsageStatistics `json:"allocatedContainerMemSize,omitempty"`
-	// UsedVertexCPUCoreCount - the statistics information for the used vertex CPU core count.
+	// UsedVertexCPUCoreCount - The statistics information for the used vertex CPU core count.
 	UsedVertexCPUCoreCount *ResourceUsageStatistics `json:"usedVertexCpuCoreCount,omitempty"`
-	// UsedVertexPeakMemSize - the statistics information for the used vertex peak memory size.
+	// UsedVertexPeakMemSize - The statistics information for the used vertex peak memory size.
 	UsedVertexPeakMemSize *ResourceUsageStatistics `json:"usedVertexPeakMemSize,omitempty"`
 }
 
@@ -2050,11 +2051,11 @@ func (future UpdateFuture) Result(client Client) (i Information, err error) {
 // UpdateJobParameters the parameters that can be used to update existing Data Lake Analytics job information
 // properties. (Only for use internally with Scope job type.)
 type UpdateJobParameters struct {
-	// DegreeOfParallelism - the degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
+	// DegreeOfParallelism - The degree of parallelism used for this job. This must be greater than 0, if set to less than 0 it will default to 1.
 	DegreeOfParallelism *int32 `json:"degreeOfParallelism,omitempty"`
-	// Priority - the priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
+	// Priority - The priority value for the current job. Lower numbers have a higher priority. By default, a job has a priority of 1000. This must be greater than 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// Tags - the key-value pairs used to add additional metadata to the job information. (Only for use internally with Scope job type.)
+	// Tags - The key-value pairs used to add additional metadata to the job information.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -2075,37 +2076,37 @@ func (ujp UpdateJobParameters) MarshalJSON() ([]byte, error) {
 
 // USQLJobProperties u-SQL job properties used when retrieving U-SQL jobs.
 type USQLJobProperties struct {
-	// Resources - the list of resources that are required by the job
+	// Resources - The list of resources that are required by the job.
 	Resources *[]Resource `json:"resources,omitempty"`
-	// Statistics - the job specific statistics.
+	// Statistics - The job specific statistics.
 	Statistics *Statistics `json:"statistics,omitempty"`
-	// DebugData - the job specific debug data locations.
+	// DebugData - The job specific debug data locations.
 	DebugData *DataPath `json:"debugData,omitempty"`
-	// Diagnostics - the diagnostics for the job.
+	// Diagnostics - The diagnostics for the job.
 	Diagnostics *[]Diagnostics `json:"diagnostics,omitempty"`
-	// AlgebraFilePath - the algebra file path after the job has completed
+	// AlgebraFilePath - The algebra file path after the job has completed.
 	AlgebraFilePath *string `json:"algebraFilePath,omitempty"`
-	// TotalCompilationTime - the total time this job spent compiling. This value should not be set by the user and will be ignored if it is.
+	// TotalCompilationTime - The total time this job spent compiling. This value should not be set by the user and will be ignored if it is.
 	TotalCompilationTime *string `json:"totalCompilationTime,omitempty"`
-	// TotalPausedTime - the total time this job spent paused. This value should not be set by the user and will be ignored if it is.
-	TotalPausedTime *string `json:"totalPausedTime,omitempty"`
-	// TotalQueuedTime - the total time this job spent queued. This value should not be set by the user and will be ignored if it is.
+	// TotalQueuedTime - The total time this job spent queued. This value should not be set by the user and will be ignored if it is.
 	TotalQueuedTime *string `json:"totalQueuedTime,omitempty"`
-	// TotalRunningTime - the total time this job spent executing. This value should not be set by the user and will be ignored if it is.
+	// TotalRunningTime - The total time this job spent executing. This value should not be set by the user and will be ignored if it is.
 	TotalRunningTime *string `json:"totalRunningTime,omitempty"`
-	// RootProcessNodeID - the ID used to identify the job manager coordinating job execution. This value should not be set by the user and will be ignored if it is.
+	// TotalPausedTime - The total time this job spent paused. This value should not be set by the user and will be ignored if it is.
+	TotalPausedTime *string `json:"totalPausedTime,omitempty"`
+	// RootProcessNodeID - The ID used to identify the job manager coordinating job execution. This value should not be set by the user and will be ignored if it is.
 	RootProcessNodeID *string `json:"rootProcessNodeId,omitempty"`
-	// YarnApplicationID - the ID used to identify the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
+	// YarnApplicationID - The ID used to identify the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
 	YarnApplicationID *string `json:"yarnApplicationId,omitempty"`
-	// YarnApplicationTimeStamp - the timestamp (in ticks) for the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
+	// YarnApplicationTimeStamp - The timestamp (in ticks) for the yarn application executing the job. This value should not be set by the user and will be ignored if it is.
 	YarnApplicationTimeStamp *int64 `json:"yarnApplicationTimeStamp,omitempty"`
-	// CompileMode - the specific compilation mode for the job used during execution. If this is not specified during submission, the server will determine the optimal compilation mode. Possible values include: 'Semantic', 'Full', 'SingleBox'
+	// CompileMode - The specific compilation mode for the job used during execution. If this is not specified during submission, the server will determine the optimal compilation mode. Possible values include: 'Semantic', 'Full', 'SingleBox'
 	CompileMode CompileMode `json:"compileMode,omitempty"`
-	// RuntimeVersion - the runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
+	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// Script - the script to run. Please note that the maximum script size is 3 MB.
+	// Script - The script to run. Please note that the maximum script size is 3 MB.
 	Script *string `json:"script,omitempty"`
-	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeScope', 'TypeHive'
+	// Type - Possible values include: 'TypeJobProperties', 'TypeUSQL', 'TypeHive', 'TypeScope'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -2131,14 +2132,14 @@ func (usjp USQLJobProperties) MarshalJSON() ([]byte, error) {
 	if usjp.TotalCompilationTime != nil {
 		objectMap["totalCompilationTime"] = usjp.TotalCompilationTime
 	}
-	if usjp.TotalPausedTime != nil {
-		objectMap["totalPausedTime"] = usjp.TotalPausedTime
-	}
 	if usjp.TotalQueuedTime != nil {
 		objectMap["totalQueuedTime"] = usjp.TotalQueuedTime
 	}
 	if usjp.TotalRunningTime != nil {
 		objectMap["totalRunningTime"] = usjp.TotalRunningTime
+	}
+	if usjp.TotalPausedTime != nil {
+		objectMap["totalPausedTime"] = usjp.TotalPausedTime
 	}
 	if usjp.RootProcessNodeID != nil {
 		objectMap["rootProcessNodeId"] = usjp.RootProcessNodeID
@@ -2169,13 +2170,13 @@ func (usjp USQLJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return &usjp, true
 }
 
-// AsScopeJobProperties is the BasicProperties implementation for USQLJobProperties.
-func (usjp USQLJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
+// AsHiveJobProperties is the BasicProperties implementation for USQLJobProperties.
+func (usjp USQLJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
 }
 
-// AsHiveJobProperties is the BasicProperties implementation for USQLJobProperties.
-func (usjp USQLJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
+// AsScopeJobProperties is the BasicProperties implementation for USQLJobProperties.
+func (usjp USQLJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return nil, false
 }
 

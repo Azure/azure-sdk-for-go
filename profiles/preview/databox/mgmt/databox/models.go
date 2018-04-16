@@ -30,15 +30,6 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
 }
 
-type ListSecretsClient = original.ListSecretsClient
-
-func NewListSecretsClient(subscriptionID string) ListSecretsClient {
-	return original.NewListSecretsClient(subscriptionID)
-}
-func NewListSecretsClientWithBaseURI(baseURI string, subscriptionID string) ListSecretsClient {
-	return original.NewListSecretsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type OperationsClient = original.OperationsClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {

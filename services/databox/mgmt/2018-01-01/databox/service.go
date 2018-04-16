@@ -40,33 +40,33 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 	return ServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetServiceHealth this method returns the health of partner services.
+// GetHealth this method returns the health of partner services.
 //
 // location is the location of the resource
-func (client ServiceClient) GetServiceHealth(ctx context.Context, location string) (result ServiceHealthResponseList, err error) {
-	req, err := client.GetServiceHealthPreparer(ctx, location)
+func (client ServiceClient) GetHealth(ctx context.Context, location string) (result ServiceHealthResponseList, err error) {
+	req, err := client.GetHealthPreparer(ctx, location)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetServiceHealth", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetHealth", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetServiceHealthSender(req)
+	resp, err := client.GetHealthSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetServiceHealth", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetHealth", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetServiceHealthResponder(resp)
+	result, err = client.GetHealthResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetServiceHealth", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "databox.ServiceClient", "GetHealth", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetServiceHealthPreparer prepares the GetServiceHealth request.
-func (client ServiceClient) GetServiceHealthPreparer(ctx context.Context, location string) (*http.Request, error) {
+// GetHealthPreparer prepares the GetHealth request.
+func (client ServiceClient) GetHealthPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -85,16 +85,16 @@ func (client ServiceClient) GetServiceHealthPreparer(ctx context.Context, locati
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServiceHealthSender sends the GetServiceHealth request. The method will close the
+// GetHealthSender sends the GetHealth request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServiceClient) GetServiceHealthSender(req *http.Request) (*http.Response, error) {
+func (client ServiceClient) GetHealthSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetServiceHealthResponder handles the response to the GetServiceHealth request. The method always
+// GetHealthResponder handles the response to the GetHealth request. The method always
 // closes the http.Response Body.
-func (client ServiceClient) GetServiceHealthResponder(resp *http.Response) (result ServiceHealthResponseList, err error) {
+func (client ServiceClient) GetHealthResponder(resp *http.Response) (result ServiceHealthResponseList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

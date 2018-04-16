@@ -214,7 +214,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 				Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Error", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Error.Code", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "jobResource.JobProperties.DestinationAccountDetails", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "jobResource.JobProperties.Details", Name: validation.Null, Rule: true,
+					{Target: "jobResource.JobProperties.Details", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details.ContactDetails", Name: validation.Null, Rule: true,
 							Chain: []validation.Constraint{{Target: "jobResource.JobProperties.Details.ContactDetails.Phone", Name: validation.Null, Rule: true, Chain: nil},
 								{Target: "jobResource.JobProperties.Details.ContactDetails.EmailList", Name: validation.Null, Rule: true, Chain: nil},
@@ -790,6 +790,82 @@ func (client JobsClient) listByResourceGroupNextResults(lastResults JobResourceL
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
 func (client JobsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, skipToken string) (result JobResourceListIterator, err error) {
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, skipToken)
+	return
+}
+
+// ListSecrets this method gets the unencrypted secrets related to the job.
+//
+// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
+// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
+// only
+func (client JobsClient) ListSecrets(ctx context.Context, resourceGroupName string, jobName string) (result UnencryptedSecrets, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: jobName,
+			Constraints: []validation.Constraint{{Target: "jobName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "jobName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "jobName", Name: validation.Pattern, Rule: `^[-\w\.]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("databox.JobsClient", "ListSecrets", err.Error())
+	}
+
+	req, err := client.ListSecretsPreparer(ctx, resourceGroupName, jobName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListSecrets", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSecretsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListSecrets", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSecretsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "databox.JobsClient", "ListSecrets", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSecretsPreparer prepares the ListSecrets request.
+func (client JobsClient) ListSecretsPreparer(ctx context.Context, resourceGroupName string, jobName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"jobName":           autorest.Encode("path", jobName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/jobs/{jobName}/listSecrets", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSecretsSender sends the ListSecrets request. The method will close the
+// http.Response Body if it receives an error.
+func (client JobsClient) ListSecretsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSecretsResponder handles the response to the ListSecrets request. The method always
+// closes the http.Response Body.
+func (client JobsClient) ListSecretsResponder(resp *http.Response) (result UnencryptedSecrets, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

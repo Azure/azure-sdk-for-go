@@ -21,11 +21,6 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/commerce/mgmt/2015-06-01-preview/commerce"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type AggregationGranularity = original.AggregationGranularity
 
 const (
@@ -58,13 +53,19 @@ type UsageAggregationListResultIterator = original.UsageAggregationListResultIte
 type UsageAggregationListResultPage = original.UsageAggregationListResultPage
 type UsageSample = original.UsageSample
 type RateCardClient = original.RateCardClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type UsageAggregatesClient = original.UsageAggregatesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
+	return original.NewUsageAggregatesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
+	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAggregationGranularityValues() []AggregationGranularity {
 	return original.PossibleAggregationGranularityValues()
@@ -72,21 +73,21 @@ func PossibleAggregationGranularityValues() []AggregationGranularity {
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewRateCardClient(subscriptionID string) RateCardClient {
 	return original.NewRateCardClient(subscriptionID)
 }
 func NewRateCardClientWithBaseURI(baseURI string, subscriptionID string) RateCardClient {
 	return original.NewRateCardClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
-	return original.NewUsageAggregatesClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewUsageAggregatesClientWithBaseURI(baseURI string, subscriptionID string) UsageAggregatesClient {
-	return original.NewUsageAggregatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

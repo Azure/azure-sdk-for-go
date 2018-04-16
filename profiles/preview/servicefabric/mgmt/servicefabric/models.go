@@ -21,16 +21,7 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
-type ApplicationClient = original.ApplicationClient
 type ApplicationTypeClient = original.ApplicationTypeClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
-type ClusterVersionsClient = original.ClusterVersionsClient
 type ClusterState = original.ClusterState
 
 const (
@@ -252,9 +243,18 @@ type VersionProperties = original.VersionProperties
 type VersionPutFuture = original.VersionPutFuture
 type VersionResource = original.VersionResource
 type VersionResourceList = original.VersionResourceList
-type OperationsClient = original.OperationsClient
-type ServiceClient = original.ServiceClient
 type VersionClient = original.VersionClient
+type ClustersClient = original.ClustersClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ServiceClient = original.ServiceClient
+type ClusterVersionsClient = original.ClusterVersionsClient
+type OperationsClient = original.OperationsClient
+type ApplicationClient = original.ApplicationClient
 
 func NewApplicationClient() ApplicationClient {
 	return original.NewApplicationClient()
@@ -262,29 +262,23 @@ func NewApplicationClient() ApplicationClient {
 func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
 	return original.NewApplicationClientWithBaseURI(baseURI)
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
+}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
+}
 func NewApplicationTypeClient() ApplicationTypeClient {
 	return original.NewApplicationTypeClient()
 }
 func NewApplicationTypeClientWithBaseURI(baseURI string) ApplicationTypeClient {
 	return original.NewApplicationTypeClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func NewClustersClient() ClustersClient {
-	return original.NewClustersClient()
-}
-func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI)
-}
-func NewClusterVersionsClient() ClusterVersionsClient {
-	return original.NewClusterVersionsClient()
-}
-func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
-	return original.NewClusterVersionsClientWithBaseURI(baseURI)
 }
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()
@@ -334,11 +328,23 @@ func PossibleWeightValues() []Weight {
 func PossibleX509StoreNameValues() []X509StoreName {
 	return original.PossibleX509StoreNameValues()
 }
-func NewOperationsClient() OperationsClient {
-	return original.NewOperationsClient()
+func NewVersionClient() VersionClient {
+	return original.NewVersionClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI)
+func NewVersionClientWithBaseURI(baseURI string) VersionClient {
+	return original.NewVersionClientWithBaseURI(baseURI)
+}
+func NewClustersClient() ClustersClient {
+	return original.NewClustersClient()
+}
+func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func NewServiceClient() ServiceClient {
 	return original.NewServiceClient()
@@ -346,15 +352,9 @@ func NewServiceClient() ServiceClient {
 func NewServiceClientWithBaseURI(baseURI string) ServiceClient {
 	return original.NewServiceClientWithBaseURI(baseURI)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewClusterVersionsClient() ClusterVersionsClient {
+	return original.NewClusterVersionsClient()
 }
-func Version() string {
-	return original.Version()
-}
-func NewVersionClient() VersionClient {
-	return original.NewVersionClient()
-}
-func NewVersionClientWithBaseURI(baseURI string) VersionClient {
-	return original.NewVersionClientWithBaseURI(baseURI)
+func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
+	return original.NewClusterVersionsClientWithBaseURI(baseURI)
 }

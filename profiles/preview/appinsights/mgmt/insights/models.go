@@ -21,23 +21,28 @@ package insights
 
 import original "github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights"
 
-type AnalyticsItemClient = original.AnalyticsItemClient
+type FavoriteClient = original.FavoriteClient
+type ComponentsClient = original.ComponentsClient
+type WorkbookClient = original.WorkbookClient
 type AnnotationsClient = original.AnnotationsClient
+type ComponentFeatureCapabilitiesClient = original.ComponentFeatureCapabilitiesClient
+type WebTestsClient = original.WebTestsClient
+type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
+type WorkbooksClient = original.WorkbooksClient
+type AnalyticsItemClient = original.AnalyticsItemClient
 type APIKeysClient = original.APIKeysClient
+type ComponentAvailableFeaturesClient = original.ComponentAvailableFeaturesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ComponentAvailableFeaturesClient = original.ComponentAvailableFeaturesClient
-type ComponentCurrentBillingFeaturesClient = original.ComponentCurrentBillingFeaturesClient
-type ComponentFeatureCapabilitiesClient = original.ComponentFeatureCapabilitiesClient
 type ComponentQuotaStatusClient = original.ComponentQuotaStatusClient
-type ComponentsClient = original.ComponentsClient
-type ExportConfigurationsClient = original.ExportConfigurationsClient
-type FavoriteClient = original.FavoriteClient
+type WebTestLocationsClient = original.WebTestLocationsClient
 type FavoritesClient = original.FavoritesClient
+type WorkItemConfigurationsClient = original.WorkItemConfigurationsClient
+type OperationsClient = original.OperationsClient
 type ApplicationType = original.ApplicationType
 
 const (
@@ -204,19 +209,14 @@ type Workbooks = original.Workbooks
 type WorkItemConfiguration = original.WorkItemConfiguration
 type WorkItemConfigurationError = original.WorkItemConfigurationError
 type WorkItemCreateConfiguration = original.WorkItemCreateConfiguration
-type OperationsClient = original.OperationsClient
+type ExportConfigurationsClient = original.ExportConfigurationsClient
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
-type WebTestLocationsClient = original.WebTestLocationsClient
-type WebTestsClient = original.WebTestsClient
-type WorkbookClient = original.WorkbookClient
-type WorkbooksClient = original.WorkbooksClient
-type WorkItemConfigurationsClient = original.WorkItemConfigurationsClient
 
-func NewAnalyticsItemClient(subscriptionID string) AnalyticsItemClient {
-	return original.NewAnalyticsItemClient(subscriptionID)
+func NewWorkbookClient(subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClient(subscriptionID)
 }
-func NewAnalyticsItemClientWithBaseURI(baseURI string, subscriptionID string) AnalyticsItemClient {
-	return original.NewAnalyticsItemClientWithBaseURI(baseURI, subscriptionID)
+func NewWorkbookClientWithBaseURI(baseURI string, subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAnnotationsClient(subscriptionID string) AnnotationsClient {
 	return original.NewAnnotationsClient(subscriptionID)
@@ -224,23 +224,17 @@ func NewAnnotationsClient(subscriptionID string) AnnotationsClient {
 func NewAnnotationsClientWithBaseURI(baseURI string, subscriptionID string) AnnotationsClient {
 	return original.NewAnnotationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClient(subscriptionID)
+func NewComponentFeatureCapabilitiesClient(subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClient(subscriptionID)
 }
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) ComponentFeatureCapabilitiesClient {
+	return original.NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewWebTestsClient(subscriptionID string) WebTestsClient {
+	return original.NewWebTestsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
-	return original.NewComponentAvailableFeaturesClient(subscriptionID)
-}
-func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentAvailableFeaturesClient {
-	return original.NewComponentAvailableFeaturesClientWithBaseURI(baseURI, subscriptionID)
+func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
+	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCurrentBillingFeaturesClient {
 	return original.NewComponentCurrentBillingFeaturesClient(subscriptionID)
@@ -248,17 +242,11 @@ func NewComponentCurrentBillingFeaturesClient(subscriptionID string) ComponentCu
 func NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentCurrentBillingFeaturesClient {
 	return original.NewComponentCurrentBillingFeaturesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewComponentFeatureCapabilitiesClient(subscriptionID string) ComponentFeatureCapabilitiesClient {
-	return original.NewComponentFeatureCapabilitiesClient(subscriptionID)
+func NewFavoriteClient(subscriptionID string) FavoriteClient {
+	return original.NewFavoriteClient(subscriptionID)
 }
-func NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) ComponentFeatureCapabilitiesClient {
-	return original.NewComponentFeatureCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClient(subscriptionID)
-}
-func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
-	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
+func NewFavoriteClientWithBaseURI(baseURI string, subscriptionID string) FavoriteClient {
+	return original.NewFavoriteClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewComponentsClient(subscriptionID string) ComponentsClient {
 	return original.NewComponentsClient(subscriptionID)
@@ -266,23 +254,65 @@ func NewComponentsClient(subscriptionID string) ComponentsClient {
 func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) ComponentsClient {
 	return original.NewComponentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
-	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
-func NewFavoriteClient(subscriptionID string) FavoriteClient {
-	return original.NewFavoriteClient(subscriptionID)
+func NewAnalyticsItemClient(subscriptionID string) AnalyticsItemClient {
+	return original.NewAnalyticsItemClient(subscriptionID)
 }
-func NewFavoriteClientWithBaseURI(baseURI string, subscriptionID string) FavoriteClient {
-	return original.NewFavoriteClientWithBaseURI(baseURI, subscriptionID)
+func NewAnalyticsItemClientWithBaseURI(baseURI string, subscriptionID string) AnalyticsItemClient {
+	return original.NewAnalyticsItemClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIKeysClient(subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClient(subscriptionID)
+}
+func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
+	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClient(subscriptionID)
+}
+func NewComponentAvailableFeaturesClientWithBaseURI(baseURI string, subscriptionID string) ComponentAvailableFeaturesClient {
+	return original.NewComponentAvailableFeaturesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkbooksClient(subscriptionID string) WorkbooksClient {
+	return original.NewWorkbooksClient(subscriptionID)
+}
+func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) WorkbooksClient {
+	return original.NewWorkbooksClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWebTestLocationsClient(subscriptionID string) WebTestLocationsClient {
+	return original.NewWebTestLocationsClient(subscriptionID)
+}
+func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string) WebTestLocationsClient {
+	return original.NewWebTestLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewFavoritesClient(subscriptionID string) FavoritesClient {
 	return original.NewFavoritesClient(subscriptionID)
 }
 func NewFavoritesClientWithBaseURI(baseURI string, subscriptionID string) FavoritesClient {
 	return original.NewFavoritesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkItemConfigurationsClient(subscriptionID string) WorkItemConfigurationsClient {
+	return original.NewWorkItemConfigurationsClient(subscriptionID)
+}
+func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) WorkItemConfigurationsClient {
+	return original.NewWorkItemConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewComponentQuotaStatusClient(subscriptionID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClient(subscriptionID)
+}
+func NewComponentQuotaStatusClientWithBaseURI(baseURI string, subscriptionID string) ComponentQuotaStatusClient {
+	return original.NewComponentQuotaStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleApplicationTypeValues() []ApplicationType {
 	return original.PossibleApplicationTypeValues()
@@ -323,11 +353,11 @@ func PossibleSharedTypeKindValues() []SharedTypeKind {
 func PossibleWebTestKindValues() []WebTestKind {
 	return original.PossibleWebTestKindValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewExportConfigurationsClient(subscriptionID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewExportConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ExportConfigurationsClient {
+	return original.NewExportConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveDetectionConfigurationsClient {
 	return original.NewProactiveDetectionConfigurationsClient(subscriptionID)
@@ -335,39 +365,9 @@ func NewProactiveDetectionConfigurationsClient(subscriptionID string) ProactiveD
 func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ProactiveDetectionConfigurationsClient {
 	return original.NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
-}
-func NewWebTestLocationsClient(subscriptionID string) WebTestLocationsClient {
-	return original.NewWebTestLocationsClient(subscriptionID)
-}
-func NewWebTestLocationsClientWithBaseURI(baseURI string, subscriptionID string) WebTestLocationsClient {
-	return original.NewWebTestLocationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWebTestsClient(subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClient(subscriptionID)
-}
-func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
-	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWorkbookClient(subscriptionID string) WorkbookClient {
-	return original.NewWorkbookClient(subscriptionID)
-}
-func NewWorkbookClientWithBaseURI(baseURI string, subscriptionID string) WorkbookClient {
-	return original.NewWorkbookClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWorkbooksClient(subscriptionID string) WorkbooksClient {
-	return original.NewWorkbooksClient(subscriptionID)
-}
-func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) WorkbooksClient {
-	return original.NewWorkbooksClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWorkItemConfigurationsClient(subscriptionID string) WorkItemConfigurationsClient {
-	return original.NewWorkItemConfigurationsClient(subscriptionID)
-}
-func NewWorkItemConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) WorkItemConfigurationsClient {
-	return original.NewWorkItemConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

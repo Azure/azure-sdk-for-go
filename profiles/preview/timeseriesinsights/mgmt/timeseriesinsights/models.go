@@ -22,14 +22,6 @@ package timeseriesinsights
 import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
 type AccessPoliciesClient = original.AccessPoliciesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type EnvironmentsClient = original.EnvironmentsClient
-type EventSourcesClient = original.EventSourcesClient
 type AccessPolicyRole = original.AccessPolicyRole
 
 const (
@@ -175,20 +167,22 @@ type Resource = original.Resource
 type ResourceProperties = original.ResourceProperties
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
-type ReferenceDataSetsClient = original.ReferenceDataSetsClient
+type EnvironmentsClient = original.EnvironmentsClient
 
-func NewAccessPoliciesClient(subscriptionID string) AccessPoliciesClient {
-	return original.NewAccessPoliciesClient(subscriptionID)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ReferenceDataSetsClient = original.ReferenceDataSetsClient
+type OperationsClient = original.OperationsClient
+type EventSourcesClient = original.EventSourcesClient
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AccessPoliciesClient {
-	return original.NewAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
 	return original.NewEnvironmentsClient(subscriptionID)
@@ -196,11 +190,35 @@ func NewEnvironmentsClient(subscriptionID string) EnvironmentsClient {
 func NewEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) EnvironmentsClient {
 	return original.NewEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
 }
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
+	return original.NewReferenceDataSetsClient(subscriptionID)
+}
+func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ReferenceDataSetsClient {
+	return original.NewReferenceDataSetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewEventSourcesClient(subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClient(subscriptionID)
 }
 func NewEventSourcesClientWithBaseURI(baseURI string, subscriptionID string) EventSourcesClient {
 	return original.NewEventSourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccessPoliciesClient(subscriptionID string) AccessPoliciesClient {
+	return original.NewAccessPoliciesClient(subscriptionID)
+}
+func NewAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AccessPoliciesClient {
+	return original.NewAccessPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return original.PossibleAccessPolicyRoleValues()
@@ -231,22 +249,4 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return original.PossibleStorageLimitExceededBehaviorValues()
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
-	return original.NewReferenceDataSetsClient(subscriptionID)
-}
-func NewReferenceDataSetsClientWithBaseURI(baseURI string, subscriptionID string) ReferenceDataSetsClient {
-	return original.NewReferenceDataSetsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

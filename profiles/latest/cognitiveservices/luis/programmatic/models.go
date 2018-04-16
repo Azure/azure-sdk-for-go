@@ -21,11 +21,14 @@ package programmatic
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/programmatic"
 
-type AppsClient = original.AppsClient
-type BaseClient = original.BaseClient
-type ExamplesClient = original.ExamplesClient
-type FeaturesClient = original.FeaturesClient
+type PermissionsClient = original.PermissionsClient
+type TrainClient = original.TrainClient
 type ModelClient = original.ModelClient
+type VersionsClient = original.VersionsClient
+type ExamplesClient = original.ExamplesClient
+type BaseClient = original.BaseClient
+type FeaturesClient = original.FeaturesClient
+type AppsClient = original.AppsClient
 type AzureRegions = original.AzureRegions
 
 const (
@@ -230,27 +233,9 @@ type UUID = original.UUID
 type VersionInfo = original.VersionInfo
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
-type PermissionsClient = original.PermissionsClient
-type TrainClient = original.TrainClient
-type VersionsClient = original.VersionsClient
 
 func NewAppsClient(azureRegion AzureRegions) AppsClient {
 	return original.NewAppsClient(azureRegion)
-}
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-func NewExamplesClient(azureRegion AzureRegions) ExamplesClient {
-	return original.NewExamplesClient(azureRegion)
-}
-func NewFeaturesClient(azureRegion AzureRegions) FeaturesClient {
-	return original.NewFeaturesClient(azureRegion)
-}
-func NewModelClient(azureRegion AzureRegions) ModelClient {
-	return original.NewModelClient(azureRegion)
 }
 func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
@@ -279,18 +264,33 @@ func PossibleStatus1Values() []Status1 {
 func PossibleTrainingStatusValues() []TrainingStatus {
 	return original.PossibleTrainingStatusValues()
 }
-func NewPermissionsClient(azureRegion AzureRegions) PermissionsClient {
-	return original.NewPermissionsClient(azureRegion)
-}
-func NewTrainClient(azureRegion AzureRegions) TrainClient {
-	return original.NewTrainClient(azureRegion)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
 }
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func NewFeaturesClient(azureRegion AzureRegions) FeaturesClient {
+	return original.NewFeaturesClient(azureRegion)
+}
 func NewVersionsClient(azureRegion AzureRegions) VersionsClient {
 	return original.NewVersionsClient(azureRegion)
+}
+func NewExamplesClient(azureRegion AzureRegions) ExamplesClient {
+	return original.NewExamplesClient(azureRegion)
+}
+func NewPermissionsClient(azureRegion AzureRegions) PermissionsClient {
+	return original.NewPermissionsClient(azureRegion)
+}
+func NewTrainClient(azureRegion AzureRegions) TrainClient {
+	return original.NewTrainClient(azureRegion)
+}
+func NewModelClient(azureRegion AzureRegions) ModelClient {
+	return original.NewModelClient(azureRegion)
 }

@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DatabaseOperationsClient = original.DatabaseOperationsClient
-
-func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
-	return original.NewDatabaseOperationsClient(subscriptionID)
-}
-func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
-	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
-
-func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClient(subscriptionID)
-}
-func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ManagementOperationState = original.ManagementOperationState
 
 const (
@@ -62,10 +38,6 @@ const (
 	Pending          ManagementOperationState = original.Pending
 	Succeeded        ManagementOperationState = original.Succeeded
 )
-
-func PossibleManagementOperationStateValues() []ManagementOperationState {
-	return original.PossibleManagementOperationStateValues()
-}
 
 type DatabaseOperation = original.DatabaseOperation
 type DatabaseOperationListResult = original.DatabaseOperationListResult
@@ -80,6 +52,27 @@ type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
+	return original.NewDatabaseOperationsClient(subscriptionID)
+}
+func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
+	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClient(subscriptionID)
+}
+func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleManagementOperationStateValues() []ManagementOperationState {
+	return original.PossibleManagementOperationStateValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }

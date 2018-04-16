@@ -22,118 +22,28 @@ package web
 import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web"
 
 type AppsClient = original.AppsClient
-
-func NewAppsClient(subscriptionID string) AppsClient {
-	return original.NewAppsClient(subscriptionID)
-}
-func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
-	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AppServiceCertificateOrdersClient = original.AppServiceCertificateOrdersClient
-
-func NewAppServiceCertificateOrdersClient(subscriptionID string) AppServiceCertificateOrdersClient {
-	return original.NewAppServiceCertificateOrdersClient(subscriptionID)
-}
-func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) AppServiceCertificateOrdersClient {
-	return original.NewAppServiceCertificateOrdersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AppServiceEnvironmentsClient = original.AppServiceEnvironmentsClient
-
-func NewAppServiceEnvironmentsClient(subscriptionID string) AppServiceEnvironmentsClient {
-	return original.NewAppServiceEnvironmentsClient(subscriptionID)
-}
-func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) AppServiceEnvironmentsClient {
-	return original.NewAppServiceEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AppServicePlansClient = original.AppServicePlansClient
-
-func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
-	return original.NewAppServicePlansClient(subscriptionID)
-}
-func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
-	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
-}
-
+type BillingMetersClient = original.BillingMetersClient
 type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
-
-func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
-	return original.NewCertificateRegistrationProviderClient(subscriptionID)
-}
-func NewCertificateRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) CertificateRegistrationProviderClient {
-	return original.NewCertificateRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CertificatesClient = original.CertificatesClient
-
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DeletedWebAppsClient = original.DeletedWebAppsClient
-
-func NewDeletedWebAppsClient(subscriptionID string) DeletedWebAppsClient {
-	return original.NewDeletedWebAppsClient(subscriptionID)
-}
-func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) DeletedWebAppsClient {
-	return original.NewDeletedWebAppsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DiagnosticsClient = original.DiagnosticsClient
-
-func NewDiagnosticsClient(subscriptionID string) DiagnosticsClient {
-	return original.NewDiagnosticsClient(subscriptionID)
-}
-func NewDiagnosticsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticsClient {
-	return original.NewDiagnosticsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DomainRegistrationProviderClient = original.DomainRegistrationProviderClient
-
-func NewDomainRegistrationProviderClient(subscriptionID string) DomainRegistrationProviderClient {
-	return original.NewDomainRegistrationProviderClient(subscriptionID)
-}
-func NewDomainRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) DomainRegistrationProviderClient {
-	return original.NewDomainRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DomainsClient = original.DomainsClient
-
-func NewDomainsClient(subscriptionID string) DomainsClient {
-	return original.NewDomainsClient(subscriptionID)
-}
-func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
-	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccessControlEntryAction = original.AccessControlEntryAction
 
 const (
 	Deny   AccessControlEntryAction = original.Deny
 	Permit AccessControlEntryAction = original.Permit
 )
-
-func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
-	return original.PossibleAccessControlEntryActionValues()
-}
 
 type AppServicePlanRestrictions = original.AppServicePlanRestrictions
 
@@ -146,10 +56,6 @@ const (
 	Standard AppServicePlanRestrictions = original.Standard
 )
 
-func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
-	return original.PossibleAppServicePlanRestrictionsValues()
-}
-
 type AutoHealActionType = original.AutoHealActionType
 
 const (
@@ -158,20 +64,12 @@ const (
 	Recycle      AutoHealActionType = original.Recycle
 )
 
-func PossibleAutoHealActionTypeValues() []AutoHealActionType {
-	return original.PossibleAutoHealActionTypeValues()
-}
-
 type AzureResourceType = original.AzureResourceType
 
 const (
 	TrafficManager AzureResourceType = original.TrafficManager
 	Website        AzureResourceType = original.Website
 )
-
-func PossibleAzureResourceTypeValues() []AzureResourceType {
-	return original.PossibleAzureResourceTypeValues()
-}
 
 type BackupItemStatus = original.BackupItemStatus
 
@@ -188,10 +86,6 @@ const (
 	TimedOut           BackupItemStatus = original.TimedOut
 )
 
-func PossibleBackupItemStatusValues() []BackupItemStatus {
-	return original.PossibleBackupItemStatusValues()
-}
-
 type BackupRestoreOperationType = original.BackupRestoreOperationType
 
 const (
@@ -200,10 +94,6 @@ const (
 	BackupRestoreOperationTypeRelocation BackupRestoreOperationType = original.BackupRestoreOperationTypeRelocation
 	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
 )
-
-func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
-	return original.PossibleBackupRestoreOperationTypeValues()
-}
 
 type BuiltInAuthenticationProvider = original.BuiltInAuthenticationProvider
 
@@ -214,10 +104,6 @@ const (
 	MicrosoftAccount     BuiltInAuthenticationProvider = original.MicrosoftAccount
 	Twitter              BuiltInAuthenticationProvider = original.Twitter
 )
-
-func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
-	return original.PossibleBuiltInAuthenticationProviderValues()
-}
 
 type CertificateOrderActionType = original.CertificateOrderActionType
 
@@ -238,10 +124,6 @@ const (
 	Unknown                      CertificateOrderActionType = original.Unknown
 )
 
-func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
-	return original.PossibleCertificateOrderActionTypeValues()
-}
-
 type CertificateOrderStatus = original.CertificateOrderStatus
 
 const (
@@ -257,20 +139,12 @@ const (
 	Unused            CertificateOrderStatus = original.Unused
 )
 
-func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
-	return original.PossibleCertificateOrderStatusValues()
-}
-
 type CertificateProductType = original.CertificateProductType
 
 const (
 	StandardDomainValidatedSsl         CertificateProductType = original.StandardDomainValidatedSsl
 	StandardDomainValidatedWildCardSsl CertificateProductType = original.StandardDomainValidatedWildCardSsl
 )
-
-func PossibleCertificateProductTypeValues() []CertificateProductType {
-	return original.PossibleCertificateProductTypeValues()
-}
 
 type Channels = original.Channels
 
@@ -281,10 +155,6 @@ const (
 	Notification Channels = original.Notification
 	Webhook      Channels = original.Webhook
 )
-
-func PossibleChannelsValues() []Channels {
-	return original.PossibleChannelsValues()
-}
 
 type CheckNameResourceTypes = original.CheckNameResourceTypes
 
@@ -299,10 +169,6 @@ const (
 	CheckNameResourceTypesSlot                            CheckNameResourceTypes = original.CheckNameResourceTypesSlot
 )
 
-func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
-	return original.PossibleCheckNameResourceTypesValues()
-}
-
 type CloneAbilityResult = original.CloneAbilityResult
 
 const (
@@ -311,10 +177,6 @@ const (
 	PartiallyCloneable CloneAbilityResult = original.PartiallyCloneable
 )
 
-func PossibleCloneAbilityResultValues() []CloneAbilityResult {
-	return original.PossibleCloneAbilityResultValues()
-}
-
 type ComputeModeOptions = original.ComputeModeOptions
 
 const (
@@ -322,10 +184,6 @@ const (
 	ComputeModeOptionsDynamic   ComputeModeOptions = original.ComputeModeOptionsDynamic
 	ComputeModeOptionsShared    ComputeModeOptions = original.ComputeModeOptionsShared
 )
-
-func PossibleComputeModeOptionsValues() []ComputeModeOptions {
-	return original.PossibleComputeModeOptionsValues()
-}
 
 type ConnectionStringType = original.ConnectionStringType
 
@@ -343,10 +201,6 @@ const (
 	SQLServer       ConnectionStringType = original.SQLServer
 )
 
-func PossibleConnectionStringTypeValues() []ConnectionStringType {
-	return original.PossibleConnectionStringTypeValues()
-}
-
 type ContinuousWebJobStatus = original.ContinuousWebJobStatus
 
 const (
@@ -357,20 +211,12 @@ const (
 	Stopped        ContinuousWebJobStatus = original.Stopped
 )
 
-func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
-	return original.PossibleContinuousWebJobStatusValues()
-}
-
 type CustomHostNameDNSRecordType = original.CustomHostNameDNSRecordType
 
 const (
 	A     CustomHostNameDNSRecordType = original.A
 	CName CustomHostNameDNSRecordType = original.CName
 )
-
-func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
-	return original.PossibleCustomHostNameDNSRecordTypeValues()
-}
 
 type DatabaseType = original.DatabaseType
 
@@ -381,20 +227,12 @@ const (
 	DatabaseTypeSQLAzure   DatabaseType = original.DatabaseTypeSQLAzure
 )
 
-func PossibleDatabaseTypeValues() []DatabaseType {
-	return original.PossibleDatabaseTypeValues()
-}
-
 type DNSType = original.DNSType
 
 const (
 	AzureDNS                  DNSType = original.AzureDNS
 	DefaultDomainRegistrarDNS DNSType = original.DefaultDomainRegistrarDNS
 )
-
-func PossibleDNSTypeValues() []DNSType {
-	return original.PossibleDNSTypeValues()
-}
 
 type DNSVerificationTestResult = original.DNSVerificationTestResult
 
@@ -403,10 +241,6 @@ const (
 	DNSVerificationTestResultPassed  DNSVerificationTestResult = original.DNSVerificationTestResultPassed
 	DNSVerificationTestResultSkipped DNSVerificationTestResult = original.DNSVerificationTestResultSkipped
 )
-
-func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
-	return original.PossibleDNSVerificationTestResultValues()
-}
 
 type DomainStatus = original.DomainStatus
 
@@ -434,10 +268,6 @@ const (
 	DomainStatusUpdated             DomainStatus = original.DomainStatusUpdated
 )
 
-func PossibleDomainStatusValues() []DomainStatus {
-	return original.PossibleDomainStatusValues()
-}
-
 type DomainType = original.DomainType
 
 const (
@@ -445,20 +275,12 @@ const (
 	SoftDeleted DomainType = original.SoftDeleted
 )
 
-func PossibleDomainTypeValues() []DomainType {
-	return original.PossibleDomainTypeValues()
-}
-
 type FrequencyUnit = original.FrequencyUnit
 
 const (
 	Day  FrequencyUnit = original.Day
 	Hour FrequencyUnit = original.Hour
 )
-
-func PossibleFrequencyUnitValues() []FrequencyUnit {
-	return original.PossibleFrequencyUnitValues()
-}
 
 type HostingEnvironmentStatus = original.HostingEnvironmentStatus
 
@@ -469,20 +291,12 @@ const (
 	Scaling   HostingEnvironmentStatus = original.Scaling
 )
 
-func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
-	return original.PossibleHostingEnvironmentStatusValues()
-}
-
 type HostNameType = original.HostNameType
 
 const (
 	Managed  HostNameType = original.Managed
 	Verified HostNameType = original.Verified
 )
-
-func PossibleHostNameTypeValues() []HostNameType {
-	return original.PossibleHostNameTypeValues()
-}
 
 type HostType = original.HostType
 
@@ -491,20 +305,12 @@ const (
 	HostTypeStandard   HostType = original.HostTypeStandard
 )
 
-func PossibleHostTypeValues() []HostType {
-	return original.PossibleHostTypeValues()
-}
-
 type InAvailabilityReasonType = original.InAvailabilityReasonType
 
 const (
 	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
 	Invalid       InAvailabilityReasonType = original.Invalid
 )
-
-func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
-	return original.PossibleInAvailabilityReasonTypeValues()
-}
 
 type InternalLoadBalancingMode = original.InternalLoadBalancingMode
 
@@ -513,10 +319,6 @@ const (
 	InternalLoadBalancingModePublishing InternalLoadBalancingMode = original.InternalLoadBalancingModePublishing
 	InternalLoadBalancingModeWeb        InternalLoadBalancingMode = original.InternalLoadBalancingModeWeb
 )
-
-func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
-	return original.PossibleInternalLoadBalancingModeValues()
-}
 
 type IssueType = original.IssueType
 
@@ -531,20 +333,12 @@ const (
 	UserIssue            IssueType = original.UserIssue
 )
 
-func PossibleIssueTypeValues() []IssueType {
-	return original.PossibleIssueTypeValues()
-}
-
 type JobType = original.JobType
 
 const (
 	Continuous JobType = original.Continuous
 	Triggered  JobType = original.Triggered
 )
-
-func PossibleJobTypeValues() []JobType {
-	return original.PossibleJobTypeValues()
-}
 
 type KeyVaultSecretStatus = original.KeyVaultSecretStatus
 
@@ -562,10 +356,6 @@ const (
 	KeyVaultSecretStatusWaitingOnCertificateOrder                KeyVaultSecretStatus = original.KeyVaultSecretStatusWaitingOnCertificateOrder
 )
 
-func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
-	return original.PossibleKeyVaultSecretStatusValues()
-}
-
 type LogLevel = original.LogLevel
 
 const (
@@ -576,10 +366,6 @@ const (
 	Warning     LogLevel = original.Warning
 )
 
-func PossibleLogLevelValues() []LogLevel {
-	return original.PossibleLogLevelValues()
-}
-
 type ManagedPipelineMode = original.ManagedPipelineMode
 
 const (
@@ -587,19 +373,11 @@ const (
 	Integrated ManagedPipelineMode = original.Integrated
 )
 
-func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
-	return original.PossibleManagedPipelineModeValues()
-}
-
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
 	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
 )
-
-func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return original.PossibleManagedServiceIdentityTypeValues()
-}
 
 type MSDeployLogEntryType = original.MSDeployLogEntryType
 
@@ -608,10 +386,6 @@ const (
 	MSDeployLogEntryTypeMessage MSDeployLogEntryType = original.MSDeployLogEntryTypeMessage
 	MSDeployLogEntryTypeWarning MSDeployLogEntryType = original.MSDeployLogEntryTypeWarning
 )
-
-func PossibleMSDeployLogEntryTypeValues() []MSDeployLogEntryType {
-	return original.PossibleMSDeployLogEntryTypeValues()
-}
 
 type MSDeployProvisioningState = original.MSDeployProvisioningState
 
@@ -623,20 +397,12 @@ const (
 	MSDeployProvisioningStateSucceeded MSDeployProvisioningState = original.MSDeployProvisioningStateSucceeded
 )
 
-func PossibleMSDeployProvisioningStateValues() []MSDeployProvisioningState {
-	return original.PossibleMSDeployProvisioningStateValues()
-}
-
 type MySQLMigrationType = original.MySQLMigrationType
 
 const (
 	LocalToRemote MySQLMigrationType = original.LocalToRemote
 	RemoteToLocal MySQLMigrationType = original.RemoteToLocal
 )
-
-func PossibleMySQLMigrationTypeValues() []MySQLMigrationType {
-	return original.PossibleMySQLMigrationTypeValues()
-}
 
 type NotificationLevel = original.NotificationLevel
 
@@ -646,10 +412,6 @@ const (
 	NotificationLevelNonUrgentSuggestion NotificationLevel = original.NotificationLevelNonUrgentSuggestion
 	NotificationLevelWarning             NotificationLevel = original.NotificationLevelWarning
 )
-
-func PossibleNotificationLevelValues() []NotificationLevel {
-	return original.PossibleNotificationLevelValues()
-}
 
 type OperationStatus = original.OperationStatus
 
@@ -661,10 +423,6 @@ const (
 	OperationStatusTimedOut   OperationStatus = original.OperationStatusTimedOut
 )
 
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -675,10 +433,6 @@ const (
 	ProvisioningStateSucceeded  ProvisioningState = original.ProvisioningStateSucceeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type PublicCertificateLocation = original.PublicCertificateLocation
 
 const (
@@ -686,10 +440,6 @@ const (
 	PublicCertificateLocationLocalMachineMy PublicCertificateLocation = original.PublicCertificateLocationLocalMachineMy
 	PublicCertificateLocationUnknown        PublicCertificateLocation = original.PublicCertificateLocationUnknown
 )
-
-func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
-	return original.PossiblePublicCertificateLocationValues()
-}
 
 type PublishingProfileFormat = original.PublishingProfileFormat
 
@@ -699,10 +449,6 @@ const (
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
-func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
-	return original.PossiblePublishingProfileFormatValues()
-}
-
 type ResourceScopeType = original.ResourceScopeType
 
 const (
@@ -711,10 +457,6 @@ const (
 	WebSite      ResourceScopeType = original.WebSite
 )
 
-func PossibleResourceScopeTypeValues() []ResourceScopeType {
-	return original.PossibleResourceScopeTypeValues()
-}
-
 type RouteType = original.RouteType
 
 const (
@@ -722,10 +464,6 @@ const (
 	INHERITED RouteType = original.INHERITED
 	STATIC    RouteType = original.STATIC
 )
-
-func PossibleRouteTypeValues() []RouteType {
-	return original.PossibleRouteTypeValues()
-}
 
 type ScmType = original.ScmType
 
@@ -745,10 +483,6 @@ const (
 	ScmTypeVSO          ScmType = original.ScmTypeVSO
 )
 
-func PossibleScmTypeValues() []ScmType {
-	return original.PossibleScmTypeValues()
-}
-
 type SiteAvailabilityState = original.SiteAvailabilityState
 
 const (
@@ -757,20 +491,12 @@ const (
 	Normal               SiteAvailabilityState = original.Normal
 )
 
-func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
-	return original.PossibleSiteAvailabilityStateValues()
-}
-
 type SiteExtensionType = original.SiteExtensionType
 
 const (
 	Gallery SiteExtensionType = original.Gallery
 	WebRoot SiteExtensionType = original.WebRoot
 )
-
-func PossibleSiteExtensionTypeValues() []SiteExtensionType {
-	return original.PossibleSiteExtensionTypeValues()
-}
 
 type SiteLoadBalancing = original.SiteLoadBalancing
 
@@ -781,10 +507,6 @@ const (
 	WeightedRoundRobin   SiteLoadBalancing = original.WeightedRoundRobin
 	WeightedTotalTraffic SiteLoadBalancing = original.WeightedTotalTraffic
 )
-
-func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
-	return original.PossibleSiteLoadBalancingValues()
-}
 
 type SkuName = original.SkuName
 
@@ -799,10 +521,6 @@ const (
 	SkuNameStandard  SkuName = original.SkuNameStandard
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type SolutionType = original.SolutionType
 
 const (
@@ -810,10 +528,6 @@ const (
 	DeepInvestigation SolutionType = original.DeepInvestigation
 	QuickSolution     SolutionType = original.QuickSolution
 )
-
-func PossibleSolutionTypeValues() []SolutionType {
-	return original.PossibleSolutionTypeValues()
-}
 
 type SslState = original.SslState
 
@@ -823,10 +537,6 @@ const (
 	SniEnabled     SslState = original.SniEnabled
 )
 
-func PossibleSslStateValues() []SslState {
-	return original.PossibleSslStateValues()
-}
-
 type StatusOptions = original.StatusOptions
 
 const (
@@ -834,10 +544,6 @@ const (
 	StatusOptionsPending  StatusOptions = original.StatusOptionsPending
 	StatusOptionsReady    StatusOptions = original.StatusOptionsReady
 )
-
-func PossibleStatusOptionsValues() []StatusOptions {
-	return original.PossibleStatusOptionsValues()
-}
 
 type SupportedTLSVersions = original.SupportedTLSVersions
 
@@ -847,10 +553,6 @@ const (
 	OneFullStopZero SupportedTLSVersions = original.OneFullStopZero
 )
 
-func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
-	return original.PossibleSupportedTLSVersionsValues()
-}
-
 type TriggeredWebJobStatus = original.TriggeredWebJobStatus
 
 const (
@@ -859,20 +561,12 @@ const (
 	TriggeredWebJobStatusSuccess TriggeredWebJobStatus = original.TriggeredWebJobStatusSuccess
 )
 
-func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
-	return original.PossibleTriggeredWebJobStatusValues()
-}
-
 type UnauthenticatedClientAction = original.UnauthenticatedClientAction
 
 const (
 	AllowAnonymous      UnauthenticatedClientAction = original.AllowAnonymous
 	RedirectToLoginPage UnauthenticatedClientAction = original.RedirectToLoginPage
 )
-
-func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
-	return original.PossibleUnauthenticatedClientActionValues()
-}
 
 type UsageState = original.UsageState
 
@@ -881,20 +575,12 @@ const (
 	UsageStateNormal   UsageState = original.UsageStateNormal
 )
 
-func PossibleUsageStateValues() []UsageState {
-	return original.PossibleUsageStateValues()
-}
-
 type ValidateResourceTypes = original.ValidateResourceTypes
 
 const (
 	ValidateResourceTypesServerFarm ValidateResourceTypes = original.ValidateResourceTypesServerFarm
 	ValidateResourceTypesSite       ValidateResourceTypes = original.ValidateResourceTypesSite
 )
-
-func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
-	return original.PossibleValidateResourceTypesValues()
-}
 
 type WorkerSizeOptions = original.WorkerSizeOptions
 
@@ -907,10 +593,6 @@ const (
 	Medium  WorkerSizeOptions = original.Medium
 	Small   WorkerSizeOptions = original.Small
 )
-
-func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
-	return original.PossibleWorkerSizeOptionsValues()
-}
 
 type AbnormalTimePeriod = original.AbnormalTimePeriod
 type Address = original.Address
@@ -1004,6 +686,11 @@ type BackupItemProperties = original.BackupItemProperties
 type BackupRequest = original.BackupRequest
 type BackupRequestProperties = original.BackupRequestProperties
 type BackupSchedule = original.BackupSchedule
+type BillingMeter = original.BillingMeter
+type BillingMeterCollection = original.BillingMeterCollection
+type BillingMeterCollectionIterator = original.BillingMeterCollectionIterator
+type BillingMeterCollectionPage = original.BillingMeterCollectionPage
+type BillingMeterProperties = original.BillingMeterProperties
 type Capability = original.Capability
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
@@ -1397,34 +1084,274 @@ type WorkerPoolCollectionIterator = original.WorkerPoolCollectionIterator
 type WorkerPoolCollectionPage = original.WorkerPoolCollectionPage
 type WorkerPoolResource = original.WorkerPoolResource
 type ProviderClient = original.ProviderClient
+type RecommendationsClient = original.RecommendationsClient
+type ResourceHealthMetadataClient = original.ResourceHealthMetadataClient
+type TopLevelDomainsClient = original.TopLevelDomainsClient
 
+func NewAppsClient(subscriptionID string) AppsClient {
+	return original.NewAppsClient(subscriptionID)
+}
+func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient {
+	return original.NewAppsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppServiceCertificateOrdersClient(subscriptionID string) AppServiceCertificateOrdersClient {
+	return original.NewAppServiceCertificateOrdersClient(subscriptionID)
+}
+func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) AppServiceCertificateOrdersClient {
+	return original.NewAppServiceCertificateOrdersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppServiceEnvironmentsClient(subscriptionID string) AppServiceEnvironmentsClient {
+	return original.NewAppServiceEnvironmentsClient(subscriptionID)
+}
+func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) AppServiceEnvironmentsClient {
+	return original.NewAppServiceEnvironmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
+	return original.NewAppServicePlansClient(subscriptionID)
+}
+func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
+	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
+	return original.NewBillingMetersClient(subscriptionID)
+}
+func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
+	return original.NewBillingMetersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
+	return original.NewCertificateRegistrationProviderClient(subscriptionID)
+}
+func NewCertificateRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) CertificateRegistrationProviderClient {
+	return original.NewCertificateRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeletedWebAppsClient(subscriptionID string) DeletedWebAppsClient {
+	return original.NewDeletedWebAppsClient(subscriptionID)
+}
+func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) DeletedWebAppsClient {
+	return original.NewDeletedWebAppsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiagnosticsClient(subscriptionID string) DiagnosticsClient {
+	return original.NewDiagnosticsClient(subscriptionID)
+}
+func NewDiagnosticsClientWithBaseURI(baseURI string, subscriptionID string) DiagnosticsClient {
+	return original.NewDiagnosticsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainRegistrationProviderClient(subscriptionID string) DomainRegistrationProviderClient {
+	return original.NewDomainRegistrationProviderClient(subscriptionID)
+}
+func NewDomainRegistrationProviderClientWithBaseURI(baseURI string, subscriptionID string) DomainRegistrationProviderClient {
+	return original.NewDomainRegistrationProviderClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainsClient(subscriptionID string) DomainsClient {
+	return original.NewDomainsClient(subscriptionID)
+}
+func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsClient {
+	return original.NewDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
+	return original.PossibleAccessControlEntryActionValues()
+}
+func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
+	return original.PossibleAppServicePlanRestrictionsValues()
+}
+func PossibleAutoHealActionTypeValues() []AutoHealActionType {
+	return original.PossibleAutoHealActionTypeValues()
+}
+func PossibleAzureResourceTypeValues() []AzureResourceType {
+	return original.PossibleAzureResourceTypeValues()
+}
+func PossibleBackupItemStatusValues() []BackupItemStatus {
+	return original.PossibleBackupItemStatusValues()
+}
+func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
+	return original.PossibleBackupRestoreOperationTypeValues()
+}
+func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
+	return original.PossibleBuiltInAuthenticationProviderValues()
+}
+func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
+	return original.PossibleCertificateOrderActionTypeValues()
+}
+func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
+	return original.PossibleCertificateOrderStatusValues()
+}
+func PossibleCertificateProductTypeValues() []CertificateProductType {
+	return original.PossibleCertificateProductTypeValues()
+}
+func PossibleChannelsValues() []Channels {
+	return original.PossibleChannelsValues()
+}
+func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
+	return original.PossibleCheckNameResourceTypesValues()
+}
+func PossibleCloneAbilityResultValues() []CloneAbilityResult {
+	return original.PossibleCloneAbilityResultValues()
+}
+func PossibleComputeModeOptionsValues() []ComputeModeOptions {
+	return original.PossibleComputeModeOptionsValues()
+}
+func PossibleConnectionStringTypeValues() []ConnectionStringType {
+	return original.PossibleConnectionStringTypeValues()
+}
+func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
+	return original.PossibleContinuousWebJobStatusValues()
+}
+func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
+	return original.PossibleCustomHostNameDNSRecordTypeValues()
+}
+func PossibleDatabaseTypeValues() []DatabaseType {
+	return original.PossibleDatabaseTypeValues()
+}
+func PossibleDNSTypeValues() []DNSType {
+	return original.PossibleDNSTypeValues()
+}
+func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
+	return original.PossibleDNSVerificationTestResultValues()
+}
+func PossibleDomainStatusValues() []DomainStatus {
+	return original.PossibleDomainStatusValues()
+}
+func PossibleDomainTypeValues() []DomainType {
+	return original.PossibleDomainTypeValues()
+}
+func PossibleFrequencyUnitValues() []FrequencyUnit {
+	return original.PossibleFrequencyUnitValues()
+}
+func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
+	return original.PossibleHostingEnvironmentStatusValues()
+}
+func PossibleHostNameTypeValues() []HostNameType {
+	return original.PossibleHostNameTypeValues()
+}
+func PossibleHostTypeValues() []HostType {
+	return original.PossibleHostTypeValues()
+}
+func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
+	return original.PossibleInAvailabilityReasonTypeValues()
+}
+func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
+	return original.PossibleInternalLoadBalancingModeValues()
+}
+func PossibleIssueTypeValues() []IssueType {
+	return original.PossibleIssueTypeValues()
+}
+func PossibleJobTypeValues() []JobType {
+	return original.PossibleJobTypeValues()
+}
+func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
+	return original.PossibleKeyVaultSecretStatusValues()
+}
+func PossibleLogLevelValues() []LogLevel {
+	return original.PossibleLogLevelValues()
+}
+func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
+	return original.PossibleManagedPipelineModeValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
+}
+func PossibleMSDeployLogEntryTypeValues() []MSDeployLogEntryType {
+	return original.PossibleMSDeployLogEntryTypeValues()
+}
+func PossibleMSDeployProvisioningStateValues() []MSDeployProvisioningState {
+	return original.PossibleMSDeployProvisioningStateValues()
+}
+func PossibleMySQLMigrationTypeValues() []MySQLMigrationType {
+	return original.PossibleMySQLMigrationTypeValues()
+}
+func PossibleNotificationLevelValues() []NotificationLevel {
+	return original.PossibleNotificationLevelValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
+	return original.PossiblePublicCertificateLocationValues()
+}
+func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
+	return original.PossiblePublishingProfileFormatValues()
+}
+func PossibleResourceScopeTypeValues() []ResourceScopeType {
+	return original.PossibleResourceScopeTypeValues()
+}
+func PossibleRouteTypeValues() []RouteType {
+	return original.PossibleRouteTypeValues()
+}
+func PossibleScmTypeValues() []ScmType {
+	return original.PossibleScmTypeValues()
+}
+func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
+	return original.PossibleSiteAvailabilityStateValues()
+}
+func PossibleSiteExtensionTypeValues() []SiteExtensionType {
+	return original.PossibleSiteExtensionTypeValues()
+}
+func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
+	return original.PossibleSiteLoadBalancingValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleSolutionTypeValues() []SolutionType {
+	return original.PossibleSolutionTypeValues()
+}
+func PossibleSslStateValues() []SslState {
+	return original.PossibleSslStateValues()
+}
+func PossibleStatusOptionsValues() []StatusOptions {
+	return original.PossibleStatusOptionsValues()
+}
+func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
+	return original.PossibleSupportedTLSVersionsValues()
+}
+func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
+	return original.PossibleTriggeredWebJobStatusValues()
+}
+func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
+	return original.PossibleUnauthenticatedClientActionValues()
+}
+func PossibleUsageStateValues() []UsageState {
+	return original.PossibleUsageStateValues()
+}
+func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
+	return original.PossibleValidateResourceTypesValues()
+}
+func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
+	return original.PossibleWorkerSizeOptionsValues()
+}
 func NewProviderClient(subscriptionID string) ProviderClient {
 	return original.NewProviderClient(subscriptionID)
 }
 func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) ProviderClient {
 	return original.NewProviderClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RecommendationsClient = original.RecommendationsClient
-
 func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClient(subscriptionID)
 }
 func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ResourceHealthMetadataClient = original.ResourceHealthMetadataClient
-
 func NewResourceHealthMetadataClient(subscriptionID string) ResourceHealthMetadataClient {
 	return original.NewResourceHealthMetadataClient(subscriptionID)
 }
 func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthMetadataClient {
 	return original.NewResourceHealthMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TopLevelDomainsClient = original.TopLevelDomainsClient
-
 func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
 	return original.NewTopLevelDomainsClient(subscriptionID)
 }

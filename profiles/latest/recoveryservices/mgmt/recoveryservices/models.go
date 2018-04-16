@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AuthType = original.AuthType
 
 const (
@@ -44,10 +36,6 @@ const (
 	Invalid              AuthType = original.Invalid
 )
 
-func PossibleAuthTypeValues() []AuthType {
-	return original.PossibleAuthTypeValues()
-}
-
 type AuthTypeBasicResourceCertificateDetails = original.AuthTypeBasicResourceCertificateDetails
 
 const (
@@ -56,10 +44,6 @@ const (
 	AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = original.AuthTypeResourceCertificateDetails
 )
 
-func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
-	return original.PossibleAuthTypeBasicResourceCertificateDetailsValues()
-}
-
 type SkuName = original.SkuName
 
 const (
@@ -67,20 +51,12 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type TriggerType = original.TriggerType
 
 const (
 	ForcedUpgrade TriggerType = original.ForcedUpgrade
 	UserTriggered TriggerType = original.UserTriggered
 )
-
-func PossibleTriggerTypeValues() []TriggerType {
-	return original.PossibleTriggerTypeValues()
-}
 
 type UsagesUnit = original.UsagesUnit
 
@@ -93,10 +69,6 @@ const (
 	Seconds        UsagesUnit = original.Seconds
 )
 
-func PossibleUsagesUnitValues() []UsagesUnit {
-	return original.PossibleUsagesUnitValues()
-}
-
 type VaultUpgradeState = original.VaultUpgradeState
 
 const (
@@ -105,10 +77,6 @@ const (
 	Unknown    VaultUpgradeState = original.Unknown
 	Upgraded   VaultUpgradeState = original.Upgraded
 )
-
-func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
-	return original.PossibleVaultUpgradeStateValues()
-}
 
 type CertificateRequest = original.CertificateRequest
 type ClientDiscoveryDisplay = original.ClientDiscoveryDisplay
@@ -146,61 +114,73 @@ type VaultProperties = original.VaultProperties
 type VaultUsage = original.VaultUsage
 type VaultUsageList = original.VaultUsageList
 type OperationsClient = original.OperationsClient
+type RegisteredIdentitiesClient = original.RegisteredIdentitiesClient
+type ReplicationUsagesClient = original.ReplicationUsagesClient
+type UsagesClient = original.UsagesClient
+type VaultCertificatesClient = original.VaultCertificatesClient
+type VaultExtendedInfoClient = original.VaultExtendedInfoClient
+type VaultsClient = original.VaultsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthTypeValues() []AuthType {
+	return original.PossibleAuthTypeValues()
+}
+func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicResourceCertificateDetails {
+	return original.PossibleAuthTypeBasicResourceCertificateDetailsValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleTriggerTypeValues() []TriggerType {
+	return original.PossibleTriggerTypeValues()
+}
+func PossibleUsagesUnitValues() []UsagesUnit {
+	return original.PossibleUsagesUnitValues()
+}
+func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
+	return original.PossibleVaultUpgradeStateValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RegisteredIdentitiesClient = original.RegisteredIdentitiesClient
-
 func NewRegisteredIdentitiesClient(subscriptionID string) RegisteredIdentitiesClient {
 	return original.NewRegisteredIdentitiesClient(subscriptionID)
 }
 func NewRegisteredIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) RegisteredIdentitiesClient {
 	return original.NewRegisteredIdentitiesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReplicationUsagesClient = original.ReplicationUsagesClient
-
 func NewReplicationUsagesClient(subscriptionID string) ReplicationUsagesClient {
 	return original.NewReplicationUsagesClient(subscriptionID)
 }
 func NewReplicationUsagesClientWithBaseURI(baseURI string, subscriptionID string) ReplicationUsagesClient {
 	return original.NewReplicationUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsagesClient = original.UsagesClient
-
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VaultCertificatesClient = original.VaultCertificatesClient
-
 func NewVaultCertificatesClient(subscriptionID string) VaultCertificatesClient {
 	return original.NewVaultCertificatesClient(subscriptionID)
 }
 func NewVaultCertificatesClientWithBaseURI(baseURI string, subscriptionID string) VaultCertificatesClient {
 	return original.NewVaultCertificatesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VaultExtendedInfoClient = original.VaultExtendedInfoClient
-
 func NewVaultExtendedInfoClient(subscriptionID string) VaultExtendedInfoClient {
 	return original.NewVaultExtendedInfoClient(subscriptionID)
 }
 func NewVaultExtendedInfoClientWithBaseURI(baseURI string, subscriptionID string) VaultExtendedInfoClient {
 	return original.NewVaultExtendedInfoClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VaultsClient = original.VaultsClient
-
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)
 }

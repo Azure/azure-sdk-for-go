@@ -22,54 +22,15 @@ package servicefabric
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
 type ApplicationClient = original.ApplicationClient
-
-func NewApplicationClient() ApplicationClient {
-	return original.NewApplicationClient()
-}
-func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
-	return original.NewApplicationClientWithBaseURI(baseURI)
-}
-
 type ApplicationTypeClient = original.ApplicationTypeClient
-
-func NewApplicationTypeClient() ApplicationTypeClient {
-	return original.NewApplicationTypeClient()
-}
-func NewApplicationTypeClientWithBaseURI(baseURI string) ApplicationTypeClient {
-	return original.NewApplicationTypeClientWithBaseURI(baseURI)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type ClustersClient = original.ClustersClient
-
-func NewClustersClient() ClustersClient {
-	return original.NewClustersClient()
-}
-func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI)
-}
-
 type ClusterVersionsClient = original.ClusterVersionsClient
-
-func NewClusterVersionsClient() ClusterVersionsClient {
-	return original.NewClusterVersionsClient()
-}
-func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
-	return original.NewClusterVersionsClientWithBaseURI(baseURI)
-}
-
 type ClusterState = original.ClusterState
 
 const (
@@ -85,10 +46,6 @@ const (
 	WaitingForNodes           ClusterState = original.WaitingForNodes
 )
 
-func PossibleClusterStateValues() []ClusterState {
-	return original.PossibleClusterStateValues()
-}
-
 type DefaultMoveCost = original.DefaultMoveCost
 
 const (
@@ -98,10 +55,6 @@ const (
 	Zero   DefaultMoveCost = original.Zero
 )
 
-func PossibleDefaultMoveCostValues() []DefaultMoveCost {
-	return original.PossibleDefaultMoveCostValues()
-}
-
 type DurabilityLevel = original.DurabilityLevel
 
 const (
@@ -110,20 +63,12 @@ const (
 	Silver DurabilityLevel = original.Silver
 )
 
-func PossibleDurabilityLevelValues() []DurabilityLevel {
-	return original.PossibleDurabilityLevelValues()
-}
-
 type Environment = original.Environment
 
 const (
 	Linux   Environment = original.Linux
 	Windows Environment = original.Windows
 )
-
-func PossibleEnvironmentValues() []Environment {
-	return original.PossibleEnvironmentValues()
-}
 
 type PartitionScheme = original.PartitionScheme
 
@@ -134,10 +79,6 @@ const (
 	PartitionSchemeUniformInt64Range          PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
-func PossiblePartitionSchemeValues() []PartitionScheme {
-	return original.PossiblePartitionSchemeValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -146,10 +87,6 @@ const (
 	Succeeded ProvisioningState = original.Succeeded
 	Updating  ProvisioningState = original.Updating
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type ReliabilityLevel = original.ReliabilityLevel
 
@@ -161,10 +98,6 @@ const (
 	ReliabilityLevelSilver   ReliabilityLevel = original.ReliabilityLevelSilver
 )
 
-func PossibleReliabilityLevelValues() []ReliabilityLevel {
-	return original.PossibleReliabilityLevelValues()
-}
-
 type ReliabilityLevel1 = original.ReliabilityLevel1
 
 const (
@@ -172,10 +105,6 @@ const (
 	ReliabilityLevel1Gold   ReliabilityLevel1 = original.ReliabilityLevel1Gold
 	ReliabilityLevel1Silver ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
-
-func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
-	return original.PossibleReliabilityLevel1Values()
-}
 
 type Scheme = original.Scheme
 
@@ -186,10 +115,6 @@ const (
 	NonAlignedAffinity Scheme = original.NonAlignedAffinity
 )
 
-func PossibleSchemeValues() []Scheme {
-	return original.PossibleSchemeValues()
-}
-
 type ServiceKind = original.ServiceKind
 
 const (
@@ -197,10 +122,6 @@ const (
 	ServiceKindStateful          ServiceKind = original.ServiceKindStateful
 	ServiceKindStateless         ServiceKind = original.ServiceKindStateless
 )
-
-func PossibleServiceKindValues() []ServiceKind {
-	return original.PossibleServiceKindValues()
-}
 
 type ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdateProperties
 
@@ -210,19 +131,11 @@ const (
 	ServiceKindBasicServiceUpdatePropertiesServiceKindStateless               ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdatePropertiesServiceKindStateless
 )
 
-func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
-	return original.PossibleServiceKindBasicServiceUpdatePropertiesValues()
-}
-
 type Type = original.Type
 
 const (
 	TypeServicePlacementPolicyDescription Type = original.TypeServicePlacementPolicyDescription
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type UpgradeMode = original.UpgradeMode
 
@@ -231,20 +144,12 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return original.PossibleUpgradeModeValues()
-}
-
 type UpgradeMode1 = original.UpgradeMode1
 
 const (
 	UpgradeMode1Automatic UpgradeMode1 = original.UpgradeMode1Automatic
 	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
 )
-
-func PossibleUpgradeMode1Values() []UpgradeMode1 {
-	return original.PossibleUpgradeMode1Values()
-}
 
 type Weight = original.Weight
 
@@ -254,10 +159,6 @@ const (
 	WeightMedium Weight = original.WeightMedium
 	WeightZero   Weight = original.WeightZero
 )
-
-func PossibleWeightValues() []Weight {
-	return original.PossibleWeightValues()
-}
 
 type X509StoreName = original.X509StoreName
 
@@ -271,10 +172,6 @@ const (
 	TrustedPeople        X509StoreName = original.TrustedPeople
 	TrustedPublisher     X509StoreName = original.TrustedPublisher
 )
-
-func PossibleX509StoreNameValues() []X509StoreName {
-	return original.PossibleX509StoreNameValues()
-}
 
 type ApplicationDeleteFuture = original.ApplicationDeleteFuture
 type ApplicationHealthPolicy = original.ApplicationHealthPolicy
@@ -356,16 +253,93 @@ type VersionPutFuture = original.VersionPutFuture
 type VersionResource = original.VersionResource
 type VersionResourceList = original.VersionResourceList
 type OperationsClient = original.OperationsClient
+type ServiceClient = original.ServiceClient
+type VersionClient = original.VersionClient
 
+func NewApplicationClient() ApplicationClient {
+	return original.NewApplicationClient()
+}
+func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
+	return original.NewApplicationClientWithBaseURI(baseURI)
+}
+func NewApplicationTypeClient() ApplicationTypeClient {
+	return original.NewApplicationTypeClient()
+}
+func NewApplicationTypeClientWithBaseURI(baseURI string) ApplicationTypeClient {
+	return original.NewApplicationTypeClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewClustersClient() ClustersClient {
+	return original.NewClustersClient()
+}
+func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI)
+}
+func NewClusterVersionsClient() ClusterVersionsClient {
+	return original.NewClusterVersionsClient()
+}
+func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
+	return original.NewClusterVersionsClientWithBaseURI(baseURI)
+}
+func PossibleClusterStateValues() []ClusterState {
+	return original.PossibleClusterStateValues()
+}
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
+	return original.PossibleDefaultMoveCostValues()
+}
+func PossibleDurabilityLevelValues() []DurabilityLevel {
+	return original.PossibleDurabilityLevelValues()
+}
+func PossibleEnvironmentValues() []Environment {
+	return original.PossibleEnvironmentValues()
+}
+func PossiblePartitionSchemeValues() []PartitionScheme {
+	return original.PossiblePartitionSchemeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleReliabilityLevelValues() []ReliabilityLevel {
+	return original.PossibleReliabilityLevelValues()
+}
+func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
+	return original.PossibleReliabilityLevel1Values()
+}
+func PossibleSchemeValues() []Scheme {
+	return original.PossibleSchemeValues()
+}
+func PossibleServiceKindValues() []ServiceKind {
+	return original.PossibleServiceKindValues()
+}
+func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
+	return original.PossibleServiceKindBasicServiceUpdatePropertiesValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return original.PossibleUpgradeModeValues()
+}
+func PossibleUpgradeMode1Values() []UpgradeMode1 {
+	return original.PossibleUpgradeMode1Values()
+}
+func PossibleWeightValues() []Weight {
+	return original.PossibleWeightValues()
+}
+func PossibleX509StoreNameValues() []X509StoreName {
+	return original.PossibleX509StoreNameValues()
+}
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-
-type ServiceClient = original.ServiceClient
-
 func NewServiceClient() ServiceClient {
 	return original.NewServiceClient()
 }
@@ -378,9 +352,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type VersionClient = original.VersionClient
-
 func NewVersionClient() VersionClient {
 	return original.NewVersionClient()
 }

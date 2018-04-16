@@ -23,54 +23,19 @@ import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/
 
 type AccountsClient = original.AccountsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type FirewallRulesClient = original.FirewallRulesClient
-
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LocationsClient = original.LocationsClient
-
-func NewLocationsClient(subscriptionID string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
 const (
 	Active    DataLakeStoreAccountState = original.Active
 	Suspended DataLakeStoreAccountState = original.Suspended
 )
-
-func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
-	return original.PossibleDataLakeStoreAccountStateValues()
-}
 
 type DataLakeStoreAccountStatus = original.DataLakeStoreAccountStatus
 
@@ -88,20 +53,12 @@ const (
 	Undeleting DataLakeStoreAccountStatus = original.Undeleting
 )
 
-func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
-	return original.PossibleDataLakeStoreAccountStatusValues()
-}
-
 type EncryptionConfigType = original.EncryptionConfigType
 
 const (
 	ServiceManaged EncryptionConfigType = original.ServiceManaged
 	UserManaged    EncryptionConfigType = original.UserManaged
 )
-
-func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
-	return original.PossibleEncryptionConfigTypeValues()
-}
 
 type EncryptionProvisioningState = original.EncryptionProvisioningState
 
@@ -110,20 +67,12 @@ const (
 	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = original.EncryptionProvisioningStateSucceeded
 )
 
-func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
-	return original.PossibleEncryptionProvisioningStateValues()
-}
-
 type EncryptionState = original.EncryptionState
 
 const (
 	Disabled EncryptionState = original.Disabled
 	Enabled  EncryptionState = original.Enabled
 )
-
-func PossibleEncryptionStateValues() []EncryptionState {
-	return original.PossibleEncryptionStateValues()
-}
 
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
@@ -132,20 +81,12 @@ const (
 	FirewallAllowAzureIpsStateEnabled  FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsStateEnabled
 )
 
-func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
-	return original.PossibleFirewallAllowAzureIpsStateValues()
-}
-
 type FirewallState = original.FirewallState
 
 const (
 	FirewallStateDisabled FirewallState = original.FirewallStateDisabled
 	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
-
-func PossibleFirewallStateValues() []FirewallState {
-	return original.PossibleFirewallStateValues()
-}
 
 type OperationOrigin = original.OperationOrigin
 
@@ -154,10 +95,6 @@ const (
 	User       OperationOrigin = original.User
 	Usersystem OperationOrigin = original.Usersystem
 )
-
-func PossibleOperationOriginValues() []OperationOrigin {
-	return original.PossibleOperationOriginValues()
-}
 
 type SubscriptionState = original.SubscriptionState
 
@@ -168,10 +105,6 @@ const (
 	SubscriptionStateUnregistered SubscriptionState = original.SubscriptionStateUnregistered
 	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
-
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return original.PossibleSubscriptionStateValues()
-}
 
 type TierType = original.TierType
 
@@ -185,20 +118,12 @@ const (
 	Consumption     TierType = original.Consumption
 )
 
-func PossibleTierTypeValues() []TierType {
-	return original.PossibleTierTypeValues()
-}
-
 type TrustedIDProviderState = original.TrustedIDProviderState
 
 const (
 	TrustedIDProviderStateDisabled TrustedIDProviderState = original.TrustedIDProviderStateDisabled
 	TrustedIDProviderStateEnabled  TrustedIDProviderState = original.TrustedIDProviderStateEnabled
 )
-
-func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
-	return original.PossibleTrustedIDProviderStateValues()
-}
 
 type AccountsCreateFutureType = original.AccountsCreateFutureType
 type AccountsDeleteFutureType = original.AccountsDeleteFutureType
@@ -250,16 +175,71 @@ type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParamet
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
 type UpdateTrustedIDProviderWithAccountParameters = original.UpdateTrustedIDProviderWithAccountParameters
 type OperationsClient = original.OperationsClient
+type TrustedIDProvidersClient = original.TrustedIDProvidersClient
 
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
+	return original.PossibleDataLakeStoreAccountStateValues()
+}
+func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
+	return original.PossibleDataLakeStoreAccountStatusValues()
+}
+func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
+	return original.PossibleEncryptionConfigTypeValues()
+}
+func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
+	return original.PossibleEncryptionProvisioningStateValues()
+}
+func PossibleEncryptionStateValues() []EncryptionState {
+	return original.PossibleEncryptionStateValues()
+}
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
+	return original.PossibleFirewallAllowAzureIpsStateValues()
+}
+func PossibleFirewallStateValues() []FirewallState {
+	return original.PossibleFirewallStateValues()
+}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
+}
+func PossibleTierTypeValues() []TierType {
+	return original.PossibleTierTypeValues()
+}
+func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
+	return original.PossibleTrustedIDProviderStateValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TrustedIDProvidersClient = original.TrustedIDProvidersClient
-
 func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
 	return original.NewTrustedIDProvidersClient(subscriptionID)
 }

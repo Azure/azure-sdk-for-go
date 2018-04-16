@@ -23,44 +23,13 @@ import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/201
 
 type BudgetsClient = original.BudgetsClient
 
-func NewBudgetsClient(subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClient(subscriptionID)
-}
-func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CostAllocationTagsClient = original.CostAllocationTagsClient
-
-func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClient(subscriptionID)
-}
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type MarketplacesClient = original.MarketplacesClient
-
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClient(subscriptionID)
-}
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CategoryType = original.CategoryType
 
 const (
@@ -68,20 +37,12 @@ const (
 	Usage CategoryType = original.Usage
 )
 
-func PossibleCategoryTypeValues() []CategoryType {
-	return original.PossibleCategoryTypeValues()
-}
-
 type Datagrain = original.Datagrain
 
 const (
 	DailyGrain   Datagrain = original.DailyGrain
 	MonthlyGrain Datagrain = original.MonthlyGrain
 )
-
-func PossibleDatagrainValues() []Datagrain {
-	return original.PossibleDatagrainValues()
-}
 
 type OperatorType = original.OperatorType
 
@@ -91,10 +52,6 @@ const (
 	GreaterThanOrEqualTo OperatorType = original.GreaterThanOrEqualTo
 )
 
-func PossibleOperatorTypeValues() []OperatorType {
-	return original.PossibleOperatorTypeValues()
-}
-
 type TimeGrainType = original.TimeGrainType
 
 const (
@@ -102,10 +59,6 @@ const (
 	Monthly   TimeGrainType = original.Monthly
 	Quarterly TimeGrainType = original.Quarterly
 )
-
-func PossibleTimeGrainTypeValues() []TimeGrainType {
-	return original.PossibleTimeGrainTypeValues()
-}
 
 type Budget = original.Budget
 type BudgetProperties = original.BudgetProperties
@@ -159,52 +112,78 @@ type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
+type PriceSheetClient = original.PriceSheetClient
+type ReservationRecommendationsClient = original.ReservationRecommendationsClient
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+type ReservationsSummariesClient = original.ReservationsSummariesClient
+type UsageDetailsClient = original.UsageDetailsClient
 
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClient(subscriptionID)
+}
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
+	return original.NewCostAllocationTagsClient(subscriptionID)
+}
+func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
+	return original.NewCostAllocationTagsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClient(subscriptionID)
+}
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCategoryTypeValues() []CategoryType {
+	return original.PossibleCategoryTypeValues()
+}
+func PossibleDatagrainValues() []Datagrain {
+	return original.PossibleDatagrainValues()
+}
+func PossibleOperatorTypeValues() []OperatorType {
+	return original.PossibleOperatorTypeValues()
+}
+func PossibleTimeGrainTypeValues() []TimeGrainType {
+	return original.PossibleTimeGrainTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type PriceSheetClient = original.PriceSheetClient
-
 func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
 	return original.NewPriceSheetClient(subscriptionID)
 }
 func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
 	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReservationRecommendationsClient = original.ReservationRecommendationsClient
-
 func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
 	return original.NewReservationRecommendationsClient(subscriptionID)
 }
 func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
 	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-
 func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClient(subscriptionID)
 }
 func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-
 func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClient(subscriptionID)
 }
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsageDetailsClient = original.UsageDetailsClient
-
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)
 }

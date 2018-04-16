@@ -23,62 +23,15 @@ import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/m
 
 type AccountsClient = original.AccountsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ComputePoliciesClient = original.ComputePoliciesClient
-
-func NewComputePoliciesClient(subscriptionID string) ComputePoliciesClient {
-	return original.NewComputePoliciesClient(subscriptionID)
-}
-func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) ComputePoliciesClient {
-	return original.NewComputePoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DataLakeStoreAccountsClient = original.DataLakeStoreAccountsClient
-
-func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClient(subscriptionID)
-}
-func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
-	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type FirewallRulesClient = original.FirewallRulesClient
-
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LocationsClient = original.LocationsClient
-
-func NewLocationsClient(subscriptionID string) LocationsClient {
-	return original.NewLocationsClient(subscriptionID)
-}
-func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
-	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AADObjectType = original.AADObjectType
 
 const (
@@ -87,20 +40,12 @@ const (
 	User             AADObjectType = original.User
 )
 
-func PossibleAADObjectTypeValues() []AADObjectType {
-	return original.PossibleAADObjectTypeValues()
-}
-
 type DataLakeAnalyticsAccountState = original.DataLakeAnalyticsAccountState
 
 const (
 	Active    DataLakeAnalyticsAccountState = original.Active
 	Suspended DataLakeAnalyticsAccountState = original.Suspended
 )
-
-func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
-	return original.PossibleDataLakeAnalyticsAccountStateValues()
-}
 
 type DataLakeAnalyticsAccountStatus = original.DataLakeAnalyticsAccountStatus
 
@@ -118,20 +63,12 @@ const (
 	Undeleting DataLakeAnalyticsAccountStatus = original.Undeleting
 )
 
-func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
-	return original.PossibleDataLakeAnalyticsAccountStatusValues()
-}
-
 type FirewallAllowAzureIpsState = original.FirewallAllowAzureIpsState
 
 const (
 	Disabled FirewallAllowAzureIpsState = original.Disabled
 	Enabled  FirewallAllowAzureIpsState = original.Enabled
 )
-
-func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
-	return original.PossibleFirewallAllowAzureIpsStateValues()
-}
 
 type FirewallState = original.FirewallState
 
@@ -140,10 +77,6 @@ const (
 	FirewallStateEnabled  FirewallState = original.FirewallStateEnabled
 )
 
-func PossibleFirewallStateValues() []FirewallState {
-	return original.PossibleFirewallStateValues()
-}
-
 type OperationOrigin = original.OperationOrigin
 
 const (
@@ -151,10 +84,6 @@ const (
 	OperationOriginUser       OperationOrigin = original.OperationOriginUser
 	OperationOriginUsersystem OperationOrigin = original.OperationOriginUsersystem
 )
-
-func PossibleOperationOriginValues() []OperationOrigin {
-	return original.PossibleOperationOriginValues()
-}
 
 type SubscriptionState = original.SubscriptionState
 
@@ -165,10 +94,6 @@ const (
 	SubscriptionStateUnregistered SubscriptionState = original.SubscriptionStateUnregistered
 	SubscriptionStateWarned       SubscriptionState = original.SubscriptionStateWarned
 )
-
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return original.PossibleSubscriptionStateValues()
-}
 
 type TierType = original.TierType
 
@@ -183,10 +108,6 @@ const (
 	Commitment500AUHours    TierType = original.Commitment500AUHours
 	Consumption             TierType = original.Consumption
 )
-
-func PossibleTierTypeValues() []TierType {
-	return original.PossibleTierTypeValues()
-}
 
 type AccountsCreateFutureType = original.AccountsCreateFutureType
 type AccountsDeleteFutureType = original.AccountsDeleteFutureType
@@ -263,16 +184,74 @@ type UpdateStorageAccountParameters = original.UpdateStorageAccountParameters
 type UpdateStorageAccountProperties = original.UpdateStorageAccountProperties
 type UpdateStorageAccountWithAccountParameters = original.UpdateStorageAccountWithAccountParameters
 type OperationsClient = original.OperationsClient
+type StorageAccountsClient = original.StorageAccountsClient
 
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewComputePoliciesClient(subscriptionID string) ComputePoliciesClient {
+	return original.NewComputePoliciesClient(subscriptionID)
+}
+func NewComputePoliciesClientWithBaseURI(baseURI string, subscriptionID string) ComputePoliciesClient {
+	return original.NewComputePoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataLakeStoreAccountsClient(subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClient(subscriptionID)
+}
+func NewDataLakeStoreAccountsClientWithBaseURI(baseURI string, subscriptionID string) DataLakeStoreAccountsClient {
+	return original.NewDataLakeStoreAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAADObjectTypeValues() []AADObjectType {
+	return original.PossibleAADObjectTypeValues()
+}
+func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
+	return original.PossibleDataLakeAnalyticsAccountStateValues()
+}
+func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
+	return original.PossibleDataLakeAnalyticsAccountStatusValues()
+}
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
+	return original.PossibleFirewallAllowAzureIpsStateValues()
+}
+func PossibleFirewallStateValues() []FirewallState {
+	return original.PossibleFirewallStateValues()
+}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
+}
+func PossibleTierTypeValues() []TierType {
+	return original.PossibleTierTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type StorageAccountsClient = original.StorageAccountsClient
-
 func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
 	return original.NewStorageAccountsClient(subscriptionID)
 }

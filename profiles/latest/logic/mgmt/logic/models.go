@@ -22,54 +22,15 @@ package logic
 import original "github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic"
 
 type AgreementsClient = original.AgreementsClient
-
-func NewAgreementsClient(subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClient(subscriptionID)
-}
-func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CertificatesClient = original.CertificatesClient
-
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
-}
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type IntegrationAccountsClient = original.IntegrationAccountsClient
-
-func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClient(subscriptionID)
-}
-func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
-	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type MapsClient = original.MapsClient
-
-func NewMapsClient(subscriptionID string) MapsClient {
-	return original.NewMapsClient(subscriptionID)
-}
-func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
-	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AgreementType = original.AgreementType
 
 const (
@@ -78,10 +39,6 @@ const (
 	NotSpecified AgreementType = original.NotSpecified
 	X12          AgreementType = original.X12
 )
-
-func PossibleAgreementTypeValues() []AgreementType {
-	return original.PossibleAgreementTypeValues()
-}
 
 type DayOfWeek = original.DayOfWeek
 
@@ -95,10 +52,6 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return original.PossibleDayOfWeekValues()
-}
-
 type DaysOfWeek = original.DaysOfWeek
 
 const (
@@ -110,10 +63,6 @@ const (
 	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
 	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
-
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return original.PossibleDaysOfWeekValues()
-}
 
 type EdifactCharacterSet = original.EdifactCharacterSet
 
@@ -135,10 +84,6 @@ const (
 	EdifactCharacterSetUNOY         EdifactCharacterSet = original.EdifactCharacterSetUNOY
 )
 
-func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
-	return original.PossibleEdifactCharacterSetValues()
-}
-
 type EdifactDecimalIndicator = original.EdifactDecimalIndicator
 
 const (
@@ -146,10 +91,6 @@ const (
 	EdifactDecimalIndicatorDecimal      EdifactDecimalIndicator = original.EdifactDecimalIndicatorDecimal
 	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = original.EdifactDecimalIndicatorNotSpecified
 )
-
-func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
-	return original.PossibleEdifactDecimalIndicatorValues()
-}
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
 
@@ -163,10 +104,6 @@ const (
 	EncryptionAlgorithmRC2          EncryptionAlgorithm = original.EncryptionAlgorithmRC2
 )
 
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return original.PossibleEncryptionAlgorithmValues()
-}
-
 type HashingAlgorithm = original.HashingAlgorithm
 
 const (
@@ -179,10 +116,6 @@ const (
 	HashingAlgorithmSHA2512      HashingAlgorithm = original.HashingAlgorithmSHA2512
 )
 
-func PossibleHashingAlgorithmValues() []HashingAlgorithm {
-	return original.PossibleHashingAlgorithmValues()
-}
-
 type IntegrationAccountSkuName = original.IntegrationAccountSkuName
 
 const (
@@ -190,10 +123,6 @@ const (
 	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = original.IntegrationAccountSkuNameNotSpecified
 	IntegrationAccountSkuNameStandard     IntegrationAccountSkuName = original.IntegrationAccountSkuNameStandard
 )
-
-func PossibleIntegrationAccountSkuNameValues() []IntegrationAccountSkuName {
-	return original.PossibleIntegrationAccountSkuNameValues()
-}
 
 type KeyType = original.KeyType
 
@@ -203,20 +132,12 @@ const (
 	KeyTypeSecondary    KeyType = original.KeyTypeSecondary
 )
 
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-
 type MapType = original.MapType
 
 const (
 	MapTypeNotSpecified MapType = original.MapTypeNotSpecified
 	MapTypeXslt         MapType = original.MapTypeXslt
 )
-
-func PossibleMapTypeValues() []MapType {
-	return original.PossibleMapTypeValues()
-}
 
 type MessageFilterType = original.MessageFilterType
 
@@ -225,10 +146,6 @@ const (
 	MessageFilterTypeInclude      MessageFilterType = original.MessageFilterTypeInclude
 	MessageFilterTypeNotSpecified MessageFilterType = original.MessageFilterTypeNotSpecified
 )
-
-func PossibleMessageFilterTypeValues() []MessageFilterType {
-	return original.PossibleMessageFilterTypeValues()
-}
 
 type ParameterType = original.ParameterType
 
@@ -244,20 +161,12 @@ const (
 	ParameterTypeString       ParameterType = original.ParameterTypeString
 )
 
-func PossibleParameterTypeValues() []ParameterType {
-	return original.PossibleParameterTypeValues()
-}
-
 type PartnerType = original.PartnerType
 
 const (
 	PartnerTypeB2B          PartnerType = original.PartnerTypeB2B
 	PartnerTypeNotSpecified PartnerType = original.PartnerTypeNotSpecified
 )
-
-func PossiblePartnerTypeValues() []PartnerType {
-	return original.PossiblePartnerTypeValues()
-}
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
@@ -272,20 +181,12 @@ const (
 	RecurrenceFrequencyYear         RecurrenceFrequency = original.RecurrenceFrequencyYear
 )
 
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return original.PossibleRecurrenceFrequencyValues()
-}
-
 type SchemaType = original.SchemaType
 
 const (
 	SchemaTypeNotSpecified SchemaType = original.SchemaTypeNotSpecified
 	SchemaTypeXML          SchemaType = original.SchemaTypeXML
 )
-
-func PossibleSchemaTypeValues() []SchemaType {
-	return original.PossibleSchemaTypeValues()
-}
 
 type SegmentTerminatorSuffix = original.SegmentTerminatorSuffix
 
@@ -296,10 +197,6 @@ const (
 	SegmentTerminatorSuffixNone         SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNone
 	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = original.SegmentTerminatorSuffixNotSpecified
 )
-
-func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
-	return original.PossibleSegmentTerminatorSuffixValues()
-}
 
 type SigningAlgorithm = original.SigningAlgorithm
 
@@ -312,10 +209,6 @@ const (
 	SigningAlgorithmSHA2512      SigningAlgorithm = original.SigningAlgorithmSHA2512
 )
 
-func PossibleSigningAlgorithmValues() []SigningAlgorithm {
-	return original.PossibleSigningAlgorithmValues()
-}
-
 type SkuName = original.SkuName
 
 const (
@@ -327,10 +220,6 @@ const (
 	SkuNameStandard     SkuName = original.SkuNameStandard
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type TrailingSeparatorPolicy = original.TrailingSeparatorPolicy
 
 const (
@@ -340,10 +229,6 @@ const (
 	TrailingSeparatorPolicyOptional     TrailingSeparatorPolicy = original.TrailingSeparatorPolicyOptional
 )
 
-func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
-	return original.PossibleTrailingSeparatorPolicyValues()
-}
-
 type UsageIndicator = original.UsageIndicator
 
 const (
@@ -352,10 +237,6 @@ const (
 	UsageIndicatorProduction   UsageIndicator = original.UsageIndicatorProduction
 	UsageIndicatorTest         UsageIndicator = original.UsageIndicatorTest
 )
-
-func PossibleUsageIndicatorValues() []UsageIndicator {
-	return original.PossibleUsageIndicatorValues()
-}
 
 type WorkflowProvisioningState = original.WorkflowProvisioningState
 
@@ -380,10 +261,6 @@ const (
 	WorkflowProvisioningStateUpdating      WorkflowProvisioningState = original.WorkflowProvisioningStateUpdating
 )
 
-func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
-	return original.PossibleWorkflowProvisioningStateValues()
-}
-
 type WorkflowState = original.WorkflowState
 
 const (
@@ -394,10 +271,6 @@ const (
 	WorkflowStateNotSpecified WorkflowState = original.WorkflowStateNotSpecified
 	WorkflowStateSuspended    WorkflowState = original.WorkflowStateSuspended
 )
-
-func PossibleWorkflowStateValues() []WorkflowState {
-	return original.PossibleWorkflowStateValues()
-}
 
 type WorkflowStatus = original.WorkflowStatus
 
@@ -416,10 +289,6 @@ const (
 	WorkflowStatusTimedOut     WorkflowStatus = original.WorkflowStatusTimedOut
 	WorkflowStatusWaiting      WorkflowStatus = original.WorkflowStatusWaiting
 )
-
-func PossibleWorkflowStatusValues() []WorkflowStatus {
-	return original.PossibleWorkflowStatusValues()
-}
 
 type WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningState
 
@@ -444,10 +313,6 @@ const (
 	WorkflowTriggerProvisioningStateUpdating      WorkflowTriggerProvisioningState = original.WorkflowTriggerProvisioningStateUpdating
 )
 
-func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
-	return original.PossibleWorkflowTriggerProvisioningStateValues()
-}
-
 type X12CharacterSet = original.X12CharacterSet
 
 const (
@@ -457,10 +322,6 @@ const (
 	X12CharacterSetUTF8         X12CharacterSet = original.X12CharacterSetUTF8
 )
 
-func PossibleX12CharacterSetValues() []X12CharacterSet {
-	return original.PossibleX12CharacterSetValues()
-}
-
 type X12DateFormat = original.X12DateFormat
 
 const (
@@ -468,10 +329,6 @@ const (
 	X12DateFormatNotSpecified X12DateFormat = original.X12DateFormatNotSpecified
 	X12DateFormatYYMMDD       X12DateFormat = original.X12DateFormatYYMMDD
 )
-
-func PossibleX12DateFormatValues() []X12DateFormat {
-	return original.PossibleX12DateFormatValues()
-}
 
 type X12TimeFormat = original.X12TimeFormat
 
@@ -482,10 +339,6 @@ const (
 	X12TimeFormatHHMMSSdd     X12TimeFormat = original.X12TimeFormatHHMMSSdd
 	X12TimeFormatNotSpecified X12TimeFormat = original.X12TimeFormatNotSpecified
 )
-
-func PossibleX12TimeFormatValues() []X12TimeFormat {
-	return original.PossibleX12TimeFormatValues()
-}
 
 type AgreementContent = original.AgreementContent
 type AS2AcknowledgementConnectionSettings = original.AS2AcknowledgementConnectionSettings
@@ -637,25 +490,138 @@ type X12SecuritySettings = original.X12SecuritySettings
 type X12ValidationOverride = original.X12ValidationOverride
 type X12ValidationSettings = original.X12ValidationSettings
 type PartnersClient = original.PartnersClient
+type SchemasClient = original.SchemasClient
+type SessionsClient = original.SessionsClient
+type WorkflowRunActionsClient = original.WorkflowRunActionsClient
+type WorkflowRunsClient = original.WorkflowRunsClient
+type WorkflowsClient = original.WorkflowsClient
+type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
+type WorkflowTriggersClient = original.WorkflowTriggersClient
+type WorkflowVersionsClient = original.WorkflowVersionsClient
 
+func NewAgreementsClient(subscriptionID string) AgreementsClient {
+	return original.NewAgreementsClient(subscriptionID)
+}
+func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
+	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClient(subscriptionID)
+}
+func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
+	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMapsClient(subscriptionID string) MapsClient {
+	return original.NewMapsClient(subscriptionID)
+}
+func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
+	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAgreementTypeValues() []AgreementType {
+	return original.PossibleAgreementTypeValues()
+}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return original.PossibleDaysOfWeekValues()
+}
+func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
+	return original.PossibleEdifactCharacterSetValues()
+}
+func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
+	return original.PossibleEdifactDecimalIndicatorValues()
+}
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return original.PossibleEncryptionAlgorithmValues()
+}
+func PossibleHashingAlgorithmValues() []HashingAlgorithm {
+	return original.PossibleHashingAlgorithmValues()
+}
+func PossibleIntegrationAccountSkuNameValues() []IntegrationAccountSkuName {
+	return original.PossibleIntegrationAccountSkuNameValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleMapTypeValues() []MapType {
+	return original.PossibleMapTypeValues()
+}
+func PossibleMessageFilterTypeValues() []MessageFilterType {
+	return original.PossibleMessageFilterTypeValues()
+}
+func PossibleParameterTypeValues() []ParameterType {
+	return original.PossibleParameterTypeValues()
+}
+func PossiblePartnerTypeValues() []PartnerType {
+	return original.PossiblePartnerTypeValues()
+}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return original.PossibleRecurrenceFrequencyValues()
+}
+func PossibleSchemaTypeValues() []SchemaType {
+	return original.PossibleSchemaTypeValues()
+}
+func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
+	return original.PossibleSegmentTerminatorSuffixValues()
+}
+func PossibleSigningAlgorithmValues() []SigningAlgorithm {
+	return original.PossibleSigningAlgorithmValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
+	return original.PossibleTrailingSeparatorPolicyValues()
+}
+func PossibleUsageIndicatorValues() []UsageIndicator {
+	return original.PossibleUsageIndicatorValues()
+}
+func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
+	return original.PossibleWorkflowProvisioningStateValues()
+}
+func PossibleWorkflowStateValues() []WorkflowState {
+	return original.PossibleWorkflowStateValues()
+}
+func PossibleWorkflowStatusValues() []WorkflowStatus {
+	return original.PossibleWorkflowStatusValues()
+}
+func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
+	return original.PossibleWorkflowTriggerProvisioningStateValues()
+}
+func PossibleX12CharacterSetValues() []X12CharacterSet {
+	return original.PossibleX12CharacterSetValues()
+}
+func PossibleX12DateFormatValues() []X12DateFormat {
+	return original.PossibleX12DateFormatValues()
+}
+func PossibleX12TimeFormatValues() []X12TimeFormat {
+	return original.PossibleX12TimeFormatValues()
+}
 func NewPartnersClient(subscriptionID string) PartnersClient {
 	return original.NewPartnersClient(subscriptionID)
 }
 func NewPartnersClientWithBaseURI(baseURI string, subscriptionID string) PartnersClient {
 	return original.NewPartnersClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SchemasClient = original.SchemasClient
-
 func NewSchemasClient(subscriptionID string) SchemasClient {
 	return original.NewSchemasClient(subscriptionID)
 }
 func NewSchemasClientWithBaseURI(baseURI string, subscriptionID string) SchemasClient {
 	return original.NewSchemasClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SessionsClient = original.SessionsClient
-
 func NewSessionsClient(subscriptionID string) SessionsClient {
 	return original.NewSessionsClient(subscriptionID)
 }
@@ -668,54 +634,36 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type WorkflowRunActionsClient = original.WorkflowRunActionsClient
-
 func NewWorkflowRunActionsClient(subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClient(subscriptionID)
 }
 func NewWorkflowRunActionsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunActionsClient {
 	return original.NewWorkflowRunActionsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkflowRunsClient = original.WorkflowRunsClient
-
 func NewWorkflowRunsClient(subscriptionID string) WorkflowRunsClient {
 	return original.NewWorkflowRunsClient(subscriptionID)
 }
 func NewWorkflowRunsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowRunsClient {
 	return original.NewWorkflowRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkflowsClient = original.WorkflowsClient
-
 func NewWorkflowsClient(subscriptionID string) WorkflowsClient {
 	return original.NewWorkflowsClient(subscriptionID)
 }
 func NewWorkflowsClientWithBaseURI(baseURI string, subscriptionID string) WorkflowsClient {
 	return original.NewWorkflowsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
-
 func NewWorkflowTriggerHistoriesClient(subscriptionID string) WorkflowTriggerHistoriesClient {
 	return original.NewWorkflowTriggerHistoriesClient(subscriptionID)
 }
 func NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggerHistoriesClient {
 	return original.NewWorkflowTriggerHistoriesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkflowTriggersClient = original.WorkflowTriggersClient
-
 func NewWorkflowTriggersClient(subscriptionID string) WorkflowTriggersClient {
 	return original.NewWorkflowTriggersClient(subscriptionID)
 }
 func NewWorkflowTriggersClientWithBaseURI(baseURI string, subscriptionID string) WorkflowTriggersClient {
 	return original.NewWorkflowTriggersClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkflowVersionsClient = original.WorkflowVersionsClient
-
 func NewWorkflowVersionsClient(subscriptionID string) WorkflowVersionsClient {
 	return original.NewWorkflowVersionsClient(subscriptionID)
 }

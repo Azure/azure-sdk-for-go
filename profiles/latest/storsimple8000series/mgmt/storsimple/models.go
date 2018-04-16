@@ -22,126 +22,23 @@ package storsimple
 import original "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
 
 type AccessControlRecordsClient = original.AccessControlRecordsClient
-
-func NewAccessControlRecordsClient(subscriptionID string) AccessControlRecordsClient {
-	return original.NewAccessControlRecordsClient(subscriptionID)
-}
-func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID string) AccessControlRecordsClient {
-	return original.NewAccessControlRecordsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AlertsClient = original.AlertsClient
-
-func NewAlertsClient(subscriptionID string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID)
-}
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type BackupPoliciesClient = original.BackupPoliciesClient
-
-func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
-	return original.NewBackupPoliciesClient(subscriptionID)
-}
-func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
-	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type BackupsClient = original.BackupsClient
-
-func NewBackupsClient(subscriptionID string) BackupsClient {
-	return original.NewBackupsClient(subscriptionID)
-}
-func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
-	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type BackupSchedulesClient = original.BackupSchedulesClient
-
-func NewBackupSchedulesClient(subscriptionID string) BackupSchedulesClient {
-	return original.NewBackupSchedulesClient(subscriptionID)
-}
-func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BackupSchedulesClient {
-	return original.NewBackupSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type BandwidthSettingsClient = original.BandwidthSettingsClient
-
-func NewBandwidthSettingsClient(subscriptionID string) BandwidthSettingsClient {
-	return original.NewBandwidthSettingsClient(subscriptionID)
-}
-func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSettingsClient {
-	return original.NewBandwidthSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CloudAppliancesClient = original.CloudAppliancesClient
-
-func NewCloudAppliancesClient(subscriptionID string) CloudAppliancesClient {
-	return original.NewCloudAppliancesClient(subscriptionID)
-}
-func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) CloudAppliancesClient {
-	return original.NewCloudAppliancesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DevicesClient = original.DevicesClient
-
-func NewDevicesClient(subscriptionID string) DevicesClient {
-	return original.NewDevicesClient(subscriptionID)
-}
-func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
-	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DeviceSettingsClient = original.DeviceSettingsClient
-
-func NewDeviceSettingsClient(subscriptionID string) DeviceSettingsClient {
-	return original.NewDeviceSettingsClient(subscriptionID)
-}
-func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) DeviceSettingsClient {
-	return original.NewDeviceSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type HardwareComponentGroupsClient = original.HardwareComponentGroupsClient
-
-func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGroupsClient {
-	return original.NewHardwareComponentGroupsClient(subscriptionID)
-}
-func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID string) HardwareComponentGroupsClient {
-	return original.NewHardwareComponentGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type JobsClient = original.JobsClient
-
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ManagersClient = original.ManagersClient
-
-func NewManagersClient(subscriptionID string) ManagersClient {
-	return original.NewManagersClient(subscriptionID)
-}
-func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
-	return original.NewManagersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AlertEmailNotificationStatus = original.AlertEmailNotificationStatus
 
 const (
@@ -149,20 +46,12 @@ const (
 	Enabled  AlertEmailNotificationStatus = original.Enabled
 )
 
-func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
-	return original.PossibleAlertEmailNotificationStatusValues()
-}
-
 type AlertScope = original.AlertScope
 
 const (
 	AlertScopeDevice   AlertScope = original.AlertScopeDevice
 	AlertScopeResource AlertScope = original.AlertScopeResource
 )
-
-func PossibleAlertScopeValues() []AlertScope {
-	return original.PossibleAlertScopeValues()
-}
 
 type AlertSeverity = original.AlertSeverity
 
@@ -172,10 +61,6 @@ const (
 	Warning       AlertSeverity = original.Warning
 )
 
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return original.PossibleAlertSeverityValues()
-}
-
 type AlertSourceType = original.AlertSourceType
 
 const (
@@ -183,20 +68,12 @@ const (
 	AlertSourceTypeResource AlertSourceType = original.AlertSourceTypeResource
 )
 
-func PossibleAlertSourceTypeValues() []AlertSourceType {
-	return original.PossibleAlertSourceTypeValues()
-}
-
 type AlertStatus = original.AlertStatus
 
 const (
 	Active  AlertStatus = original.Active
 	Cleared AlertStatus = original.Cleared
 )
-
-func PossibleAlertStatusValues() []AlertStatus {
-	return original.PossibleAlertStatusValues()
-}
 
 type AuthenticationType = original.AuthenticationType
 
@@ -207,10 +84,6 @@ const (
 	NTLM    AuthenticationType = original.NTLM
 )
 
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return original.PossibleAuthenticationTypeValues()
-}
-
 type AuthorizationEligibility = original.AuthorizationEligibility
 
 const (
@@ -218,20 +91,12 @@ const (
 	InEligible AuthorizationEligibility = original.InEligible
 )
 
-func PossibleAuthorizationEligibilityValues() []AuthorizationEligibility {
-	return original.PossibleAuthorizationEligibilityValues()
-}
-
 type AuthorizationStatus = original.AuthorizationStatus
 
 const (
 	AuthorizationStatusDisabled AuthorizationStatus = original.AuthorizationStatusDisabled
 	AuthorizationStatusEnabled  AuthorizationStatus = original.AuthorizationStatusEnabled
 )
-
-func PossibleAuthorizationStatusValues() []AuthorizationStatus {
-	return original.PossibleAuthorizationStatusValues()
-}
 
 type BackupJobCreationType = original.BackupJobCreationType
 
@@ -241,20 +106,12 @@ const (
 	BySSM      BackupJobCreationType = original.BySSM
 )
 
-func PossibleBackupJobCreationTypeValues() []BackupJobCreationType {
-	return original.PossibleBackupJobCreationTypeValues()
-}
-
 type BackupPolicyCreationType = original.BackupPolicyCreationType
 
 const (
 	BackupPolicyCreationTypeBySaaS BackupPolicyCreationType = original.BackupPolicyCreationTypeBySaaS
 	BackupPolicyCreationTypeBySSM  BackupPolicyCreationType = original.BackupPolicyCreationTypeBySSM
 )
-
-func PossibleBackupPolicyCreationTypeValues() []BackupPolicyCreationType {
-	return original.PossibleBackupPolicyCreationTypeValues()
-}
 
 type BackupStatus = original.BackupStatus
 
@@ -263,20 +120,12 @@ const (
 	BackupStatusEnabled  BackupStatus = original.BackupStatusEnabled
 )
 
-func PossibleBackupStatusValues() []BackupStatus {
-	return original.PossibleBackupStatusValues()
-}
-
 type BackupType = original.BackupType
 
 const (
 	CloudSnapshot BackupType = original.CloudSnapshot
 	LocalSnapshot BackupType = original.LocalSnapshot
 )
-
-func PossibleBackupTypeValues() []BackupType {
-	return original.PossibleBackupTypeValues()
-}
 
 type ControllerID = original.ControllerID
 
@@ -287,10 +136,6 @@ const (
 	ControllerIDUnknown     ControllerID = original.ControllerIDUnknown
 )
 
-func PossibleControllerIDValues() []ControllerID {
-	return original.PossibleControllerIDValues()
-}
-
 type ControllerPowerStateAction = original.ControllerPowerStateAction
 
 const (
@@ -298,10 +143,6 @@ const (
 	Shutdown ControllerPowerStateAction = original.Shutdown
 	Start    ControllerPowerStateAction = original.Start
 )
-
-func PossibleControllerPowerStateActionValues() []ControllerPowerStateAction {
-	return original.PossibleControllerPowerStateActionValues()
-}
 
 type ControllerStatus = original.ControllerStatus
 
@@ -313,10 +154,6 @@ const (
 	ControllerStatusRecovering ControllerStatus = original.ControllerStatusRecovering
 	ControllerStatusWarning    ControllerStatus = original.ControllerStatusWarning
 )
-
-func PossibleControllerStatusValues() []ControllerStatus {
-	return original.PossibleControllerStatusValues()
-}
 
 type DayOfWeek = original.DayOfWeek
 
@@ -330,20 +167,12 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return original.PossibleDayOfWeekValues()
-}
-
 type DeviceConfigurationStatus = original.DeviceConfigurationStatus
 
 const (
 	Complete DeviceConfigurationStatus = original.Complete
 	Pending  DeviceConfigurationStatus = original.Pending
 )
-
-func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
-	return original.PossibleDeviceConfigurationStatusValues()
-}
 
 type DeviceStatus = original.DeviceStatus
 
@@ -361,10 +190,6 @@ const (
 	Unknown           DeviceStatus = original.Unknown
 )
 
-func PossibleDeviceStatusValues() []DeviceStatus {
-	return original.PossibleDeviceStatusValues()
-}
-
 type DeviceType = original.DeviceType
 
 const (
@@ -372,10 +197,6 @@ const (
 	DeviceTypeSeries8000PhysicalAppliance DeviceType = original.DeviceTypeSeries8000PhysicalAppliance
 	DeviceTypeSeries8000VirtualAppliance  DeviceType = original.DeviceTypeSeries8000VirtualAppliance
 )
-
-func PossibleDeviceTypeValues() []DeviceType {
-	return original.PossibleDeviceTypeValues()
-}
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
 
@@ -385,20 +206,12 @@ const (
 	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = original.EncryptionAlgorithmRSAESPKCS1V15
 )
 
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return original.PossibleEncryptionAlgorithmValues()
-}
-
 type EncryptionStatus = original.EncryptionStatus
 
 const (
 	EncryptionStatusDisabled EncryptionStatus = original.EncryptionStatusDisabled
 	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
 )
-
-func PossibleEncryptionStatusValues() []EncryptionStatus {
-	return original.PossibleEncryptionStatusValues()
-}
 
 type FeatureSupportStatus = original.FeatureSupportStatus
 
@@ -407,10 +220,6 @@ const (
 	Supported                FeatureSupportStatus = original.Supported
 	UnsupportedDeviceVersion FeatureSupportStatus = original.UnsupportedDeviceVersion
 )
-
-func PossibleFeatureSupportStatusValues() []FeatureSupportStatus {
-	return original.PossibleFeatureSupportStatusValues()
-}
 
 type HardwareComponentStatus = original.HardwareComponentStatus
 
@@ -424,10 +233,6 @@ const (
 	HardwareComponentStatusWarning    HardwareComponentStatus = original.HardwareComponentStatusWarning
 )
 
-func PossibleHardwareComponentStatusValues() []HardwareComponentStatus {
-	return original.PossibleHardwareComponentStatusValues()
-}
-
 type InEligibilityCategory = original.InEligibilityCategory
 
 const (
@@ -435,10 +240,6 @@ const (
 	NotSupportedAppliance InEligibilityCategory = original.NotSupportedAppliance
 	RolloverPending       InEligibilityCategory = original.RolloverPending
 )
-
-func PossibleInEligibilityCategoryValues() []InEligibilityCategory {
-	return original.PossibleInEligibilityCategoryValues()
-}
 
 type ISCSIAndCloudStatus = original.ISCSIAndCloudStatus
 
@@ -449,10 +250,6 @@ const (
 	ISCSIAndCloudStatusIscsiEnabled         ISCSIAndCloudStatus = original.ISCSIAndCloudStatusIscsiEnabled
 )
 
-func PossibleISCSIAndCloudStatusValues() []ISCSIAndCloudStatus {
-	return original.PossibleISCSIAndCloudStatusValues()
-}
-
 type JobStatus = original.JobStatus
 
 const (
@@ -461,10 +258,6 @@ const (
 	Running   JobStatus = original.Running
 	Succeeded JobStatus = original.Succeeded
 )
-
-func PossibleJobStatusValues() []JobStatus {
-	return original.PossibleJobStatusValues()
-}
 
 type JobType = original.JobType
 
@@ -481,10 +274,6 @@ const (
 	SupportPackageLogs        JobType = original.SupportPackageLogs
 )
 
-func PossibleJobTypeValues() []JobType {
-	return original.PossibleJobTypeValues()
-}
-
 type KeyRolloverStatus = original.KeyRolloverStatus
 
 const (
@@ -492,19 +281,11 @@ const (
 	Required    KeyRolloverStatus = original.Required
 )
 
-func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
-	return original.PossibleKeyRolloverStatusValues()
-}
-
 type Kind = original.Kind
 
 const (
 	Series8000 Kind = original.Series8000
 )
-
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
 
 type ManagerType = original.ManagerType
 
@@ -512,10 +293,6 @@ const (
 	GardaV1    ManagerType = original.GardaV1
 	HelsinkiV1 ManagerType = original.HelsinkiV1
 )
-
-func PossibleManagerTypeValues() []ManagerType {
-	return original.PossibleManagerTypeValues()
-}
 
 type MetricAggregationType = original.MetricAggregationType
 
@@ -528,10 +305,6 @@ const (
 	MetricAggregationTypeTotal   MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
-func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return original.PossibleMetricAggregationTypeValues()
-}
-
 type MetricUnit = original.MetricUnit
 
 const (
@@ -543,20 +316,12 @@ const (
 	Seconds        MetricUnit = original.Seconds
 )
 
-func PossibleMetricUnitValues() []MetricUnit {
-	return original.PossibleMetricUnitValues()
-}
-
 type MonitoringStatus = original.MonitoringStatus
 
 const (
 	MonitoringStatusDisabled MonitoringStatus = original.MonitoringStatusDisabled
 	MonitoringStatusEnabled  MonitoringStatus = original.MonitoringStatusEnabled
 )
-
-func PossibleMonitoringStatusValues() []MonitoringStatus {
-	return original.PossibleMonitoringStatusValues()
-}
 
 type NetInterfaceID = original.NetInterfaceID
 
@@ -570,20 +335,12 @@ const (
 	NetInterfaceIDInvalid NetInterfaceID = original.NetInterfaceIDInvalid
 )
 
-func PossibleNetInterfaceIDValues() []NetInterfaceID {
-	return original.PossibleNetInterfaceIDValues()
-}
-
 type NetInterfaceStatus = original.NetInterfaceStatus
 
 const (
 	NetInterfaceStatusDisabled NetInterfaceStatus = original.NetInterfaceStatusDisabled
 	NetInterfaceStatusEnabled  NetInterfaceStatus = original.NetInterfaceStatusEnabled
 )
-
-func PossibleNetInterfaceStatusValues() []NetInterfaceStatus {
-	return original.PossibleNetInterfaceStatusValues()
-}
 
 type NetworkMode = original.NetworkMode
 
@@ -594,10 +351,6 @@ const (
 	NetworkModeIPV6    NetworkMode = original.NetworkModeIPV6
 )
 
-func PossibleNetworkModeValues() []NetworkMode {
-	return original.PossibleNetworkModeValues()
-}
-
 type OperationStatus = original.OperationStatus
 
 const (
@@ -607,20 +360,12 @@ const (
 	OperationStatusUpdating  OperationStatus = original.OperationStatusUpdating
 )
 
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
-}
-
 type OwnerShipStatus = original.OwnerShipStatus
 
 const (
 	NotOwned OwnerShipStatus = original.NotOwned
 	Owned    OwnerShipStatus = original.Owned
 )
-
-func PossibleOwnerShipStatusValues() []OwnerShipStatus {
-	return original.PossibleOwnerShipStatusValues()
-}
 
 type RecurrenceType = original.RecurrenceType
 
@@ -631,10 +376,6 @@ const (
 	Weekly  RecurrenceType = original.Weekly
 )
 
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return original.PossibleRecurrenceTypeValues()
-}
-
 type RemoteManagementModeConfiguration = original.RemoteManagementModeConfiguration
 
 const (
@@ -644,20 +385,12 @@ const (
 	RemoteManagementModeConfigurationUnknown             RemoteManagementModeConfiguration = original.RemoteManagementModeConfigurationUnknown
 )
 
-func PossibleRemoteManagementModeConfigurationValues() []RemoteManagementModeConfiguration {
-	return original.PossibleRemoteManagementModeConfigurationValues()
-}
-
 type ScheduledBackupStatus = original.ScheduledBackupStatus
 
 const (
 	ScheduledBackupStatusDisabled ScheduledBackupStatus = original.ScheduledBackupStatusDisabled
 	ScheduledBackupStatusEnabled  ScheduledBackupStatus = original.ScheduledBackupStatusEnabled
 )
-
-func PossibleScheduledBackupStatusValues() []ScheduledBackupStatus {
-	return original.PossibleScheduledBackupStatusValues()
-}
 
 type ScheduleStatus = original.ScheduleStatus
 
@@ -666,20 +399,12 @@ const (
 	ScheduleStatusEnabled  ScheduleStatus = original.ScheduleStatusEnabled
 )
 
-func PossibleScheduleStatusValues() []ScheduleStatus {
-	return original.PossibleScheduleStatusValues()
-}
-
 type SslStatus = original.SslStatus
 
 const (
 	SslStatusDisabled SslStatus = original.SslStatusDisabled
 	SslStatusEnabled  SslStatus = original.SslStatusEnabled
 )
-
-func PossibleSslStatusValues() []SslStatus {
-	return original.PossibleSslStatusValues()
-}
 
 type TargetEligibilityResultCode = original.TargetEligibilityResultCode
 
@@ -693,20 +418,12 @@ const (
 	TargetSourceIncompatibleVersionError      TargetEligibilityResultCode = original.TargetSourceIncompatibleVersionError
 )
 
-func PossibleTargetEligibilityResultCodeValues() []TargetEligibilityResultCode {
-	return original.PossibleTargetEligibilityResultCodeValues()
-}
-
 type TargetEligibilityStatus = original.TargetEligibilityStatus
 
 const (
 	TargetEligibilityStatusEligible    TargetEligibilityStatus = original.TargetEligibilityStatusEligible
 	TargetEligibilityStatusNotEligible TargetEligibilityStatus = original.TargetEligibilityStatusNotEligible
 )
-
-func PossibleTargetEligibilityStatusValues() []TargetEligibilityStatus {
-	return original.PossibleTargetEligibilityStatusValues()
-}
 
 type VirtualMachineAPIType = original.VirtualMachineAPIType
 
@@ -715,20 +432,12 @@ const (
 	Classic VirtualMachineAPIType = original.Classic
 )
 
-func PossibleVirtualMachineAPITypeValues() []VirtualMachineAPIType {
-	return original.PossibleVirtualMachineAPITypeValues()
-}
-
 type VolumeStatus = original.VolumeStatus
 
 const (
 	VolumeStatusOffline VolumeStatus = original.VolumeStatusOffline
 	VolumeStatusOnline  VolumeStatus = original.VolumeStatusOnline
 )
-
-func PossibleVolumeStatusValues() []VolumeStatus {
-	return original.PossibleVolumeStatusValues()
-}
 
 type VolumeType = original.VolumeType
 
@@ -737,10 +446,6 @@ const (
 	LocallyPinned VolumeType = original.LocallyPinned
 	Tiered        VolumeType = original.Tiered
 )
-
-func PossibleVolumeTypeValues() []VolumeType {
-	return original.PossibleVolumeTypeValues()
-}
 
 type AccessControlRecord = original.AccessControlRecord
 type AccessControlRecordList = original.AccessControlRecordList
@@ -920,16 +625,238 @@ type VolumesCreateOrUpdateFuture = original.VolumesCreateOrUpdateFuture
 type VolumesDeleteFuture = original.VolumesDeleteFuture
 type WebproxySettings = original.WebproxySettings
 type OperationsClient = original.OperationsClient
+type StorageAccountCredentialsClient = original.StorageAccountCredentialsClient
+type VolumeContainersClient = original.VolumeContainersClient
+type VolumesClient = original.VolumesClient
 
+func NewAccessControlRecordsClient(subscriptionID string) AccessControlRecordsClient {
+	return original.NewAccessControlRecordsClient(subscriptionID)
+}
+func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID string) AccessControlRecordsClient {
+	return original.NewAccessControlRecordsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClient(subscriptionID)
+}
+func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupsClient(subscriptionID string) BackupsClient {
+	return original.NewBackupsClient(subscriptionID)
+}
+func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
+	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupSchedulesClient(subscriptionID string) BackupSchedulesClient {
+	return original.NewBackupSchedulesClient(subscriptionID)
+}
+func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BackupSchedulesClient {
+	return original.NewBackupSchedulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBandwidthSettingsClient(subscriptionID string) BandwidthSettingsClient {
+	return original.NewBandwidthSettingsClient(subscriptionID)
+}
+func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSettingsClient {
+	return original.NewBandwidthSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudAppliancesClient(subscriptionID string) CloudAppliancesClient {
+	return original.NewCloudAppliancesClient(subscriptionID)
+}
+func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) CloudAppliancesClient {
+	return original.NewCloudAppliancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDevicesClient(subscriptionID string) DevicesClient {
+	return original.NewDevicesClient(subscriptionID)
+}
+func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
+	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeviceSettingsClient(subscriptionID string) DeviceSettingsClient {
+	return original.NewDeviceSettingsClient(subscriptionID)
+}
+func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) DeviceSettingsClient {
+	return original.NewDeviceSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGroupsClient {
+	return original.NewHardwareComponentGroupsClient(subscriptionID)
+}
+func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID string) HardwareComponentGroupsClient {
+	return original.NewHardwareComponentGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagersClient(subscriptionID string) ManagersClient {
+	return original.NewManagersClient(subscriptionID)
+}
+func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
+	return original.NewManagersClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
+	return original.PossibleAlertEmailNotificationStatusValues()
+}
+func PossibleAlertScopeValues() []AlertScope {
+	return original.PossibleAlertScopeValues()
+}
+func PossibleAlertSeverityValues() []AlertSeverity {
+	return original.PossibleAlertSeverityValues()
+}
+func PossibleAlertSourceTypeValues() []AlertSourceType {
+	return original.PossibleAlertSourceTypeValues()
+}
+func PossibleAlertStatusValues() []AlertStatus {
+	return original.PossibleAlertStatusValues()
+}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleAuthorizationEligibilityValues() []AuthorizationEligibility {
+	return original.PossibleAuthorizationEligibilityValues()
+}
+func PossibleAuthorizationStatusValues() []AuthorizationStatus {
+	return original.PossibleAuthorizationStatusValues()
+}
+func PossibleBackupJobCreationTypeValues() []BackupJobCreationType {
+	return original.PossibleBackupJobCreationTypeValues()
+}
+func PossibleBackupPolicyCreationTypeValues() []BackupPolicyCreationType {
+	return original.PossibleBackupPolicyCreationTypeValues()
+}
+func PossibleBackupStatusValues() []BackupStatus {
+	return original.PossibleBackupStatusValues()
+}
+func PossibleBackupTypeValues() []BackupType {
+	return original.PossibleBackupTypeValues()
+}
+func PossibleControllerIDValues() []ControllerID {
+	return original.PossibleControllerIDValues()
+}
+func PossibleControllerPowerStateActionValues() []ControllerPowerStateAction {
+	return original.PossibleControllerPowerStateActionValues()
+}
+func PossibleControllerStatusValues() []ControllerStatus {
+	return original.PossibleControllerStatusValues()
+}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
+	return original.PossibleDeviceConfigurationStatusValues()
+}
+func PossibleDeviceStatusValues() []DeviceStatus {
+	return original.PossibleDeviceStatusValues()
+}
+func PossibleDeviceTypeValues() []DeviceType {
+	return original.PossibleDeviceTypeValues()
+}
+func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
+	return original.PossibleEncryptionAlgorithmValues()
+}
+func PossibleEncryptionStatusValues() []EncryptionStatus {
+	return original.PossibleEncryptionStatusValues()
+}
+func PossibleFeatureSupportStatusValues() []FeatureSupportStatus {
+	return original.PossibleFeatureSupportStatusValues()
+}
+func PossibleHardwareComponentStatusValues() []HardwareComponentStatus {
+	return original.PossibleHardwareComponentStatusValues()
+}
+func PossibleInEligibilityCategoryValues() []InEligibilityCategory {
+	return original.PossibleInEligibilityCategoryValues()
+}
+func PossibleISCSIAndCloudStatusValues() []ISCSIAndCloudStatus {
+	return original.PossibleISCSIAndCloudStatusValues()
+}
+func PossibleJobStatusValues() []JobStatus {
+	return original.PossibleJobStatusValues()
+}
+func PossibleJobTypeValues() []JobType {
+	return original.PossibleJobTypeValues()
+}
+func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
+	return original.PossibleKeyRolloverStatusValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleManagerTypeValues() []ManagerType {
+	return original.PossibleManagerTypeValues()
+}
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
+}
+func PossibleMetricUnitValues() []MetricUnit {
+	return original.PossibleMetricUnitValues()
+}
+func PossibleMonitoringStatusValues() []MonitoringStatus {
+	return original.PossibleMonitoringStatusValues()
+}
+func PossibleNetInterfaceIDValues() []NetInterfaceID {
+	return original.PossibleNetInterfaceIDValues()
+}
+func PossibleNetInterfaceStatusValues() []NetInterfaceStatus {
+	return original.PossibleNetInterfaceStatusValues()
+}
+func PossibleNetworkModeValues() []NetworkMode {
+	return original.PossibleNetworkModeValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+func PossibleOwnerShipStatusValues() []OwnerShipStatus {
+	return original.PossibleOwnerShipStatusValues()
+}
+func PossibleRecurrenceTypeValues() []RecurrenceType {
+	return original.PossibleRecurrenceTypeValues()
+}
+func PossibleRemoteManagementModeConfigurationValues() []RemoteManagementModeConfiguration {
+	return original.PossibleRemoteManagementModeConfigurationValues()
+}
+func PossibleScheduledBackupStatusValues() []ScheduledBackupStatus {
+	return original.PossibleScheduledBackupStatusValues()
+}
+func PossibleScheduleStatusValues() []ScheduleStatus {
+	return original.PossibleScheduleStatusValues()
+}
+func PossibleSslStatusValues() []SslStatus {
+	return original.PossibleSslStatusValues()
+}
+func PossibleTargetEligibilityResultCodeValues() []TargetEligibilityResultCode {
+	return original.PossibleTargetEligibilityResultCodeValues()
+}
+func PossibleTargetEligibilityStatusValues() []TargetEligibilityStatus {
+	return original.PossibleTargetEligibilityStatusValues()
+}
+func PossibleVirtualMachineAPITypeValues() []VirtualMachineAPIType {
+	return original.PossibleVirtualMachineAPITypeValues()
+}
+func PossibleVolumeStatusValues() []VolumeStatus {
+	return original.PossibleVolumeStatusValues()
+}
+func PossibleVolumeTypeValues() []VolumeType {
+	return original.PossibleVolumeTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type StorageAccountCredentialsClient = original.StorageAccountCredentialsClient
-
 func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCredentialsClient {
 	return original.NewStorageAccountCredentialsClient(subscriptionID)
 }
@@ -942,18 +869,12 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type VolumeContainersClient = original.VolumeContainersClient
-
 func NewVolumeContainersClient(subscriptionID string) VolumeContainersClient {
 	return original.NewVolumeContainersClient(subscriptionID)
 }
 func NewVolumeContainersClientWithBaseURI(baseURI string, subscriptionID string) VolumeContainersClient {
 	return original.NewVolumeContainersClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VolumesClient = original.VolumesClient
-
 func NewVolumesClient(subscriptionID string) VolumesClient {
 	return original.NewVolumesClient(subscriptionID)
 }

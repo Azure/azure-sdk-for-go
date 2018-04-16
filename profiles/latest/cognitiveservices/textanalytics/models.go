@@ -22,14 +22,6 @@ package textanalytics
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/textanalytics"
 
 type BaseClient = original.BaseClient
-
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-
 type AzureRegions = original.AzureRegions
 
 const (
@@ -47,10 +39,6 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
-}
-
 type BatchInput = original.BatchInput
 type DetectedLanguage = original.DetectedLanguage
 type ErrorRecord = original.ErrorRecord
@@ -66,6 +54,15 @@ type MultiLanguageInput = original.MultiLanguageInput
 type SentimentBatchResult = original.SentimentBatchResult
 type SentimentBatchResultItem = original.SentimentBatchResultItem
 
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return original.PossibleAzureRegionsValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

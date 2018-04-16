@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ContainerServicesClient = original.ContainerServicesClient
-
-func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClient(subscriptionID)
-}
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ManagedClustersClient = original.ManagedClustersClient
-
-func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClient(subscriptionID)
-}
-func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type OrchestratorTypes = original.OrchestratorTypes
 
 const (
@@ -62,10 +38,6 @@ const (
 	Swarm      OrchestratorTypes = original.Swarm
 )
 
-func PossibleOrchestratorTypesValues() []OrchestratorTypes {
-	return original.PossibleOrchestratorTypesValues()
-}
-
 type OSType = original.OSType
 
 const (
@@ -73,20 +45,12 @@ const (
 	Windows OSType = original.Windows
 )
 
-func PossibleOSTypeValues() []OSType {
-	return original.PossibleOSTypeValues()
-}
-
 type StorageProfileTypes = original.StorageProfileTypes
 
 const (
 	ManagedDisks   StorageProfileTypes = original.ManagedDisks
 	StorageAccount StorageProfileTypes = original.StorageAccount
 )
-
-func PossibleStorageProfileTypesValues() []StorageProfileTypes {
-	return original.PossibleStorageProfileTypesValues()
-}
 
 type VMSizeTypes = original.VMSizeTypes
 
@@ -270,10 +234,6 @@ const (
 	StandardNV6         VMSizeTypes = original.StandardNV6
 )
 
-func PossibleVMSizeTypesValues() []VMSizeTypes {
-	return original.PossibleVMSizeTypesValues()
-}
-
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
 type ContainerService = original.ContainerService
@@ -311,6 +271,36 @@ type SSHPublicKey = original.SSHPublicKey
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClient(subscriptionID)
+}
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClient(subscriptionID)
+}
+func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleOrchestratorTypesValues() []OrchestratorTypes {
+	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleOSTypeValues() []OSType {
+	return original.PossibleOSTypeValues()
+}
+func PossibleStorageProfileTypesValues() []StorageProfileTypes {
+	return original.PossibleStorageProfileTypesValues()
+}
+func PossibleVMSizeTypesValues() []VMSizeTypes {
+	return original.PossibleVMSizeTypesValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

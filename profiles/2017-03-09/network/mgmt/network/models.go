@@ -23,99 +23,24 @@ import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 
-func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
-	return original.NewApplicationGatewaysClient(subscriptionID)
-}
-func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
-	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
-
-func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
-}
-func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
-
-func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
-}
-func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
-
-func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClient(subscriptionID)
-}
-func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
-
-func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
-	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
-}
-func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
-	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type InterfacesClient = original.InterfacesClient
-
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
-}
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LoadBalancersClient = original.LoadBalancersClient
-
-func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
-	return original.NewLoadBalancersClient(subscriptionID)
-}
-func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
-	return original.NewLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
-
-func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
-	return original.NewLocalNetworkGatewaysClient(subscriptionID)
-}
-func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
-	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBasedAffinity
 
 const (
 	Disabled ApplicationGatewayCookieBasedAffinity = original.Disabled
 	Enabled  ApplicationGatewayCookieBasedAffinity = original.Enabled
 )
-
-func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
-	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
-}
 
 type ApplicationGatewayOperationalState = original.ApplicationGatewayOperationalState
 
@@ -126,10 +51,6 @@ const (
 	Stopping ApplicationGatewayOperationalState = original.Stopping
 )
 
-func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOperationalState {
-	return original.PossibleApplicationGatewayOperationalStateValues()
-}
-
 type ApplicationGatewayProtocol = original.ApplicationGatewayProtocol
 
 const (
@@ -137,20 +58,12 @@ const (
 	HTTPS ApplicationGatewayProtocol = original.HTTPS
 )
 
-func PossibleApplicationGatewayProtocolValues() []ApplicationGatewayProtocol {
-	return original.PossibleApplicationGatewayProtocolValues()
-}
-
 type ApplicationGatewayRequestRoutingRuleType = original.ApplicationGatewayRequestRoutingRuleType
 
 const (
 	Basic            ApplicationGatewayRequestRoutingRuleType = original.Basic
 	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = original.PathBasedRouting
 )
-
-func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
-	return original.PossibleApplicationGatewayRequestRoutingRuleTypeValues()
-}
 
 type ApplicationGatewaySkuName = original.ApplicationGatewaySkuName
 
@@ -160,19 +73,11 @@ const (
 	StandardSmall  ApplicationGatewaySkuName = original.StandardSmall
 )
 
-func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
-	return original.PossibleApplicationGatewaySkuNameValues()
-}
-
 type ApplicationGatewayTier = original.ApplicationGatewayTier
 
 const (
 	Standard ApplicationGatewayTier = original.Standard
 )
-
-func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
-	return original.PossibleApplicationGatewayTierValues()
-}
 
 type AuthorizationUseStatus = original.AuthorizationUseStatus
 
@@ -180,10 +85,6 @@ const (
 	Available AuthorizationUseStatus = original.Available
 	InUse     AuthorizationUseStatus = original.InUse
 )
-
-func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
-	return original.PossibleAuthorizationUseStatusValues()
-}
 
 type ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
 
@@ -194,20 +95,12 @@ const (
 	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = original.ValidationNeeded
 )
 
-func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
-	return original.PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues()
-}
-
 type ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringState
 
 const (
 	ExpressRouteCircuitPeeringStateDisabled ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringStateDisabled
 	ExpressRouteCircuitPeeringStateEnabled  ExpressRouteCircuitPeeringState = original.ExpressRouteCircuitPeeringStateEnabled
 )
-
-func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeeringState {
-	return original.PossibleExpressRouteCircuitPeeringStateValues()
-}
 
 type ExpressRouteCircuitPeeringType = original.ExpressRouteCircuitPeeringType
 
@@ -217,20 +110,12 @@ const (
 	MicrosoftPeering    ExpressRouteCircuitPeeringType = original.MicrosoftPeering
 )
 
-func PossibleExpressRouteCircuitPeeringTypeValues() []ExpressRouteCircuitPeeringType {
-	return original.PossibleExpressRouteCircuitPeeringTypeValues()
-}
-
 type ExpressRouteCircuitSkuFamily = original.ExpressRouteCircuitSkuFamily
 
 const (
 	MeteredData   ExpressRouteCircuitSkuFamily = original.MeteredData
 	UnlimitedData ExpressRouteCircuitSkuFamily = original.UnlimitedData
 )
-
-func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily {
-	return original.PossibleExpressRouteCircuitSkuFamilyValues()
-}
 
 type ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTier
 
@@ -239,20 +124,12 @@ const (
 	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = original.ExpressRouteCircuitSkuTierStandard
 )
 
-func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
-	return original.PossibleExpressRouteCircuitSkuTierValues()
-}
-
 type IPAllocationMethod = original.IPAllocationMethod
 
 const (
 	Dynamic IPAllocationMethod = original.Dynamic
 	Static  IPAllocationMethod = original.Static
 )
-
-func PossibleIPAllocationMethodValues() []IPAllocationMethod {
-	return original.PossibleIPAllocationMethodValues()
-}
 
 type LoadDistribution = original.LoadDistribution
 
@@ -262,10 +139,6 @@ const (
 	SourceIPProtocol LoadDistribution = original.SourceIPProtocol
 )
 
-func PossibleLoadDistributionValues() []LoadDistribution {
-	return original.PossibleLoadDistributionValues()
-}
-
 type OperationStatus = original.OperationStatus
 
 const (
@@ -274,10 +147,6 @@ const (
 	Succeeded  OperationStatus = original.Succeeded
 )
 
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
-}
-
 type ProbeProtocol = original.ProbeProtocol
 
 const (
@@ -285,20 +154,12 @@ const (
 	ProbeProtocolTCP  ProbeProtocol = original.ProbeProtocolTCP
 )
 
-func PossibleProbeProtocolValues() []ProbeProtocol {
-	return original.PossibleProbeProtocolValues()
-}
-
 type ProcessorArchitecture = original.ProcessorArchitecture
 
 const (
 	Amd64 ProcessorArchitecture = original.Amd64
 	X86   ProcessorArchitecture = original.X86
 )
-
-func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
-	return original.PossibleProcessorArchitectureValues()
-}
 
 type RouteNextHopType = original.RouteNextHopType
 
@@ -310,20 +171,12 @@ const (
 	RouteNextHopTypeVnetLocal             RouteNextHopType = original.RouteNextHopTypeVnetLocal
 )
 
-func PossibleRouteNextHopTypeValues() []RouteNextHopType {
-	return original.PossibleRouteNextHopTypeValues()
-}
-
 type SecurityRuleAccess = original.SecurityRuleAccess
 
 const (
 	Allow SecurityRuleAccess = original.Allow
 	Deny  SecurityRuleAccess = original.Deny
 )
-
-func PossibleSecurityRuleAccessValues() []SecurityRuleAccess {
-	return original.PossibleSecurityRuleAccessValues()
-}
 
 type SecurityRuleDirection = original.SecurityRuleDirection
 
@@ -332,10 +185,6 @@ const (
 	Outbound SecurityRuleDirection = original.Outbound
 )
 
-func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
-	return original.PossibleSecurityRuleDirectionValues()
-}
-
 type SecurityRuleProtocol = original.SecurityRuleProtocol
 
 const (
@@ -343,10 +192,6 @@ const (
 	TCP      SecurityRuleProtocol = original.TCP
 	UDP      SecurityRuleProtocol = original.UDP
 )
-
-func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
-	return original.PossibleSecurityRuleProtocolValues()
-}
 
 type ServiceProviderProvisioningState = original.ServiceProviderProvisioningState
 
@@ -357,20 +202,12 @@ const (
 	Provisioning   ServiceProviderProvisioningState = original.Provisioning
 )
 
-func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvisioningState {
-	return original.PossibleServiceProviderProvisioningStateValues()
-}
-
 type TransportProtocol = original.TransportProtocol
 
 const (
 	TransportProtocolTCP TransportProtocol = original.TransportProtocolTCP
 	TransportProtocolUDP TransportProtocol = original.TransportProtocolUDP
 )
-
-func PossibleTransportProtocolValues() []TransportProtocol {
-	return original.PossibleTransportProtocolValues()
-}
 
 type VirtualNetworkGatewayConnectionStatus = original.VirtualNetworkGatewayConnectionStatus
 
@@ -381,10 +218,6 @@ const (
 	Unknown      VirtualNetworkGatewayConnectionStatus = original.Unknown
 )
 
-func PossibleVirtualNetworkGatewayConnectionStatusValues() []VirtualNetworkGatewayConnectionStatus {
-	return original.PossibleVirtualNetworkGatewayConnectionStatusValues()
-}
-
 type VirtualNetworkGatewayConnectionType = original.VirtualNetworkGatewayConnectionType
 
 const (
@@ -394,10 +227,6 @@ const (
 	VPNClient    VirtualNetworkGatewayConnectionType = original.VPNClient
 )
 
-func PossibleVirtualNetworkGatewayConnectionTypeValues() []VirtualNetworkGatewayConnectionType {
-	return original.PossibleVirtualNetworkGatewayConnectionTypeValues()
-}
-
 type VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuName
 
 const (
@@ -405,10 +234,6 @@ const (
 	VirtualNetworkGatewaySkuNameHighPerformance VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameHighPerformance
 	VirtualNetworkGatewaySkuNameStandard        VirtualNetworkGatewaySkuName = original.VirtualNetworkGatewaySkuNameStandard
 )
-
-func PossibleVirtualNetworkGatewaySkuNameValues() []VirtualNetworkGatewaySkuName {
-	return original.PossibleVirtualNetworkGatewaySkuNameValues()
-}
 
 type VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTier
 
@@ -418,10 +243,6 @@ const (
 	VirtualNetworkGatewaySkuTierStandard        VirtualNetworkGatewaySkuTier = original.VirtualNetworkGatewaySkuTierStandard
 )
 
-func PossibleVirtualNetworkGatewaySkuTierValues() []VirtualNetworkGatewaySkuTier {
-	return original.PossibleVirtualNetworkGatewaySkuTierValues()
-}
-
 type VirtualNetworkGatewayType = original.VirtualNetworkGatewayType
 
 const (
@@ -429,20 +250,12 @@ const (
 	VirtualNetworkGatewayTypeVpn          VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeVpn
 )
 
-func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
-	return original.PossibleVirtualNetworkGatewayTypeValues()
-}
-
 type VpnType = original.VpnType
 
 const (
 	PolicyBased VpnType = original.PolicyBased
 	RouteBased  VpnType = original.RouteBased
 )
-
-func PossibleVpnTypeValues() []VpnType {
-	return original.PossibleVpnTypeValues()
-}
 
 type AddressSpace = original.AddressSpace
 type ApplicationGateway = original.ApplicationGateway
@@ -654,61 +467,193 @@ type VpnClientRevokedCertificatePropertiesFormat = original.VpnClientRevokedCert
 type VpnClientRootCertificate = original.VpnClientRootCertificate
 type VpnClientRootCertificatePropertiesFormat = original.VpnClientRootCertificatePropertiesFormat
 type PublicIPAddressesClient = original.PublicIPAddressesClient
+type RoutesClient = original.RoutesClient
+type RouteTablesClient = original.RouteTablesClient
+type SecurityGroupsClient = original.SecurityGroupsClient
+type SecurityRulesClient = original.SecurityRulesClient
+type SubnetsClient = original.SubnetsClient
+type UsagesClient = original.UsagesClient
+type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
+type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
+type VirtualNetworksClient = original.VirtualNetworksClient
 
+func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
+	return original.NewApplicationGatewaysClient(subscriptionID)
+}
+func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
+	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
+}
+func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
+}
+func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClient(subscriptionID)
+}
+func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
+	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
+}
+func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
+	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInterfacesClient(subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClient(subscriptionID)
+}
+func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
+	return original.NewLoadBalancersClient(subscriptionID)
+}
+func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
+	return original.NewLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
+	return original.NewLocalNetworkGatewaysClient(subscriptionID)
+}
+func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
+	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
+	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
+}
+func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOperationalState {
+	return original.PossibleApplicationGatewayOperationalStateValues()
+}
+func PossibleApplicationGatewayProtocolValues() []ApplicationGatewayProtocol {
+	return original.PossibleApplicationGatewayProtocolValues()
+}
+func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
+	return original.PossibleApplicationGatewayRequestRoutingRuleTypeValues()
+}
+func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
+	return original.PossibleApplicationGatewaySkuNameValues()
+}
+func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
+	return original.PossibleApplicationGatewayTierValues()
+}
+func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
+	return original.PossibleAuthorizationUseStatusValues()
+}
+func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
+	return original.PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues()
+}
+func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeeringState {
+	return original.PossibleExpressRouteCircuitPeeringStateValues()
+}
+func PossibleExpressRouteCircuitPeeringTypeValues() []ExpressRouteCircuitPeeringType {
+	return original.PossibleExpressRouteCircuitPeeringTypeValues()
+}
+func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily {
+	return original.PossibleExpressRouteCircuitSkuFamilyValues()
+}
+func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
+	return original.PossibleExpressRouteCircuitSkuTierValues()
+}
+func PossibleIPAllocationMethodValues() []IPAllocationMethod {
+	return original.PossibleIPAllocationMethodValues()
+}
+func PossibleLoadDistributionValues() []LoadDistribution {
+	return original.PossibleLoadDistributionValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+func PossibleProbeProtocolValues() []ProbeProtocol {
+	return original.PossibleProbeProtocolValues()
+}
+func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
+	return original.PossibleProcessorArchitectureValues()
+}
+func PossibleRouteNextHopTypeValues() []RouteNextHopType {
+	return original.PossibleRouteNextHopTypeValues()
+}
+func PossibleSecurityRuleAccessValues() []SecurityRuleAccess {
+	return original.PossibleSecurityRuleAccessValues()
+}
+func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
+	return original.PossibleSecurityRuleDirectionValues()
+}
+func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
+	return original.PossibleSecurityRuleProtocolValues()
+}
+func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvisioningState {
+	return original.PossibleServiceProviderProvisioningStateValues()
+}
+func PossibleTransportProtocolValues() []TransportProtocol {
+	return original.PossibleTransportProtocolValues()
+}
+func PossibleVirtualNetworkGatewayConnectionStatusValues() []VirtualNetworkGatewayConnectionStatus {
+	return original.PossibleVirtualNetworkGatewayConnectionStatusValues()
+}
+func PossibleVirtualNetworkGatewayConnectionTypeValues() []VirtualNetworkGatewayConnectionType {
+	return original.PossibleVirtualNetworkGatewayConnectionTypeValues()
+}
+func PossibleVirtualNetworkGatewaySkuNameValues() []VirtualNetworkGatewaySkuName {
+	return original.PossibleVirtualNetworkGatewaySkuNameValues()
+}
+func PossibleVirtualNetworkGatewaySkuTierValues() []VirtualNetworkGatewaySkuTier {
+	return original.PossibleVirtualNetworkGatewaySkuTierValues()
+}
+func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
+	return original.PossibleVirtualNetworkGatewayTypeValues()
+}
+func PossibleVpnTypeValues() []VpnType {
+	return original.PossibleVpnTypeValues()
+}
 func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
 	return original.NewPublicIPAddressesClient(subscriptionID)
 }
 func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
 	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RoutesClient = original.RoutesClient
-
 func NewRoutesClient(subscriptionID string) RoutesClient {
 	return original.NewRoutesClient(subscriptionID)
 }
 func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
 	return original.NewRoutesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RouteTablesClient = original.RouteTablesClient
-
 func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
 	return original.NewRouteTablesClient(subscriptionID)
 }
 func NewRouteTablesClientWithBaseURI(baseURI string, subscriptionID string) RouteTablesClient {
 	return original.NewRouteTablesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SecurityGroupsClient = original.SecurityGroupsClient
-
 func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
 	return original.NewSecurityGroupsClient(subscriptionID)
 }
 func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
 	return original.NewSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SecurityRulesClient = original.SecurityRulesClient
-
 func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClient(subscriptionID)
 }
 func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SubnetsClient = original.SubnetsClient
-
 func NewSubnetsClient(subscriptionID string) SubnetsClient {
 	return original.NewSubnetsClient(subscriptionID)
 }
 func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
 	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsagesClient = original.UsagesClient
-
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
@@ -721,27 +666,18 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
-
 func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
 	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
 }
 func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
 	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
-
 func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
 	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
 }
 func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
 	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualNetworksClient = original.VirtualNetworksClient
-
 func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
 	return original.NewVirtualNetworksClient(subscriptionID)
 }

@@ -26,23 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CustomerSubscriptionsClient = original.CustomerSubscriptionsClient
-
-func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptionsClient {
-	return original.NewCustomerSubscriptionsClient(subscriptionID)
-}
-func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) CustomerSubscriptionsClient {
-	return original.NewCustomerSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ComputeRole = original.ComputeRole
 
 const (
@@ -50,10 +34,6 @@ const (
 	None ComputeRole = original.None
 	PaaS ComputeRole = original.PaaS
 )
-
-func PossibleComputeRoleValues() []ComputeRole {
-	return original.PossibleComputeRoleValues()
-}
 
 type OperatingSystem = original.OperatingSystem
 
@@ -63,10 +43,6 @@ const (
 	OperatingSystemWindows OperatingSystem = original.OperatingSystemWindows
 )
 
-func PossibleOperatingSystemValues() []OperatingSystem {
-	return original.PossibleOperatingSystemValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -75,10 +51,6 @@ const (
 	Failed    ProvisioningState = original.Failed
 	Succeeded ProvisioningState = original.Succeeded
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type ActivationKeyResult = original.ActivationKeyResult
 type CustomerSubscription = original.CustomerSubscription
@@ -115,25 +87,42 @@ type URI = original.URI
 type VirtualMachineExtensionProductProperties = original.VirtualMachineExtensionProductProperties
 type VirtualMachineProductProperties = original.VirtualMachineProductProperties
 type OperationsClient = original.OperationsClient
+type ProductsClient = original.ProductsClient
+type RegistrationsClient = original.RegistrationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptionsClient {
+	return original.NewCustomerSubscriptionsClient(subscriptionID)
+}
+func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) CustomerSubscriptionsClient {
+	return original.NewCustomerSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleComputeRoleValues() []ComputeRole {
+	return original.PossibleComputeRoleValues()
+}
+func PossibleOperatingSystemValues() []OperatingSystem {
+	return original.PossibleOperatingSystemValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ProductsClient = original.ProductsClient
-
 func NewProductsClient(subscriptionID string) ProductsClient {
 	return original.NewProductsClient(subscriptionID)
 }
 func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
 	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RegistrationsClient = original.RegistrationsClient
-
 func NewRegistrationsClient(subscriptionID string) RegistrationsClient {
 	return original.NewRegistrationsClient(subscriptionID)
 }

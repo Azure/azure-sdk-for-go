@@ -23,89 +23,18 @@ import original "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgm
 
 type AuthorizationPoliciesClient = original.AuthorizationPoliciesClient
 
-func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPoliciesClient {
-	return original.NewAuthorizationPoliciesClient(subscriptionID)
-}
-func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
-	return original.NewAuthorizationPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ConnectorMappingsClient = original.ConnectorMappingsClient
-
-func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
-	return original.NewConnectorMappingsClient(subscriptionID)
-}
-func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
-	return original.NewConnectorMappingsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ConnectorsClient = original.ConnectorsClient
-
-func NewConnectorsClient(subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClient(subscriptionID)
-}
-func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
-	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type HubsClient = original.HubsClient
-
-func NewHubsClient(subscriptionID string) HubsClient {
-	return original.NewHubsClient(subscriptionID)
-}
-func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
-	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ImagesClient = original.ImagesClient
-
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return original.NewImagesClient(subscriptionID)
-}
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type InteractionsClient = original.InteractionsClient
-
-func NewInteractionsClient(subscriptionID string) InteractionsClient {
-	return original.NewInteractionsClient(subscriptionID)
-}
-func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) InteractionsClient {
-	return original.NewInteractionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type KpiClient = original.KpiClient
-
-func NewKpiClient(subscriptionID string) KpiClient {
-	return original.NewKpiClient(subscriptionID)
-}
-func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
-	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LinksClient = original.LinksClient
-
-func NewLinksClient(subscriptionID string) LinksClient {
-	return original.NewLinksClient(subscriptionID)
-}
-func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
-	return original.NewLinksClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CalculationWindowTypes = original.CalculationWindowTypes
 
 const (
@@ -116,10 +45,6 @@ const (
 	Week     CalculationWindowTypes = original.Week
 )
 
-func PossibleCalculationWindowTypesValues() []CalculationWindowTypes {
-	return original.PossibleCalculationWindowTypesValues()
-}
-
 type CanonicalPropertyValueType = original.CanonicalPropertyValueType
 
 const (
@@ -129,10 +54,6 @@ const (
 	Numeric            CanonicalPropertyValueType = original.Numeric
 )
 
-func PossibleCanonicalPropertyValueTypeValues() []CanonicalPropertyValueType {
-	return original.PossibleCanonicalPropertyValueTypeValues()
-}
-
 type CardinalityTypes = original.CardinalityTypes
 
 const (
@@ -141,10 +62,6 @@ const (
 	OneToOne   CardinalityTypes = original.OneToOne
 )
 
-func PossibleCardinalityTypesValues() []CardinalityTypes {
-	return original.PossibleCardinalityTypesValues()
-}
-
 type CompletionOperationTypes = original.CompletionOperationTypes
 
 const (
@@ -152,10 +69,6 @@ const (
 	DoNothing  CompletionOperationTypes = original.DoNothing
 	MoveFile   CompletionOperationTypes = original.MoveFile
 )
-
-func PossibleCompletionOperationTypesValues() []CompletionOperationTypes {
-	return original.PossibleCompletionOperationTypesValues()
-}
 
 type ConnectorMappingStates = original.ConnectorMappingStates
 
@@ -169,10 +82,6 @@ const (
 	Stopped  ConnectorMappingStates = original.Stopped
 )
 
-func PossibleConnectorMappingStatesValues() []ConnectorMappingStates {
-	return original.PossibleConnectorMappingStatesValues()
-}
-
 type ConnectorStates = original.ConnectorStates
 
 const (
@@ -183,10 +92,6 @@ const (
 	ConnectorStatesFailed   ConnectorStates = original.ConnectorStatesFailed
 	ConnectorStatesReady    ConnectorStates = original.ConnectorStatesReady
 )
-
-func PossibleConnectorStatesValues() []ConnectorStates {
-	return original.PossibleConnectorStatesValues()
-}
 
 type ConnectorTypes = original.ConnectorTypes
 
@@ -199,10 +104,6 @@ const (
 	Salesforce     ConnectorTypes = original.Salesforce
 )
 
-func PossibleConnectorTypesValues() []ConnectorTypes {
-	return original.PossibleConnectorTypesValues()
-}
-
 type DataSourceType = original.DataSourceType
 
 const (
@@ -210,10 +111,6 @@ const (
 	DataSourceTypeLinkInteraction DataSourceType = original.DataSourceTypeLinkInteraction
 	DataSourceTypeSystemDefault   DataSourceType = original.DataSourceTypeSystemDefault
 )
-
-func PossibleDataSourceTypeValues() []DataSourceType {
-	return original.PossibleDataSourceTypeValues()
-}
 
 type EntityType = original.EntityType
 
@@ -224,10 +121,6 @@ const (
 	EntityTypeRelationship EntityType = original.EntityTypeRelationship
 )
 
-func PossibleEntityTypeValues() []EntityType {
-	return original.PossibleEntityTypeValues()
-}
-
 type EntityTypes = original.EntityTypes
 
 const (
@@ -237,10 +130,6 @@ const (
 	EntityTypesRelationship EntityTypes = original.EntityTypesRelationship
 )
 
-func PossibleEntityTypesValues() []EntityTypes {
-	return original.PossibleEntityTypesValues()
-}
-
 type ErrorManagementTypes = original.ErrorManagementTypes
 
 const (
@@ -248,10 +137,6 @@ const (
 	RejectUntilLimit  ErrorManagementTypes = original.RejectUntilLimit
 	StopImport        ErrorManagementTypes = original.StopImport
 )
-
-func PossibleErrorManagementTypesValues() []ErrorManagementTypes {
-	return original.PossibleErrorManagementTypesValues()
-}
 
 type FrequencyTypes = original.FrequencyTypes
 
@@ -263,20 +148,12 @@ const (
 	FrequencyTypesWeek   FrequencyTypes = original.FrequencyTypesWeek
 )
 
-func PossibleFrequencyTypesValues() []FrequencyTypes {
-	return original.PossibleFrequencyTypesValues()
-}
-
 type InstanceOperationType = original.InstanceOperationType
 
 const (
 	Delete InstanceOperationType = original.Delete
 	Upsert InstanceOperationType = original.Upsert
 )
-
-func PossibleInstanceOperationTypeValues() []InstanceOperationType {
-	return original.PossibleInstanceOperationTypeValues()
-}
 
 type KpiFunctions = original.KpiFunctions
 
@@ -291,20 +168,12 @@ const (
 	KpiFunctionsSum           KpiFunctions = original.KpiFunctionsSum
 )
 
-func PossibleKpiFunctionsValues() []KpiFunctions {
-	return original.PossibleKpiFunctionsValues()
-}
-
 type LinkTypes = original.LinkTypes
 
 const (
 	CopyIfNull   LinkTypes = original.CopyIfNull
 	UpdateAlways LinkTypes = original.UpdateAlways
 )
-
-func PossibleLinkTypesValues() []LinkTypes {
-	return original.PossibleLinkTypesValues()
-}
 
 type PermissionTypes = original.PermissionTypes
 
@@ -313,10 +182,6 @@ const (
 	Read   PermissionTypes = original.Read
 	Write  PermissionTypes = original.Write
 )
-
-func PossiblePermissionTypesValues() []PermissionTypes {
-	return original.PossiblePermissionTypesValues()
-}
 
 type PredictionModelLifeCycle = original.PredictionModelLifeCycle
 
@@ -341,10 +206,6 @@ const (
 	PredictionModelLifeCycleTrainingFailed           PredictionModelLifeCycle = original.PredictionModelLifeCycleTrainingFailed
 )
 
-func PossiblePredictionModelLifeCycleValues() []PredictionModelLifeCycle {
-	return original.PossiblePredictionModelLifeCycleValues()
-}
-
 type ProvisioningStates = original.ProvisioningStates
 
 const (
@@ -355,10 +216,6 @@ const (
 	ProvisioningStatesProvisioning      ProvisioningStates = original.ProvisioningStatesProvisioning
 	ProvisioningStatesSucceeded         ProvisioningStates = original.ProvisioningStatesSucceeded
 )
-
-func PossibleProvisioningStatesValues() []ProvisioningStates {
-	return original.PossibleProvisioningStatesValues()
-}
 
 type RoleTypes = original.RoleTypes
 
@@ -371,10 +228,6 @@ const (
 	Reader       RoleTypes = original.Reader
 )
 
-func PossibleRoleTypesValues() []RoleTypes {
-	return original.PossibleRoleTypesValues()
-}
-
 type Status = original.Status
 
 const (
@@ -382,10 +235,6 @@ const (
 	StatusDeleted Status = original.StatusDeleted
 	StatusNone    Status = original.StatusNone
 )
-
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
-}
 
 type AssignmentPrincipal = original.AssignmentPrincipal
 type AuthorizationPolicy = original.AuthorizationPolicy
@@ -535,61 +384,165 @@ type WidgetTypeListResultIterator = original.WidgetTypeListResultIterator
 type WidgetTypeListResultPage = original.WidgetTypeListResultPage
 type WidgetTypeResourceFormat = original.WidgetTypeResourceFormat
 type OperationsClient = original.OperationsClient
+type PredictionsClient = original.PredictionsClient
+type ProfilesClient = original.ProfilesClient
+type RelationshipLinksClient = original.RelationshipLinksClient
+type RelationshipsClient = original.RelationshipsClient
+type RoleAssignmentsClient = original.RoleAssignmentsClient
+type RolesClient = original.RolesClient
+type ViewsClient = original.ViewsClient
+type WidgetTypesClient = original.WidgetTypesClient
 
+func NewAuthorizationPoliciesClient(subscriptionID string) AuthorizationPoliciesClient {
+	return original.NewAuthorizationPoliciesClient(subscriptionID)
+}
+func NewAuthorizationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationPoliciesClient {
+	return original.NewAuthorizationPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorMappingsClient(subscriptionID string) ConnectorMappingsClient {
+	return original.NewConnectorMappingsClient(subscriptionID)
+}
+func NewConnectorMappingsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorMappingsClient {
+	return original.NewConnectorMappingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectorsClient(subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClient(subscriptionID)
+}
+func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) ConnectorsClient {
+	return original.NewConnectorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHubsClient(subscriptionID string) HubsClient {
+	return original.NewHubsClient(subscriptionID)
+}
+func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient {
+	return original.NewHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewImagesClient(subscriptionID string) ImagesClient {
+	return original.NewImagesClient(subscriptionID)
+}
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewInteractionsClient(subscriptionID string) InteractionsClient {
+	return original.NewInteractionsClient(subscriptionID)
+}
+func NewInteractionsClientWithBaseURI(baseURI string, subscriptionID string) InteractionsClient {
+	return original.NewInteractionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewKpiClient(subscriptionID string) KpiClient {
+	return original.NewKpiClient(subscriptionID)
+}
+func NewKpiClientWithBaseURI(baseURI string, subscriptionID string) KpiClient {
+	return original.NewKpiClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinksClient(subscriptionID string) LinksClient {
+	return original.NewLinksClient(subscriptionID)
+}
+func NewLinksClientWithBaseURI(baseURI string, subscriptionID string) LinksClient {
+	return original.NewLinksClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCalculationWindowTypesValues() []CalculationWindowTypes {
+	return original.PossibleCalculationWindowTypesValues()
+}
+func PossibleCanonicalPropertyValueTypeValues() []CanonicalPropertyValueType {
+	return original.PossibleCanonicalPropertyValueTypeValues()
+}
+func PossibleCardinalityTypesValues() []CardinalityTypes {
+	return original.PossibleCardinalityTypesValues()
+}
+func PossibleCompletionOperationTypesValues() []CompletionOperationTypes {
+	return original.PossibleCompletionOperationTypesValues()
+}
+func PossibleConnectorMappingStatesValues() []ConnectorMappingStates {
+	return original.PossibleConnectorMappingStatesValues()
+}
+func PossibleConnectorStatesValues() []ConnectorStates {
+	return original.PossibleConnectorStatesValues()
+}
+func PossibleConnectorTypesValues() []ConnectorTypes {
+	return original.PossibleConnectorTypesValues()
+}
+func PossibleDataSourceTypeValues() []DataSourceType {
+	return original.PossibleDataSourceTypeValues()
+}
+func PossibleEntityTypeValues() []EntityType {
+	return original.PossibleEntityTypeValues()
+}
+func PossibleEntityTypesValues() []EntityTypes {
+	return original.PossibleEntityTypesValues()
+}
+func PossibleErrorManagementTypesValues() []ErrorManagementTypes {
+	return original.PossibleErrorManagementTypesValues()
+}
+func PossibleFrequencyTypesValues() []FrequencyTypes {
+	return original.PossibleFrequencyTypesValues()
+}
+func PossibleInstanceOperationTypeValues() []InstanceOperationType {
+	return original.PossibleInstanceOperationTypeValues()
+}
+func PossibleKpiFunctionsValues() []KpiFunctions {
+	return original.PossibleKpiFunctionsValues()
+}
+func PossibleLinkTypesValues() []LinkTypes {
+	return original.PossibleLinkTypesValues()
+}
+func PossiblePermissionTypesValues() []PermissionTypes {
+	return original.PossiblePermissionTypesValues()
+}
+func PossiblePredictionModelLifeCycleValues() []PredictionModelLifeCycle {
+	return original.PossiblePredictionModelLifeCycleValues()
+}
+func PossibleProvisioningStatesValues() []ProvisioningStates {
+	return original.PossibleProvisioningStatesValues()
+}
+func PossibleRoleTypesValues() []RoleTypes {
+	return original.PossibleRoleTypesValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type PredictionsClient = original.PredictionsClient
-
 func NewPredictionsClient(subscriptionID string) PredictionsClient {
 	return original.NewPredictionsClient(subscriptionID)
 }
 func NewPredictionsClientWithBaseURI(baseURI string, subscriptionID string) PredictionsClient {
 	return original.NewPredictionsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ProfilesClient = original.ProfilesClient
-
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
 }
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RelationshipLinksClient = original.RelationshipLinksClient
-
 func NewRelationshipLinksClient(subscriptionID string) RelationshipLinksClient {
 	return original.NewRelationshipLinksClient(subscriptionID)
 }
 func NewRelationshipLinksClientWithBaseURI(baseURI string, subscriptionID string) RelationshipLinksClient {
 	return original.NewRelationshipLinksClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RelationshipsClient = original.RelationshipsClient
-
 func NewRelationshipsClient(subscriptionID string) RelationshipsClient {
 	return original.NewRelationshipsClient(subscriptionID)
 }
 func NewRelationshipsClientWithBaseURI(baseURI string, subscriptionID string) RelationshipsClient {
 	return original.NewRelationshipsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RoleAssignmentsClient = original.RoleAssignmentsClient
-
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)
 }
 func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RolesClient = original.RolesClient
-
 func NewRolesClient(subscriptionID string) RolesClient {
 	return original.NewRolesClient(subscriptionID)
 }
@@ -602,18 +555,12 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type ViewsClient = original.ViewsClient
-
 func NewViewsClient(subscriptionID string) ViewsClient {
 	return original.NewViewsClient(subscriptionID)
 }
 func NewViewsClientWithBaseURI(baseURI string, subscriptionID string) ViewsClient {
 	return original.NewViewsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WidgetTypesClient = original.WidgetTypesClient
-
 func NewWidgetTypesClient(subscriptionID string) WidgetTypesClient {
 	return original.NewWidgetTypesClient(subscriptionID)
 }

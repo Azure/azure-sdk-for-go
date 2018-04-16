@@ -26,24 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type Datagrain = original.Datagrain
 
 const (
 	DailyGrain   Datagrain = original.DailyGrain
 	MonthlyGrain Datagrain = original.MonthlyGrain
 )
-
-func PossibleDatagrainValues() []Datagrain {
-	return original.PossibleDatagrainValues()
-}
 
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -66,34 +54,37 @@ type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+type ReservationsSummariesClient = original.ReservationsSummariesClient
+type UsageDetailsClient = original.UsageDetailsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDatagrainValues() []Datagrain {
+	return original.PossibleDatagrainValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-
 func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClient(subscriptionID)
 }
 func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReservationsSummariesClient = original.ReservationsSummariesClient
-
 func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClient(subscriptionID)
 }
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsageDetailsClient = original.UsageDetailsClient
-
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)
 }

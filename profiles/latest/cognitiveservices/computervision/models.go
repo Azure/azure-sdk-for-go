@@ -22,14 +22,6 @@ package computervision
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/computervision"
 
 type BaseClient = original.BaseClient
-
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-
 type AzureRegions = original.AzureRegions
 
 const (
@@ -47,10 +39,6 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
-}
-
 type Details = original.Details
 
 const (
@@ -58,20 +46,12 @@ const (
 	Landmarks   Details = original.Landmarks
 )
 
-func PossibleDetailsValues() []Details {
-	return original.PossibleDetailsValues()
-}
-
 type DomainModels = original.DomainModels
 
 const (
 	DomainModelsCelebrities DomainModels = original.DomainModelsCelebrities
 	DomainModelsLandmarks   DomainModels = original.DomainModelsLandmarks
 )
-
-func PossibleDomainModelsValues() []DomainModels {
-	return original.PossibleDomainModelsValues()
-}
 
 type ErrorCodes = original.ErrorCodes
 
@@ -91,10 +71,6 @@ const (
 	Unspecified               ErrorCodes = original.Unspecified
 )
 
-func PossibleErrorCodesValues() []ErrorCodes {
-	return original.PossibleErrorCodesValues()
-}
-
 type Gender = original.Gender
 
 const (
@@ -102,20 +78,12 @@ const (
 	Male   Gender = original.Male
 )
 
-func PossibleGenderValues() []Gender {
-	return original.PossibleGenderValues()
-}
-
 type Language1 = original.Language1
 
 const (
 	En Language1 = original.En
 	Zh Language1 = original.Zh
 )
-
-func PossibleLanguage1Values() []Language1 {
-	return original.PossibleLanguage1Values()
-}
 
 type OcrLanguages = original.OcrLanguages
 
@@ -149,10 +117,6 @@ const (
 	OcrLanguagesZhHant OcrLanguages = original.OcrLanguagesZhHant
 )
 
-func PossibleOcrLanguagesValues() []OcrLanguages {
-	return original.PossibleOcrLanguagesValues()
-}
-
 type TextOperationStatusCodes = original.TextOperationStatusCodes
 
 const (
@@ -161,10 +125,6 @@ const (
 	Running    TextOperationStatusCodes = original.Running
 	Succeeded  TextOperationStatusCodes = original.Succeeded
 )
-
-func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
-	return original.PossibleTextOperationStatusCodesValues()
-}
 
 type VisualFeatureTypes = original.VisualFeatureTypes
 
@@ -177,10 +137,6 @@ const (
 	VisualFeatureTypesImageType   VisualFeatureTypes = original.VisualFeatureTypesImageType
 	VisualFeatureTypesTags        VisualFeatureTypes = original.VisualFeatureTypesTags
 )
-
-func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
-	return original.PossibleVisualFeatureTypesValues()
-}
 
 type AdultInfo = original.AdultInfo
 type Category = original.Category
@@ -213,6 +169,39 @@ type TagResult = original.TagResult
 type TextOperationResult = original.TextOperationResult
 type Word = original.Word
 
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return original.PossibleAzureRegionsValues()
+}
+func PossibleDetailsValues() []Details {
+	return original.PossibleDetailsValues()
+}
+func PossibleDomainModelsValues() []DomainModels {
+	return original.PossibleDomainModelsValues()
+}
+func PossibleErrorCodesValues() []ErrorCodes {
+	return original.PossibleErrorCodesValues()
+}
+func PossibleGenderValues() []Gender {
+	return original.PossibleGenderValues()
+}
+func PossibleLanguage1Values() []Language1 {
+	return original.PossibleLanguage1Values()
+}
+func PossibleOcrLanguagesValues() []OcrLanguages {
+	return original.PossibleOcrLanguagesValues()
+}
+func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
+	return original.PossibleTextOperationStatusCodesValues()
+}
+func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
+	return original.PossibleVisualFeatureTypesValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

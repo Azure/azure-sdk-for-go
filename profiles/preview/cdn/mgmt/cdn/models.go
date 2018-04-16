@@ -26,41 +26,9 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CustomDomainsClient = original.CustomDomainsClient
-
-func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClient(subscriptionID)
-}
-func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type EdgeNodesClient = original.EdgeNodesClient
-
-func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClient(subscriptionID)
-}
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type EndpointsClient = original.EndpointsClient
-
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
-}
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CacheBehavior = original.CacheBehavior
 
 const (
@@ -69,10 +37,6 @@ const (
 	SetIfMissing CacheBehavior = original.SetIfMissing
 )
 
-func PossibleCacheBehaviorValues() []CacheBehavior {
-	return original.PossibleCacheBehaviorValues()
-}
-
 type CustomDomainResourceState = original.CustomDomainResourceState
 
 const (
@@ -80,10 +44,6 @@ const (
 	Creating CustomDomainResourceState = original.Creating
 	Deleting CustomDomainResourceState = original.Deleting
 )
-
-func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
-	return original.PossibleCustomDomainResourceStateValues()
-}
 
 type CustomHTTPSProvisioningState = original.CustomHTTPSProvisioningState
 
@@ -94,10 +54,6 @@ const (
 	Enabling  CustomHTTPSProvisioningState = original.Enabling
 	Failed    CustomHTTPSProvisioningState = original.Failed
 )
-
-func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState {
-	return original.PossibleCustomHTTPSProvisioningStateValues()
-}
 
 type CustomHTTPSProvisioningSubstate = original.CustomHTTPSProvisioningSubstate
 
@@ -114,10 +70,6 @@ const (
 	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
 )
 
-func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
-	return original.PossibleCustomHTTPSProvisioningSubstateValues()
-}
-
 type EndpointResourceState = original.EndpointResourceState
 
 const (
@@ -129,20 +81,12 @@ const (
 	EndpointResourceStateStopping EndpointResourceState = original.EndpointResourceStateStopping
 )
 
-func PossibleEndpointResourceStateValues() []EndpointResourceState {
-	return original.PossibleEndpointResourceStateValues()
-}
-
 type GeoFilterActions = original.GeoFilterActions
 
 const (
 	Allow GeoFilterActions = original.Allow
 	Block GeoFilterActions = original.Block
 )
-
-func PossibleGeoFilterActionsValues() []GeoFilterActions {
-	return original.PossibleGeoFilterActionsValues()
-}
 
 type MatchType = original.MatchType
 
@@ -151,20 +95,12 @@ const (
 	Wildcard MatchType = original.Wildcard
 )
 
-func PossibleMatchTypeValues() []MatchType {
-	return original.PossibleMatchTypeValues()
-}
-
 type Name = original.Name
 
 const (
 	NameCacheExpiration    Name = original.NameCacheExpiration
 	NameDeliveryRuleAction Name = original.NameDeliveryRuleAction
 )
-
-func PossibleNameValues() []Name {
-	return original.PossibleNameValues()
-}
 
 type NameBasicDeliveryRuleCondition = original.NameBasicDeliveryRuleCondition
 
@@ -173,10 +109,6 @@ const (
 	NameURLFileExtension      NameBasicDeliveryRuleCondition = original.NameURLFileExtension
 	NameURLPath               NameBasicDeliveryRuleCondition = original.NameURLPath
 )
-
-func PossibleNameBasicDeliveryRuleConditionValues() []NameBasicDeliveryRuleCondition {
-	return original.PossibleNameBasicDeliveryRuleConditionValues()
-}
 
 type OptimizationType = original.OptimizationType
 
@@ -188,10 +120,6 @@ const (
 	VideoOnDemandMediaStreaming OptimizationType = original.VideoOnDemandMediaStreaming
 )
 
-func PossibleOptimizationTypeValues() []OptimizationType {
-	return original.PossibleOptimizationTypeValues()
-}
-
 type OriginResourceState = original.OriginResourceState
 
 const (
@@ -199,10 +127,6 @@ const (
 	OriginResourceStateCreating OriginResourceState = original.OriginResourceStateCreating
 	OriginResourceStateDeleting OriginResourceState = original.OriginResourceStateDeleting
 )
-
-func PossibleOriginResourceStateValues() []OriginResourceState {
-	return original.PossibleOriginResourceStateValues()
-}
 
 type ProfileResourceState = original.ProfileResourceState
 
@@ -213,10 +137,6 @@ const (
 	ProfileResourceStateDisabled ProfileResourceState = original.ProfileResourceStateDisabled
 )
 
-func PossibleProfileResourceStateValues() []ProfileResourceState {
-	return original.PossibleProfileResourceStateValues()
-}
-
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
 
 const (
@@ -226,19 +146,11 @@ const (
 	UseQueryString    QueryStringCachingBehavior = original.UseQueryString
 )
 
-func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
-	return original.PossibleQueryStringCachingBehaviorValues()
-}
-
 type ResourceType = original.ResourceType
 
 const (
 	MicrosoftCdnProfilesEndpoints ResourceType = original.MicrosoftCdnProfilesEndpoints
 )
-
-func PossibleResourceTypeValues() []ResourceType {
-	return original.PossibleResourceTypeValues()
-}
 
 type SkuName = original.SkuName
 
@@ -249,10 +161,6 @@ const (
 	StandardChinaCdn SkuName = original.StandardChinaCdn
 	StandardVerizon  SkuName = original.StandardVerizon
 )
-
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
 
 type CacheExpirationActionParameters = original.CacheExpirationActionParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
@@ -341,34 +249,97 @@ type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
 type OperationsClient = original.OperationsClient
+type OriginsClient = original.OriginsClient
+type ProfilesClient = original.ProfilesClient
+type ResourceUsageClient = original.ResourceUsageClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
+}
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClient(subscriptionID)
+}
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
+}
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCacheBehaviorValues() []CacheBehavior {
+	return original.PossibleCacheBehaviorValues()
+}
+func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
+	return original.PossibleCustomDomainResourceStateValues()
+}
+func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState {
+	return original.PossibleCustomHTTPSProvisioningStateValues()
+}
+func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
+	return original.PossibleCustomHTTPSProvisioningSubstateValues()
+}
+func PossibleEndpointResourceStateValues() []EndpointResourceState {
+	return original.PossibleEndpointResourceStateValues()
+}
+func PossibleGeoFilterActionsValues() []GeoFilterActions {
+	return original.PossibleGeoFilterActionsValues()
+}
+func PossibleMatchTypeValues() []MatchType {
+	return original.PossibleMatchTypeValues()
+}
+func PossibleNameValues() []Name {
+	return original.PossibleNameValues()
+}
+func PossibleNameBasicDeliveryRuleConditionValues() []NameBasicDeliveryRuleCondition {
+	return original.PossibleNameBasicDeliveryRuleConditionValues()
+}
+func PossibleOptimizationTypeValues() []OptimizationType {
+	return original.PossibleOptimizationTypeValues()
+}
+func PossibleOriginResourceStateValues() []OriginResourceState {
+	return original.PossibleOriginResourceStateValues()
+}
+func PossibleProfileResourceStateValues() []ProfileResourceState {
+	return original.PossibleProfileResourceStateValues()
+}
+func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
+	return original.PossibleQueryStringCachingBehaviorValues()
+}
+func PossibleResourceTypeValues() []ResourceType {
+	return original.PossibleResourceTypeValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type OriginsClient = original.OriginsClient
-
 func NewOriginsClient(subscriptionID string) OriginsClient {
 	return original.NewOriginsClient(subscriptionID)
 }
 func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
 	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ProfilesClient = original.ProfilesClient
-
 func NewProfilesClient(subscriptionID string) ProfilesClient {
 	return original.NewProfilesClient(subscriptionID)
 }
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ResourceUsageClient = original.ResourceUsageClient
-
 func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
 	return original.NewResourceUsageClient(subscriptionID)
 }

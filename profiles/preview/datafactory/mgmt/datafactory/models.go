@@ -23,71 +23,16 @@ import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/201
 
 type ActivityRunsClient = original.ActivityRunsClient
 
-func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClient(subscriptionID)
-}
-func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
-	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DatasetsClient = original.DatasetsClient
-
-func NewDatasetsClient(subscriptionID string) DatasetsClient {
-	return original.NewDatasetsClient(subscriptionID)
-}
-func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
-	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type FactoriesClient = original.FactoriesClient
-
-func NewFactoriesClient(subscriptionID string) FactoriesClient {
-	return original.NewFactoriesClient(subscriptionID)
-}
-func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string) FactoriesClient {
-	return original.NewFactoriesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
-
-func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeNodesClient {
-	return original.NewIntegrationRuntimeNodesClient(subscriptionID)
-}
-func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
-	return original.NewIntegrationRuntimeNodesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
-
-func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
-	return original.NewIntegrationRuntimesClient(subscriptionID)
-}
-func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
-	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LinkedServicesClient = original.LinkedServicesClient
-
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -97,10 +42,6 @@ const (
 	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return original.PossibleAuthenticationTypeValues()
-}
-
 type AuthorizationType = original.AuthorizationType
 
 const (
@@ -109,20 +50,12 @@ const (
 	AuthorizationTypeRBAC                               AuthorizationType = original.AuthorizationTypeRBAC
 )
 
-func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return original.PossibleAuthorizationTypeValues()
-}
-
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
 	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
 	Upload AzureSearchIndexWriteBehaviorType = original.Upload
 )
-
-func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
-	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
-}
 
 type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
 
@@ -139,10 +72,6 @@ const (
 	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
-func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
-	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
-}
-
 type CopyBehaviorType = original.CopyBehaviorType
 
 const (
@@ -151,20 +80,12 @@ const (
 	PreserveHierarchy CopyBehaviorType = original.PreserveHierarchy
 )
 
-func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
-	return original.PossibleCopyBehaviorTypeValues()
-}
-
 type DatasetCompressionLevel = original.DatasetCompressionLevel
 
 const (
 	Fastest DatasetCompressionLevel = original.Fastest
 	Optimal DatasetCompressionLevel = original.Optimal
 )
-
-func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
-	return original.PossibleDatasetCompressionLevelValues()
-}
 
 type DayOfWeek = original.DayOfWeek
 
@@ -178,10 +99,6 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return original.PossibleDayOfWeekValues()
-}
-
 type DaysOfWeek = original.DaysOfWeek
 
 const (
@@ -194,19 +111,11 @@ const (
 	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return original.PossibleDaysOfWeekValues()
-}
-
 type Db2AuthenticationType = original.Db2AuthenticationType
 
 const (
 	Basic Db2AuthenticationType = original.Basic
 )
-
-func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
-	return original.PossibleDb2AuthenticationTypeValues()
-}
 
 type DependencyCondition = original.DependencyCondition
 
@@ -217,20 +126,12 @@ const (
 	Succeeded DependencyCondition = original.Succeeded
 )
 
-func PossibleDependencyConditionValues() []DependencyCondition {
-	return original.PossibleDependencyConditionValues()
-}
-
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
 	FtpAuthenticationTypeAnonymous FtpAuthenticationType = original.FtpAuthenticationTypeAnonymous
 	FtpAuthenticationTypeBasic     FtpAuthenticationType = original.FtpAuthenticationTypeBasic
 )
-
-func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
-	return original.PossibleFtpAuthenticationTypeValues()
-}
 
 type GoogleBigQueryAuthenticationType = original.GoogleBigQueryAuthenticationType
 
@@ -239,20 +140,12 @@ const (
 	UserAuthentication    GoogleBigQueryAuthenticationType = original.UserAuthentication
 )
 
-func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthenticationType {
-	return original.PossibleGoogleBigQueryAuthenticationTypeValues()
-}
-
 type HBaseAuthenticationType = original.HBaseAuthenticationType
 
 const (
 	HBaseAuthenticationTypeAnonymous HBaseAuthenticationType = original.HBaseAuthenticationTypeAnonymous
 	HBaseAuthenticationTypeBasic     HBaseAuthenticationType = original.HBaseAuthenticationTypeBasic
 )
-
-func PossibleHBaseAuthenticationTypeValues() []HBaseAuthenticationType {
-	return original.PossibleHBaseAuthenticationTypeValues()
-}
 
 type HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOption
 
@@ -261,10 +154,6 @@ const (
 	Failure HDInsightActivityDebugInfoOption = original.Failure
 	None    HDInsightActivityDebugInfoOption = original.None
 )
-
-func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugInfoOption {
-	return original.PossibleHDInsightActivityDebugInfoOptionValues()
-}
 
 type HiveAuthenticationType = original.HiveAuthenticationType
 
@@ -275,10 +164,6 @@ const (
 	WindowsAzureHDInsightService HiveAuthenticationType = original.WindowsAzureHDInsightService
 )
 
-func PossibleHiveAuthenticationTypeValues() []HiveAuthenticationType {
-	return original.PossibleHiveAuthenticationTypeValues()
-}
-
 type HiveServerType = original.HiveServerType
 
 const (
@@ -287,10 +172,6 @@ const (
 	HiveThriftServer HiveServerType = original.HiveThriftServer
 )
 
-func PossibleHiveServerTypeValues() []HiveServerType {
-	return original.PossibleHiveServerTypeValues()
-}
-
 type HiveThriftTransportProtocol = original.HiveThriftTransportProtocol
 
 const (
@@ -298,10 +179,6 @@ const (
 	HTTP   HiveThriftTransportProtocol = original.HTTP
 	SASL   HiveThriftTransportProtocol = original.SASL
 )
-
-func PossibleHiveThriftTransportProtocolValues() []HiveThriftTransportProtocol {
-	return original.PossibleHiveThriftTransportProtocolValues()
-}
 
 type HTTPAuthenticationType = original.HTTPAuthenticationType
 
@@ -313,10 +190,6 @@ const (
 	HTTPAuthenticationTypeWindows           HTTPAuthenticationType = original.HTTPAuthenticationTypeWindows
 )
 
-func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
-	return original.PossibleHTTPAuthenticationTypeValues()
-}
-
 type ImpalaAuthenticationType = original.ImpalaAuthenticationType
 
 const (
@@ -325,20 +198,12 @@ const (
 	ImpalaAuthenticationTypeUsernameAndPassword ImpalaAuthenticationType = original.ImpalaAuthenticationTypeUsernameAndPassword
 )
 
-func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
-	return original.PossibleImpalaAuthenticationTypeValues()
-}
-
 type IntegrationRuntimeAuthKeyName = original.IntegrationRuntimeAuthKeyName
 
 const (
 	AuthKey1 IntegrationRuntimeAuthKeyName = original.AuthKey1
 	AuthKey2 IntegrationRuntimeAuthKeyName = original.AuthKey2
 )
-
-func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyName {
-	return original.PossibleIntegrationRuntimeAuthKeyNameValues()
-}
 
 type IntegrationRuntimeAutoUpdate = original.IntegrationRuntimeAutoUpdate
 
@@ -347,20 +212,12 @@ const (
 	On  IntegrationRuntimeAutoUpdate = original.On
 )
 
-func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate {
-	return original.PossibleIntegrationRuntimeAutoUpdateValues()
-}
-
 type IntegrationRuntimeEdition = original.IntegrationRuntimeEdition
 
 const (
 	Enterprise IntegrationRuntimeEdition = original.Enterprise
 	Standard   IntegrationRuntimeEdition = original.Standard
 )
-
-func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
-	return original.PossibleIntegrationRuntimeEditionValues()
-}
 
 type IntegrationRuntimeInternalChannelEncryptionMode = original.IntegrationRuntimeInternalChannelEncryptionMode
 
@@ -370,20 +227,12 @@ const (
 	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = original.SslEncrypted
 )
 
-func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []IntegrationRuntimeInternalChannelEncryptionMode {
-	return original.PossibleIntegrationRuntimeInternalChannelEncryptionModeValues()
-}
-
 type IntegrationRuntimeLicenseType = original.IntegrationRuntimeLicenseType
 
 const (
 	BasePrice       IntegrationRuntimeLicenseType = original.BasePrice
 	LicenseIncluded IntegrationRuntimeLicenseType = original.LicenseIncluded
 )
-
-func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
-	return original.PossibleIntegrationRuntimeLicenseTypeValues()
-}
 
 type IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTier
 
@@ -393,10 +242,6 @@ const (
 	IntegrationRuntimeSsisCatalogPricingTierPremiumRS IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierPremiumRS
 	IntegrationRuntimeSsisCatalogPricingTierStandard  IntegrationRuntimeSsisCatalogPricingTier = original.IntegrationRuntimeSsisCatalogPricingTierStandard
 )
-
-func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
-	return original.PossibleIntegrationRuntimeSsisCatalogPricingTierValues()
-}
 
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
@@ -412,20 +257,12 @@ const (
 	Stopping         IntegrationRuntimeState = original.Stopping
 )
 
-func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
-	return original.PossibleIntegrationRuntimeStateValues()
-}
-
 type IntegrationRuntimeType = original.IntegrationRuntimeType
 
 const (
 	Managed    IntegrationRuntimeType = original.Managed
 	SelfHosted IntegrationRuntimeType = original.SelfHosted
 )
-
-func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
-	return original.PossibleIntegrationRuntimeTypeValues()
-}
 
 type IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResult
 
@@ -434,20 +271,12 @@ const (
 	Succeed IntegrationRuntimeUpdateResult = original.Succeed
 )
 
-func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
-	return original.PossibleIntegrationRuntimeUpdateResultValues()
-}
-
 type JSONFormatFilePattern = original.JSONFormatFilePattern
 
 const (
 	ArrayOfObjects JSONFormatFilePattern = original.ArrayOfObjects
 	SetOfObjects   JSONFormatFilePattern = original.SetOfObjects
 )
-
-func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
-	return original.PossibleJSONFormatFilePatternValues()
-}
 
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
 
@@ -458,10 +287,6 @@ const (
 	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusUnavailable
 )
 
-func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
-	return original.PossibleManagedIntegrationRuntimeNodeStatusValues()
-}
-
 type MongoDbAuthenticationType = original.MongoDbAuthenticationType
 
 const (
@@ -469,20 +294,12 @@ const (
 	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
 )
 
-func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
-	return original.PossibleMongoDbAuthenticationTypeValues()
-}
-
 type ODataAuthenticationType = original.ODataAuthenticationType
 
 const (
 	ODataAuthenticationTypeAnonymous ODataAuthenticationType = original.ODataAuthenticationTypeAnonymous
 	ODataAuthenticationTypeBasic     ODataAuthenticationType = original.ODataAuthenticationTypeBasic
 )
-
-func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
-	return original.PossibleODataAuthenticationTypeValues()
-}
 
 type ParameterType = original.ParameterType
 
@@ -496,10 +313,6 @@ const (
 	ParameterTypeString       ParameterType = original.ParameterTypeString
 )
 
-func PossibleParameterTypeValues() []ParameterType {
-	return original.PossibleParameterTypeValues()
-}
-
 type PhoenixAuthenticationType = original.PhoenixAuthenticationType
 
 const (
@@ -507,10 +320,6 @@ const (
 	PhoenixAuthenticationTypeUsernameAndPassword          PhoenixAuthenticationType = original.PhoenixAuthenticationTypeUsernameAndPassword
 	PhoenixAuthenticationTypeWindowsAzureHDInsightService PhoenixAuthenticationType = original.PhoenixAuthenticationTypeWindowsAzureHDInsightService
 )
-
-func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
-	return original.PossiblePhoenixAuthenticationTypeValues()
-}
 
 type PipelineRunQueryFilterOperand = original.PipelineRunQueryFilterOperand
 
@@ -521,10 +330,6 @@ const (
 	Status       PipelineRunQueryFilterOperand = original.Status
 )
 
-func PossiblePipelineRunQueryFilterOperandValues() []PipelineRunQueryFilterOperand {
-	return original.PossiblePipelineRunQueryFilterOperandValues()
-}
-
 type PipelineRunQueryFilterOperator = original.PipelineRunQueryFilterOperator
 
 const (
@@ -534,20 +339,12 @@ const (
 	NotIn     PipelineRunQueryFilterOperator = original.NotIn
 )
 
-func PossiblePipelineRunQueryFilterOperatorValues() []PipelineRunQueryFilterOperator {
-	return original.PossiblePipelineRunQueryFilterOperatorValues()
-}
-
 type PipelineRunQueryOrder = original.PipelineRunQueryOrder
 
 const (
 	ASC  PipelineRunQueryOrder = original.ASC
 	DESC PipelineRunQueryOrder = original.DESC
 )
-
-func PossiblePipelineRunQueryOrderValues() []PipelineRunQueryOrder {
-	return original.PossiblePipelineRunQueryOrderValues()
-}
 
 type PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByField
 
@@ -556,10 +353,6 @@ const (
 	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = original.PipelineRunQueryOrderByFieldRunStart
 )
 
-func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField {
-	return original.PossiblePipelineRunQueryOrderByFieldValues()
-}
-
 type PolybaseSettingsRejectType = original.PolybaseSettingsRejectType
 
 const (
@@ -567,20 +360,12 @@ const (
 	Value      PolybaseSettingsRejectType = original.Value
 )
 
-func PossiblePolybaseSettingsRejectTypeValues() []PolybaseSettingsRejectType {
-	return original.PossiblePolybaseSettingsRejectTypeValues()
-}
-
 type PrestoAuthenticationType = original.PrestoAuthenticationType
 
 const (
 	PrestoAuthenticationTypeAnonymous PrestoAuthenticationType = original.PrestoAuthenticationTypeAnonymous
 	PrestoAuthenticationTypeLDAP      PrestoAuthenticationType = original.PrestoAuthenticationTypeLDAP
 )
-
-func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
-	return original.PossiblePrestoAuthenticationTypeValues()
-}
 
 type RecurrenceFrequency = original.RecurrenceFrequency
 
@@ -594,20 +379,12 @@ const (
 	Year         RecurrenceFrequency = original.Year
 )
 
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return original.PossibleRecurrenceFrequencyValues()
-}
-
 type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
 
 const (
 	Insert SalesforceSinkWriteBehavior = original.Insert
 	Upsert SalesforceSinkWriteBehavior = original.Upsert
 )
-
-func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
-	return original.PossibleSalesforceSinkWriteBehaviorValues()
-}
 
 type SalesforceSourceReadBehavior = original.SalesforceSourceReadBehavior
 
@@ -616,10 +393,6 @@ const (
 	QueryAll SalesforceSourceReadBehavior = original.QueryAll
 )
 
-func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
-	return original.PossibleSalesforceSourceReadBehaviorValues()
-}
-
 type SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehavior
 
 const (
@@ -627,20 +400,12 @@ const (
 	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorUpdate
 )
 
-func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
-	return original.PossibleSapCloudForCustomerSinkWriteBehaviorValues()
-}
-
 type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 
 const (
 	SapHanaAuthenticationTypeBasic   SapHanaAuthenticationType = original.SapHanaAuthenticationTypeBasic
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
 )
-
-func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
-	return original.PossibleSapHanaAuthenticationTypeValues()
-}
 
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
 
@@ -654,10 +419,6 @@ const (
 	SelfHostedIntegrationRuntimeNodeStatusUpgrading        SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatusUpgrading
 )
 
-func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
-	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
-}
-
 type ServiceNowAuthenticationType = original.ServiceNowAuthenticationType
 
 const (
@@ -665,20 +426,12 @@ const (
 	ServiceNowAuthenticationTypeOAuth2 ServiceNowAuthenticationType = original.ServiceNowAuthenticationTypeOAuth2
 )
 
-func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType {
-	return original.PossibleServiceNowAuthenticationTypeValues()
-}
-
 type SftpAuthenticationType = original.SftpAuthenticationType
 
 const (
 	SftpAuthenticationTypeBasic        SftpAuthenticationType = original.SftpAuthenticationTypeBasic
 	SftpAuthenticationTypeSSHPublicKey SftpAuthenticationType = original.SftpAuthenticationTypeSSHPublicKey
 )
-
-func PossibleSftpAuthenticationTypeValues() []SftpAuthenticationType {
-	return original.PossibleSftpAuthenticationTypeValues()
-}
 
 type SparkAuthenticationType = original.SparkAuthenticationType
 
@@ -689,10 +442,6 @@ const (
 	SparkAuthenticationTypeWindowsAzureHDInsightService SparkAuthenticationType = original.SparkAuthenticationTypeWindowsAzureHDInsightService
 )
 
-func PossibleSparkAuthenticationTypeValues() []SparkAuthenticationType {
-	return original.PossibleSparkAuthenticationTypeValues()
-}
-
 type SparkServerType = original.SparkServerType
 
 const (
@@ -700,10 +449,6 @@ const (
 	SharkServer2      SparkServerType = original.SharkServer2
 	SparkThriftServer SparkServerType = original.SparkThriftServer
 )
-
-func PossibleSparkServerTypeValues() []SparkServerType {
-	return original.PossibleSparkServerTypeValues()
-}
 
 type SparkThriftTransportProtocol = original.SparkThriftTransportProtocol
 
@@ -713,20 +458,12 @@ const (
 	SparkThriftTransportProtocolSASL   SparkThriftTransportProtocol = original.SparkThriftTransportProtocolSASL
 )
 
-func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol {
-	return original.PossibleSparkThriftTransportProtocolValues()
-}
-
 type SSISExecutionRuntime = original.SSISExecutionRuntime
 
 const (
 	X64 SSISExecutionRuntime = original.X64
 	X86 SSISExecutionRuntime = original.X86
 )
-
-func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
-	return original.PossibleSSISExecutionRuntimeValues()
-}
 
 type StoredProcedureParameterType = original.StoredProcedureParameterType
 
@@ -739,10 +476,6 @@ const (
 	String  StoredProcedureParameterType = original.String
 )
 
-func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
-	return original.PossibleStoredProcedureParameterTypeValues()
-}
-
 type SybaseAuthenticationType = original.SybaseAuthenticationType
 
 const (
@@ -750,20 +483,12 @@ const (
 	SybaseAuthenticationTypeWindows SybaseAuthenticationType = original.SybaseAuthenticationTypeWindows
 )
 
-func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
-	return original.PossibleSybaseAuthenticationTypeValues()
-}
-
 type TeradataAuthenticationType = original.TeradataAuthenticationType
 
 const (
 	TeradataAuthenticationTypeBasic   TeradataAuthenticationType = original.TeradataAuthenticationTypeBasic
 	TeradataAuthenticationTypeWindows TeradataAuthenticationType = original.TeradataAuthenticationTypeWindows
 )
-
-func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
-	return original.PossibleTeradataAuthenticationTypeValues()
-}
 
 type TriggerRunStatus = original.TriggerRunStatus
 
@@ -773,10 +498,6 @@ const (
 	TriggerRunStatusSucceeded  TriggerRunStatus = original.TriggerRunStatusSucceeded
 )
 
-func PossibleTriggerRunStatusValues() []TriggerRunStatus {
-	return original.PossibleTriggerRunStatusValues()
-}
-
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
@@ -785,20 +506,12 @@ const (
 	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
 )
 
-func PossibleTriggerRuntimeStateValues() []TriggerRuntimeState {
-	return original.PossibleTriggerRuntimeStateValues()
-}
-
 type TumblingWindowFrequency = original.TumblingWindowFrequency
 
 const (
 	TumblingWindowFrequencyHour   TumblingWindowFrequency = original.TumblingWindowFrequencyHour
 	TumblingWindowFrequencyMinute TumblingWindowFrequency = original.TumblingWindowFrequencyMinute
 )
-
-func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
-	return original.PossibleTumblingWindowFrequencyValues()
-}
 
 type Type = original.Type
 
@@ -807,10 +520,6 @@ const (
 	TypeSecretBase          Type = original.TypeSecretBase
 	TypeSecureString        Type = original.TypeSecureString
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type TypeBasicActivity = original.TypeBasicActivity
 
@@ -842,10 +551,6 @@ const (
 	TypeWebActivity              TypeBasicActivity = original.TypeWebActivity
 )
 
-func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return original.PossibleTypeBasicActivityValues()
-}
-
 type TypeBasicCopySink = original.TypeBasicCopySink
 
 const (
@@ -865,10 +570,6 @@ const (
 	TypeSQLDWSink                TypeBasicCopySink = original.TypeSQLDWSink
 	TypeSQLSink                  TypeBasicCopySink = original.TypeSQLSink
 )
-
-func PossibleTypeBasicCopySinkValues() []TypeBasicCopySink {
-	return original.PossibleTypeBasicCopySinkValues()
-}
 
 type TypeBasicCopySource = original.TypeBasicCopySource
 
@@ -926,20 +627,12 @@ const (
 	TypeZohoSource                     TypeBasicCopySource = original.TypeZohoSource
 )
 
-func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
-	return original.PossibleTypeBasicCopySourceValues()
-}
-
 type TypeBasicCopyTranslator = original.TypeBasicCopyTranslator
 
 const (
 	TypeCopyTranslator    TypeBasicCopyTranslator = original.TypeCopyTranslator
 	TypeTabularTranslator TypeBasicCopyTranslator = original.TypeTabularTranslator
 )
-
-func PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator {
-	return original.PossibleTypeBasicCopyTranslatorValues()
-}
 
 type TypeBasicDataset = original.TypeBasicDataset
 
@@ -1000,10 +693,6 @@ const (
 	TypeZohoObject                     TypeBasicDataset = original.TypeZohoObject
 )
 
-func PossibleTypeBasicDatasetValues() []TypeBasicDataset {
-	return original.PossibleTypeBasicDatasetValues()
-}
-
 type TypeBasicDatasetCompression = original.TypeBasicDatasetCompression
 
 const (
@@ -1013,10 +702,6 @@ const (
 	TypeGZip               TypeBasicDatasetCompression = original.TypeGZip
 	TypeZipDeflate         TypeBasicDatasetCompression = original.TypeZipDeflate
 )
-
-func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
-	return original.PossibleTypeBasicDatasetCompressionValues()
-}
 
 type TypeBasicDatasetStorageFormat = original.TypeBasicDatasetStorageFormat
 
@@ -1029,10 +714,6 @@ const (
 	TypeTextFormat           TypeBasicDatasetStorageFormat = original.TypeTextFormat
 )
 
-func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
-	return original.PossibleTypeBasicDatasetStorageFormatValues()
-}
-
 type TypeBasicIntegrationRuntime = original.TypeBasicIntegrationRuntime
 
 const (
@@ -1041,10 +722,6 @@ const (
 	TypeSelfHosted         TypeBasicIntegrationRuntime = original.TypeSelfHosted
 )
 
-func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
-	return original.PossibleTypeBasicIntegrationRuntimeValues()
-}
-
 type TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatus
 
 const (
@@ -1052,10 +729,6 @@ const (
 	TypeBasicIntegrationRuntimeStatusTypeManaged                  TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatusTypeManaged
 	TypeBasicIntegrationRuntimeStatusTypeSelfHosted               TypeBasicIntegrationRuntimeStatus = original.TypeBasicIntegrationRuntimeStatusTypeSelfHosted
 )
-
-func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
-	return original.PossibleTypeBasicIntegrationRuntimeStatusValues()
-}
 
 type TypeBasicLinkedService = original.TypeBasicLinkedService
 
@@ -1133,10 +806,6 @@ const (
 	TypeZoho                     TypeBasicLinkedService = original.TypeZoho
 )
 
-func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
-	return original.PossibleTypeBasicLinkedServiceValues()
-}
-
 type TypeBasicTrigger = original.TypeBasicTrigger
 
 const (
@@ -1147,10 +816,6 @@ const (
 	TypeTumblingWindowTrigger   TypeBasicTrigger = original.TypeTumblingWindowTrigger
 )
 
-func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
-	return original.PossibleTypeBasicTriggerValues()
-}
-
 type WebActivityMethod = original.WebActivityMethod
 
 const (
@@ -1159,10 +824,6 @@ const (
 	POST   WebActivityMethod = original.POST
 	PUT    WebActivityMethod = original.PUT
 )
-
-func PossibleWebActivityMethodValues() []WebActivityMethod {
-	return original.PossibleWebActivityMethodValues()
-}
 
 type BasicActivity = original.BasicActivity
 type Activity = original.Activity
@@ -1653,34 +1314,283 @@ type ZohoLinkedServiceTypeProperties = original.ZohoLinkedServiceTypeProperties
 type ZohoObjectDataset = original.ZohoObjectDataset
 type ZohoSource = original.ZohoSource
 type OperationsClient = original.OperationsClient
+type PipelineRunsClient = original.PipelineRunsClient
+type PipelinesClient = original.PipelinesClient
+type TriggersClient = original.TriggersClient
 
+func NewActivityRunsClient(subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClient(subscriptionID)
+}
+func NewActivityRunsClientWithBaseURI(baseURI string, subscriptionID string) ActivityRunsClient {
+	return original.NewActivityRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatasetsClient(subscriptionID string) DatasetsClient {
+	return original.NewDatasetsClient(subscriptionID)
+}
+func NewDatasetsClientWithBaseURI(baseURI string, subscriptionID string) DatasetsClient {
+	return original.NewDatasetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFactoriesClient(subscriptionID string) FactoriesClient {
+	return original.NewFactoriesClient(subscriptionID)
+}
+func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string) FactoriesClient {
+	return original.NewFactoriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimeNodesClient(subscriptionID string) IntegrationRuntimeNodesClient {
+	return original.NewIntegrationRuntimeNodesClient(subscriptionID)
+}
+func NewIntegrationRuntimeNodesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodesClient {
+	return original.NewIntegrationRuntimeNodesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIntegrationRuntimesClient(subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClient(subscriptionID)
+}
+func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimesClient {
+	return original.NewIntegrationRuntimesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return original.PossibleAuthorizationTypeValues()
+}
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
+	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
+}
+func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
+	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
+}
+func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
+	return original.PossibleCopyBehaviorTypeValues()
+}
+func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
+	return original.PossibleDatasetCompressionLevelValues()
+}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return original.PossibleDaysOfWeekValues()
+}
+func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
+	return original.PossibleDb2AuthenticationTypeValues()
+}
+func PossibleDependencyConditionValues() []DependencyCondition {
+	return original.PossibleDependencyConditionValues()
+}
+func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
+	return original.PossibleFtpAuthenticationTypeValues()
+}
+func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthenticationType {
+	return original.PossibleGoogleBigQueryAuthenticationTypeValues()
+}
+func PossibleHBaseAuthenticationTypeValues() []HBaseAuthenticationType {
+	return original.PossibleHBaseAuthenticationTypeValues()
+}
+func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugInfoOption {
+	return original.PossibleHDInsightActivityDebugInfoOptionValues()
+}
+func PossibleHiveAuthenticationTypeValues() []HiveAuthenticationType {
+	return original.PossibleHiveAuthenticationTypeValues()
+}
+func PossibleHiveServerTypeValues() []HiveServerType {
+	return original.PossibleHiveServerTypeValues()
+}
+func PossibleHiveThriftTransportProtocolValues() []HiveThriftTransportProtocol {
+	return original.PossibleHiveThriftTransportProtocolValues()
+}
+func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
+	return original.PossibleHTTPAuthenticationTypeValues()
+}
+func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
+	return original.PossibleImpalaAuthenticationTypeValues()
+}
+func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyName {
+	return original.PossibleIntegrationRuntimeAuthKeyNameValues()
+}
+func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate {
+	return original.PossibleIntegrationRuntimeAutoUpdateValues()
+}
+func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
+	return original.PossibleIntegrationRuntimeEditionValues()
+}
+func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []IntegrationRuntimeInternalChannelEncryptionMode {
+	return original.PossibleIntegrationRuntimeInternalChannelEncryptionModeValues()
+}
+func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
+	return original.PossibleIntegrationRuntimeLicenseTypeValues()
+}
+func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRuntimeSsisCatalogPricingTier {
+	return original.PossibleIntegrationRuntimeSsisCatalogPricingTierValues()
+}
+func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
+	return original.PossibleIntegrationRuntimeStateValues()
+}
+func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
+	return original.PossibleIntegrationRuntimeTypeValues()
+}
+func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
+	return original.PossibleIntegrationRuntimeUpdateResultValues()
+}
+func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
+	return original.PossibleJSONFormatFilePatternValues()
+}
+func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
+	return original.PossibleManagedIntegrationRuntimeNodeStatusValues()
+}
+func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
+	return original.PossibleMongoDbAuthenticationTypeValues()
+}
+func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
+	return original.PossibleODataAuthenticationTypeValues()
+}
+func PossibleParameterTypeValues() []ParameterType {
+	return original.PossibleParameterTypeValues()
+}
+func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
+	return original.PossiblePhoenixAuthenticationTypeValues()
+}
+func PossiblePipelineRunQueryFilterOperandValues() []PipelineRunQueryFilterOperand {
+	return original.PossiblePipelineRunQueryFilterOperandValues()
+}
+func PossiblePipelineRunQueryFilterOperatorValues() []PipelineRunQueryFilterOperator {
+	return original.PossiblePipelineRunQueryFilterOperatorValues()
+}
+func PossiblePipelineRunQueryOrderValues() []PipelineRunQueryOrder {
+	return original.PossiblePipelineRunQueryOrderValues()
+}
+func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField {
+	return original.PossiblePipelineRunQueryOrderByFieldValues()
+}
+func PossiblePolybaseSettingsRejectTypeValues() []PolybaseSettingsRejectType {
+	return original.PossiblePolybaseSettingsRejectTypeValues()
+}
+func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
+	return original.PossiblePrestoAuthenticationTypeValues()
+}
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return original.PossibleRecurrenceFrequencyValues()
+}
+func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
+	return original.PossibleSalesforceSinkWriteBehaviorValues()
+}
+func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
+	return original.PossibleSalesforceSourceReadBehaviorValues()
+}
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
+	return original.PossibleSapCloudForCustomerSinkWriteBehaviorValues()
+}
+func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
+	return original.PossibleSapHanaAuthenticationTypeValues()
+}
+func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
+	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
+}
+func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType {
+	return original.PossibleServiceNowAuthenticationTypeValues()
+}
+func PossibleSftpAuthenticationTypeValues() []SftpAuthenticationType {
+	return original.PossibleSftpAuthenticationTypeValues()
+}
+func PossibleSparkAuthenticationTypeValues() []SparkAuthenticationType {
+	return original.PossibleSparkAuthenticationTypeValues()
+}
+func PossibleSparkServerTypeValues() []SparkServerType {
+	return original.PossibleSparkServerTypeValues()
+}
+func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol {
+	return original.PossibleSparkThriftTransportProtocolValues()
+}
+func PossibleSSISExecutionRuntimeValues() []SSISExecutionRuntime {
+	return original.PossibleSSISExecutionRuntimeValues()
+}
+func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
+	return original.PossibleStoredProcedureParameterTypeValues()
+}
+func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
+	return original.PossibleSybaseAuthenticationTypeValues()
+}
+func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
+	return original.PossibleTeradataAuthenticationTypeValues()
+}
+func PossibleTriggerRunStatusValues() []TriggerRunStatus {
+	return original.PossibleTriggerRunStatusValues()
+}
+func PossibleTriggerRuntimeStateValues() []TriggerRuntimeState {
+	return original.PossibleTriggerRuntimeStateValues()
+}
+func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
+	return original.PossibleTumblingWindowFrequencyValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleTypeBasicActivityValues() []TypeBasicActivity {
+	return original.PossibleTypeBasicActivityValues()
+}
+func PossibleTypeBasicCopySinkValues() []TypeBasicCopySink {
+	return original.PossibleTypeBasicCopySinkValues()
+}
+func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
+	return original.PossibleTypeBasicCopySourceValues()
+}
+func PossibleTypeBasicCopyTranslatorValues() []TypeBasicCopyTranslator {
+	return original.PossibleTypeBasicCopyTranslatorValues()
+}
+func PossibleTypeBasicDatasetValues() []TypeBasicDataset {
+	return original.PossibleTypeBasicDatasetValues()
+}
+func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
+	return original.PossibleTypeBasicDatasetCompressionValues()
+}
+func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
+	return original.PossibleTypeBasicDatasetStorageFormatValues()
+}
+func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
+	return original.PossibleTypeBasicIntegrationRuntimeValues()
+}
+func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
+	return original.PossibleTypeBasicIntegrationRuntimeStatusValues()
+}
+func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
+	return original.PossibleTypeBasicLinkedServiceValues()
+}
+func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
+	return original.PossibleTypeBasicTriggerValues()
+}
+func PossibleWebActivityMethodValues() []WebActivityMethod {
+	return original.PossibleWebActivityMethodValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type PipelineRunsClient = original.PipelineRunsClient
-
 func NewPipelineRunsClient(subscriptionID string) PipelineRunsClient {
 	return original.NewPipelineRunsClient(subscriptionID)
 }
 func NewPipelineRunsClientWithBaseURI(baseURI string, subscriptionID string) PipelineRunsClient {
 	return original.NewPipelineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type PipelinesClient = original.PipelinesClient
-
 func NewPipelinesClient(subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClient(subscriptionID)
 }
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TriggersClient = original.TriggersClient
-
 func NewTriggersClient(subscriptionID string) TriggersClient {
 	return original.NewTriggersClient(subscriptionID)
 }

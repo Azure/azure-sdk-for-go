@@ -26,24 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type PasswordName = original.PasswordName
 
 const (
 	Password  PasswordName = original.Password
 	Password2 PasswordName = original.Password2
 )
-
-func PossiblePasswordNameValues() []PasswordName {
-	return original.PossiblePasswordNameValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -56,20 +44,12 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type RegistryUsageUnit = original.RegistryUsageUnit
 
 const (
 	Bytes RegistryUsageUnit = original.Bytes
 	Count RegistryUsageUnit = original.Count
 )
-
-func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
-	return original.PossibleRegistryUsageUnitValues()
-}
 
 type SkuName = original.SkuName
 
@@ -80,10 +60,6 @@ const (
 	Standard SkuName = original.Standard
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type SkuTier = original.SkuTier
 
 const (
@@ -93,10 +69,6 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
-
 type WebhookAction = original.WebhookAction
 
 const (
@@ -104,20 +76,12 @@ const (
 	Push   WebhookAction = original.Push
 )
 
-func PossibleWebhookActionValues() []WebhookAction {
-	return original.PossibleWebhookActionValues()
-}
-
 type WebhookStatus = original.WebhookStatus
 
 const (
 	Disabled WebhookStatus = original.Disabled
 	Enabled  WebhookStatus = original.Enabled
 )
-
-func PossibleWebhookStatusValues() []WebhookStatus {
-	return original.PossibleWebhookStatusValues()
-}
 
 type Actor = original.Actor
 type CallbackConfig = original.CallbackConfig
@@ -180,25 +144,49 @@ type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
 type OperationsClient = original.OperationsClient
+type RegistriesClient = original.RegistriesClient
+type ReplicationsClient = original.ReplicationsClient
+type WebhooksClient = original.WebhooksClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossiblePasswordNameValues() []PasswordName {
+	return original.PossiblePasswordNameValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
+	return original.PossibleRegistryUsageUnitValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleWebhookActionValues() []WebhookAction {
+	return original.PossibleWebhookActionValues()
+}
+func PossibleWebhookStatusValues() []WebhookStatus {
+	return original.PossibleWebhookStatusValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RegistriesClient = original.RegistriesClient
-
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClient(subscriptionID)
 }
 func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ReplicationsClient = original.ReplicationsClient
-
 func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClient(subscriptionID)
 }
@@ -211,9 +199,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type WebhooksClient = original.WebhooksClient
-
 func NewWebhooksClient(subscriptionID string) WebhooksClient {
 	return original.NewWebhooksClient(subscriptionID)
 }

@@ -116,12 +116,12 @@ func (client TextModerationClient) DetectLanguageResponder(resp *http.Response) 
 
 // ScreenText detects profanity in more than 100 languages and match against custom and shared blacklists.
 //
-// language is language of the terms. textContentType is the content type. textContent is content to screen.
-// textContent will be closed upon successful return. Callers should ensure closure when receiving an
-// error.autocorrect is autocorrect text. pii is detect personal identifiable information. listID is the list Id.
+// textContentType is the content type. textContent is content to screen. textContent will be closed upon
+// successful return. Callers should ensure closure when receiving an error.language is language of the text.
+// autocorrect is autocorrect text. pii is detect personal identifiable information. listID is the list Id.
 // classify is classify input.
-func (client TextModerationClient) ScreenText(ctx context.Context, language string, textContentType string, textContent io.ReadCloser, autocorrect *bool, pii *bool, listID string, classify *bool) (result Screen, err error) {
-	req, err := client.ScreenTextPreparer(ctx, language, textContentType, textContent, autocorrect, pii, listID, classify)
+func (client TextModerationClient) ScreenText(ctx context.Context, textContentType string, textContent io.ReadCloser, language string, autocorrect *bool, pii *bool, listID string, classify *bool) (result Screen, err error) {
+	req, err := client.ScreenTextPreparer(ctx, textContentType, textContent, language, autocorrect, pii, listID, classify)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "contentmoderator.TextModerationClient", "ScreenText", nil, "Failure preparing request")
 		return
@@ -143,13 +143,14 @@ func (client TextModerationClient) ScreenText(ctx context.Context, language stri
 }
 
 // ScreenTextPreparer prepares the ScreenText request.
-func (client TextModerationClient) ScreenTextPreparer(ctx context.Context, language string, textContentType string, textContent io.ReadCloser, autocorrect *bool, pii *bool, listID string, classify *bool) (*http.Request, error) {
+func (client TextModerationClient) ScreenTextPreparer(ctx context.Context, textContentType string, textContent io.ReadCloser, language string, autocorrect *bool, pii *bool, listID string, classify *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"baseUrl": client.BaseURL,
 	}
 
-	queryParameters := map[string]interface{}{
-		"language": autorest.Encode("query", language),
+	queryParameters := map[string]interface{}{}
+	if len(language) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
 	}
 	if autocorrect != nil {
 		queryParameters["autocorrect"] = autorest.Encode("query", *autocorrect)

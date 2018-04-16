@@ -440,24 +440,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewImagesClient() ImagesClient {
-	return original.NewImagesClient()
-}
-func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
 func PossibleCurrencyValues() []Currency {
 	return original.PossibleCurrencyValues()
 }
@@ -505,4 +487,22 @@ func PossibleTypeValues() []Type {
 }
 func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
 	return original.PossibleTypeBasicResponseBaseValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewImagesClient() ImagesClient {
+	return original.NewImagesClient()
+}
+func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

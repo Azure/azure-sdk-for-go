@@ -98,15 +98,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func NewClient() Client {
-	return original.NewClient()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
-}
 func PossibleAppendModeTypeValues() []AppendModeType {
 	return original.PossibleAppendModeTypeValues()
 }
@@ -127,4 +118,13 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
 }

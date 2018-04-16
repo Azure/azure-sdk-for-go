@@ -21,6 +21,14 @@ package azurestack
 
 import original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
+type ProductsClient = original.ProductsClient
+type RegistrationsClient = original.RegistrationsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type CustomerSubscriptionsClient = original.CustomerSubscriptionsClient
 type ComputeRole = original.ComputeRole
@@ -82,14 +90,6 @@ type Resource = original.Resource
 type URI = original.URI
 type VirtualMachineExtensionProductProperties = original.VirtualMachineExtensionProductProperties
 type VirtualMachineProductProperties = original.VirtualMachineProductProperties
-type ProductsClient = original.ProductsClient
-type RegistrationsClient = original.RegistrationsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 
 func PossibleComputeRoleValues() []ComputeRole {
 	return original.PossibleComputeRoleValues()

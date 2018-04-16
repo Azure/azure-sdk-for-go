@@ -21,13 +21,6 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 
-type ClustersClient = original.ClustersClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type ConfigurationClient = original.ConfigurationClient
 type Cluster = original.Cluster
@@ -46,7 +39,26 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
+type ClustersClient = original.ClustersClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewConfigurationClient(subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClient(subscriptionID)
+}
+func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
 }
@@ -64,16 +76,4 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationClient(subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClient(subscriptionID)
-}
-func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

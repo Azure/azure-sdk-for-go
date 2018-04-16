@@ -21,6 +21,8 @@ package trafficmanager
 
 import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-05-01/trafficmanager"
 
+type EndpointsClient = original.EndpointsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -98,7 +100,6 @@ type Region = original.Region
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type ProfilesClient = original.ProfilesClient
-type EndpointsClient = original.EndpointsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

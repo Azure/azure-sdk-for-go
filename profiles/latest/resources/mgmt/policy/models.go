@@ -21,6 +21,7 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy"
 
+type AssignmentsClient = original.AssignmentsClient
 type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
@@ -54,8 +55,19 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type AssignmentsClient = original.AssignmentsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClient(subscriptionID)
+}
+func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
+	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
 	return original.NewDefinitionsClient(subscriptionID)
 }
@@ -73,16 +85,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewAssignmentsClient(subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClient(subscriptionID)
-}
-func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) AssignmentsClient {
-	return original.NewAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -41,6 +41,12 @@ const (
 
 type BaseClient = original.BaseClient
 
+func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
+	return original.NewResourceLinksClient(subscriptionID)
+}
+func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
+	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleFilterValues() []Filter {
 	return original.PossibleFilterValues()
 }
@@ -55,10 +61,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
-	return original.NewResourceLinksClient(subscriptionID)
-}
-func NewResourceLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceLinksClient {
-	return original.NewResourceLinksClientWithBaseURI(baseURI, subscriptionID)
 }

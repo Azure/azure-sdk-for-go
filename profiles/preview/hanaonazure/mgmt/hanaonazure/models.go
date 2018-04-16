@@ -21,7 +21,6 @@ package hanaonazure
 
 import original "github.com/Azure/azure-sdk-for-go/services/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
-type OperationsClient = original.OperationsClient
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -62,13 +61,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -92,4 +86,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

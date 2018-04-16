@@ -21,11 +21,6 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type VaultsClient = original.VaultsClient
 type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
@@ -162,6 +157,12 @@ type VaultPatchParameters = original.VaultPatchParameters
 type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

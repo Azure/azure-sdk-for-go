@@ -169,6 +169,18 @@ type TextOperationResult = original.TextOperationResult
 type Word = original.Word
 type BaseClient = original.BaseClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
 func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
 }
@@ -195,16 +207,4 @@ func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
 }
 func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
 	return original.PossibleVisualFeatureTypesValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
 }

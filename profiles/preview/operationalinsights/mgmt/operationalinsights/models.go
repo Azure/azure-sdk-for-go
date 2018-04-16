@@ -21,6 +21,13 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
+type DataSourcesClient = original.DataSourcesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type DataSourceKind = original.DataSourceKind
 
@@ -96,13 +103,6 @@ type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type LinkedServicesClient = original.LinkedServicesClient
 type WorkspacesClient = original.WorkspacesClient
-type DataSourcesClient = original.DataSourcesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 
 func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClient(subscriptionID)

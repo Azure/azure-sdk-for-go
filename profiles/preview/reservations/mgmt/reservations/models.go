@@ -21,6 +21,7 @@ package reservations
 
 import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations"
 
+type Client = original.Client
 type OperationClient = original.OperationClient
 type AppliedScopeType = original.AppliedScopeType
 
@@ -233,8 +234,25 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type Client = original.Client
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
+}
+func NewOperationClient() OperationClient {
+	return original.NewOperationClient()
+}
+func NewOperationClientWithBaseURI(baseURI string) OperationClient {
+	return original.NewOperationClientWithBaseURI(baseURI)
+}
 func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return original.PossibleAppliedScopeTypeValues()
 }
@@ -273,22 +291,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-func NewClient() Client {
-	return original.NewClient()
-}
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
-}
-func NewOperationClient() OperationClient {
-	return original.NewOperationClient()
-}
-func NewOperationClientWithBaseURI(baseURI string) OperationClient {
-	return original.NewOperationClientWithBaseURI(baseURI)
 }

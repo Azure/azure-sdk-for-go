@@ -21,6 +21,8 @@ package face
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face"
 
+type PersonGroupClient = original.PersonGroupClient
+type Client = original.Client
 type AccessoryType = original.AccessoryType
 
 const (
@@ -180,12 +182,7 @@ type VerifyResult = original.VerifyResult
 type ListClient = original.ListClient
 type BaseClient = original.BaseClient
 type PersonGroupPersonClient = original.PersonGroupPersonClient
-type PersonGroupClient = original.PersonGroupClient
-type Client = original.Client
 
-func NewClient(azureRegion AzureRegions) Client {
-	return original.NewClient(azureRegion)
-}
 func PossibleAccessoryTypeValues() []AccessoryType {
 	return original.PossibleAccessoryTypeValues()
 }
@@ -239,4 +236,7 @@ func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClien
 }
 func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
 	return original.NewPersonGroupClient(azureRegion)
+}
+func NewClient(azureRegion AzureRegions) Client {
+	return original.NewClient(azureRegion)
 }

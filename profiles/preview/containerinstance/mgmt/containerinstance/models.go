@@ -21,14 +21,6 @@ package containerinstance
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-02-01-preview/containerinstance"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type OperationsClient = original.OperationsClient
-type ContainerLogsClient = original.ContainerLogsClient
-type ContainerGroupUsageClient = original.ContainerGroupUsageClient
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
@@ -103,6 +95,21 @@ type VolumeMount = original.VolumeMount
 type ContainerGroupsClient = original.ContainerGroupsClient
 type StartContainerClient = original.StartContainerClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type ContainerLogsClient = original.ContainerLogsClient
+type ContainerGroupUsageClient = original.ContainerGroupUsageClient
+
+func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClient(subscriptionID)
+}
+func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
 	return original.PossibleContainerGroupNetworkProtocolValues()
 }
@@ -153,10 +160,4 @@ func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
 }
 func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) ContainerLogsClient {
 	return original.NewContainerLogsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClient(subscriptionID)
-}
-func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
 }

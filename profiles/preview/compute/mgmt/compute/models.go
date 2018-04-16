@@ -21,18 +21,14 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-04-01/compute"
 
-type ImagesClient = original.ImagesClient
+type AvailabilitySetsClient = original.AvailabilitySetsClient
+type VirtualMachineSizesClient = original.VirtualMachineSizesClient
+type ResourceSkusClient = original.ResourceSkusClient
+type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
+type VirtualMachinesClient = original.VirtualMachinesClient
 type VirtualMachineImagesClient = original.VirtualMachineImagesClient
 type UsageClient = original.UsageClient
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
-type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExtensionsClient
-type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
-type SnapshotsClient = original.SnapshotsClient
-type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
-type DisksClient = original.DisksClient
-type AvailabilitySetsClient = original.AvailabilitySetsClient
-type OperationsClient = original.OperationsClient
-type VirtualMachineScaleSetRollingUpgradesClient = original.VirtualMachineScaleSetRollingUpgradesClient
 type AccessLevel = original.AccessLevel
 
 const (
@@ -778,37 +774,47 @@ type VirtualMachineUpdate = original.VirtualMachineUpdate
 type WindowsConfiguration = original.WindowsConfiguration
 type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
-type ResourceSkusClient = original.ResourceSkusClient
+type SnapshotsClient = original.SnapshotsClient
+type DisksClient = original.DisksClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type VirtualMachineScaleSetRollingUpgradesClient = original.VirtualMachineScaleSetRollingUpgradesClient
+type ContainerServicesClient = original.ContainerServicesClient
+type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
+type ImagesClient = original.ImagesClient
 type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
 type LogAnalyticsClient = original.LogAnalyticsClient
-type VirtualMachineSizesClient = original.VirtualMachineSizesClient
-type ContainerServicesClient = original.ContainerServicesClient
-type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
-type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
+type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExtensionsClient
 
-func NewAvailabilitySetsClient(subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClient(subscriptionID, resourceGroupName, diskName)
+func New(subscriptionID string, resourceGroupName string, diskName string) BaseClient {
+	return original.New(subscriptionID, resourceGroupName, diskName)
 }
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
-func NewOperationsClient(subscriptionID string, resourceGroupName string, diskName string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, resourceGroupName, diskName)
+func NewVirtualMachineImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClient(subscriptionID, resourceGroupName, diskName)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
-func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID, resourceGroupName, diskName)
+func NewUsageClient(subscriptionID string, resourceGroupName string, diskName string) UsageClient {
+	return original.NewUsageClient(subscriptionID, resourceGroupName, diskName)
 }
-func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
 func PossibleAccessLevelValues() []AccessLevel {
 	return original.PossibleAccessLevelValues()
@@ -906,17 +912,53 @@ func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSet
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return original.PossibleVirtualMachineSizeTypesValues()
 }
-func NewResourceSkusClient(subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID, resourceGroupName, diskName)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func Version() string {
+	return original.Version()
 }
-func New(subscriptionID string, resourceGroupName string, diskName string) BaseClient {
-	return original.New(subscriptionID, resourceGroupName, diskName)
+func NewSnapshotsClient(subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
+	return original.NewSnapshotsClient(subscriptionID, resourceGroupName, diskName)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
+	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewDisksClient(subscriptionID string, resourceGroupName string, diskName string) DisksClient {
+	return original.NewDisksClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) DisksClient {
+	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewOperationsClient(subscriptionID string, resourceGroupName string, diskName string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewContainerServicesClient(subscriptionID string, resourceGroupName string, diskName string) ContainerServicesClient {
+	return original.NewContainerServicesClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ContainerServicesClient {
+	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineExtensionImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewImagesClient(subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
+	return original.NewImagesClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
 func NewVirtualMachineExtensionsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionsClient {
 	return original.NewVirtualMachineExtensionsClient(subscriptionID, resourceGroupName, diskName)
@@ -930,17 +972,35 @@ func NewLogAnalyticsClient(subscriptionID string, resourceGroupName string, disk
 func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) LogAnalyticsClient {
 	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
+func NewVirtualMachineRunCommandsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
+func NewAvailabilitySetsClient(subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClient(subscriptionID, resourceGroupName, diskName)
+}
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+}
 func NewVirtualMachineSizesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineSizesClient {
 	return original.NewVirtualMachineSizesClient(subscriptionID, resourceGroupName, diskName)
 }
 func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineSizesClient {
 	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
-func NewContainerServicesClient(subscriptionID string, resourceGroupName string, diskName string) ContainerServicesClient {
-	return original.NewContainerServicesClient(subscriptionID, resourceGroupName, diskName)
+func NewResourceSkusClient(subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID, resourceGroupName, diskName)
 }
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ContainerServicesClient {
-	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }
 func NewVirtualMachineScaleSetsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetsClient {
 	return original.NewVirtualMachineScaleSetsClient(subscriptionID, resourceGroupName, diskName)
@@ -953,64 +1013,4 @@ func NewVirtualMachinesClient(subscriptionID string, resourceGroupName string, d
 }
 func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachinesClient {
 	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewSnapshotsClient(subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
-	return original.NewSnapshotsClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
-	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewImagesClient(subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
-	return original.NewImagesClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewUsageClient(subscriptionID string, resourceGroupName string, diskName string) UsageClient {
-	return original.NewUsageClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineScaleSetVMsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewVirtualMachineExtensionImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineRunCommandsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
-}
-func NewDisksClient(subscriptionID string, resourceGroupName string, diskName string) DisksClient {
-	return original.NewDisksClient(subscriptionID, resourceGroupName, diskName)
-}
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) DisksClient {
-	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)
 }

@@ -175,6 +175,24 @@ const (
 
 type BaseClient = original.BaseClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWebClient() WebClient {
+	return original.NewWebClient()
+}
+func NewWebClientWithBaseURI(baseURI string) WebClient {
+	return original.NewWebClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func PossibleAnswerTypeValues() []AnswerType {
 	return original.PossibleAnswerTypeValues()
 }
@@ -198,22 +216,4 @@ func PossibleTypeValues() []Type {
 }
 func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
 	return original.PossibleTypeBasicResponseBaseValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWebClient() WebClient {
-	return original.NewWebClient()
-}
-func NewWebClientWithBaseURI(baseURI string) WebClient {
-	return original.NewWebClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

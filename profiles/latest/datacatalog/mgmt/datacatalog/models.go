@@ -21,8 +21,6 @@ package datacatalog
 
 import original "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog"
 
-type ADCCatalogsClient = original.ADCCatalogsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -45,13 +43,8 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Principals = original.Principals
 type Resource = original.Resource
+type ADCCatalogsClient = original.ADCCatalogsClient
 
-func NewADCOperationsClient(subscriptionID string, catalogName string) ADCOperationsClient {
-	return original.NewADCOperationsClient(subscriptionID, catalogName)
-}
-func NewADCOperationsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCOperationsClient {
-	return original.NewADCOperationsClientWithBaseURI(baseURI, subscriptionID, catalogName)
-}
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
 }
@@ -72,4 +65,10 @@ func New(subscriptionID string, catalogName string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, catalogName)
+}
+func NewADCOperationsClient(subscriptionID string, catalogName string) ADCOperationsClient {
+	return original.NewADCOperationsClient(subscriptionID, catalogName)
+}
+func NewADCOperationsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCOperationsClient {
+	return original.NewADCOperationsClientWithBaseURI(baseURI, subscriptionID, catalogName)
 }

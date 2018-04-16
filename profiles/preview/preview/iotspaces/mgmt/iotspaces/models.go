@@ -79,6 +79,18 @@ const (
 
 type BaseClient = original.BaseClient
 
+func NewClient(subscriptionID uuid.UUID) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
 	return original.PossibleNameUnavailabilityReasonValues()
 }
@@ -99,16 +111,4 @@ func New(subscriptionID uuid.UUID) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewClient(subscriptionID uuid.UUID) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

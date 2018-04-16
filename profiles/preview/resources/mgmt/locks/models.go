@@ -43,15 +43,6 @@ const (
 type BaseClient = original.BaseClient
 type ManagementLocksClient = original.ManagementLocksClient
 
-func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClient(subscriptionID)
-}
-func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
-	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleLockLevelValues() []LockLevel {
-	return original.PossibleLockLevelValues()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -63,4 +54,13 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClient(subscriptionID)
+}
+func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
+	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleLockLevelValues() []LockLevel {
+	return original.PossibleLockLevelValues()
 }

@@ -21,11 +21,6 @@ package iothub
 
 import original "github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type IotDpsResourceClient = original.IotDpsResourceClient
 type AccessRightsDescription = original.AccessRightsDescription
@@ -123,6 +118,18 @@ type VerificationCodeResponse = original.VerificationCodeResponse
 type VerificationCodeResponseProperties = original.VerificationCodeResponseProperties
 type DpsCertificateClient = original.DpsCertificateClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewIotDpsResourceClient(subscriptionID string) IotDpsResourceClient {
 	return original.NewIotDpsResourceClient(subscriptionID)
 }
@@ -164,10 +171,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

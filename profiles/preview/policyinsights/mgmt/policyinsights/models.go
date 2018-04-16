@@ -21,6 +21,12 @@ package policyinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2017-12-12-preview/policyinsights"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesResource = original.PolicyStatesResource
 
@@ -46,13 +52,21 @@ type Summary = original.Summary
 type SummaryResults = original.SummaryResults
 type PolicyEventsClient = original.PolicyEventsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type OperationsClient = original.OperationsClient
-
+func NewPolicyStatesClient() PolicyStatesClient {
+	return original.NewPolicyStatesClient()
+}
+func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
+	return original.NewPolicyStatesClientWithBaseURI(baseURI)
+}
+func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
+	return original.PossiblePolicyStatesResourceValues()
+}
+func NewPolicyEventsClient() PolicyEventsClient {
+	return original.NewPolicyEventsClient()
+}
+func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
+	return original.NewPolicyEventsClientWithBaseURI(baseURI)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -70,19 +84,4 @@ func NewOperationsClient() OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
-}
-func NewPolicyStatesClient() PolicyStatesClient {
-	return original.NewPolicyStatesClient()
-}
-func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
-	return original.NewPolicyStatesClientWithBaseURI(baseURI)
-}
-func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
-	return original.PossiblePolicyStatesResourceValues()
-}
-func NewPolicyEventsClient() PolicyEventsClient {
-	return original.NewPolicyEventsClient()
-}
-func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
-	return original.NewPolicyEventsClientWithBaseURI(baseURI)
 }

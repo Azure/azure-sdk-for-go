@@ -21,7 +21,6 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
-type UsageHistoryClient = original.UsageHistoryClient
 type SkusClient = original.SkusClient
 type CommitmentAssociationsClient = original.CommitmentAssociationsClient
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
@@ -78,6 +77,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type UsageHistoryClient = original.UsageHistoryClient
 
 func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
 	return original.NewCommitmentAssociationsClient(subscriptionID)

@@ -139,12 +139,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
 func PossibleACLTypeValues() []ACLType {
 	return original.PossibleACLTypeValues()
 }
@@ -162,4 +156,10 @@ func Version() string {
 }
 func NewClient() Client {
 	return original.NewClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
 }

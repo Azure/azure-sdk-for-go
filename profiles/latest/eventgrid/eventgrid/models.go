@@ -21,6 +21,7 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
+type BaseClient = original.BaseClient
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest
@@ -46,7 +47,6 @@ type ResourceWriteFailureData = original.ResourceWriteFailureData
 type ResourceWriteSuccessData = original.ResourceWriteSuccessData
 type StorageBlobCreatedEventData = original.StorageBlobCreatedEventData
 type StorageBlobDeletedEventData = original.StorageBlobDeletedEventData
-type BaseClient = original.BaseClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

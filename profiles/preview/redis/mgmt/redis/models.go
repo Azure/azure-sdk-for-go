@@ -159,6 +159,12 @@ type UpdateProperties = original.UpdateProperties
 type UpgradeNotification = original.UpgradeNotification
 type LinkedServerClient = original.LinkedServerClient
 
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
@@ -218,10 +224,4 @@ func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
 }
 func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
 	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -21,11 +21,17 @@ package batch
 
 import original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
 
-type OperationsClient = original.OperationsClient
-type ApplicationPackageClient = original.ApplicationPackageClient
-type PoolClient = original.PoolClient
 type LocationClient = original.LocationClient
+type OperationsClient = original.OperationsClient
 type AccountClient = original.AccountClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ApplicationClient = original.ApplicationClient
+type ApplicationPackageClient = original.ApplicationPackageClient
 type AccountKeyType = original.AccountKeyType
 
 const (
@@ -261,25 +267,37 @@ type UserIdentity = original.UserIdentity
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
 type CertificateClient = original.CertificateClient
+type PoolClient = original.PoolClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ApplicationClient = original.ApplicationClient
-
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewCertificateClient(subscriptionID string) CertificateClient {
+	return original.NewCertificateClient(subscriptionID)
+}
+func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
+	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoolClient(subscriptionID string) PoolClient {
+	return original.NewPoolClient(subscriptionID)
+}
+func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
+	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewApplicationClient(subscriptionID string) ApplicationClient {
 	return original.NewApplicationClient(subscriptionID)
 }
 func NewApplicationClientWithBaseURI(baseURI string, subscriptionID string) ApplicationClient {
 	return original.NewApplicationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAccountClient(subscriptionID string) AccountClient {
-	return original.NewAccountClient(subscriptionID)
+func NewApplicationPackageClient(subscriptionID string) ApplicationPackageClient {
+	return original.NewApplicationPackageClient(subscriptionID)
 }
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationPackageClientWithBaseURI(baseURI string, subscriptionID string) ApplicationPackageClient {
+	return original.NewApplicationPackageClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccountKeyTypeValues() []AccountKeyType {
 	return original.PossibleAccountKeyTypeValues()
@@ -341,18 +359,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewCertificateClient(subscriptionID string) CertificateClient {
-	return original.NewCertificateClient(subscriptionID)
-}
-func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
-	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -371,15 +377,9 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewApplicationPackageClient(subscriptionID string) ApplicationPackageClient {
-	return original.NewApplicationPackageClient(subscriptionID)
+func NewAccountClient(subscriptionID string) AccountClient {
+	return original.NewAccountClient(subscriptionID)
 }
-func NewApplicationPackageClientWithBaseURI(baseURI string, subscriptionID string) ApplicationPackageClient {
-	return original.NewApplicationPackageClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPoolClient(subscriptionID string) PoolClient {
-	return original.NewPoolClient(subscriptionID)
-}
-func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
-	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
 }

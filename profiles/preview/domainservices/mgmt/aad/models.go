@@ -21,11 +21,6 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -54,6 +49,12 @@ type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 type DomainServiceOperationsClient = original.DomainServiceOperationsClient
 type DomainServicesClient = original.DomainServicesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func PossibleExternalAccessValues() []ExternalAccess {
 	return original.PossibleExternalAccessValues()

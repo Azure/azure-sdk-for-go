@@ -81,15 +81,6 @@ type SuppressionContractListResultIterator = original.SuppressionContractListRes
 type SuppressionContractListResultPage = original.SuppressionContractListResultPage
 type SuppressionProperties = original.SuppressionProperties
 
-func PossibleCategoryValues() []Category {
-	return original.PossibleCategoryValues()
-}
-func PossibleImpactValues() []Impact {
-	return original.PossibleImpactValues()
-}
-func PossibleRiskValues() []Risk {
-	return original.PossibleRiskValues()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -125,4 +116,13 @@ func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 }
 func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
+}
+func PossibleImpactValues() []Impact {
+	return original.PossibleImpactValues()
+}
+func PossibleRiskValues() []Risk {
+	return original.PossibleRiskValues()
 }

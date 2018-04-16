@@ -21,8 +21,6 @@ package imagesearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/imagesearch"
 
-type ImagesClient = original.ImagesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -439,7 +437,14 @@ type TrendingImagesCategory = original.TrendingImagesCategory
 type TrendingImagesTile = original.TrendingImagesTile
 type BasicWebPage = original.BasicWebPage
 type WebPage = original.WebPage
+type ImagesClient = original.ImagesClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
 func PossibleCurrencyValues() []Currency {
 	return original.PossibleCurrencyValues()
 }
@@ -499,10 +504,4 @@ func NewImagesClient() ImagesClient {
 }
 func NewImagesClientWithBaseURI(baseURI string) ImagesClient {
 	return original.NewImagesClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }

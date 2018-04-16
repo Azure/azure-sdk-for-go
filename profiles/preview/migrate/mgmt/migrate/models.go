@@ -21,7 +21,16 @@ package migrate
 
 import original "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2018-02-02/migrate"
 
+type ProjectsClient = original.ProjectsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type AssessedMachinesClient = original.AssessedMachinesClient
 type OperationsClient = original.OperationsClient
+type AssessmentsClient = original.AssessmentsClient
 type AssessmentSizingCriterion = original.AssessmentSizingCriterion
 
 const (
@@ -449,21 +458,24 @@ type ProjectProperties = original.ProjectProperties
 type ProjectResultList = original.ProjectResultList
 type MachinesClient = original.MachinesClient
 type GroupsClient = original.GroupsClient
-type AssessmentsClient = original.AssessmentsClient
-type ProjectsClient = original.ProjectsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type AssessedMachinesClient = original.AssessedMachinesClient
-
+func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID, acceptLanguage)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
+}
+func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func PossibleAssessmentSizingCriterionValues() []AssessmentSizingCriterion {
 	return original.PossibleAssessmentSizingCriterionValues()
@@ -539,18 +551,6 @@ func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesCli
 }
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
 	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClient(subscriptionID, acceptLanguage)
-}
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
-}
-func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID, acceptLanguage)

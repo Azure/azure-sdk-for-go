@@ -21,6 +21,13 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-10-01-preview/sql"
 
+type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 type ManagementOperationState = original.ManagementOperationState
 
@@ -45,20 +52,7 @@ type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResul
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClient(subscriptionID)
-}
-func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -79,4 +73,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClient(subscriptionID)
+}
+func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

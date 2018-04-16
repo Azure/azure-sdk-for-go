@@ -21,8 +21,6 @@ package timeseriesinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
-type ReferenceDataSetsClient = original.ReferenceDataSetsClient
-type OperationsClient = original.OperationsClient
 type EventSourcesClient = original.EventSourcesClient
 type AccessPoliciesClient = original.AccessPoliciesClient
 type AccessPolicyRole = original.AccessPolicyRole
@@ -177,6 +175,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ReferenceDataSetsClient = original.ReferenceDataSetsClient
+type OperationsClient = original.OperationsClient
 
 func NewReferenceDataSetsClient(subscriptionID string) ReferenceDataSetsClient {
 	return original.NewReferenceDataSetsClient(subscriptionID)

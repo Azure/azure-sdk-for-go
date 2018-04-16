@@ -153,18 +153,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaJobDNSSuffix)
-}
 func NewPipelineClient() PipelineClient {
 	return original.NewPipelineClient()
 }
@@ -197,4 +185,16 @@ func PossibleTypeEnumValues() []TypeEnum {
 }
 func NewRecurrenceClient() RecurrenceClient {
 	return original.NewRecurrenceClient()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaJobDNSSuffix)
 }

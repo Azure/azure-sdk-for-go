@@ -21,6 +21,7 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
+type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 type AccessKeyName = original.AccessKeyName
 
 const (
@@ -60,8 +61,19 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 
+func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClient(subscriptionID)
+}
+func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessKeyNameValues() []AccessKeyName {
+	return original.PossibleAccessKeyNameValues()
+}
+func PossibleCheckNameReasonValues() []CheckNameReason {
+	return original.PossibleCheckNameReasonValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -79,16 +91,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClient(subscriptionID)
-}
-func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAccessKeyNameValues() []AccessKeyName {
-	return original.PossibleAccessKeyNameValues()
-}
-func PossibleCheckNameReasonValues() []CheckNameReason {
-	return original.PossibleCheckNameReasonValues()
 }

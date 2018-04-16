@@ -21,6 +21,8 @@ package subscription
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
 
+type FactoryClient = original.FactoryClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -76,20 +78,7 @@ type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
 type OperationsGroupClient = original.OperationsGroupClient
 type SubscriptionsClient = original.SubscriptionsClient
-type FactoryClient = original.FactoryClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewFactoryClient() FactoryClient {
-	return original.NewFactoryClient()
-}
-func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
-	return original.NewFactoryClientWithBaseURI(baseURI)
-}
 func New() BaseClient {
 	return original.New()
 }
@@ -128,4 +117,16 @@ func NewSubscriptionsClient() SubscriptionsClient {
 }
 func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewFactoryClient() FactoryClient {
+	return original.NewFactoryClient()
+}
+func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
+	return original.NewFactoryClientWithBaseURI(baseURI)
 }

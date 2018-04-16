@@ -21,9 +21,6 @@ package billing
 
 import original "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2018-03-01-preview/billing"
 
-type OperationsClient = original.OperationsClient
-type InvoicesClient = original.InvoicesClient
-type PeriodsClient = original.PeriodsClient
 type DownloadURL = original.DownloadURL
 type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountListResult = original.EnrollmentAccountListResult
@@ -55,6 +52,9 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type InvoicesClient = original.InvoicesClient
+type PeriodsClient = original.PeriodsClient
 
 func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
 	return original.NewEnrollmentAccountsClient(subscriptionID)

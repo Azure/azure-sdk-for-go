@@ -61,18 +61,6 @@ type RoleDefinitionListResultPage = original.RoleDefinitionListResultPage
 type RoleDefinitionProperties = original.RoleDefinitionProperties
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
-func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClient(subscriptionID)
-}
-func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClient(subscriptionID)
-}
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)
 }
@@ -102,4 +90,16 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewPermissionsClient(subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClient(subscriptionID)
+}
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
+}
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }

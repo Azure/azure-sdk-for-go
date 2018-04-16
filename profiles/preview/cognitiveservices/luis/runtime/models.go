@@ -49,15 +49,6 @@ type LuisResult = original.LuisResult
 type PredictionClient = original.PredictionClient
 type BaseClient = original.BaseClient
 
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -66,4 +57,13 @@ func Version() string {
 }
 func NewPredictionClient(azureRegion AzureRegions) PredictionClient {
 	return original.NewPredictionClient(azureRegion)
+}
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return original.PossibleAzureRegionsValues()
 }

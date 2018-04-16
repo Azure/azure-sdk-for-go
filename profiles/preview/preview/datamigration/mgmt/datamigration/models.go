@@ -21,8 +21,6 @@ package datamigration
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-03-31-preview/datamigration"
 
-type OperationsClient = original.OperationsClient
-type ServicesClient = original.ServicesClient
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -450,6 +448,10 @@ type ValidateMigrationInputSQLServerSQLMITaskOutput = original.ValidateMigration
 type ValidateMigrationInputSQLServerSQLMITaskProperties = original.ValidateMigrationInputSQLServerSQLMITaskProperties
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
+type ResourceSkusClient = original.ResourceSkusClient
+type TasksClient = original.TasksClient
+type OperationsClient = original.OperationsClient
+type ServicesClient = original.ServicesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -457,9 +459,7 @@ const (
 
 type BaseClient = original.BaseClient
 type UsagesClient = original.UsagesClient
-type ResourceSkusClient = original.ResourceSkusClient
 type ProjectsClient = original.ProjectsClient
-type TasksClient = original.TasksClient
 
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
@@ -467,23 +467,17 @@ func NewUsagesClient(subscriptionID string) UsagesClient {
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
-}
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
 }
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
 	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTasksClient(subscriptionID string) TasksClient {
-	return original.NewTasksClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
-	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -587,15 +581,21 @@ func PossibleUpdateActionTypeValues() []UpdateActionType {
 func PossibleValidationStatusValues() []ValidationStatus {
 	return original.PossibleValidationStatusValues()
 }
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewTasksClient(subscriptionID string) TasksClient {
+	return original.NewTasksClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
+	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
 }

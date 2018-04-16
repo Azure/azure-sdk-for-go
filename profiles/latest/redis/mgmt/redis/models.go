@@ -21,6 +21,7 @@ package redis
 
 import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
 
+type LinkedServerClient = original.LinkedServerClient
 type FirewallRulesClient = original.FirewallRulesClient
 
 const (
@@ -157,38 +158,7 @@ type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
 type UpgradeNotification = original.UpgradeNotification
-type LinkedServerClient = original.LinkedServerClient
 
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return original.PossibleDayOfWeekValues()
-}
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleRebootTypeValues() []RebootType {
-	return original.PossibleRebootTypeValues()
-}
-func PossibleReplicationRoleValues() []ReplicationRole {
-	return original.PossibleReplicationRoleValues()
-}
-func PossibleSkuFamilyValues() []SkuFamily {
-	return original.PossibleSkuFamilyValues()
-}
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-func PossibleTLSVersionValues() []TLSVersion {
-	return original.PossibleTLSVersionValues()
-}
 func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
 	return original.NewLinkedServerClient(subscriptionID)
 }
@@ -224,4 +194,34 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return original.PossibleDayOfWeekValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleRebootTypeValues() []RebootType {
+	return original.PossibleRebootTypeValues()
+}
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return original.PossibleReplicationRoleValues()
+}
+func PossibleSkuFamilyValues() []SkuFamily {
+	return original.PossibleSkuFamilyValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleTLSVersionValues() []TLSVersion {
+	return original.PossibleTLSVersionValues()
 }

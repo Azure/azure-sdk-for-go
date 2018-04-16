@@ -21,15 +21,6 @@ package experimentation
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-05-01-preview/experimentation"
 
-type WorkspacesClient = original.WorkspacesClient
-type AccountsClient = original.AccountsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type OperationsClient = original.OperationsClient
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -68,16 +59,16 @@ type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdateParameters
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type ProjectsClient = original.ProjectsClient
+type WorkspacesClient = original.WorkspacesClient
+type AccountsClient = original.AccountsClient
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
 }
@@ -107,4 +98,13 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }

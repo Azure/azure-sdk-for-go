@@ -21,11 +21,6 @@ package servicemap
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/servicemap"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type SummariesClient = original.SummariesClient
 type Accuracy = original.Accuracy
 
@@ -289,23 +284,23 @@ type SummaryProperties = original.SummaryProperties
 type Timezone = original.Timezone
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type PortsClient = original.PortsClient
+type ClientGroupsClient = original.ClientGroupsClient
 type MachinesClient = original.MachinesClient
 type MachineGroupsClient = original.MachineGroupsClient
 type MapsClient = original.MapsClient
-type ClientGroupsClient = original.ClientGroupsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type ProcessesClient = original.ProcessesClient
 
-func NewPortsClient(subscriptionID string) PortsClient {
-	return original.NewPortsClient(subscriptionID)
+func NewClientGroupsClient(subscriptionID string) ClientGroupsClient {
+	return original.NewClientGroupsClient(subscriptionID)
 }
-func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClient {
-	return original.NewPortsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewClientGroupsClientWithBaseURI(baseURI string, subscriptionID string) ClientGroupsClient {
+	return original.NewClientGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSummariesClient(subscriptionID string) SummariesClient {
 	return original.NewSummariesClient(subscriptionID)
@@ -373,6 +368,18 @@ func PossibleVirtualizationStateValues() []VirtualizationState {
 func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 	return original.PossibleVirtualMachineTypeValues()
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewPortsClient(subscriptionID string) PortsClient {
+	return original.NewPortsClient(subscriptionID)
+}
+func NewPortsClientWithBaseURI(baseURI string, subscriptionID string) PortsClient {
+	return original.NewPortsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProcessesClient(subscriptionID string) ProcessesClient {
 	return original.NewProcessesClient(subscriptionID)
 }
@@ -397,15 +404,9 @@ func NewMapsClient(subscriptionID string) MapsClient {
 func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient {
 	return original.NewMapsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewClientGroupsClient(subscriptionID string) ClientGroupsClient {
-	return original.NewClientGroupsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewClientGroupsClientWithBaseURI(baseURI string, subscriptionID string) ClientGroupsClient {
-	return original.NewClientGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

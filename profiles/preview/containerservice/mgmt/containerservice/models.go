@@ -21,6 +21,13 @@ package containerservice
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-09-30/containerservice"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ManagedClustersClient = original.ManagedClustersClient
+type ContainerServicesClient = original.ContainerServicesClient
 type OrchestratorTypes = original.OrchestratorTypes
 
 const (
@@ -264,14 +271,18 @@ type SSHPublicKey = original.SSHPublicKey
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ManagedClustersClient = original.ManagedClustersClient
-type ContainerServicesClient = original.ContainerServicesClient
-
+func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClient(subscriptionID)
+}
+func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
+	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClient(subscriptionID)
+}
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
+	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
 }
@@ -295,16 +306,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClient(subscriptionID)
-}
-func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
-	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClient(subscriptionID)
-}
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -21,7 +21,6 @@ package datacatalog
 
 import original "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog"
 
-type ADCOperationsClient = original.ADCOperationsClient
 type SkuType = original.SkuType
 
 const (
@@ -45,7 +44,20 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ADCOperationsClient = original.ADCOperationsClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func New(subscriptionID string, catalogName string) BaseClient {
+	return original.New(subscriptionID, catalogName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, catalogName)
+}
 func NewADCOperationsClient(subscriptionID string, catalogName string) ADCOperationsClient {
 	return original.NewADCOperationsClient(subscriptionID, catalogName)
 }
@@ -60,16 +72,4 @@ func NewADCCatalogsClient(subscriptionID string, catalogName string) ADCCatalogs
 }
 func NewADCCatalogsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCCatalogsClient {
 	return original.NewADCCatalogsClientWithBaseURI(baseURI, subscriptionID, catalogName)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func New(subscriptionID string, catalogName string) BaseClient {
-	return original.New(subscriptionID, catalogName)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, catalogName)
 }

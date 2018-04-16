@@ -21,6 +21,11 @@ package managementgroups
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-01-01-preview/management"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type Permissions = original.Permissions
 
@@ -115,18 +120,6 @@ type SubscriptionsClient = original.SubscriptionsClient
 type EntitiesClient = original.EntitiesClient
 type Client = original.Client
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skiptoken)
-}
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
@@ -177,4 +170,10 @@ func New(operationResultID string, skiptoken string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
 	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClient(operationResultID, skiptoken)
+}
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
 }

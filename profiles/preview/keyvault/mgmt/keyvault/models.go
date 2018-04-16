@@ -21,6 +21,11 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type VaultsClient = original.VaultsClient
 type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
@@ -158,24 +163,6 @@ type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVaultsClient(subscriptionID string) VaultsClient {
-	return original.NewVaultsClient(subscriptionID)
-}
-func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
-	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
-}
 func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return original.PossibleAccessPolicyUpdateKindValues()
 }
@@ -211,4 +198,16 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return original.NewVaultsClient(subscriptionID)
+}
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }

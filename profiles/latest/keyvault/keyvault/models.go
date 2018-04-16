@@ -21,6 +21,7 @@ package keyvault
 
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault"
 
+type BaseClient = original.BaseClient
 type ActionType = original.ActionType
 
 const (
@@ -202,7 +203,6 @@ type StorageListResultPage = original.StorageListResultPage
 type SubjectAlternativeNames = original.SubjectAlternativeNames
 type Trigger = original.Trigger
 type X509CertificateProperties = original.X509CertificateProperties
-type BaseClient = original.BaseClient
 
 func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()

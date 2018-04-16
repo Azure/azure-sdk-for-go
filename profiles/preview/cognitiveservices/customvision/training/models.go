@@ -21,11 +21,6 @@ package training
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.2/customvision/training"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OrderBy = original.OrderBy
 
 const (
@@ -104,6 +99,12 @@ type Quota = original.Quota
 type Tag = original.Tag
 type TagList = original.TagList
 type TagPerformance = original.TagPerformance
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func PossibleOrderByValues() []OrderBy {
 	return original.PossibleOrderByValues()

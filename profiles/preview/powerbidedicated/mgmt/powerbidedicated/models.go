@@ -21,11 +21,6 @@ package powerbidedicated
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type ProvisioningState = original.ProvisioningState
 
@@ -91,6 +86,18 @@ type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistin
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
 type CapacitiesClient = original.CapacitiesClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClient(subscriptionID)
+}
+func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -117,10 +124,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClient(subscriptionID)
-}
-func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
 }

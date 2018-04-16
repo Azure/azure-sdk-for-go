@@ -21,10 +21,9 @@ package contentmoderator
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator"
 
-type ListManagementImageListsClient = original.ListManagementImageListsClient
+type ImageModerationClient = original.ImageModerationClient
 type ListManagementImageClient = original.ListManagementImageClient
 type ListManagementTermListsClient = original.ListManagementTermListsClient
-type ListManagementTermClient = original.ListManagementTermClient
 type AzureRegionBaseURL = original.AzureRegionBaseURL
 
 const (
@@ -124,10 +123,11 @@ type TranscriptModerationBodyItemTermsItem = original.TranscriptModerationBodyIt
 type VideoFrameBodyItem = original.VideoFrameBodyItem
 type VideoFrameBodyItemMetadataItem = original.VideoFrameBodyItemMetadataItem
 type VideoFrameBodyItemReviewerResultTagsItem = original.VideoFrameBodyItemReviewerResultTagsItem
-type ReviewsClient = original.ReviewsClient
 type TextModerationClient = original.TextModerationClient
-type ImageModerationClient = original.ImageModerationClient
+type ReviewsClient = original.ReviewsClient
 type BaseClient = original.BaseClient
+type ListManagementImageListsClient = original.ListManagementImageListsClient
+type ListManagementTermClient = original.ListManagementTermClient
 
 func New(baseURL AzureRegionBaseURL) BaseClient {
 	return original.New(baseURL)
@@ -135,14 +135,8 @@ func New(baseURL AzureRegionBaseURL) BaseClient {
 func NewWithoutDefaults(baseURL AzureRegionBaseURL) BaseClient {
 	return original.NewWithoutDefaults(baseURL)
 }
-func NewTextModerationClient(baseURL AzureRegionBaseURL) TextModerationClient {
-	return original.NewTextModerationClient(baseURL)
-}
-func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient {
-	return original.NewImageModerationClient(baseURL)
-}
-func NewListManagementTermListsClient(baseURL AzureRegionBaseURL) ListManagementTermListsClient {
-	return original.NewListManagementTermListsClient(baseURL)
+func NewListManagementImageListsClient(baseURL AzureRegionBaseURL) ListManagementImageListsClient {
+	return original.NewListManagementImageListsClient(baseURL)
 }
 func NewListManagementTermClient(baseURL AzureRegionBaseURL) ListManagementTermClient {
 	return original.NewListManagementTermClient(baseURL)
@@ -156,18 +150,24 @@ func PossibleStatusEnumValues() []StatusEnum {
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
+func NewTextModerationClient(baseURL AzureRegionBaseURL) TextModerationClient {
+	return original.NewTextModerationClient(baseURL)
+}
 func NewReviewsClient(baseURL AzureRegionBaseURL) ReviewsClient {
 	return original.NewReviewsClient(baseURL)
+}
+func NewListManagementImageClient(baseURL AzureRegionBaseURL) ListManagementImageClient {
+	return original.NewListManagementImageClient(baseURL)
+}
+func NewListManagementTermListsClient(baseURL AzureRegionBaseURL) ListManagementTermListsClient {
+	return original.NewListManagementTermListsClient(baseURL)
+}
+func NewImageModerationClient(baseURL AzureRegionBaseURL) ImageModerationClient {
+	return original.NewImageModerationClient(baseURL)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
-}
-func NewListManagementImageListsClient(baseURL AzureRegionBaseURL) ListManagementImageListsClient {
-	return original.NewListManagementImageListsClient(baseURL)
-}
-func NewListManagementImageClient(baseURL AzureRegionBaseURL) ListManagementImageClient {
-	return original.NewListManagementImageClient(baseURL)
 }

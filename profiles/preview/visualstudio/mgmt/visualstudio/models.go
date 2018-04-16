@@ -21,16 +21,6 @@ package visualstudio
 
 import original "github.com/Azure/azure-sdk-for-go/services/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 
-type ProjectsClient = original.ProjectsClient
-type AccountsClient = original.AccountsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type OperationsClient = original.OperationsClient
-type ExtensionsClient = original.ExtensionsClient
 type AccountResource = original.AccountResource
 type AccountResourceListResult = original.AccountResourceListResult
 type AccountResourceRequest = original.AccountResourceRequest
@@ -47,13 +37,17 @@ type ProjectResource = original.ProjectResource
 type ProjectResourceListResult = original.ProjectResourceListResult
 type ProjectsCreateFuture = original.ProjectsCreateFuture
 type Resource = original.Resource
+type ProjectsClient = original.ProjectsClient
+type AccountsClient = original.AccountsClient
 
-func NewExtensionsClient(subscriptionID string) ExtensionsClient {
-	return original.NewExtensionsClient(subscriptionID)
-}
-func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
-	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type ExtensionsClient = original.ExtensionsClient
+
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -83,4 +77,10 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClient(subscriptionID)
+}
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -21,13 +21,6 @@ package batchai
 
 import original "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-03-01/batchai"
 
-type ClustersClient = original.ClustersClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type UsageClient = original.UsageClient
 type JobsClient = original.JobsClient
@@ -222,7 +215,26 @@ type Usage = original.Usage
 type UsageName = original.UsageName
 type UserAccountSettings = original.UserAccountSettings
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
+type ClustersClient = original.ClustersClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
+}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -285,16 +297,4 @@ func PossibleToolTypeValues() []ToolType {
 }
 func PossibleVMPriorityValues() []VMPriority {
 	return original.PossibleVMPriorityValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
-}
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }

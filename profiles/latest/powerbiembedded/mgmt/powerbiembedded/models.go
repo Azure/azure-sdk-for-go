@@ -21,11 +21,6 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 type AccessKeyName = original.AccessKeyName
 
@@ -61,6 +56,18 @@ type WorkspaceCollectionsDeleteFuture = original.WorkspaceCollectionsDeleteFutur
 type WorkspaceList = original.WorkspaceList
 type WorkspacesClient = original.WorkspacesClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
 	return original.NewWorkspaceCollectionsClient(subscriptionID)
 }
@@ -84,10 +91,4 @@ func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 }
 func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

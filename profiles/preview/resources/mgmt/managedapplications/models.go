@@ -96,18 +96,6 @@ const (
 
 type BaseClient = original.BaseClient
 
-func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
-	return original.PossibleApplianceArtifactTypeValues()
-}
-func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
-	return original.PossibleApplianceLockLevelValues()
-}
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -131,4 +119,16 @@ func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsCl
 }
 func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
 	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
+	return original.PossibleApplianceArtifactTypeValues()
+}
+func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
+	return original.PossibleApplianceLockLevelValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }

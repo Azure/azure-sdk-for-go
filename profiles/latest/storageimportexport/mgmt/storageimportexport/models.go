@@ -21,13 +21,6 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-type BitLockerKeysClient = original.BitLockerKeysClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type LocationsClient = original.LocationsClient
 type JobsClient = original.JobsClient
@@ -69,6 +62,13 @@ type ReturnShipping = original.ReturnShipping
 type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
+type BitLockerKeysClient = original.BitLockerKeysClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, acceptLanguage)

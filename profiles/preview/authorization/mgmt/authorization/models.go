@@ -21,6 +21,12 @@ package authorization
 
 import original "github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2018-01-01-preview/authorization"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type PermissionsClient = original.PermissionsClient
 type RoleDefinitionsClient = original.RoleDefinitionsClient
 type RoleAssignmentsClient = original.RoleAssignmentsClient
 type ProviderOperationsMetadataClient = original.ProviderOperationsMetadataClient
@@ -55,13 +61,24 @@ type RoleDefinitionListResultPage = original.RoleDefinitionListResultPage
 type RoleDefinitionProperties = original.RoleDefinitionProperties
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type PermissionsClient = original.PermissionsClient
-
+func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID)
+}
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID)
+}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
+	return original.NewProviderOperationsMetadataClient(subscriptionID)
+}
+func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
+	return original.NewProviderOperationsMetadataClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewClassicAdministratorsClient(subscriptionID string) ClassicAdministratorsClient {
 	return original.NewClassicAdministratorsClient(subscriptionID)
 }
@@ -85,22 +102,4 @@ func NewPermissionsClient(subscriptionID string) PermissionsClient {
 }
 func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
 	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClient(subscriptionID)
-}
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
-}
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewProviderOperationsMetadataClient(subscriptionID string) ProviderOperationsMetadataClient {
-	return original.NewProviderOperationsMetadataClient(subscriptionID)
-}
-func NewProviderOperationsMetadataClientWithBaseURI(baseURI string, subscriptionID string) ProviderOperationsMetadataClient {
-	return original.NewProviderOperationsMetadataClientWithBaseURI(baseURI, subscriptionID)
 }

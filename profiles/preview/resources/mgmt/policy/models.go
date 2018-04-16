@@ -21,6 +21,14 @@ package policy
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-06-01-preview/policy"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type AssignmentsClient = original.AssignmentsClient
+type SetDefinitionsClient = original.SetDefinitionsClient
+type DefinitionsClient = original.DefinitionsClient
 type Mode = original.Mode
 
 const (
@@ -56,15 +64,12 @@ type SetDefinitionListResultPage = original.SetDefinitionListResultPage
 type SetDefinitionProperties = original.SetDefinitionProperties
 type Sku = original.Sku
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type AssignmentsClient = original.AssignmentsClient
-type SetDefinitionsClient = original.SetDefinitionsClient
-type DefinitionsClient = original.DefinitionsClient
-
+func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
+	return original.NewDefinitionsClient(subscriptionID)
+}
+func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
+	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func PossibleModeValues() []Mode {
 	return original.PossibleModeValues()
 }
@@ -94,10 +99,4 @@ func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
 }
 func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
 	return original.NewSetDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClient(subscriptionID)
-}
-func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
-	return original.NewDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }

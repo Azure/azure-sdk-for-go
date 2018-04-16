@@ -21,8 +21,6 @@ package aad
 
 import original "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad"
 
-type DomainServicesClient = original.DomainServicesClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -55,19 +53,8 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 type DomainServiceOperationsClient = original.DomainServiceOperationsClient
+type DomainServicesClient = original.DomainServicesClient
 
-func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClient(subscriptionID)
-}
-func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
 	return original.NewDomainServicesClient(subscriptionID)
 }
@@ -85,4 +72,16 @@ func PossibleExternalAccessValues() []ExternalAccess {
 }
 func PossibleLdapsValues() []Ldaps {
 	return original.PossibleLdapsValues()
+}
+func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClient(subscriptionID)
+}
+func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

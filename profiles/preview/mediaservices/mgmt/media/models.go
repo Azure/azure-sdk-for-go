@@ -21,7 +21,6 @@ package media
 
 import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2015-10-01/media"
 
-type ServiceClient = original.ServiceClient
 type OperationsClient = original.OperationsClient
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
@@ -66,6 +65,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ServiceClient = original.ServiceClient
 
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)

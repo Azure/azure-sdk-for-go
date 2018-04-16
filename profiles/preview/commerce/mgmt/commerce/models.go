@@ -21,6 +21,14 @@ package commerce
 
 import original "github.com/Azure/azure-sdk-for-go/services/commerce/mgmt/2015-06-01-preview/commerce"
 
+type RateCardClient = original.RateCardClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type UsageAggregatesClient = original.UsageAggregatesClient
 type AggregationGranularity = original.AggregationGranularity
 
 const (
@@ -52,14 +60,6 @@ type UsageAggregationListResult = original.UsageAggregationListResult
 type UsageAggregationListResultIterator = original.UsageAggregationListResultIterator
 type UsageAggregationListResultPage = original.UsageAggregationListResultPage
 type UsageSample = original.UsageSample
-type RateCardClient = original.RateCardClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type UsageAggregatesClient = original.UsageAggregatesClient
 
 func NewUsageAggregatesClient(subscriptionID string) UsageAggregatesClient {
 	return original.NewUsageAggregatesClient(subscriptionID)

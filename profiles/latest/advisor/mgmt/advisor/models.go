@@ -21,6 +21,7 @@ package advisor
 
 import original "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor"
 
+type OperationsClient = original.OperationsClient
 type ConfigurationsClient = original.ConfigurationsClient
 type Category = original.Category
 
@@ -79,14 +80,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type OperationsClient = original.OperationsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
 	return original.NewSuppressionsClient(subscriptionID)
 }
@@ -125,4 +119,10 @@ func PossibleImpactValues() []Impact {
 }
 func PossibleRiskValues() []Risk {
 	return original.PossibleRiskValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }

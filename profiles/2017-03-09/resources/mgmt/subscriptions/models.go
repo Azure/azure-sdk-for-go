@@ -21,6 +21,11 @@ package subscriptions
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type TenantsClient = original.TenantsClient
 type SpendingLimit = original.SpendingLimit
 
@@ -53,12 +58,18 @@ type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
 type Client = original.Client
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"
 }
@@ -76,16 +87,4 @@ func NewTenantsClient() TenantsClient {
 }
 func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 	return original.NewTenantsClientWithBaseURI(baseURI)
-}
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
-func NewClient() Client {
-	return original.NewClient()
-}
-func NewClientWithBaseURI(baseURI string) Client {
-	return original.NewClientWithBaseURI(baseURI)
 }

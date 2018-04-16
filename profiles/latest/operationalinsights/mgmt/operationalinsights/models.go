@@ -21,8 +21,6 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
 
-type StorageInsightsClient = original.StorageInsightsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -87,6 +85,7 @@ type WorkspacePurgeStatusResponse = original.WorkspacePurgeStatusResponse
 type WorkspacesGetSearchResultsFuture = original.WorkspacesGetSearchResultsFuture
 type WorkspacesPurgeFuture = original.WorkspacesPurgeFuture
 type WorkspacesClient = original.WorkspacesClient
+type StorageInsightsClient = original.StorageInsightsClient
 
 func NewWorkspacesClient(subscriptionID string, purgeID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID, purgeID)

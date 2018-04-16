@@ -21,8 +21,8 @@ package postgresql
 
 import original "github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql"
 
-type OperationsClient = original.OperationsClient
 type ServersClient = original.ServersClient
+type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
 type CreateMode = original.CreateMode
 
 const (
@@ -120,30 +120,42 @@ type ServerUpdateParametersProperties = original.ServerUpdateParametersPropertie
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
-type FirewallRulesClient = original.FirewallRulesClient
 type CheckNameAvailabilityClient = original.CheckNameAvailabilityClient
 type LogFilesClient = original.LogFilesClient
+type OperationsClient = original.OperationsClient
+type ConfigurationsClient = original.ConfigurationsClient
+type DatabasesClient = original.DatabasesClient
+type FirewallRulesClient = original.FirewallRulesClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ConfigurationsClient = original.ConfigurationsClient
-type LocationBasedPerformanceTierClient = original.LocationBasedPerformanceTierClient
-type DatabasesClient = original.DatabasesClient
 
-func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
-	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLogFilesClient(subscriptionID string) LogFilesClient {
-	return original.NewLogFilesClient(subscriptionID)
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
 }
-func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
-	return original.NewLogFilesClientWithBaseURI(baseURI, subscriptionID)
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabasesClient(subscriptionID string) DatabasesClient {
+	return original.NewDatabasesClient(subscriptionID)
+}
+func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
+	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -151,17 +163,17 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewServersClient(subscriptionID string) ServersClient {
 	return original.NewServersClient(subscriptionID)
 }
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedPerformanceTierClient {
+	return original.NewLocationBasedPerformanceTierClient(subscriptionID)
+}
+func NewLocationBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedPerformanceTierClient {
+	return original.NewLocationBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
@@ -184,33 +196,21 @@ func PossibleSkuTierValues() []SkuTier {
 func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 	return original.PossibleSslEnforcementEnumValues()
 }
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID)
-}
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewLocationBasedPerformanceTierClient(subscriptionID string) LocationBasedPerformanceTierClient {
-	return original.NewLocationBasedPerformanceTierClient(subscriptionID)
-}
-func NewLocationBasedPerformanceTierClientWithBaseURI(baseURI string, subscriptionID string) LocationBasedPerformanceTierClient {
-	return original.NewLocationBasedPerformanceTierClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabasesClient(subscriptionID string) DatabasesClient {
-	return original.NewDatabasesClient(subscriptionID)
-}
-func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
-	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClient(subscriptionID)
+}
+func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckNameAvailabilityClient {
+	return original.NewCheckNameAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLogFilesClient(subscriptionID string) LogFilesClient {
+	return original.NewLogFilesClient(subscriptionID)
+}
+func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
+	return original.NewLogFilesClientWithBaseURI(baseURI, subscriptionID)
 }

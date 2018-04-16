@@ -21,6 +21,10 @@ package eventgrid
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-01-01/eventgrid"
 
+type TopicsClient = original.TopicsClient
+type EventSubscriptionsClient = original.EventSubscriptionsClient
+type TopicTypesClient = original.TopicTypesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -110,9 +114,6 @@ type TopicUpdateParameters = original.TopicUpdateParameters
 type TrackedResource = original.TrackedResource
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
-type TopicsClient = original.TopicsClient
-type EventSubscriptionsClient = original.EventSubscriptionsClient
-type TopicTypesClient = original.TopicTypesClient
 
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)

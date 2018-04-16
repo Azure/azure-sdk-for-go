@@ -21,11 +21,6 @@ package location
 
 import original "github.com/Azure/azure-sdk-for-go/services/location/mgmt/2017-01-01-preview/location"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type KeyType = original.KeyType
 
 const (
@@ -49,9 +44,12 @@ type Resource = original.Resource
 type Sku = original.Sku
 type AccountsClient = original.AccountsClient
 
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
@@ -69,4 +67,7 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
 }

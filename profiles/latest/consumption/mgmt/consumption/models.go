@@ -21,14 +21,6 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ReservationsDetailsClient = original.ReservationsDetailsClient
-type OperationsClient = original.OperationsClient
-type ReservationsSummariesClient = original.ReservationsSummariesClient
 type Datagrain = original.Datagrain
 
 const (
@@ -58,6 +50,21 @@ type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type UsageDetailsClient = original.UsageDetailsClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ReservationsDetailsClient = original.ReservationsDetailsClient
+type OperationsClient = original.OperationsClient
+type ReservationsSummariesClient = original.ReservationsSummariesClient
+
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID)
+}
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -90,10 +97,4 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID)
-}
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }

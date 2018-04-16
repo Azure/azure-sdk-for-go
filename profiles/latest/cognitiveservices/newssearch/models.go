@@ -21,8 +21,6 @@ package newssearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/newssearch"
 
-type NewsClient = original.NewsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -128,6 +126,7 @@ type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TrendingTopics = original.TrendingTopics
 type VideoObject = original.VideoObject
+type NewsClient = original.NewsClient
 
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()

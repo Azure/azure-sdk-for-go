@@ -21,6 +21,14 @@ package account
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account"
 
+type FirewallRulesClient = original.FirewallRulesClient
+type AccountsClient = original.AccountsClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type LocationsClient = original.LocationsClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
@@ -168,48 +176,7 @@ type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParamet
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
 type UpdateTrustedIDProviderWithAccountParameters = original.UpdateTrustedIDProviderWithAccountParameters
 type TrustedIDProvidersClient = original.TrustedIDProvidersClient
-type FirewallRulesClient = original.FirewallRulesClient
-type AccountsClient = original.AccountsClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
-	return original.PossibleDataLakeStoreAccountStateValues()
-}
-func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
-	return original.PossibleDataLakeStoreAccountStatusValues()
-}
-func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
-	return original.PossibleEncryptionConfigTypeValues()
-}
-func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
-	return original.PossibleEncryptionProvisioningStateValues()
-}
-func PossibleEncryptionStateValues() []EncryptionState {
-	return original.PossibleEncryptionStateValues()
-}
-func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
-	return original.PossibleFirewallAllowAzureIpsStateValues()
-}
-func PossibleFirewallStateValues() []FirewallState {
-	return original.PossibleFirewallStateValues()
-}
-func PossibleOperationOriginValues() []OperationOrigin {
-	return original.PossibleOperationOriginValues()
-}
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return original.PossibleSubscriptionStateValues()
-}
-func PossibleTierTypeValues() []TierType {
-	return original.PossibleTierTypeValues()
-}
-func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
-	return original.PossibleTrustedIDProviderStateValues()
-}
 func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
 	return original.NewTrustedIDProvidersClient(subscriptionID)
 }
@@ -251,4 +218,37 @@ func NewLocationsClient(subscriptionID string) LocationsClient {
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
+	return original.PossibleDataLakeStoreAccountStateValues()
+}
+func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
+	return original.PossibleDataLakeStoreAccountStatusValues()
+}
+func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
+	return original.PossibleEncryptionConfigTypeValues()
+}
+func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
+	return original.PossibleEncryptionProvisioningStateValues()
+}
+func PossibleEncryptionStateValues() []EncryptionState {
+	return original.PossibleEncryptionStateValues()
+}
+func PossibleFirewallAllowAzureIpsStateValues() []FirewallAllowAzureIpsState {
+	return original.PossibleFirewallAllowAzureIpsStateValues()
+}
+func PossibleFirewallStateValues() []FirewallState {
+	return original.PossibleFirewallStateValues()
+}
+func PossibleOperationOriginValues() []OperationOrigin {
+	return original.PossibleOperationOriginValues()
+}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
+}
+func PossibleTierTypeValues() []TierType {
+	return original.PossibleTierTypeValues()
+}
+func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
+	return original.PossibleTrustedIDProviderStateValues()
 }

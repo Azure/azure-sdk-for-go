@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -1243,13 +1244,7 @@ type AvailabilitySetProperties struct {
 }
 
 // AvailabilitySetUpdate specifies information about the availability set that the virtual machine should be
-// assigned to. Virtual machines specified in the same availability set are allocated to different nodes to
-// maximize availability. For more information about availability sets, see [Manage the availability of virtual
-// machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-// <br><br> For more information on Azure planned maintainance, see [Planned maintenance for virtual machines in
-// Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-// <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added
-// to an availability set.
+// assigned to. Only tags may be updated.
 type AvailabilitySetUpdate struct {
 	*AvailabilitySetProperties `json:"properties,omitempty"`
 	// Sku - Sku of the availability set
@@ -2869,8 +2864,7 @@ func (future ImagesUpdateFuture) Result(client ImagesClient) (i Image, err error
 	return
 }
 
-// ImageUpdate the source user image virtual hard disk. The virtual hard disk will be copied before being attached
-// to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
+// ImageUpdate the source user image virtual hard disk. Only tags may be updated.
 type ImageUpdate struct {
 	*ImageProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
@@ -8182,7 +8176,7 @@ type VirtualMachineScaleSetUpdateIPConfigurationProperties struct {
 // configurations.
 type VirtualMachineScaleSetUpdateNetworkConfiguration struct {
 	// Name - The network configuration name.
-	Name                                                        *string `json:"name,omitempty"`
+	Name                                                        *uuid.UUID `json:"name,omitempty"`
 	*VirtualMachineScaleSetUpdateNetworkConfigurationProperties `json:"properties,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -8214,7 +8208,7 @@ func (vmssunc *VirtualMachineScaleSetUpdateNetworkConfiguration) UnmarshalJSON(b
 		switch k {
 		case "name":
 			if v != nil {
-				var name string
+				var name uuid.UUID
 				err = json.Unmarshal(*v, &name)
 				if err != nil {
 					return err
@@ -8728,7 +8722,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
-	// EvictionPolicy - Specifies the eviction policy for virtual machines in the low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
+	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
 	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 }
 
@@ -9867,7 +9861,7 @@ func (future VirtualMachinesUpdateFuture) Result(client VirtualMachinesClient) (
 	return
 }
 
-// VirtualMachineUpdate describes a Virtual Machine.
+// VirtualMachineUpdate describes a Virtual Machine Update.
 type VirtualMachineUpdate struct {
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan                      *Plan `json:"plan,omitempty"`

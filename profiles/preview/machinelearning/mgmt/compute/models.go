@@ -21,11 +21,6 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-08-01-preview/compute"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type AgentVMSizeTypes = original.AgentVMSizeTypes
 
 const (
@@ -162,6 +157,12 @@ type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 type MachineLearningComputeClient = original.MachineLearningComputeClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

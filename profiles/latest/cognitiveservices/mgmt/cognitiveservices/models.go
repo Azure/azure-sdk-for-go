@@ -21,8 +21,6 @@ package cognitiveservices
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
-type AccountsClient = original.AccountsClient
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -163,6 +161,7 @@ type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type ResourceSkusClient = original.ResourceSkusClient
+type AccountsClient = original.AccountsClient
 
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)

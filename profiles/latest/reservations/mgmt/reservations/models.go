@@ -21,13 +21,6 @@ package reservations
 
 import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type Client = original.Client
-type OperationClient = original.OperationClient
 type AppliedScopeType = original.AppliedScopeType
 
 const (
@@ -233,6 +226,14 @@ type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
 type OrderClient = original.OrderClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type Client = original.Client
+type OperationClient = original.OperationClient
 
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()

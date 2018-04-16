@@ -21,6 +21,13 @@ package resourcehealth
 
 import original "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
 
+type AvailabilityStatusesClient = original.AvailabilityStatusesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type OperationsClient = original.OperationsClient
 type AvailabilityStateValues = original.AvailabilityStateValues
 
@@ -51,14 +58,19 @@ type RecommendedAction = original.RecommendedAction
 type ServiceImpactingEvent = original.ServiceImpactingEvent
 type ServiceImpactingEventIncidentProperties = original.ServiceImpactingEventIncidentProperties
 type ServiceImpactingEventStatus = original.ServiceImpactingEventStatus
-type AvailabilityStatusesClient = original.AvailabilityStatusesClient
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
+func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
+	return original.NewAvailabilityStatusesClient(subscriptionID)
+}
+func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
+	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -76,16 +88,4 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewAvailabilityStatusesClient(subscriptionID string) AvailabilityStatusesClient {
-	return original.NewAvailabilityStatusesClient(subscriptionID)
-}
-func NewAvailabilityStatusesClientWithBaseURI(baseURI string, subscriptionID string) AvailabilityStatusesClient {
-	return original.NewAvailabilityStatusesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

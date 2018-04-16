@@ -21,6 +21,8 @@ package servermanagement
 
 import original "github.com/Azure/azure-sdk-for-go/services/servermanagement/mgmt/2016-07-01-preview/servermanagement"
 
+type GatewayClient = original.GatewayClient
+type SessionClient = original.SessionClient
 type CredentialDataFormat = original.CredentialDataFormat
 
 const (
@@ -118,21 +120,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type GatewayClient = original.GatewayClient
-type SessionClient = original.SessionClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewGatewayClient(subscriptionID string) GatewayClient {
-	return original.NewGatewayClient(subscriptionID)
-}
-func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
-	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewSessionClient(subscriptionID string) SessionClient {
 	return original.NewSessionClient(subscriptionID)
 }
@@ -174,4 +162,16 @@ func NewNodeClient(subscriptionID string) NodeClient {
 }
 func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient {
 	return original.NewNodeClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayClient(subscriptionID string) GatewayClient {
+	return original.NewGatewayClient(subscriptionID)
+}
+func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
+	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
 }

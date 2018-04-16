@@ -21,6 +21,11 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2016-01-01/storage"
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 type UsageClient = original.UsageClient
 type AccessTier = original.AccessTier
 
@@ -117,12 +122,6 @@ type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type AccountsClient = original.AccountsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 
 func UserAgent() string {
 	return original.UserAgent() + " profiles/2017-03-09"

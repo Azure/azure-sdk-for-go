@@ -21,7 +21,6 @@ package videosearch
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/videosearch"
 
-type VideosClient = original.VideosClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -168,6 +167,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type VideosClient = original.VideosClient
 
 func NewVideosClient() VideosClient {
 	return original.NewVideosClient()

@@ -21,6 +21,7 @@ package infrastructureinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2016-05-01/infrastructureinsights"
 
+type ServiceHealthsClient = original.ServiceHealthsClient
 type RegionHealthsClient = original.RegionHealthsClient
 type AlertsClient = original.AlertsClient
 type MetricsSourceType = original.MetricsSourceType
@@ -75,26 +76,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ServiceHealthsClient = original.ServiceHealthsClient
 
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
-func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
-	return original.NewResourceHealthsClient(subscriptionID)
-}
-func NewResourceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthsClient {
-	return original.NewResourceHealthsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewServiceHealthsClient(subscriptionID string) ServiceHealthsClient {
 	return original.NewServiceHealthsClient(subscriptionID)
 }
@@ -118,4 +100,22 @@ func PossibleMetricsSourceTypeValues() []MetricsSourceType {
 }
 func PossibleMetricsUnitValues() []MetricsUnit {
 	return original.PossibleMetricsUnitValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
+func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
+	return original.NewResourceHealthsClient(subscriptionID)
+}
+func NewResourceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthsClient {
+	return original.NewResourceHealthsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

@@ -21,8 +21,6 @@ package graphrbac
 
 import original "github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac"
 
-type ObjectsClient = original.ObjectsClient
-type UsersClient = original.UsersClient
 type ObjectType = original.ObjectType
 
 const (
@@ -97,6 +95,8 @@ type UserUpdateParameters = original.UserUpdateParameters
 type ApplicationsClient = original.ApplicationsClient
 type DomainsClient = original.DomainsClient
 type ServicePrincipalsClient = original.ServicePrincipalsClient
+type ObjectsClient = original.ObjectsClient
+type UsersClient = original.UsersClient
 type GroupsClient = original.GroupsClient
 
 const (
@@ -111,17 +111,29 @@ func NewObjectsClient(tenantID string) ObjectsClient {
 func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient {
 	return original.NewObjectsClientWithBaseURI(baseURI, tenantID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
-}
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)
 }
 func NewUsersClientWithBaseURI(baseURI string, tenantID string) UsersClient {
 	return original.NewUsersClientWithBaseURI(baseURI, tenantID)
+}
+func NewGroupsClient(tenantID string) GroupsClient {
+	return original.NewGroupsClient(tenantID)
+}
+func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
+}
+func New(tenantID string) BaseClient {
+	return original.New(tenantID)
+}
+func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, tenantID)
+}
+func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClient(tenantID)
+}
+func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
+	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
 }
 func PossibleObjectTypeValues() []ObjectType {
 	return original.PossibleObjectTypeValues()
@@ -135,27 +147,15 @@ func NewApplicationsClient(tenantID string) ApplicationsClient {
 func NewApplicationsClientWithBaseURI(baseURI string, tenantID string) ApplicationsClient {
 	return original.NewApplicationsClientWithBaseURI(baseURI, tenantID)
 }
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func NewDomainsClient(tenantID string) DomainsClient {
 	return original.NewDomainsClient(tenantID)
 }
 func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient {
 	return original.NewDomainsClientWithBaseURI(baseURI, tenantID)
-}
-func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClient(tenantID)
-}
-func NewServicePrincipalsClientWithBaseURI(baseURI string, tenantID string) ServicePrincipalsClient {
-	return original.NewServicePrincipalsClientWithBaseURI(baseURI, tenantID)
-}
-func NewGroupsClient(tenantID string) GroupsClient {
-	return original.NewGroupsClient(tenantID)
-}
-func NewGroupsClientWithBaseURI(baseURI string, tenantID string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, tenantID)
-}
-func New(tenantID string) BaseClient {
-	return original.New(tenantID)
-}
-func NewWithBaseURI(baseURI string, tenantID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, tenantID)
 }

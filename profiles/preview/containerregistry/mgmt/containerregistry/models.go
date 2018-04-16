@@ -21,6 +21,8 @@ package containerregistry
 
 import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
 
+type WebhooksClient = original.WebhooksClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -146,7 +148,6 @@ type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
 type RegistriesClient = original.RegistriesClient
-type WebhooksClient = original.WebhooksClient
 
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

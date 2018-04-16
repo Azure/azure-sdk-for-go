@@ -21,12 +21,14 @@ package compute
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-08-01-preview/compute"
 
+type OperationalizationClustersClient = original.OperationalizationClustersClient
+type MachineLearningComputeClient = original.MachineLearningComputeClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type MachineLearningComputeClient = original.MachineLearningComputeClient
 type AgentVMSizeTypes = original.AgentVMSizeTypes
 
 const (
@@ -161,19 +163,24 @@ type StorageAccountCredentials = original.StorageAccountCredentials
 type StorageAccountProperties = original.StorageAccountProperties
 type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
-type OperationalizationClustersClient = original.OperationalizationClustersClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
+	return original.NewOperationalizationClustersClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
+	return original.NewOperationalizationClustersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClient(subscriptionID)
 }
 func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAgentVMSizeTypesValues() []AgentVMSizeTypes {
 	return original.PossibleAgentVMSizeTypesValues()
@@ -195,12 +202,6 @@ func PossibleSystemServiceTypeValues() []SystemServiceType {
 }
 func PossibleUpdatesAvailableValues() []UpdatesAvailable {
 	return original.PossibleUpdatesAvailableValues()
-}
-func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
-	return original.NewOperationalizationClustersClient(subscriptionID)
-}
-func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscriptionID string) OperationalizationClustersClient {
-	return original.NewOperationalizationClustersClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

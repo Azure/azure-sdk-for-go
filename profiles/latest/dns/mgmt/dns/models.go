@@ -21,11 +21,7 @@ package dns
 
 import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type RecordSetsClient = original.RecordSetsClient
 type RecordType = original.RecordType
 
 const (
@@ -68,8 +64,13 @@ type ZoneListResultPage = original.ZoneListResultPage
 type ZoneProperties = original.ZoneProperties
 type ZonesDeleteFuture = original.ZonesDeleteFuture
 type ZoneUpdate = original.ZoneUpdate
-type RecordSetsClient = original.RecordSetsClient
 type ZonesClient = original.ZonesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -77,14 +78,14 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleRecordTypeValues() []RecordType {
-	return original.PossibleRecordTypeValues()
-}
 func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
 	return original.NewRecordSetsClient(subscriptionID)
 }
 func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
 	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleRecordTypeValues() []RecordType {
+	return original.PossibleRecordTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

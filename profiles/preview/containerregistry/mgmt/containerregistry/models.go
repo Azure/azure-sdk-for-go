@@ -26,6 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type ReplicationsClient = original.ReplicationsClient
 type PasswordName = original.PasswordName
 
 const (
@@ -143,16 +145,32 @@ type WebhooksCreateFuture = original.WebhooksCreateFuture
 type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
-type OperationsClient = original.OperationsClient
 type RegistriesClient = original.RegistriesClient
-type ReplicationsClient = original.ReplicationsClient
 type WebhooksClient = original.WebhooksClient
 
+func NewWebhooksClient(subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClient(subscriptionID)
+}
+func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
+	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReplicationsClient(subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClient(subscriptionID)
+}
+func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
+	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
@@ -175,33 +193,15 @@ func PossibleWebhookActionValues() []WebhookAction {
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClient(subscriptionID)
 }
 func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReplicationsClient(subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClient(subscriptionID)
-}
-func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) ReplicationsClient {
-	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
-}
-func NewWebhooksClient(subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClient(subscriptionID)
-}
-func NewWebhooksClientWithBaseURI(baseURI string, subscriptionID string) WebhooksClient {
-	return original.NewWebhooksClientWithBaseURI(baseURI, subscriptionID)
 }

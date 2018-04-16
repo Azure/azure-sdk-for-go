@@ -26,7 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type HanaInstancesClient = original.HanaInstancesClient
+type OperationsClient = original.OperationsClient
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
@@ -60,25 +60,25 @@ type OperationList = original.OperationList
 type OSProfile = original.OSProfile
 type Resource = original.Resource
 type StorageProfile = original.StorageProfile
-type OperationsClient = original.OperationsClient
+type HanaInstancesClient = original.HanaInstancesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
 	return original.NewHanaInstancesClient(subscriptionID)
 }
 func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
 	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
-	return original.PossibleHanaHardwareTypeNamesEnumValues()
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
-	return original.PossibleHanaInstanceSizeNamesEnumValues()
+func Version() string {
+	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -86,9 +86,9 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
+	return original.PossibleHanaHardwareTypeNamesEnumValues()
 }
-func Version() string {
-	return original.Version()
+func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
+	return original.PossibleHanaInstanceSizeNamesEnumValues()
 }

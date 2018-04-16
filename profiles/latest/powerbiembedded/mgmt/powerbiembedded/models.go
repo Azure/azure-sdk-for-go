@@ -21,11 +21,14 @@ package powerbiembedded
 
 import original "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
+type WorkspacesClient = original.WorkspacesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
 type AccessKeyName = original.AccessKeyName
 
 const (
@@ -58,14 +61,18 @@ type WorkspaceCollectionAccessKeys = original.WorkspaceCollectionAccessKeys
 type WorkspaceCollectionList = original.WorkspaceCollectionList
 type WorkspaceCollectionsDeleteFuture = original.WorkspaceCollectionsDeleteFuture
 type WorkspaceList = original.WorkspaceList
-type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
-type WorkspacesClient = original.WorkspacesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClient(subscriptionID)
+}
+func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
+	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessKeyNameValues() []AccessKeyName {
 	return original.PossibleAccessKeyNameValues()
@@ -78,12 +85,6 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
-}
-func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClient(subscriptionID)
-}
-func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
-	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)

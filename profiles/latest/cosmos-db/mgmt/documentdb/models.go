@@ -21,18 +21,19 @@ package documentdb
 
 import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb"
 
+type PercentileClient = original.PercentileClient
+type PercentileSourceTargetClient = original.PercentileSourceTargetClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
 type CollectionClient = original.CollectionClient
-type CollectionPartitionClient = original.CollectionPartitionClient
-type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
-type CollectionRegionClient = original.CollectionRegionClient
 type DatabaseClient = original.DatabaseClient
-type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
-type DatabaseAccountsClient = original.DatabaseAccountsClient
+type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
+type OperationsClient = original.OperationsClient
+type CollectionRegionClient = original.CollectionRegionClient
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
@@ -133,18 +134,24 @@ type PercentileMetricValue = original.PercentileMetricValue
 type Resource = original.Resource
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
-type OperationsClient = original.OperationsClient
-type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
-type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
-type PercentileClient = original.PercentileClient
-type PercentileSourceTargetClient = original.PercentileSourceTargetClient
+type CollectionPartitionRegionClient = original.CollectionPartitionRegionClient
 type PercentileTargetClient = original.PercentileTargetClient
+type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
+type CollectionPartitionClient = original.CollectionPartitionClient
+type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
+type DatabaseAccountsClient = original.DatabaseAccountsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewDatabaseClient(subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
+	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID)
+}
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCollectionClient(subscriptionID string) CollectionClient {
 	return original.NewCollectionClient(subscriptionID)
@@ -152,41 +159,11 @@ func NewCollectionClient(subscriptionID string) CollectionClient {
 func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) CollectionClient {
 	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClient(subscriptionID)
-}
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
-	return original.NewCollectionRegionClient(subscriptionID)
-}
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
-	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseClient(subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClient(subscriptionID)
-}
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClient(subscriptionID)
-}
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClient(subscriptionID)
-}
-func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func PossibleDatabaseAccountKindValues() []DatabaseAccountKind {
 	return original.PossibleDatabaseAccountKindValues()
@@ -206,11 +183,47 @@ func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
 }
+func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClient(subscriptionID)
+}
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
+	return original.NewPercentileTargetClient(subscriptionID)
+}
+func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
+	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClient(subscriptionID)
+}
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
+	return original.NewCollectionRegionClient(subscriptionID)
+}
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
+	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClient(subscriptionID)
+}
+func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClient(subscriptionID)
+}
+func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClient {
 	return original.NewPartitionKeyRangeIDClient(subscriptionID)
@@ -218,11 +231,11 @@ func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClie
 func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDClient {
 	return original.NewPartitionKeyRangeIDClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewPercentileClient(subscriptionID string) PercentileClient {
 	return original.NewPercentileClient(subscriptionID)
@@ -235,16 +248,4 @@ func NewPercentileSourceTargetClient(subscriptionID string) PercentileSourceTarg
 }
 func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileSourceTargetClient {
 	return original.NewPercentileSourceTargetClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
-	return original.NewPercentileTargetClient(subscriptionID)
-}
-func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
-	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

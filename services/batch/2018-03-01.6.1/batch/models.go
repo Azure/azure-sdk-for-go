@@ -1724,7 +1724,13 @@ type CloudServiceConfiguration struct {
 	CurrentOSVersion *string `json:"currentOSVersion,omitempty"`
 }
 
-// CloudTask ...
+// CloudTask batch will retry tasks when a recovery operation is triggered on a compute node. Examples of recovery
+// operations include (but are not limited to) when an unhealthy compute node is rebooted or a compute node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
+// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation
+// may occur. Because of this, all tasks should be idempotent. This means tasks need to tolerate being interrupted
+// and restarted without causing any corruption or duplicate data. Best practices recommended for long running
+// tasks is to use checkpointing.
 type CloudTask struct {
 	autorest.Response `json:"-"`
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters.
@@ -1745,7 +1751,7 @@ type CloudTask struct {
 	PreviousState TaskState `json:"previousState,omitempty"`
 	// PreviousStateTransitionTime - This property is not set if the task is in its initial Active state.
 	PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Tasks should be idempotent. For more information, please see TaskContainerSettings.maxTaskRetryCount.
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
@@ -2261,13 +2267,19 @@ type JobExecutionInformation struct {
 // system may terminate one of the running tasks in the pool and return it to the queue in order to make room for
 // the Job Manager task to restart. Note that a Job Manager task in one job does not have priority over tasks in
 // other jobs. Across jobs, only job level priorities are observed. For example, if a Job Manager in a priority 0
-// job needs to be restarted, it will not displace tasks of a priority 1 job.
+// job needs to be restarted, it will not displace tasks of a priority 1 job. Batch will retry tasks when a
+// recovery operation is triggered on a compute node. Examples of recovery operations include (but are not limited
+// to) when an unhealthy compute node is rebooted or a compute node disappeared due to host failure. Retries due to
+// recovery operations are independent of and are not counted against the maxTaskRetryCount. Even if the
+// maxTaskRetryCount is 0, an internal retry due to a recovery operation may occur. Because of this, all tasks
+// should be idempotent. This means tasks need to tolerate being interrupted and restarted without causing any
+// corruption or duplicate data. Best practices recommended for long running tasks is to use checkpointing.
 type JobManagerTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
 	ID *string `json:"id,omitempty"`
 	// DisplayName - It need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// CommandLine - Tasks should be idempotent. For more information, please see TaskContainerSettings.maxTaskRetryCount. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
@@ -2326,11 +2338,17 @@ type JobPreparationAndReleaseTaskExecutionInformation struct {
 // Preparation task to handle re-execution. If the compute node is rebooted, the Job Preparation task is run again
 // on the node before scheduling any other task of the job, if rerunOnNodeRebootAfterSuccess is true or if the Job
 // Preparation task did not previously complete. If the compute node is reimaged, the Job Preparation task is run
-// again before scheduling any task of the job.
+// again before scheduling any task of the job. Batch will retry tasks when a recovery operation is triggered on a
+// compute node. Examples of recovery operations include (but are not limited to) when an unhealthy compute node is
+// rebooted or a compute node disappeared due to host failure. Retries due to recovery operations are independent
+// of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due
+// to a recovery operation may occur. Because of this, all tasks should be idempotent. This means tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. Best practices
+// recommended for long running tasks is to use checkpointing.
 type JobPreparationTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobpreparation'. No other task in the job can have the same ID as the Job Preparation task. If you try to submit a task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobPreparationTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Tasks should be idempotent. For more information, please see TaskContainerSettings.maxTaskRetryCount.
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
@@ -2629,6 +2647,7 @@ type NodeCounts struct {
 	Running             *int32 `json:"running,omitempty"`
 	Starting            *int32 `json:"starting,omitempty"`
 	StartTaskFailed     *int32 `json:"startTaskFailed,omitempty"`
+	LeavingPool         *int32 `json:"leavingPool,omitempty"`
 	Unknown             *int32 `json:"unknown,omitempty"`
 	Unusable            *int32 `json:"unusable,omitempty"`
 	WaitingForStartTask *int32 `json:"waitingForStartTask,omitempty"`
@@ -3248,9 +3267,15 @@ type Schedule struct {
 	RecurrenceInterval *string `json:"recurrenceInterval,omitempty"`
 }
 
-// StartTask ...
+// StartTask batch will retry tasks when a recovery operation is triggered on a compute node. Examples of recovery
+// operations include (but are not limited to) when an unhealthy compute node is rebooted or a compute node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
+// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation
+// may occur. Because of this, all tasks should be idempotent. This means tasks need to tolerate being interrupted
+// and restarted without causing any corruption or duplicate data. Best practices recommended for long running
+// tasks is to use checkpointing.
 type StartTask struct {
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Tasks should be idempotent. For more information, please see TaskContainerSettings.maxTaskRetryCount.
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
@@ -3323,13 +3348,19 @@ type TaskAddCollectionResult struct {
 	Value             *[]TaskAddResult `json:"value,omitempty"`
 }
 
-// TaskAddParameter ...
+// TaskAddParameter batch will retry tasks when a recovery operation is triggered on a compute node. Examples of
+// recovery operations include (but are not limited to) when an unhealthy compute node is rebooted or a compute
+// node disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
+// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation
+// may occur. Because of this, all tasks should be idempotent. This means tasks need to tolerate being interrupted
+// and restarted without causing any corruption or duplicate data. Best practices recommended for long running
+// tasks is to use checkpointing.
 type TaskAddParameter struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a job that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. Tasks should be idempotent. For more information, please see TaskContainerSettings.maxTaskRetryCount.
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
@@ -3372,7 +3403,7 @@ type TaskConstraints struct {
 	MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
 	// RetentionTime - The default is infinite, i.e. the task directory will be retained until the compute node is removed or reimaged.
 	RetentionTime *string `json:"retentionTime,omitempty"`
-	// MaxTaskRetryCount - Note that this value specifically controls the number of retries. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task without limit.
+	// MaxTaskRetryCount - Note that this value specifically controls the number of retries for the task executable due to nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit. Resource files and application packages are only downloaded again if the task is retried on a new compute node.
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 }
 
@@ -3528,7 +3559,9 @@ type UserAccount struct {
 	LinuxUserConfiguration *LinuxUserConfiguration `json:"linuxUserConfiguration,omitempty"`
 }
 
-// UserIdentity specify either the userName or autoUser property, but not both.
+// UserIdentity specify either the userName or autoUser property, but not both. On CloudServiceConfiguration pools,
+// this user is logged in with the INTERACTIVE flag. On Windows VirtualMachineConfiguration pools, this user is
+// logged in with the BATCH flag.
 type UserIdentity struct {
 	// UserName - The userName and autoUser properties are mutually exclusive; you must specify one but not both.
 	UserName *string `json:"username,omitempty"`

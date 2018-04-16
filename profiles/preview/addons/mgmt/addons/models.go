@@ -21,17 +21,22 @@ package addons
 
 import original "github.com/Azure/azure-sdk-for-go/services/addons/mgmt/2018-03-01/addons"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type SupportPlanTypesClient = original.SupportPlanTypesClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
+	return original.NewSupportPlanTypesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) SupportPlanTypesClient {
+	return original.NewSupportPlanTypesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+type OperationsClient = original.OperationsClient
+
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type OneTimeCharge = original.OneTimeCharge
@@ -96,26 +101,23 @@ type OperationsDefinition = original.OperationsDefinition
 type OperationsDisplayDefinition = original.OperationsDisplayDefinition
 type SupportPlanTypesCreateOrUpdateFuture = original.SupportPlanTypesCreateOrUpdateFuture
 type SupportPlanTypesDeleteFuture = original.SupportPlanTypesDeleteFuture
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
-type SupportPlanTypesClient = original.SupportPlanTypesClient
-
-func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
-	return original.NewSupportPlanTypesClient(subscriptionID)
-}
-func NewSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) SupportPlanTypesClient {
-	return original.NewSupportPlanTypesClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

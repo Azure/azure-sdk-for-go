@@ -21,25 +21,22 @@ package face
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face"
 
-type BaseClient = original.BaseClient
+type PersonGroupPersonClient = original.PersonGroupPersonClient
 
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
+func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
+	return original.NewPersonGroupPersonClient(azureRegion)
 }
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
+
+type PersonGroupClient = original.PersonGroupClient
+
+func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
+	return original.NewPersonGroupClient(azureRegion)
 }
 
 type Client = original.Client
 
 func NewClient(azureRegion AzureRegions) Client {
 	return original.NewClient(azureRegion)
-}
-
-type ListClient = original.ListClient
-
-func NewListClient(azureRegion AzureRegions) ListClient {
-	return original.NewListClient(azureRegion)
 }
 
 type AccessoryType = original.AccessoryType
@@ -242,20 +239,25 @@ type UpdatePersonFaceRequest = original.UpdatePersonFaceRequest
 type VerifyFaceToFaceRequest = original.VerifyFaceToFaceRequest
 type VerifyFaceToPersonRequest = original.VerifyFaceToPersonRequest
 type VerifyResult = original.VerifyResult
-type PersonGroupClient = original.PersonGroupClient
 
-func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
-	return original.NewPersonGroupClient(azureRegion)
-}
-
-type PersonGroupPersonClient = original.PersonGroupPersonClient
-
-func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
-	return original.NewPersonGroupPersonClient(azureRegion)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+
+type ListClient = original.ListClient
+
+func NewListClient(azureRegion AzureRegions) ListClient {
+	return original.NewListClient(azureRegion)
+}
+
+type BaseClient = original.BaseClient
+
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
 }

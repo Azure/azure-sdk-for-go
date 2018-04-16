@@ -48,15 +48,15 @@ type ResourceWriteSuccessData = original.ResourceWriteSuccessData
 type StorageBlobCreatedEventData = original.StorageBlobCreatedEventData
 type StorageBlobDeletedEventData = original.StorageBlobDeletedEventData
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
 }

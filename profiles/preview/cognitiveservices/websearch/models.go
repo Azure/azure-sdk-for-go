@@ -174,6 +174,18 @@ type BasicWebWebGrouping = original.BasicWebWebGrouping
 type WebWebGrouping = original.WebWebGrouping
 type WebClient = original.WebClient
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
+func NewWebClient() WebClient {
+	return original.NewWebClient()
+}
+func NewWebClientWithBaseURI(baseURI string) WebClient {
+	return original.NewWebClientWithBaseURI(baseURI)
+}
 func New() BaseClient {
 	return original.New()
 }
@@ -203,16 +215,4 @@ func PossibleTypeValues() []Type {
 }
 func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
 	return original.PossibleTypeBasicResponseBaseValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWebClient() WebClient {
-	return original.NewWebClient()
-}
-func NewWebClientWithBaseURI(baseURI string) WebClient {
-	return original.NewWebClientWithBaseURI(baseURI)
 }

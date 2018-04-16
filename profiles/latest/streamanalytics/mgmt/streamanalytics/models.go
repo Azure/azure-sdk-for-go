@@ -21,13 +21,17 @@ package streamanalytics
 
 import original "github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics"
 
+type OutputsClient = original.OutputsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type FunctionsClient = original.FunctionsClient
+type OperationsClient = original.OperationsClient
+type TransformationsClient = original.TransformationsClient
 type InputsClient = original.InputsClient
+type StreamingJobsClient = original.StreamingJobsClient
 type BindingType = original.BindingType
 
 const (
@@ -265,29 +269,38 @@ type SubscriptionQuotaProperties = original.SubscriptionQuotaProperties
 type SubscriptionQuotasListResult = original.SubscriptionQuotasListResult
 type Transformation = original.Transformation
 type TransformationProperties = original.TransformationProperties
-type OperationsClient = original.OperationsClient
-type OutputsClient = original.OutputsClient
-type StreamingJobsClient = original.StreamingJobsClient
+type FunctionsClient = original.FunctionsClient
 type SubscriptionsClient = original.SubscriptionsClient
-type TransformationsClient = original.TransformationsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewFunctionsClient(subscriptionID string) FunctionsClient {
-	return original.NewFunctionsClient(subscriptionID)
+func NewTransformationsClient(subscriptionID string) TransformationsClient {
+	return original.NewTransformationsClient(subscriptionID)
 }
-func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) FunctionsClient {
-	return original.NewFunctionsClientWithBaseURI(baseURI, subscriptionID)
+func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) TransformationsClient {
+	return original.NewTransformationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewInputsClient(subscriptionID string) InputsClient {
 	return original.NewInputsClient(subscriptionID)
 }
 func NewInputsClientWithBaseURI(baseURI string, subscriptionID string) InputsClient {
 	return original.NewInputsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOutputsClient(subscriptionID string) OutputsClient {
+	return original.NewOutputsClient(subscriptionID)
+}
+func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsClient {
+	return original.NewOutputsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleBindingTypeValues() []BindingType {
 	return original.PossibleBindingTypeValues()
@@ -337,23 +350,11 @@ func PossibleTypeBasicStreamInputDataSourceValues() []TypeBasicStreamInputDataSo
 func PossibleUdfTypeValues() []UdfType {
 	return original.PossibleUdfTypeValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewFunctionsClient(subscriptionID string) FunctionsClient {
+	return original.NewFunctionsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOutputsClient(subscriptionID string) OutputsClient {
-	return original.NewOutputsClient(subscriptionID)
-}
-func NewOutputsClientWithBaseURI(baseURI string, subscriptionID string) OutputsClient {
-	return original.NewOutputsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewStreamingJobsClient(subscriptionID string) StreamingJobsClient {
-	return original.NewStreamingJobsClient(subscriptionID)
-}
-func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) StreamingJobsClient {
-	return original.NewStreamingJobsClientWithBaseURI(baseURI, subscriptionID)
+func NewFunctionsClientWithBaseURI(baseURI string, subscriptionID string) FunctionsClient {
+	return original.NewFunctionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
 	return original.NewSubscriptionsClient(subscriptionID)
@@ -361,15 +362,15 @@ func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
 func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTransformationsClient(subscriptionID string) TransformationsClient {
-	return original.NewTransformationsClient(subscriptionID)
-}
-func NewTransformationsClientWithBaseURI(baseURI string, subscriptionID string) TransformationsClient {
-	return original.NewTransformationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewStreamingJobsClient(subscriptionID string) StreamingJobsClient {
+	return original.NewStreamingJobsClient(subscriptionID)
+}
+func NewStreamingJobsClientWithBaseURI(baseURI string, subscriptionID string) StreamingJobsClient {
+	return original.NewStreamingJobsClientWithBaseURI(baseURI, subscriptionID)
 }

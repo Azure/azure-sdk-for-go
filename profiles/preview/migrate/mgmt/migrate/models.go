@@ -21,16 +21,15 @@ package migrate
 
 import original "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2018-02-02/migrate"
 
-type AssessedMachinesClient = original.AssessedMachinesClient
+type OperationsClient = original.OperationsClient
 type AssessmentsClient = original.AssessmentsClient
+type GroupsClient = original.GroupsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type GroupsClient = original.GroupsClient
-type MachinesClient = original.MachinesClient
 type AssessmentSizingCriterion = original.AssessmentSizingCriterion
 
 const (
@@ -456,38 +455,33 @@ type Project = original.Project
 type ProjectKey = original.ProjectKey
 type ProjectProperties = original.ProjectProperties
 type ProjectResultList = original.ProjectResultList
-type OperationsClient = original.OperationsClient
 type ProjectsClient = original.ProjectsClient
+type MachinesClient = original.MachinesClient
+type AssessedMachinesClient = original.AssessedMachinesClient
 
-func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) AssessedMachinesClient {
-	return original.NewAssessedMachinesClient(subscriptionID, acceptLanguage)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
-	return original.NewAssessedMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+func Version() string {
+	return original.Version()
 }
-func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
+func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
+	return original.NewProjectsClient(subscriptionID, acceptLanguage)
 }
-func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func New(subscriptionID string, acceptLanguage string) BaseClient {
-	return original.New(subscriptionID, acceptLanguage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClient(subscriptionID, acceptLanguage)
-}
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
+	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
 	return original.NewMachinesClient(subscriptionID, acceptLanguage)
 }
 func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
 	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) AssessedMachinesClient {
+	return original.NewAssessedMachinesClient(subscriptionID, acceptLanguage)
+}
+func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
+	return original.NewAssessedMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func PossibleAssessmentSizingCriterionValues() []AssessmentSizingCriterion {
 	return original.PossibleAssessmentSizingCriterionValues()
@@ -552,21 +546,27 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleTimeRangeValues() []TimeRange {
 	return original.PossibleTimeRangeValues()
 }
+func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
+}
+func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID, acceptLanguage)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
-	return original.NewProjectsClient(subscriptionID, acceptLanguage)
-}
-func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
-	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

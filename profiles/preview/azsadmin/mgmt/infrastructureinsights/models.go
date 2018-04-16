@@ -21,13 +21,6 @@ package infrastructureinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2016-05-01/infrastructureinsights"
 
-type AlertsClient = original.AlertsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type MetricsSourceType = original.MetricsSourceType
 
 const (
@@ -73,33 +66,22 @@ type ServiceHealthListIterator = original.ServiceHealthListIterator
 type ServiceHealthListPage = original.ServiceHealthListPage
 type ServiceHealthModel = original.ServiceHealthModel
 type UsageMetrics = original.UsageMetrics
-type RegionHealthsClient = original.RegionHealthsClient
 type ResourceHealthsClient = original.ResourceHealthsClient
-type ServiceHealthsClient = original.ServiceHealthsClient
 
-func NewAlertsClient(subscriptionID string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ServiceHealthsClient = original.ServiceHealthsClient
+type RegionHealthsClient = original.RegionHealthsClient
+type AlertsClient = original.AlertsClient
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleMetricsSourceTypeValues() []MetricsSourceType {
-	return original.PossibleMetricsSourceTypeValues()
-}
-func PossibleMetricsUnitValues() []MetricsUnit {
-	return original.PossibleMetricsUnitValues()
-}
-func NewRegionHealthsClient(subscriptionID string) RegionHealthsClient {
-	return original.NewRegionHealthsClient(subscriptionID)
-}
-func NewRegionHealthsClientWithBaseURI(baseURI string, subscriptionID string) RegionHealthsClient {
-	return original.NewRegionHealthsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
 	return original.NewResourceHealthsClient(subscriptionID)
@@ -107,15 +89,33 @@ func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
 func NewResourceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthsClient {
 	return original.NewResourceHealthsClientWithBaseURI(baseURI, subscriptionID)
 }
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
 func NewServiceHealthsClient(subscriptionID string) ServiceHealthsClient {
 	return original.NewServiceHealthsClient(subscriptionID)
 }
 func NewServiceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ServiceHealthsClient {
 	return original.NewServiceHealthsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewRegionHealthsClient(subscriptionID string) RegionHealthsClient {
+	return original.NewRegionHealthsClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewRegionHealthsClientWithBaseURI(baseURI string, subscriptionID string) RegionHealthsClient {
+	return original.NewRegionHealthsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleMetricsSourceTypeValues() []MetricsSourceType {
+	return original.PossibleMetricsSourceTypeValues()
+}
+func PossibleMetricsUnitValues() []MetricsUnit {
+	return original.PossibleMetricsUnitValues()
 }

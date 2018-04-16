@@ -26,9 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type EndpointsClient = original.EndpointsClient
+type UserMetricsKeysClient = original.UserMetricsKeysClient
 type GeographicHierarchiesClient = original.GeographicHierarchiesClient
-type HeatMapClient = original.HeatMapClient
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
 const (
@@ -106,13 +105,20 @@ type TrackedResource = original.TrackedResource
 type TrafficFlow = original.TrafficFlow
 type UserMetricsKeyModel = original.UserMetricsKeyModel
 type ProfilesClient = original.ProfilesClient
-type UserMetricsKeysClient = original.UserMetricsKeysClient
+type EndpointsClient = original.EndpointsClient
+type HeatMapClient = original.HeatMapClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
 }
 func NewEndpointsClient(subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClient(subscriptionID)
@@ -120,17 +126,29 @@ func NewEndpointsClient(subscriptionID string) EndpointsClient {
 func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchiesClient {
-	return original.NewGeographicHierarchiesClient(subscriptionID)
-}
-func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
-	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewHeatMapClient(subscriptionID string) HeatMapClient {
 	return original.NewHeatMapClient(subscriptionID)
 }
 func NewHeatMapClientWithBaseURI(baseURI string, subscriptionID string) HeatMapClient {
 	return original.NewHeatMapClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClient(subscriptionID)
+}
+func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
+	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGeographicHierarchiesClient(subscriptionID string) GeographicHierarchiesClient {
+	return original.NewGeographicHierarchiesClient(subscriptionID)
+}
+func NewGeographicHierarchiesClientWithBaseURI(baseURI string, subscriptionID string) GeographicHierarchiesClient {
+	return original.NewGeographicHierarchiesClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 	return original.PossibleEndpointMonitorStatusValues()
@@ -149,22 +167,4 @@ func PossibleProfileStatusValues() []ProfileStatus {
 }
 func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	return original.PossibleTrafficRoutingMethodValues()
-}
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
-}
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClient(subscriptionID)
-}
-func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

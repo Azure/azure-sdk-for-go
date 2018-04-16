@@ -21,12 +21,11 @@ package servicefabric
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/1.0.0/servicefabric"
 
-type ApplicationHealthsClient = original.ApplicationHealthsClient
-type ApplicationManifestsClient = original.ApplicationManifestsClient
-type ApplicationsClient = original.ApplicationsClient
-type ApplicationTypesClient = original.ApplicationTypesClient
-type ApplicationUpgradeRollbacksClient = original.ApplicationUpgradeRollbacksClient
-type ApplicationUpgradesClient = original.ApplicationUpgradesClient
+type ServiceGroupMembersClient = original.ServiceGroupMembersClient
+type ReplicaLoadInformationsClient = original.ReplicaLoadInformationsClient
+type ServiceFromTemplatesClient = original.ServiceFromTemplatesClient
+type NodesClient = original.NodesClient
+type PartitionsClient = original.PartitionsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -34,18 +33,35 @@ const (
 
 type BaseClient = original.BaseClient
 type ClusterHealthsClient = original.ClusterHealthsClient
-type ClusterLoadInformationsClient = original.ClusterLoadInformationsClient
-type ClusterManifestsClient = original.ClusterManifestsClient
-type ClusterPackagesClient = original.ClusterPackagesClient
-type ClusterUpgradesClient = original.ClusterUpgradesClient
-type DeployedApplicationHealthsClient = original.DeployedApplicationHealthsClient
-type DeployedApplicationsClient = original.DeployedApplicationsClient
-type DeployedCodePackagesClient = original.DeployedCodePackagesClient
-type DeployedReplicaDetailsClient = original.DeployedReplicaDetailsClient
-type DeployedReplicasClient = original.DeployedReplicasClient
-type DeployedServicePackageHealthsClient = original.DeployedServicePackageHealthsClient
 type DeployedServicePackagesClient = original.DeployedServicePackagesClient
+type NodeStatesClient = original.NodeStatesClient
+type ServiceGroupsClient = original.ServiceGroupsClient
+type ServiceDescriptionsClient = original.ServiceDescriptionsClient
+type ApplicationTypesClient = original.ApplicationTypesClient
+type NodeLoadInformationsClient = original.NodeLoadInformationsClient
+type ClusterManifestsClient = original.ClusterManifestsClient
+type DeployedApplicationHealthsClient = original.DeployedApplicationHealthsClient
+type ReplicaHealthsClient = original.ReplicaHealthsClient
+type ServiceTypesClient = original.ServiceTypesClient
+type PartitionLoadsClient = original.PartitionLoadsClient
+type ServiceGroupFromTemplatesClient = original.ServiceGroupFromTemplatesClient
+type DeployedServicePackageHealthsClient = original.DeployedServicePackageHealthsClient
+type ApplicationsClient = original.ApplicationsClient
+type DeployedApplicationsClient = original.DeployedApplicationsClient
+type PartitionHealthsClient = original.PartitionHealthsClient
+type ServicesClient = original.ServicesClient
+type ClusterUpgradesClient = original.ClusterUpgradesClient
+type ClusterLoadInformationsClient = original.ClusterLoadInformationsClient
 type DeployedServiceTypesClient = original.DeployedServiceTypesClient
+type NodeHealthsClient = original.NodeHealthsClient
+type ServiceGroupDescriptionsClient = original.ServiceGroupDescriptionsClient
+type UpgradeProgressesClient = original.UpgradeProgressesClient
+type DeployedReplicaDetailsClient = original.DeployedReplicaDetailsClient
+type ApplicationUpgradeRollbacksClient = original.ApplicationUpgradeRollbacksClient
+type PartitionListsClient = original.PartitionListsClient
+type ReplicasClient = original.ReplicasClient
+type ApplicationHealthsClient = original.ApplicationHealthsClient
+type ApplicationUpgradesClient = original.ApplicationUpgradesClient
 type AggregatedHealthState = original.AggregatedHealthState
 
 const (
@@ -847,35 +863,19 @@ type UpdateServiceGroupDescription = original.UpdateServiceGroupDescription
 type UpgradeDomainDeltaNodesCheckHealthEvaluation = original.UpgradeDomainDeltaNodesCheckHealthEvaluation
 type UpgradeDomainDeployedApplicationsHealthEvaluation = original.UpgradeDomainDeployedApplicationsHealthEvaluation
 type UpgradeDomainNodesHealthEvaluation = original.UpgradeDomainNodesHealthEvaluation
-type NodeHealthsClient = original.NodeHealthsClient
-type NodeLoadInformationsClient = original.NodeLoadInformationsClient
-type NodesClient = original.NodesClient
-type NodeStatesClient = original.NodeStatesClient
-type PartitionHealthsClient = original.PartitionHealthsClient
-type PartitionListsClient = original.PartitionListsClient
 type PartitionLoadInformationsClient = original.PartitionLoadInformationsClient
-type PartitionLoadsClient = original.PartitionLoadsClient
-type PartitionsClient = original.PartitionsClient
-type ReplicaHealthsClient = original.ReplicaHealthsClient
-type ReplicaLoadInformationsClient = original.ReplicaLoadInformationsClient
-type ReplicasClient = original.ReplicasClient
-type ServiceDescriptionsClient = original.ServiceDescriptionsClient
-type ServiceFromTemplatesClient = original.ServiceFromTemplatesClient
-type ServiceGroupDescriptionsClient = original.ServiceGroupDescriptionsClient
-type ServiceGroupFromTemplatesClient = original.ServiceGroupFromTemplatesClient
-type ServiceGroupMembersClient = original.ServiceGroupMembersClient
-type ServiceGroupsClient = original.ServiceGroupsClient
+type DeployedReplicasClient = original.DeployedReplicasClient
 type ServiceHealthsClient = original.ServiceHealthsClient
+type DeployedCodePackagesClient = original.DeployedCodePackagesClient
 type ServiceManifestsClient = original.ServiceManifestsClient
-type ServicesClient = original.ServicesClient
-type ServiceTypesClient = original.ServiceTypesClient
-type UpgradeProgressesClient = original.UpgradeProgressesClient
+type ApplicationManifestsClient = original.ApplicationManifestsClient
+type ClusterPackagesClient = original.ClusterPackagesClient
 
-func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
-	return original.NewApplicationHealthsClient(timeout)
+func NewServiceManifestsClient(timeout *int32) ServiceManifestsClient {
+	return original.NewServiceManifestsClient(timeout)
 }
-func NewApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) ApplicationHealthsClient {
-	return original.NewApplicationHealthsClientWithBaseURI(baseURI, timeout)
+func NewServiceManifestsClientWithBaseURI(baseURI string, timeout *int32) ServiceManifestsClient {
+	return original.NewServiceManifestsClientWithBaseURI(baseURI, timeout)
 }
 func NewApplicationManifestsClient(timeout *int32) ApplicationManifestsClient {
 	return original.NewApplicationManifestsClient(timeout)
@@ -883,89 +883,11 @@ func NewApplicationManifestsClient(timeout *int32) ApplicationManifestsClient {
 func NewApplicationManifestsClientWithBaseURI(baseURI string, timeout *int32) ApplicationManifestsClient {
 	return original.NewApplicationManifestsClientWithBaseURI(baseURI, timeout)
 }
-func NewApplicationsClient(timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClient(timeout)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, timeout *int32) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, timeout)
-}
-func NewApplicationTypesClient(timeout *int32) ApplicationTypesClient {
-	return original.NewApplicationTypesClient(timeout)
-}
-func NewApplicationTypesClientWithBaseURI(baseURI string, timeout *int32) ApplicationTypesClient {
-	return original.NewApplicationTypesClientWithBaseURI(baseURI, timeout)
-}
-func NewApplicationUpgradeRollbacksClient(timeout *int32) ApplicationUpgradeRollbacksClient {
-	return original.NewApplicationUpgradeRollbacksClient(timeout)
-}
-func NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradeRollbacksClient {
-	return original.NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI, timeout)
-}
-func NewApplicationUpgradesClient(timeout *int32) ApplicationUpgradesClient {
-	return original.NewApplicationUpgradesClient(timeout)
-}
-func NewApplicationUpgradesClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradesClient {
-	return original.NewApplicationUpgradesClientWithBaseURI(baseURI, timeout)
-}
-func New(timeout *int32) BaseClient {
-	return original.New(timeout)
-}
-func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
-	return original.NewWithBaseURI(baseURI, timeout)
-}
-func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
-	return original.NewClusterHealthsClient(timeout)
-}
-func NewClusterHealthsClientWithBaseURI(baseURI string, timeout *int32) ClusterHealthsClient {
-	return original.NewClusterHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewClusterLoadInformationsClient(timeout *int32) ClusterLoadInformationsClient {
-	return original.NewClusterLoadInformationsClient(timeout)
-}
-func NewClusterLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ClusterLoadInformationsClient {
-	return original.NewClusterLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-func NewClusterManifestsClient(timeout *int32) ClusterManifestsClient {
-	return original.NewClusterManifestsClient(timeout)
-}
-func NewClusterManifestsClientWithBaseURI(baseURI string, timeout *int32) ClusterManifestsClient {
-	return original.NewClusterManifestsClientWithBaseURI(baseURI, timeout)
-}
 func NewClusterPackagesClient(timeout *int32) ClusterPackagesClient {
 	return original.NewClusterPackagesClient(timeout)
 }
 func NewClusterPackagesClientWithBaseURI(baseURI string, timeout *int32) ClusterPackagesClient {
 	return original.NewClusterPackagesClientWithBaseURI(baseURI, timeout)
-}
-func NewClusterUpgradesClient(timeout *int32) ClusterUpgradesClient {
-	return original.NewClusterUpgradesClient(timeout)
-}
-func NewClusterUpgradesClientWithBaseURI(baseURI string, timeout *int32) ClusterUpgradesClient {
-	return original.NewClusterUpgradesClientWithBaseURI(baseURI, timeout)
-}
-func NewDeployedApplicationHealthsClient(timeout *int32) DeployedApplicationHealthsClient {
-	return original.NewDeployedApplicationHealthsClient(timeout)
-}
-func NewDeployedApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationHealthsClient {
-	return original.NewDeployedApplicationHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewDeployedApplicationsClient(timeout *int32) DeployedApplicationsClient {
-	return original.NewDeployedApplicationsClient(timeout)
-}
-func NewDeployedApplicationsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationsClient {
-	return original.NewDeployedApplicationsClientWithBaseURI(baseURI, timeout)
-}
-func NewDeployedCodePackagesClient(timeout *int32) DeployedCodePackagesClient {
-	return original.NewDeployedCodePackagesClient(timeout)
-}
-func NewDeployedCodePackagesClientWithBaseURI(baseURI string, timeout *int32) DeployedCodePackagesClient {
-	return original.NewDeployedCodePackagesClientWithBaseURI(baseURI, timeout)
-}
-func NewDeployedReplicaDetailsClient(timeout *int32) DeployedReplicaDetailsClient {
-	return original.NewDeployedReplicaDetailsClient(timeout)
-}
-func NewDeployedReplicaDetailsClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicaDetailsClient {
-	return original.NewDeployedReplicaDetailsClientWithBaseURI(baseURI, timeout)
 }
 func NewDeployedReplicasClient(timeout *int32) DeployedReplicasClient {
 	return original.NewDeployedReplicasClient(timeout)
@@ -973,11 +895,77 @@ func NewDeployedReplicasClient(timeout *int32) DeployedReplicasClient {
 func NewDeployedReplicasClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicasClient {
 	return original.NewDeployedReplicasClientWithBaseURI(baseURI, timeout)
 }
-func NewDeployedServicePackageHealthsClient(timeout *int32) DeployedServicePackageHealthsClient {
-	return original.NewDeployedServicePackageHealthsClient(timeout)
+func NewServiceHealthsClient(timeout *int32) ServiceHealthsClient {
+	return original.NewServiceHealthsClient(timeout)
 }
-func NewDeployedServicePackageHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedServicePackageHealthsClient {
-	return original.NewDeployedServicePackageHealthsClientWithBaseURI(baseURI, timeout)
+func NewServiceHealthsClientWithBaseURI(baseURI string, timeout *int32) ServiceHealthsClient {
+	return original.NewServiceHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewDeployedCodePackagesClient(timeout *int32) DeployedCodePackagesClient {
+	return original.NewDeployedCodePackagesClient(timeout)
+}
+func NewDeployedCodePackagesClientWithBaseURI(baseURI string, timeout *int32) DeployedCodePackagesClient {
+	return original.NewDeployedCodePackagesClientWithBaseURI(baseURI, timeout)
+}
+func NewNodesClient(timeout *int32) NodesClient {
+	return original.NewNodesClient(timeout)
+}
+func NewNodesClientWithBaseURI(baseURI string, timeout *int32) NodesClient {
+	return original.NewNodesClientWithBaseURI(baseURI, timeout)
+}
+func NewPartitionsClient(timeout *int32) PartitionsClient {
+	return original.NewPartitionsClient(timeout)
+}
+func NewPartitionsClientWithBaseURI(baseURI string, timeout *int32) PartitionsClient {
+	return original.NewPartitionsClientWithBaseURI(baseURI, timeout)
+}
+func New(timeout *int32) BaseClient {
+	return original.New(timeout)
+}
+func NewWithBaseURI(baseURI string, timeout *int32) BaseClient {
+	return original.NewWithBaseURI(baseURI, timeout)
+}
+func NewServiceGroupMembersClient(timeout *int32) ServiceGroupMembersClient {
+	return original.NewServiceGroupMembersClient(timeout)
+}
+func NewServiceGroupMembersClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupMembersClient {
+	return original.NewServiceGroupMembersClientWithBaseURI(baseURI, timeout)
+}
+func NewReplicaLoadInformationsClient(timeout *int32) ReplicaLoadInformationsClient {
+	return original.NewReplicaLoadInformationsClient(timeout)
+}
+func NewReplicaLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ReplicaLoadInformationsClient {
+	return original.NewReplicaLoadInformationsClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceFromTemplatesClient(timeout *int32) ServiceFromTemplatesClient {
+	return original.NewServiceFromTemplatesClient(timeout)
+}
+func NewServiceFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceFromTemplatesClient {
+	return original.NewServiceFromTemplatesClientWithBaseURI(baseURI, timeout)
+}
+func NewApplicationTypesClient(timeout *int32) ApplicationTypesClient {
+	return original.NewApplicationTypesClient(timeout)
+}
+func NewApplicationTypesClientWithBaseURI(baseURI string, timeout *int32) ApplicationTypesClient {
+	return original.NewApplicationTypesClientWithBaseURI(baseURI, timeout)
+}
+func NewNodeLoadInformationsClient(timeout *int32) NodeLoadInformationsClient {
+	return original.NewNodeLoadInformationsClient(timeout)
+}
+func NewNodeLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) NodeLoadInformationsClient {
+	return original.NewNodeLoadInformationsClientWithBaseURI(baseURI, timeout)
+}
+func NewClusterManifestsClient(timeout *int32) ClusterManifestsClient {
+	return original.NewClusterManifestsClient(timeout)
+}
+func NewClusterManifestsClientWithBaseURI(baseURI string, timeout *int32) ClusterManifestsClient {
+	return original.NewClusterManifestsClientWithBaseURI(baseURI, timeout)
+}
+func NewClusterHealthsClient(timeout *int32) ClusterHealthsClient {
+	return original.NewClusterHealthsClient(timeout)
+}
+func NewClusterHealthsClientWithBaseURI(baseURI string, timeout *int32) ClusterHealthsClient {
+	return original.NewClusterHealthsClientWithBaseURI(baseURI, timeout)
 }
 func NewDeployedServicePackagesClient(timeout *int32) DeployedServicePackagesClient {
 	return original.NewDeployedServicePackagesClient(timeout)
@@ -985,11 +973,131 @@ func NewDeployedServicePackagesClient(timeout *int32) DeployedServicePackagesCli
 func NewDeployedServicePackagesClientWithBaseURI(baseURI string, timeout *int32) DeployedServicePackagesClient {
 	return original.NewDeployedServicePackagesClientWithBaseURI(baseURI, timeout)
 }
+func NewNodeStatesClient(timeout *int32) NodeStatesClient {
+	return original.NewNodeStatesClient(timeout)
+}
+func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
+	return original.NewNodeStatesClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceGroupsClient(timeout *int32) ServiceGroupsClient {
+	return original.NewServiceGroupsClient(timeout)
+}
+func NewServiceGroupsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupsClient {
+	return original.NewServiceGroupsClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceDescriptionsClient(timeout *int32) ServiceDescriptionsClient {
+	return original.NewServiceDescriptionsClient(timeout)
+}
+func NewServiceDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceDescriptionsClient {
+	return original.NewServiceDescriptionsClientWithBaseURI(baseURI, timeout)
+}
+func NewPartitionLoadsClient(timeout *int32) PartitionLoadsClient {
+	return original.NewPartitionLoadsClient(timeout)
+}
+func NewPartitionLoadsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadsClient {
+	return original.NewPartitionLoadsClientWithBaseURI(baseURI, timeout)
+}
+func NewDeployedApplicationHealthsClient(timeout *int32) DeployedApplicationHealthsClient {
+	return original.NewDeployedApplicationHealthsClient(timeout)
+}
+func NewDeployedApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationHealthsClient {
+	return original.NewDeployedApplicationHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewReplicaHealthsClient(timeout *int32) ReplicaHealthsClient {
+	return original.NewReplicaHealthsClient(timeout)
+}
+func NewReplicaHealthsClientWithBaseURI(baseURI string, timeout *int32) ReplicaHealthsClient {
+	return original.NewReplicaHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceTypesClient(timeout *int32) ServiceTypesClient {
+	return original.NewServiceTypesClient(timeout)
+}
+func NewServiceTypesClientWithBaseURI(baseURI string, timeout *int32) ServiceTypesClient {
+	return original.NewServiceTypesClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceGroupFromTemplatesClient(timeout *int32) ServiceGroupFromTemplatesClient {
+	return original.NewServiceGroupFromTemplatesClient(timeout)
+}
+func NewServiceGroupFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupFromTemplatesClient {
+	return original.NewServiceGroupFromTemplatesClientWithBaseURI(baseURI, timeout)
+}
+func NewDeployedServicePackageHealthsClient(timeout *int32) DeployedServicePackageHealthsClient {
+	return original.NewDeployedServicePackageHealthsClient(timeout)
+}
+func NewDeployedServicePackageHealthsClientWithBaseURI(baseURI string, timeout *int32) DeployedServicePackageHealthsClient {
+	return original.NewDeployedServicePackageHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewClusterLoadInformationsClient(timeout *int32) ClusterLoadInformationsClient {
+	return original.NewClusterLoadInformationsClient(timeout)
+}
+func NewClusterLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ClusterLoadInformationsClient {
+	return original.NewClusterLoadInformationsClientWithBaseURI(baseURI, timeout)
+}
 func NewDeployedServiceTypesClient(timeout *int32) DeployedServiceTypesClient {
 	return original.NewDeployedServiceTypesClient(timeout)
 }
 func NewDeployedServiceTypesClientWithBaseURI(baseURI string, timeout *int32) DeployedServiceTypesClient {
 	return original.NewDeployedServiceTypesClientWithBaseURI(baseURI, timeout)
+}
+func NewNodeHealthsClient(timeout *int32) NodeHealthsClient {
+	return original.NewNodeHealthsClient(timeout)
+}
+func NewNodeHealthsClientWithBaseURI(baseURI string, timeout *int32) NodeHealthsClient {
+	return original.NewNodeHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewApplicationsClient(timeout *int32) ApplicationsClient {
+	return original.NewApplicationsClient(timeout)
+}
+func NewApplicationsClientWithBaseURI(baseURI string, timeout *int32) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, timeout)
+}
+func NewDeployedApplicationsClient(timeout *int32) DeployedApplicationsClient {
+	return original.NewDeployedApplicationsClient(timeout)
+}
+func NewDeployedApplicationsClientWithBaseURI(baseURI string, timeout *int32) DeployedApplicationsClient {
+	return original.NewDeployedApplicationsClientWithBaseURI(baseURI, timeout)
+}
+func NewPartitionHealthsClient(timeout *int32) PartitionHealthsClient {
+	return original.NewPartitionHealthsClient(timeout)
+}
+func NewPartitionHealthsClientWithBaseURI(baseURI string, timeout *int32) PartitionHealthsClient {
+	return original.NewPartitionHealthsClientWithBaseURI(baseURI, timeout)
+}
+func NewServicesClient(timeout *int32) ServicesClient {
+	return original.NewServicesClient(timeout)
+}
+func NewServicesClientWithBaseURI(baseURI string, timeout *int32) ServicesClient {
+	return original.NewServicesClientWithBaseURI(baseURI, timeout)
+}
+func NewClusterUpgradesClient(timeout *int32) ClusterUpgradesClient {
+	return original.NewClusterUpgradesClient(timeout)
+}
+func NewClusterUpgradesClientWithBaseURI(baseURI string, timeout *int32) ClusterUpgradesClient {
+	return original.NewClusterUpgradesClientWithBaseURI(baseURI, timeout)
+}
+func NewApplicationUpgradeRollbacksClient(timeout *int32) ApplicationUpgradeRollbacksClient {
+	return original.NewApplicationUpgradeRollbacksClient(timeout)
+}
+func NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradeRollbacksClient {
+	return original.NewApplicationUpgradeRollbacksClientWithBaseURI(baseURI, timeout)
+}
+func NewServiceGroupDescriptionsClient(timeout *int32) ServiceGroupDescriptionsClient {
+	return original.NewServiceGroupDescriptionsClient(timeout)
+}
+func NewServiceGroupDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupDescriptionsClient {
+	return original.NewServiceGroupDescriptionsClientWithBaseURI(baseURI, timeout)
+}
+func NewUpgradeProgressesClient(timeout *int32) UpgradeProgressesClient {
+	return original.NewUpgradeProgressesClient(timeout)
+}
+func NewUpgradeProgressesClientWithBaseURI(baseURI string, timeout *int32) UpgradeProgressesClient {
+	return original.NewUpgradeProgressesClientWithBaseURI(baseURI, timeout)
+}
+func NewDeployedReplicaDetailsClient(timeout *int32) DeployedReplicaDetailsClient {
+	return original.NewDeployedReplicaDetailsClient(timeout)
+}
+func NewDeployedReplicaDetailsClientWithBaseURI(baseURI string, timeout *int32) DeployedReplicaDetailsClient {
+	return original.NewDeployedReplicaDetailsClientWithBaseURI(baseURI, timeout)
 }
 func PossibleAggregatedHealthStateValues() []AggregatedHealthState {
 	return original.PossibleAggregatedHealthStateValues()
@@ -1189,41 +1297,11 @@ func PossibleUpgradeStateValues() []UpgradeState {
 func PossibleUpgradeState1Values() []UpgradeState1 {
 	return original.PossibleUpgradeState1Values()
 }
-func NewNodeHealthsClient(timeout *int32) NodeHealthsClient {
-	return original.NewNodeHealthsClient(timeout)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
 }
-func NewNodeHealthsClientWithBaseURI(baseURI string, timeout *int32) NodeHealthsClient {
-	return original.NewNodeHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewNodeLoadInformationsClient(timeout *int32) NodeLoadInformationsClient {
-	return original.NewNodeLoadInformationsClient(timeout)
-}
-func NewNodeLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) NodeLoadInformationsClient {
-	return original.NewNodeLoadInformationsClientWithBaseURI(baseURI, timeout)
-}
-func NewNodesClient(timeout *int32) NodesClient {
-	return original.NewNodesClient(timeout)
-}
-func NewNodesClientWithBaseURI(baseURI string, timeout *int32) NodesClient {
-	return original.NewNodesClientWithBaseURI(baseURI, timeout)
-}
-func NewNodeStatesClient(timeout *int32) NodeStatesClient {
-	return original.NewNodeStatesClient(timeout)
-}
-func NewNodeStatesClientWithBaseURI(baseURI string, timeout *int32) NodeStatesClient {
-	return original.NewNodeStatesClientWithBaseURI(baseURI, timeout)
-}
-func NewPartitionHealthsClient(timeout *int32) PartitionHealthsClient {
-	return original.NewPartitionHealthsClient(timeout)
-}
-func NewPartitionHealthsClientWithBaseURI(baseURI string, timeout *int32) PartitionHealthsClient {
-	return original.NewPartitionHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewPartitionListsClient(timeout *int32) PartitionListsClient {
-	return original.NewPartitionListsClient(timeout)
-}
-func NewPartitionListsClientWithBaseURI(baseURI string, timeout *int32) PartitionListsClient {
-	return original.NewPartitionListsClientWithBaseURI(baseURI, timeout)
+func Version() string {
+	return original.Version()
 }
 func NewPartitionLoadInformationsClient(timeout *int32) PartitionLoadInformationsClient {
 	return original.NewPartitionLoadInformationsClient(timeout)
@@ -1231,29 +1309,11 @@ func NewPartitionLoadInformationsClient(timeout *int32) PartitionLoadInformation
 func NewPartitionLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadInformationsClient {
 	return original.NewPartitionLoadInformationsClientWithBaseURI(baseURI, timeout)
 }
-func NewPartitionLoadsClient(timeout *int32) PartitionLoadsClient {
-	return original.NewPartitionLoadsClient(timeout)
+func NewPartitionListsClient(timeout *int32) PartitionListsClient {
+	return original.NewPartitionListsClient(timeout)
 }
-func NewPartitionLoadsClientWithBaseURI(baseURI string, timeout *int32) PartitionLoadsClient {
-	return original.NewPartitionLoadsClientWithBaseURI(baseURI, timeout)
-}
-func NewPartitionsClient(timeout *int32) PartitionsClient {
-	return original.NewPartitionsClient(timeout)
-}
-func NewPartitionsClientWithBaseURI(baseURI string, timeout *int32) PartitionsClient {
-	return original.NewPartitionsClientWithBaseURI(baseURI, timeout)
-}
-func NewReplicaHealthsClient(timeout *int32) ReplicaHealthsClient {
-	return original.NewReplicaHealthsClient(timeout)
-}
-func NewReplicaHealthsClientWithBaseURI(baseURI string, timeout *int32) ReplicaHealthsClient {
-	return original.NewReplicaHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewReplicaLoadInformationsClient(timeout *int32) ReplicaLoadInformationsClient {
-	return original.NewReplicaLoadInformationsClient(timeout)
-}
-func NewReplicaLoadInformationsClientWithBaseURI(baseURI string, timeout *int32) ReplicaLoadInformationsClient {
-	return original.NewReplicaLoadInformationsClientWithBaseURI(baseURI, timeout)
+func NewPartitionListsClientWithBaseURI(baseURI string, timeout *int32) PartitionListsClient {
+	return original.NewPartitionListsClientWithBaseURI(baseURI, timeout)
 }
 func NewReplicasClient(timeout *int32) ReplicasClient {
 	return original.NewReplicasClient(timeout)
@@ -1261,75 +1321,15 @@ func NewReplicasClient(timeout *int32) ReplicasClient {
 func NewReplicasClientWithBaseURI(baseURI string, timeout *int32) ReplicasClient {
 	return original.NewReplicasClientWithBaseURI(baseURI, timeout)
 }
-func NewServiceDescriptionsClient(timeout *int32) ServiceDescriptionsClient {
-	return original.NewServiceDescriptionsClient(timeout)
+func NewApplicationHealthsClient(timeout *int32) ApplicationHealthsClient {
+	return original.NewApplicationHealthsClient(timeout)
 }
-func NewServiceDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceDescriptionsClient {
-	return original.NewServiceDescriptionsClientWithBaseURI(baseURI, timeout)
+func NewApplicationHealthsClientWithBaseURI(baseURI string, timeout *int32) ApplicationHealthsClient {
+	return original.NewApplicationHealthsClientWithBaseURI(baseURI, timeout)
 }
-func NewServiceFromTemplatesClient(timeout *int32) ServiceFromTemplatesClient {
-	return original.NewServiceFromTemplatesClient(timeout)
+func NewApplicationUpgradesClient(timeout *int32) ApplicationUpgradesClient {
+	return original.NewApplicationUpgradesClient(timeout)
 }
-func NewServiceFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceFromTemplatesClient {
-	return original.NewServiceFromTemplatesClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceGroupDescriptionsClient(timeout *int32) ServiceGroupDescriptionsClient {
-	return original.NewServiceGroupDescriptionsClient(timeout)
-}
-func NewServiceGroupDescriptionsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupDescriptionsClient {
-	return original.NewServiceGroupDescriptionsClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceGroupFromTemplatesClient(timeout *int32) ServiceGroupFromTemplatesClient {
-	return original.NewServiceGroupFromTemplatesClient(timeout)
-}
-func NewServiceGroupFromTemplatesClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupFromTemplatesClient {
-	return original.NewServiceGroupFromTemplatesClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceGroupMembersClient(timeout *int32) ServiceGroupMembersClient {
-	return original.NewServiceGroupMembersClient(timeout)
-}
-func NewServiceGroupMembersClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupMembersClient {
-	return original.NewServiceGroupMembersClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceGroupsClient(timeout *int32) ServiceGroupsClient {
-	return original.NewServiceGroupsClient(timeout)
-}
-func NewServiceGroupsClientWithBaseURI(baseURI string, timeout *int32) ServiceGroupsClient {
-	return original.NewServiceGroupsClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceHealthsClient(timeout *int32) ServiceHealthsClient {
-	return original.NewServiceHealthsClient(timeout)
-}
-func NewServiceHealthsClientWithBaseURI(baseURI string, timeout *int32) ServiceHealthsClient {
-	return original.NewServiceHealthsClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceManifestsClient(timeout *int32) ServiceManifestsClient {
-	return original.NewServiceManifestsClient(timeout)
-}
-func NewServiceManifestsClientWithBaseURI(baseURI string, timeout *int32) ServiceManifestsClient {
-	return original.NewServiceManifestsClientWithBaseURI(baseURI, timeout)
-}
-func NewServicesClient(timeout *int32) ServicesClient {
-	return original.NewServicesClient(timeout)
-}
-func NewServicesClientWithBaseURI(baseURI string, timeout *int32) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, timeout)
-}
-func NewServiceTypesClient(timeout *int32) ServiceTypesClient {
-	return original.NewServiceTypesClient(timeout)
-}
-func NewServiceTypesClientWithBaseURI(baseURI string, timeout *int32) ServiceTypesClient {
-	return original.NewServiceTypesClientWithBaseURI(baseURI, timeout)
-}
-func NewUpgradeProgressesClient(timeout *int32) UpgradeProgressesClient {
-	return original.NewUpgradeProgressesClient(timeout)
-}
-func NewUpgradeProgressesClientWithBaseURI(baseURI string, timeout *int32) UpgradeProgressesClient {
-	return original.NewUpgradeProgressesClientWithBaseURI(baseURI, timeout)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
+func NewApplicationUpgradesClientWithBaseURI(baseURI string, timeout *int32) ApplicationUpgradesClient {
+	return original.NewApplicationUpgradesClientWithBaseURI(baseURI, timeout)
 }

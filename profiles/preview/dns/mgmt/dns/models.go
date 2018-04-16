@@ -21,11 +21,7 @@ package dns
 
 import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-03-01-preview/dns"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type RecordSetsClient = original.RecordSetsClient
 type RecordType = original.RecordType
 
 const (
@@ -75,26 +71,25 @@ type ZoneListResultPage = original.ZoneListResultPage
 type ZoneProperties = original.ZoneProperties
 type ZonesDeleteFuture = original.ZonesDeleteFuture
 type ZoneUpdate = original.ZoneUpdate
-type RecordSetsClient = original.RecordSetsClient
 type ZonesClient = original.ZonesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
+	return original.NewRecordSetsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
+	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleRecordTypeValues() [10]RecordType {
 	return original.PossibleRecordTypeValues()
 }
 func PossibleZoneTypeValues() [2]ZoneType {
 	return original.PossibleZoneTypeValues()
-}
-func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
-	return original.NewRecordSetsClient(subscriptionID)
-}
-func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
-	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
@@ -107,4 +102,10 @@ func NewZonesClient(subscriptionID string) ZonesClient {
 }
 func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
 	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

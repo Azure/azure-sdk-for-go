@@ -24,52 +24,52 @@ import (
 	"net/http"
 )
 
-// CostAllocationTagsClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type CostAllocationTagsClient struct {
+// CostTagsClient is the consumption management client provides access to consumption resources for Azure Enterprise
+// Subscriptions.
+type CostTagsClient struct {
 	BaseClient
 }
 
-// NewCostAllocationTagsClient creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
-	return NewCostAllocationTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewCostTagsClient creates an instance of the CostTagsClient client.
+func NewCostTagsClient(subscriptionID string) CostTagsClient {
+	return NewCostTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewCostAllocationTagsClientWithBaseURI creates an instance of the CostAllocationTagsClient client.
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
-	return CostAllocationTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client.
+func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
+	return CostTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate the operation to create or update cost allocation tags assiciated with a billing account. Update
-// operation requires latest eTag to be set in the request mandatorily. You may obtain the latest eTag by performing a
-// get operation. Create operation does not require eTag.
+// CreateOrUpdate the operation to create or update cost tags assiciated with a billing account. Update operation
+// requires latest eTag to be set in the request mandatorily. You may obtain the latest eTag by performing a get
+// operation. Create operation does not require eTag.
 //
-// billingAccountID is azure Billing Account ID. parameters is parameters supplied to the Create cost allocation
-// tags operation.
-func (client CostAllocationTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostAllocationTags) (result CostAllocationTags, err error) {
+// billingAccountID is azure Billing Account ID. parameters is parameters supplied to the Create cost tags
+// operation.
+func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostTags) (result CostTags, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, billingAccountID, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostAllocationTags) (*http.Request, error) {
+func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostTags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
@@ -83,7 +83,7 @@ func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costAllocationTags", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costTags", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -91,14 +91,14 @@ func (client CostAllocationTagsClient) CreateOrUpdatePreparer(ctx context.Contex
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client CostAllocationTagsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client CostTagsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client CostAllocationTagsClient) CreateOrUpdateResponder(resp *http.Response) (result CostAllocationTags, err error) {
+func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (result CostTags, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -109,33 +109,33 @@ func (client CostAllocationTagsClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
-// Get get cost allocation tags for a billing account.
+// Get get cost tags for a billing account.
 //
 // billingAccountID is azure Billing Account ID.
-func (client CostAllocationTagsClient) Get(ctx context.Context, billingAccountID string) (result CostAllocationTags, err error) {
+func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (result CostTags, err error) {
 	req, err := client.GetPreparer(ctx, billingAccountID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.CostAllocationTagsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client CostAllocationTagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client CostTagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
@@ -148,21 +148,21 @@ func (client CostAllocationTagsClient) GetPreparer(ctx context.Context, billingA
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costAllocationTags", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.CostManagement/billingAccounts/{billingAccountId}/providers/Microsoft.Consumption/costTags", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client CostAllocationTagsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client CostTagsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client CostAllocationTagsClient) GetResponder(resp *http.Response) (result CostAllocationTags, err error) {
+func (client CostTagsClient) GetResponder(resp *http.Response) (result CostTags, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

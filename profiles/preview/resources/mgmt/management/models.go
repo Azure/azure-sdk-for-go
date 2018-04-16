@@ -21,13 +21,7 @@ package managementgroups
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-01-01-preview/management"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type EntitiesClient = original.EntitiesClient
-type Client = original.Client
+type OperationsClient = original.OperationsClient
 type Permissions = original.Permissions
 
 const (
@@ -117,26 +111,21 @@ type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
-type OperationsClient = original.OperationsClient
 type SubscriptionsClient = original.SubscriptionsClient
+type EntitiesClient = original.EntitiesClient
+type Client = original.Client
 
-func New(operationResultID string, skiptoken string) BaseClient {
-	return original.New(operationResultID, skiptoken)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClient(operationResultID, skiptoken)
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skiptoken)
-}
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-func NewClient(operationResultID string, skiptoken string) Client {
-	return original.NewClient(operationResultID, skiptoken)
-}
-func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
@@ -159,12 +148,6 @@ func PossibleType1Values() []Type1 {
 func PossibleType2Values() []Type2 {
 	return original.PossibleType2Values()
 }
-func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skiptoken)
-}
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
 func NewSubscriptionsClient(operationResultID string, skiptoken string) SubscriptionsClient {
 	return original.NewSubscriptionsClient(operationResultID, skiptoken)
 }
@@ -176,4 +159,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClient(operationResultID, skiptoken)
+}
+func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func NewClient(operationResultID string, skiptoken string) Client {
+	return original.NewClient(operationResultID, skiptoken)
+}
+func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
+	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func New(operationResultID string, skiptoken string) BaseClient {
+	return original.New(operationResultID, skiptoken)
+}
+func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
+	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
 }

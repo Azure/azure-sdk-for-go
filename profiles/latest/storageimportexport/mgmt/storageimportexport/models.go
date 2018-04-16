@@ -21,35 +21,13 @@ package storageimportexport
 
 import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
 
-type BitLockerKeysClient = original.BitLockerKeysClient
+type OperationsClient = original.OperationsClient
 
-func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
+func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
-func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
-	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string, acceptLanguage string) BaseClient {
-	return original.New(subscriptionID, acceptLanguage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
-type JobsClient = original.JobsClient
-
-func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClient(subscriptionID, acceptLanguage)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 
 type LocationsClient = original.LocationsClient
@@ -59,6 +37,15 @@ func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsC
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+
+type JobsClient = original.JobsClient
+
+func NewJobsClient(subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClient(subscriptionID, acceptLanguage)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 
 type DriveState = original.DriveState
@@ -103,17 +90,32 @@ type ReturnShipping = original.ReturnShipping
 type ShippingInformation = original.ShippingInformation
 type UpdateJobParameters = original.UpdateJobParameters
 type UpdateJobParametersProperties = original.UpdateJobParametersProperties
-type OperationsClient = original.OperationsClient
 
-func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, acceptLanguage)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+
+type BitLockerKeysClient = original.BitLockerKeysClient
+
+func NewBitLockerKeysClient(subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClient(subscriptionID, acceptLanguage)
+}
+func NewBitLockerKeysClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BitLockerKeysClient {
+	return original.NewBitLockerKeysClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }

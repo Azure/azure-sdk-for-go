@@ -21,17 +21,13 @@ package dns
 
 import original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
+type RecordSetsClient = original.RecordSetsClient
 
-type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
+	return original.NewRecordSetsClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
+	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 
 type RecordType = original.RecordType
@@ -80,14 +76,7 @@ type ZoneListResultPage = original.ZoneListResultPage
 type ZoneProperties = original.ZoneProperties
 type ZonesDeleteFuture = original.ZonesDeleteFuture
 type ZoneUpdate = original.ZoneUpdate
-type RecordSetsClient = original.RecordSetsClient
 
-func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
-	return original.NewRecordSetsClient(subscriptionID)
-}
-func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
-	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
@@ -102,4 +91,17 @@ func NewZonesClient(subscriptionID string) ZonesClient {
 }
 func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClient {
 	return original.NewZonesClientWithBaseURI(baseURI, subscriptionID)
+}
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

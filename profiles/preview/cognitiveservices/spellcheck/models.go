@@ -26,24 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type ActionType = original.ActionType
 
 const (
 	Edit ActionType = original.Edit
 	Load ActionType = original.Load
 )
-
-func PossibleActionTypeValues() []ActionType {
-	return original.PossibleActionTypeValues()
-}
 
 type ErrorCode = original.ErrorCode
 
@@ -55,10 +43,6 @@ const (
 	RateLimitExceeded         ErrorCode = original.RateLimitExceeded
 	ServerError               ErrorCode = original.ServerError
 )
-
-func PossibleErrorCodeValues() []ErrorCode {
-	return original.PossibleErrorCodeValues()
-}
 
 type ErrorSubCode = original.ErrorSubCode
 
@@ -76,20 +60,12 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return original.PossibleErrorSubCodeValues()
-}
-
 type ErrorType = original.ErrorType
 
 const (
 	RepeatedToken ErrorType = original.RepeatedToken
 	UnknownToken  ErrorType = original.UnknownToken
 )
-
-func PossibleErrorTypeValues() []ErrorType {
-	return original.PossibleErrorTypeValues()
-}
 
 type Type = original.Type
 
@@ -101,10 +77,6 @@ const (
 	TypeResponseBase  Type = original.TypeResponseBase
 	TypeSpellCheck    Type = original.TypeSpellCheck
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
@@ -120,6 +92,27 @@ type SpellCheck = original.SpellCheck
 type SpellingFlaggedToken = original.SpellingFlaggedToken
 type SpellingTokenSuggestion = original.SpellingTokenSuggestion
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
+func PossibleErrorCodeValues() []ErrorCode {
+	return original.PossibleErrorCodeValues()
+}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return original.PossibleErrorSubCodeValues()
+}
+func PossibleErrorTypeValues() []ErrorType {
+	return original.PossibleErrorTypeValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }

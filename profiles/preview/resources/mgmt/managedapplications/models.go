@@ -22,46 +22,19 @@ package managedapplications
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
 
 type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
-
-func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClient(subscriptionID)
-}
-func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AppliancesClient = original.AppliancesClient
-
-func NewAppliancesClient(subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClient(subscriptionID)
-}
-func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ApplianceArtifactType = original.ApplianceArtifactType
 
 const (
 	Custom   ApplianceArtifactType = original.Custom
 	Template ApplianceArtifactType = original.Template
 )
-
-func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
-	return original.PossibleApplianceArtifactTypeValues()
-}
 
 type ApplianceLockLevel = original.ApplianceLockLevel
 
@@ -70,10 +43,6 @@ const (
 	None         ApplianceLockLevel = original.None
 	ReadOnly     ApplianceLockLevel = original.ReadOnly
 )
-
-func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
-	return original.PossibleApplianceLockLevelValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -91,19 +60,11 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
-
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
 
 type Appliance = original.Appliance
 type ApplianceArtifact = original.ApplianceArtifact
@@ -135,6 +96,36 @@ type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
 
+func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
+	return original.NewApplianceDefinitionsClient(subscriptionID)
+}
+func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
+	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppliancesClient(subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClient(subscriptionID)
+}
+func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
+	return original.PossibleApplianceArtifactTypeValues()
+}
+func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
+	return original.PossibleApplianceLockLevelValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }

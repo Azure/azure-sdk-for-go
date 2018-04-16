@@ -22,189 +22,30 @@ package automation
 import original "github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2017-05-15-preview/automation"
 
 type AccountClient = original.AccountClient
-
-func NewAccountClient(subscriptionID string) AccountClient {
-	return original.NewAccountClient(subscriptionID)
-}
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ActivityClient = original.ActivityClient
-
-func NewActivityClient(subscriptionID string) ActivityClient {
-	return original.NewActivityClient(subscriptionID)
-}
-func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) ActivityClient {
-	return original.NewActivityClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AgentRegistrationInformationClient = original.AgentRegistrationInformationClient
-
-func NewAgentRegistrationInformationClient(subscriptionID string) AgentRegistrationInformationClient {
-	return original.NewAgentRegistrationInformationClient(subscriptionID)
-}
-func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string) AgentRegistrationInformationClient {
-	return original.NewAgentRegistrationInformationClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CertificateClient = original.CertificateClient
-
-func NewCertificateClient(subscriptionID string) CertificateClient {
-	return original.NewCertificateClient(subscriptionID)
-}
-func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
-	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ConnectionClient = original.ConnectionClient
-
-func NewConnectionClient(subscriptionID string) ConnectionClient {
-	return original.NewConnectionClient(subscriptionID)
-}
-func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string) ConnectionClient {
-	return original.NewConnectionClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ConnectionTypeClient = original.ConnectionTypeClient
-
-func NewConnectionTypeClient(subscriptionID string) ConnectionTypeClient {
-	return original.NewConnectionTypeClient(subscriptionID)
-}
-func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string) ConnectionTypeClient {
-	return original.NewConnectionTypeClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CredentialClient = original.CredentialClient
-
-func NewCredentialClient(subscriptionID string) CredentialClient {
-	return original.NewCredentialClient(subscriptionID)
-}
-func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) CredentialClient {
-	return original.NewCredentialClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DscCompilationJobClient = original.DscCompilationJobClient
-
-func NewDscCompilationJobClient(subscriptionID string) DscCompilationJobClient {
-	return original.NewDscCompilationJobClient(subscriptionID)
-}
-func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobClient {
-	return original.NewDscCompilationJobClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DscCompilationJobStreamClient = original.DscCompilationJobStreamClient
-
-func NewDscCompilationJobStreamClient(subscriptionID string) DscCompilationJobStreamClient {
-	return original.NewDscCompilationJobStreamClient(subscriptionID)
-}
-func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobStreamClient {
-	return original.NewDscCompilationJobStreamClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DscConfigurationClient = original.DscConfigurationClient
-
-func NewDscConfigurationClient(subscriptionID string) DscConfigurationClient {
-	return original.NewDscConfigurationClient(subscriptionID)
-}
-func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscConfigurationClient {
-	return original.NewDscConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DscNodeClient = original.DscNodeClient
-
-func NewDscNodeClient(subscriptionID string) DscNodeClient {
-	return original.NewDscNodeClient(subscriptionID)
-}
-func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string) DscNodeClient {
-	return original.NewDscNodeClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DscNodeConfigurationClient = original.DscNodeConfigurationClient
-
-func NewDscNodeConfigurationClient(subscriptionID string) DscNodeConfigurationClient {
-	return original.NewDscNodeConfigurationClient(subscriptionID)
-}
-func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscNodeConfigurationClient {
-	return original.NewDscNodeConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type FieldsClient = original.FieldsClient
-
-func NewFieldsClient(subscriptionID string) FieldsClient {
-	return original.NewFieldsClient(subscriptionID)
-}
-func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string) FieldsClient {
-	return original.NewFieldsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type HybridRunbookWorkerGroupClient = original.HybridRunbookWorkerGroupClient
-
-func NewHybridRunbookWorkerGroupClient(subscriptionID string) HybridRunbookWorkerGroupClient {
-	return original.NewHybridRunbookWorkerGroupClient(subscriptionID)
-}
-func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string) HybridRunbookWorkerGroupClient {
-	return original.NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type JobClient = original.JobClient
-
-func NewJobClient(subscriptionID string) JobClient {
-	return original.NewJobClient(subscriptionID)
-}
-func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
-	return original.NewJobClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type JobScheduleClient = original.JobScheduleClient
-
-func NewJobScheduleClient(subscriptionID string) JobScheduleClient {
-	return original.NewJobScheduleClient(subscriptionID)
-}
-func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string) JobScheduleClient {
-	return original.NewJobScheduleClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type JobStreamClient = original.JobStreamClient
-
-func NewJobStreamClient(subscriptionID string) JobStreamClient {
-	return original.NewJobStreamClient(subscriptionID)
-}
-func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStreamClient {
-	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type KeysClient = original.KeysClient
-
-func NewKeysClient(subscriptionID string) KeysClient {
-	return original.NewKeysClient(subscriptionID)
-}
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
-	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LinkedWorkspaceClient = original.LinkedWorkspaceClient
-
-func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
-	return original.NewLinkedWorkspaceClient(subscriptionID)
-}
-func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) LinkedWorkspaceClient {
-	return original.NewLinkedWorkspaceClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccountState = original.AccountState
 
 const (
@@ -213,20 +54,12 @@ const (
 	Unavailable AccountState = original.Unavailable
 )
 
-func PossibleAccountStateValues() []AccountState {
-	return original.PossibleAccountStateValues()
-}
-
 type AgentRegistrationKeyName = original.AgentRegistrationKeyName
 
 const (
 	Primary   AgentRegistrationKeyName = original.Primary
 	Secondary AgentRegistrationKeyName = original.Secondary
 )
-
-func PossibleAgentRegistrationKeyNameValues() []AgentRegistrationKeyName {
-	return original.PossibleAgentRegistrationKeyNameValues()
-}
 
 type ContentSourceType = original.ContentSourceType
 
@@ -235,19 +68,11 @@ const (
 	URI             ContentSourceType = original.URI
 )
 
-func PossibleContentSourceTypeValues() []ContentSourceType {
-	return original.PossibleContentSourceTypeValues()
-}
-
 type DscConfigurationProvisioningState = original.DscConfigurationProvisioningState
 
 const (
 	Succeeded DscConfigurationProvisioningState = original.Succeeded
 )
-
-func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisioningState {
-	return original.PossibleDscConfigurationProvisioningStateValues()
-}
 
 type DscConfigurationState = original.DscConfigurationState
 
@@ -256,10 +81,6 @@ const (
 	DscConfigurationStateNew       DscConfigurationState = original.DscConfigurationStateNew
 	DscConfigurationStatePublished DscConfigurationState = original.DscConfigurationStatePublished
 )
-
-func PossibleDscConfigurationStateValues() []DscConfigurationState {
-	return original.PossibleDscConfigurationStateValues()
-}
 
 type HTTPStatusCode = original.HTTPStatusCode
 
@@ -313,10 +134,6 @@ const (
 	UseProxy                     HTTPStatusCode = original.UseProxy
 )
 
-func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return original.PossibleHTTPStatusCodeValues()
-}
-
 type JobProvisioningState = original.JobProvisioningState
 
 const (
@@ -325,10 +142,6 @@ const (
 	JobProvisioningStateSucceeded  JobProvisioningState = original.JobProvisioningStateSucceeded
 	JobProvisioningStateSuspended  JobProvisioningState = original.JobProvisioningStateSuspended
 )
-
-func PossibleJobProvisioningStateValues() []JobProvisioningState {
-	return original.PossibleJobProvisioningStateValues()
-}
 
 type JobStatus = original.JobStatus
 
@@ -348,10 +161,6 @@ const (
 	JobStatusSuspending   JobStatus = original.JobStatusSuspending
 )
 
-func PossibleJobStatusValues() []JobStatus {
-	return original.PossibleJobStatusValues()
-}
-
 type JobStreamType = original.JobStreamType
 
 const (
@@ -364,10 +173,6 @@ const (
 	Warning  JobStreamType = original.Warning
 )
 
-func PossibleJobStreamTypeValues() []JobStreamType {
-	return original.PossibleJobStreamTypeValues()
-}
-
 type KeyName = original.KeyName
 
 const (
@@ -375,19 +180,11 @@ const (
 	KeyNameSecondary KeyName = original.KeyNameSecondary
 )
 
-func PossibleKeyNameValues() []KeyName {
-	return original.PossibleKeyNameValues()
-}
-
 type KeyPermissions = original.KeyPermissions
 
 const (
 	Full KeyPermissions = original.Full
 )
-
-func PossibleKeyPermissionsValues() []KeyPermissions {
-	return original.PossibleKeyPermissionsValues()
-}
 
 type LinuxUpdateClasses = original.LinuxUpdateClasses
 
@@ -397,10 +194,6 @@ const (
 	Security     LinuxUpdateClasses = original.Security
 	Unclassified LinuxUpdateClasses = original.Unclassified
 )
-
-func PossibleLinuxUpdateClassesValues() []LinuxUpdateClasses {
-	return original.PossibleLinuxUpdateClassesValues()
-}
 
 type ModuleProvisioningState = original.ModuleProvisioningState
 
@@ -423,20 +216,12 @@ const (
 	ModuleProvisioningStateUpdating                    ModuleProvisioningState = original.ModuleProvisioningStateUpdating
 )
 
-func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
-	return original.PossibleModuleProvisioningStateValues()
-}
-
 type OperatingSystemType = original.OperatingSystemType
 
 const (
 	Linux   OperatingSystemType = original.Linux
 	Windows OperatingSystemType = original.Windows
 )
-
-func PossibleOperatingSystemTypeValues() []OperatingSystemType {
-	return original.PossibleOperatingSystemTypeValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -446,19 +231,11 @@ const (
 	Running   ProvisioningState = original.Running
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type RunbookProvisioningState = original.RunbookProvisioningState
 
 const (
 	RunbookProvisioningStateSucceeded RunbookProvisioningState = original.RunbookProvisioningStateSucceeded
 )
-
-func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
-	return original.PossibleRunbookProvisioningStateValues()
-}
 
 type RunbookState = original.RunbookState
 
@@ -467,10 +244,6 @@ const (
 	RunbookStateNew       RunbookState = original.RunbookStateNew
 	RunbookStatePublished RunbookState = original.RunbookStatePublished
 )
-
-func PossibleRunbookStateValues() []RunbookState {
-	return original.PossibleRunbookStateValues()
-}
 
 type RunbookTypeEnum = original.RunbookTypeEnum
 
@@ -482,10 +255,6 @@ const (
 	PowerShellWorkflow      RunbookTypeEnum = original.PowerShellWorkflow
 	Script                  RunbookTypeEnum = original.Script
 )
-
-func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
-	return original.PossibleRunbookTypeEnumValues()
-}
 
 type ScheduleDay = original.ScheduleDay
 
@@ -499,10 +268,6 @@ const (
 	Wednesday ScheduleDay = original.Wednesday
 )
 
-func PossibleScheduleDayValues() []ScheduleDay {
-	return original.PossibleScheduleDayValues()
-}
-
 type ScheduleFrequency = original.ScheduleFrequency
 
 const (
@@ -513,20 +278,12 @@ const (
 	Week    ScheduleFrequency = original.Week
 )
 
-func PossibleScheduleFrequencyValues() []ScheduleFrequency {
-	return original.PossibleScheduleFrequencyValues()
-}
-
 type SkuNameEnum = original.SkuNameEnum
 
 const (
 	Basic SkuNameEnum = original.Basic
 	Free  SkuNameEnum = original.Free
 )
-
-func PossibleSkuNameEnumValues() []SkuNameEnum {
-	return original.PossibleSkuNameEnumValues()
-}
 
 type SourceType = original.SourceType
 
@@ -535,10 +292,6 @@ const (
 	VsoGit  SourceType = original.VsoGit
 	VsoTfvc SourceType = original.VsoTfvc
 )
-
-func PossibleSourceTypeValues() []SourceType {
-	return original.PossibleSourceTypeValues()
-}
 
 type WindowsUpdateClasses = original.WindowsUpdateClasses
 
@@ -553,10 +306,6 @@ const (
 	WindowsUpdateClassesUpdateRollup WindowsUpdateClasses = original.WindowsUpdateClassesUpdateRollup
 	WindowsUpdateClassesUpdates      WindowsUpdateClasses = original.WindowsUpdateClassesUpdates
 )
-
-func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
-	return original.PossibleWindowsUpdateClassesValues()
-}
 
 type Account = original.Account
 type AccountCreateOrUpdateParameters = original.AccountCreateOrUpdateParameters
@@ -798,151 +547,309 @@ type WebhookUpdateParameters = original.WebhookUpdateParameters
 type WebhookUpdateProperties = original.WebhookUpdateProperties
 type WindowsProperties = original.WindowsProperties
 type ModuleClient = original.ModuleClient
+type NodeReportsClient = original.NodeReportsClient
+type ObjectDataTypesClient = original.ObjectDataTypesClient
+type OperationsClient = original.OperationsClient
+type RunbookClient = original.RunbookClient
+type RunbookDraftClient = original.RunbookDraftClient
+type ScheduleClient = original.ScheduleClient
+type SoftwareUpdateConfigurationMachineRunsClient = original.SoftwareUpdateConfigurationMachineRunsClient
+type SoftwareUpdateConfigurationRunsClient = original.SoftwareUpdateConfigurationRunsClient
+type SoftwareUpdateConfigurationsClient = original.SoftwareUpdateConfigurationsClient
+type SourceControlClient = original.SourceControlClient
+type SourceControlSyncJobClient = original.SourceControlSyncJobClient
+type StatisticsClient = original.StatisticsClient
+type TestJobClient = original.TestJobClient
+type TestJobStreamsClient = original.TestJobStreamsClient
+type UsagesClient = original.UsagesClient
+type VariableClient = original.VariableClient
+type WebhookClient = original.WebhookClient
 
+func NewAccountClient(subscriptionID string) AccountClient {
+	return original.NewAccountClient(subscriptionID)
+}
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewActivityClient(subscriptionID string) ActivityClient {
+	return original.NewActivityClient(subscriptionID)
+}
+func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) ActivityClient {
+	return original.NewActivityClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAgentRegistrationInformationClient(subscriptionID string) AgentRegistrationInformationClient {
+	return original.NewAgentRegistrationInformationClient(subscriptionID)
+}
+func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string) AgentRegistrationInformationClient {
+	return original.NewAgentRegistrationInformationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCertificateClient(subscriptionID string) CertificateClient {
+	return original.NewCertificateClient(subscriptionID)
+}
+func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
+	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectionClient(subscriptionID string) ConnectionClient {
+	return original.NewConnectionClient(subscriptionID)
+}
+func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string) ConnectionClient {
+	return original.NewConnectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectionTypeClient(subscriptionID string) ConnectionTypeClient {
+	return original.NewConnectionTypeClient(subscriptionID)
+}
+func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string) ConnectionTypeClient {
+	return original.NewConnectionTypeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCredentialClient(subscriptionID string) CredentialClient {
+	return original.NewCredentialClient(subscriptionID)
+}
+func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) CredentialClient {
+	return original.NewCredentialClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDscCompilationJobClient(subscriptionID string) DscCompilationJobClient {
+	return original.NewDscCompilationJobClient(subscriptionID)
+}
+func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobClient {
+	return original.NewDscCompilationJobClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDscCompilationJobStreamClient(subscriptionID string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClient(subscriptionID)
+}
+func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDscConfigurationClient(subscriptionID string) DscConfigurationClient {
+	return original.NewDscConfigurationClient(subscriptionID)
+}
+func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscConfigurationClient {
+	return original.NewDscConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDscNodeClient(subscriptionID string) DscNodeClient {
+	return original.NewDscNodeClient(subscriptionID)
+}
+func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string) DscNodeClient {
+	return original.NewDscNodeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDscNodeConfigurationClient(subscriptionID string) DscNodeConfigurationClient {
+	return original.NewDscNodeConfigurationClient(subscriptionID)
+}
+func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscNodeConfigurationClient {
+	return original.NewDscNodeConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFieldsClient(subscriptionID string) FieldsClient {
+	return original.NewFieldsClient(subscriptionID)
+}
+func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string) FieldsClient {
+	return original.NewFieldsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewHybridRunbookWorkerGroupClient(subscriptionID string) HybridRunbookWorkerGroupClient {
+	return original.NewHybridRunbookWorkerGroupClient(subscriptionID)
+}
+func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string) HybridRunbookWorkerGroupClient {
+	return original.NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobClient(subscriptionID string) JobClient {
+	return original.NewJobClient(subscriptionID)
+}
+func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
+	return original.NewJobClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobScheduleClient(subscriptionID string) JobScheduleClient {
+	return original.NewJobScheduleClient(subscriptionID)
+}
+func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string) JobScheduleClient {
+	return original.NewJobScheduleClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobStreamClient(subscriptionID string) JobStreamClient {
+	return original.NewJobStreamClient(subscriptionID)
+}
+func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStreamClient {
+	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
+}
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClient(subscriptionID)
+}
+func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccountStateValues() []AccountState {
+	return original.PossibleAccountStateValues()
+}
+func PossibleAgentRegistrationKeyNameValues() []AgentRegistrationKeyName {
+	return original.PossibleAgentRegistrationKeyNameValues()
+}
+func PossibleContentSourceTypeValues() []ContentSourceType {
+	return original.PossibleContentSourceTypeValues()
+}
+func PossibleDscConfigurationProvisioningStateValues() []DscConfigurationProvisioningState {
+	return original.PossibleDscConfigurationProvisioningStateValues()
+}
+func PossibleDscConfigurationStateValues() []DscConfigurationState {
+	return original.PossibleDscConfigurationStateValues()
+}
+func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
+	return original.PossibleHTTPStatusCodeValues()
+}
+func PossibleJobProvisioningStateValues() []JobProvisioningState {
+	return original.PossibleJobProvisioningStateValues()
+}
+func PossibleJobStatusValues() []JobStatus {
+	return original.PossibleJobStatusValues()
+}
+func PossibleJobStreamTypeValues() []JobStreamType {
+	return original.PossibleJobStreamTypeValues()
+}
+func PossibleKeyNameValues() []KeyName {
+	return original.PossibleKeyNameValues()
+}
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return original.PossibleKeyPermissionsValues()
+}
+func PossibleLinuxUpdateClassesValues() []LinuxUpdateClasses {
+	return original.PossibleLinuxUpdateClassesValues()
+}
+func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
+	return original.PossibleModuleProvisioningStateValues()
+}
+func PossibleOperatingSystemTypeValues() []OperatingSystemType {
+	return original.PossibleOperatingSystemTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
+	return original.PossibleRunbookProvisioningStateValues()
+}
+func PossibleRunbookStateValues() []RunbookState {
+	return original.PossibleRunbookStateValues()
+}
+func PossibleRunbookTypeEnumValues() []RunbookTypeEnum {
+	return original.PossibleRunbookTypeEnumValues()
+}
+func PossibleScheduleDayValues() []ScheduleDay {
+	return original.PossibleScheduleDayValues()
+}
+func PossibleScheduleFrequencyValues() []ScheduleFrequency {
+	return original.PossibleScheduleFrequencyValues()
+}
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return original.PossibleSkuNameEnumValues()
+}
+func PossibleSourceTypeValues() []SourceType {
+	return original.PossibleSourceTypeValues()
+}
+func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
+	return original.PossibleWindowsUpdateClassesValues()
+}
 func NewModuleClient(subscriptionID string) ModuleClient {
 	return original.NewModuleClient(subscriptionID)
 }
 func NewModuleClientWithBaseURI(baseURI string, subscriptionID string) ModuleClient {
 	return original.NewModuleClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type NodeReportsClient = original.NodeReportsClient
-
 func NewNodeReportsClient(subscriptionID string) NodeReportsClient {
 	return original.NewNodeReportsClient(subscriptionID)
 }
 func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string) NodeReportsClient {
 	return original.NewNodeReportsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ObjectDataTypesClient = original.ObjectDataTypesClient
-
 func NewObjectDataTypesClient(subscriptionID string) ObjectDataTypesClient {
 	return original.NewObjectDataTypesClient(subscriptionID)
 }
 func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string) ObjectDataTypesClient {
 	return original.NewObjectDataTypesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type OperationsClient = original.OperationsClient
-
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RunbookClient = original.RunbookClient
-
 func NewRunbookClient(subscriptionID string) RunbookClient {
 	return original.NewRunbookClient(subscriptionID)
 }
 func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string) RunbookClient {
 	return original.NewRunbookClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type RunbookDraftClient = original.RunbookDraftClient
-
 func NewRunbookDraftClient(subscriptionID string) RunbookDraftClient {
 	return original.NewRunbookDraftClient(subscriptionID)
 }
 func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string) RunbookDraftClient {
 	return original.NewRunbookDraftClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ScheduleClient = original.ScheduleClient
-
 func NewScheduleClient(subscriptionID string) ScheduleClient {
 	return original.NewScheduleClient(subscriptionID)
 }
 func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) ScheduleClient {
 	return original.NewScheduleClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SoftwareUpdateConfigurationMachineRunsClient = original.SoftwareUpdateConfigurationMachineRunsClient
-
 func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
 	return original.NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID)
 }
 func NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
 	return original.NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SoftwareUpdateConfigurationRunsClient = original.SoftwareUpdateConfigurationRunsClient
-
 func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string) SoftwareUpdateConfigurationRunsClient {
 	return original.NewSoftwareUpdateConfigurationRunsClient(subscriptionID)
 }
 func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationRunsClient {
 	return original.NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SoftwareUpdateConfigurationsClient = original.SoftwareUpdateConfigurationsClient
-
 func NewSoftwareUpdateConfigurationsClient(subscriptionID string) SoftwareUpdateConfigurationsClient {
 	return original.NewSoftwareUpdateConfigurationsClient(subscriptionID)
 }
 func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationsClient {
 	return original.NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SourceControlClient = original.SourceControlClient
-
 func NewSourceControlClient(subscriptionID string) SourceControlClient {
 	return original.NewSourceControlClient(subscriptionID)
 }
 func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
 	return original.NewSourceControlClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SourceControlSyncJobClient = original.SourceControlSyncJobClient
-
 func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobClient {
 	return original.NewSourceControlSyncJobClient(subscriptionID)
 }
 func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
 	return original.NewSourceControlSyncJobClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type StatisticsClient = original.StatisticsClient
-
 func NewStatisticsClient(subscriptionID string) StatisticsClient {
 	return original.NewStatisticsClient(subscriptionID)
 }
 func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string) StatisticsClient {
 	return original.NewStatisticsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TestJobClient = original.TestJobClient
-
 func NewTestJobClient(subscriptionID string) TestJobClient {
 	return original.NewTestJobClient(subscriptionID)
 }
 func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string) TestJobClient {
 	return original.NewTestJobClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TestJobStreamsClient = original.TestJobStreamsClient
-
 func NewTestJobStreamsClient(subscriptionID string) TestJobStreamsClient {
 	return original.NewTestJobStreamsClient(subscriptionID)
 }
 func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) TestJobStreamsClient {
 	return original.NewTestJobStreamsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsagesClient = original.UsagesClient
-
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VariableClient = original.VariableClient
-
 func NewVariableClient(subscriptionID string) VariableClient {
 	return original.NewVariableClient(subscriptionID)
 }
@@ -955,9 +862,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type WebhookClient = original.WebhookClient
-
 func NewWebhookClient(subscriptionID string) WebhookClient {
 	return original.NewWebhookClient(subscriptionID)
 }

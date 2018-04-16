@@ -26,24 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type PolicyStatesResource = original.PolicyStatesResource
 
 const (
 	Default PolicyStatesResource = original.Default
 	Latest  PolicyStatesResource = original.Latest
 )
-
-func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
-	return original.PossiblePolicyStatesResourceValues()
-}
 
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -61,25 +49,30 @@ type SummarizeResults = original.SummarizeResults
 type Summary = original.Summary
 type SummaryResults = original.SummaryResults
 type OperationsClient = original.OperationsClient
+type PolicyEventsClient = original.PolicyEventsClient
+type PolicyStatesClient = original.PolicyStatesClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
+	return original.PossiblePolicyStatesResourceValues()
+}
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-
-type PolicyEventsClient = original.PolicyEventsClient
-
 func NewPolicyEventsClient() PolicyEventsClient {
 	return original.NewPolicyEventsClient()
 }
 func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 	return original.NewPolicyEventsClientWithBaseURI(baseURI)
 }
-
-type PolicyStatesClient = original.PolicyStatesClient
-
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()
 }

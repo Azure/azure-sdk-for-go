@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(operationResultID string, skiptoken string) BaseClient {
-	return original.New(operationResultID, skiptoken)
-}
-func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-
 type EntitiesClient = original.EntitiesClient
-
-func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skiptoken)
-}
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-
 type Client = original.Client
-
-func NewClient(operationResultID string, skiptoken string) Client {
-	return original.NewClient(operationResultID, skiptoken)
-}
-func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
-}
-
 type Permissions = original.Permissions
 
 const (
@@ -60,10 +36,6 @@ const (
 	Noaccess Permissions = original.Noaccess
 	View     Permissions = original.View
 )
-
-func PossiblePermissionsValues() []Permissions {
-	return original.PossiblePermissionsValues()
-}
 
 type Permissions1 = original.Permissions1
 
@@ -74,19 +46,11 @@ const (
 	Permissions1View     Permissions1 = original.Permissions1View
 )
 
-func PossiblePermissions1Values() []Permissions1 {
-	return original.PossiblePermissions1Values()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
 	Updating ProvisioningState = original.Updating
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type Reason = original.Reason
 
@@ -95,19 +59,11 @@ const (
 	Invalid       Reason = original.Invalid
 )
 
-func PossibleReasonValues() []Reason {
-	return original.PossibleReasonValues()
-}
-
 type Type = original.Type
 
 const (
 	ProvidersMicrosoftManagementmanagementGroup Type = original.ProvidersMicrosoftManagementmanagementGroup
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type Type1 = original.Type1
 
@@ -116,20 +72,12 @@ const (
 	Subscriptions                                Type1 = original.Subscriptions
 )
 
-func PossibleType1Values() []Type1 {
-	return original.PossibleType1Values()
-}
-
 type Type2 = original.Type2
 
 const (
 	Type2ProvidersMicrosoftManagementmanagementGroups Type2 = original.Type2ProvidersMicrosoftManagementmanagementGroups
 	Type2Subscriptions                                Type2 = original.Type2Subscriptions
 )
-
-func PossibleType2Values() []Type2 {
-	return original.PossibleType2Values()
-}
 
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
@@ -170,16 +118,53 @@ type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
 type OperationsClient = original.OperationsClient
+type SubscriptionsClient = original.SubscriptionsClient
 
+func New(operationResultID string, skiptoken string) BaseClient {
+	return original.New(operationResultID, skiptoken)
+}
+func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
+	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClient(operationResultID, skiptoken)
+}
+func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func NewClient(operationResultID string, skiptoken string) Client {
+	return original.NewClient(operationResultID, skiptoken)
+}
+func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
+	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+}
+func PossiblePermissionsValues() []Permissions {
+	return original.PossiblePermissionsValues()
+}
+func PossiblePermissions1Values() []Permissions1 {
+	return original.PossiblePermissions1Values()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleType1Values() []Type1 {
+	return original.PossibleType1Values()
+}
+func PossibleType2Values() []Type2 {
+	return original.PossibleType2Values()
+}
 func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
 	return original.NewOperationsClient(operationResultID, skiptoken)
 }
 func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
 }
-
-type SubscriptionsClient = original.SubscriptionsClient
-
 func NewSubscriptionsClient(operationResultID string, skiptoken string) SubscriptionsClient {
 	return original.NewSubscriptionsClient(operationResultID, skiptoken)
 }

@@ -26,32 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type HanaInstancesClient = original.HanaInstancesClient
-
-func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
-	return original.NewHanaInstancesClient(subscriptionID)
-}
-func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
-	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
 	CiscoUCS HanaHardwareTypeNamesEnum = original.CiscoUCS
 )
-
-func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
-	return original.PossibleHanaHardwareTypeNamesEnumValues()
-}
 
 type HanaInstanceSizeNamesEnum = original.HanaInstanceSizeNamesEnum
 
@@ -63,10 +43,6 @@ const (
 	S72   HanaInstanceSizeNamesEnum = original.S72
 	S72m  HanaInstanceSizeNamesEnum = original.S72m
 )
-
-func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
-	return original.PossibleHanaInstanceSizeNamesEnumValues()
-}
 
 type Disk = original.Disk
 type Display = original.Display
@@ -86,6 +62,24 @@ type Resource = original.Resource
 type StorageProfile = original.StorageProfile
 type OperationsClient = original.OperationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewHanaInstancesClient(subscriptionID string) HanaInstancesClient {
+	return original.NewHanaInstancesClient(subscriptionID)
+}
+func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) HanaInstancesClient {
+	return original.NewHanaInstancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
+	return original.PossibleHanaHardwareTypeNamesEnumValues()
+}
+func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
+	return original.PossibleHanaInstanceSizeNamesEnumValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }

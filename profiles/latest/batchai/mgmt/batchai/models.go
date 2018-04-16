@@ -26,51 +26,15 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ClustersClient = original.ClustersClient
-
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
-}
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type FileServersClient = original.FileServersClient
-
-func NewFileServersClient(subscriptionID string) FileServersClient {
-	return original.NewFileServersClient(subscriptionID)
-}
-func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) FileServersClient {
-	return original.NewFileServersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type JobsClient = original.JobsClient
-
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
-}
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AllocationState = original.AllocationState
 
 const (
 	Resizing AllocationState = original.Resizing
 	Steady   AllocationState = original.Steady
 )
-
-func PossibleAllocationStateValues() []AllocationState {
-	return original.PossibleAllocationStateValues()
-}
 
 type CachingType = original.CachingType
 
@@ -80,10 +44,6 @@ const (
 	Readwrite CachingType = original.Readwrite
 )
 
-func PossibleCachingTypeValues() []CachingType {
-	return original.PossibleCachingTypeValues()
-}
-
 type DeallocationOption = original.DeallocationOption
 
 const (
@@ -92,10 +52,6 @@ const (
 	Unknown              DeallocationOption = original.Unknown
 	Waitforjobcompletion DeallocationOption = original.Waitforjobcompletion
 )
-
-func PossibleDeallocationOptionValues() []DeallocationOption {
-	return original.PossibleDeallocationOptionValues()
-}
 
 type ExecutionState = original.ExecutionState
 
@@ -107,10 +63,6 @@ const (
 	Terminating ExecutionState = original.Terminating
 )
 
-func PossibleExecutionStateValues() []ExecutionState {
-	return original.PossibleExecutionStateValues()
-}
-
 type FileServerProvisioningState = original.FileServerProvisioningState
 
 const (
@@ -121,20 +73,12 @@ const (
 	FileServerProvisioningStateUpdating  FileServerProvisioningState = original.FileServerProvisioningStateUpdating
 )
 
-func PossibleFileServerProvisioningStateValues() []FileServerProvisioningState {
-	return original.PossibleFileServerProvisioningStateValues()
-}
-
 type FileServerType = original.FileServerType
 
 const (
 	Glusterfs FileServerType = original.Glusterfs
 	Nfs       FileServerType = original.Nfs
 )
-
-func PossibleFileServerTypeValues() []FileServerType {
-	return original.PossibleFileServerTypeValues()
-}
 
 type OutputType = original.OutputType
 
@@ -145,10 +89,6 @@ const (
 	Summary OutputType = original.Summary
 )
 
-func PossibleOutputTypeValues() []OutputType {
-	return original.PossibleOutputTypeValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -158,20 +98,12 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type StorageAccountType = original.StorageAccountType
 
 const (
 	PremiumLRS  StorageAccountType = original.PremiumLRS
 	StandardLRS StorageAccountType = original.StandardLRS
 )
-
-func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return original.PossibleStorageAccountTypeValues()
-}
 
 type ToolType = original.ToolType
 
@@ -184,20 +116,12 @@ const (
 	ToolTypeTensorflow ToolType = original.ToolTypeTensorflow
 )
 
-func PossibleToolTypeValues() []ToolType {
-	return original.PossibleToolTypeValues()
-}
-
 type VMPriority = original.VMPriority
 
 const (
 	Dedicated   VMPriority = original.Dedicated
 	Lowpriority VMPriority = original.Lowpriority
 )
-
-func PossibleVMPriorityValues() []VMPriority {
-	return original.PossibleVMPriorityValues()
-}
 
 type AppInsightsReference = original.AppInsightsReference
 type AutoScaleSettings = original.AutoScaleSettings
@@ -296,16 +220,71 @@ type UsageName = original.UsageName
 type UserAccountSettings = original.UserAccountSettings
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type OperationsClient = original.OperationsClient
+type UsageClient = original.UsageClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
+}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFileServersClient(subscriptionID string) FileServersClient {
+	return original.NewFileServersClient(subscriptionID)
+}
+func NewFileServersClientWithBaseURI(baseURI string, subscriptionID string) FileServersClient {
+	return original.NewFileServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAllocationStateValues() []AllocationState {
+	return original.PossibleAllocationStateValues()
+}
+func PossibleCachingTypeValues() []CachingType {
+	return original.PossibleCachingTypeValues()
+}
+func PossibleDeallocationOptionValues() []DeallocationOption {
+	return original.PossibleDeallocationOptionValues()
+}
+func PossibleExecutionStateValues() []ExecutionState {
+	return original.PossibleExecutionStateValues()
+}
+func PossibleFileServerProvisioningStateValues() []FileServerProvisioningState {
+	return original.PossibleFileServerProvisioningStateValues()
+}
+func PossibleFileServerTypeValues() []FileServerType {
+	return original.PossibleFileServerTypeValues()
+}
+func PossibleOutputTypeValues() []OutputType {
+	return original.PossibleOutputTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return original.PossibleStorageAccountTypeValues()
+}
+func PossibleToolTypeValues() []ToolType {
+	return original.PossibleToolTypeValues()
+}
+func PossibleVMPriorityValues() []VMPriority {
+	return original.PossibleVMPriorityValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsageClient = original.UsageClient
-
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
 }

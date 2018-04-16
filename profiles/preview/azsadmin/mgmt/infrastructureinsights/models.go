@@ -23,26 +23,11 @@ import original "github.com/Azure/azure-sdk-for-go/services/azsadmin/mgmt/2016-0
 
 type AlertsClient = original.AlertsClient
 
-func NewAlertsClient(subscriptionID string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID)
-}
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type MetricsSourceType = original.MetricsSourceType
 
 const (
@@ -50,10 +35,6 @@ const (
 	ResourceProvider MetricsSourceType = original.ResourceProvider
 	VirtualMachine   MetricsSourceType = original.VirtualMachine
 )
-
-func PossibleMetricsSourceTypeValues() []MetricsSourceType {
-	return original.PossibleMetricsSourceTypeValues()
-}
 
 type MetricsUnit = original.MetricsUnit
 
@@ -66,10 +47,6 @@ const (
 	Percentage MetricsUnit = original.Percentage
 	TB         MetricsUnit = original.TB
 )
-
-func PossibleMetricsUnitValues() []MetricsUnit {
-	return original.PossibleMetricsUnitValues()
-}
 
 type Alert = original.Alert
 type AlertList = original.AlertList
@@ -97,25 +74,39 @@ type ServiceHealthListPage = original.ServiceHealthListPage
 type ServiceHealthModel = original.ServiceHealthModel
 type UsageMetrics = original.UsageMetrics
 type RegionHealthsClient = original.RegionHealthsClient
+type ResourceHealthsClient = original.ResourceHealthsClient
+type ServiceHealthsClient = original.ServiceHealthsClient
 
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleMetricsSourceTypeValues() []MetricsSourceType {
+	return original.PossibleMetricsSourceTypeValues()
+}
+func PossibleMetricsUnitValues() []MetricsUnit {
+	return original.PossibleMetricsUnitValues()
+}
 func NewRegionHealthsClient(subscriptionID string) RegionHealthsClient {
 	return original.NewRegionHealthsClient(subscriptionID)
 }
 func NewRegionHealthsClientWithBaseURI(baseURI string, subscriptionID string) RegionHealthsClient {
 	return original.NewRegionHealthsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ResourceHealthsClient = original.ResourceHealthsClient
-
 func NewResourceHealthsClient(subscriptionID string) ResourceHealthsClient {
 	return original.NewResourceHealthsClient(subscriptionID)
 }
 func NewResourceHealthsClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthsClient {
 	return original.NewResourceHealthsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ServiceHealthsClient = original.ServiceHealthsClient
-
 func NewServiceHealthsClient(subscriptionID string) ServiceHealthsClient {
 	return original.NewServiceHealthsClient(subscriptionID)
 }

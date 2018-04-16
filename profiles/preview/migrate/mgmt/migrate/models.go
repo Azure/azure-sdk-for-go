@@ -22,64 +22,21 @@ package migrate
 import original "github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2018-02-02/migrate"
 
 type AssessedMachinesClient = original.AssessedMachinesClient
-
-func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) AssessedMachinesClient {
-	return original.NewAssessedMachinesClient(subscriptionID, acceptLanguage)
-}
-func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
-	return original.NewAssessedMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
 type AssessmentsClient = original.AssessmentsClient
-
-func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
-}
-func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
-	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string, acceptLanguage string) BaseClient {
-	return original.New(subscriptionID, acceptLanguage)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
 type GroupsClient = original.GroupsClient
-
-func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClient(subscriptionID, acceptLanguage)
-}
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
 type MachinesClient = original.MachinesClient
-
-func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
-	return original.NewMachinesClient(subscriptionID, acceptLanguage)
-}
-func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
-	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-
 type AssessmentSizingCriterion = original.AssessmentSizingCriterion
 
 const (
 	AsOnPremises     AssessmentSizingCriterion = original.AsOnPremises
 	PerformanceBased AssessmentSizingCriterion = original.PerformanceBased
 )
-
-func PossibleAssessmentSizingCriterionValues() []AssessmentSizingCriterion {
-	return original.PossibleAssessmentSizingCriterionValues()
-}
 
 type AssessmentStage = original.AssessmentStage
 
@@ -88,10 +45,6 @@ const (
 	InProgress  AssessmentStage = original.InProgress
 	UnderReview AssessmentStage = original.UnderReview
 )
-
-func PossibleAssessmentStageValues() []AssessmentStage {
-	return original.PossibleAssessmentStageValues()
-}
 
 type AssessmentStatus = original.AssessmentStatus
 
@@ -102,10 +55,6 @@ const (
 	Running   AssessmentStatus = original.Running
 	Updated   AssessmentStatus = original.Updated
 )
-
-func PossibleAssessmentStatusValues() []AssessmentStatus {
-	return original.PossibleAssessmentStatusValues()
-}
 
 type AzureDiskSize = original.AzureDiskSize
 
@@ -127,10 +76,6 @@ const (
 	Unknown     AzureDiskSize = original.Unknown
 )
 
-func PossibleAzureDiskSizeValues() []AzureDiskSize {
-	return original.PossibleAzureDiskSizeValues()
-}
-
 type AzureDiskSuitabilityExplanation = original.AzureDiskSuitabilityExplanation
 
 const (
@@ -144,10 +89,6 @@ const (
 	AzureDiskSuitabilityExplanationUnknown                                AzureDiskSuitabilityExplanation = original.AzureDiskSuitabilityExplanationUnknown
 )
 
-func PossibleAzureDiskSuitabilityExplanationValues() []AzureDiskSuitabilityExplanation {
-	return original.PossibleAzureDiskSuitabilityExplanationValues()
-}
-
 type AzureDiskType = original.AzureDiskType
 
 const (
@@ -156,10 +97,6 @@ const (
 	AzureDiskTypeUnknown  AzureDiskType = original.AzureDiskTypeUnknown
 )
 
-func PossibleAzureDiskTypeValues() []AzureDiskType {
-	return original.PossibleAzureDiskTypeValues()
-}
-
 type AzureHybridUseBenefit = original.AzureHybridUseBenefit
 
 const (
@@ -167,10 +104,6 @@ const (
 	AzureHybridUseBenefitUnknown AzureHybridUseBenefit = original.AzureHybridUseBenefitUnknown
 	AzureHybridUseBenefitYes     AzureHybridUseBenefit = original.AzureHybridUseBenefitYes
 )
-
-func PossibleAzureHybridUseBenefitValues() []AzureHybridUseBenefit {
-	return original.PossibleAzureHybridUseBenefitValues()
-}
 
 type AzureLocation = original.AzureLocation
 
@@ -208,10 +141,6 @@ const (
 	AzureLocationWestUs2            AzureLocation = original.AzureLocationWestUs2
 )
 
-func PossibleAzureLocationValues() []AzureLocation {
-	return original.PossibleAzureLocationValues()
-}
-
 type AzureNetworkAdapterSuitabilityExplanation = original.AzureNetworkAdapterSuitabilityExplanation
 
 const (
@@ -219,10 +148,6 @@ const (
 	AzureNetworkAdapterSuitabilityExplanationNotApplicable        AzureNetworkAdapterSuitabilityExplanation = original.AzureNetworkAdapterSuitabilityExplanationNotApplicable
 	AzureNetworkAdapterSuitabilityExplanationUnknown              AzureNetworkAdapterSuitabilityExplanation = original.AzureNetworkAdapterSuitabilityExplanationUnknown
 )
-
-func PossibleAzureNetworkAdapterSuitabilityExplanationValues() []AzureNetworkAdapterSuitabilityExplanation {
-	return original.PossibleAzureNetworkAdapterSuitabilityExplanationValues()
-}
 
 type AzureOfferCode = original.AzureOfferCode
 
@@ -267,20 +192,12 @@ const (
 	AzureOfferCodeUnknown      AzureOfferCode = original.AzureOfferCodeUnknown
 )
 
-func PossibleAzureOfferCodeValues() []AzureOfferCode {
-	return original.PossibleAzureOfferCodeValues()
-}
-
 type AzurePricingTier = original.AzurePricingTier
 
 const (
 	Basic    AzurePricingTier = original.Basic
 	Standard AzurePricingTier = original.Standard
 )
-
-func PossibleAzurePricingTierValues() []AzurePricingTier {
-	return original.PossibleAzurePricingTierValues()
-}
 
 type AzureStorageRedundancy = original.AzureStorageRedundancy
 
@@ -291,10 +208,6 @@ const (
 	AzureStorageRedundancyUnknown                AzureStorageRedundancy = original.AzureStorageRedundancyUnknown
 	AzureStorageRedundancyZoneRedundant          AzureStorageRedundancy = original.AzureStorageRedundancyZoneRedundant
 )
-
-func PossibleAzureStorageRedundancyValues() []AzureStorageRedundancy {
-	return original.PossibleAzureStorageRedundancyValues()
-}
 
 type AzureVMSize = original.AzureVMSize
 
@@ -392,10 +305,6 @@ const (
 	AzureVMSizeUnknown        AzureVMSize = original.AzureVMSizeUnknown
 )
 
-func PossibleAzureVMSizeValues() []AzureVMSize {
-	return original.PossibleAzureVMSizeValues()
-}
-
 type AzureVMSuitabilityExplanation = original.AzureVMSuitabilityExplanation
 
 const (
@@ -437,10 +346,6 @@ const (
 	AzureVMSuitabilityExplanationWindowsServerVersionsSupportedWithCaveat     AzureVMSuitabilityExplanation = original.AzureVMSuitabilityExplanationWindowsServerVersionsSupportedWithCaveat
 )
 
-func PossibleAzureVMSuitabilityExplanationValues() []AzureVMSuitabilityExplanation {
-	return original.PossibleAzureVMSuitabilityExplanationValues()
-}
-
 type CloudSuitability = original.CloudSuitability
 
 const (
@@ -450,10 +355,6 @@ const (
 	CloudSuitabilitySuitable              CloudSuitability = original.CloudSuitabilitySuitable
 	CloudSuitabilityUnknown               CloudSuitability = original.CloudSuitabilityUnknown
 )
-
-func PossibleCloudSuitabilityValues() []CloudSuitability {
-	return original.PossibleCloudSuitabilityValues()
-}
 
 type Currency = original.Currency
 
@@ -486,10 +387,6 @@ const (
 	CurrencyZAR     Currency = original.CurrencyZAR
 )
 
-func PossibleCurrencyValues() []Currency {
-	return original.PossibleCurrencyValues()
-}
-
 type DiscoveryStatus = original.DiscoveryStatus
 
 const (
@@ -499,10 +396,6 @@ const (
 	DiscoveryStatusUnknown    DiscoveryStatus = original.DiscoveryStatusUnknown
 )
 
-func PossibleDiscoveryStatusValues() []DiscoveryStatus {
-	return original.PossibleDiscoveryStatusValues()
-}
-
 type MachineBootType = original.MachineBootType
 
 const (
@@ -510,10 +403,6 @@ const (
 	MachineBootTypeEFI     MachineBootType = original.MachineBootTypeEFI
 	MachineBootTypeUnknown MachineBootType = original.MachineBootTypeUnknown
 )
-
-func PossibleMachineBootTypeValues() []MachineBootType {
-	return original.PossibleMachineBootTypeValues()
-}
 
 type Percentile = original.Percentile
 
@@ -523,10 +412,6 @@ const (
 	Percentile95 Percentile = original.Percentile95
 	Percentile99 Percentile = original.Percentile99
 )
-
-func PossiblePercentileValues() []Percentile {
-	return original.PossiblePercentileValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -539,10 +424,6 @@ const (
 	Succeeded ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type TimeRange = original.TimeRange
 
 const (
@@ -550,10 +431,6 @@ const (
 	Month TimeRange = original.Month
 	Week  TimeRange = original.Week
 )
-
-func PossibleTimeRangeValues() []TimeRange {
-	return original.PossibleTimeRangeValues()
-}
 
 type AssessedDisk = original.AssessedDisk
 type AssessedMachine = original.AssessedMachine
@@ -580,16 +457,107 @@ type ProjectKey = original.ProjectKey
 type ProjectProperties = original.ProjectProperties
 type ProjectResultList = original.ProjectResultList
 type OperationsClient = original.OperationsClient
+type ProjectsClient = original.ProjectsClient
 
+func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) AssessedMachinesClient {
+	return original.NewAssessedMachinesClient(subscriptionID, acceptLanguage)
+}
+func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessedMachinesClient {
+	return original.NewAssessedMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewAssessmentsClient(subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClient(subscriptionID, acceptLanguage)
+}
+func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) AssessmentsClient {
+	return original.NewAssessmentsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func New(subscriptionID string, acceptLanguage string) BaseClient {
+	return original.New(subscriptionID, acceptLanguage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewGroupsClient(subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID, acceptLanguage)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func NewMachinesClient(subscriptionID string, acceptLanguage string) MachinesClient {
+	return original.NewMachinesClient(subscriptionID, acceptLanguage)
+}
+func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) MachinesClient {
+	return original.NewMachinesClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
+}
+func PossibleAssessmentSizingCriterionValues() []AssessmentSizingCriterion {
+	return original.PossibleAssessmentSizingCriterionValues()
+}
+func PossibleAssessmentStageValues() []AssessmentStage {
+	return original.PossibleAssessmentStageValues()
+}
+func PossibleAssessmentStatusValues() []AssessmentStatus {
+	return original.PossibleAssessmentStatusValues()
+}
+func PossibleAzureDiskSizeValues() []AzureDiskSize {
+	return original.PossibleAzureDiskSizeValues()
+}
+func PossibleAzureDiskSuitabilityExplanationValues() []AzureDiskSuitabilityExplanation {
+	return original.PossibleAzureDiskSuitabilityExplanationValues()
+}
+func PossibleAzureDiskTypeValues() []AzureDiskType {
+	return original.PossibleAzureDiskTypeValues()
+}
+func PossibleAzureHybridUseBenefitValues() []AzureHybridUseBenefit {
+	return original.PossibleAzureHybridUseBenefitValues()
+}
+func PossibleAzureLocationValues() []AzureLocation {
+	return original.PossibleAzureLocationValues()
+}
+func PossibleAzureNetworkAdapterSuitabilityExplanationValues() []AzureNetworkAdapterSuitabilityExplanation {
+	return original.PossibleAzureNetworkAdapterSuitabilityExplanationValues()
+}
+func PossibleAzureOfferCodeValues() []AzureOfferCode {
+	return original.PossibleAzureOfferCodeValues()
+}
+func PossibleAzurePricingTierValues() []AzurePricingTier {
+	return original.PossibleAzurePricingTierValues()
+}
+func PossibleAzureStorageRedundancyValues() []AzureStorageRedundancy {
+	return original.PossibleAzureStorageRedundancyValues()
+}
+func PossibleAzureVMSizeValues() []AzureVMSize {
+	return original.PossibleAzureVMSizeValues()
+}
+func PossibleAzureVMSuitabilityExplanationValues() []AzureVMSuitabilityExplanation {
+	return original.PossibleAzureVMSuitabilityExplanationValues()
+}
+func PossibleCloudSuitabilityValues() []CloudSuitability {
+	return original.PossibleCloudSuitabilityValues()
+}
+func PossibleCurrencyValues() []Currency {
+	return original.PossibleCurrencyValues()
+}
+func PossibleDiscoveryStatusValues() []DiscoveryStatus {
+	return original.PossibleDiscoveryStatusValues()
+}
+func PossibleMachineBootTypeValues() []MachineBootType {
+	return original.PossibleMachineBootTypeValues()
+}
+func PossiblePercentileValues() []Percentile {
+	return original.PossiblePercentileValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleTimeRangeValues() []TimeRange {
+	return original.PossibleTimeRangeValues()
+}
 func NewOperationsClient(subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, acceptLanguage)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
-
-type ProjectsClient = original.ProjectsClient
-
 func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID, acceptLanguage)
 }

@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccessPolicyUpdateKind = original.AccessPolicyUpdateKind
 
 const (
@@ -41,10 +33,6 @@ const (
 	Remove  AccessPolicyUpdateKind = original.Remove
 	Replace AccessPolicyUpdateKind = original.Replace
 )
-
-func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
-	return original.PossibleAccessPolicyUpdateKindValues()
-}
 
 type CertificatePermissions = original.CertificatePermissions
 
@@ -65,20 +53,12 @@ const (
 	Update         CertificatePermissions = original.Update
 )
 
-func PossibleCertificatePermissionsValues() []CertificatePermissions {
-	return original.PossibleCertificatePermissionsValues()
-}
-
 type CreateMode = original.CreateMode
 
 const (
 	CreateModeDefault CreateMode = original.CreateModeDefault
 	CreateModeRecover CreateMode = original.CreateModeRecover
 )
-
-func PossibleCreateModeValues() []CreateMode {
-	return original.PossibleCreateModeValues()
-}
 
 type KeyPermissions = original.KeyPermissions
 
@@ -101,20 +81,12 @@ const (
 	KeyPermissionsWrapKey   KeyPermissions = original.KeyPermissionsWrapKey
 )
 
-func PossibleKeyPermissionsValues() []KeyPermissions {
-	return original.PossibleKeyPermissionsValues()
-}
-
 type Reason = original.Reason
 
 const (
 	AccountNameInvalid Reason = original.AccountNameInvalid
 	AlreadyExists      Reason = original.AlreadyExists
 )
-
-func PossibleReasonValues() []Reason {
-	return original.PossibleReasonValues()
-}
 
 type SecretPermissions = original.SecretPermissions
 
@@ -129,20 +101,12 @@ const (
 	SecretPermissionsSet     SecretPermissions = original.SecretPermissionsSet
 )
 
-func PossibleSecretPermissionsValues() []SecretPermissions {
-	return original.PossibleSecretPermissionsValues()
-}
-
 type SkuName = original.SkuName
 
 const (
 	Premium  SkuName = original.Premium
 	Standard SkuName = original.Standard
 )
-
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
 
 type StoragePermissions = original.StoragePermissions
 
@@ -162,10 +126,6 @@ const (
 	StoragePermissionsSetsas        StoragePermissions = original.StoragePermissionsSetsas
 	StoragePermissionsUpdate        StoragePermissions = original.StoragePermissionsUpdate
 )
-
-func PossibleStoragePermissionsValues() []StoragePermissions {
-	return original.PossibleStoragePermissionsValues()
-}
 
 type AccessPolicyEntry = original.AccessPolicyEntry
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
@@ -201,16 +161,44 @@ type VaultPatchProperties = original.VaultPatchProperties
 type VaultProperties = original.VaultProperties
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
 type OperationsClient = original.OperationsClient
+type VaultsClient = original.VaultsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
+	return original.PossibleAccessPolicyUpdateKindValues()
+}
+func PossibleCertificatePermissionsValues() []CertificatePermissions {
+	return original.PossibleCertificatePermissionsValues()
+}
+func PossibleCreateModeValues() []CreateMode {
+	return original.PossibleCreateModeValues()
+}
+func PossibleKeyPermissionsValues() []KeyPermissions {
+	return original.PossibleKeyPermissionsValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
+}
+func PossibleSecretPermissionsValues() []SecretPermissions {
+	return original.PossibleSecretPermissionsValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleStoragePermissionsValues() []StoragePermissions {
+	return original.PossibleStoragePermissionsValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VaultsClient = original.VaultsClient
-
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)
 }

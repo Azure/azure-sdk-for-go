@@ -22,26 +22,8 @@ package face
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face"
 
 type BaseClient = original.BaseClient
-
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
-
 type Client = original.Client
-
-func NewClient(azureRegion AzureRegions) Client {
-	return original.NewClient(azureRegion)
-}
-
 type ListClient = original.ListClient
-
-func NewListClient(azureRegion AzureRegions) ListClient {
-	return original.NewListClient(azureRegion)
-}
-
 type AccessoryType = original.AccessoryType
 
 const (
@@ -49,10 +31,6 @@ const (
 	HeadWear AccessoryType = original.HeadWear
 	Mask     AccessoryType = original.Mask
 )
-
-func PossibleAccessoryTypeValues() []AccessoryType {
-	return original.PossibleAccessoryTypeValues()
-}
 
 type AttributeType = original.AttributeType
 
@@ -73,10 +51,6 @@ const (
 	AttributeTypeSmile       AttributeType = original.AttributeTypeSmile
 )
 
-func PossibleAttributeTypeValues() []AttributeType {
-	return original.PossibleAttributeTypeValues()
-}
-
 type AzureRegions = original.AzureRegions
 
 const (
@@ -94,10 +68,6 @@ const (
 	Westus2        AzureRegions = original.Westus2
 )
 
-func PossibleAzureRegionsValues() []AzureRegions {
-	return original.PossibleAzureRegionsValues()
-}
-
 type BlurLevel = original.BlurLevel
 
 const (
@@ -105,10 +75,6 @@ const (
 	Low    BlurLevel = original.Low
 	Medium BlurLevel = original.Medium
 )
-
-func PossibleBlurLevelValues() []BlurLevel {
-	return original.PossibleBlurLevelValues()
-}
 
 type ExposureLevel = original.ExposureLevel
 
@@ -118,20 +84,12 @@ const (
 	UnderExposure ExposureLevel = original.UnderExposure
 )
 
-func PossibleExposureLevelValues() []ExposureLevel {
-	return original.PossibleExposureLevelValues()
-}
-
 type FindSimilarMatchMode = original.FindSimilarMatchMode
 
 const (
 	MatchFace   FindSimilarMatchMode = original.MatchFace
 	MatchPerson FindSimilarMatchMode = original.MatchPerson
 )
-
-func PossibleFindSimilarMatchModeValues() []FindSimilarMatchMode {
-	return original.PossibleFindSimilarMatchModeValues()
-}
 
 type Gender = original.Gender
 
@@ -141,10 +99,6 @@ const (
 	Male       Gender = original.Male
 )
 
-func PossibleGenderValues() []Gender {
-	return original.PossibleGenderValues()
-}
-
 type GlassesType = original.GlassesType
 
 const (
@@ -153,10 +107,6 @@ const (
 	Sunglasses      GlassesType = original.Sunglasses
 	SwimmingGoggles GlassesType = original.SwimmingGoggles
 )
-
-func PossibleGlassesTypeValues() []GlassesType {
-	return original.PossibleGlassesTypeValues()
-}
 
 type HairColorType = original.HairColorType
 
@@ -171,10 +121,6 @@ const (
 	White   HairColorType = original.White
 )
 
-func PossibleHairColorTypeValues() []HairColorType {
-	return original.PossibleHairColorTypeValues()
-}
-
 type NoiseLevel = original.NoiseLevel
 
 const (
@@ -182,10 +128,6 @@ const (
 	NoiseLevelLow    NoiseLevel = original.NoiseLevelLow
 	NoiseLevelMedium NoiseLevel = original.NoiseLevelMedium
 )
-
-func PossibleNoiseLevelValues() []NoiseLevel {
-	return original.PossibleNoiseLevelValues()
-}
 
 type TrainingStatusType = original.TrainingStatusType
 
@@ -195,10 +137,6 @@ const (
 	Running    TrainingStatusType = original.Running
 	Succeeded  TrainingStatusType = original.Succeeded
 )
-
-func PossibleTrainingStatusTypeValues() []TrainingStatusType {
-	return original.PossibleTrainingStatusTypeValues()
-}
 
 type Accessory = original.Accessory
 type APIError = original.APIError
@@ -243,13 +181,56 @@ type VerifyFaceToFaceRequest = original.VerifyFaceToFaceRequest
 type VerifyFaceToPersonRequest = original.VerifyFaceToPersonRequest
 type VerifyResult = original.VerifyResult
 type PersonGroupClient = original.PersonGroupClient
+type PersonGroupPersonClient = original.PersonGroupPersonClient
 
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func NewClient(azureRegion AzureRegions) Client {
+	return original.NewClient(azureRegion)
+}
+func NewListClient(azureRegion AzureRegions) ListClient {
+	return original.NewListClient(azureRegion)
+}
+func PossibleAccessoryTypeValues() []AccessoryType {
+	return original.PossibleAccessoryTypeValues()
+}
+func PossibleAttributeTypeValues() []AttributeType {
+	return original.PossibleAttributeTypeValues()
+}
+func PossibleAzureRegionsValues() []AzureRegions {
+	return original.PossibleAzureRegionsValues()
+}
+func PossibleBlurLevelValues() []BlurLevel {
+	return original.PossibleBlurLevelValues()
+}
+func PossibleExposureLevelValues() []ExposureLevel {
+	return original.PossibleExposureLevelValues()
+}
+func PossibleFindSimilarMatchModeValues() []FindSimilarMatchMode {
+	return original.PossibleFindSimilarMatchModeValues()
+}
+func PossibleGenderValues() []Gender {
+	return original.PossibleGenderValues()
+}
+func PossibleGlassesTypeValues() []GlassesType {
+	return original.PossibleGlassesTypeValues()
+}
+func PossibleHairColorTypeValues() []HairColorType {
+	return original.PossibleHairColorTypeValues()
+}
+func PossibleNoiseLevelValues() []NoiseLevel {
+	return original.PossibleNoiseLevelValues()
+}
+func PossibleTrainingStatusTypeValues() []TrainingStatusType {
+	return original.PossibleTrainingStatusTypeValues()
+}
 func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
 	return original.NewPersonGroupClient(azureRegion)
 }
-
-type PersonGroupPersonClient = original.PersonGroupPersonClient
-
 func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
 	return original.NewPersonGroupPersonClient(azureRegion)
 }

@@ -26,51 +26,15 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ContainerGroupsClient = original.ContainerGroupsClient
-
-func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClient(subscriptionID)
-}
-func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
-	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ContainerGroupUsageClient = original.ContainerGroupUsageClient
-
-func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClient(subscriptionID)
-}
-func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
-	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ContainerLogsClient = original.ContainerLogsClient
-
-func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
-	return original.NewContainerLogsClient(subscriptionID)
-}
-func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) ContainerLogsClient {
-	return original.NewContainerLogsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ContainerGroupNetworkProtocol = original.ContainerGroupNetworkProtocol
 
 const (
 	TCP ContainerGroupNetworkProtocol = original.TCP
 	UDP ContainerGroupNetworkProtocol = original.UDP
 )
-
-func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
-	return original.PossibleContainerGroupNetworkProtocolValues()
-}
 
 type ContainerGroupRestartPolicy = original.ContainerGroupRestartPolicy
 
@@ -80,20 +44,12 @@ const (
 	OnFailure ContainerGroupRestartPolicy = original.OnFailure
 )
 
-func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
-	return original.PossibleContainerGroupRestartPolicyValues()
-}
-
 type ContainerNetworkProtocol = original.ContainerNetworkProtocol
 
 const (
 	ContainerNetworkProtocolTCP ContainerNetworkProtocol = original.ContainerNetworkProtocolTCP
 	ContainerNetworkProtocolUDP ContainerNetworkProtocol = original.ContainerNetworkProtocolUDP
 )
-
-func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
-	return original.PossibleContainerNetworkProtocolValues()
-}
 
 type OperatingSystemTypes = original.OperatingSystemTypes
 
@@ -102,20 +58,12 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return original.PossibleOperatingSystemTypesValues()
-}
-
 type OperationsOrigin = original.OperationsOrigin
 
 const (
 	System OperationsOrigin = original.System
 	User   OperationsOrigin = original.User
 )
-
-func PossibleOperationsOriginValues() []OperationsOrigin {
-	return original.PossibleOperationsOriginValues()
-}
 
 type AzureFileVolume = original.AzureFileVolume
 type Container = original.Container
@@ -153,16 +101,53 @@ type UsageName = original.UsageName
 type Volume = original.Volume
 type VolumeMount = original.VolumeMount
 type OperationsClient = original.OperationsClient
+type StartContainerClient = original.StartContainerClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerGroupsClient(subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClient(subscriptionID)
+}
+func NewContainerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupsClient {
+	return original.NewContainerGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClient(subscriptionID)
+}
+func NewContainerGroupUsageClientWithBaseURI(baseURI string, subscriptionID string) ContainerGroupUsageClient {
+	return original.NewContainerGroupUsageClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewContainerLogsClient(subscriptionID string) ContainerLogsClient {
+	return original.NewContainerLogsClient(subscriptionID)
+}
+func NewContainerLogsClientWithBaseURI(baseURI string, subscriptionID string) ContainerLogsClient {
+	return original.NewContainerLogsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
+	return original.PossibleContainerGroupNetworkProtocolValues()
+}
+func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
+	return original.PossibleContainerGroupRestartPolicyValues()
+}
+func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
+	return original.PossibleContainerNetworkProtocolValues()
+}
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return original.PossibleOperatingSystemTypesValues()
+}
+func PossibleOperationsOriginValues() []OperationsOrigin {
+	return original.PossibleOperationsOriginValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type StartContainerClient = original.StartContainerClient
-
 func NewStartContainerClient(subscriptionID string) StartContainerClient {
 	return original.NewStartContainerClient(subscriptionID)
 }

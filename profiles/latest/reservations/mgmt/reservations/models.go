@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type AppliedScopeType = original.AppliedScopeType
 
 const (
@@ -41,20 +33,12 @@ const (
 	Single AppliedScopeType = original.Single
 )
 
-func PossibleAppliedScopeTypeValues() []AppliedScopeType {
-	return original.PossibleAppliedScopeTypeValues()
-}
-
 type AppliedScopeType1 = original.AppliedScopeType1
 
 const (
 	AppliedScopeType1Shared AppliedScopeType1 = original.AppliedScopeType1Shared
 	AppliedScopeType1Single AppliedScopeType1 = original.AppliedScopeType1Single
 )
-
-func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
-	return original.PossibleAppliedScopeType1Values()
-}
 
 type Code = original.Code
 
@@ -116,19 +100,11 @@ const (
 	UnsupportedReservationTerm                    Code = original.UnsupportedReservationTerm
 )
 
-func PossibleCodeValues() []Code {
-	return original.PossibleCodeValues()
-}
-
 type Kind = original.Kind
 
 const (
 	MicrosoftCompute Kind = original.MicrosoftCompute
 )
-
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
 
 type Location = original.Location
 
@@ -159,10 +135,6 @@ const (
 	Westus2            Location = original.Westus2
 )
 
-func PossibleLocationValues() []Location {
-	return original.PossibleLocationValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -180,10 +152,6 @@ const (
 	Split                 ProvisioningState = original.Split
 	Succeeded             ProvisioningState = original.Succeeded
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type ProvisioningState1 = original.ProvisioningState1
 
@@ -203,10 +171,6 @@ const (
 	ProvisioningState1Succeeded             ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return original.PossibleProvisioningState1Values()
-}
-
 type StatusCode = original.StatusCode
 
 const (
@@ -221,20 +185,12 @@ const (
 	StatusCodeSucceeded              StatusCode = original.StatusCodeSucceeded
 )
 
-func PossibleStatusCodeValues() []StatusCode {
-	return original.PossibleStatusCodeValues()
-}
-
 type Term = original.Term
 
 const (
 	P1Y Term = original.P1Y
 	P3Y Term = original.P3Y
 )
-
-func PossibleTermValues() []Term {
-	return original.PossibleTermValues()
-}
 
 type AppliedReservationList = original.AppliedReservationList
 type AppliedReservations = original.AppliedReservations
@@ -275,25 +231,54 @@ type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
 type OperationClient = original.OperationClient
+type OrderClient = original.OrderClient
+type Client = original.Client
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleAppliedScopeTypeValues() []AppliedScopeType {
+	return original.PossibleAppliedScopeTypeValues()
+}
+func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
+	return original.PossibleAppliedScopeType1Values()
+}
+func PossibleCodeValues() []Code {
+	return original.PossibleCodeValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleLocationValues() []Location {
+	return original.PossibleLocationValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return original.PossibleProvisioningState1Values()
+}
+func PossibleStatusCodeValues() []StatusCode {
+	return original.PossibleStatusCodeValues()
+}
+func PossibleTermValues() []Term {
+	return original.PossibleTermValues()
+}
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
 }
 func NewOperationClientWithBaseURI(baseURI string) OperationClient {
 	return original.NewOperationClientWithBaseURI(baseURI)
 }
-
-type OrderClient = original.OrderClient
-
 func NewOrderClient() OrderClient {
 	return original.NewOrderClient()
 }
 func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 	return original.NewOrderClientWithBaseURI(baseURI)
 }
-
-type Client = original.Client
-
 func NewClient() Client {
 	return original.NewClient()
 }

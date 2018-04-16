@@ -22,46 +22,19 @@ package cognitiveservices
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
 type AccountsClient = original.AccountsClient
-
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
-
-func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID)
-}
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type KeyName = original.KeyName
 
 const (
 	Key1 KeyName = original.Key1
 	Key2 KeyName = original.Key2
 )
-
-func PossibleKeyNameValues() []KeyName {
-	return original.PossibleKeyNameValues()
-}
 
 type Kind = original.Kind
 
@@ -87,10 +60,6 @@ const (
 	WebLM                  Kind = original.WebLM
 )
 
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -102,10 +71,6 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type QuotaUsageStatus = original.QuotaUsageStatus
 
 const (
@@ -115,10 +80,6 @@ const (
 	Unknown   QuotaUsageStatus = original.Unknown
 )
 
-func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
-	return original.PossibleQuotaUsageStatusValues()
-}
-
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
@@ -126,20 +87,12 @@ const (
 	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
 )
 
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
-}
-
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
 const (
 	Location ResourceSkuRestrictionsType = original.Location
 	Zone     ResourceSkuRestrictionsType = original.Zone
 )
-
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return original.PossibleResourceSkuRestrictionsTypeValues()
-}
 
 type SkuName = original.SkuName
 
@@ -157,10 +110,6 @@ const (
 	S6 SkuName = original.S6
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type SkuTier = original.SkuTier
 
 const (
@@ -168,10 +117,6 @@ const (
 	Premium  SkuTier = original.Premium
 	Standard SkuTier = original.Standard
 )
-
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
 
 type UnitType = original.UnitType
 
@@ -184,10 +129,6 @@ const (
 	Percent        UnitType = original.Percent
 	Seconds        UnitType = original.Seconds
 )
-
-func PossibleUnitTypeValues() []UnitType {
-	return original.PossibleUnitTypeValues()
-}
 
 type Account = original.Account
 type AccountCreateParameters = original.AccountCreateParameters
@@ -221,16 +162,59 @@ type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type OperationsClient = original.OperationsClient
+type ResourceSkusClient = original.ResourceSkusClient
 
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID)
+}
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleKeyNameValues() []KeyName {
+	return original.PossibleKeyNameValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
+	return original.PossibleQuotaUsageStatusValues()
+}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleUnitTypeValues() []UnitType {
+	return original.PossibleUnitTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ResourceSkusClient = original.ResourceSkusClient
-
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
 }

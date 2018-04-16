@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type AnswerType = original.AnswerType
 
 const (
@@ -47,10 +39,6 @@ const (
 	AnswerTypeWebPages         AnswerType = original.AnswerTypeWebPages
 )
 
-func PossibleAnswerTypeValues() []AnswerType {
-	return original.PossibleAnswerTypeValues()
-}
-
 type ErrorCode = original.ErrorCode
 
 const (
@@ -61,10 +49,6 @@ const (
 	RateLimitExceeded         ErrorCode = original.RateLimitExceeded
 	ServerError               ErrorCode = original.ServerError
 )
-
-func PossibleErrorCodeValues() []ErrorCode {
-	return original.PossibleErrorCodeValues()
-}
 
 type ErrorSubCode = original.ErrorSubCode
 
@@ -82,10 +66,6 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return original.PossibleErrorSubCodeValues()
-}
-
 type Freshness = original.Freshness
 
 const (
@@ -93,10 +73,6 @@ const (
 	Month Freshness = original.Month
 	Week  Freshness = original.Week
 )
-
-func PossibleFreshnessValues() []Freshness {
-	return original.PossibleFreshnessValues()
-}
 
 type SafeSearch = original.SafeSearch
 
@@ -106,10 +82,6 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
-func PossibleSafeSearchValues() []SafeSearch {
-	return original.PossibleSafeSearchValues()
-}
-
 type TextFormat = original.TextFormat
 
 const (
@@ -117,19 +89,11 @@ const (
 	Raw  TextFormat = original.Raw
 )
 
-func PossibleTextFormatValues() []TextFormat {
-	return original.PossibleTextFormatValues()
-}
-
 type Type = original.Type
 
 const (
 	TypeWebWebGrouping Type = original.TypeWebWebGrouping
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type TypeBasicResponseBase = original.TypeBasicResponseBase
 
@@ -161,10 +125,6 @@ const (
 	TypeWebPage                            TypeBasicResponseBase = original.TypeWebPage
 	TypeWebWebAnswer                       TypeBasicResponseBase = original.TypeWebWebAnswer
 )
-
-func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
-	return original.PossibleTypeBasicResponseBaseValues()
-}
 
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
@@ -212,16 +172,44 @@ type WebPage = original.WebPage
 type WebWebAnswer = original.WebWebAnswer
 type BasicWebWebGrouping = original.BasicWebWebGrouping
 type WebWebGrouping = original.WebWebGrouping
+type WebClient = original.WebClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleAnswerTypeValues() []AnswerType {
+	return original.PossibleAnswerTypeValues()
+}
+func PossibleErrorCodeValues() []ErrorCode {
+	return original.PossibleErrorCodeValues()
+}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return original.PossibleErrorSubCodeValues()
+}
+func PossibleFreshnessValues() []Freshness {
+	return original.PossibleFreshnessValues()
+}
+func PossibleSafeSearchValues() []SafeSearch {
+	return original.PossibleSafeSearchValues()
+}
+func PossibleTextFormatValues() []TextFormat {
+	return original.PossibleTextFormatValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return original.PossibleTypeBasicResponseBaseValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
 }
-
-type WebClient = original.WebClient
-
 func NewWebClient() WebClient {
 	return original.NewWebClient()
 }

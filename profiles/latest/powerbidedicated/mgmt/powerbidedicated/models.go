@@ -23,26 +23,11 @@ import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgm
 
 type CapacitiesClient = original.CapacitiesClient
 
-func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClient(subscriptionID)
-}
-func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
-	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -60,19 +45,11 @@ const (
 	Updating     ProvisioningState = original.Updating
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type SkuTier = original.SkuTier
 
 const (
 	PBIEAzure SkuTier = original.PBIEAzure
 )
-
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
 
 type State = original.State
 
@@ -90,10 +67,6 @@ const (
 	StateSuspending   State = original.StateSuspending
 	StateUpdating     State = original.StateUpdating
 )
-
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 
 type CapacitiesCreateFuture = original.CapacitiesCreateFuture
 type CapacitiesDeleteFuture = original.CapacitiesDeleteFuture
@@ -119,6 +92,27 @@ type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistin
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
 type OperationsClient = original.OperationsClient
 
+func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClient(subscriptionID)
+}
+func NewCapacitiesClientWithBaseURI(baseURI string, subscriptionID string) CapacitiesClient {
+	return original.NewCapacitiesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }

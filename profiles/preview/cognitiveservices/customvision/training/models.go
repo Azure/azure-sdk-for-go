@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(aPIKey string) BaseClient {
-	return original.New(aPIKey)
-}
-func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
-	return original.NewWithBaseURI(baseURI, aPIKey)
-}
-
 type OrderBy = original.OrderBy
 
 const (
@@ -42,20 +34,12 @@ const (
 	Suggested OrderBy = original.Suggested
 )
 
-func PossibleOrderByValues() []OrderBy {
-	return original.PossibleOrderByValues()
-}
-
 type Platform = original.Platform
 
 const (
 	CoreML     Platform = original.CoreML
 	TensorFlow Platform = original.TensorFlow
 )
-
-func PossiblePlatformValues() []Platform {
-	return original.PossiblePlatformValues()
-}
 
 type Status = original.Status
 
@@ -71,10 +55,6 @@ const (
 	OKDuplicate         Status = original.OKDuplicate
 )
 
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
-}
-
 type Status1 = original.Status1
 
 const (
@@ -82,10 +62,6 @@ const (
 	Exporting Status1 = original.Exporting
 	Failed    Status1 = original.Failed
 )
-
-func PossibleStatus1Values() []Status1 {
-	return original.PossibleStatus1Values()
-}
 
 type Account = original.Account
 type AccountQuota = original.AccountQuota
@@ -129,6 +105,24 @@ type Tag = original.Tag
 type TagList = original.TagList
 type TagPerformance = original.TagPerformance
 
+func New(aPIKey string) BaseClient {
+	return original.New(aPIKey)
+}
+func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
+	return original.NewWithBaseURI(baseURI, aPIKey)
+}
+func PossibleOrderByValues() []OrderBy {
+	return original.PossibleOrderByValues()
+}
+func PossiblePlatformValues() []Platform {
+	return original.PossiblePlatformValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleStatus1Values() []Status1 {
+	return original.PossibleStatus1Values()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }

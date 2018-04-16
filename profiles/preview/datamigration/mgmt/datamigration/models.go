@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AuthenticationType = original.AuthenticationType
 
 const (
@@ -43,10 +35,6 @@ const (
 	SQLAuthentication         AuthenticationType = original.SQLAuthentication
 	WindowsAuthentication     AuthenticationType = original.WindowsAuthentication
 )
-
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return original.PossibleAuthenticationTypeValues()
-}
 
 type DatabaseCompatLevel = original.DatabaseCompatLevel
 
@@ -60,10 +48,6 @@ const (
 	CompatLevel90  DatabaseCompatLevel = original.CompatLevel90
 )
 
-func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
-	return original.PossibleDatabaseCompatLevelValues()
-}
-
 type DatabaseFileType = original.DatabaseFileType
 
 const (
@@ -73,10 +57,6 @@ const (
 	NotSupported DatabaseFileType = original.NotSupported
 	Rows         DatabaseFileType = original.Rows
 )
-
-func PossibleDatabaseFileTypeValues() []DatabaseFileType {
-	return original.PossibleDatabaseFileTypeValues()
-}
 
 type DatabaseMigrationStage = original.DatabaseMigrationStage
 
@@ -88,10 +68,6 @@ const (
 	DatabaseMigrationStageNone       DatabaseMigrationStage = original.DatabaseMigrationStageNone
 	DatabaseMigrationStageRestore    DatabaseMigrationStage = original.DatabaseMigrationStageRestore
 )
-
-func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
-	return original.PossibleDatabaseMigrationStageValues()
-}
 
 type DatabaseState = original.DatabaseState
 
@@ -107,10 +83,6 @@ const (
 	Suspect          DatabaseState = original.Suspect
 )
 
-func PossibleDatabaseStateValues() []DatabaseState {
-	return original.PossibleDatabaseStateValues()
-}
-
 type ErrorType = original.ErrorType
 
 const (
@@ -118,10 +90,6 @@ const (
 	ErrorTypeError   ErrorType = original.ErrorTypeError
 	ErrorTypeWarning ErrorType = original.ErrorTypeWarning
 )
-
-func PossibleErrorTypeValues() []ErrorType {
-	return original.PossibleErrorTypeValues()
-}
 
 type MigrationState = original.MigrationState
 
@@ -134,10 +102,6 @@ const (
 	MigrationStateStopped    MigrationState = original.MigrationStateStopped
 	MigrationStateWarning    MigrationState = original.MigrationStateWarning
 )
-
-func PossibleMigrationStateValues() []MigrationState {
-	return original.PossibleMigrationStateValues()
-}
 
 type MigrationStatus = original.MigrationStatus
 
@@ -154,20 +118,12 @@ const (
 	MigrationStatusStopped                 MigrationStatus = original.MigrationStatusStopped
 )
 
-func PossibleMigrationStatusValues() []MigrationStatus {
-	return original.PossibleMigrationStatusValues()
-}
-
 type NameCheckFailureReason = original.NameCheckFailureReason
 
 const (
 	AlreadyExists NameCheckFailureReason = original.AlreadyExists
 	Invalid       NameCheckFailureReason = original.Invalid
 )
-
-func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
-	return original.PossibleNameCheckFailureReasonValues()
-}
 
 type ObjectType = original.ObjectType
 
@@ -179,20 +135,12 @@ const (
 	View             ObjectType = original.View
 )
 
-func PossibleObjectTypeValues() []ObjectType {
-	return original.PossibleObjectTypeValues()
-}
-
 type ProjectProvisioningState = original.ProjectProvisioningState
 
 const (
 	Deleting  ProjectProvisioningState = original.Deleting
 	Succeeded ProjectProvisioningState = original.Succeeded
 )
-
-func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
-	return original.PossibleProjectProvisioningStateValues()
-}
 
 type ProjectSourcePlatform = original.ProjectSourcePlatform
 
@@ -201,20 +149,12 @@ const (
 	Unknown ProjectSourcePlatform = original.Unknown
 )
 
-func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
-	return original.PossibleProjectSourcePlatformValues()
-}
-
 type ProjectTargetPlatform = original.ProjectTargetPlatform
 
 const (
 	ProjectTargetPlatformSQLDB   ProjectTargetPlatform = original.ProjectTargetPlatformSQLDB
 	ProjectTargetPlatformUnknown ProjectTargetPlatform = original.ProjectTargetPlatformUnknown
 )
-
-func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
-	return original.PossibleProjectTargetPlatformValues()
-}
 
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
@@ -224,10 +164,6 @@ const (
 	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
-func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
-	return original.PossibleResourceSkuCapacityScaleTypeValues()
-}
-
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
@@ -235,19 +171,11 @@ const (
 	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
 )
 
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
-}
-
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
 const (
 	Location ResourceSkuRestrictionsType = original.Location
 )
-
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return original.PossibleResourceSkuRestrictionsTypeValues()
-}
 
 type ResultType = original.ResultType
 
@@ -259,10 +187,6 @@ const (
 	ResultTypeTableLevelOutput                ResultType = original.ResultTypeTableLevelOutput
 )
 
-func PossibleResultTypeValues() []ResultType {
-	return original.PossibleResultTypeValues()
-}
-
 type ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutput
 
 const (
@@ -271,20 +195,12 @@ const (
 	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput                    ResultTypeBasicConnectToSourceSQLServerTaskOutput = original.ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput
 )
 
-func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
-	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
-}
-
 type ServerLevelPermissionsGroup = original.ServerLevelPermissionsGroup
 
 const (
 	Default                         ServerLevelPermissionsGroup = original.Default
 	MigrationFromSQLServerToAzureDB ServerLevelPermissionsGroup = original.MigrationFromSQLServerToAzureDB
 )
-
-func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
-	return original.PossibleServerLevelPermissionsGroupValues()
-}
 
 type ServiceProvisioningState = original.ServiceProvisioningState
 
@@ -301,10 +217,6 @@ const (
 	ServiceProvisioningStateSucceeded     ServiceProvisioningState = original.ServiceProvisioningStateSucceeded
 )
 
-func PossibleServiceProvisioningStateValues() []ServiceProvisioningState {
-	return original.PossibleServiceProvisioningStateValues()
-}
-
 type ServiceScalability = original.ServiceScalability
 
 const (
@@ -313,10 +225,6 @@ const (
 	ServiceScalabilityNone      ServiceScalability = original.ServiceScalabilityNone
 )
 
-func PossibleServiceScalabilityValues() []ServiceScalability {
-	return original.PossibleServiceScalabilityValues()
-}
-
 type Severity = original.Severity
 
 const (
@@ -324,10 +232,6 @@ const (
 	SeverityMessage Severity = original.SeverityMessage
 	SeverityWarning Severity = original.SeverityWarning
 )
-
-func PossibleSeverityValues() []Severity {
-	return original.PossibleSeverityValues()
-}
 
 type TaskState = original.TaskState
 
@@ -342,10 +246,6 @@ const (
 	TaskStateUnknown               TaskState = original.TaskStateUnknown
 )
 
-func PossibleTaskStateValues() []TaskState {
-	return original.PossibleTaskStateValues()
-}
-
 type TaskType = original.TaskType
 
 const (
@@ -356,20 +256,12 @@ const (
 	TaskTypeUnknown                  TaskType = original.TaskTypeUnknown
 )
 
-func PossibleTaskTypeValues() []TaskType {
-	return original.PossibleTaskTypeValues()
-}
-
 type Type = original.Type
 
 const (
 	TypeSQLConnectionInfo Type = original.TypeSQLConnectionInfo
 	TypeUnknown           Type = original.TypeUnknown
 )
-
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
 
 type UpdateActionType = original.UpdateActionType
 
@@ -378,10 +270,6 @@ const (
 	ChangedOnTarget UpdateActionType = original.ChangedOnTarget
 	DeletedOnTarget UpdateActionType = original.DeletedOnTarget
 )
-
-func PossibleUpdateActionTypeValues() []UpdateActionType {
-	return original.PossibleUpdateActionTypeValues()
-}
 
 type ValidationStatus = original.ValidationStatus
 
@@ -395,10 +283,6 @@ const (
 	ValidationStatusNotStarted          ValidationStatus = original.ValidationStatusNotStarted
 	ValidationStatusStopped             ValidationStatus = original.ValidationStatusStopped
 )
-
-func PossibleValidationStatusValues() []ValidationStatus {
-	return original.PossibleValidationStatusValues()
-}
 
 type APIError = original.APIError
 type AvailableServiceSku = original.AvailableServiceSku
@@ -504,52 +388,129 @@ type TrackedResource = original.TrackedResource
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics
 type OperationsClient = original.OperationsClient
+type ProjectsClient = original.ProjectsClient
+type ResourceSkusClient = original.ResourceSkusClient
+type ServicesClient = original.ServicesClient
+type TasksClient = original.TasksClient
+type UsagesClient = original.UsagesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
+	return original.PossibleDatabaseCompatLevelValues()
+}
+func PossibleDatabaseFileTypeValues() []DatabaseFileType {
+	return original.PossibleDatabaseFileTypeValues()
+}
+func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
+	return original.PossibleDatabaseMigrationStageValues()
+}
+func PossibleDatabaseStateValues() []DatabaseState {
+	return original.PossibleDatabaseStateValues()
+}
+func PossibleErrorTypeValues() []ErrorType {
+	return original.PossibleErrorTypeValues()
+}
+func PossibleMigrationStateValues() []MigrationState {
+	return original.PossibleMigrationStateValues()
+}
+func PossibleMigrationStatusValues() []MigrationStatus {
+	return original.PossibleMigrationStatusValues()
+}
+func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
+	return original.PossibleNameCheckFailureReasonValues()
+}
+func PossibleObjectTypeValues() []ObjectType {
+	return original.PossibleObjectTypeValues()
+}
+func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
+	return original.PossibleProjectProvisioningStateValues()
+}
+func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
+	return original.PossibleProjectSourcePlatformValues()
+}
+func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
+	return original.PossibleProjectTargetPlatformValues()
+}
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return original.PossibleResourceSkuCapacityScaleTypeValues()
+}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
+func PossibleResultTypeValues() []ResultType {
+	return original.PossibleResultTypeValues()
+}
+func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
+	return original.PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues()
+}
+func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
+	return original.PossibleServerLevelPermissionsGroupValues()
+}
+func PossibleServiceProvisioningStateValues() []ServiceProvisioningState {
+	return original.PossibleServiceProvisioningStateValues()
+}
+func PossibleServiceScalabilityValues() []ServiceScalability {
+	return original.PossibleServiceScalabilityValues()
+}
+func PossibleSeverityValues() []Severity {
+	return original.PossibleSeverityValues()
+}
+func PossibleTaskStateValues() []TaskState {
+	return original.PossibleTaskStateValues()
+}
+func PossibleTaskTypeValues() []TaskType {
+	return original.PossibleTaskTypeValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleUpdateActionTypeValues() []UpdateActionType {
+	return original.PossibleUpdateActionTypeValues()
+}
+func PossibleValidationStatusValues() []ValidationStatus {
+	return original.PossibleValidationStatusValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ProjectsClient = original.ProjectsClient
-
 func NewProjectsClient(subscriptionID string) ProjectsClient {
 	return original.NewProjectsClient(subscriptionID)
 }
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) ProjectsClient {
 	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ResourceSkusClient = original.ResourceSkusClient
-
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
 }
 func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ServicesClient = original.ServicesClient
-
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
 }
 func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TasksClient = original.TasksClient
-
 func NewTasksClient(subscriptionID string) TasksClient {
 	return original.NewTasksClient(subscriptionID)
 }
 func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClient {
 	return original.NewTasksClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsagesClient = original.UsagesClient
-
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }

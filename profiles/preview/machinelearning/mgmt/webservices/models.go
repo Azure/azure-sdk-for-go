@@ -26,24 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AssetType = original.AssetType
 
 const (
 	AssetTypeModule   AssetType = original.AssetTypeModule
 	AssetTypeResource AssetType = original.AssetTypeResource
 )
-
-func PossibleAssetTypeValues() []AssetType {
-	return original.PossibleAssetTypeValues()
-}
 
 type ColumnFormat = original.ColumnFormat
 
@@ -67,10 +55,6 @@ const (
 	Uint8          ColumnFormat = original.Uint8
 )
 
-func PossibleColumnFormatValues() []ColumnFormat {
-	return original.PossibleColumnFormatValues()
-}
-
 type ColumnType = original.ColumnType
 
 const (
@@ -80,10 +64,6 @@ const (
 	String  ColumnType = original.String
 )
 
-func PossibleColumnTypeValues() []ColumnType {
-	return original.PossibleColumnTypeValues()
-}
-
 type DiagnosticsLevel = original.DiagnosticsLevel
 
 const (
@@ -92,19 +72,11 @@ const (
 	None  DiagnosticsLevel = original.None
 )
 
-func PossibleDiagnosticsLevelValues() []DiagnosticsLevel {
-	return original.PossibleDiagnosticsLevelValues()
-}
-
 type InputPortType = original.InputPortType
 
 const (
 	Dataset InputPortType = original.Dataset
 )
-
-func PossibleInputPortTypeValues() []InputPortType {
-	return original.PossibleInputPortTypeValues()
-}
 
 type OutputPortType = original.OutputPortType
 
@@ -112,20 +84,12 @@ const (
 	OutputPortTypeDataset OutputPortType = original.OutputPortTypeDataset
 )
 
-func PossibleOutputPortTypeValues() []OutputPortType {
-	return original.PossibleOutputPortTypeValues()
-}
-
 type PackageType = original.PackageType
 
 const (
 	PackageTypeGraph                PackageType = original.PackageTypeGraph
 	PackageTypeWebServiceProperties PackageType = original.PackageTypeWebServiceProperties
 )
-
-func PossiblePackageTypeValues() []PackageType {
-	return original.PossiblePackageTypeValues()
-}
 
 type ParameterType = original.ParameterType
 
@@ -144,10 +108,6 @@ const (
 	ParameterTypeString          ParameterType = original.ParameterTypeString
 )
 
-func PossibleParameterTypeValues() []ParameterType {
-	return original.PossibleParameterTypeValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -156,10 +116,6 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 	Unknown      ProvisioningState = original.Unknown
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type AssetItem = original.AssetItem
 type AsyncOperationErrorInfo = original.AsyncOperationErrorInfo
@@ -201,7 +157,41 @@ type StorageAccount = original.StorageAccount
 type TableSpecification = original.TableSpecification
 type WebService = original.WebService
 type OperationsClient = original.OperationsClient
+type Client = original.Client
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAssetTypeValues() []AssetType {
+	return original.PossibleAssetTypeValues()
+}
+func PossibleColumnFormatValues() []ColumnFormat {
+	return original.PossibleColumnFormatValues()
+}
+func PossibleColumnTypeValues() []ColumnType {
+	return original.PossibleColumnTypeValues()
+}
+func PossibleDiagnosticsLevelValues() []DiagnosticsLevel {
+	return original.PossibleDiagnosticsLevelValues()
+}
+func PossibleInputPortTypeValues() []InputPortType {
+	return original.PossibleInputPortTypeValues()
+}
+func PossibleOutputPortTypeValues() []OutputPortType {
+	return original.PossibleOutputPortTypeValues()
+}
+func PossiblePackageTypeValues() []PackageType {
+	return original.PossiblePackageTypeValues()
+}
+func PossibleParameterTypeValues() []ParameterType {
+	return original.PossibleParameterTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -214,9 +204,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type Client = original.Client
-
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }

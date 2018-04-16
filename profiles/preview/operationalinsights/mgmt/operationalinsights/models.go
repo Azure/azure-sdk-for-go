@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DataSourcesClient = original.DataSourcesClient
-
-func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClient(subscriptionID)
-}
-func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type LinkedServicesClient = original.LinkedServicesClient
-
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
-}
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DataSourceKind = original.DataSourceKind
 
 const (
@@ -72,10 +48,6 @@ const (
 	WindowsPerformanceCounter     DataSourceKind = original.WindowsPerformanceCounter
 )
 
-func PossibleDataSourceKindValues() []DataSourceKind {
-	return original.PossibleDataSourceKindValues()
-}
-
 type EntityStatus = original.EntityStatus
 
 const (
@@ -86,10 +58,6 @@ const (
 	ProvisioningAccount EntityStatus = original.ProvisioningAccount
 	Succeeded           EntityStatus = original.Succeeded
 )
-
-func PossibleEntityStatusValues() []EntityStatus {
-	return original.PossibleEntityStatusValues()
-}
 
 type SkuNameEnum = original.SkuNameEnum
 
@@ -102,10 +70,6 @@ const (
 	Standard   SkuNameEnum = original.Standard
 	Unlimited  SkuNameEnum = original.Unlimited
 )
-
-func PossibleSkuNameEnumValues() []SkuNameEnum {
-	return original.PossibleSkuNameEnumValues()
-}
 
 type DataSource = original.DataSource
 type DataSourceFilter = original.DataSourceFilter
@@ -137,7 +101,35 @@ type WorkspaceListUsagesResult = original.WorkspaceListUsagesResult
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type OperationsClient = original.OperationsClient
+type WorkspacesClient = original.WorkspacesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
+	return original.NewDataSourcesClient(subscriptionID)
+}
+func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
+	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDataSourceKindValues() []DataSourceKind {
+	return original.PossibleDataSourceKindValues()
+}
+func PossibleEntityStatusValues() []EntityStatus {
+	return original.PossibleEntityStatusValues()
+}
+func PossibleSkuNameEnumValues() []SkuNameEnum {
+	return original.PossibleSkuNameEnumValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -150,9 +142,6 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type WorkspacesClient = original.WorkspacesClient
-
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
 }

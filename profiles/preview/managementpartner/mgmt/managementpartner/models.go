@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type Code = original.Code
 
 const (
@@ -42,20 +34,12 @@ const (
 	NotFound   Code = original.NotFound
 )
 
-func PossibleCodeValues() []Code {
-	return original.PossibleCodeValues()
-}
-
 type State = original.State
 
 const (
 	Active  State = original.Active
 	Deleted State = original.Deleted
 )
-
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 
 type Error = original.Error
 type ExtendedErrorInfo = original.ExtendedErrorInfo
@@ -67,16 +51,26 @@ type OperationResponse = original.OperationResponse
 type PartnerProperties = original.PartnerProperties
 type PartnerResponse = original.PartnerResponse
 type OperationClient = original.OperationClient
+type PartnerClient = original.PartnerClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleCodeValues() []Code {
+	return original.PossibleCodeValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
 }
 func NewOperationClientWithBaseURI(baseURI string) OperationClient {
 	return original.NewOperationClientWithBaseURI(baseURI)
 }
-
-type PartnerClient = original.PartnerClient
-
 func NewPartnerClient() PartnerClient {
 	return original.NewPartnerClient()
 }

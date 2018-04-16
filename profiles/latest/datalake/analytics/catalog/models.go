@@ -23,23 +23,11 @@ import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2
 
 type Client = original.Client
 
-func NewClient() Client {
-	return original.NewClient()
-}
-
 const (
 	DefaultAdlaCatalogDNSSuffix = original.DefaultAdlaCatalogDNSSuffix
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
-
 type ACLType = original.ACLType
 
 const (
@@ -50,10 +38,6 @@ const (
 	UserObj  ACLType = original.UserObj
 )
 
-func PossibleACLTypeValues() []ACLType {
-	return original.PossibleACLTypeValues()
-}
-
 type FileType = original.FileType
 
 const (
@@ -61,10 +45,6 @@ const (
 	Nodeploy FileType = original.Nodeploy
 	Resource FileType = original.Resource
 )
-
-func PossibleFileTypeValues() []FileType {
-	return original.PossibleFileTypeValues()
-}
 
 type PermissionType = original.PermissionType
 
@@ -77,10 +57,6 @@ const (
 	Use    PermissionType = original.Use
 	Write  PermissionType = original.Write
 )
-
-func PossiblePermissionTypeValues() []PermissionType {
-	return original.PossiblePermissionTypeValues()
-}
 
 type ACL = original.ACL
 type ACLCreateOrUpdateParameters = original.ACLCreateOrUpdateParameters
@@ -163,6 +139,24 @@ type USQLViewList = original.USQLViewList
 type USQLViewListIterator = original.USQLViewListIterator
 type USQLViewListPage = original.USQLViewListPage
 
+func NewClient() Client {
+	return original.NewClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
+}
+func PossibleACLTypeValues() []ACLType {
+	return original.PossibleACLTypeValues()
+}
+func PossibleFileTypeValues() []FileType {
+	return original.PossibleFileTypeValues()
+}
+func PossiblePermissionTypeValues() []PermissionType {
+	return original.PossiblePermissionTypeValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

@@ -26,32 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type GatewayClient = original.GatewayClient
-
-func NewGatewayClient(subscriptionID string) GatewayClient {
-	return original.NewGatewayClient(subscriptionID)
-}
-func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
-	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type CredentialDataFormat = original.CredentialDataFormat
 
 const (
 	RsaEncrypted CredentialDataFormat = original.RsaEncrypted
 )
-
-func PossibleCredentialDataFormatValues() []CredentialDataFormat {
-	return original.PossibleCredentialDataFormatValues()
-}
 
 type GatewayExpandOption = original.GatewayExpandOption
 
@@ -60,19 +40,11 @@ const (
 	Status   GatewayExpandOption = original.Status
 )
 
-func PossibleGatewayExpandOptionValues() []GatewayExpandOption {
-	return original.PossibleGatewayExpandOptionValues()
-}
-
 type PowerShellExpandOption = original.PowerShellExpandOption
 
 const (
 	Output PowerShellExpandOption = original.Output
 )
-
-func PossiblePowerShellExpandOptionValues() []PowerShellExpandOption {
-	return original.PossiblePowerShellExpandOptionValues()
-}
 
 type PromptFieldType = original.PromptFieldType
 
@@ -82,10 +54,6 @@ const (
 	String       PromptFieldType = original.String
 )
 
-func PossiblePromptFieldTypeValues() []PromptFieldType {
-	return original.PossiblePromptFieldTypeValues()
-}
-
 type RetentionPeriod = original.RetentionPeriod
 
 const (
@@ -93,20 +61,12 @@ const (
 	Session    RetentionPeriod = original.Session
 )
 
-func PossibleRetentionPeriodValues() []RetentionPeriod {
-	return original.PossibleRetentionPeriodValues()
-}
-
 type UpgradeMode = original.UpgradeMode
 
 const (
 	Automatic UpgradeMode = original.Automatic
 	Manual    UpgradeMode = original.Manual
 )
-
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return original.PossibleUpgradeModeValues()
-}
 
 type EncryptionJwkResource = original.EncryptionJwkResource
 type Error = original.Error
@@ -157,25 +117,51 @@ type SessionResource = original.SessionResource
 type SessionResourceProperties = original.SessionResourceProperties
 type VersionServermanagement = original.VersionServermanagement
 type NodeClient = original.NodeClient
+type PowerShellClient = original.PowerShellClient
+type SessionClient = original.SessionClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewGatewayClient(subscriptionID string) GatewayClient {
+	return original.NewGatewayClient(subscriptionID)
+}
+func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
+	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCredentialDataFormatValues() []CredentialDataFormat {
+	return original.PossibleCredentialDataFormatValues()
+}
+func PossibleGatewayExpandOptionValues() []GatewayExpandOption {
+	return original.PossibleGatewayExpandOptionValues()
+}
+func PossiblePowerShellExpandOptionValues() []PowerShellExpandOption {
+	return original.PossiblePowerShellExpandOptionValues()
+}
+func PossiblePromptFieldTypeValues() []PromptFieldType {
+	return original.PossiblePromptFieldTypeValues()
+}
+func PossibleRetentionPeriodValues() []RetentionPeriod {
+	return original.PossibleRetentionPeriodValues()
+}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return original.PossibleUpgradeModeValues()
+}
 func NewNodeClient(subscriptionID string) NodeClient {
 	return original.NewNodeClient(subscriptionID)
 }
 func NewNodeClientWithBaseURI(baseURI string, subscriptionID string) NodeClient {
 	return original.NewNodeClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type PowerShellClient = original.PowerShellClient
-
 func NewPowerShellClient(subscriptionID string) PowerShellClient {
 	return original.NewPowerShellClient(subscriptionID)
 }
 func NewPowerShellClientWithBaseURI(baseURI string, subscriptionID string) PowerShellClient {
 	return original.NewPowerShellClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SessionClient = original.SessionClient
-
 func NewSessionClient(subscriptionID string) SessionClient {
 	return original.NewSessionClient(subscriptionID)
 }

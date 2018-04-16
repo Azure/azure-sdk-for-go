@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type AccessKeyName = original.AccessKeyName
 
 const (
@@ -41,20 +33,12 @@ const (
 	Key2 AccessKeyName = original.Key2
 )
 
-func PossibleAccessKeyNameValues() []AccessKeyName {
-	return original.PossibleAccessKeyNameValues()
-}
-
 type CheckNameReason = original.CheckNameReason
 
 const (
 	Invalid     CheckNameReason = original.Invalid
 	Unavailable CheckNameReason = original.Unavailable
 )
-
-func PossibleCheckNameReasonValues() []CheckNameReason {
-	return original.PossibleCheckNameReasonValues()
-}
 
 type AzureSku = original.AzureSku
 type CheckNameRequest = original.CheckNameRequest
@@ -74,25 +58,33 @@ type WorkspaceCollectionAccessKeys = original.WorkspaceCollectionAccessKeys
 type WorkspaceCollectionList = original.WorkspaceCollectionList
 type WorkspaceCollectionsDeleteFuture = original.WorkspaceCollectionsDeleteFuture
 type WorkspaceList = original.WorkspaceList
+type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
+type WorkspacesClient = original.WorkspacesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAccessKeyNameValues() []AccessKeyName {
+	return original.PossibleAccessKeyNameValues()
+}
+func PossibleCheckNameReasonValues() []CheckNameReason {
+	return original.PossibleCheckNameReasonValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
 }
-
-type WorkspaceCollectionsClient = original.WorkspaceCollectionsClient
-
 func NewWorkspaceCollectionsClient(subscriptionID string) WorkspaceCollectionsClient {
 	return original.NewWorkspaceCollectionsClient(subscriptionID)
 }
 func NewWorkspaceCollectionsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceCollectionsClient {
 	return original.NewWorkspaceCollectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type WorkspacesClient = original.WorkspacesClient
-
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
 }

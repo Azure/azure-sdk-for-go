@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type OneTimeCharge = original.OneTimeCharge
 
 const (
@@ -42,10 +34,6 @@ const (
 	OnReenabled OneTimeCharge = original.OnReenabled
 )
 
-func PossibleOneTimeChargeValues() []OneTimeCharge {
-	return original.PossibleOneTimeChargeValues()
-}
-
 type PlanTypeName = original.PlanTypeName
 
 const (
@@ -53,10 +41,6 @@ const (
 	Essential PlanTypeName = original.Essential
 	Standard  PlanTypeName = original.Standard
 )
-
-func PossiblePlanTypeNameValues() []PlanTypeName {
-	return original.PossiblePlanTypeNameValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -70,10 +54,6 @@ const (
 	Upgrading   ProvisioningState = original.Upgrading
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type SupportPlanType = original.SupportPlanType
 
 const (
@@ -81,10 +61,6 @@ const (
 	SupportPlanTypeEssential SupportPlanType = original.SupportPlanTypeEssential
 	SupportPlanTypeStandard  SupportPlanType = original.SupportPlanTypeStandard
 )
-
-func PossibleSupportPlanTypeValues() []SupportPlanType {
-	return original.PossibleSupportPlanTypeValues()
-}
 
 type CanonicalSupportPlanInfoDefinition = original.CanonicalSupportPlanInfoDefinition
 type CanonicalSupportPlanProperties = original.CanonicalSupportPlanProperties
@@ -97,16 +73,32 @@ type OperationsDisplayDefinition = original.OperationsDisplayDefinition
 type SupportPlanTypesCreateOrUpdateFuture = original.SupportPlanTypesCreateOrUpdateFuture
 type SupportPlanTypesDeleteFuture = original.SupportPlanTypesDeleteFuture
 type OperationsClient = original.OperationsClient
+type SupportPlanTypesClient = original.SupportPlanTypesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleOneTimeChargeValues() []OneTimeCharge {
+	return original.PossibleOneTimeChargeValues()
+}
+func PossiblePlanTypeNameValues() []PlanTypeName {
+	return original.PossiblePlanTypeNameValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSupportPlanTypeValues() []SupportPlanType {
+	return original.PossibleSupportPlanTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type SupportPlanTypesClient = original.SupportPlanTypesClient
-
 func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
 	return original.NewSupportPlanTypesClient(subscriptionID)
 }

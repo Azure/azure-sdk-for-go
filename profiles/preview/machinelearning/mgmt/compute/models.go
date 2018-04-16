@@ -26,23 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type MachineLearningComputeClient = original.MachineLearningComputeClient
-
-func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClient(subscriptionID)
-}
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type AgentVMSizeTypes = original.AgentVMSizeTypes
 
 const (
@@ -95,20 +79,12 @@ const (
 	StandardGS5   AgentVMSizeTypes = original.StandardGS5
 )
 
-func PossibleAgentVMSizeTypesValues() []AgentVMSizeTypes {
-	return original.PossibleAgentVMSizeTypesValues()
-}
-
 type ClusterType = original.ClusterType
 
 const (
 	ACS   ClusterType = original.ACS
 	Local ClusterType = original.Local
 )
-
-func PossibleClusterTypeValues() []ClusterType {
-	return original.PossibleClusterTypeValues()
-}
 
 type OperationStatus = original.OperationStatus
 
@@ -122,10 +98,6 @@ const (
 	Updating  OperationStatus = original.Updating
 )
 
-func PossibleOperationStatusValues() []OperationStatus {
-	return original.PossibleOperationStatusValues()
-}
-
 type OrchestratorType = original.OrchestratorType
 
 const (
@@ -133,20 +105,12 @@ const (
 	None       OrchestratorType = original.None
 )
 
-func PossibleOrchestratorTypeValues() []OrchestratorType {
-	return original.PossibleOrchestratorTypeValues()
-}
-
 type Status = original.Status
 
 const (
 	Disabled Status = original.Disabled
 	Enabled  Status = original.Enabled
 )
-
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
-}
 
 type SystemServiceType = original.SystemServiceType
 
@@ -156,20 +120,12 @@ const (
 	SystemServiceTypeScoringFrontEnd SystemServiceType = original.SystemServiceTypeScoringFrontEnd
 )
 
-func PossibleSystemServiceTypeValues() []SystemServiceType {
-	return original.PossibleSystemServiceTypeValues()
-}
-
 type UpdatesAvailable = original.UpdatesAvailable
 
 const (
 	No  UpdatesAvailable = original.No
 	Yes UpdatesAvailable = original.Yes
 )
-
-func PossibleUpdatesAvailableValues() []UpdatesAvailable {
-	return original.PossibleUpdatesAvailableValues()
-}
 
 type AcsClusterProperties = original.AcsClusterProperties
 type AppInsightsCredentials = original.AppInsightsCredentials
@@ -207,6 +163,39 @@ type SystemService = original.SystemService
 type UpdateSystemServicesResponse = original.UpdateSystemServicesResponse
 type OperationalizationClustersClient = original.OperationalizationClustersClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClient(subscriptionID)
+}
+func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAgentVMSizeTypesValues() []AgentVMSizeTypes {
+	return original.PossibleAgentVMSizeTypesValues()
+}
+func PossibleClusterTypeValues() []ClusterType {
+	return original.PossibleClusterTypeValues()
+}
+func PossibleOperationStatusValues() []OperationStatus {
+	return original.PossibleOperationStatusValues()
+}
+func PossibleOrchestratorTypeValues() []OrchestratorType {
+	return original.PossibleOrchestratorTypeValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
+func PossibleSystemServiceTypeValues() []SystemServiceType {
+	return original.PossibleSystemServiceTypeValues()
+}
+func PossibleUpdatesAvailableValues() []UpdatesAvailable {
+	return original.PossibleUpdatesAvailableValues()
+}
 func NewOperationalizationClustersClient(subscriptionID string) OperationalizationClustersClient {
 	return original.NewOperationalizationClustersClient(subscriptionID)
 }

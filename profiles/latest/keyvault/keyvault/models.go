@@ -204,12 +204,6 @@ type SubjectAlternativeNames = original.SubjectAlternativeNames
 type Trigger = original.Trigger
 type X509CertificateProperties = original.X509CertificateProperties
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
 func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
 }
@@ -239,4 +233,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
 }

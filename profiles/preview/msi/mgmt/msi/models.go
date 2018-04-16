@@ -21,11 +21,6 @@ package msi
 
 import original "github.com/Azure/azure-sdk-for-go/services/msi/mgmt/2015-08-31-preview/msi"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type UserAssignedIdentities = original.UserAssignedIdentities
 
 const (
@@ -44,17 +39,26 @@ type OperationListResultPage = original.OperationListResultPage
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
 type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListResultPage
-type OperationsClient = original.OperationsClient
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
-	return original.PossibleUserAssignedIdentitiesValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -62,15 +66,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleUserAssignedIdentitiesValues() []UserAssignedIdentities {
+	return original.PossibleUserAssignedIdentitiesValues()
+}
 func NewUserAssignedIdentitiesClient(subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClient(subscriptionID)
 }
 func NewUserAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID string) UserAssignedIdentitiesClient {
 	return original.NewUserAssignedIdentitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

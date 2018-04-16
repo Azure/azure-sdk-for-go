@@ -21,11 +21,15 @@ package azurestack
 
 import original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
+type ProductsClient = original.ProductsClient
+type RegistrationsClient = original.RegistrationsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
 type CustomerSubscriptionsClient = original.CustomerSubscriptionsClient
 type ComputeRole = original.ComputeRole
 
@@ -86,15 +90,24 @@ type Resource = original.Resource
 type URI = original.URI
 type VirtualMachineExtensionProductProperties = original.VirtualMachineExtensionProductProperties
 type VirtualMachineProductProperties = original.VirtualMachineProductProperties
-type OperationsClient = original.OperationsClient
-type ProductsClient = original.ProductsClient
-type RegistrationsClient = original.RegistrationsClient
 
+func NewRegistrationsClient(subscriptionID string) RegistrationsClient {
+	return original.NewRegistrationsClient(subscriptionID)
+}
+func NewRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) RegistrationsClient {
+	return original.NewRegistrationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptionsClient {
 	return original.NewCustomerSubscriptionsClient(subscriptionID)
@@ -111,27 +124,15 @@ func PossibleOperatingSystemValues() []OperatingSystem {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewProductsClient(subscriptionID string) ProductsClient {
 	return original.NewProductsClient(subscriptionID)
 }
 func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
 	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRegistrationsClient(subscriptionID string) RegistrationsClient {
-	return original.NewRegistrationsClient(subscriptionID)
-}
-func NewRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) RegistrationsClient {
-	return original.NewRegistrationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

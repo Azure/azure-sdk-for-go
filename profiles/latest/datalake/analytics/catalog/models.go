@@ -21,13 +21,6 @@ package catalog
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01-preview/catalog"
 
-type Client = original.Client
-
-const (
-	DefaultAdlaCatalogDNSSuffix = original.DefaultAdlaCatalogDNSSuffix
-)
-
-type BaseClient = original.BaseClient
 type ACLType = original.ACLType
 
 const (
@@ -138,16 +131,14 @@ type USQLView = original.USQLView
 type USQLViewList = original.USQLViewList
 type USQLViewListIterator = original.USQLViewListIterator
 type USQLViewListPage = original.USQLViewListPage
+type Client = original.Client
 
-func NewClient() Client {
-	return original.NewClient()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
+const (
+	DefaultAdlaCatalogDNSSuffix = original.DefaultAdlaCatalogDNSSuffix
+)
+
+type BaseClient = original.BaseClient
+
 func PossibleACLTypeValues() []ACLType {
 	return original.PossibleACLTypeValues()
 }
@@ -162,4 +153,13 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
 }

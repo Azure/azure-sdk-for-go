@@ -11,8 +11,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "cd2702d0255126f3d64a7cef703e1341f22bc0ac"
-  version = "v10.5.0"
+  revision = "9ad9326b278af8fa5cc67c30c0ce9a58cc0862b2"
+  version = "v10.6.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -45,7 +45,7 @@
     "internal/sasl",
     "internal/scram"
   ]
-  revision = "baa28fcb8e7d5dfab92026c0920cb6c9ae72faa2"
+  revision = "f76e4f9da92ecd56e3be26f5ba92580af1ef97b4"
 
 [[projects]]
   branch = "master"
@@ -62,7 +62,7 @@
     "json/scanner",
     "json/token"
   ]
-  revision = "f40e974e75af4e271d97ce0fc917af5898ae7bda"
+  revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
@@ -86,7 +86,7 @@
   branch = "master"
   name = "github.com/marstr/goalias"
   packages = ["model"]
-  revision = "3026ca7e18e829805b990b41e4ce28c92cb80caa"
+  revision = "8dff9a14db648bfdd58d45515d3eaaee23aad078"
 
 [[projects]]
   name = "github.com/marstr/guid"
@@ -160,8 +160,8 @@
 [[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
-  revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
-  version = "v1.0.0"
+  revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
+  version = "v1.0.1"
 
 [[projects]]
   name = "github.com/spf13/viper"
@@ -176,13 +176,13 @@
     "pkcs12",
     "pkcs12/internal/rc2"
   ]
-  revision = "12892e8c234f4fe6f6803f052061de9057903bb2"
+  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "378d26f46672a356c46195c28f61bdb4c0a781dd"
+  revision = "ecfd8b563e1320e7282dccf28ad48ec2c68aaebf"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -202,9 +202,10 @@
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
-    "imports"
+    "imports",
+    "internal/fastwalk"
   ]
-  revision = "ac136b6c2db7c4d43955e4bc7174db36dc0539c0"
+  revision = "94b14834a20132093826ea5e2da5502a13908ad3"
 
 [[projects]]
   branch = "v1"

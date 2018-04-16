@@ -26,7 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ClustersClient = original.ClustersClient
+type OperationsClient = original.OperationsClient
 type ConfigurationClient = original.ConfigurationClient
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
@@ -44,13 +44,13 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
+type ClustersClient = original.ClustersClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -58,11 +58,11 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewConfigurationClient(subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -70,9 +70,9 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewConfigurationClient(subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }

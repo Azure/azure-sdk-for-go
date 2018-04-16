@@ -21,12 +21,6 @@ package job
 
 import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job"
 
-const (
-	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
-)
-
-type BaseClient = original.BaseClient
-type Client = original.Client
 type CompileMode = original.CompileMode
 
 const (
@@ -136,14 +130,33 @@ type StateAuditRecord = original.StateAuditRecord
 type Statistics = original.Statistics
 type StatisticsVertexStage = original.StatisticsVertexStage
 type USQLJobProperties = original.USQLJobProperties
-type PipelineClient = original.PipelineClient
 type RecurrenceClient = original.RecurrenceClient
 
+const (
+	DefaultAdlaJobDNSSuffix = original.DefaultAdlaJobDNSSuffix
+)
+
+type BaseClient = original.BaseClient
+type PipelineClient = original.PipelineClient
+type Client = original.Client
+
+func NewRecurrenceClient() RecurrenceClient {
+	return original.NewRecurrenceClient()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New() BaseClient {
 	return original.New()
 }
 func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
 	return original.NewWithoutDefaults(adlaJobDNSSuffix)
+}
+func NewPipelineClient() PipelineClient {
+	return original.NewPipelineClient()
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -171,16 +184,4 @@ func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties
 }
 func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()
-}
-func NewPipelineClient() PipelineClient {
-	return original.NewPipelineClient()
-}
-func NewRecurrenceClient() RecurrenceClient {
-	return original.NewRecurrenceClient()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

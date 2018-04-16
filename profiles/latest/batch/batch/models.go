@@ -21,19 +21,17 @@ package batch
 
 import original "github.com/Azure/azure-sdk-for-go/services/batch/2018-03-01.6.1/batch"
 
-type AccountClient = original.AccountClient
-type ApplicationClient = original.ApplicationClient
 type CertificateClient = original.CertificateClient
+type PoolClient = original.PoolClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ComputeNodeClient = original.ComputeNodeClient
-type FileClient = original.FileClient
 type JobClient = original.JobClient
-type JobScheduleClient = original.JobScheduleClient
+type FileClient = original.FileClient
+type AccountClient = original.AccountClient
 type AccessScope = original.AccessScope
 
 const (
@@ -504,32 +502,16 @@ type UserAccount = original.UserAccount
 type UserIdentity = original.UserIdentity
 type VirtualMachineConfiguration = original.VirtualMachineConfiguration
 type WindowsConfiguration = original.WindowsConfiguration
-type PoolClient = original.PoolClient
 type TaskClient = original.TaskClient
+type ApplicationClient = original.ApplicationClient
+type ComputeNodeClient = original.ComputeNodeClient
+type JobScheduleClient = original.JobScheduleClient
 
-func NewAccountClient() AccountClient {
-	return original.NewAccountClient()
-}
-func NewAccountClientWithBaseURI(baseURI string) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI)
-}
 func NewApplicationClient() ApplicationClient {
 	return original.NewApplicationClient()
 }
 func NewApplicationClientWithBaseURI(baseURI string) ApplicationClient {
 	return original.NewApplicationClientWithBaseURI(baseURI)
-}
-func NewCertificateClient() CertificateClient {
-	return original.NewCertificateClient()
-}
-func NewCertificateClientWithBaseURI(baseURI string) CertificateClient {
-	return original.NewCertificateClientWithBaseURI(baseURI)
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
 }
 func NewComputeNodeClient() ComputeNodeClient {
 	return original.NewComputeNodeClient()
@@ -537,11 +519,17 @@ func NewComputeNodeClient() ComputeNodeClient {
 func NewComputeNodeClientWithBaseURI(baseURI string) ComputeNodeClient {
 	return original.NewComputeNodeClientWithBaseURI(baseURI)
 }
-func NewFileClient() FileClient {
-	return original.NewFileClient()
+func NewJobScheduleClient() JobScheduleClient {
+	return original.NewJobScheduleClient()
 }
-func NewFileClientWithBaseURI(baseURI string) FileClient {
-	return original.NewFileClientWithBaseURI(baseURI)
+func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
+	return original.NewJobScheduleClientWithBaseURI(baseURI)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
 }
 func NewJobClient() JobClient {
 	return original.NewJobClient()
@@ -549,11 +537,17 @@ func NewJobClient() JobClient {
 func NewJobClientWithBaseURI(baseURI string) JobClient {
 	return original.NewJobClientWithBaseURI(baseURI)
 }
-func NewJobScheduleClient() JobScheduleClient {
-	return original.NewJobScheduleClient()
+func NewFileClient() FileClient {
+	return original.NewFileClient()
 }
-func NewJobScheduleClientWithBaseURI(baseURI string) JobScheduleClient {
-	return original.NewJobScheduleClientWithBaseURI(baseURI)
+func NewFileClientWithBaseURI(baseURI string) FileClient {
+	return original.NewFileClientWithBaseURI(baseURI)
+}
+func NewAccountClient() AccountClient {
+	return original.NewAccountClient()
+}
+func NewAccountClientWithBaseURI(baseURI string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI)
 }
 func PossibleAccessScopeValues() []AccessScope {
 	return original.PossibleAccessScopeValues()
@@ -672,21 +666,27 @@ func PossibleTaskExecutionResultValues() []TaskExecutionResult {
 func PossibleTaskStateValues() []TaskState {
 	return original.PossibleTaskStateValues()
 }
-func NewPoolClient() PoolClient {
-	return original.NewPoolClient()
-}
-func NewPoolClientWithBaseURI(baseURI string) PoolClient {
-	return original.NewPoolClientWithBaseURI(baseURI)
-}
 func NewTaskClient() TaskClient {
 	return original.NewTaskClient()
 }
 func NewTaskClientWithBaseURI(baseURI string) TaskClient {
 	return original.NewTaskClientWithBaseURI(baseURI)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+func NewCertificateClient() CertificateClient {
+	return original.NewCertificateClient()
 }
-func Version() string {
-	return original.Version()
+func NewCertificateClientWithBaseURI(baseURI string) CertificateClient {
+	return original.NewCertificateClientWithBaseURI(baseURI)
+}
+func NewPoolClient() PoolClient {
+	return original.NewPoolClient()
+}
+func NewPoolClientWithBaseURI(baseURI string) PoolClient {
+	return original.NewPoolClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

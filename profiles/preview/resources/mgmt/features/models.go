@@ -21,24 +21,19 @@ package features
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type Client = original.Client
 type OperationsListResult = original.OperationsListResult
 type OperationsListResultIterator = original.OperationsListResultIterator
 type OperationsListResultPage = original.OperationsListResultPage
 type Properties = original.Properties
 type Result = original.Result
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type Client = original.Client
+
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
@@ -50,4 +45,10 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

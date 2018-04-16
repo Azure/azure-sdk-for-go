@@ -21,11 +21,6 @@ package locks
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type ManagementLocksClient = original.ManagementLocksClient
 type LockLevel = original.LockLevel
 
@@ -41,6 +36,21 @@ type ManagementLockListResultPage = original.ManagementLockListResultPage
 type ManagementLockObject = original.ManagementLockObject
 type ManagementLockProperties = original.ManagementLockProperties
 
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func PossibleLockLevelValues() []LockLevel {
+	return original.PossibleLockLevelValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/2017-03-09"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -52,13 +62,4 @@ func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 }
 func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleLockLevelValues() []LockLevel {
-	return original.PossibleLockLevelValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/2017-03-09"
-}
-func Version() string {
-	return original.Version()
 }

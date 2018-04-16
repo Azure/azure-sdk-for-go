@@ -21,13 +21,21 @@ package servicebus
 
 import original "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 
+type RegionsClient = original.RegionsClient
+type NamespacesClient = original.NamespacesClient
+type QueuesClient = original.QueuesClient
+type RulesClient = original.RulesClient
+
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	DefaultBaseURI    = original.DefaultBaseURI
+	DefaultConfigName = original.DefaultConfigName
 )
 
 type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+type MigrationConfigurationsClient = original.MigrationConfigurationsClient
+type TopicsClient = original.TopicsClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
-type EventHubsClient = original.EventHubsClient
 type AccessRights = original.AccessRights
 
 const (
@@ -135,6 +143,11 @@ type EventHubListResultIterator = original.EventHubListResultIterator
 type EventHubListResultPage = original.EventHubListResultPage
 type EventhubProperties = original.EventhubProperties
 type MessageCountDetails = original.MessageCountDetails
+type MigrationConfigListResult = original.MigrationConfigListResult
+type MigrationConfigListResultIterator = original.MigrationConfigListResultIterator
+type MigrationConfigListResultPage = original.MigrationConfigListResultPage
+type MigrationConfigProperties = original.MigrationConfigProperties
+type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
@@ -185,32 +198,39 @@ type SBTopicProperties = original.SBTopicProperties
 type SQLFilter = original.SQLFilter
 type SQLRuleAction = original.SQLRuleAction
 type TrackedResource = original.TrackedResource
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
-type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
-type QueuesClient = original.QueuesClient
-type RegionsClient = original.RegionsClient
-type RulesClient = original.RulesClient
 type SubscriptionsClient = original.SubscriptionsClient
-type TopicsClient = original.TopicsClient
+type PremiumMessagingRegionsClient = original.PremiumMessagingRegionsClient
+type EventHubsClient = original.EventHubsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMigrationConfigurationsClient(subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClient(subscriptionID)
+}
+func NewMigrationConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTopicsClient(subscriptionID string) TopicsClient {
+	return original.NewTopicsClient(subscriptionID)
+}
+func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
+	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
 }
 func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewEventHubsClient(subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClient(subscriptionID)
-}
-func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
@@ -242,17 +262,11 @@ func PossibleSkuTierValues() []SkuTier {
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()
 }
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
+func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID)
 }
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingRegionsClient {
 	return original.NewPremiumMessagingRegionsClient(subscriptionID)
@@ -260,11 +274,11 @@ func NewPremiumMessagingRegionsClient(subscriptionID string) PremiumMessagingReg
 func NewPremiumMessagingRegionsClientWithBaseURI(baseURI string, subscriptionID string) PremiumMessagingRegionsClient {
 	return original.NewPremiumMessagingRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewQueuesClient(subscriptionID string) QueuesClient {
-	return original.NewQueuesClient(subscriptionID)
+func NewEventHubsClient(subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClient(subscriptionID)
 }
-func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
-	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
+func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegionsClient(subscriptionID string) RegionsClient {
 	return original.NewRegionsClient(subscriptionID)
@@ -272,27 +286,27 @@ func NewRegionsClient(subscriptionID string) RegionsClient {
 func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
 	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewQueuesClient(subscriptionID string) QueuesClient {
+	return original.NewQueuesClient(subscriptionID)
+}
+func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesClient {
+	return original.NewQueuesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewRulesClient(subscriptionID string) RulesClient {
 	return original.NewRulesClient(subscriptionID)
 }
 func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClient {
 	return original.NewRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTopicsClient(subscriptionID string) TopicsClient {
-	return original.NewTopicsClient(subscriptionID)
-}
-func NewTopicsClientWithBaseURI(baseURI string, subscriptionID string) TopicsClient {
-	return original.NewTopicsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }

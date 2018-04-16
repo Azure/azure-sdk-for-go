@@ -21,13 +21,16 @@ package redis
 
 import original "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis"
 
+type FirewallRulesClient = original.FirewallRulesClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type FirewallRulesClient = original.FirewallRulesClient
-type LinkedServerClient = original.LinkedServerClient
+type PatchSchedulesClient = original.PatchSchedulesClient
+type OperationsClient = original.OperationsClient
+type Client = original.Client
 type DayOfWeek = original.DayOfWeek
 
 const (
@@ -154,15 +157,13 @@ type TrackedResource = original.TrackedResource
 type UpdateParameters = original.UpdateParameters
 type UpdateProperties = original.UpdateProperties
 type UpgradeNotification = original.UpgradeNotification
-type OperationsClient = original.OperationsClient
-type PatchSchedulesClient = original.PatchSchedulesClient
-type Client = original.Client
+type LinkedServerClient = original.LinkedServerClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
 }
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
@@ -170,11 +171,29 @@ func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
-	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
+	return original.NewPatchSchedulesClient(subscriptionID)
+}
+func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
+	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
@@ -200,27 +219,9 @@ func PossibleSkuNameValues() []SkuName {
 func PossibleTLSVersionValues() []TLSVersion {
 	return original.PossibleTLSVersionValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewLinkedServerClient(subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPatchSchedulesClient(subscriptionID string) PatchSchedulesClient {
-	return original.NewPatchSchedulesClient(subscriptionID)
-}
-func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) PatchSchedulesClient {
-	return original.NewPatchSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
+func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) LinkedServerClient {
+	return original.NewLinkedServerClientWithBaseURI(baseURI, subscriptionID)
 }

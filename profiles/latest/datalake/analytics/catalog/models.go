@@ -139,15 +139,6 @@ type USQLViewList = original.USQLViewList
 type USQLViewListIterator = original.USQLViewListIterator
 type USQLViewListPage = original.USQLViewListPage
 
-func NewClient() Client {
-	return original.NewClient()
-}
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
-}
 func PossibleACLTypeValues() []ACLType {
 	return original.PossibleACLTypeValues()
 }
@@ -162,4 +153,13 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
 }

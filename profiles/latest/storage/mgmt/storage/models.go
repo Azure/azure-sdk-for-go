@@ -21,13 +21,8 @@ package storage
 
 import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
 
-type AccountsClient = original.AccountsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type SkusClient = original.SkusClient
+type UsageClient = original.UsageClient
 type AccessTier = original.AccessTier
 
 const (
@@ -234,21 +229,38 @@ type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type VirtualNetworkRule = original.VirtualNetworkRule
-type OperationsClient = original.OperationsClient
-type SkusClient = original.SkusClient
-type UsageClient = original.UsageClient
+type AccountsClient = original.AccountsClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type OperationsClient = original.OperationsClient
+
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
+}
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageClient(subscriptionID string) UsageClient {
+	return original.NewUsageClient(subscriptionID)
+}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessTierValues() []AccessTier {
 	return original.PossibleAccessTierValues()
@@ -310,27 +322,15 @@ func PossibleStateValues() []State {
 func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewSkusClient(subscriptionID string) SkusClient {
-	return original.NewSkusClient(subscriptionID)
-}
-func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
-	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageClient(subscriptionID string) UsageClient {
-	return original.NewUsageClient(subscriptionID)
-}
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }

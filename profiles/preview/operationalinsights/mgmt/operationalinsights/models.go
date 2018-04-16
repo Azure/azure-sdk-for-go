@@ -21,13 +21,7 @@ package operationalinsights
 
 import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-11-01-preview/operationalinsights"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type DataSourcesClient = original.DataSourcesClient
-type LinkedServicesClient = original.LinkedServicesClient
+type OperationsClient = original.OperationsClient
 type DataSourceKind = original.DataSourceKind
 
 const (
@@ -100,14 +94,33 @@ type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListUsagesResult = original.WorkspaceListUsagesResult
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
-type OperationsClient = original.OperationsClient
+type LinkedServicesClient = original.LinkedServicesClient
 type WorkspacesClient = original.WorkspacesClient
+type DataSourcesClient = original.DataSourcesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClient(subscriptionID)
+}
+func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClient(subscriptionID)
+}
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
+	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClient(subscriptionID)
@@ -115,11 +128,17 @@ func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
 func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
 	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleDataSourceKindValues() []DataSourceKind {
 	return original.PossibleDataSourceKindValues()
@@ -129,22 +148,4 @@ func PossibleEntityStatusValues() []EntityStatus {
 }
 func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
-}
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClient(subscriptionID)
-}
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
 }

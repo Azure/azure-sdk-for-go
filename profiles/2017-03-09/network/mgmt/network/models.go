@@ -21,20 +21,6 @@ package network
 
 import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network"
 
-type ApplicationGatewaysClient = original.ApplicationGatewaysClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
-type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
-type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
-type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
-type InterfacesClient = original.InterfacesClient
-type LoadBalancersClient = original.LoadBalancersClient
-type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
 type ApplicationGatewayCookieBasedAffinity = original.ApplicationGatewayCookieBasedAffinity
 
 const (
@@ -466,16 +452,30 @@ type VpnClientRevokedCertificate = original.VpnClientRevokedCertificate
 type VpnClientRevokedCertificatePropertiesFormat = original.VpnClientRevokedCertificatePropertiesFormat
 type VpnClientRootCertificate = original.VpnClientRootCertificate
 type VpnClientRootCertificatePropertiesFormat = original.VpnClientRootCertificatePropertiesFormat
-type PublicIPAddressesClient = original.PublicIPAddressesClient
-type RoutesClient = original.RoutesClient
 type RouteTablesClient = original.RouteTablesClient
 type SecurityGroupsClient = original.SecurityGroupsClient
 type SecurityRulesClient = original.SecurityRulesClient
-type SubnetsClient = original.SubnetsClient
-type UsagesClient = original.UsagesClient
+
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type PublicIPAddressesClient = original.PublicIPAddressesClient
 type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConnectionsClient
-type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
+type InterfacesClient = original.InterfacesClient
 type VirtualNetworksClient = original.VirtualNetworksClient
+type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
+type RoutesClient = original.RoutesClient
+type SubnetsClient = original.SubnetsClient
+type LoadBalancersClient = original.LoadBalancersClient
+type ExpressRouteCircuitsClient = original.ExpressRouteCircuitsClient
+type ApplicationGatewaysClient = original.ApplicationGatewaysClient
+type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
+type ExpressRouteServiceProvidersClient = original.ExpressRouteServiceProvidersClient
+type UsagesClient = original.UsagesClient
+type ExpressRouteCircuitAuthorizationsClient = original.ExpressRouteCircuitAuthorizationsClient
+type ExpressRouteCircuitPeeringsClient = original.ExpressRouteCircuitPeeringsClient
 
 func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClient(subscriptionID)
@@ -483,41 +483,23 @@ func NewApplicationGatewaysClient(subscriptionID string) ApplicationGatewaysClie
 func NewApplicationGatewaysClientWithBaseURI(baseURI string, subscriptionID string) ApplicationGatewaysClient {
 	return original.NewApplicationGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
+	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
+func NewRoutesClient(subscriptionID string) RoutesClient {
+	return original.NewRoutesClient(subscriptionID)
 }
-func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
-	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
+func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
+	return original.NewRoutesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
+func NewSubnetsClient(subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClient(subscriptionID)
 }
-func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
-	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClient(subscriptionID)
-}
-func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
-	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
-	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
-}
-func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
-	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewInterfacesClient(subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClient(subscriptionID)
-}
-func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
-	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
+func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
+	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClient(subscriptionID)
@@ -525,11 +507,47 @@ func NewLoadBalancersClient(subscriptionID string) LoadBalancersClient {
 func NewLoadBalancersClientWithBaseURI(baseURI string, subscriptionID string) LoadBalancersClient {
 	return original.NewLoadBalancersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewExpressRouteCircuitsClient(subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClient(subscriptionID)
+}
+func NewExpressRouteCircuitsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitsClient {
+	return original.NewExpressRouteCircuitsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitPeeringsClient(subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClient(subscriptionID)
+}
+func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return original.NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI, subscriptionID)
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/2017-03-09"
+}
+func Version() string {
+	return original.Version()
+}
 func NewLocalNetworkGatewaysClient(subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClient(subscriptionID)
 }
 func NewLocalNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) LocalNetworkGatewaysClient {
 	return original.NewLocalNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteServiceProvidersClient(subscriptionID string) ExpressRouteServiceProvidersClient {
+	return original.NewExpressRouteServiceProvidersClient(subscriptionID)
+}
+func NewExpressRouteServiceProvidersClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteServiceProvidersClient {
+	return original.NewExpressRouteServiceProvidersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
+}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewExpressRouteCircuitAuthorizationsClient(subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClient(subscriptionID)
+}
+func NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) ExpressRouteCircuitAuthorizationsClient {
+	return original.NewExpressRouteCircuitAuthorizationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
 	return original.PossibleApplicationGatewayCookieBasedAffinityValues()
@@ -618,18 +636,6 @@ func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
 func PossibleVpnTypeValues() []VpnType {
 	return original.PossibleVpnTypeValues()
 }
-func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClient(subscriptionID)
-}
-func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
-	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRoutesClient(subscriptionID string) RoutesClient {
-	return original.NewRoutesClient(subscriptionID)
-}
-func NewRoutesClientWithBaseURI(baseURI string, subscriptionID string) RoutesClient {
-	return original.NewRoutesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRouteTablesClient(subscriptionID string) RouteTablesClient {
 	return original.NewRouteTablesClient(subscriptionID)
 }
@@ -642,29 +648,29 @@ func NewSecurityGroupsClient(subscriptionID string) SecurityGroupsClient {
 func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) SecurityGroupsClient {
 	return original.NewSecurityGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClient(subscriptionID)
+}
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClient(subscriptionID)
 }
 func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubnetsClient(subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsClient {
-	return original.NewSubnetsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
+func NewPublicIPAddressesClient(subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClient(subscriptionID)
 }
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/2017-03-09"
-}
-func Version() string {
-	return original.Version()
+func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPAddressesClient {
+	return original.NewPublicIPAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNetworkGatewayConnectionsClient {
 	return original.NewVirtualNetworkGatewayConnectionsClient(subscriptionID)
@@ -672,15 +678,9 @@ func NewVirtualNetworkGatewayConnectionsClient(subscriptionID string) VirtualNet
 func NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayConnectionsClient {
 	return original.NewVirtualNetworkGatewayConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
+func NewInterfacesClient(subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClient(subscriptionID)
 }
-func NewVirtualNetworkGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewaysClient {
-	return original.NewVirtualNetworkGatewaysClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualNetworksClient(subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClient(subscriptionID)
-}
-func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
+func NewInterfacesClientWithBaseURI(baseURI string, subscriptionID string) InterfacesClient {
+	return original.NewInterfacesClientWithBaseURI(baseURI, subscriptionID)
 }

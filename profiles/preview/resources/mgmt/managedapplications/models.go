@@ -21,14 +21,8 @@ package managedapplications
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
 
-type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
 type AppliancesClient = original.AppliancesClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
+type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
 type ApplianceArtifactType = original.ApplianceArtifactType
 
 const (
@@ -96,24 +90,12 @@ type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
 
-func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClient(subscriptionID)
-}
-func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAppliancesClient(subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClient(subscriptionID)
-}
-func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
 	return original.PossibleApplianceArtifactTypeValues()
 }
@@ -131,4 +113,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewAppliancesClient(subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClient(subscriptionID)
+}
+func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
+	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
+	return original.NewApplianceDefinitionsClient(subscriptionID)
+}
+func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
+	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }

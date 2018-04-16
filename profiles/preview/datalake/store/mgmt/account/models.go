@@ -28,7 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type FirewallRulesClient = original.FirewallRulesClient
+type OperationsClient = original.OperationsClient
 type LocationsClient = original.LocationsClient
 type DataLakeStoreAccountState = original.DataLakeStoreAccountState
 
@@ -174,27 +174,9 @@ type UpdateKeyVaultMetaInfo = original.UpdateKeyVaultMetaInfo
 type UpdateTrustedIDProviderParameters = original.UpdateTrustedIDProviderParameters
 type UpdateTrustedIDProviderProperties = original.UpdateTrustedIDProviderProperties
 type UpdateTrustedIDProviderWithAccountParameters = original.UpdateTrustedIDProviderWithAccountParameters
-type OperationsClient = original.OperationsClient
 type TrustedIDProvidersClient = original.TrustedIDProvidersClient
+type FirewallRulesClient = original.FirewallRulesClient
 
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClient(subscriptionID)
-}
-func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
-	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewLocationsClient(subscriptionID string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID)
 }
@@ -234,12 +216,6 @@ func PossibleTierTypeValues() []TierType {
 func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
 	return original.PossibleTrustedIDProviderStateValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTrustedIDProvidersClient(subscriptionID string) TrustedIDProvidersClient {
 	return original.NewTrustedIDProvidersClient(subscriptionID)
 }
@@ -251,4 +227,28 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClient(subscriptionID)
+}
+func NewFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) FirewallRulesClient {
+	return original.NewFirewallRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }

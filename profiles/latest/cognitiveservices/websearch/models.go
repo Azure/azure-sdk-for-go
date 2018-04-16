@@ -174,12 +174,6 @@ type BasicWebWebGrouping = original.BasicWebWebGrouping
 type WebWebGrouping = original.WebWebGrouping
 type WebClient = original.WebClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
 func PossibleAnswerTypeValues() []AnswerType {
 	return original.PossibleAnswerTypeValues()
 }
@@ -215,4 +209,10 @@ func NewWebClient() WebClient {
 }
 func NewWebClientWithBaseURI(baseURI string) WebClient {
 	return original.NewWebClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }

@@ -19,7 +19,7 @@
 
 package devices
 
-import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-01-22/devices"
+import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices"
 
 type CertificatesClient = original.CertificatesClient
 
@@ -29,6 +29,7 @@ const (
 
 type BaseClient = original.BaseClient
 type IotHubResourceClient = original.IotHubResourceClient
+type OperationsClient = original.OperationsClient
 type AccessRights = original.AccessRights
 
 const (
@@ -74,6 +75,9 @@ const (
 type IotHubSku = original.IotHubSku
 
 const (
+	B1 IotHubSku = original.B1
+	B2 IotHubSku = original.B2
+	B3 IotHubSku = original.B3
 	F1 IotHubSku = original.F1
 	S1 IotHubSku = original.S1
 	S2 IotHubSku = original.S2
@@ -83,6 +87,7 @@ const (
 type IotHubSkuTier = original.IotHubSkuTier
 
 const (
+	Basic    IotHubSkuTier = original.Basic
 	Free     IotHubSkuTier = original.Free
 	Standard IotHubSkuTier = original.Standard
 )
@@ -204,25 +209,12 @@ type SharedAccessSignatureAuthorizationRuleListResultIterator = original.SharedA
 type SharedAccessSignatureAuthorizationRuleListResultPage = original.SharedAccessSignatureAuthorizationRuleListResultPage
 type StorageEndpointProperties = original.StorageEndpointProperties
 type TagsResource = original.TagsResource
-type OperationsClient = original.OperationsClient
 
-func NewCertificatesClient(subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
-	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClient(subscriptionID)
-}
-func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
-	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
@@ -257,15 +249,27 @@ func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
 func PossibleRoutingSourceValues() []RoutingSource {
 	return original.PossibleRoutingSourceValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewIotHubResourceClient(subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClient(subscriptionID)
+}
+func NewIotHubResourceClientWithBaseURI(baseURI string, subscriptionID string) IotHubResourceClient {
+	return original.NewIotHubResourceClientWithBaseURI(baseURI, subscriptionID)
 }

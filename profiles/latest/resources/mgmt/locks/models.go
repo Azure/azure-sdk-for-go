@@ -42,6 +42,15 @@ type ManagementLockObject = original.ManagementLockObject
 type ManagementLockOwner = original.ManagementLockOwner
 type ManagementLockProperties = original.ManagementLockProperties
 
+func PossibleLockLevelValues() []LockLevel {
+	return original.PossibleLockLevelValues()
+}
+func UserAgent() string {
+	return original.UserAgent() + " profiles/latest"
+}
+func Version() string {
+	return original.Version()
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -53,13 +62,4 @@ func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 }
 func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleLockLevelValues() []LockLevel {
-	return original.PossibleLockLevelValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
-}
-func Version() string {
-	return original.Version()
 }

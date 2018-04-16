@@ -48,3 +48,21 @@ func Execute() {
 		os.Exit(-1)
 	}
 }
+
+// CommandFlags is used to specify flags when invoking commands programatically.
+type CommandFlags struct {
+	CopyRepo            bool
+	OnlyAdditions       bool
+	OnlyBreakingChanges bool
+	Quiet               bool
+	Verbose             bool
+}
+
+// applies the specified flags to their global equivalents
+func (cf CommandFlags) apply() {
+	copyRepoFlag = cf.CopyRepo
+	onlyAdditionsFlag = cf.OnlyAdditions
+	onlyBreakingChangesFlag = cf.OnlyBreakingChanges
+	quietFlag = cf.Quiet
+	verboseFlag = cf.Verbose
+}

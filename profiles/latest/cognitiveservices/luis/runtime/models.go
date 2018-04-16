@@ -21,6 +21,7 @@ package runtime
 
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
 
+type PredictionClient = original.PredictionClient
 type BaseClient = original.BaseClient
 type AzureRegions = original.AzureRegions
 
@@ -47,23 +48,22 @@ type EntityWithResolution = original.EntityWithResolution
 type EntityWithScore = original.EntityWithScore
 type IntentModel = original.IntentModel
 type LuisResult = original.LuisResult
-type PredictionClient = original.PredictionClient
 
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
-}
 func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
-}
-func NewPredictionClient(azureRegion AzureRegions) PredictionClient {
-	return original.NewPredictionClient(azureRegion)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewPredictionClient(azureRegion AzureRegions) PredictionClient {
+	return original.NewPredictionClient(azureRegion)
+}
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
 }

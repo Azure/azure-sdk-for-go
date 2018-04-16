@@ -26,7 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type EntitiesClient = original.EntitiesClient
 type AnswerType = original.AnswerType
 
 const (
@@ -249,18 +248,19 @@ type StructuredValue = original.StructuredValue
 type BasicThing = original.BasicThing
 type Thing = original.Thing
 type TouristAttraction = original.TouristAttraction
+type EntitiesClient = original.EntitiesClient
 
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
 func NewEntitiesClient() EntitiesClient {
 	return original.NewEntitiesClient()
 }
 func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
 	return original.NewEntitiesClientWithBaseURI(baseURI)
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func PossibleAnswerTypeValues() []AnswerType {
 	return original.PossibleAnswerTypeValues()

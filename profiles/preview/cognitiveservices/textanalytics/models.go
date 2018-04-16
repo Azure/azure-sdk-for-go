@@ -54,6 +54,12 @@ type MultiLanguageInput = original.MultiLanguageInput
 type SentimentBatchResult = original.SentimentBatchResult
 type SentimentBatchResultItem = original.SentimentBatchResultItem
 
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
+}
+func Version() string {
+	return original.Version()
+}
 func New(azureRegion AzureRegions) BaseClient {
 	return original.New(azureRegion)
 }
@@ -62,10 +68,4 @@ func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
 }
 func PossibleAzureRegionsValues() []AzureRegions {
 	return original.PossibleAzureRegionsValues()
-}
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
-}
-func Version() string {
-	return original.Version()
 }

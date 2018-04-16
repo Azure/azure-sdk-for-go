@@ -21,13 +21,16 @@ package commitmentplans
 
 import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-05-01-preview/commitmentplans"
 
+type Client = original.Client
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
+type UsageHistoryClient = original.UsageHistoryClient
+type SkusClient = original.SkusClient
 type CommitmentAssociationsClient = original.CommitmentAssociationsClient
-type Client = original.Client
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
@@ -75,26 +78,12 @@ type SkuCapacity = original.SkuCapacity
 type SkuCost = original.SkuCost
 type SkuListResult = original.SkuListResult
 type SkuRestrictions = original.SkuRestrictions
-type SkusClient = original.SkusClient
-type UsageHistoryClient = original.UsageHistoryClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
 func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
 	return original.NewCommitmentAssociationsClient(subscriptionID)
 }
 func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
 	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
 	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
@@ -105,11 +94,23 @@ func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
 	return original.PossibleSkuCapacityScaleTypeValues()
 }
-func NewSkusClient(subscriptionID string) SkusClient {
-	return original.NewSkusClient(subscriptionID)
+func UserAgent() string {
+	return original.UserAgent() + " profiles/preview"
 }
-func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
-	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+func Version() string {
+	return original.Version()
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
 	return original.NewUsageHistoryClient(subscriptionID)
@@ -117,9 +118,9 @@ func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
 func NewUsageHistoryClientWithBaseURI(baseURI string, subscriptionID string) UsageHistoryClient {
 	return original.NewUsageHistoryClientWithBaseURI(baseURI, subscriptionID)
 }
-func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+func NewSkusClient(subscriptionID string) SkusClient {
+	return original.NewSkusClient(subscriptionID)
 }
-func Version() string {
-	return original.Version()
+func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
+	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }

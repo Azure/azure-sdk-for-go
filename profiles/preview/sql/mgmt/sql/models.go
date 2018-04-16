@@ -21,13 +21,7 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/sql/mgmt/2017-10-01-preview/sql"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type DatabaseOperationsClient = original.DatabaseOperationsClient
-type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 type ManagementOperationState = original.ManagementOperationState
 
 const (
@@ -51,24 +45,24 @@ type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResul
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type ShortTermRetentionPoliciesCreateOrUpdateFuture = original.ShortTermRetentionPoliciesCreateOrUpdateFuture
+type ShortTermRetentionPoliciesUpdateFuture = original.ShortTermRetentionPoliciesUpdateFuture
+type ShortTermRetentionPolicy = original.ShortTermRetentionPolicy
+type ShortTermRetentionPolicyProperties = original.ShortTermRetentionPolicyProperties
+type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type ShortTermRetentionPoliciesClient = original.ShortTermRetentionPoliciesClient
+
 func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
 	return original.NewDatabaseOperationsClient(subscriptionID)
 }
 func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
 	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClient(subscriptionID)
-}
-func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
@@ -78,4 +72,22 @@ func UserAgent() string {
 }
 func Version() string {
 	return original.Version()
+}
+func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClient(subscriptionID)
+}
+func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
+	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClient(subscriptionID)
+}
+func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
+	return original.NewShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }

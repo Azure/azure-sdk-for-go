@@ -21,14 +21,6 @@ package eventhub
 
 import original "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
 
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type ConsumerGroupsClient = original.ConsumerGroupsClient
-type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
-type EventHubsClient = original.EventHubsClient
 type AccessRights = original.AccessRights
 
 const (
@@ -156,33 +148,48 @@ type RegenerateAccessKeyParameters = original.RegenerateAccessKeyParameters
 type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type NamespacesClient = original.NamespacesClient
-type OperationsClient = original.OperationsClient
-type RegionsClient = original.RegionsClient
+type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewConsumerGroupsClient(subscriptionID string) ConsumerGroupsClient {
-	return original.NewConsumerGroupsClient(subscriptionID)
-}
-func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerGroupsClient {
-	return original.NewConsumerGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+type RegionsClient = original.RegionsClient
+type NamespacesClient = original.NamespacesClient
+type ConsumerGroupsClient = original.ConsumerGroupsClient
+type OperationsClient = original.OperationsClient
+type EventHubsClient = original.EventHubsClient
+
 func NewDisasterRecoveryConfigsClient(subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClient(subscriptionID)
 }
 func NewDisasterRecoveryConfigsClientWithBaseURI(baseURI string, subscriptionID string) DisasterRecoveryConfigsClient {
 	return original.NewDisasterRecoveryConfigsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEventHubsClient(subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
-	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewRegionsClient(subscriptionID string) RegionsClient {
+	return original.NewRegionsClient(subscriptionID)
+}
+func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
+	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConsumerGroupsClient(subscriptionID string) ConsumerGroupsClient {
+	return original.NewConsumerGroupsClient(subscriptionID)
+}
+func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) ConsumerGroupsClient {
+	return original.NewConsumerGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
@@ -211,27 +218,21 @@ func PossibleSkuTierValues() []SkuTier {
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return original.PossibleUnavailableReasonValues()
 }
-func NewNamespacesClient(subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClient(subscriptionID)
-}
-func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
-	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRegionsClient(subscriptionID string) RegionsClient {
-	return original.NewRegionsClient(subscriptionID)
-}
-func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsClient {
-	return original.NewRegionsClientWithBaseURI(baseURI, subscriptionID)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewEventHubsClient(subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClient(subscriptionID)
+}
+func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
+	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }

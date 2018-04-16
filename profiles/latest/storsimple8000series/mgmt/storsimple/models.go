@@ -21,24 +21,22 @@ package storsimple
 
 import original "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
 
+type OperationsClient = original.OperationsClient
+type ManagersClient = original.ManagersClient
+type VolumeContainersClient = original.VolumeContainersClient
+type BandwidthSettingsClient = original.BandwidthSettingsClient
 type AccessControlRecordsClient = original.AccessControlRecordsClient
+type CloudAppliancesClient = original.CloudAppliancesClient
+type DeviceSettingsClient = original.DeviceSettingsClient
+type JobsClient = original.JobsClient
 type AlertsClient = original.AlertsClient
 type BackupPoliciesClient = original.BackupPoliciesClient
-type BackupsClient = original.BackupsClient
-type BackupSchedulesClient = original.BackupSchedulesClient
-type BandwidthSettingsClient = original.BandwidthSettingsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
-type CloudAppliancesClient = original.CloudAppliancesClient
-type DevicesClient = original.DevicesClient
-type DeviceSettingsClient = original.DeviceSettingsClient
 type HardwareComponentGroupsClient = original.HardwareComponentGroupsClient
-type JobsClient = original.JobsClient
-type ManagersClient = original.ManagersClient
+type BackupSchedulesClient = original.BackupSchedulesClient
+type BackupsClient = original.BackupsClient
+type DevicesClient = original.DevicesClient
+type StorageAccountCredentialsClient = original.StorageAccountCredentialsClient
+type VolumesClient = original.VolumesClient
 type AlertEmailNotificationStatus = original.AlertEmailNotificationStatus
 
 const (
@@ -624,70 +622,18 @@ type VolumeProperties = original.VolumeProperties
 type VolumesCreateOrUpdateFuture = original.VolumesCreateOrUpdateFuture
 type VolumesDeleteFuture = original.VolumesDeleteFuture
 type WebproxySettings = original.WebproxySettings
-type OperationsClient = original.OperationsClient
-type StorageAccountCredentialsClient = original.StorageAccountCredentialsClient
-type VolumeContainersClient = original.VolumeContainersClient
-type VolumesClient = original.VolumesClient
 
-func NewAccessControlRecordsClient(subscriptionID string) AccessControlRecordsClient {
-	return original.NewAccessControlRecordsClient(subscriptionID)
-}
-func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID string) AccessControlRecordsClient {
-	return original.NewAccessControlRecordsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewAlertsClient(subscriptionID string) AlertsClient {
-	return original.NewAlertsClient(subscriptionID)
-}
-func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
-	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
-	return original.NewBackupPoliciesClient(subscriptionID)
-}
-func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
-	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func NewBackupsClient(subscriptionID string) BackupsClient {
 	return original.NewBackupsClient(subscriptionID)
 }
 func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
 	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBackupSchedulesClient(subscriptionID string) BackupSchedulesClient {
-	return original.NewBackupSchedulesClient(subscriptionID)
-}
-func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BackupSchedulesClient {
-	return original.NewBackupSchedulesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBandwidthSettingsClient(subscriptionID string) BandwidthSettingsClient {
-	return original.NewBandwidthSettingsClient(subscriptionID)
-}
-func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSettingsClient {
-	return original.NewBandwidthSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewCloudAppliancesClient(subscriptionID string) CloudAppliancesClient {
-	return original.NewCloudAppliancesClient(subscriptionID)
-}
-func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) CloudAppliancesClient {
-	return original.NewCloudAppliancesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDevicesClient(subscriptionID string) DevicesClient {
-	return original.NewDevicesClient(subscriptionID)
-}
-func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
-	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDeviceSettingsClient(subscriptionID string) DeviceSettingsClient {
-	return original.NewDeviceSettingsClient(subscriptionID)
-}
-func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) DeviceSettingsClient {
-	return original.NewDeviceSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGroupsClient {
 	return original.NewHardwareComponentGroupsClient(subscriptionID)
@@ -695,17 +641,17 @@ func NewHardwareComponentGroupsClient(subscriptionID string) HardwareComponentGr
 func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID string) HardwareComponentGroupsClient {
 	return original.NewHardwareComponentGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewJobsClient(subscriptionID string) JobsClient {
-	return original.NewJobsClient(subscriptionID)
+func NewBackupSchedulesClient(subscriptionID string) BackupSchedulesClient {
+	return original.NewBackupSchedulesClient(subscriptionID)
 }
-func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
-	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+func NewBackupSchedulesClientWithBaseURI(baseURI string, subscriptionID string) BackupSchedulesClient {
+	return original.NewBackupSchedulesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagersClient(subscriptionID string) ManagersClient {
-	return original.NewManagersClient(subscriptionID)
+func NewVolumesClient(subscriptionID string) VolumesClient {
+	return original.NewVolumesClient(subscriptionID)
 }
-func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
-	return original.NewManagersClientWithBaseURI(baseURI, subscriptionID)
+func NewVolumesClientWithBaseURI(baseURI string, subscriptionID string) VolumesClient {
+	return original.NewVolumesClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
 	return original.PossibleAlertEmailNotificationStatusValues()
@@ -851,11 +797,17 @@ func PossibleVolumeStatusValues() []VolumeStatus {
 func PossibleVolumeTypeValues() []VolumeType {
 	return original.PossibleVolumeTypeValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDevicesClient(subscriptionID string) DevicesClient {
+	return original.NewDevicesClient(subscriptionID)
+}
+func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesClient {
+	return original.NewDevicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCredentialsClient {
 	return original.NewStorageAccountCredentialsClient(subscriptionID)
@@ -863,11 +815,47 @@ func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCre
 func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountCredentialsClient {
 	return original.NewStorageAccountCredentialsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagersClient(subscriptionID string) ManagersClient {
+	return original.NewManagersClient(subscriptionID)
+}
+func NewManagersClientWithBaseURI(baseURI string, subscriptionID string) ManagersClient {
+	return original.NewManagersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func NewDeviceSettingsClient(subscriptionID string) DeviceSettingsClient {
+	return original.NewDeviceSettingsClient(subscriptionID)
+}
+func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) DeviceSettingsClient {
+	return original.NewDeviceSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewJobsClient(subscriptionID string) JobsClient {
+	return original.NewJobsClient(subscriptionID)
+}
+func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
+	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertsClient(subscriptionID string) AlertsClient {
+	return original.NewAlertsClient(subscriptionID)
+}
+func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
+	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClient(subscriptionID)
+}
+func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVolumeContainersClient(subscriptionID string) VolumeContainersClient {
 	return original.NewVolumeContainersClient(subscriptionID)
@@ -875,9 +863,21 @@ func NewVolumeContainersClient(subscriptionID string) VolumeContainersClient {
 func NewVolumeContainersClientWithBaseURI(baseURI string, subscriptionID string) VolumeContainersClient {
 	return original.NewVolumeContainersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVolumesClient(subscriptionID string) VolumesClient {
-	return original.NewVolumesClient(subscriptionID)
+func NewBandwidthSettingsClient(subscriptionID string) BandwidthSettingsClient {
+	return original.NewBandwidthSettingsClient(subscriptionID)
 }
-func NewVolumesClientWithBaseURI(baseURI string, subscriptionID string) VolumesClient {
-	return original.NewVolumesClientWithBaseURI(baseURI, subscriptionID)
+func NewBandwidthSettingsClientWithBaseURI(baseURI string, subscriptionID string) BandwidthSettingsClient {
+	return original.NewBandwidthSettingsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccessControlRecordsClient(subscriptionID string) AccessControlRecordsClient {
+	return original.NewAccessControlRecordsClient(subscriptionID)
+}
+func NewAccessControlRecordsClientWithBaseURI(baseURI string, subscriptionID string) AccessControlRecordsClient {
+	return original.NewAccessControlRecordsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudAppliancesClient(subscriptionID string) CloudAppliancesClient {
+	return original.NewCloudAppliancesClient(subscriptionID)
+}
+func NewCloudAppliancesClientWithBaseURI(baseURI string, subscriptionID string) CloudAppliancesClient {
+	return original.NewCloudAppliancesClientWithBaseURI(baseURI, subscriptionID)
 }

@@ -22,8 +22,9 @@ package face
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/face"
 
 type BaseClient = original.BaseClient
+type PersonGroupPersonClient = original.PersonGroupPersonClient
+type PersonGroupClient = original.PersonGroupClient
 type Client = original.Client
-type ListClient = original.ListClient
 type AccessoryType = original.AccessoryType
 
 const (
@@ -180,20 +181,13 @@ type UpdatePersonFaceRequest = original.UpdatePersonFaceRequest
 type VerifyFaceToFaceRequest = original.VerifyFaceToFaceRequest
 type VerifyFaceToPersonRequest = original.VerifyFaceToPersonRequest
 type VerifyResult = original.VerifyResult
-type PersonGroupClient = original.PersonGroupClient
-type PersonGroupPersonClient = original.PersonGroupPersonClient
+type ListClient = original.ListClient
 
-func New(azureRegion AzureRegions) BaseClient {
-	return original.New(azureRegion)
-}
-func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
-	return original.NewWithoutDefaults(azureRegion)
+func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
+	return original.NewPersonGroupClient(azureRegion)
 }
 func NewClient(azureRegion AzureRegions) Client {
 	return original.NewClient(azureRegion)
-}
-func NewListClient(azureRegion AzureRegions) ListClient {
-	return original.NewListClient(azureRegion)
 }
 func PossibleAccessoryTypeValues() []AccessoryType {
 	return original.PossibleAccessoryTypeValues()
@@ -228,15 +222,21 @@ func PossibleNoiseLevelValues() []NoiseLevel {
 func PossibleTrainingStatusTypeValues() []TrainingStatusType {
 	return original.PossibleTrainingStatusTypeValues()
 }
-func NewPersonGroupClient(azureRegion AzureRegions) PersonGroupClient {
-	return original.NewPersonGroupClient(azureRegion)
-}
-func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
-	return original.NewPersonGroupPersonClient(azureRegion)
-}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
+}
+func NewListClient(azureRegion AzureRegions) ListClient {
+	return original.NewListClient(azureRegion)
+}
+func New(azureRegion AzureRegions) BaseClient {
+	return original.New(azureRegion)
+}
+func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
+	return original.NewWithoutDefaults(azureRegion)
+}
+func NewPersonGroupPersonClient(azureRegion AzureRegions) PersonGroupPersonClient {
+	return original.NewPersonGroupPersonClient(azureRegion)
 }

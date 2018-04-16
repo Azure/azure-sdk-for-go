@@ -21,14 +21,7 @@ package datacatalog
 
 import original "github.com/Azure/azure-sdk-for-go/services/datacatalog/mgmt/2016-03-30/datacatalog"
 
-type ADCCatalogsClient = original.ADCCatalogsClient
 type ADCOperationsClient = original.ADCOperationsClient
-
-const (
-	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type BaseClient = original.BaseClient
 type SkuType = original.SkuType
 
 const (
@@ -45,31 +38,38 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Principals = original.Principals
 type Resource = original.Resource
+type ADCCatalogsClient = original.ADCCatalogsClient
 
-func NewADCCatalogsClient(subscriptionID string, catalogName string) ADCCatalogsClient {
-	return original.NewADCCatalogsClient(subscriptionID, catalogName)
-}
-func NewADCCatalogsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCCatalogsClient {
-	return original.NewADCCatalogsClientWithBaseURI(baseURI, subscriptionID, catalogName)
-}
+const (
+	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BaseClient = original.BaseClient
+
 func NewADCOperationsClient(subscriptionID string, catalogName string) ADCOperationsClient {
 	return original.NewADCOperationsClient(subscriptionID, catalogName)
 }
 func NewADCOperationsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCOperationsClient {
 	return original.NewADCOperationsClientWithBaseURI(baseURI, subscriptionID, catalogName)
 }
-func New(subscriptionID string, catalogName string) BaseClient {
-	return original.New(subscriptionID, catalogName)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, catalogName)
-}
 func PossibleSkuTypeValues() []SkuType {
 	return original.PossibleSkuTypeValues()
+}
+func NewADCCatalogsClient(subscriptionID string, catalogName string) ADCCatalogsClient {
+	return original.NewADCCatalogsClient(subscriptionID, catalogName)
+}
+func NewADCCatalogsClientWithBaseURI(baseURI string, subscriptionID string, catalogName string) ADCCatalogsClient {
+	return original.NewADCCatalogsClientWithBaseURI(baseURI, subscriptionID, catalogName)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
+}
+func New(subscriptionID string, catalogName string) BaseClient {
+	return original.New(subscriptionID, catalogName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, catalogName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, catalogName)
 }

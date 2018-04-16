@@ -664,8 +664,10 @@ type AdditionalLocation struct {
 	Location *string `json:"location,omitempty"`
 	// Sku - SKU properties of the API Management service.
 	Sku *ServiceSkuProperties `json:"sku,omitempty"`
-	// PublicIPAddresses - Static IP addresses of the location's virtual machines.
+	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service in the additional location. Available only for Basic, Standard and Premium SKU.
 	PublicIPAddresses *[]string `json:"publicIPAddresses,omitempty"`
+	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual Network in a particular additional location. Available only for Basic, Standard and Premium SKU.
+	PrivateIPAddresses *[]string `json:"privateIPAddresses,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration for the location.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
 	// GatewayRegionalURL - Gateway URL of the API Management service in the Region.
@@ -7741,9 +7743,9 @@ type ServiceBaseProperties struct {
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service. Available only for Basic, Standard and Premium SKU.
+	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for Basic, Standard and Premium SKU.
 	PublicIPAddresses *[]string `json:"publicIPAddresses,omitempty"`
-	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
+	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
 	PrivateIPAddresses *[]string `json:"privateIPAddresses,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
@@ -8025,9 +8027,9 @@ type ServiceProperties struct {
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service. Available only for Basic, Standard and Premium SKU.
+	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for Basic, Standard and Premium SKU.
 	PublicIPAddresses *[]string `json:"publicIPAddresses,omitempty"`
-	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
+	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
 	PrivateIPAddresses *[]string `json:"privateIPAddresses,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
@@ -8580,9 +8582,9 @@ type ServiceUpdateProperties struct {
 	ScmURL *string `json:"scmUrl,omitempty"`
 	// HostnameConfigurations - Custom hostname configuration of the API Management service.
 	HostnameConfigurations *[]HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
-	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service. Available only for Basic, Standard and Premium SKU.
+	// PublicIPAddresses - Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for Basic, Standard and Premium SKU.
 	PublicIPAddresses *[]string `json:"publicIPAddresses,omitempty"`
-	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
+	// PrivateIPAddresses - Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard and Premium SKU.
 	PrivateIPAddresses *[]string `json:"privateIPAddresses,omitempty"`
 	// VirtualNetworkConfiguration - Virtual network configuration of the API Management service.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`

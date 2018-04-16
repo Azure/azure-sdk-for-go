@@ -19,7 +19,7 @@
 
 package devices
 
-import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-01-22/devices"
+import original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices"
 
 type CertificatesClient = original.CertificatesClient
 
@@ -74,6 +74,9 @@ const (
 type IotHubSku = original.IotHubSku
 
 const (
+	B1 IotHubSku = original.B1
+	B2 IotHubSku = original.B2
+	B3 IotHubSku = original.B3
 	F1 IotHubSku = original.F1
 	S1 IotHubSku = original.S1
 	S2 IotHubSku = original.S2
@@ -83,6 +86,7 @@ const (
 type IotHubSkuTier = original.IotHubSkuTier
 
 const (
+	Basic    IotHubSkuTier = original.Basic
 	Free     IotHubSkuTier = original.Free
 	Standard IotHubSkuTier = original.Standard
 )

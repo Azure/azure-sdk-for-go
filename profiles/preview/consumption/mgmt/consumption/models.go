@@ -28,7 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type CostAllocationTagsClient = original.CostAllocationTagsClient
+type CostTagsClient = original.CostTagsClient
 type MarketplacesClient = original.MarketplacesClient
 type CategoryType = original.CategoryType
 
@@ -66,9 +66,9 @@ type BudgetsListResult = original.BudgetsListResult
 type BudgetsListResultIterator = original.BudgetsListResultIterator
 type BudgetsListResultPage = original.BudgetsListResultPage
 type BudgetTimePeriod = original.BudgetTimePeriod
-type CostAllocationTag = original.CostAllocationTag
-type CostAllocationTagProperties = original.CostAllocationTagProperties
-type CostAllocationTags = original.CostAllocationTags
+type CostTag = original.CostTag
+type CostTagProperties = original.CostTagProperties
+type CostTags = original.CostTags
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -106,6 +106,9 @@ type ReservationSummariesListResultPage = original.ReservationSummariesListResul
 type ReservationSummariesProperties = original.ReservationSummariesProperties
 type Resource = original.Resource
 type ResourceAttributes = original.ResourceAttributes
+type Tag = original.Tag
+type TagProperties = original.TagProperties
+type Tags = original.Tags
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
@@ -116,6 +119,7 @@ type PriceSheetClient = original.PriceSheetClient
 type ReservationRecommendationsClient = original.ReservationRecommendationsClient
 type ReservationsDetailsClient = original.ReservationsDetailsClient
 type ReservationsSummariesClient = original.ReservationsSummariesClient
+type TagsClient = original.TagsClient
 type UsageDetailsClient = original.UsageDetailsClient
 
 func NewBudgetsClient(subscriptionID string) BudgetsClient {
@@ -130,11 +134,11 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewCostAllocationTagsClient(subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClient(subscriptionID)
+func NewCostTagsClient(subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClient(subscriptionID)
 }
-func NewCostAllocationTagsClientWithBaseURI(baseURI string, subscriptionID string) CostAllocationTagsClient {
-	return original.NewCostAllocationTagsClientWithBaseURI(baseURI, subscriptionID)
+func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
 	return original.NewMarketplacesClient(subscriptionID)
@@ -183,6 +187,12 @@ func NewReservationsSummariesClient(subscriptionID string) ReservationsSummaries
 }
 func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
 	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
+}
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)

@@ -25,6 +25,9 @@ type APIClient = original.APIClient
 type APIDiagnosticClient = original.APIDiagnosticClient
 type APIDiagnosticLoggerClient = original.APIDiagnosticLoggerClient
 type APIExportClient = original.APIExportClient
+type APIIssueClient = original.APIIssueClient
+type APIIssueAttachmentClient = original.APIIssueAttachmentClient
+type APIIssueCommentClient = original.APIIssueCommentClient
 type APIOperationClient = original.APIOperationClient
 type APIOperationPolicyClient = original.APIOperationPolicyClient
 type APIPolicyClient = original.APIPolicyClient
@@ -254,6 +257,16 @@ const (
 	SoapToRest      SoapAPIType = original.SoapToRest
 )
 
+type State = original.State
+
+const (
+	Closed   State = original.Closed
+	Open     State = original.Open
+	Proposed State = original.Proposed
+	Removed  State = original.Removed
+	Resolved State = original.Resolved
+)
+
 type StoreName = original.StoreName
 
 const (
@@ -431,6 +444,21 @@ type IdentityProviderListIterator = original.IdentityProviderListIterator
 type IdentityProviderListPage = original.IdentityProviderListPage
 type IdentityProviderUpdateParameters = original.IdentityProviderUpdateParameters
 type IdentityProviderUpdateProperties = original.IdentityProviderUpdateProperties
+type IssueAttachmentCollection = original.IssueAttachmentCollection
+type IssueAttachmentCollectionIterator = original.IssueAttachmentCollectionIterator
+type IssueAttachmentCollectionPage = original.IssueAttachmentCollectionPage
+type IssueAttachmentContract = original.IssueAttachmentContract
+type IssueAttachmentContractProperties = original.IssueAttachmentContractProperties
+type IssueCollection = original.IssueCollection
+type IssueCollectionIterator = original.IssueCollectionIterator
+type IssueCollectionPage = original.IssueCollectionPage
+type IssueCommentCollection = original.IssueCommentCollection
+type IssueCommentCollectionIterator = original.IssueCommentCollectionIterator
+type IssueCommentCollectionPage = original.IssueCommentCollectionPage
+type IssueCommentContract = original.IssueCommentContract
+type IssueCommentContractProperties = original.IssueCommentContractProperties
+type IssueContract = original.IssueContract
+type IssueContractProperties = original.IssueContractProperties
 type ListNetworkStatusContractByLocation = original.ListNetworkStatusContractByLocation
 type LoggerCollection = original.LoggerCollection
 type LoggerCollectionIterator = original.LoggerCollectionIterator
@@ -666,6 +694,24 @@ func NewAPIExportClient(subscriptionID string) APIExportClient {
 func NewAPIExportClientWithBaseURI(baseURI string, subscriptionID string) APIExportClient {
 	return original.NewAPIExportClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAPIIssueClient(subscriptionID string) APIIssueClient {
+	return original.NewAPIIssueClient(subscriptionID)
+}
+func NewAPIIssueClientWithBaseURI(baseURI string, subscriptionID string) APIIssueClient {
+	return original.NewAPIIssueClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIIssueAttachmentClient(subscriptionID string) APIIssueAttachmentClient {
+	return original.NewAPIIssueAttachmentClient(subscriptionID)
+}
+func NewAPIIssueAttachmentClientWithBaseURI(baseURI string, subscriptionID string) APIIssueAttachmentClient {
+	return original.NewAPIIssueAttachmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAPIIssueCommentClient(subscriptionID string) APIIssueCommentClient {
+	return original.NewAPIIssueCommentClient(subscriptionID)
+}
+func NewAPIIssueCommentClientWithBaseURI(baseURI string, subscriptionID string) APIIssueCommentClient {
+	return original.NewAPIIssueCommentClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAPIOperationClient(subscriptionID string) APIOperationClient {
 	return original.NewAPIOperationClient(subscriptionID)
 }
@@ -857,6 +903,9 @@ func PossibleSkuTypeValues() []SkuType {
 }
 func PossibleSoapAPITypeValues() []SoapAPIType {
 	return original.PossibleSoapAPITypeValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
 }
 func PossibleStoreNameValues() []StoreName {
 	return original.PossibleStoreNameValues()

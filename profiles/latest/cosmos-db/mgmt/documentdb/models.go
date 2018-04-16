@@ -133,6 +133,7 @@ type PercentileMetricValue = original.PercentileMetricValue
 type Resource = original.Resource
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
+type VirtualNetworkRule = original.VirtualNetworkRule
 type OperationsClient = original.OperationsClient
 type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
 type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient

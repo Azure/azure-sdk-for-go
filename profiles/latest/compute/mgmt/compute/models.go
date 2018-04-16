@@ -276,6 +276,23 @@ const (
 	Rolling   UpgradeMode = original.Rolling
 )
 
+type UpgradeOperationInvoker = original.UpgradeOperationInvoker
+
+const (
+	Platform UpgradeOperationInvoker = original.Platform
+	Unknown  UpgradeOperationInvoker = original.Unknown
+	User     UpgradeOperationInvoker = original.User
+)
+
+type UpgradeState = original.UpgradeState
+
+const (
+	UpgradeStateCancelled      UpgradeState = original.UpgradeStateCancelled
+	UpgradeStateCompleted      UpgradeState = original.UpgradeStateCompleted
+	UpgradeStateFaulted        UpgradeState = original.UpgradeStateFaulted
+	UpgradeStateRollingForward UpgradeState = original.UpgradeStateRollingForward
+)
+
 type VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypes
 
 const (
@@ -616,6 +633,9 @@ type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UpdateResource = original.UpdateResource
+type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
+type UpgradeOperationHistoricalStatusInfoProperties = original.UpgradeOperationHistoricalStatusInfoProperties
+type UpgradeOperationHistoryStatus = original.UpgradeOperationHistoryStatus
 type UpgradePolicy = original.UpgradePolicy
 type Usage = original.Usage
 type UsageName = original.UsageName
@@ -664,6 +684,9 @@ type VirtualMachineScaleSetInstanceView = original.VirtualMachineScaleSetInstanc
 type VirtualMachineScaleSetInstanceViewStatusesSummary = original.VirtualMachineScaleSetInstanceViewStatusesSummary
 type VirtualMachineScaleSetIPConfiguration = original.VirtualMachineScaleSetIPConfiguration
 type VirtualMachineScaleSetIPConfigurationProperties = original.VirtualMachineScaleSetIPConfigurationProperties
+type VirtualMachineScaleSetListOSUpgradeHistory = original.VirtualMachineScaleSetListOSUpgradeHistory
+type VirtualMachineScaleSetListOSUpgradeHistoryIterator = original.VirtualMachineScaleSetListOSUpgradeHistoryIterator
+type VirtualMachineScaleSetListOSUpgradeHistoryPage = original.VirtualMachineScaleSetListOSUpgradeHistoryPage
 type VirtualMachineScaleSetListResult = original.VirtualMachineScaleSetListResult
 type VirtualMachineScaleSetListResultIterator = original.VirtualMachineScaleSetListResultIterator
 type VirtualMachineScaleSetListResultPage = original.VirtualMachineScaleSetListResultPage
@@ -882,6 +905,12 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 }
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
+}
+func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
+	return original.PossibleUpgradeOperationInvokerValues()
+}
+func PossibleUpgradeStateValues() []UpgradeState {
+	return original.PossibleUpgradeStateValues()
 }
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
 	return original.PossibleVirtualMachineEvictionPolicyTypesValues()

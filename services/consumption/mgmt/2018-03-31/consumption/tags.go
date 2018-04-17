@@ -31,20 +31,18 @@ type TagsClient struct {
 }
 
 // NewTagsClient creates an instance of the TagsClient client.
-func NewTagsClient(subscriptionID string) TagsClient {
-	return NewTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewTagsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) TagsClient {
+	return NewTagsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
 }
 
 // NewTagsClientWithBaseURI creates an instance of the TagsClient client.
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return TagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewTagsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) TagsClient {
+	return TagsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
 }
 
 // Get get all available tag keys for a billing account.
-//
-// billingAccountID is azure Billing Account ID.
-func (client TagsClient) Get(ctx context.Context, billingAccountID string) (result Tags, err error) {
-	req, err := client.GetPreparer(ctx, billingAccountID)
+func (client TagsClient) Get(ctx context.Context) (result Tags, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.TagsClient", "Get", nil, "Failure preparing request")
 		return
@@ -66,9 +64,9 @@ func (client TagsClient) Get(ctx context.Context, billingAccountID string) (resu
 }
 
 // GetPreparer prepares the Get request.
-func (client TagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client TagsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"

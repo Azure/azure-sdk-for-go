@@ -31,23 +31,22 @@ type CostTagsClient struct {
 }
 
 // NewCostTagsClient creates an instance of the CostTagsClient client.
-func NewCostTagsClient(subscriptionID string) CostTagsClient {
-	return NewCostTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCostTagsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostTagsClient {
+	return NewCostTagsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
 }
 
 // NewCostTagsClientWithBaseURI creates an instance of the CostTagsClient client.
-func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
-	return CostTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCostTagsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostTagsClient {
+	return CostTagsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update cost tags assiciated with a billing account. Update operation
 // requires latest eTag to be set in the request mandatorily. You may obtain the latest eTag by performing a get
 // operation. Create operation does not require eTag.
 //
-// billingAccountID is azure Billing Account ID. parameters is parameters supplied to the Create cost tags
-// operation.
-func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountID string, parameters CostTags) (result CostTags, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, billingAccountID, parameters)
+// parameters is parameters supplied to the Create cost tags operation.
+func (client CostTagsClient) CreateOrUpdate(ctx context.Context, parameters CostTags) (result CostTags, err error) {
+	req, err := client.CreateOrUpdatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -69,9 +68,9 @@ func (client CostTagsClient) CreateOrUpdate(ctx context.Context, billingAccountI
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, billingAccountID string, parameters CostTags) (*http.Request, error) {
+func (client CostTagsClient) CreateOrUpdatePreparer(ctx context.Context, parameters CostTags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -110,10 +109,8 @@ func (client CostTagsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Get get cost tags for a billing account.
-//
-// billingAccountID is azure Billing Account ID.
-func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (result CostTags, err error) {
-	req, err := client.GetPreparer(ctx, billingAccountID)
+func (client CostTagsClient) Get(ctx context.Context) (result CostTags, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.CostTagsClient", "Get", nil, "Failure preparing request")
 		return
@@ -135,9 +132,9 @@ func (client CostTagsClient) Get(ctx context.Context, billingAccountID string) (
 }
 
 // GetPreparer prepares the Get request.
-func (client CostTagsClient) GetPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
+func (client CostTagsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", billingAccountID),
+		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"

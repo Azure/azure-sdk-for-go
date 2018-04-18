@@ -32,13 +32,13 @@ type UsageDetailsClient struct {
 }
 
 // NewUsageDetailsClient creates an instance of the UsageDetailsClient client.
-func NewUsageDetailsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsClient {
-	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return NewUsageDetailsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsageDetailsClientWithBaseURI creates an instance of the UsageDetailsClient client.
-func NewUsageDetailsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsClient {
-	return UsageDetailsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return UsageDetailsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the usage details for a scope by current billing period. Usage details are available via this API only

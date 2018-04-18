@@ -31,13 +31,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available consumption REST API operations.

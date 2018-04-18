@@ -32,26 +32,27 @@ type MarketplacesByBillingAccountClient struct {
 }
 
 // NewMarketplacesByBillingAccountClient creates an instance of the MarketplacesByBillingAccountClient client.
-func NewMarketplacesByBillingAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByBillingAccountClient {
-	return NewMarketplacesByBillingAccountClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByBillingAccountClient(subscriptionID string) MarketplacesByBillingAccountClient {
+	return NewMarketplacesByBillingAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMarketplacesByBillingAccountClientWithBaseURI creates an instance of the MarketplacesByBillingAccountClient
 // client.
-func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByBillingAccountClient {
-	return MarketplacesByBillingAccountClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByBillingAccountClient {
+	return MarketplacesByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the marketplaces for a scope by billingAccountId and current billing period. Marketplaces are available
 // via this API only for May 1, 2014 or later.
 //
-// filter is may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
-// time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',
-// 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. top is may be used to
-// limit the number of results to the most recent N marketplaces. skiptoken is skiptoken is only used if a previous
-// operation returned a partial result. If a previous response contains a nextLink element, the value of the
-// nextLink element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
-func (client MarketplacesByBillingAccountClient) List(ctx context.Context, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+// billingAccountID is billingAccount ID filter is may be used to filter marketplaces by properties/usageEnd (Utc
+// time), properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName or
+// properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
+// support 'ne', 'or', or 'not'. top is may be used to limit the number of results to the most recent N
+// marketplaces. skiptoken is skiptoken is only used if a previous operation returned a partial result. If a
+// previous response contains a nextLink element, the value of the nextLink element will include a skiptoken
+// parameter that specifies a starting point to use for subsequent calls.
+func (client MarketplacesByBillingAccountClient) List(ctx context.Context, billingAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -62,7 +63,7 @@ func (client MarketplacesByBillingAccountClient) List(ctx context.Context, filte
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter, top, skiptoken)
+	req, err := client.ListPreparer(ctx, billingAccountID, filter, top, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "List", nil, "Failure preparing request")
 		return
@@ -84,9 +85,9 @@ func (client MarketplacesByBillingAccountClient) List(ctx context.Context, filte
 }
 
 // ListPreparer prepares the List request.
-func (client MarketplacesByBillingAccountClient) ListPreparer(ctx context.Context, filter string, top *int32, skiptoken string) (*http.Request, error) {
+func (client MarketplacesByBillingAccountClient) ListPreparer(ctx context.Context, billingAccountID string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -153,22 +154,22 @@ func (client MarketplacesByBillingAccountClient) listNextResults(lastResults Mar
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesByBillingAccountClient) ListComplete(ctx context.Context, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter, top, skiptoken)
+func (client MarketplacesByBillingAccountClient) ListComplete(ctx context.Context, billingAccountID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.List(ctx, billingAccountID, filter, top, skiptoken)
 	return
 }
 
 // ListByBillingPeriod lists the marketplaces for a scope by billing period and billingAccountId. Marketplaces are
 // available via this API only for May 1, 2014 or later.
 //
-// billingPeriodName is billing Period Name. filter is may be used to filter marketplaces by properties/usageEnd
-// (Utc time), properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName or
-// properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently
-// support 'ne', 'or', or 'not'. top is may be used to limit the number of results to the most recent N
-// marketplaces. skiptoken is skiptoken is only used if a previous operation returned a partial result. If a
-// previous response contains a nextLink element, the value of the nextLink element will include a skiptoken
-// parameter that specifies a starting point to use for subsequent calls.
-func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+// billingAccountID is billingAccount ID billingPeriodName is billing Period Name. filter is may be used to filter
+// marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc time), properties/resourceGroup,
+// properties/instanceName or properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+// It does not currently support 'ne', 'or', or 'not'. top is may be used to limit the number of results to the
+// most recent N marketplaces. skiptoken is skiptoken is only used if a previous operation returned a partial
+// result. If a previous response contains a nextLink element, the value of the nextLink element will include a
+// skiptoken parameter that specifies a starting point to use for subsequent calls.
+func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -179,7 +180,7 @@ func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context
 	}
 
 	result.fn = client.listByBillingPeriodNextResults
-	req, err := client.ListByBillingPeriodPreparer(ctx, billingPeriodName, filter, top, skiptoken)
+	req, err := client.ListByBillingPeriodPreparer(ctx, billingAccountID, billingPeriodName, filter, top, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "ListByBillingPeriod", nil, "Failure preparing request")
 		return
@@ -201,9 +202,9 @@ func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context
 }
 
 // ListByBillingPeriodPreparer prepares the ListByBillingPeriod request.
-func (client MarketplacesByBillingAccountClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+func (client MarketplacesByBillingAccountClient) ListByBillingPeriodPreparer(ctx context.Context, billingAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId":  autorest.Encode("path", client.BillingAccountID),
+		"billingAccountId":  autorest.Encode("path", billingAccountID),
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 	}
 
@@ -271,7 +272,7 @@ func (client MarketplacesByBillingAccountClient) listByBillingPeriodNextResults(
 }
 
 // ListByBillingPeriodComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesByBillingAccountClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.ListByBillingPeriod(ctx, billingPeriodName, filter, top, skiptoken)
+func (client MarketplacesByBillingAccountClient) ListByBillingPeriodComplete(ctx context.Context, billingAccountID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListByBillingPeriod(ctx, billingAccountID, billingPeriodName, filter, top, skiptoken)
 	return
 }

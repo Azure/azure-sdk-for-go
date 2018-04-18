@@ -32,13 +32,13 @@ type BudgetsClient struct {
 }
 
 // NewBudgetsClient creates an instance of the BudgetsClient client.
-func NewBudgetsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BudgetsClient {
-	return NewBudgetsClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return NewBudgetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewBudgetsClientWithBaseURI creates an instance of the BudgetsClient client.
-func NewBudgetsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BudgetsClient {
-	return BudgetsClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return BudgetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update a budget. Update operation requires latest eTag to be set in the

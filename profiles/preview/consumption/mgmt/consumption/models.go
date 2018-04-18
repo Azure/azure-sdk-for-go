@@ -148,53 +148,53 @@ type UsageDetailsByBillingAccountClient = original.UsageDetailsByBillingAccountC
 type UsageDetailsByDepartmentClient = original.UsageDetailsByDepartmentClient
 type UsageDetailsByEnrollmentAccountClient = original.UsageDetailsByEnrollmentAccountClient
 
-func NewBudgetsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewBudgetsClient(subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClient(subscriptionID)
 }
-func NewBudgetsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
+	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
-	return original.New(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewCostTagsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewCostTagsClient(subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClient(subscriptionID)
 }
-func NewCostTagsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
+	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewGetBalancesByBillingAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) GetBalancesByBillingAccountClient {
-	return original.NewGetBalancesByBillingAccountClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewGetBalancesByBillingAccountClient(subscriptionID string) GetBalancesByBillingAccountClient {
+	return original.NewGetBalancesByBillingAccountClient(subscriptionID)
 }
-func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) GetBalancesByBillingAccountClient {
-	return original.NewGetBalancesByBillingAccountClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) GetBalancesByBillingAccountClient {
+	return original.NewGetBalancesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClient(subscriptionID)
 }
-func NewMarketplacesClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
+	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesByBillingAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByBillingAccountClient {
-	return original.NewMarketplacesByBillingAccountClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByBillingAccountClient(subscriptionID string) MarketplacesByBillingAccountClient {
+	return original.NewMarketplacesByBillingAccountClient(subscriptionID)
 }
-func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByBillingAccountClient {
-	return original.NewMarketplacesByBillingAccountClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByBillingAccountClient {
+	return original.NewMarketplacesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesByDepartmentClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByDepartmentClient {
-	return original.NewMarketplacesByDepartmentClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepartmentClient {
+	return original.NewMarketplacesByDepartmentClient(subscriptionID)
 }
-func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByDepartmentClient {
-	return original.NewMarketplacesByDepartmentClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
+	return original.NewMarketplacesByDepartmentClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMarketplacesByEnrollmentAccountsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByEnrollmentAccountsClient {
-	return original.NewMarketplacesByEnrollmentAccountsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByEnrollmentAccountsClient(subscriptionID string) MarketplacesByEnrollmentAccountsClient {
+	return original.NewMarketplacesByEnrollmentAccountsClient(subscriptionID)
 }
-func NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) MarketplacesByEnrollmentAccountsClient {
-	return original.NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByEnrollmentAccountsClient {
+	return original.NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleBillingFrequencyValues() []BillingFrequency {
 	return original.PossibleBillingFrequencyValues()
@@ -214,65 +214,65 @@ func PossiblePriceHiddenValues() []PriceHidden {
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
 }
-func NewOperationsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPriceSheetClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
 }
-func NewPriceSheetClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationRecommendationsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClient(subscriptionID)
 }
-func NewReservationRecommendationsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsDetailsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID)
 }
-func NewReservationsDetailsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewReservationsSummariesClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClient(subscriptionID)
 }
-func NewReservationsSummariesClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTagsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) TagsClient {
-	return original.NewTagsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
 }
-func NewTagsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClient(subscriptionID)
 }
-func NewUsageDetailsClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsByBillingAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByBillingAccountClient {
-	return original.NewUsageDetailsByBillingAccountClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByBillingAccountClient(subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClient(subscriptionID)
 }
-func NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByBillingAccountClient {
-	return original.NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsByDepartmentClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByDepartmentClient {
-	return original.NewUsageDetailsByDepartmentClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByDepartmentClient(subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClient(subscriptionID)
 }
-func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByDepartmentClient {
-	return original.NewUsageDetailsByDepartmentClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsageDetailsByEnrollmentAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
-	return original.NewUsageDetailsByEnrollmentAccountClient(billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByEnrollmentAccountClient(subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClient(subscriptionID)
 }
-func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
-	return original.NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

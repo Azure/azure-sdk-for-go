@@ -32,29 +32,30 @@ type UsageDetailsByDepartmentClient struct {
 }
 
 // NewUsageDetailsByDepartmentClient creates an instance of the UsageDetailsByDepartmentClient client.
-func NewUsageDetailsByDepartmentClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByDepartmentClient {
-	return NewUsageDetailsByDepartmentClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByDepartmentClient(subscriptionID string) UsageDetailsByDepartmentClient {
+	return NewUsageDetailsByDepartmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsageDetailsByDepartmentClientWithBaseURI creates an instance of the UsageDetailsByDepartmentClient client.
-func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByDepartmentClient {
-	return UsageDetailsByDepartmentClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByDepartmentClient {
+	return UsageDetailsByDepartmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the usage details by departmentId for a scope by current billing period. Usage details are available via
 // this API only for May 1, 2014 or later.
 //
-// expand is may be used to expand the properties/additionalProperties or properties/meterDetails within a list of
-// usage details. By default, these fields are not included when listing usage details. filter is may be used to
-// filter usageDetails by properties/usageEnd (Utc time), properties/usageStart (Utc time),
-// properties/resourceGroup, properties/instanceName, properties/instanceId or tags. The filter supports 'eq',
-// 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value
-// pair string where key and value is separated by a colon (:). skiptoken is skiptoken is only used if a previous
-// operation returned a partial result. If a previous response contains a nextLink element, the value of the
-// nextLink element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
-// top is may be used to limit the number of results to the most recent N usageDetails. apply is oData apply
-// expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsByDepartmentClient) List(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+// departmentID is department ID expand is may be used to expand the properties/additionalProperties or
+// properties/meterDetails within a list of usage details. By default, these fields are not included when listing
+// usage details. filter is may be used to filter usageDetails by properties/usageEnd (Utc time),
+// properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName, properties/instanceId or
+// tags. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
+// 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:). skiptoken is
+// skiptoken is only used if a previous operation returned a partial result. If a previous response contains a
+// nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting
+// point to use for subsequent calls. top is may be used to limit the number of results to the most recent N
+// usageDetails. apply is oData apply expression to aggregate usageDetails by tags or (tags and
+// properties/usageStart)
+func (client UsageDetailsByDepartmentClient) List(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -65,7 +66,7 @@ func (client UsageDetailsByDepartmentClient) List(ctx context.Context, expand st
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, expand, filter, skiptoken, top, apply)
+	req, err := client.ListPreparer(ctx, departmentID, expand, filter, skiptoken, top, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByDepartmentClient", "List", nil, "Failure preparing request")
 		return
@@ -87,9 +88,9 @@ func (client UsageDetailsByDepartmentClient) List(ctx context.Context, expand st
 }
 
 // ListPreparer prepares the List request.
-func (client UsageDetailsByDepartmentClient) ListPreparer(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsByDepartmentClient) ListPreparer(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"departmentId": autorest.Encode("path", client.DepartmentID),
+		"departmentId": autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -162,26 +163,26 @@ func (client UsageDetailsByDepartmentClient) listNextResults(lastResults UsageDe
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsByDepartmentClient) ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
-	result.page, err = client.List(ctx, expand, filter, skiptoken, top, apply)
+func (client UsageDetailsByDepartmentClient) ListComplete(ctx context.Context, departmentID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+	result.page, err = client.List(ctx, departmentID, expand, filter, skiptoken, top, apply)
 	return
 }
 
 // ListByBillingPeriod lists the usage details  based on departmentId for a scope by billing period. Usage details are
 // available via this API only for May 1, 2014 or later.
 //
-// billingPeriodName is billing Period Name. expand is may be used to expand the properties/additionalProperties or
-// properties/meterDetails within a list of usage details. By default, these fields are not included when listing
-// usage details. filter is may be used to filter usageDetails by properties/usageEnd (Utc time),
-// properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName or properties/instanceId.
-// The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-// Tag filter is a key value pair string where key and value is separated by a colon (:). apply is oData apply
-// expression to aggregate usageDetails by tags or (tags and properties/usageStart) for specified billing period
-// skiptoken is skiptoken is only used if a previous operation returned a partial result. If a previous response
-// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-// a starting point to use for subsequent calls. top is may be used to limit the number of results to the most
-// recent N usageDetails.
-func (client UsageDetailsByDepartmentClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+// departmentID is department ID billingPeriodName is billing Period Name. expand is may be used to expand the
+// properties/additionalProperties or properties/meterDetails within a list of usage details. By default, these
+// fields are not included when listing usage details. filter is may be used to filter usageDetails by
+// properties/usageEnd (Utc time), properties/usageStart (Utc time), properties/resourceGroup,
+// properties/instanceName or properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+// It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is
+// separated by a colon (:). apply is oData apply expression to aggregate usageDetails by tags or (tags and
+// properties/usageStart) for specified billing period skiptoken is skiptoken is only used if a previous operation
+// returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element
+// will include a skiptoken parameter that specifies a starting point to use for subsequent calls. top is may be
+// used to limit the number of results to the most recent N usageDetails.
+func (client UsageDetailsByDepartmentClient) ListByBillingPeriod(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -192,7 +193,7 @@ func (client UsageDetailsByDepartmentClient) ListByBillingPeriod(ctx context.Con
 	}
 
 	result.fn = client.listByBillingPeriodNextResults
-	req, err := client.ListByBillingPeriodPreparer(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
+	req, err := client.ListByBillingPeriodPreparer(ctx, departmentID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByDepartmentClient", "ListByBillingPeriod", nil, "Failure preparing request")
 		return
@@ -214,10 +215,10 @@ func (client UsageDetailsByDepartmentClient) ListByBillingPeriod(ctx context.Con
 }
 
 // ListByBillingPeriodPreparer prepares the ListByBillingPeriod request.
-func (client UsageDetailsByDepartmentClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsByDepartmentClient) ListByBillingPeriodPreparer(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
-		"departmentId":      autorest.Encode("path", client.DepartmentID),
+		"departmentId":      autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -290,7 +291,7 @@ func (client UsageDetailsByDepartmentClient) listByBillingPeriodNextResults(last
 }
 
 // ListByBillingPeriodComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsByDepartmentClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
-	result.page, err = client.ListByBillingPeriod(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
+func (client UsageDetailsByDepartmentClient) ListByBillingPeriodComplete(ctx context.Context, departmentID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+	result.page, err = client.ListByBillingPeriod(ctx, departmentID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }

@@ -35,34 +35,30 @@ const (
 // BaseClient is the base client for Consumption.
 type BaseClient struct {
 	autorest.Client
-	BaseURI             string
-	BillingAccountID    string
-	DepartmentID        string
-	EnrollmentAccountID string
-	SubscriptionID      string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:              autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:             baseURI,
-		BillingAccountID:    billingAccountID,
-		DepartmentID:        departmentID,
-		EnrollmentAccountID: enrollmentAccountID,
-		SubscriptionID:      subscriptionID,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }
 
 // GetBalancesByBillingAccount gets the balances for a scope by billingAccountId. Balances are available via this API
 // only for May 1, 2014 or later.
-func (client BaseClient) GetBalancesByBillingAccount(ctx context.Context) (result Balance, err error) {
-	req, err := client.GetBalancesByBillingAccountPreparer(ctx)
+//
+// billingAccountID is billingAccount ID
+func (client BaseClient) GetBalancesByBillingAccount(ctx context.Context, billingAccountID string) (result Balance, err error) {
+	req, err := client.GetBalancesByBillingAccountPreparer(ctx, billingAccountID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BaseClient", "GetBalancesByBillingAccount", nil, "Failure preparing request")
 		return
@@ -84,9 +80,9 @@ func (client BaseClient) GetBalancesByBillingAccount(ctx context.Context) (resul
 }
 
 // GetBalancesByBillingAccountPreparer prepares the GetBalancesByBillingAccount request.
-func (client BaseClient) GetBalancesByBillingAccountPreparer(ctx context.Context) (*http.Request, error) {
+func (client BaseClient) GetBalancesByBillingAccountPreparer(ctx context.Context, billingAccountID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId": autorest.Encode("path", client.BillingAccountID),
+		"billingAccountId": autorest.Encode("path", billingAccountID),
 	}
 
 	const APIVersion = "2018-03-31"

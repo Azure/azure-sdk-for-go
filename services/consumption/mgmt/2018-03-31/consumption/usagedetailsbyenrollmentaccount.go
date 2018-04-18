@@ -32,30 +32,31 @@ type UsageDetailsByEnrollmentAccountClient struct {
 }
 
 // NewUsageDetailsByEnrollmentAccountClient creates an instance of the UsageDetailsByEnrollmentAccountClient client.
-func NewUsageDetailsByEnrollmentAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
-	return NewUsageDetailsByEnrollmentAccountClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewUsageDetailsByEnrollmentAccountClient(subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return NewUsageDetailsByEnrollmentAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsageDetailsByEnrollmentAccountClientWithBaseURI creates an instance of the UsageDetailsByEnrollmentAccountClient
 // client.
-func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
-	return UsageDetailsByEnrollmentAccountClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return UsageDetailsByEnrollmentAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists the usage details by enrollmentAccountId for a scope by current billing period. Usage details are
 // available via this API only for May 1, 2014 or later.
 //
-// expand is may be used to expand the properties/additionalProperties or properties/meterDetails within a list of
-// usage details. By default, these fields are not included when listing usage details. filter is may be used to
-// filter usageDetails by properties/usageEnd (Utc time), properties/usageStart (Utc time),
-// properties/resourceGroup, properties/instanceName, properties/instanceId or tags. The filter supports 'eq',
-// 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value
-// pair string where key and value is separated by a colon (:). skiptoken is skiptoken is only used if a previous
-// operation returned a partial result. If a previous response contains a nextLink element, the value of the
-// nextLink element will include a skiptoken parameter that specifies a starting point to use for subsequent calls.
-// top is may be used to limit the number of results to the most recent N usageDetails. apply is oData apply
-// expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+// enrollmentAccountID is enrollmentAccount ID expand is may be used to expand the properties/additionalProperties
+// or properties/meterDetails within a list of usage details. By default, these fields are not included when
+// listing usage details. filter is may be used to filter usageDetails by properties/usageEnd (Utc time),
+// properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName, properties/instanceId or
+// tags. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or
+// 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:). skiptoken is
+// skiptoken is only used if a previous operation returned a partial result. If a previous response contains a
+// nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting
+// point to use for subsequent calls. top is may be used to limit the number of results to the most recent N
+// usageDetails. apply is oData apply expression to aggregate usageDetails by tags or (tags and
+// properties/usageStart)
+func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -66,7 +67,7 @@ func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, ex
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, expand, filter, skiptoken, top, apply)
+	req, err := client.ListPreparer(ctx, enrollmentAccountID, expand, filter, skiptoken, top, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByEnrollmentAccountClient", "List", nil, "Failure preparing request")
 		return
@@ -88,9 +89,9 @@ func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, ex
 }
 
 // ListPreparer prepares the List request.
-func (client UsageDetailsByEnrollmentAccountClient) ListPreparer(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsByEnrollmentAccountClient) ListPreparer(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"enrollmentAccountId": autorest.Encode("path", client.EnrollmentAccountID),
+		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -163,26 +164,26 @@ func (client UsageDetailsByEnrollmentAccountClient) listNextResults(lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsByEnrollmentAccountClient) ListComplete(ctx context.Context, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
-	result.page, err = client.List(ctx, expand, filter, skiptoken, top, apply)
+func (client UsageDetailsByEnrollmentAccountClient) ListComplete(ctx context.Context, enrollmentAccountID string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+	result.page, err = client.List(ctx, enrollmentAccountID, expand, filter, skiptoken, top, apply)
 	return
 }
 
 // ListByBillingPeriod lists the usage details based on enrollmentAccountId for a scope by billing period. Usage
 // details are available via this API only for May 1, 2014 or later.
 //
-// billingPeriodName is billing Period Name. expand is may be used to expand the properties/additionalProperties or
-// properties/meterDetails within a list of usage details. By default, these fields are not included when listing
-// usage details. filter is may be used to filter usageDetails by properties/usageEnd (Utc time),
-// properties/usageStart (Utc time), properties/resourceGroup, properties/instanceName or properties/instanceId.
-// The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
-// Tag filter is a key value pair string where key and value is separated by a colon (:). apply is oData apply
-// expression to aggregate usageDetails by tags or (tags and properties/usageStart) for specified billing period
-// skiptoken is skiptoken is only used if a previous operation returned a partial result. If a previous response
-// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-// a starting point to use for subsequent calls. top is may be used to limit the number of results to the most
-// recent N usageDetails.
-func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
+// enrollmentAccountID is enrollmentAccount ID billingPeriodName is billing Period Name. expand is may be used to
+// expand the properties/additionalProperties or properties/meterDetails within a list of usage details. By
+// default, these fields are not included when listing usage details. filter is may be used to filter usageDetails
+// by properties/usageEnd (Utc time), properties/usageStart (Utc time), properties/resourceGroup,
+// properties/instanceName or properties/instanceId. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
+// It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is
+// separated by a colon (:). apply is oData apply expression to aggregate usageDetails by tags or (tags and
+// properties/usageStart) for specified billing period skiptoken is skiptoken is only used if a previous operation
+// returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element
+// will include a skiptoken parameter that specifies a starting point to use for subsequent calls. top is may be
+// used to limit the number of results to the most recent N usageDetails.
+func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
@@ -193,7 +194,7 @@ func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx cont
 	}
 
 	result.fn = client.listByBillingPeriodNextResults
-	req, err := client.ListByBillingPeriodPreparer(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
+	req, err := client.ListByBillingPeriodPreparer(ctx, enrollmentAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByEnrollmentAccountClient", "ListByBillingPeriod", nil, "Failure preparing request")
 		return
@@ -215,10 +216,10 @@ func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx cont
 }
 
 // ListByBillingPeriodPreparer prepares the ListByBillingPeriod request.
-func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
+func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodPreparer(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName":   autorest.Encode("path", billingPeriodName),
-		"enrollmentAccountId": autorest.Encode("path", client.EnrollmentAccountID),
+		"enrollmentAccountId": autorest.Encode("path", enrollmentAccountID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -291,7 +292,7 @@ func (client UsageDetailsByEnrollmentAccountClient) listByBillingPeriodNextResul
 }
 
 // ListByBillingPeriodComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
-	result.page, err = client.ListByBillingPeriod(ctx, billingPeriodName, expand, filter, apply, skiptoken, top)
+func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodComplete(ctx context.Context, enrollmentAccountID string, billingPeriodName string, expand string, filter string, apply string, skiptoken string, top *int32) (result UsageDetailsListResultIterator, err error) {
+	result.page, err = client.ListByBillingPeriod(ctx, enrollmentAccountID, billingPeriodName, expand, filter, apply, skiptoken, top)
 	return
 }

@@ -31,21 +31,21 @@ type GetBalancesByBillingAccountClient struct {
 }
 
 // NewGetBalancesByBillingAccountClient creates an instance of the GetBalancesByBillingAccountClient client.
-func NewGetBalancesByBillingAccountClient(billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) GetBalancesByBillingAccountClient {
-	return NewGetBalancesByBillingAccountClientWithBaseURI(DefaultBaseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)
+func NewGetBalancesByBillingAccountClient(subscriptionID string) GetBalancesByBillingAccountClient {
+	return NewGetBalancesByBillingAccountClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewGetBalancesByBillingAccountClientWithBaseURI creates an instance of the GetBalancesByBillingAccountClient client.
-func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, billingAccountID string, departmentID string, enrollmentAccountID string, subscriptionID string) GetBalancesByBillingAccountClient {
-	return GetBalancesByBillingAccountClient{NewWithBaseURI(baseURI, billingAccountID, departmentID, enrollmentAccountID, subscriptionID)}
+func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) GetBalancesByBillingAccountClient {
+	return GetBalancesByBillingAccountClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ByBillingPeriod gets the balances for a scope by billing period and billingAccountId. Balances are available via
 // this API only for May 1, 2014 or later.
 //
-// billingPeriodName is billing Period Name.
-func (client GetBalancesByBillingAccountClient) ByBillingPeriod(ctx context.Context, billingPeriodName string) (result Balance, err error) {
-	req, err := client.ByBillingPeriodPreparer(ctx, billingPeriodName)
+// billingAccountID is billingAccount ID billingPeriodName is billing Period Name.
+func (client GetBalancesByBillingAccountClient) ByBillingPeriod(ctx context.Context, billingAccountID string, billingPeriodName string) (result Balance, err error) {
+	req, err := client.ByBillingPeriodPreparer(ctx, billingAccountID, billingPeriodName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.GetBalancesByBillingAccountClient", "ByBillingPeriod", nil, "Failure preparing request")
 		return
@@ -67,9 +67,9 @@ func (client GetBalancesByBillingAccountClient) ByBillingPeriod(ctx context.Cont
 }
 
 // ByBillingPeriodPreparer prepares the ByBillingPeriod request.
-func (client GetBalancesByBillingAccountClient) ByBillingPeriodPreparer(ctx context.Context, billingPeriodName string) (*http.Request, error) {
+func (client GetBalancesByBillingAccountClient) ByBillingPeriodPreparer(ctx context.Context, billingAccountID string, billingPeriodName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountId":  autorest.Encode("path", client.BillingAccountID),
+		"billingAccountId":  autorest.Encode("path", billingAccountID),
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
 	}
 

@@ -120,6 +120,87 @@ func (client FactoriesClient) CancelPipelineRunResponder(resp *http.Response) (r
 	return
 }
 
+// ConfigureRepo updates a factory's repo information.
+//
+// resourceGroupName is the resource group name. factoryName is the factory name. factoryRepoUpdate is update
+// factory repo request definition.
+func (client FactoriesClient) ConfigureRepo(ctx context.Context, resourceGroupName string, factoryName string, factoryRepoUpdate FactoryRepoUpdate) (result Factory, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.FactoriesClient", "ConfigureRepo", err.Error())
+	}
+
+	req, err := client.ConfigureRepoPreparer(ctx, resourceGroupName, factoryName, factoryRepoUpdate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ConfigureRepo", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ConfigureRepoSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ConfigureRepo", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ConfigureRepoResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ConfigureRepo", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ConfigureRepoPreparer prepares the ConfigureRepo request.
+func (client FactoriesClient) ConfigureRepoPreparer(ctx context.Context, resourceGroupName string, factoryName string, factoryRepoUpdate FactoryRepoUpdate) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/configureRepo", pathParameters),
+		autorest.WithJSON(factoryRepoUpdate),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ConfigureRepoSender sends the ConfigureRepo request. The method will close the
+// http.Response Body if it receives an error.
+func (client FactoriesClient) ConfigureRepoSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ConfigureRepoResponder handles the response to the ConfigureRepo request. The method always
+// closes the http.Response Body.
+func (client FactoriesClient) ConfigureRepoResponder(resp *http.Response) (result Factory, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate creates or updates a factory.
 //
 // resourceGroupName is the resource group name. factoryName is the factory name. factory is factory resource

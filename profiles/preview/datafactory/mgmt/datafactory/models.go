@@ -28,7 +28,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ConfigureRepoClient = original.ConfigureRepoClient
 type DatasetsClient = original.DatasetsClient
 type FactoriesClient = original.FactoriesClient
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
@@ -1334,12 +1333,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewConfigureRepoClient(subscriptionID string) ConfigureRepoClient {
-	return original.NewConfigureRepoClient(subscriptionID)
-}
-func NewConfigureRepoClientWithBaseURI(baseURI string, subscriptionID string) ConfigureRepoClient {
-	return original.NewConfigureRepoClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatasetsClient(subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClient(subscriptionID)

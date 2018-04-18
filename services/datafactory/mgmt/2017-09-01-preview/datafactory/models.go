@@ -1243,6 +1243,8 @@ const (
 	TypeQuickBooksSource TypeBasicCopySource = "QuickBooksSource"
 	// TypeRelationalSource ...
 	TypeRelationalSource TypeBasicCopySource = "RelationalSource"
+	// TypeResponsysSource ...
+	TypeResponsysSource TypeBasicCopySource = "ResponsysSource"
 	// TypeSalesforceMarketingCloudSource ...
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = "SalesforceMarketingCloudSource"
 	// TypeSalesforceSource ...
@@ -1275,7 +1277,7 @@ const (
 
 // PossibleTypeBasicCopySourceValues returns an array of possible values for the TypeBasicCopySource const type.
 func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
-	return []TypeBasicCopySource{TypeAmazonMWSSource, TypeAmazonRedshiftSource, TypeAzureDataLakeStoreSource, TypeAzureMySQLSource, TypeAzurePostgreSQLSource, TypeAzureTableSource, TypeBlobSource, TypeCassandraSource, TypeConcurSource, TypeCopySource, TypeCouchbaseSource, TypeDocumentDbCollectionSource, TypeDrillSource, TypeDynamicsSource, TypeEloquaSource, TypeFileSystemSource, TypeGoogleBigQuerySource, TypeGreenplumSource, TypeHBaseSource, TypeHdfsSource, TypeHiveSource, TypeHTTPSource, TypeHubspotSource, TypeImpalaSource, TypeJiraSource, TypeMagentoSource, TypeMariaDBSource, TypeMarketoSource, TypeMongoDbSource, TypeNetezzaSource, TypeOracleSource, TypePaypalSource, TypePhoenixSource, TypePrestoSource, TypeQuickBooksSource, TypeRelationalSource, TypeSalesforceMarketingCloudSource, TypeSalesforceSource, TypeSapCloudForCustomerSource, TypeSapEccSource, TypeServiceNowSource, TypeShopifySource, TypeSparkSource, TypeSQLDWSource, TypeSQLSource, TypeSquareSource, TypeVerticaSource, TypeWebSource, TypeXeroSource, TypeZohoSource}
+	return []TypeBasicCopySource{TypeAmazonMWSSource, TypeAmazonRedshiftSource, TypeAzureDataLakeStoreSource, TypeAzureMySQLSource, TypeAzurePostgreSQLSource, TypeAzureTableSource, TypeBlobSource, TypeCassandraSource, TypeConcurSource, TypeCopySource, TypeCouchbaseSource, TypeDocumentDbCollectionSource, TypeDrillSource, TypeDynamicsSource, TypeEloquaSource, TypeFileSystemSource, TypeGoogleBigQuerySource, TypeGreenplumSource, TypeHBaseSource, TypeHdfsSource, TypeHiveSource, TypeHTTPSource, TypeHubspotSource, TypeImpalaSource, TypeJiraSource, TypeMagentoSource, TypeMariaDBSource, TypeMarketoSource, TypeMongoDbSource, TypeNetezzaSource, TypeOracleSource, TypePaypalSource, TypePhoenixSource, TypePrestoSource, TypeQuickBooksSource, TypeRelationalSource, TypeResponsysSource, TypeSalesforceMarketingCloudSource, TypeSalesforceSource, TypeSapCloudForCustomerSource, TypeSapEccSource, TypeServiceNowSource, TypeShopifySource, TypeSparkSource, TypeSQLDWSource, TypeSQLSource, TypeSquareSource, TypeVerticaSource, TypeWebSource, TypeXeroSource, TypeZohoSource}
 }
 
 // TypeBasicCopyTranslator enumerates the values for type basic copy translator.
@@ -1377,6 +1379,8 @@ const (
 	TypeQuickBooksObject TypeBasicDataset = "QuickBooksObject"
 	// TypeRelationalTable ...
 	TypeRelationalTable TypeBasicDataset = "RelationalTable"
+	// TypeResponsysObject ...
+	TypeResponsysObject TypeBasicDataset = "ResponsysObject"
 	// TypeSalesforceMarketingCloudObject ...
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = "SalesforceMarketingCloudObject"
 	// TypeSalesforceObject ...
@@ -1407,7 +1411,7 @@ const (
 
 // PossibleTypeBasicDatasetValues returns an array of possible values for the TypeBasicDataset const type.
 func PossibleTypeBasicDatasetValues() []TypeBasicDataset {
-	return []TypeBasicDataset{TypeAmazonMWSObject, TypeAmazonS3Object, TypeAzureBlob, TypeAzureDataLakeStoreFile, TypeAzureMySQLTable, TypeAzurePostgreSQLTable, TypeAzureSearchIndex, TypeAzureSQLDWTable, TypeAzureSQLTable, TypeAzureTable, TypeCassandraTable, TypeConcurObject, TypeCouchbaseTable, TypeCustomDataset, TypeDataset, TypeDocumentDbCollection, TypeDrillTable, TypeDynamicsEntity, TypeEloquaObject, TypeFileShare, TypeGoogleBigQueryObject, TypeGreenplumTable, TypeHBaseObject, TypeHiveObject, TypeHTTPFile, TypeHubspotObject, TypeImpalaObject, TypeJiraObject, TypeMagentoObject, TypeMariaDBTable, TypeMarketoObject, TypeMongoDbCollection, TypeNetezzaTable, TypeODataResource, TypeOracleTable, TypePaypalObject, TypePhoenixObject, TypePrestoObject, TypeQuickBooksObject, TypeRelationalTable, TypeSalesforceMarketingCloudObject, TypeSalesforceObject, TypeSapCloudForCustomerResource, TypeSapEccResource, TypeServiceNowObject, TypeShopifyObject, TypeSparkObject, TypeSQLServerTable, TypeSquareObject, TypeVerticaTable, TypeWebTable, TypeXeroObject, TypeZohoObject}
+	return []TypeBasicDataset{TypeAmazonMWSObject, TypeAmazonS3Object, TypeAzureBlob, TypeAzureDataLakeStoreFile, TypeAzureMySQLTable, TypeAzurePostgreSQLTable, TypeAzureSearchIndex, TypeAzureSQLDWTable, TypeAzureSQLTable, TypeAzureTable, TypeCassandraTable, TypeConcurObject, TypeCouchbaseTable, TypeCustomDataset, TypeDataset, TypeDocumentDbCollection, TypeDrillTable, TypeDynamicsEntity, TypeEloquaObject, TypeFileShare, TypeGoogleBigQueryObject, TypeGreenplumTable, TypeHBaseObject, TypeHiveObject, TypeHTTPFile, TypeHubspotObject, TypeImpalaObject, TypeJiraObject, TypeMagentoObject, TypeMariaDBTable, TypeMarketoObject, TypeMongoDbCollection, TypeNetezzaTable, TypeODataResource, TypeOracleTable, TypePaypalObject, TypePhoenixObject, TypePrestoObject, TypeQuickBooksObject, TypeRelationalTable, TypeResponsysObject, TypeSalesforceMarketingCloudObject, TypeSalesforceObject, TypeSapCloudForCustomerResource, TypeSapEccResource, TypeServiceNowObject, TypeShopifyObject, TypeSparkObject, TypeSQLServerTable, TypeSquareObject, TypeVerticaTable, TypeWebTable, TypeXeroObject, TypeZohoObject}
 }
 
 // TypeBasicDatasetCompression enumerates the values for type basic dataset compression.
@@ -1596,6 +1600,8 @@ const (
 	TypePresto TypeBasicLinkedService = "Presto"
 	// TypeQuickBooks ...
 	TypeQuickBooks TypeBasicLinkedService = "QuickBooks"
+	// TypeResponsys ...
+	TypeResponsys TypeBasicLinkedService = "Responsys"
 	// TypeSalesforce ...
 	TypeSalesforce TypeBasicLinkedService = "Salesforce"
 	// TypeSalesforceMarketingCloud ...
@@ -1636,7 +1642,7 @@ const (
 
 // PossibleTypeBasicLinkedServiceValues returns an array of possible values for the TypeBasicLinkedService const type.
 func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
-	return []TypeBasicLinkedService{TypeAmazonMWS, TypeAmazonRedshift, TypeAmazonS3, TypeAzureBatch, TypeAzureDatabricks, TypeAzureDataLakeAnalytics, TypeAzureDataLakeStore, TypeAzureKeyVault, TypeAzureML, TypeAzureMySQL, TypeAzurePostgreSQL, TypeAzureSearch, TypeAzureSQLDatabase, TypeAzureSQLDW, TypeAzureStorage, TypeCassandra, TypeConcur, TypeCosmosDb, TypeCouchbase, TypeCustomDataSource, TypeDb2, TypeDrill, TypeDynamics, TypeEloqua, TypeFileServer, TypeFtpServer, TypeGoogleBigQuery, TypeGreenplum, TypeHBase, TypeHdfs, TypeHDInsight, TypeHDInsightOnDemand, TypeHive, TypeHTTPServer, TypeHubspot, TypeImpala, TypeJira, TypeLinkedService, TypeMagento, TypeMariaDB, TypeMarketo, TypeMongoDb, TypeMySQL, TypeNetezza, TypeOData, TypeOdbc, TypeOracle, TypePaypal, TypePhoenix, TypePostgreSQL, TypePresto, TypeQuickBooks, TypeSalesforce, TypeSalesforceMarketingCloud, TypeSapBW, TypeSapCloudForCustomer, TypeSapEcc, TypeSapHana, TypeServiceNow, TypeSftp, TypeShopify, TypeSpark, TypeSQLServer, TypeSquare, TypeSybase, TypeTeradata, TypeVertica, TypeWeb, TypeXero, TypeZoho}
+	return []TypeBasicLinkedService{TypeAmazonMWS, TypeAmazonRedshift, TypeAmazonS3, TypeAzureBatch, TypeAzureDatabricks, TypeAzureDataLakeAnalytics, TypeAzureDataLakeStore, TypeAzureKeyVault, TypeAzureML, TypeAzureMySQL, TypeAzurePostgreSQL, TypeAzureSearch, TypeAzureSQLDatabase, TypeAzureSQLDW, TypeAzureStorage, TypeCassandra, TypeConcur, TypeCosmosDb, TypeCouchbase, TypeCustomDataSource, TypeDb2, TypeDrill, TypeDynamics, TypeEloqua, TypeFileServer, TypeFtpServer, TypeGoogleBigQuery, TypeGreenplum, TypeHBase, TypeHdfs, TypeHDInsight, TypeHDInsightOnDemand, TypeHive, TypeHTTPServer, TypeHubspot, TypeImpala, TypeJira, TypeLinkedService, TypeMagento, TypeMariaDB, TypeMarketo, TypeMongoDb, TypeMySQL, TypeNetezza, TypeOData, TypeOdbc, TypeOracle, TypePaypal, TypePhoenix, TypePostgreSQL, TypePresto, TypeQuickBooks, TypeResponsys, TypeSalesforce, TypeSalesforceMarketingCloud, TypeSapBW, TypeSapCloudForCustomer, TypeSapEcc, TypeSapHana, TypeServiceNow, TypeSftp, TypeShopify, TypeSpark, TypeSQLServer, TypeSquare, TypeSybase, TypeTeradata, TypeVertica, TypeWeb, TypeXero, TypeZoho}
 }
 
 // TypeBasicTrigger enumerates the values for type basic trigger.
@@ -2261,7 +2267,7 @@ type AmazonMWSLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -2291,6 +2297,11 @@ func (amls AmazonMWSLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AmazonMWSLinkedService.
+func (amls AmazonMWSLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AmazonMWSLinkedService.
@@ -2870,7 +2881,7 @@ type AmazonMWSObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -2898,6 +2909,11 @@ func (amod AmazonMWSObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AmazonMWSObjectDataset.
+func (amod AmazonMWSObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AmazonMWSObjectDataset.
@@ -3180,7 +3196,7 @@ type AmazonMWSSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -3202,6 +3218,11 @@ func (ams AmazonMWSSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AmazonMWSSource.
 func (ams AmazonMWSSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AmazonMWSSource.
+func (ams AmazonMWSSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -3469,7 +3490,7 @@ type AmazonRedshiftLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -3499,6 +3520,11 @@ func (arls AmazonRedshiftLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AmazonRedshiftLinkedService.
+func (arls AmazonRedshiftLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AmazonRedshiftLinkedService.
@@ -4033,7 +4059,7 @@ type AmazonRedshiftSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -4059,6 +4085,11 @@ func (ars AmazonRedshiftSource) MarshalJSON() ([]byte, error) {
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AmazonRedshiftSource.
 func (ars AmazonRedshiftSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
 	return &ars, true
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AmazonRedshiftSource.
+func (ars AmazonRedshiftSource) AsResponsysSource() (*ResponsysSource, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudSource is the BasicCopySource implementation for AmazonRedshiftSource.
@@ -4327,7 +4358,7 @@ type AmazonS3Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -4358,6 +4389,11 @@ func (asd AmazonS3Dataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AmazonS3Dataset.
+func (asd AmazonS3Dataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AmazonS3Dataset.
@@ -4817,7 +4853,7 @@ type AmazonS3LinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -4847,6 +4883,11 @@ func (asls AmazonS3LinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AmazonS3LinkedService.
+func (asls AmazonS3LinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AmazonS3LinkedService.
@@ -5412,7 +5453,7 @@ type AzureBatchLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -5442,6 +5483,11 @@ func (abls AzureBatchLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureBatchLinkedService.
+func (abls AzureBatchLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureBatchLinkedService.
@@ -5980,7 +6026,7 @@ type AzureBlobDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -6011,6 +6057,11 @@ func (abd AzureBlobDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureBlobDataset.
+func (abd AzureBlobDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureBlobDataset.
@@ -6459,7 +6510,7 @@ type AzureDatabricksLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -6489,6 +6540,11 @@ func (adls AzureDatabricksLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureDatabricksLinkedService.
+func (adls AzureDatabricksLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureDatabricksLinkedService.
@@ -7063,7 +7119,7 @@ type AzureDataLakeAnalyticsLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -7093,6 +7149,11 @@ func (adlals AzureDataLakeAnalyticsLinkedService) MarshalJSON() ([]byte, error) 
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureDataLakeAnalyticsLinkedService.
+func (adlals AzureDataLakeAnalyticsLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureDataLakeAnalyticsLinkedService.
@@ -7653,7 +7714,7 @@ type AzureDataLakeStoreDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -7684,6 +7745,11 @@ func (adlsd AzureDataLakeStoreDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureDataLakeStoreDataset.
+func (adlsd AzureDataLakeStoreDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureDataLakeStoreDataset.
@@ -8121,7 +8187,7 @@ type AzureDataLakeStoreLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -8151,6 +8217,11 @@ func (adlsls AzureDataLakeStoreLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureDataLakeStoreLinkedService.
+func (adlsls AzureDataLakeStoreLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureDataLakeStoreLinkedService.
@@ -8823,7 +8894,7 @@ type AzureDataLakeStoreSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -8845,6 +8916,11 @@ func (adlss AzureDataLakeStoreSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AzureDataLakeStoreSource.
 func (adlss AzureDataLakeStoreSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AzureDataLakeStoreSource.
+func (adlss AzureDataLakeStoreSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -9112,7 +9188,7 @@ type AzureKeyVaultLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -9142,6 +9218,11 @@ func (akvls AzureKeyVaultLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureKeyVaultLinkedService.
+func (akvls AzureKeyVaultLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureKeyVaultLinkedService.
@@ -9953,7 +10034,7 @@ type AzureMLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -9983,6 +10064,11 @@ func (amls AzureMLLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureMLLinkedService.
+func (amls AzureMLLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureMLLinkedService.
@@ -10828,7 +10914,7 @@ type AzureMySQLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -10858,6 +10944,11 @@ func (amsls AzureMySQLLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureMySQLLinkedService.
+func (amsls AzureMySQLLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureMySQLLinkedService.
@@ -11346,7 +11437,7 @@ type AzureMySQLSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -11368,6 +11459,11 @@ func (amss AzureMySQLSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AzureMySQLSource.
 func (amss AzureMySQLSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AzureMySQLSource.
+func (amss AzureMySQLSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -11637,7 +11733,7 @@ type AzureMySQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -11668,6 +11764,11 @@ func (amstd AzureMySQLTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureMySQLTableDataset.
+func (amstd AzureMySQLTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureMySQLTableDataset.
@@ -12050,7 +12151,7 @@ type AzurePostgreSQLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -12080,6 +12181,11 @@ func (apsls AzurePostgreSQLLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzurePostgreSQLLinkedService.
+func (apsls AzurePostgreSQLLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzurePostgreSQLLinkedService.
@@ -12568,7 +12674,7 @@ type AzurePostgreSQLSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -12590,6 +12696,11 @@ func (apss AzurePostgreSQLSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AzurePostgreSQLSource.
 func (apss AzurePostgreSQLSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AzurePostgreSQLSource.
+func (apss AzurePostgreSQLSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -12857,7 +12968,7 @@ type AzurePostgreSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -12885,6 +12996,11 @@ func (apstd AzurePostgreSQLTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzurePostgreSQLTableDataset.
+func (apstd AzurePostgreSQLTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzurePostgreSQLTableDataset.
@@ -13286,7 +13402,7 @@ type AzureSearchIndexDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -13317,6 +13433,11 @@ func (asid AzureSearchIndexDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureSearchIndexDataset.
+func (asid AzureSearchIndexDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureSearchIndexDataset.
@@ -13817,7 +13938,7 @@ type AzureSearchLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -13847,6 +13968,11 @@ func (asls AzureSearchLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureSearchLinkedService.
+func (asls AzureSearchLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureSearchLinkedService.
@@ -14350,7 +14476,7 @@ type AzureSQLDatabaseLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -14380,6 +14506,11 @@ func (asdls AzureSQLDatabaseLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureSQLDatabaseLinkedService.
+func (asdls AzureSQLDatabaseLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureSQLDatabaseLinkedService.
@@ -14904,7 +15035,7 @@ type AzureSQLDWLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -14934,6 +15065,11 @@ func (asdls AzureSQLDWLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureSQLDWLinkedService.
+func (asdls AzureSQLDWLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureSQLDWLinkedService.
@@ -15460,7 +15596,7 @@ type AzureSQLDWTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -15491,6 +15627,11 @@ func (asdtd AzureSQLDWTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureSQLDWTableDataset.
+func (asdtd AzureSQLDWTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureSQLDWTableDataset.
@@ -15875,7 +16016,7 @@ type AzureSQLTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -15906,6 +16047,11 @@ func (astd AzureSQLTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureSQLTableDataset.
+func (astd AzureSQLTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureSQLTableDataset.
@@ -16288,7 +16434,7 @@ type AzureStorageLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -16318,6 +16464,11 @@ func (asls AzureStorageLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for AzureStorageLinkedService.
+func (asls AzureStorageLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for AzureStorageLinkedService.
@@ -16822,7 +16973,7 @@ type AzureTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -16853,6 +17004,11 @@ func (atd AzureTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for AzureTableDataset.
+func (atd AzureTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for AzureTableDataset.
@@ -17358,7 +17514,7 @@ type AzureTableSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -17381,6 +17537,11 @@ func (ats AzureTableSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for AzureTableSource.
 func (ats AzureTableSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for AzureTableSource.
+func (ats AzureTableSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -17775,7 +17936,7 @@ type BlobSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -17799,6 +17960,11 @@ func (bs BlobSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for BlobSource.
 func (bs BlobSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for BlobSource.
+func (bs BlobSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -18224,7 +18390,7 @@ type CassandraLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -18254,6 +18420,11 @@ func (cls CassandraLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for CassandraLinkedService.
+func (cls CassandraLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for CassandraLinkedService.
@@ -18788,7 +18959,7 @@ type CassandraSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -18813,6 +18984,11 @@ func (cs CassandraSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for CassandraSource.
 func (cs CassandraSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for CassandraSource.
+func (cs CassandraSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -19082,7 +19258,7 @@ type CassandraTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -19113,6 +19289,11 @@ func (ctd CassandraTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for CassandraTableDataset.
+func (ctd CassandraTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for CassandraTableDataset.
@@ -19497,7 +19678,7 @@ type ConcurLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -19527,6 +19708,11 @@ func (cls ConcurLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ConcurLinkedService.
+func (cls ConcurLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ConcurLinkedService.
@@ -20074,7 +20260,7 @@ type ConcurObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -20102,6 +20288,11 @@ func (cod ConcurObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ConcurObjectDataset.
+func (cod ConcurObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ConcurObjectDataset.
@@ -20384,7 +20575,7 @@ type ConcurSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -20406,6 +20597,11 @@ func (cs ConcurSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for ConcurSource.
 func (cs ConcurSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ConcurSource.
+func (cs ConcurSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -21551,6 +21747,7 @@ func (cs CopySink) AsBasicCopySink() (BasicCopySink, bool) {
 // BasicCopySource a copy activity source.
 type BasicCopySource interface {
 	AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool)
+	AsResponsysSource() (*ResponsysSource, bool)
 	AsSalesforceMarketingCloudSource() (*SalesforceMarketingCloudSource, bool)
 	AsVerticaSource() (*VerticaSource, bool)
 	AsNetezzaSource() (*NetezzaSource, bool)
@@ -21610,7 +21807,7 @@ type CopySource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -21626,6 +21823,10 @@ func unmarshalBasicCopySource(body []byte) (BasicCopySource, error) {
 		var ars AmazonRedshiftSource
 		err := json.Unmarshal(body, &ars)
 		return ars, err
+	case string(TypeResponsysSource):
+		var rs ResponsysSource
+		err := json.Unmarshal(body, &rs)
+		return rs, err
 	case string(TypeSalesforceMarketingCloudSource):
 		var smcs SalesforceMarketingCloudSource
 		err := json.Unmarshal(body, &smcs)
@@ -21860,6 +22061,11 @@ func (cs CopySource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for CopySource.
 func (cs CopySource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for CopySource.
+func (cs CopySource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -22206,7 +22412,7 @@ type CosmosDbLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -22236,6 +22442,11 @@ func (cdls CosmosDbLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for CosmosDbLinkedService.
+func (cdls CosmosDbLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for CosmosDbLinkedService.
@@ -22728,7 +22939,7 @@ type CouchbaseLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -22758,6 +22969,11 @@ func (cls CouchbaseLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for CouchbaseLinkedService.
+func (cls CouchbaseLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for CouchbaseLinkedService.
@@ -23246,7 +23462,7 @@ type CouchbaseSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -23268,6 +23484,11 @@ func (cs CouchbaseSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for CouchbaseSource.
 func (cs CouchbaseSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for CouchbaseSource.
+func (cs CouchbaseSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -23535,7 +23756,7 @@ type CouchbaseTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -23563,6 +23784,11 @@ func (ctd CouchbaseTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for CouchbaseTableDataset.
+func (ctd CouchbaseTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for CouchbaseTableDataset.
@@ -24178,7 +24404,7 @@ type CustomDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -24207,6 +24433,11 @@ func (cd CustomDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for CustomDataset.
+func (cd CustomDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for CustomDataset.
@@ -24493,7 +24724,7 @@ type CustomDataSourceLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -24521,6 +24752,11 @@ func (cdsls CustomDataSourceLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for CustomDataSourceLinkedService.
+func (cdsls CustomDataSourceLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for CustomDataSourceLinkedService.
@@ -25496,6 +25732,7 @@ func (dlauatp DataLakeAnalyticsUSQLActivityTypeProperties) MarshalJSON() ([]byte
 // BasicDataset the Azure Data Factory nested object which identifies data within different data stores, such as
 // tables, files, folders, and documents.
 type BasicDataset interface {
+	AsResponsysObjectDataset() (*ResponsysObjectDataset, bool)
 	AsSalesforceMarketingCloudObjectDataset() (*SalesforceMarketingCloudObjectDataset, bool)
 	AsVerticaTableDataset() (*VerticaTableDataset, bool)
 	AsNetezzaTableDataset() (*NetezzaTableDataset, bool)
@@ -25566,7 +25803,7 @@ type Dataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -25578,6 +25815,10 @@ func unmarshalBasicDataset(body []byte) (BasicDataset, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeResponsysObject):
+		var rod ResponsysObjectDataset
+		err := json.Unmarshal(body, &rod)
+		return rod, err
 	case string(TypeSalesforceMarketingCloudObject):
 		var smcod SalesforceMarketingCloudObjectDataset
 		err := json.Unmarshal(body, &smcod)
@@ -25835,6 +26076,11 @@ func (d Dataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for Dataset.
+func (d Dataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for Dataset.
@@ -26775,7 +27021,7 @@ type Db2LinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -26805,6 +27051,11 @@ func (d2ls Db2LinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for Db2LinkedService.
+func (d2ls Db2LinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for Db2LinkedService.
@@ -27353,7 +27604,7 @@ type DocumentDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -27384,6 +27635,11 @@ func (ddcd DocumentDbCollectionDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for DocumentDbCollectionDataset.
+func (ddcd DocumentDbCollectionDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for DocumentDbCollectionDataset.
@@ -27880,7 +28136,7 @@ type DocumentDbCollectionSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -27903,6 +28159,11 @@ func (ddcs DocumentDbCollectionSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for DocumentDbCollectionSource.
 func (ddcs DocumentDbCollectionSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for DocumentDbCollectionSource.
+func (ddcs DocumentDbCollectionSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -28170,7 +28431,7 @@ type DrillLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -28200,6 +28461,11 @@ func (dls DrillLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for DrillLinkedService.
+func (dls DrillLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for DrillLinkedService.
@@ -28688,7 +28954,7 @@ type DrillSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -28710,6 +28976,11 @@ func (ds DrillSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for DrillSource.
 func (ds DrillSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for DrillSource.
+func (ds DrillSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -28977,7 +29248,7 @@ type DrillTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -29005,6 +29276,11 @@ func (dtd DrillTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for DrillTableDataset.
+func (dtd DrillTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for DrillTableDataset.
@@ -29293,7 +29569,7 @@ type DynamicsEntityDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -29324,6 +29600,11 @@ func (ded DynamicsEntityDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for DynamicsEntityDataset.
+func (ded DynamicsEntityDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for DynamicsEntityDataset.
@@ -29706,7 +29987,7 @@ type DynamicsLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -29736,6 +30017,11 @@ func (dls DynamicsLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for DynamicsLinkedService.
+func (dls DynamicsLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for DynamicsLinkedService.
@@ -30422,7 +30708,7 @@ type DynamicsSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -30444,6 +30730,11 @@ func (ds DynamicsSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for DynamicsSource.
 func (ds DynamicsSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for DynamicsSource.
+func (ds DynamicsSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -30711,7 +31002,7 @@ type EloquaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -30741,6 +31032,11 @@ func (els EloquaLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for EloquaLinkedService.
+func (els EloquaLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for EloquaLinkedService.
@@ -31288,7 +31584,7 @@ type EloquaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -31316,6 +31612,11 @@ func (eod EloquaObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for EloquaObjectDataset.
+func (eod EloquaObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for EloquaObjectDataset.
@@ -31598,7 +31899,7 @@ type EloquaSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -31620,6 +31921,11 @@ func (es EloquaSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for EloquaSource.
 func (es EloquaSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for EloquaSource.
+func (es EloquaSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -32452,10 +32758,56 @@ type ExecuteSSISPackageActivityTypeProperties struct {
 	Runtime SSISExecutionRuntime `json:"runtime,omitempty"`
 	// LoggingLevel - The logging level of SSIS package execution.
 	LoggingLevel *string `json:"loggingLevel,omitempty"`
-	// EnvironmentPath - The environment path to execution the SSIS package.
+	// EnvironmentPath - The environment path to execute the SSIS package.
 	EnvironmentPath *string `json:"environmentPath,omitempty"`
 	// ConnectVia - The integration runtime reference.
 	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+	// ProjectParameters - The project level parameters to execute the SSIS package.
+	ProjectParameters map[string]*SSISExecutionParameter `json:"projectParameters"`
+	// PackageParameters - The package level parameters to execute the SSIS package.
+	PackageParameters map[string]*SSISExecutionParameter `json:"packageParameters"`
+	// ProjectConnectionManagers - The project level connection managers to execute the SSIS package.
+	ProjectConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"projectConnectionManagers"`
+	// PackageConnectionManagers - The package level connection managers to execute the SSIS package.
+	PackageConnectionManagers map[string]map[string]*SSISExecutionParameter `json:"packageConnectionManagers"`
+	// PropertyOverrides - The property overrides to execute the SSIS package.
+	PropertyOverrides map[string]*SSISPropertyOverride `json:"propertyOverrides"`
+}
+
+// MarshalJSON is the custom marshaler for ExecuteSSISPackageActivityTypeProperties.
+func (espatp ExecuteSSISPackageActivityTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if espatp.PackageLocation != nil {
+		objectMap["packageLocation"] = espatp.PackageLocation
+	}
+	if espatp.Runtime != "" {
+		objectMap["runtime"] = espatp.Runtime
+	}
+	if espatp.LoggingLevel != nil {
+		objectMap["loggingLevel"] = espatp.LoggingLevel
+	}
+	if espatp.EnvironmentPath != nil {
+		objectMap["environmentPath"] = espatp.EnvironmentPath
+	}
+	if espatp.ConnectVia != nil {
+		objectMap["connectVia"] = espatp.ConnectVia
+	}
+	if espatp.ProjectParameters != nil {
+		objectMap["projectParameters"] = espatp.ProjectParameters
+	}
+	if espatp.PackageParameters != nil {
+		objectMap["packageParameters"] = espatp.PackageParameters
+	}
+	if espatp.ProjectConnectionManagers != nil {
+		objectMap["projectConnectionManagers"] = espatp.ProjectConnectionManagers
+	}
+	if espatp.PackageConnectionManagers != nil {
+		objectMap["packageConnectionManagers"] = espatp.PackageConnectionManagers
+	}
+	if espatp.PropertyOverrides != nil {
+		objectMap["propertyOverrides"] = espatp.PropertyOverrides
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicExecutionActivity base class for all execution activities.
@@ -33067,7 +33419,7 @@ type FileServerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -33097,6 +33449,11 @@ func (fsls FileServerLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for FileServerLinkedService.
+func (fsls FileServerLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for FileServerLinkedService.
@@ -33613,7 +33970,7 @@ type FileShareDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -33644,6 +34001,11 @@ func (fsd FileShareDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for FileShareDataset.
+func (fsd FileShareDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for FileShareDataset.
@@ -34206,7 +34568,7 @@ type FileSystemSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -34228,6 +34590,11 @@ func (fss FileSystemSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for FileSystemSource.
 func (fss FileSystemSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for FileSystemSource.
+func (fss FileSystemSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -35071,7 +35438,7 @@ type FtpServerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -35101,6 +35468,11 @@ func (fsls FtpServerLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for FtpServerLinkedService.
+func (fsls FtpServerLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for FtpServerLinkedService.
@@ -35948,7 +36320,7 @@ type GoogleBigQueryLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -35978,6 +36350,11 @@ func (gbqls GoogleBigQueryLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for GoogleBigQueryLinkedService.
+func (gbqls GoogleBigQueryLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for GoogleBigQueryLinkedService.
@@ -36578,7 +36955,7 @@ type GoogleBigQueryObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -36606,6 +36983,11 @@ func (gbqod GoogleBigQueryObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for GoogleBigQueryObjectDataset.
+func (gbqod GoogleBigQueryObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for GoogleBigQueryObjectDataset.
@@ -36888,7 +37270,7 @@ type GoogleBigQuerySource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -36910,6 +37292,11 @@ func (gbqs GoogleBigQuerySource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for GoogleBigQuerySource.
 func (gbqs GoogleBigQuerySource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for GoogleBigQuerySource.
+func (gbqs GoogleBigQuerySource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -37177,7 +37564,7 @@ type GreenplumLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -37207,6 +37594,11 @@ func (gls GreenplumLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for GreenplumLinkedService.
+func (gls GreenplumLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for GreenplumLinkedService.
@@ -37695,7 +38087,7 @@ type GreenplumSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -37717,6 +38109,11 @@ func (gs GreenplumSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for GreenplumSource.
 func (gs GreenplumSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for GreenplumSource.
+func (gs GreenplumSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -37984,7 +38381,7 @@ type GreenplumTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -38012,6 +38409,11 @@ func (gtd GreenplumTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for GreenplumTableDataset.
+func (gtd GreenplumTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for GreenplumTableDataset.
@@ -38298,7 +38700,7 @@ type HBaseLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -38328,6 +38730,11 @@ func (hbls HBaseLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HBaseLinkedService.
+func (hbls HBaseLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HBaseLinkedService.
@@ -38919,7 +39326,7 @@ type HBaseObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -38947,6 +39354,11 @@ func (hbod HBaseObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for HBaseObjectDataset.
+func (hbod HBaseObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for HBaseObjectDataset.
@@ -39229,7 +39641,7 @@ type HBaseSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -39251,6 +39663,11 @@ func (hbs HBaseSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for HBaseSource.
 func (hbs HBaseSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for HBaseSource.
+func (hbs HBaseSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -39518,7 +39935,7 @@ type HdfsLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -39548,6 +39965,11 @@ func (hls HdfsLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HdfsLinkedService.
+func (hls HdfsLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HdfsLinkedService.
@@ -40071,7 +40493,7 @@ type HdfsSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -40096,6 +40518,11 @@ func (hs HdfsSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for HdfsSource.
 func (hs HdfsSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for HdfsSource.
+func (hs HdfsSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -40682,7 +41109,7 @@ type HDInsightLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -40712,6 +41139,11 @@ func (hils HDInsightLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HDInsightLinkedService.
+func (hils HDInsightLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HDInsightLinkedService.
@@ -41575,7 +42007,7 @@ type HDInsightOnDemandLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -41605,6 +42037,11 @@ func (hiodls HDInsightOnDemandLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HDInsightOnDemandLinkedService.
+func (hiodls HDInsightOnDemandLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HDInsightOnDemandLinkedService.
@@ -43388,7 +43825,7 @@ type HiveLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -43418,6 +43855,11 @@ func (hls HiveLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HiveLinkedService.
+func (hls HiveLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HiveLinkedService.
@@ -44075,7 +44517,7 @@ type HiveObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -44103,6 +44545,11 @@ func (hod HiveObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for HiveObjectDataset.
+func (hod HiveObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for HiveObjectDataset.
@@ -44385,7 +44832,7 @@ type HiveSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -44407,6 +44854,11 @@ func (hs HiveSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for HiveSource.
 func (hs HiveSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for HiveSource.
+func (hs HiveSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -44676,7 +45128,7 @@ type HTTPDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -44707,6 +45159,11 @@ func (hd HTTPDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for HTTPDataset.
+func (hd HTTPDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for HTTPDataset.
@@ -45168,7 +45625,7 @@ type HTTPLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -45198,6 +45655,11 @@ func (hls HTTPLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HTTPLinkedService.
+func (hls HTTPLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HTTPLinkedService.
@@ -45752,7 +46214,7 @@ type HTTPSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -45774,6 +46236,11 @@ func (hs HTTPSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for HTTPSource.
 func (hs HTTPSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for HTTPSource.
+func (hs HTTPSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -46041,7 +46508,7 @@ type HubspotLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -46071,6 +46538,11 @@ func (hls HubspotLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for HubspotLinkedService.
+func (hls HubspotLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for HubspotLinkedService.
@@ -46627,7 +47099,7 @@ type HubspotObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -46655,6 +47127,11 @@ func (hod HubspotObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for HubspotObjectDataset.
+func (hod HubspotObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for HubspotObjectDataset.
@@ -46937,7 +47414,7 @@ type HubspotSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -46959,6 +47436,11 @@ func (hs HubspotSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for HubspotSource.
 func (hs HubspotSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for HubspotSource.
+func (hs HubspotSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -47530,7 +48012,7 @@ type ImpalaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -47560,6 +48042,11 @@ func (ils ImpalaLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ImpalaLinkedService.
+func (ils ImpalaLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ImpalaLinkedService.
@@ -48151,7 +48638,7 @@ type ImpalaObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -48179,6 +48666,11 @@ func (iod ImpalaObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ImpalaObjectDataset.
+func (iod ImpalaObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ImpalaObjectDataset.
@@ -48461,7 +48953,7 @@ type ImpalaSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -48483,6 +48975,11 @@ func (is ImpalaSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for ImpalaSource.
 func (is ImpalaSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ImpalaSource.
+func (is ImpalaSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -49588,7 +50085,7 @@ type JiraLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -49618,6 +50115,11 @@ func (jls JiraLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for JiraLinkedService.
+func (jls JiraLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for JiraLinkedService.
@@ -50176,7 +50678,7 @@ type JiraObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -50204,6 +50706,11 @@ func (jod JiraObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for JiraObjectDataset.
+func (jod JiraObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for JiraObjectDataset.
@@ -50486,7 +50993,7 @@ type JiraSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -50508,6 +51015,11 @@ func (js JiraSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for JiraSource.
 func (js JiraSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for JiraSource.
+func (js JiraSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -51051,6 +51563,7 @@ func (lirtp *LinkedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) 
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be
 // used to connect with related store or compute resource.
 type BasicLinkedService interface {
+	AsResponsysLinkedService() (*ResponsysLinkedService, bool)
 	AsAzureDatabricksLinkedService() (*AzureDatabricksLinkedService, bool)
 	AsAzureDataLakeAnalyticsLinkedService() (*AzureDataLakeAnalyticsLinkedService, bool)
 	AsHDInsightOnDemandLinkedService() (*HDInsightOnDemandLinkedService, bool)
@@ -51136,7 +51649,7 @@ type LinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -51148,6 +51661,10 @@ func unmarshalBasicLinkedService(body []byte) (BasicLinkedService, error) {
 	}
 
 	switch m["type"] {
+	case string(TypeResponsys):
+		var rls ResponsysLinkedService
+		err := json.Unmarshal(body, &rls)
+		return rls, err
 	case string(TypeAzureDatabricks):
 		var adls AzureDatabricksLinkedService
 		err := json.Unmarshal(body, &adls)
@@ -51472,6 +51989,11 @@ func (ls LinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for LinkedService.
+func (ls LinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for LinkedService.
@@ -52376,7 +52898,7 @@ type MagentoLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -52406,6 +52928,11 @@ func (mls MagentoLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for MagentoLinkedService.
+func (mls MagentoLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for MagentoLinkedService.
@@ -52942,7 +53469,7 @@ type MagentoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -52970,6 +53497,11 @@ func (mod MagentoObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for MagentoObjectDataset.
+func (mod MagentoObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for MagentoObjectDataset.
@@ -53252,7 +53784,7 @@ type MagentoSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -53274,6 +53806,11 @@ func (ms MagentoSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for MagentoSource.
 func (ms MagentoSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for MagentoSource.
+func (ms MagentoSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -53838,7 +54375,7 @@ type MariaDBLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -53868,6 +54405,11 @@ func (mdls MariaDBLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for MariaDBLinkedService.
+func (mdls MariaDBLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for MariaDBLinkedService.
@@ -54356,7 +54898,7 @@ type MariaDBSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -54378,6 +54920,11 @@ func (mds MariaDBSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for MariaDBSource.
 func (mds MariaDBSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for MariaDBSource.
+func (mds MariaDBSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -54645,7 +55192,7 @@ type MariaDBTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -54673,6 +55220,11 @@ func (mdtd MariaDBTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for MariaDBTableDataset.
+func (mdtd MariaDBTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for MariaDBTableDataset.
@@ -54959,7 +55511,7 @@ type MarketoLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -54989,6 +55541,11 @@ func (mls MarketoLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for MarketoLinkedService.
+func (mls MarketoLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for MarketoLinkedService.
@@ -55536,7 +56093,7 @@ type MarketoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -55564,6 +56121,11 @@ func (mod MarketoObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for MarketoObjectDataset.
+func (mod MarketoObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for MarketoObjectDataset.
@@ -55846,7 +56408,7 @@ type MarketoSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -55868,6 +56430,11 @@ func (ms MarketoSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for MarketoSource.
 func (ms MarketoSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for MarketoSource.
+func (ms MarketoSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -56137,7 +56704,7 @@ type MongoDbCollectionDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -56168,6 +56735,11 @@ func (mdcd MongoDbCollectionDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for MongoDbCollectionDataset.
+func (mdcd MongoDbCollectionDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for MongoDbCollectionDataset.
@@ -56550,7 +57122,7 @@ type MongoDbLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -56580,6 +57152,11 @@ func (mdls MongoDbLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for MongoDbLinkedService.
+func (mdls MongoDbLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for MongoDbLinkedService.
@@ -57156,7 +57733,7 @@ type MongoDbSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -57178,6 +57755,11 @@ func (mds MongoDbSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for MongoDbSource.
 func (mds MongoDbSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for MongoDbSource.
+func (mds MongoDbSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -57564,7 +58146,7 @@ type MySQLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -57594,6 +58176,11 @@ func (msls MySQLLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for MySQLLinkedService.
+func (msls MySQLLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for MySQLLinkedService.
@@ -58086,7 +58673,7 @@ type NetezzaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -58116,6 +58703,11 @@ func (nls NetezzaLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for NetezzaLinkedService.
+func (nls NetezzaLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for NetezzaLinkedService.
@@ -58604,7 +59196,7 @@ type NetezzaSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -58626,6 +59218,11 @@ func (ns NetezzaSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for NetezzaSource.
 func (ns NetezzaSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for NetezzaSource.
+func (ns NetezzaSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -58893,7 +59490,7 @@ type NetezzaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -58921,6 +59518,11 @@ func (ntd NetezzaTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for NetezzaTableDataset.
+func (ntd NetezzaTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for NetezzaTableDataset.
@@ -59207,7 +59809,7 @@ type ODataLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -59237,6 +59839,11 @@ func (odls ODataLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ODataLinkedService.
+func (odls ODataLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ODataLinkedService.
@@ -59764,7 +60371,7 @@ type ODataResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -59795,6 +60402,11 @@ func (odrd ODataResourceDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ODataResourceDataset.
+func (odrd ODataResourceDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ODataResourceDataset.
@@ -60177,7 +60789,7 @@ type OdbcLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -60207,6 +60819,11 @@ func (ols OdbcLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for OdbcLinkedService.
+func (ols OdbcLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for OdbcLinkedService.
@@ -61013,7 +61630,7 @@ type OracleLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -61043,6 +61660,11 @@ func (ols OracleLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for OracleLinkedService.
+func (ols OracleLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for OracleLinkedService.
@@ -61649,7 +62271,7 @@ type OracleSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -61672,6 +62294,11 @@ func (osVar OracleSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for OracleSource.
 func (osVar OracleSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for OracleSource.
+func (osVar OracleSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -61941,7 +62568,7 @@ type OracleTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -61972,6 +62599,11 @@ func (otd OracleTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for OracleTableDataset.
+func (otd OracleTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for OracleTableDataset.
@@ -62486,7 +63118,7 @@ type PaypalLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -62516,6 +63148,11 @@ func (pls PaypalLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for PaypalLinkedService.
+func (pls PaypalLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for PaypalLinkedService.
@@ -63063,7 +63700,7 @@ type PaypalObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -63091,6 +63728,11 @@ func (pod PaypalObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for PaypalObjectDataset.
+func (pod PaypalObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for PaypalObjectDataset.
@@ -63373,7 +64015,7 @@ type PaypalSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -63395,6 +64037,11 @@ func (ps PaypalSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for PaypalSource.
 func (ps PaypalSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for PaypalSource.
+func (ps PaypalSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -63662,7 +64309,7 @@ type PhoenixLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -63692,6 +64339,11 @@ func (pls PhoenixLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for PhoenixLinkedService.
+func (pls PhoenixLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for PhoenixLinkedService.
@@ -64294,7 +64946,7 @@ type PhoenixObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -64322,6 +64974,11 @@ func (pod PhoenixObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for PhoenixObjectDataset.
+func (pod PhoenixObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for PhoenixObjectDataset.
@@ -64604,7 +65261,7 @@ type PhoenixSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -64626,6 +65283,11 @@ func (ps PhoenixSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for PhoenixSource.
 func (ps PhoenixSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for PhoenixSource.
+func (ps PhoenixSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -65356,7 +66018,7 @@ type PostgreSQLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -65386,6 +66048,11 @@ func (psls PostgreSQLLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for PostgreSQLLinkedService.
+func (psls PostgreSQLLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for PostgreSQLLinkedService.
@@ -65878,7 +66545,7 @@ type PrestoLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -65908,6 +66575,11 @@ func (pls PrestoLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for PrestoLinkedService.
+func (pls PrestoLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for PrestoLinkedService.
@@ -66532,7 +67204,7 @@ type PrestoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -66560,6 +67232,11 @@ func (pod PrestoObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for PrestoObjectDataset.
+func (pod PrestoObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for PrestoObjectDataset.
@@ -66842,7 +67519,7 @@ type PrestoSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -66864,6 +67541,11 @@ func (ps PrestoSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for PrestoSource.
 func (ps PrestoSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for PrestoSource.
+func (ps PrestoSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -67131,7 +67813,7 @@ type QuickBooksLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -67161,6 +67843,11 @@ func (qbls QuickBooksLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for QuickBooksLinkedService.
+func (qbls QuickBooksLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for QuickBooksLinkedService.
@@ -67696,7 +68383,7 @@ type QuickBooksObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -67724,6 +68411,11 @@ func (qbod QuickBooksObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for QuickBooksObjectDataset.
+func (qbod QuickBooksObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for QuickBooksObjectDataset.
@@ -68006,7 +68698,7 @@ type QuickBooksSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -68028,6 +68720,11 @@ func (qbs QuickBooksSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for QuickBooksSource.
 func (qbs QuickBooksSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for QuickBooksSource.
+func (qbs QuickBooksSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -68387,7 +69084,7 @@ type RelationalSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -68409,6 +69106,11 @@ func (rs RelationalSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for RelationalSource.
 func (rs RelationalSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for RelationalSource.
+func (rs RelationalSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -68678,7 +69380,7 @@ type RelationalTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -68709,6 +69411,11 @@ func (rtd RelationalTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for RelationalTableDataset.
+func (rtd RelationalTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for RelationalTableDataset.
@@ -69112,6 +69819,1197 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ResponsysLinkedService responsys linked service.
+type ResponsysLinkedService struct {
+	// ResponsysLinkedServiceTypeProperties - Responsys linked service properties.
+	*ResponsysLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ConnectVia - The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+	// Description - Linked service description.
+	Description *string `json:"description,omitempty"`
+	// Parameters - Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters"`
+	// Annotations - List of tags that can be used for describing the Dataset.
+	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	Type TypeBasicLinkedService `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResponsysLinkedService.
+func (rls ResponsysLinkedService) MarshalJSON() ([]byte, error) {
+	rls.Type = TypeResponsys
+	objectMap := make(map[string]interface{})
+	if rls.ResponsysLinkedServiceTypeProperties != nil {
+		objectMap["typeProperties"] = rls.ResponsysLinkedServiceTypeProperties
+	}
+	if rls.ConnectVia != nil {
+		objectMap["connectVia"] = rls.ConnectVia
+	}
+	if rls.Description != nil {
+		objectMap["description"] = rls.Description
+	}
+	if rls.Parameters != nil {
+		objectMap["parameters"] = rls.Parameters
+	}
+	if rls.Annotations != nil {
+		objectMap["annotations"] = rls.Annotations
+	}
+	if rls.Type != "" {
+		objectMap["type"] = rls.Type
+	}
+	for k, v := range rls.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return &rls, true
+}
+
+// AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureDatabricksLinkedService() (*AzureDatabricksLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeAnalyticsLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureDataLakeAnalyticsLinkedService() (*AzureDataLakeAnalyticsLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightOnDemandLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHDInsightOnDemandLinkedService() (*HDInsightOnDemandLinkedService, bool) {
+	return nil, false
+}
+
+// AsSalesforceMarketingCloudLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSalesforceMarketingCloudLinkedService() (*SalesforceMarketingCloudLinkedService, bool) {
+	return nil, false
+}
+
+// AsNetezzaLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsNetezzaLinkedService() (*NetezzaLinkedService, bool) {
+	return nil, false
+}
+
+// AsVerticaLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsVerticaLinkedService() (*VerticaLinkedService, bool) {
+	return nil, false
+}
+
+// AsZohoLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsZohoLinkedService() (*ZohoLinkedService, bool) {
+	return nil, false
+}
+
+// AsXeroLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsXeroLinkedService() (*XeroLinkedService, bool) {
+	return nil, false
+}
+
+// AsSquareLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSquareLinkedService() (*SquareLinkedService, bool) {
+	return nil, false
+}
+
+// AsSparkLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSparkLinkedService() (*SparkLinkedService, bool) {
+	return nil, false
+}
+
+// AsShopifyLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsShopifyLinkedService() (*ShopifyLinkedService, bool) {
+	return nil, false
+}
+
+// AsServiceNowLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsServiceNowLinkedService() (*ServiceNowLinkedService, bool) {
+	return nil, false
+}
+
+// AsQuickBooksLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsQuickBooksLinkedService() (*QuickBooksLinkedService, bool) {
+	return nil, false
+}
+
+// AsPrestoLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsPrestoLinkedService() (*PrestoLinkedService, bool) {
+	return nil, false
+}
+
+// AsPhoenixLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsPhoenixLinkedService() (*PhoenixLinkedService, bool) {
+	return nil, false
+}
+
+// AsPaypalLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsPaypalLinkedService() (*PaypalLinkedService, bool) {
+	return nil, false
+}
+
+// AsMarketoLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsMarketoLinkedService() (*MarketoLinkedService, bool) {
+	return nil, false
+}
+
+// AsMariaDBLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsMariaDBLinkedService() (*MariaDBLinkedService, bool) {
+	return nil, false
+}
+
+// AsMagentoLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsMagentoLinkedService() (*MagentoLinkedService, bool) {
+	return nil, false
+}
+
+// AsJiraLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsJiraLinkedService() (*JiraLinkedService, bool) {
+	return nil, false
+}
+
+// AsImpalaLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsImpalaLinkedService() (*ImpalaLinkedService, bool) {
+	return nil, false
+}
+
+// AsHubspotLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHubspotLinkedService() (*HubspotLinkedService, bool) {
+	return nil, false
+}
+
+// AsHiveLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHiveLinkedService() (*HiveLinkedService, bool) {
+	return nil, false
+}
+
+// AsHBaseLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHBaseLinkedService() (*HBaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsGreenplumLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsGreenplumLinkedService() (*GreenplumLinkedService, bool) {
+	return nil, false
+}
+
+// AsGoogleBigQueryLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsGoogleBigQueryLinkedService() (*GoogleBigQueryLinkedService, bool) {
+	return nil, false
+}
+
+// AsEloquaLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsEloquaLinkedService() (*EloquaLinkedService, bool) {
+	return nil, false
+}
+
+// AsDrillLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsDrillLinkedService() (*DrillLinkedService, bool) {
+	return nil, false
+}
+
+// AsCouchbaseLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsCouchbaseLinkedService() (*CouchbaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsConcurLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsConcurLinkedService() (*ConcurLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzurePostgreSQLLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzurePostgreSQLLinkedService() (*AzurePostgreSQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonMWSLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAmazonMWSLinkedService() (*AmazonMWSLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapHanaLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSapHanaLinkedService() (*SapHanaLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapBWLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSapBWLinkedService() (*SapBWLinkedService, bool) {
+	return nil, false
+}
+
+// AsSftpServerLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSftpServerLinkedService() (*SftpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsFtpServerLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsFtpServerLinkedService() (*FtpServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHTTPLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHTTPLinkedService() (*HTTPLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSearchLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureSearchLinkedService() (*AzureSearchLinkedService, bool) {
+	return nil, false
+}
+
+// AsCustomDataSourceLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsCustomDataSourceLinkedService() (*CustomDataSourceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonRedshiftLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAmazonRedshiftLinkedService() (*AmazonRedshiftLinkedService, bool) {
+	return nil, false
+}
+
+// AsAmazonS3LinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAmazonS3LinkedService() (*AmazonS3LinkedService, bool) {
+	return nil, false
+}
+
+// AsSapEccLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSapEccLinkedService() (*SapEccLinkedService, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool) {
+	return nil, false
+}
+
+// AsSalesforceLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSalesforceLinkedService() (*SalesforceLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureDataLakeStoreLinkedService() (*AzureDataLakeStoreLinkedService, bool) {
+	return nil, false
+}
+
+// AsMongoDbLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsMongoDbLinkedService() (*MongoDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsCassandraLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsCassandraLinkedService() (*CassandraLinkedService, bool) {
+	return nil, false
+}
+
+// AsWebLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsWebLinkedService() (*WebLinkedService, bool) {
+	return nil, false
+}
+
+// AsODataLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsODataLinkedService() (*ODataLinkedService, bool) {
+	return nil, false
+}
+
+// AsHdfsLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHdfsLinkedService() (*HdfsLinkedService, bool) {
+	return nil, false
+}
+
+// AsOdbcLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsOdbcLinkedService() (*OdbcLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMLLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureMLLinkedService() (*AzureMLLinkedService, bool) {
+	return nil, false
+}
+
+// AsTeradataLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsTeradataLinkedService() (*TeradataLinkedService, bool) {
+	return nil, false
+}
+
+// AsDb2LinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsDb2LinkedService() (*Db2LinkedService, bool) {
+	return nil, false
+}
+
+// AsSybaseLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSybaseLinkedService() (*SybaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsPostgreSQLLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsPostgreSQLLinkedService() (*PostgreSQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsMySQLLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsMySQLLinkedService() (*MySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool) {
+	return nil, false
+}
+
+// AsOracleLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsOracleLinkedService() (*OracleLinkedService, bool) {
+	return nil, false
+}
+
+// AsFileServerLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsFileServerLinkedService() (*FileServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsHDInsightLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsHDInsightLinkedService() (*HDInsightLinkedService, bool) {
+	return nil, false
+}
+
+// AsDynamicsLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsDynamicsLinkedService() (*DynamicsLinkedService, bool) {
+	return nil, false
+}
+
+// AsCosmosDbLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsCosmosDbLinkedService() (*CosmosDbLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureKeyVaultLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureKeyVaultLinkedService() (*AzureKeyVaultLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureBatchLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureBatchLinkedService() (*AzureBatchLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDatabaseLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureSQLDatabaseLinkedService() (*AzureSQLDatabaseLinkedService, bool) {
+	return nil, false
+}
+
+// AsSQLServerLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsSQLServerLinkedService() (*SQLServerLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureSQLDWLinkedService() (*AzureSQLDWLinkedService, bool) {
+	return nil, false
+}
+
+// AsAzureStorageLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsAzureStorageLinkedService() (*AzureStorageLinkedService, bool) {
+	return nil, false
+}
+
+// AsLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsLinkedService() (*LinkedService, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedService is the BasicLinkedService implementation for ResponsysLinkedService.
+func (rls ResponsysLinkedService) AsBasicLinkedService() (BasicLinkedService, bool) {
+	return &rls, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ResponsysLinkedService struct.
+func (rls *ResponsysLinkedService) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var responsysLinkedServiceTypeProperties ResponsysLinkedServiceTypeProperties
+				err = json.Unmarshal(*v, &responsysLinkedServiceTypeProperties)
+				if err != nil {
+					return err
+				}
+				rls.ResponsysLinkedServiceTypeProperties = &responsysLinkedServiceTypeProperties
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if rls.AdditionalProperties == nil {
+					rls.AdditionalProperties = make(map[string]interface{})
+				}
+				rls.AdditionalProperties[k] = additionalProperties
+			}
+		case "connectVia":
+			if v != nil {
+				var connectVia IntegrationRuntimeReference
+				err = json.Unmarshal(*v, &connectVia)
+				if err != nil {
+					return err
+				}
+				rls.ConnectVia = &connectVia
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				rls.Description = &description
+			}
+		case "parameters":
+			if v != nil {
+				var parameters map[string]*ParameterSpecification
+				err = json.Unmarshal(*v, &parameters)
+				if err != nil {
+					return err
+				}
+				rls.Parameters = parameters
+			}
+		case "annotations":
+			if v != nil {
+				var annotations []interface{}
+				err = json.Unmarshal(*v, &annotations)
+				if err != nil {
+					return err
+				}
+				rls.Annotations = &annotations
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicLinkedService
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rls.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ResponsysLinkedServiceTypeProperties responsys linked service properties.
+type ResponsysLinkedServiceTypeProperties struct {
+	// Endpoint - The endpoint of the Responsys server.
+	Endpoint interface{} `json:"endpoint,omitempty"`
+	// ClientID - The client ID associated with the Responsys application. Type: string (or Expression with resultType string).
+	ClientID interface{} `json:"clientId,omitempty"`
+	// ClientSecret - The client secret associated with the Responsys application. Type: string (or Expression with resultType string).
+	ClientSecret BasicSecretBase `json:"clientSecret,omitempty"`
+	// UseEncryptedEndpoints - Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean (or Expression with resultType boolean).
+	UseEncryptedEndpoints interface{} `json:"useEncryptedEndpoints,omitempty"`
+	// UseHostVerification - Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+	UseHostVerification interface{} `json:"useHostVerification,omitempty"`
+	// UsePeerVerification - Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+	UsePeerVerification interface{} `json:"usePeerVerification,omitempty"`
+	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ResponsysLinkedServiceTypeProperties struct.
+func (rlstp *ResponsysLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "endpoint":
+			if v != nil {
+				var endpoint interface{}
+				err = json.Unmarshal(*v, &endpoint)
+				if err != nil {
+					return err
+				}
+				rlstp.Endpoint = endpoint
+			}
+		case "clientId":
+			if v != nil {
+				var clientID interface{}
+				err = json.Unmarshal(*v, &clientID)
+				if err != nil {
+					return err
+				}
+				rlstp.ClientID = clientID
+			}
+		case "clientSecret":
+			if v != nil {
+				clientSecret, err := unmarshalBasicSecretBase(*v)
+				if err != nil {
+					return err
+				}
+				rlstp.ClientSecret = clientSecret
+			}
+		case "useEncryptedEndpoints":
+			if v != nil {
+				var useEncryptedEndpoints interface{}
+				err = json.Unmarshal(*v, &useEncryptedEndpoints)
+				if err != nil {
+					return err
+				}
+				rlstp.UseEncryptedEndpoints = useEncryptedEndpoints
+			}
+		case "useHostVerification":
+			if v != nil {
+				var useHostVerification interface{}
+				err = json.Unmarshal(*v, &useHostVerification)
+				if err != nil {
+					return err
+				}
+				rlstp.UseHostVerification = useHostVerification
+			}
+		case "usePeerVerification":
+			if v != nil {
+				var usePeerVerification interface{}
+				err = json.Unmarshal(*v, &usePeerVerification)
+				if err != nil {
+					return err
+				}
+				rlstp.UsePeerVerification = usePeerVerification
+			}
+		case "encryptedCredential":
+			if v != nil {
+				var encryptedCredential interface{}
+				err = json.Unmarshal(*v, &encryptedCredential)
+				if err != nil {
+					return err
+				}
+				rlstp.EncryptedCredential = encryptedCredential
+			}
+		}
+	}
+
+	return nil
+}
+
+// ResponsysObjectDataset responsys dataset.
+type ResponsysObjectDataset struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Description - Dataset description.
+	Description *string `json:"description,omitempty"`
+	// Structure - Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure interface{} `json:"structure,omitempty"`
+	// LinkedServiceName - Linked service reference.
+	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
+	// Parameters - Parameters for dataset.
+	Parameters map[string]*ParameterSpecification `json:"parameters"`
+	// Annotations - List of tags that can be used for describing the Dataset.
+	Annotations *[]interface{} `json:"annotations,omitempty"`
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	Type TypeBasicDataset `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) MarshalJSON() ([]byte, error) {
+	rod.Type = TypeResponsysObject
+	objectMap := make(map[string]interface{})
+	if rod.Description != nil {
+		objectMap["description"] = rod.Description
+	}
+	objectMap["structure"] = rod.Structure
+	if rod.LinkedServiceName != nil {
+		objectMap["linkedServiceName"] = rod.LinkedServiceName
+	}
+	if rod.Parameters != nil {
+		objectMap["parameters"] = rod.Parameters
+	}
+	if rod.Annotations != nil {
+		objectMap["annotations"] = rod.Annotations
+	}
+	if rod.Type != "" {
+		objectMap["type"] = rod.Type
+	}
+	for k, v := range rod.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return &rod, true
+}
+
+// AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSalesforceMarketingCloudObjectDataset() (*SalesforceMarketingCloudObjectDataset, bool) {
+	return nil, false
+}
+
+// AsVerticaTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsVerticaTableDataset() (*VerticaTableDataset, bool) {
+	return nil, false
+}
+
+// AsNetezzaTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsNetezzaTableDataset() (*NetezzaTableDataset, bool) {
+	return nil, false
+}
+
+// AsZohoObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsZohoObjectDataset() (*ZohoObjectDataset, bool) {
+	return nil, false
+}
+
+// AsXeroObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsXeroObjectDataset() (*XeroObjectDataset, bool) {
+	return nil, false
+}
+
+// AsSquareObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSquareObjectDataset() (*SquareObjectDataset, bool) {
+	return nil, false
+}
+
+// AsSparkObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSparkObjectDataset() (*SparkObjectDataset, bool) {
+	return nil, false
+}
+
+// AsShopifyObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsShopifyObjectDataset() (*ShopifyObjectDataset, bool) {
+	return nil, false
+}
+
+// AsServiceNowObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsServiceNowObjectDataset() (*ServiceNowObjectDataset, bool) {
+	return nil, false
+}
+
+// AsQuickBooksObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsQuickBooksObjectDataset() (*QuickBooksObjectDataset, bool) {
+	return nil, false
+}
+
+// AsPrestoObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsPrestoObjectDataset() (*PrestoObjectDataset, bool) {
+	return nil, false
+}
+
+// AsPhoenixObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsPhoenixObjectDataset() (*PhoenixObjectDataset, bool) {
+	return nil, false
+}
+
+// AsPaypalObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsPaypalObjectDataset() (*PaypalObjectDataset, bool) {
+	return nil, false
+}
+
+// AsMarketoObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsMarketoObjectDataset() (*MarketoObjectDataset, bool) {
+	return nil, false
+}
+
+// AsMariaDBTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsMariaDBTableDataset() (*MariaDBTableDataset, bool) {
+	return nil, false
+}
+
+// AsMagentoObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsMagentoObjectDataset() (*MagentoObjectDataset, bool) {
+	return nil, false
+}
+
+// AsJiraObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsJiraObjectDataset() (*JiraObjectDataset, bool) {
+	return nil, false
+}
+
+// AsImpalaObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsImpalaObjectDataset() (*ImpalaObjectDataset, bool) {
+	return nil, false
+}
+
+// AsHubspotObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsHubspotObjectDataset() (*HubspotObjectDataset, bool) {
+	return nil, false
+}
+
+// AsHiveObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsHiveObjectDataset() (*HiveObjectDataset, bool) {
+	return nil, false
+}
+
+// AsHBaseObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsHBaseObjectDataset() (*HBaseObjectDataset, bool) {
+	return nil, false
+}
+
+// AsGreenplumTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsGreenplumTableDataset() (*GreenplumTableDataset, bool) {
+	return nil, false
+}
+
+// AsGoogleBigQueryObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsGoogleBigQueryObjectDataset() (*GoogleBigQueryObjectDataset, bool) {
+	return nil, false
+}
+
+// AsEloquaObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsEloquaObjectDataset() (*EloquaObjectDataset, bool) {
+	return nil, false
+}
+
+// AsDrillTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsDrillTableDataset() (*DrillTableDataset, bool) {
+	return nil, false
+}
+
+// AsCouchbaseTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsCouchbaseTableDataset() (*CouchbaseTableDataset, bool) {
+	return nil, false
+}
+
+// AsConcurObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsConcurObjectDataset() (*ConcurObjectDataset, bool) {
+	return nil, false
+}
+
+// AsAzurePostgreSQLTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzurePostgreSQLTableDataset() (*AzurePostgreSQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsAmazonMWSObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAmazonMWSObjectDataset() (*AmazonMWSObjectDataset, bool) {
+	return nil, false
+}
+
+// AsHTTPDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsHTTPDataset() (*HTTPDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSearchIndexDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool) {
+	return nil, false
+}
+
+// AsWebTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsWebTableDataset() (*WebTableDataset, bool) {
+	return nil, false
+}
+
+// AsSQLServerTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSQLServerTableDataset() (*SQLServerTableDataset, bool) {
+	return nil, false
+}
+
+// AsSapEccResourceDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSapEccResourceDataset() (*SapEccResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerResourceDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool) {
+	return nil, false
+}
+
+// AsSalesforceObjectDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool) {
+	return nil, false
+}
+
+// AsRelationalTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsRelationalTableDataset() (*RelationalTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsOracleTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsOracleTableDataset() (*OracleTableDataset, bool) {
+	return nil, false
+}
+
+// AsODataResourceDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsODataResourceDataset() (*ODataResourceDataset, bool) {
+	return nil, false
+}
+
+// AsMongoDbCollectionDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsFileShareDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsFileShareDataset() (*FileShareDataset, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureDataLakeStoreDataset() (*AzureDataLakeStoreDataset, bool) {
+	return nil, false
+}
+
+// AsDynamicsEntityDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsDynamicsEntityDataset() (*DynamicsEntityDataset, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsDocumentDbCollectionDataset() (*DocumentDbCollectionDataset, bool) {
+	return nil, false
+}
+
+// AsCustomDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsCustomDataset() (*CustomDataset, bool) {
+	return nil, false
+}
+
+// AsCassandraTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsCassandraTableDataset() (*CassandraTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDWTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureSQLDWTableDataset() (*AzureSQLDWTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureSQLTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureSQLTableDataset() (*AzureSQLTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureTableDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureTableDataset() (*AzureTableDataset, bool) {
+	return nil, false
+}
+
+// AsAzureBlobDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAzureBlobDataset() (*AzureBlobDataset, bool) {
+	return nil, false
+}
+
+// AsAmazonS3Dataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsAmazonS3Dataset() (*AmazonS3Dataset, bool) {
+	return nil, false
+}
+
+// AsDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsDataset() (*Dataset, bool) {
+	return nil, false
+}
+
+// AsBasicDataset is the BasicDataset implementation for ResponsysObjectDataset.
+func (rod ResponsysObjectDataset) AsBasicDataset() (BasicDataset, bool) {
+	return &rod, true
+}
+
+// ResponsysSource a copy activity Responsys source.
+type ResponsysSource struct {
+	// Query - A query to retrieve data from source. Type: string (or Expression with resultType string).
+	Query interface{} `json:"query,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// SourceRetryCount - Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	Type TypeBasicCopySource `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResponsysSource.
+func (rs ResponsysSource) MarshalJSON() ([]byte, error) {
+	rs.Type = TypeResponsysSource
+	objectMap := make(map[string]interface{})
+	objectMap["query"] = rs.Query
+	objectMap["sourceRetryCount"] = rs.SourceRetryCount
+	objectMap["sourceRetryWait"] = rs.SourceRetryWait
+	if rs.Type != "" {
+		objectMap["type"] = rs.Type
+	}
+	for k, v := range rs.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAmazonRedshiftSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsResponsysSource() (*ResponsysSource, bool) {
+	return &rs, true
+}
+
+// AsSalesforceMarketingCloudSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSalesforceMarketingCloudSource() (*SalesforceMarketingCloudSource, bool) {
+	return nil, false
+}
+
+// AsVerticaSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsVerticaSource() (*VerticaSource, bool) {
+	return nil, false
+}
+
+// AsNetezzaSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsNetezzaSource() (*NetezzaSource, bool) {
+	return nil, false
+}
+
+// AsZohoSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsZohoSource() (*ZohoSource, bool) {
+	return nil, false
+}
+
+// AsXeroSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsXeroSource() (*XeroSource, bool) {
+	return nil, false
+}
+
+// AsSquareSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSquareSource() (*SquareSource, bool) {
+	return nil, false
+}
+
+// AsSparkSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSparkSource() (*SparkSource, bool) {
+	return nil, false
+}
+
+// AsShopifySource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsShopifySource() (*ShopifySource, bool) {
+	return nil, false
+}
+
+// AsServiceNowSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsServiceNowSource() (*ServiceNowSource, bool) {
+	return nil, false
+}
+
+// AsQuickBooksSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsQuickBooksSource() (*QuickBooksSource, bool) {
+	return nil, false
+}
+
+// AsPrestoSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsPrestoSource() (*PrestoSource, bool) {
+	return nil, false
+}
+
+// AsPhoenixSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsPhoenixSource() (*PhoenixSource, bool) {
+	return nil, false
+}
+
+// AsPaypalSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsPaypalSource() (*PaypalSource, bool) {
+	return nil, false
+}
+
+// AsMarketoSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsMarketoSource() (*MarketoSource, bool) {
+	return nil, false
+}
+
+// AsMariaDBSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsMariaDBSource() (*MariaDBSource, bool) {
+	return nil, false
+}
+
+// AsMagentoSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsMagentoSource() (*MagentoSource, bool) {
+	return nil, false
+}
+
+// AsJiraSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsJiraSource() (*JiraSource, bool) {
+	return nil, false
+}
+
+// AsImpalaSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsImpalaSource() (*ImpalaSource, bool) {
+	return nil, false
+}
+
+// AsHubspotSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsHubspotSource() (*HubspotSource, bool) {
+	return nil, false
+}
+
+// AsHiveSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsHiveSource() (*HiveSource, bool) {
+	return nil, false
+}
+
+// AsHBaseSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsHBaseSource() (*HBaseSource, bool) {
+	return nil, false
+}
+
+// AsGreenplumSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsGreenplumSource() (*GreenplumSource, bool) {
+	return nil, false
+}
+
+// AsGoogleBigQuerySource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsGoogleBigQuerySource() (*GoogleBigQuerySource, bool) {
+	return nil, false
+}
+
+// AsEloquaSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsEloquaSource() (*EloquaSource, bool) {
+	return nil, false
+}
+
+// AsDrillSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsDrillSource() (*DrillSource, bool) {
+	return nil, false
+}
+
+// AsCouchbaseSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsCouchbaseSource() (*CouchbaseSource, bool) {
+	return nil, false
+}
+
+// AsConcurSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsConcurSource() (*ConcurSource, bool) {
+	return nil, false
+}
+
+// AsAzurePostgreSQLSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAzurePostgreSQLSource() (*AzurePostgreSQLSource, bool) {
+	return nil, false
+}
+
+// AsAmazonMWSSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAmazonMWSSource() (*AmazonMWSSource, bool) {
+	return nil, false
+}
+
+// AsHTTPSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsHTTPSource() (*HTTPSource, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAzureDataLakeStoreSource() (*AzureDataLakeStoreSource, bool) {
+	return nil, false
+}
+
+// AsMongoDbSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsMongoDbSource() (*MongoDbSource, bool) {
+	return nil, false
+}
+
+// AsCassandraSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsCassandraSource() (*CassandraSource, bool) {
+	return nil, false
+}
+
+// AsWebSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsWebSource() (*WebSource, bool) {
+	return nil, false
+}
+
+// AsOracleSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsOracleSource() (*OracleSource, bool) {
+	return nil, false
+}
+
+// AsAzureMySQLSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAzureMySQLSource() (*AzureMySQLSource, bool) {
+	return nil, false
+}
+
+// AsHdfsSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsHdfsSource() (*HdfsSource, bool) {
+	return nil, false
+}
+
+// AsFileSystemSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsFileSystemSource() (*FileSystemSource, bool) {
+	return nil, false
+}
+
+// AsSQLDWSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSQLDWSource() (*SQLDWSource, bool) {
+	return nil, false
+}
+
+// AsSQLSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSQLSource() (*SQLSource, bool) {
+	return nil, false
+}
+
+// AsSapEccSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSapEccSource() (*SapEccSource, bool) {
+	return nil, false
+}
+
+// AsSapCloudForCustomerSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool) {
+	return nil, false
+}
+
+// AsSalesforceSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsSalesforceSource() (*SalesforceSource, bool) {
+	return nil, false
+}
+
+// AsRelationalSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsRelationalSource() (*RelationalSource, bool) {
+	return nil, false
+}
+
+// AsDynamicsSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsDynamicsSource() (*DynamicsSource, bool) {
+	return nil, false
+}
+
+// AsDocumentDbCollectionSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool) {
+	return nil, false
+}
+
+// AsBlobSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsBlobSource() (*BlobSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableSource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsAzureTableSource() (*AzureTableSource, bool) {
+	return nil, false
+}
+
+// AsCopySource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsCopySource() (*CopySource, bool) {
+	return nil, false
+}
+
+// AsBasicCopySource is the BasicCopySource implementation for ResponsysSource.
+func (rs ResponsysSource) AsBasicCopySource() (BasicCopySource, bool) {
+	return &rs, true
+}
+
 // RetryPolicy execution policy for an activity.
 type RetryPolicy struct {
 	// Count - Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
@@ -69134,7 +71032,7 @@ type SalesforceLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -69164,6 +71062,11 @@ func (sls SalesforceLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SalesforceLinkedService.
+func (sls SalesforceLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SalesforceLinkedService.
@@ -69688,7 +71591,7 @@ type SalesforceMarketingCloudLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -69718,6 +71621,11 @@ func (smcls SalesforceMarketingCloudLinkedService) MarshalJSON() ([]byte, error)
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SalesforceMarketingCloudLinkedService.
+func (smcls SalesforceMarketingCloudLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SalesforceMarketingCloudLinkedService.
@@ -70254,7 +72162,7 @@ type SalesforceMarketingCloudObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -70282,6 +72190,11 @@ func (smcod SalesforceMarketingCloudObjectDataset) MarshalJSON() ([]byte, error)
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SalesforceMarketingCloudObjectDataset.
+func (smcod SalesforceMarketingCloudObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SalesforceMarketingCloudObjectDataset.
@@ -70564,7 +72477,7 @@ type SalesforceMarketingCloudSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -70586,6 +72499,11 @@ func (smcs SalesforceMarketingCloudSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SalesforceMarketingCloudSource.
 func (smcs SalesforceMarketingCloudSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SalesforceMarketingCloudSource.
+func (smcs SalesforceMarketingCloudSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -70855,7 +72773,7 @@ type SalesforceObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -70886,6 +72804,11 @@ func (sod SalesforceObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SalesforceObjectDataset.
+func (sod SalesforceObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SalesforceObjectDataset.
@@ -71390,7 +73313,7 @@ type SalesforceSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -71415,6 +73338,11 @@ func (ss SalesforceSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SalesforceSource.
 func (ss SalesforceSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SalesforceSource.
+func (ss SalesforceSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -71682,7 +73610,7 @@ type SapBWLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -71712,6 +73640,11 @@ func (sbls SapBWLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SapBWLinkedService.
+func (sbls SapBWLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SapBWLinkedService.
@@ -72248,7 +74181,7 @@ type SapCloudForCustomerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -72278,6 +74211,11 @@ func (scfcls SapCloudForCustomerLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SapCloudForCustomerLinkedService.
+func (scfcls SapCloudForCustomerLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SapCloudForCustomerLinkedService.
@@ -72794,7 +74732,7 @@ type SapCloudForCustomerResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -72825,6 +74763,11 @@ func (scfcrd SapCloudForCustomerResourceDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SapCloudForCustomerResourceDataset.
+func (scfcrd SapCloudForCustomerResourceDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SapCloudForCustomerResourceDataset.
@@ -73321,7 +75264,7 @@ type SapCloudForCustomerSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -73343,6 +75286,11 @@ func (scfcs SapCloudForCustomerSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SapCloudForCustomerSource.
 func (scfcs SapCloudForCustomerSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SapCloudForCustomerSource.
+func (scfcs SapCloudForCustomerSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -73610,7 +75558,7 @@ type SapEccLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -73640,6 +75588,11 @@ func (sels SapEccLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SapEccLinkedService.
+func (sels SapEccLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SapEccLinkedService.
@@ -74156,7 +76109,7 @@ type SapEccResourceDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -74187,6 +76140,11 @@ func (serd SapEccResourceDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SapEccResourceDataset.
+func (serd SapEccResourceDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SapEccResourceDataset.
@@ -74565,7 +76523,7 @@ type SapEccSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -74589,6 +76547,11 @@ func (ses SapEccSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SapEccSource.
 func (ses SapEccSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SapEccSource.
+func (ses SapEccSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -74856,7 +76819,7 @@ type SapHanaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -74886,6 +76849,11 @@ func (shls SapHanaLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SapHanaLinkedService.
+func (shls SapHanaLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SapHanaLinkedService.
@@ -76136,7 +78104,7 @@ type ServiceNowLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -76166,6 +78134,11 @@ func (snls ServiceNowLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ServiceNowLinkedService.
+func (snls ServiceNowLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ServiceNowLinkedService.
@@ -76745,7 +78718,7 @@ type ServiceNowObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -76773,6 +78746,11 @@ func (snod ServiceNowObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ServiceNowObjectDataset.
+func (snod ServiceNowObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ServiceNowObjectDataset.
@@ -77055,7 +79033,7 @@ type ServiceNowSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -77077,6 +79055,11 @@ func (sns ServiceNowSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for ServiceNowSource.
 func (sns ServiceNowSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ServiceNowSource.
+func (sns ServiceNowSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -77344,7 +79327,7 @@ type SftpServerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -77374,6 +79357,11 @@ func (ssls SftpServerLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SftpServerLinkedService.
+func (ssls SftpServerLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SftpServerLinkedService.
@@ -77963,7 +79951,7 @@ type ShopifyLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -77993,6 +79981,11 @@ func (sls ShopifyLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ShopifyLinkedService.
+func (sls ShopifyLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ShopifyLinkedService.
@@ -78529,7 +80522,7 @@ type ShopifyObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -78557,6 +80550,11 @@ func (sod ShopifyObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ShopifyObjectDataset.
+func (sod ShopifyObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ShopifyObjectDataset.
@@ -78839,7 +80837,7 @@ type ShopifySource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -78861,6 +80859,11 @@ func (ss ShopifySource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for ShopifySource.
 func (ss ShopifySource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ShopifySource.
+func (ss ShopifySource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -79128,7 +81131,7 @@ type SparkLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -79158,6 +81161,11 @@ func (sls SparkLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SparkLinkedService.
+func (sls SparkLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SparkLinkedService.
@@ -79782,7 +81790,7 @@ type SparkObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -79810,6 +81818,11 @@ func (sod SparkObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SparkObjectDataset.
+func (sod SparkObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SparkObjectDataset.
@@ -80092,7 +82105,7 @@ type SparkSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -80114,6 +82127,11 @@ func (ss SparkSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SparkSource.
 func (ss SparkSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SparkSource.
+func (ss SparkSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -80505,7 +82523,7 @@ type SQLDWSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -80529,6 +82547,11 @@ func (sds SQLDWSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SQLDWSource.
 func (sds SQLDWSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SQLDWSource.
+func (sds SQLDWSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -80796,7 +82819,7 @@ type SQLServerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -80826,6 +82849,11 @@ func (ssls SQLServerLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SQLServerLinkedService.
+func (ssls SQLServerLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SQLServerLinkedService.
@@ -81640,7 +83668,7 @@ type SQLServerTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -81671,6 +83699,11 @@ func (sstd SQLServerTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SQLServerTableDataset.
+func (sstd SQLServerTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SQLServerTableDataset.
@@ -82180,7 +84213,7 @@ type SQLSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -82206,6 +84239,11 @@ func (ss SQLSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SQLSource.
 func (ss SQLSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SQLSource.
+func (ss SQLSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -82473,7 +84511,7 @@ type SquareLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -82503,6 +84541,11 @@ func (sls SquareLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SquareLinkedService.
+func (sls SquareLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SquareLinkedService.
@@ -83061,7 +85104,7 @@ type SquareObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -83089,6 +85132,11 @@ func (sod SquareObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for SquareObjectDataset.
+func (sod SquareObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for SquareObjectDataset.
@@ -83371,7 +85419,7 @@ type SquareSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -83393,6 +85441,11 @@ func (ss SquareSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for SquareSource.
 func (ss SquareSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for SquareSource.
+func (ss SquareSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -83646,10 +85699,24 @@ func (ss SquareSource) AsBasicCopySource() (BasicCopySource, bool) {
 	return &ss, true
 }
 
+// SSISExecutionParameter SSIS execution parameter.
+type SSISExecutionParameter struct {
+	// Value - SSIS package execution parameter value. Type: string (or Expression with resultType string).
+	Value interface{} `json:"value,omitempty"`
+}
+
 // SSISPackageLocation SSIS package location.
 type SSISPackageLocation struct {
 	// PackagePath - The SSIS package path.
 	PackagePath *string `json:"packagePath,omitempty"`
+}
+
+// SSISPropertyOverride SSIS property override.
+type SSISPropertyOverride struct {
+	// Value - SSIS package property override value. Type: string (or Expression with resultType string).
+	Value interface{} `json:"value,omitempty"`
+	// IsSensitive - Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
+	IsSensitive *bool `json:"isSensitive,omitempty"`
 }
 
 // StagingSettings staging settings.
@@ -83712,7 +85779,7 @@ type SybaseLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -83742,6 +85809,11 @@ func (sls SybaseLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for SybaseLinkedService.
+func (sls SybaseLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for SybaseLinkedService.
@@ -84328,7 +86400,7 @@ type TeradataLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -84358,6 +86430,11 @@ func (TLSVar TeradataLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for TeradataLinkedService.
+func (TLSVar TeradataLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for TeradataLinkedService.
@@ -85532,6 +87609,14 @@ func (future TriggersStopFuture) Result(client TriggersClient) (ar autorest.Resp
 	return
 }
 
+// TumblingWindowDependency tumbling Window dependency information.
+type TumblingWindowDependency struct {
+	// Type - Reference type 'TriggerReference' for Tumbling Window.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Trigger reference name.
+	ReferenceName *string `json:"referenceName,omitempty"`
+}
+
 // TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a start time
 // without gaps and also supports backfill scenarios (when start time is in the past).
 type TumblingWindowTrigger struct {
@@ -85697,6 +87782,8 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	// DependsOn - Tumbling Window depends on condition.
+	DependsOn *[]TumblingWindowDependency `json:"dependsOn,omitempty"`
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or
@@ -86032,7 +88119,7 @@ type VerticaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -86062,6 +88149,11 @@ func (vls VerticaLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for VerticaLinkedService.
+func (vls VerticaLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for VerticaLinkedService.
@@ -86550,7 +88642,7 @@ type VerticaSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -86572,6 +88664,11 @@ func (vs VerticaSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for VerticaSource.
 func (vs VerticaSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for VerticaSource.
+func (vs VerticaSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -86839,7 +88936,7 @@ type VerticaTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -86867,6 +88964,11 @@ func (vtd VerticaTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for VerticaTableDataset.
+func (vtd VerticaTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for VerticaTableDataset.
@@ -87971,7 +90073,7 @@ type WebLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -87999,6 +90101,11 @@ func (wls WebLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for WebLinkedService.
+func (wls WebLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for WebLinkedService.
@@ -88543,7 +90650,7 @@ type WebSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -88564,6 +90671,11 @@ func (ws WebSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for WebSource.
 func (ws WebSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for WebSource.
+func (ws WebSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -88833,7 +90945,7 @@ type WebTableDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -88864,6 +90976,11 @@ func (wtd WebTableDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for WebTableDataset.
+func (wtd WebTableDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for WebTableDataset.
@@ -89248,7 +91365,7 @@ type XeroLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -89278,6 +91395,11 @@ func (xls XeroLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for XeroLinkedService.
+func (xls XeroLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for XeroLinkedService.
@@ -89825,7 +91947,7 @@ type XeroObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -89853,6 +91975,11 @@ func (xod XeroObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for XeroObjectDataset.
+func (xod XeroObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for XeroObjectDataset.
@@ -90135,7 +92262,7 @@ type XeroSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -90157,6 +92284,11 @@ func (xs XeroSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for XeroSource.
 func (xs XeroSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for XeroSource.
+func (xs XeroSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 
@@ -90424,7 +92556,7 @@ type ZohoLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeLinkedService', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
+	// Type - Possible values include: 'TypeLinkedService', 'TypeResponsys', 'TypeAzureDatabricks', 'TypeAzureDataLakeAnalytics', 'TypeHDInsightOnDemand', 'TypeSalesforceMarketingCloud', 'TypeNetezza', 'TypeVertica', 'TypeZoho', 'TypeXero', 'TypeSquare', 'TypeSpark', 'TypeShopify', 'TypeServiceNow', 'TypeQuickBooks', 'TypePresto', 'TypePhoenix', 'TypePaypal', 'TypeMarketo', 'TypeMariaDB', 'TypeMagento', 'TypeJira', 'TypeImpala', 'TypeHubspot', 'TypeHive', 'TypeHBase', 'TypeGreenplum', 'TypeGoogleBigQuery', 'TypeEloqua', 'TypeDrill', 'TypeCouchbase', 'TypeConcur', 'TypeAzurePostgreSQL', 'TypeAmazonMWS', 'TypeSapHana', 'TypeSapBW', 'TypeSftp', 'TypeFtpServer', 'TypeHTTPServer', 'TypeAzureSearch', 'TypeCustomDataSource', 'TypeAmazonRedshift', 'TypeAmazonS3', 'TypeSapEcc', 'TypeSapCloudForCustomer', 'TypeSalesforce', 'TypeAzureDataLakeStore', 'TypeMongoDb', 'TypeCassandra', 'TypeWeb', 'TypeOData', 'TypeHdfs', 'TypeOdbc', 'TypeAzureML', 'TypeTeradata', 'TypeDb2', 'TypeSybase', 'TypePostgreSQL', 'TypeMySQL', 'TypeAzureMySQL', 'TypeOracle', 'TypeFileServer', 'TypeHDInsight', 'TypeDynamics', 'TypeCosmosDb', 'TypeAzureKeyVault', 'TypeAzureBatch', 'TypeAzureSQLDatabase', 'TypeSQLServer', 'TypeAzureSQLDW', 'TypeAzureStorage'
 	Type TypeBasicLinkedService `json:"type,omitempty"`
 }
 
@@ -90454,6 +92586,11 @@ func (zls ZohoLinkedService) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysLinkedService is the BasicLinkedService implementation for ZohoLinkedService.
+func (zls ZohoLinkedService) AsResponsysLinkedService() (*ResponsysLinkedService, bool) {
+	return nil, false
 }
 
 // AsAzureDatabricksLinkedService is the BasicLinkedService implementation for ZohoLinkedService.
@@ -90990,7 +93127,7 @@ type ZohoObjectDataset struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters"`
 	// Annotations - List of tags that can be used for describing the Dataset.
 	Annotations *[]interface{} `json:"annotations,omitempty"`
-	// Type - Possible values include: 'TypeDataset', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
+	// Type - Possible values include: 'TypeDataset', 'TypeResponsysObject', 'TypeSalesforceMarketingCloudObject', 'TypeVerticaTable', 'TypeNetezzaTable', 'TypeZohoObject', 'TypeXeroObject', 'TypeSquareObject', 'TypeSparkObject', 'TypeShopifyObject', 'TypeServiceNowObject', 'TypeQuickBooksObject', 'TypePrestoObject', 'TypePhoenixObject', 'TypePaypalObject', 'TypeMarketoObject', 'TypeMariaDBTable', 'TypeMagentoObject', 'TypeJiraObject', 'TypeImpalaObject', 'TypeHubspotObject', 'TypeHiveObject', 'TypeHBaseObject', 'TypeGreenplumTable', 'TypeGoogleBigQueryObject', 'TypeEloquaObject', 'TypeDrillTable', 'TypeCouchbaseTable', 'TypeConcurObject', 'TypeAzurePostgreSQLTable', 'TypeAmazonMWSObject', 'TypeHTTPFile', 'TypeAzureSearchIndex', 'TypeWebTable', 'TypeSQLServerTable', 'TypeSapEccResource', 'TypeSapCloudForCustomerResource', 'TypeSalesforceObject', 'TypeRelationalTable', 'TypeAzureMySQLTable', 'TypeOracleTable', 'TypeODataResource', 'TypeMongoDbCollection', 'TypeFileShare', 'TypeAzureDataLakeStoreFile', 'TypeDynamicsEntity', 'TypeDocumentDbCollection', 'TypeCustomDataset', 'TypeCassandraTable', 'TypeAzureSQLDWTable', 'TypeAzureSQLTable', 'TypeAzureTable', 'TypeAzureBlob', 'TypeAmazonS3Object'
 	Type TypeBasicDataset `json:"type,omitempty"`
 }
 
@@ -91018,6 +93155,11 @@ func (zod ZohoObjectDataset) MarshalJSON() ([]byte, error) {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsResponsysObjectDataset is the BasicDataset implementation for ZohoObjectDataset.
+func (zod ZohoObjectDataset) AsResponsysObjectDataset() (*ResponsysObjectDataset, bool) {
+	return nil, false
 }
 
 // AsSalesforceMarketingCloudObjectDataset is the BasicDataset implementation for ZohoObjectDataset.
@@ -91300,7 +93442,7 @@ type ZohoSource struct {
 	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
 	// SourceRetryWait - Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
-	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
+	// Type - Possible values include: 'TypeCopySource', 'TypeAmazonRedshiftSource', 'TypeResponsysSource', 'TypeSalesforceMarketingCloudSource', 'TypeVerticaSource', 'TypeNetezzaSource', 'TypeZohoSource', 'TypeXeroSource', 'TypeSquareSource', 'TypeSparkSource', 'TypeShopifySource', 'TypeServiceNowSource', 'TypeQuickBooksSource', 'TypePrestoSource', 'TypePhoenixSource', 'TypePaypalSource', 'TypeMarketoSource', 'TypeMariaDBSource', 'TypeMagentoSource', 'TypeJiraSource', 'TypeImpalaSource', 'TypeHubspotSource', 'TypeHiveSource', 'TypeHBaseSource', 'TypeGreenplumSource', 'TypeGoogleBigQuerySource', 'TypeEloquaSource', 'TypeDrillSource', 'TypeCouchbaseSource', 'TypeConcurSource', 'TypeAzurePostgreSQLSource', 'TypeAmazonMWSSource', 'TypeHTTPSource', 'TypeAzureDataLakeStoreSource', 'TypeMongoDbSource', 'TypeCassandraSource', 'TypeWebSource', 'TypeOracleSource', 'TypeAzureMySQLSource', 'TypeHdfsSource', 'TypeFileSystemSource', 'TypeSQLDWSource', 'TypeSQLSource', 'TypeSapEccSource', 'TypeSapCloudForCustomerSource', 'TypeSalesforceSource', 'TypeRelationalSource', 'TypeDynamicsSource', 'TypeDocumentDbCollectionSource', 'TypeBlobSource', 'TypeAzureTableSource'
 	Type TypeBasicCopySource `json:"type,omitempty"`
 }
 
@@ -91322,6 +93464,11 @@ func (zs ZohoSource) MarshalJSON() ([]byte, error) {
 
 // AsAmazonRedshiftSource is the BasicCopySource implementation for ZohoSource.
 func (zs ZohoSource) AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool) {
+	return nil, false
+}
+
+// AsResponsysSource is the BasicCopySource implementation for ZohoSource.
+func (zs ZohoSource) AsResponsysSource() (*ResponsysSource, bool) {
 	return nil, false
 }
 

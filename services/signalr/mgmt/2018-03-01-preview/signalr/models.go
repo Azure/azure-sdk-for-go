@@ -603,8 +603,8 @@ type ResourceSku struct {
 // ResourceType a class represent a SignalR service resource.
 type ResourceType struct {
 	autorest.Response `json:"-"`
-	// Signalrsku - SKU of the service.
-	Signalrsku *ResourceSku `json:"sku,omitempty"`
+	// Sku - SKU of the service.
+	Sku *ResourceSku `json:"sku,omitempty"`
 	// Properties - The properties of the service.
 	*Properties `json:"properties,omitempty"`
 	// Location - The GEO location of the SignalR service. e.g. West US | East US | North Central US | South Central US.
@@ -622,8 +622,8 @@ type ResourceType struct {
 // MarshalJSON is the custom marshaler for ResourceType.
 func (rt ResourceType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rt.Signalrsku != nil {
-		objectMap["sku"] = rt.Signalrsku
+	if rt.Sku != nil {
+		objectMap["sku"] = rt.Sku
 	}
 	if rt.Properties != nil {
 		objectMap["properties"] = rt.Properties
@@ -657,12 +657,12 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "sku":
 			if v != nil {
-				var signalrsku ResourceSku
-				err = json.Unmarshal(*v, &signalrsku)
+				var sku ResourceSku
+				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err
 				}
-				rt.Signalrsku = &signalrsku
+				rt.Sku = &sku
 			}
 		case "properties":
 			if v != nil {

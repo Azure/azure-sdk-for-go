@@ -27500,8 +27500,6 @@ type Db2LinkedServiceTypeProperties struct {
 	Server interface{} `json:"server,omitempty"`
 	// Database - Database name for connection. Type: string (or Expression with resultType string).
 	Database interface{} `json:"database,omitempty"`
-	// Schema - Schema name for connection. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
 	// AuthenticationType - AuthenticationType to be used for connection. Possible values include: 'Basic'
 	AuthenticationType Db2AuthenticationType `json:"authenticationType,omitempty"`
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
@@ -27538,15 +27536,6 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d2lstp.Database = databaseVar
-			}
-		case "schema":
-			if v != nil {
-				var schema interface{}
-				err = json.Unmarshal(*v, &schema)
-				if err != nil {
-					return err
-				}
-				d2lstp.Schema = schema
 			}
 		case "authenticationType":
 			if v != nil {
@@ -33400,8 +33389,8 @@ type FactoryProperties struct {
 
 // FactoryRepoUpdate factory's VSTS repo information.
 type FactoryRepoUpdate struct {
-	// FactoryID - The factory id.
-	FactoryID *string `json:"factoryId,omitempty"`
+	// FactoryResourceID - The factory resource id.
+	FactoryResourceID *string `json:"factoryResourceId,omitempty"`
 	// VstsConfiguration - VSTS repo information of the factory.
 	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
 }
@@ -58660,16 +58649,8 @@ func (msls *MySQLLinkedService) UnmarshalJSON(body []byte) error {
 
 // MySQLLinkedServiceTypeProperties mySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
-	// Server - Server name for connection. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
-	// Database - Database name for connection. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
-	// Schema - Schema name for connection. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
-	// Username - Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
-	// Password - Password for authentication.
-	Password BasicSecretBase `json:"password,omitempty"`
+	// ConnectionString - The connection string.
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
 }
@@ -58683,49 +58664,13 @@ func (mslstp *MySQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 	}
 	for k, v := range m {
 		switch k {
-		case "server":
+		case "connectionString":
 			if v != nil {
-				var server interface{}
-				err = json.Unmarshal(*v, &server)
+				connectionString, err := unmarshalBasicSecretBase(*v)
 				if err != nil {
 					return err
 				}
-				mslstp.Server = server
-			}
-		case "database":
-			if v != nil {
-				var databaseVar interface{}
-				err = json.Unmarshal(*v, &databaseVar)
-				if err != nil {
-					return err
-				}
-				mslstp.Database = databaseVar
-			}
-		case "schema":
-			if v != nil {
-				var schema interface{}
-				err = json.Unmarshal(*v, &schema)
-				if err != nil {
-					return err
-				}
-				mslstp.Schema = schema
-			}
-		case "username":
-			if v != nil {
-				var username interface{}
-				err = json.Unmarshal(*v, &username)
-				if err != nil {
-					return err
-				}
-				mslstp.Username = username
-			}
-		case "password":
-			if v != nil {
-				password, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				mslstp.Password = password
+				mslstp.ConnectionString = connectionString
 			}
 		case "encryptedCredential":
 			if v != nil {
@@ -66576,16 +66521,8 @@ func (psls *PostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
 
 // PostgreSQLLinkedServiceTypeProperties postgreSQL linked service properties.
 type PostgreSQLLinkedServiceTypeProperties struct {
-	// Server - Server name for connection. Type: string (or Expression with resultType string).
-	Server interface{} `json:"server,omitempty"`
-	// Database - Database name for connection. Type: string (or Expression with resultType string).
-	Database interface{} `json:"database,omitempty"`
-	// Schema - Schema name for connection. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
-	// Username - Username for authentication. Type: string (or Expression with resultType string).
-	Username interface{} `json:"username,omitempty"`
-	// Password - Password for authentication.
-	Password BasicSecretBase `json:"password,omitempty"`
+	// ConnectionString - The connection string.
+	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
 }
@@ -66599,49 +66536,13 @@ func (pslstp *PostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) 
 	}
 	for k, v := range m {
 		switch k {
-		case "server":
+		case "connectionString":
 			if v != nil {
-				var server interface{}
-				err = json.Unmarshal(*v, &server)
+				connectionString, err := unmarshalBasicSecretBase(*v)
 				if err != nil {
 					return err
 				}
-				pslstp.Server = server
-			}
-		case "database":
-			if v != nil {
-				var databaseVar interface{}
-				err = json.Unmarshal(*v, &databaseVar)
-				if err != nil {
-					return err
-				}
-				pslstp.Database = databaseVar
-			}
-		case "schema":
-			if v != nil {
-				var schema interface{}
-				err = json.Unmarshal(*v, &schema)
-				if err != nil {
-					return err
-				}
-				pslstp.Schema = schema
-			}
-		case "username":
-			if v != nil {
-				var username interface{}
-				err = json.Unmarshal(*v, &username)
-				if err != nil {
-					return err
-				}
-				pslstp.Username = username
-			}
-		case "password":
-			if v != nil {
-				password, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				pslstp.Password = password
+				pslstp.ConnectionString = connectionString
 			}
 		case "encryptedCredential":
 			if v != nil {
@@ -87004,8 +86905,6 @@ func (TLSVar *TeradataLinkedService) UnmarshalJSON(body []byte) error {
 type TeradataLinkedServiceTypeProperties struct {
 	// Server - Server name for connection. Type: string (or Expression with resultType string).
 	Server interface{} `json:"server,omitempty"`
-	// Schema - Schema name for connection. Type: string (or Expression with resultType string).
-	Schema interface{} `json:"schema,omitempty"`
 	// AuthenticationType - AuthenticationType to be used for connection. Possible values include: 'TeradataAuthenticationTypeBasic', 'TeradataAuthenticationTypeWindows'
 	AuthenticationType TeradataAuthenticationType `json:"authenticationType,omitempty"`
 	// Username - Username for authentication. Type: string (or Expression with resultType string).
@@ -87033,15 +86932,6 @@ func (tlstp *TeradataLinkedServiceTypeProperties) UnmarshalJSON(body []byte) err
 					return err
 				}
 				tlstp.Server = server
-			}
-		case "schema":
-			if v != nil {
-				var schema interface{}
-				err = json.Unmarshal(*v, &schema)
-				if err != nil {
-					return err
-				}
-				tlstp.Schema = schema
 			}
 		case "authenticationType":
 			if v != nil {

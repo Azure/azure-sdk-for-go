@@ -78,6 +78,12 @@ const (
 	TimeSpan LocalTimestampFormat = original.TimeSpan
 )
 
+type PropertyType = original.PropertyType
+
+const (
+	String PropertyType = original.String
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -92,10 +98,10 @@ const (
 type ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyType
 
 const (
-	Bool     ReferenceDataKeyPropertyType = original.Bool
-	DateTime ReferenceDataKeyPropertyType = original.DateTime
-	Double   ReferenceDataKeyPropertyType = original.Double
-	String   ReferenceDataKeyPropertyType = original.String
+	ReferenceDataKeyPropertyTypeBool     ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeBool
+	ReferenceDataKeyPropertyTypeDateTime ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeDateTime
+	ReferenceDataKeyPropertyTypeDouble   ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeDouble
+	ReferenceDataKeyPropertyTypeString   ReferenceDataKeyPropertyType = original.ReferenceDataKeyPropertyTypeString
 )
 
 type SkuName = original.SkuName
@@ -164,6 +170,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type PartitionKeyProperty = original.PartitionKeyProperty
 type ReferenceDataSetCreateOrUpdateParameters = original.ReferenceDataSetCreateOrUpdateParameters
 type ReferenceDataSetCreationProperties = original.ReferenceDataSetCreationProperties
 type ReferenceDataSetKeyProperty = original.ReferenceDataSetKeyProperty
@@ -219,6 +226,9 @@ func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource
 }
 func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
 	return original.PossibleLocalTimestampFormatValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

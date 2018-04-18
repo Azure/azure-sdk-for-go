@@ -28,6 +28,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ConfigureRepoClient = original.ConfigureRepoClient
 type DatasetsClient = original.DatasetsClient
 type FactoriesClient = original.FactoriesClient
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
@@ -987,7 +988,9 @@ type FactoryListResponse = original.FactoryListResponse
 type FactoryListResponseIterator = original.FactoryListResponseIterator
 type FactoryListResponsePage = original.FactoryListResponsePage
 type FactoryProperties = original.FactoryProperties
+type FactoryRepoUpdate = original.FactoryRepoUpdate
 type FactoryUpdateParameters = original.FactoryUpdateParameters
+type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
 type FileServerLinkedService = original.FileServerLinkedService
 type FileServerLinkedServiceTypeProperties = original.FileServerLinkedServiceTypeProperties
 type FileShareDataset = original.FileShareDataset
@@ -1331,6 +1334,12 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigureRepoClient(subscriptionID string) ConfigureRepoClient {
+	return original.NewConfigureRepoClient(subscriptionID)
+}
+func NewConfigureRepoClientWithBaseURI(baseURI string, subscriptionID string) ConfigureRepoClient {
+	return original.NewConfigureRepoClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatasetsClient(subscriptionID string) DatasetsClient {
 	return original.NewDatasetsClient(subscriptionID)

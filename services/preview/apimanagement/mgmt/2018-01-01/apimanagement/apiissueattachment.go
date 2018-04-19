@@ -331,13 +331,13 @@ func (client APIIssueAttachmentClient) GetResponder(resp *http.Response) (result
 	return
 }
 
-// Head gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+// GetEntityTag gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 // apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
 // identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
 // within an Issue. Must be unique in the current Issue.
-func (client APIIssueAttachmentClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error) {
+func (client APIIssueAttachmentClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -355,32 +355,32 @@ func (client APIIssueAttachmentClient) Head(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "attachmentID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "attachmentID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "attachmentID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APIIssueAttachmentClient", "Head", err.Error())
+		return result, validation.NewError("apimanagement.APIIssueAttachmentClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.HeadPreparer(ctx, resourceGroupName, serviceName, apiid, issueID, attachmentID)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, apiid, issueID, attachmentID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "GetEntityTag", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.HeadSender(req)
+	resp, err := client.GetEntityTagSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "GetEntityTag", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.HeadResponder(resp)
+	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "Head", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentClient", "GetEntityTag", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// HeadPreparer prepares the Head request.
-func (client APIIssueAttachmentClient) HeadPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (*http.Request, error) {
+// GetEntityTagPreparer prepares the GetEntityTag request.
+func (client APIIssueAttachmentClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"attachmentId":      autorest.Encode("path", attachmentID),
@@ -403,16 +403,16 @@ func (client APIIssueAttachmentClient) HeadPreparer(ctx context.Context, resourc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// HeadSender sends the Head request. The method will close the
+// GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
-func (client APIIssueAttachmentClient) HeadSender(req *http.Request) (*http.Response, error) {
+func (client APIIssueAttachmentClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// HeadResponder handles the response to the Head request. The method always
+// GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
-func (client APIIssueAttachmentClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIIssueAttachmentClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

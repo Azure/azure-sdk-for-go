@@ -28,6 +28,7 @@ const (
 type BaseClient = original.BaseClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type EventHubsClient = original.EventHubsClient
+type MigrationConfigurationsClient = original.MigrationConfigurationsClient
 type AccessRights = original.AccessRights
 
 const (
@@ -135,6 +136,11 @@ type EventHubListResultIterator = original.EventHubListResultIterator
 type EventHubListResultPage = original.EventHubListResultPage
 type EventhubProperties = original.EventhubProperties
 type MessageCountDetails = original.MessageCountDetails
+type MigrationConfigListResult = original.MigrationConfigListResult
+type MigrationConfigListResultIterator = original.MigrationConfigListResultIterator
+type MigrationConfigListResultPage = original.MigrationConfigListResultPage
+type MigrationConfigProperties = original.MigrationConfigProperties
+type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
@@ -211,6 +217,12 @@ func NewEventHubsClient(subscriptionID string) EventHubsClient {
 }
 func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMigrationConfigurationsClient(subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClient(subscriptionID)
+}
+func NewMigrationConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigurationsClient {
+	return original.NewMigrationConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()

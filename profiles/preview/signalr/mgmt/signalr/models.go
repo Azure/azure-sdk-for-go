@@ -41,7 +41,9 @@ const (
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
 	Moving    ProvisioningState = original.Moving
+	Running   ProvisioningState = original.Running
 	Succeeded ProvisioningState = original.Succeeded
+	Unknown   ProvisioningState = original.Unknown
 	Updating  ProvisioningState = original.Updating
 )
 
@@ -80,6 +82,7 @@ type ServiceSpecification = original.ServiceSpecification
 type TrackedResource = original.TrackedResource
 type UpdateFuture = original.UpdateFuture
 type UpdateParameters = original.UpdateParameters
+type OperationsClient = original.OperationsClient
 type Client = original.Client
 
 func New(subscriptionID string) BaseClient {
@@ -96,6 +99,12 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)

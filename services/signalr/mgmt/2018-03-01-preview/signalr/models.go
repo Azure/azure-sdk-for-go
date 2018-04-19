@@ -54,15 +54,19 @@ const (
 	Failed ProvisioningState = "Failed"
 	// Moving ...
 	Moving ProvisioningState = "Moving"
+	// Running ...
+	Running ProvisioningState = "Running"
 	// Succeeded ...
 	Succeeded ProvisioningState = "Succeeded"
+	// Unknown ...
+	Unknown ProvisioningState = "Unknown"
 	// Updating ...
 	Updating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Moving, Succeeded, Updating}
+	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Moving, Running, Succeeded, Unknown, Updating}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -403,7 +407,7 @@ type OperationProperties struct {
 // Properties a class that describes the properties of the SignalR service that should contain more read-only
 // properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
 type Properties struct {
-	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Creating', 'Updating', 'Deleting', 'Moving'
+	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExternalIP - The publicly accessible IP of the SignalR service.
 	ExternalIP *string `json:"externalIP,omitempty"`
@@ -603,8 +607,8 @@ type ResourceSku struct {
 // ResourceType a class represent a SignalR service resource.
 type ResourceType struct {
 	autorest.Response `json:"-"`
-	// Signalrsku - SKU of the service.
-	Signalrsku *ResourceSku `json:"sku,omitempty"`
+	// Sku - SKU of the service.
+	Sku *ResourceSku `json:"sku,omitempty"`
 	// Properties - The properties of the service.
 	*Properties `json:"properties,omitempty"`
 	// Location - The GEO location of the SignalR service. e.g. West US | East US | North Central US | South Central US.
@@ -622,8 +626,8 @@ type ResourceType struct {
 // MarshalJSON is the custom marshaler for ResourceType.
 func (rt ResourceType) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rt.Signalrsku != nil {
-		objectMap["sku"] = rt.Signalrsku
+	if rt.Sku != nil {
+		objectMap["sku"] = rt.Sku
 	}
 	if rt.Properties != nil {
 		objectMap["properties"] = rt.Properties
@@ -657,12 +661,12 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "sku":
 			if v != nil {
-				var signalrsku ResourceSku
-				err = json.Unmarshal(*v, &signalrsku)
+				var sku ResourceSku
+				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err
 				}
-				rt.Signalrsku = &signalrsku
+				rt.Sku = &sku
 			}
 		case "properties":
 			if v != nil {

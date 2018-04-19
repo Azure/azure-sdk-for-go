@@ -87609,14 +87609,6 @@ func (future TriggersStopFuture) Result(client TriggersClient) (ar autorest.Resp
 	return
 }
 
-// TumblingWindowDependency tumbling Window dependency information.
-type TumblingWindowDependency struct {
-	// Type - Reference type "TriggerReference" for Tumbling Window.
-	Type *string `json:"type,omitempty"`
-	// ReferenceName - Trigger reference name.
-	ReferenceName *string `json:"referenceName,omitempty"`
-}
-
 // TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a start time
 // without gaps and also supports backfill scenarios (when start time is in the past).
 type TumblingWindowTrigger struct {
@@ -87766,6 +87758,14 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// TumblingWindowTriggerReference tumbling window trigger reference type.
+type TumblingWindowTriggerReference struct {
+	// Type - Tumbling window trigger reference type.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Reference TumblingWindowTrigger name.
+	ReferenceName *string `json:"referenceName,omitempty"`
+}
+
 // TumblingWindowTriggerTypeProperties tumbling Window Trigger properties.
 type TumblingWindowTriggerTypeProperties struct {
 	// Frequency - The frequency of the time windows. Possible values include: 'TumblingWindowFrequencyMinute', 'TumblingWindowFrequencyHour'
@@ -87782,8 +87782,8 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
-	// DependsOn - Tumbling Window depends on condition.
-	DependsOn *[]TumblingWindowDependency `json:"dependsOn,omitempty"`
+	// DependsOn - Tumbling window triggers that this trigger depends on.
+	DependsOn *[]TumblingWindowTriggerReference `json:"dependsOn,omitempty"`
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or

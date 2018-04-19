@@ -517,3 +517,77 @@ func (client ReplicationProtectionContainerMappingsClient) PurgeResponder(resp *
 	result.Response = resp
 	return
 }
+
+// Update the operation to update protection container mapping.
+//
+// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
+// container mapping name. updateInput is mapping update input.
+func (client ReplicationProtectionContainerMappingsClient) Update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput) (result ReplicationProtectionContainerMappingsUpdateFuture, err error) {
+	req, err := client.UpdatePreparer(ctx, fabricName, protectionContainerName, mappingName, updateInput)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsClient", "Update", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ReplicationProtectionContainerMappingsClient) UpdatePreparer(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"fabricName":              autorest.Encode("path", fabricName),
+		"mappingName":             autorest.Encode("path", mappingName),
+		"protectionContainerName": autorest.Encode("path", protectionContainerName),
+		"resourceGroupName":       autorest.Encode("path", client.ResourceGroupName),
+		"resourceName":            autorest.Encode("path", client.ResourceName),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-01-10"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}", pathParameters),
+		autorest.WithJSON(updateInput),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client ReplicationProtectionContainerMappingsClient) UpdateSender(req *http.Request) (future ReplicationProtectionContainerMappingsUpdateFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client ReplicationProtectionContainerMappingsClient) UpdateResponder(resp *http.Response) (result ProtectionContainerMapping, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

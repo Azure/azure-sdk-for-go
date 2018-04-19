@@ -314,12 +314,12 @@ func (client APIIssueClient) GetResponder(resp *http.Response) (result IssueCont
 	return
 }
 
-// Head gets the entity state (Etag) version of the Issue for an API specified by its identifier.
+// GetEntityTag gets the entity state (Etag) version of the Issue for an API specified by its identifier.
 //
 // resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 // apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
 // identifier. Must be unique in the current API Management service instance.
-func (client APIIssueClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result autorest.Response, err error) {
+func (client APIIssueClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
@@ -333,32 +333,32 @@ func (client APIIssueClient) Head(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "issueID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APIIssueClient", "Head", err.Error())
+		return result, validation.NewError("apimanagement.APIIssueClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.HeadPreparer(ctx, resourceGroupName, serviceName, apiid, issueID)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, apiid, issueID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Head", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "GetEntityTag", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.HeadSender(req)
+	resp, err := client.GetEntityTagSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Head", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "GetEntityTag", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.HeadResponder(resp)
+	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "Head", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueClient", "GetEntityTag", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// HeadPreparer prepares the Head request.
-func (client APIIssueClient) HeadPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (*http.Request, error) {
+// GetEntityTagPreparer prepares the GetEntityTag request.
+func (client APIIssueClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiId":             autorest.Encode("path", apiid),
 		"issueId":           autorest.Encode("path", issueID),
@@ -380,16 +380,16 @@ func (client APIIssueClient) HeadPreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// HeadSender sends the Head request. The method will close the
+// GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
-func (client APIIssueClient) HeadSender(req *http.Request) (*http.Response, error) {
+func (client APIIssueClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// HeadResponder handles the response to the Head request. The method always
+// GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
-func (client APIIssueClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client APIIssueClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

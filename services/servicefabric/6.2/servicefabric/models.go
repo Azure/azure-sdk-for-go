@@ -51979,7 +51979,7 @@ type TimeBasedBackupScheduleDescription struct {
 	ScheduleFrequencyType BackupScheduleFrequencyType `json:"ScheduleFrequencyType,omitempty"`
 	// RunDays - List of days of a week when to trigger the periodic backup. This is valid only when the backup schedule frequency type is weekly.
 	RunDays *[]DayOfWeek `json:"RunDays,omitempty"`
-	// RunTimes - Represents the list of exact time during the day in ISO8601 format. Like '19:00:00' will represent '7PM' during the day. Date specified along with time will be ignored.In the examples, date is also specified with time but the date will always be ignored.
+	// RunTimes - Represents the list of exact time during the day in ISO8601 format. Like '19:00:00' will represent '7PM' during the day. Date specified along with time will be ignored.
 	RunTimes *[]date.Time `json:"RunTimes,omitempty"`
 	// ScheduleKind - Possible values include: 'ScheduleKindBackupScheduleDescription', 'ScheduleKindFrequencyBased', 'ScheduleKindTimeBased'
 	ScheduleKind ScheduleKind `json:"ScheduleKind,omitempty"`

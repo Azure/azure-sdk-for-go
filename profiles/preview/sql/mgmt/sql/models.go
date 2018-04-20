@@ -28,6 +28,14 @@ const (
 type BaseClient = original.BaseClient
 type DatabaseOperationsClient = original.DatabaseOperationsClient
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
+type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
+type InstanceFailoverGroupReplicationRole = original.InstanceFailoverGroupReplicationRole
+
+const (
+	Primary   InstanceFailoverGroupReplicationRole = original.Primary
+	Secondary InstanceFailoverGroupReplicationRole = original.Secondary
+)
+
 type ManagementOperationState = original.ManagementOperationState
 
 const (
@@ -37,6 +45,20 @@ const (
 	InProgress       ManagementOperationState = original.InProgress
 	Pending          ManagementOperationState = original.Pending
 	Succeeded        ManagementOperationState = original.Succeeded
+)
+
+type ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicy
+
+const (
+	Disabled ReadOnlyEndpointFailoverPolicy = original.Disabled
+	Enabled  ReadOnlyEndpointFailoverPolicy = original.Enabled
+)
+
+type ReadWriteEndpointFailoverPolicy = original.ReadWriteEndpointFailoverPolicy
+
+const (
+	Automatic ReadWriteEndpointFailoverPolicy = original.Automatic
+	Manual    ReadWriteEndpointFailoverPolicy = original.Manual
 )
 
 type DatabaseOperation = original.DatabaseOperation
@@ -49,13 +71,21 @@ type ElasticPoolOperationListResult = original.ElasticPoolOperationListResult
 type ElasticPoolOperationListResultIterator = original.ElasticPoolOperationListResultIterator
 type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResultPage
 type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
+type InstanceFailoverGroup = original.InstanceFailoverGroup
+type InstanceFailoverGroupListResult = original.InstanceFailoverGroupListResult
+type InstanceFailoverGroupListResultIterator = original.InstanceFailoverGroupListResultIterator
+type InstanceFailoverGroupListResultPage = original.InstanceFailoverGroupListResultPage
+type InstanceFailoverGroupProperties = original.InstanceFailoverGroupProperties
+type InstanceFailoverGroupReadOnlyEndpoint = original.InstanceFailoverGroupReadOnlyEndpoint
+type InstanceFailoverGroupReadWriteEndpoint = original.InstanceFailoverGroupReadWriteEndpoint
+type InstanceFailoverGroupsCreateOrUpdateFuture = original.InstanceFailoverGroupsCreateOrUpdateFuture
+type InstanceFailoverGroupsDeleteFuture = original.InstanceFailoverGroupsDeleteFuture
+type InstanceFailoverGroupsFailoverFuture = original.InstanceFailoverGroupsFailoverFuture
+type InstanceFailoverGroupsForceFailoverAllowDataLossFuture = original.InstanceFailoverGroupsForceFailoverAllowDataLossFuture
+type ManagedInstancePairInfo = original.ManagedInstancePairInfo
+type PartnerRegionInfo = original.PartnerRegionInfo
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type ShortTermRetentionPoliciesCreateOrUpdateFuture = original.ShortTermRetentionPoliciesCreateOrUpdateFuture
-type ShortTermRetentionPoliciesUpdateFuture = original.ShortTermRetentionPoliciesUpdateFuture
-type ShortTermRetentionPolicy = original.ShortTermRetentionPolicy
-type ShortTermRetentionPolicyProperties = original.ShortTermRetentionPolicyProperties
-type ShortTermRetentionPoliciesClient = original.ShortTermRetentionPoliciesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -75,14 +105,23 @@ func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperations
 func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
 	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewInstanceFailoverGroupsClient(subscriptionID string) InstanceFailoverGroupsClient {
+	return original.NewInstanceFailoverGroupsClient(subscriptionID)
+}
+func NewInstanceFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) InstanceFailoverGroupsClient {
+	return original.NewInstanceFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
+	return original.PossibleInstanceFailoverGroupReplicationRoleValues()
+}
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return original.PossibleManagementOperationStateValues()
 }
-func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
-	return original.NewShortTermRetentionPoliciesClient(subscriptionID)
+func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
+	return original.PossibleReadOnlyEndpointFailoverPolicyValues()
 }
-func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
-	return original.NewShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
+	return original.PossibleReadWriteEndpointFailoverPolicyValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

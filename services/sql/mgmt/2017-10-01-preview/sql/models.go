@@ -26,6 +26,21 @@ import (
 	"net/http"
 )
 
+// InstanceFailoverGroupReplicationRole enumerates the values for instance failover group replication role.
+type InstanceFailoverGroupReplicationRole string
+
+const (
+	// Primary ...
+	Primary InstanceFailoverGroupReplicationRole = "Primary"
+	// Secondary ...
+	Secondary InstanceFailoverGroupReplicationRole = "Secondary"
+)
+
+// PossibleInstanceFailoverGroupReplicationRoleValues returns an array of possible values for the InstanceFailoverGroupReplicationRole const type.
+func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
+	return []InstanceFailoverGroupReplicationRole{Primary, Secondary}
+}
+
 // ManagementOperationState enumerates the values for management operation state.
 type ManagementOperationState string
 
@@ -47,6 +62,36 @@ const (
 // PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
+}
+
+// ReadOnlyEndpointFailoverPolicy enumerates the values for read only endpoint failover policy.
+type ReadOnlyEndpointFailoverPolicy string
+
+const (
+	// Disabled ...
+	Disabled ReadOnlyEndpointFailoverPolicy = "Disabled"
+	// Enabled ...
+	Enabled ReadOnlyEndpointFailoverPolicy = "Enabled"
+)
+
+// PossibleReadOnlyEndpointFailoverPolicyValues returns an array of possible values for the ReadOnlyEndpointFailoverPolicy const type.
+func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
+	return []ReadOnlyEndpointFailoverPolicy{Disabled, Enabled}
+}
+
+// ReadWriteEndpointFailoverPolicy enumerates the values for read write endpoint failover policy.
+type ReadWriteEndpointFailoverPolicy string
+
+const (
+	// Automatic ...
+	Automatic ReadWriteEndpointFailoverPolicy = "Automatic"
+	// Manual ...
+	Manual ReadWriteEndpointFailoverPolicy = "Manual"
+)
+
+// PossibleReadWriteEndpointFailoverPolicyValues returns an array of possible values for the ReadWriteEndpointFailoverPolicy const type.
+func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
+	return []ReadWriteEndpointFailoverPolicy{Automatic, Manual}
 }
 
 // DatabaseOperation a database operation.
@@ -479,6 +524,432 @@ type ElasticPoolOperationProperties struct {
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
+// InstanceFailoverGroup an instance failover group.
+type InstanceFailoverGroup struct {
+	autorest.Response `json:"-"`
+	// InstanceFailoverGroupProperties - Resource properties.
+	*InstanceFailoverGroupProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InstanceFailoverGroup.
+func (ifg InstanceFailoverGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ifg.InstanceFailoverGroupProperties != nil {
+		objectMap["properties"] = ifg.InstanceFailoverGroupProperties
+	}
+	if ifg.ID != nil {
+		objectMap["id"] = ifg.ID
+	}
+	if ifg.Name != nil {
+		objectMap["name"] = ifg.Name
+	}
+	if ifg.Type != nil {
+		objectMap["type"] = ifg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for InstanceFailoverGroup struct.
+func (ifg *InstanceFailoverGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var instanceFailoverGroupProperties InstanceFailoverGroupProperties
+				err = json.Unmarshal(*v, &instanceFailoverGroupProperties)
+				if err != nil {
+					return err
+				}
+				ifg.InstanceFailoverGroupProperties = &instanceFailoverGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ifg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ifg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ifg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// InstanceFailoverGroupListResult a list of instance failover groups.
+type InstanceFailoverGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]InstanceFailoverGroup `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// InstanceFailoverGroupListResultIterator provides access to a complete listing of InstanceFailoverGroup values.
+type InstanceFailoverGroupListResultIterator struct {
+	i    int
+	page InstanceFailoverGroupListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *InstanceFailoverGroupListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter InstanceFailoverGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter InstanceFailoverGroupListResultIterator) Response() InstanceFailoverGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter InstanceFailoverGroupListResultIterator) Value() InstanceFailoverGroup {
+	if !iter.page.NotDone() {
+		return InstanceFailoverGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ifglr InstanceFailoverGroupListResult) IsEmpty() bool {
+	return ifglr.Value == nil || len(*ifglr.Value) == 0
+}
+
+// instanceFailoverGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ifglr InstanceFailoverGroupListResult) instanceFailoverGroupListResultPreparer() (*http.Request, error) {
+	if ifglr.NextLink == nil || len(to.String(ifglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ifglr.NextLink)))
+}
+
+// InstanceFailoverGroupListResultPage contains a page of InstanceFailoverGroup values.
+type InstanceFailoverGroupListResultPage struct {
+	fn    func(InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)
+	ifglr InstanceFailoverGroupListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *InstanceFailoverGroupListResultPage) Next() error {
+	next, err := page.fn(page.ifglr)
+	if err != nil {
+		return err
+	}
+	page.ifglr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page InstanceFailoverGroupListResultPage) NotDone() bool {
+	return !page.ifglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page InstanceFailoverGroupListResultPage) Response() InstanceFailoverGroupListResult {
+	return page.ifglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page InstanceFailoverGroupListResultPage) Values() []InstanceFailoverGroup {
+	if page.ifglr.IsEmpty() {
+		return nil
+	}
+	return *page.ifglr.Value
+}
+
+// InstanceFailoverGroupProperties properties of a instance failover group.
+type InstanceFailoverGroupProperties struct {
+	// ReadWriteEndpoint - Read-write endpoint of the failover group instance.
+	ReadWriteEndpoint *InstanceFailoverGroupReadWriteEndpoint `json:"readWriteEndpoint,omitempty"`
+	// ReadOnlyEndpoint - Read-only endpoint of the failover group instance.
+	ReadOnlyEndpoint *InstanceFailoverGroupReadOnlyEndpoint `json:"readOnlyEndpoint,omitempty"`
+	// ReplicationRole - Local replication role of the failover group instance. Possible values include: 'Primary', 'Secondary'
+	ReplicationRole InstanceFailoverGroupReplicationRole `json:"replicationRole,omitempty"`
+	// ReplicationState - Replication state of the failover group instance.
+	ReplicationState *string `json:"replicationState,omitempty"`
+	// PartnerRegions - Partner region information for the failover group.
+	PartnerRegions *[]PartnerRegionInfo `json:"partnerRegions,omitempty"`
+	// ManagedInstancePairs - List of managed instance pairs in the failover group.
+	ManagedInstancePairs *[]ManagedInstancePairInfo `json:"managedInstancePairs,omitempty"`
+}
+
+// InstanceFailoverGroupReadOnlyEndpoint read-only endpoint of the failover group instance.
+type InstanceFailoverGroupReadOnlyEndpoint struct {
+	// FailoverPolicy - Failover policy of the read-only endpoint for the failover group. Possible values include: 'Disabled', 'Enabled'
+	FailoverPolicy ReadOnlyEndpointFailoverPolicy `json:"failoverPolicy,omitempty"`
+}
+
+// InstanceFailoverGroupReadWriteEndpoint read-write endpoint of the failover group instance.
+type InstanceFailoverGroupReadWriteEndpoint struct {
+	// FailoverPolicy - Failover policy of the read-write endpoint for the failover group. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required. Possible values include: 'Manual', 'Automatic'
+	FailoverPolicy ReadWriteEndpointFailoverPolicy `json:"failoverPolicy,omitempty"`
+	// FailoverWithDataLossGracePeriodMinutes - Grace period before failover with data loss is attempted for the read-write endpoint. If failoverPolicy is Automatic then failoverWithDataLossGracePeriodMinutes is required.
+	FailoverWithDataLossGracePeriodMinutes *int32 `json:"failoverWithDataLossGracePeriodMinutes,omitempty"`
+}
+
+// InstanceFailoverGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type InstanceFailoverGroupsCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future InstanceFailoverGroupsCreateOrUpdateFuture) Result(client InstanceFailoverGroupsClient) (ifg InstanceFailoverGroup, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ifg, azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ifg, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ifg, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// InstanceFailoverGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type InstanceFailoverGroupsDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future InstanceFailoverGroupsDeleteFuture) Result(client InstanceFailoverGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// InstanceFailoverGroupsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type InstanceFailoverGroupsFailoverFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future InstanceFailoverGroupsFailoverFuture) Result(client InstanceFailoverGroupsClient) (ifg InstanceFailoverGroup, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ifg, azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsFailoverFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ifg, err = client.FailoverResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ifg, err = client.FailoverResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsFailoverFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// InstanceFailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type InstanceFailoverGroupsForceFailoverAllowDataLossFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future InstanceFailoverGroupsForceFailoverAllowDataLossFuture) Result(client InstanceFailoverGroupsClient) (ifg InstanceFailoverGroup, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ifg, azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ifg, err = client.ForceFailoverAllowDataLossResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ifg, err = client.ForceFailoverAllowDataLossResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ManagedInstancePairInfo pairs of Managed Instances in the failover group.
+type ManagedInstancePairInfo struct {
+	// PrimaryManagedInstanceID - Id of Primary Managed Instance in pair.
+	PrimaryManagedInstanceID *string `json:"primaryManagedInstanceId,omitempty"`
+	// PartnerManagedInstanceID - Id of Partner Managed Instance in pair.
+	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
+}
+
+// PartnerRegionInfo partner region information for the failover group.
+type PartnerRegionInfo struct {
+	// Location - Geo location of the partner managed instances.
+	Location *string `json:"location,omitempty"`
+	// ReplicationRole - Replication role of the partner managed instances. Possible values include: 'Primary', 'Secondary'
+	ReplicationRole InstanceFailoverGroupReplicationRole `json:"replicationRole,omitempty"`
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - Resource ID.
@@ -497,190 +968,4 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-}
-
-// ShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ShortTermRetentionPoliciesCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future ShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		strp, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	strp, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// ShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ShortTermRetentionPoliciesUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future ShortTermRetentionPoliciesUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		strp, err = client.UpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	strp, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// ShortTermRetentionPolicy a short term retention policy resource.
-type ShortTermRetentionPolicy struct {
-	autorest.Response `json:"-"`
-	// ShortTermRetentionPolicyProperties - Resource properties.
-	*ShortTermRetentionPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ShortTermRetentionPolicy.
-func (strp ShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if strp.ShortTermRetentionPolicyProperties != nil {
-		objectMap["properties"] = strp.ShortTermRetentionPolicyProperties
-	}
-	if strp.ID != nil {
-		objectMap["id"] = strp.ID
-	}
-	if strp.Name != nil {
-		objectMap["name"] = strp.Name
-	}
-	if strp.Type != nil {
-		objectMap["type"] = strp.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ShortTermRetentionPolicy struct.
-func (strp *ShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var shortTermRetentionPolicyProperties ShortTermRetentionPolicyProperties
-				err = json.Unmarshal(*v, &shortTermRetentionPolicyProperties)
-				if err != nil {
-					return err
-				}
-				strp.ShortTermRetentionPolicyProperties = &shortTermRetentionPolicyProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				strp.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				strp.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				strp.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// ShortTermRetentionPolicyProperties properties of a short term retention policy
-type ShortTermRetentionPolicyProperties struct {
-	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
 }

@@ -28,7 +28,7 @@ const (
 type BaseClient = original.BaseClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type EventHubsClient = original.EventHubsClient
-type MigrationConfigurationsClient = original.MigrationConfigurationsClient
+type MigrationConfigsClient = original.MigrationConfigsClient
 type AccessRights = original.AccessRights
 
 const (
@@ -141,7 +141,7 @@ type MigrationConfigListResultIterator = original.MigrationConfigListResultItera
 type MigrationConfigListResultPage = original.MigrationConfigListResultPage
 type MigrationConfigProperties = original.MigrationConfigProperties
 type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
-type MigrationConfigurationsStartMigrationFuture = original.MigrationConfigurationsStartMigrationFuture
+type MigrationConfigsStartMigrationFuture = original.MigrationConfigsStartMigrationFuture
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation
@@ -219,11 +219,11 @@ func NewEventHubsClient(subscriptionID string) EventHubsClient {
 func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewMigrationConfigurationsClient(subscriptionID string) MigrationConfigurationsClient {
-	return original.NewMigrationConfigurationsClient(subscriptionID)
+func NewMigrationConfigsClient(subscriptionID string) MigrationConfigsClient {
+	return original.NewMigrationConfigsClient(subscriptionID)
 }
-func NewMigrationConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigurationsClient {
-	return original.NewMigrationConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+func NewMigrationConfigsClientWithBaseURI(baseURI string, subscriptionID string) MigrationConfigsClient {
+	return original.NewMigrationConfigsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()

@@ -180,7 +180,6 @@ type ListApplicationInsightsComponentAnalyticsItem = original.ListApplicationIns
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
 type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
-type ListWorkbook = original.ListWorkbook
 type ListWorkItemConfiguration = original.ListWorkItemConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

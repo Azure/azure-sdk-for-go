@@ -30,13 +30,13 @@ type AvailabilitySetsClient struct {
 }
 
 // NewAvailabilitySetsClient creates an instance of the AvailabilitySetsClient client.
-func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
-	return NewAvailabilitySetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAvailabilitySetsClient(subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
+	return NewAvailabilitySetsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewAvailabilitySetsClientWithBaseURI creates an instance of the AvailabilitySetsClient client.
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
-	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
+	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // CreateOrUpdate create or update an availability set.
@@ -73,7 +73,7 @@ func (client AvailabilitySetsClient) CreateOrUpdatePreparer(ctx context.Context,
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,7 +141,7 @@ func (client AvailabilitySetsClient) DeletePreparer(ctx context.Context, resourc
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -207,7 +207,7 @@ func (client AvailabilitySetsClient) GetPreparer(ctx context.Context, resourceGr
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -272,7 +272,7 @@ func (client AvailabilitySetsClient) ListPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -339,7 +339,7 @@ func (client AvailabilitySetsClient) ListAvailableSizesPreparer(ctx context.Cont
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -406,7 +406,7 @@ func (client AvailabilitySetsClient) UpdatePreparer(ctx context.Context, resourc
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

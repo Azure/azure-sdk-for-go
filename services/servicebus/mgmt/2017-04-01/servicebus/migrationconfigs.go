@@ -41,7 +41,8 @@ func NewMigrationConfigsClientWithBaseURI(baseURI string, subscriptionID string)
 }
 
 // CompleteMigration this operation Completes Migration of entities by pointing the connection strings to Premium
-// namespace and any enties created after the operation will be under Premium Namespace.
+// namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation
+// will fail when entity migration is in-progress.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
 // name

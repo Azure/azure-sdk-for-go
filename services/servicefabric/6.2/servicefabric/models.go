@@ -3220,8 +3220,7 @@ type ApplicationBackupConfigurationInfo struct {
 	ApplicationName *string `json:"ApplicationName,omitempty"`
 	// PolicyName - The name of the backup policy which is applicable to this Service Fabric application or service or partition.
 	PolicyName *string `json:"PolicyName,omitempty"`
-	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied.
-	// . Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
+	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied. Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
 	PolicyInheritedFrom BackupPolicyScope `json:"PolicyInheritedFrom,omitempty"`
 	// SuspensionInfo - Describes the backup suspension details.
 	SuspensionInfo *BackupSuspensionInfo `json:"SuspensionInfo,omitempty"`
@@ -4783,8 +4782,7 @@ type ApplicationHealth struct {
 	DeployedApplicationHealthStates *[]DeployedApplicationHealthState `json:"DeployedApplicationHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -5994,15 +5992,13 @@ type ApplicationInfo struct {
 	TypeName *string `json:"TypeName,omitempty"`
 	// TypeVersion - The version of the application type as defined in the application manifest.
 	TypeVersion *string `json:"TypeVersion,omitempty"`
-	// Status - The status of the application.
-	// . Possible values include: 'ApplicationStatusInvalid', 'ApplicationStatusReady', 'ApplicationStatusUpgrading', 'ApplicationStatusCreating', 'ApplicationStatusDeleting', 'ApplicationStatusFailed'
+	// Status - The status of the application. Possible values include: 'ApplicationStatusInvalid', 'ApplicationStatusReady', 'ApplicationStatusUpgrading', 'ApplicationStatusCreating', 'ApplicationStatusDeleting', 'ApplicationStatusFailed'
 	Status ApplicationStatus `json:"Status,omitempty"`
 	// Parameters - List of application parameters with overridden values from their default values specified in the application manifest.
 	Parameters *[]ApplicationParameter `json:"Parameters,omitempty"`
 	// HealthState - The health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"HealthState,omitempty"`
-	// ApplicationDefinitionKind - The mechanism used to define a Service Fabric application.
-	// . Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'
+	// ApplicationDefinitionKind - The mechanism used to define a Service Fabric application. Possible values include: 'Invalid', 'ServiceFabricApplicationDescription', 'Compose'
 	ApplicationDefinitionKind ApplicationDefinitionKind `json:"ApplicationDefinitionKind,omitempty"`
 }
 
@@ -6406,13 +6402,11 @@ type ApplicationTypeInfo struct {
 	Version *string `json:"Version,omitempty"`
 	// DefaultParameterList - List of application type parameters that can be overridden when creating or updating the application.
 	DefaultParameterList *[]ApplicationParameter `json:"DefaultParameterList,omitempty"`
-	// Status - The status of the application type.
-	// . Possible values include: 'ApplicationTypeStatusInvalid', 'ApplicationTypeStatusProvisioning', 'ApplicationTypeStatusAvailable', 'ApplicationTypeStatusUnprovisioning', 'ApplicationTypeStatusFailed'
+	// Status - The status of the application type. Possible values include: 'ApplicationTypeStatusInvalid', 'ApplicationTypeStatusProvisioning', 'ApplicationTypeStatusAvailable', 'ApplicationTypeStatusUnprovisioning', 'ApplicationTypeStatusFailed'
 	Status ApplicationTypeStatus `json:"Status,omitempty"`
 	// StatusDetails - Additional detailed information about the status of the application type.
 	StatusDetails *string `json:"StatusDetails,omitempty"`
-	// ApplicationTypeDefinitionKind - The mechanism used to define a Service Fabric application type.
-	// . Possible values include: 'ApplicationTypeDefinitionKindInvalid', 'ApplicationTypeDefinitionKindServiceFabricApplicationPackage', 'ApplicationTypeDefinitionKindCompose'
+	// ApplicationTypeDefinitionKind - The mechanism used to define a Service Fabric application type. Possible values include: 'ApplicationTypeDefinitionKindInvalid', 'ApplicationTypeDefinitionKindServiceFabricApplicationPackage', 'ApplicationTypeDefinitionKindCompose'
 	ApplicationTypeDefinitionKind ApplicationTypeDefinitionKind `json:"ApplicationTypeDefinitionKind,omitempty"`
 }
 
@@ -8915,8 +8909,7 @@ type BasicBackupConfigurationInfo interface {
 type BackupConfigurationInfo struct {
 	// PolicyName - The name of the backup policy which is applicable to this Service Fabric application or service or partition.
 	PolicyName *string `json:"PolicyName,omitempty"`
-	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied.
-	// . Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
+	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied. Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
 	PolicyInheritedFrom BackupPolicyScope `json:"PolicyInheritedFrom,omitempty"`
 	// SuspensionInfo - Describes the backup suspension details.
 	SuspensionInfo *BackupSuspensionInfo `json:"SuspensionInfo,omitempty"`
@@ -9131,8 +9124,7 @@ type BackupInfo struct {
 	PartitionInformation BasicPartitionInformation `json:"PartitionInformation,omitempty"`
 	// BackupLocation - Location of the backup, relative to the backup store.
 	BackupLocation *string `json:"BackupLocation,omitempty"`
-	// BackupType - Describes the type of backup, whether its full or incremental.
-	// . Possible values include: 'BackupTypeInvalid', 'BackupTypeFull', 'BackupTypeIncremental'
+	// BackupType - Describes the type of backup, whether its full or incremental. Possible values include: 'BackupTypeInvalid', 'BackupTypeFull', 'BackupTypeIncremental'
 	BackupType BackupType `json:"BackupType,omitempty"`
 	// EpochOfLastBackupRecord - Epoch of the last record in this backup.
 	EpochOfLastBackupRecord *BackupEpoch `json:"EpochOfLastBackupRecord,omitempty"`
@@ -9365,8 +9357,7 @@ func (bpd *BackupPolicyDescription) UnmarshalJSON(body []byte) error {
 // BackupProgressInfo describes the progress of a partition's backup.
 type BackupProgressInfo struct {
 	autorest.Response `json:"-"`
-	// BackupState - Represents the current state of the partition backup operation.
-	// . Possible values include: 'BackupStateInvalid', 'BackupStateAccepted', 'BackupStateBackupInProgress', 'BackupStateSuccess', 'BackupStateFailure', 'BackupStateTimeout'
+	// BackupState - Represents the current state of the partition backup operation. Possible values include: 'BackupStateInvalid', 'BackupStateAccepted', 'BackupStateBackupInProgress', 'BackupStateSuccess', 'BackupStateFailure', 'BackupStateTimeout'
 	BackupState BackupState `json:"BackupState,omitempty"`
 	// TimeStampUtc - TimeStamp in UTC when operation succeeded or failed.
 	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
@@ -9559,8 +9550,7 @@ func (bsd BackupStorageDescription) AsBasicBackupStorageDescription() (BasicBack
 type BackupSuspensionInfo struct {
 	// IsSuspended - Indicates whether periodic backup is suspended at this level or not.
 	IsSuspended *bool `json:"IsSuspended,omitempty"`
-	// SuspensionInheritedFrom - Specifies the scope at which the backup suspension was applied.
-	// . Possible values include: 'BackupSuspensionScopeInvalid', 'BackupSuspensionScopePartition', 'BackupSuspensionScopeService', 'BackupSuspensionScopeApplication'
+	// SuspensionInheritedFrom - Specifies the scope at which the backup suspension was applied. Possible values include: 'BackupSuspensionScopeInvalid', 'BackupSuspensionScopePartition', 'BackupSuspensionScopeService', 'BackupSuspensionScopeApplication'
 	SuspensionInheritedFrom BackupSuspensionScope `json:"SuspensionInheritedFrom,omitempty"`
 }
 
@@ -9625,11 +9615,9 @@ type Chaos struct {
 	autorest.Response `json:"-"`
 	// ChaosParameters - If Chaos is running, these are the parameters Chaos is running with.
 	ChaosParameters *ChaosParameters `json:"ChaosParameters,omitempty"`
-	// Status - Current status of the Chaos run.
-	// . Possible values include: 'ChaosStatusInvalid', 'ChaosStatusRunning', 'ChaosStatusStopped'
+	// Status - Current status of the Chaos run. Possible values include: 'ChaosStatusInvalid', 'ChaosStatusRunning', 'ChaosStatusStopped'
 	Status ChaosStatus `json:"Status,omitempty"`
-	// ScheduleStatus - Current status of the schedule.
-	// . Possible values include: 'ChaosScheduleStatusInvalid', 'ChaosScheduleStatusStopped', 'ChaosScheduleStatusActive', 'ChaosScheduleStatusExpired', 'ChaosScheduleStatusPending'
+	// ScheduleStatus - Current status of the schedule. Possible values include: 'ChaosScheduleStatusInvalid', 'ChaosScheduleStatusStopped', 'ChaosScheduleStatusActive', 'ChaosScheduleStatusExpired', 'ChaosScheduleStatusPending'
 	ScheduleStatus ChaosScheduleStatus `json:"ScheduleStatus,omitempty"`
 }
 
@@ -15633,8 +15621,7 @@ type ClusterHealth struct {
 	ApplicationHealthStates *[]ApplicationHealthState `json:"ApplicationHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -15650,8 +15637,7 @@ type ClusterHealthChunk struct {
 	autorest.Response `json:"-"`
 	// HealthState - The HealthState representing the aggregated health state of the cluster computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired cluster health policy and the application health policies.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired cluster health policy and the application health policies. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	HealthState HealthState `json:"HealthState,omitempty"`
 	// NodeHealthStateChunks - The list of node health state chunks in the cluster that respect the filters in the cluster health chunk query description.
 	NodeHealthStateChunks *NodeHealthStateChunkList `json:"NodeHealthStateChunks,omitempty"`
@@ -18964,8 +18950,7 @@ type ComposeDeploymentUpgradeProgressInfo struct {
 	DeploymentName *string `json:"DeploymentName,omitempty"`
 	// ApplicationName - The name of the target application, including the 'fabric:' URI scheme.
 	ApplicationName *string `json:"ApplicationName,omitempty"`
-	// UpgradeState - The state of the compose deployment upgrade.
-	// . Possible values include: 'ComposeDeploymentUpgradeStateInvalid', 'ComposeDeploymentUpgradeStateProvisioningTarget', 'ComposeDeploymentUpgradeStateRollingForwardInProgress', 'ComposeDeploymentUpgradeStateRollingForwardPending', 'ComposeDeploymentUpgradeStateUnprovisioningCurrent', 'ComposeDeploymentUpgradeStateRollingForwardCompleted', 'ComposeDeploymentUpgradeStateRollingBackInProgress', 'ComposeDeploymentUpgradeStateUnprovisioningTarget', 'ComposeDeploymentUpgradeStateRollingBackCompleted', 'ComposeDeploymentUpgradeStateFailed'
+	// UpgradeState - The state of the compose deployment upgrade. Possible values include: 'ComposeDeploymentUpgradeStateInvalid', 'ComposeDeploymentUpgradeStateProvisioningTarget', 'ComposeDeploymentUpgradeStateRollingForwardInProgress', 'ComposeDeploymentUpgradeStateRollingForwardPending', 'ComposeDeploymentUpgradeStateUnprovisioningCurrent', 'ComposeDeploymentUpgradeStateRollingForwardCompleted', 'ComposeDeploymentUpgradeStateRollingBackInProgress', 'ComposeDeploymentUpgradeStateUnprovisioningTarget', 'ComposeDeploymentUpgradeStateRollingBackCompleted', 'ComposeDeploymentUpgradeStateFailed'
 	UpgradeState ComposeDeploymentUpgradeState `json:"UpgradeState,omitempty"`
 	// UpgradeStatusDetails - Additional detailed information about the status of the pending upgrade.
 	UpgradeStatusDetails *string `json:"UpgradeStatusDetails,omitempty"`
@@ -19960,8 +19945,7 @@ type CurrentUpgradeDomainProgressInfo struct {
 
 // DeactivationIntentDescription describes the intent or reason for deactivating the node.
 type DeactivationIntentDescription struct {
-	// DeactivationIntent - Describes the intent or reason for deactivating the node. The possible values are following.
-	// . Possible values include: 'Pause', 'Restart', 'RemoveData'
+	// DeactivationIntent - Describes the intent or reason for deactivating the node. The possible values are following. Possible values include: 'Pause', 'Restart', 'RemoveData'
 	DeactivationIntent DeactivationIntent `json:"DeactivationIntent,omitempty"`
 }
 
@@ -20203,8 +20187,7 @@ type DeployedApplicationHealth struct {
 	DeployedServicePackageHealthStates *[]DeployedServicePackageHealthState `json:"DeployedServicePackageHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -21385,8 +21368,7 @@ type DeployedApplicationInfo struct {
 	Name *string `json:"Name,omitempty"`
 	// TypeName - The application type name as defined in the application manifest.
 	TypeName *string `json:"TypeName,omitempty"`
-	// Status - The status of the application deployed on the node. Following are the possible values.
-	// . Possible values include: 'DeployedApplicationStatusInvalid', 'DeployedApplicationStatusDownloading', 'DeployedApplicationStatusActivating', 'DeployedApplicationStatusActive', 'DeployedApplicationStatusUpgrading', 'DeployedApplicationStatusDeactivating'
+	// Status - The status of the application deployed on the node. Following are the possible values. Possible values include: 'DeployedApplicationStatusInvalid', 'DeployedApplicationStatusDownloading', 'DeployedApplicationStatusActivating', 'DeployedApplicationStatusActive', 'DeployedApplicationStatusUpgrading', 'DeployedApplicationStatusDeactivating'
 	Status DeployedApplicationStatus `json:"Status,omitempty"`
 	// WorkDirectory - The work directory of the application on the node. The work directory can be used to store application data.
 	WorkDirectory *string `json:"WorkDirectory,omitempty"`
@@ -21567,8 +21549,7 @@ type DeployedCodePackageInfo struct {
 	HostType HostType `json:"HostType,omitempty"`
 	// HostIsolationMode - Specifies the isolation mode of main entry point of a code package when it's host type is ContainerHost. This is specified as part of container host policies in application manifest while importing service manifest. Possible values include: 'HostIsolationModeNone', 'HostIsolationModeProcess', 'HostIsolationModeHyperV'
 	HostIsolationMode HostIsolationMode `json:"HostIsolationMode,omitempty"`
-	// Status - Specifies the status of a deployed application or service package on a Service Fabric node.
-	// . Possible values include: 'DeploymentStatusInvalid', 'DeploymentStatusDownloading', 'DeploymentStatusActivating', 'DeploymentStatusActive', 'DeploymentStatusUpgrading', 'DeploymentStatusDeactivating'
+	// Status - Specifies the status of a deployed application or service package on a Service Fabric node. Possible values include: 'DeploymentStatusInvalid', 'DeploymentStatusDownloading', 'DeploymentStatusActivating', 'DeploymentStatusActive', 'DeploymentStatusUpgrading', 'DeploymentStatusDeactivating'
 	Status DeploymentStatus `json:"Status,omitempty"`
 	// RunFrequencyInterval - The interval at which code package is run. This is used for periodic code package.
 	RunFrequencyInterval *string `json:"RunFrequencyInterval,omitempty"`
@@ -22556,8 +22537,7 @@ type DeployedServicePackageHealth struct {
 	NodeName *string `json:"NodeName,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -22799,8 +22779,7 @@ type DeployedServicePackageInfo struct {
 	Name *string `json:"Name,omitempty"`
 	// Version - The version of the service package specified in service manifest.
 	Version *string `json:"Version,omitempty"`
-	// Status - Specifies the status of a deployed application or service package on a Service Fabric node.
-	// . Possible values include: 'DeploymentStatusInvalid', 'DeploymentStatusDownloading', 'DeploymentStatusActivating', 'DeploymentStatusActive', 'DeploymentStatusUpgrading', 'DeploymentStatusDeactivating'
+	// Status - Specifies the status of a deployed application or service package on a Service Fabric node. Possible values include: 'DeploymentStatusInvalid', 'DeploymentStatusDownloading', 'DeploymentStatusActivating', 'DeploymentStatusActive', 'DeploymentStatusUpgrading', 'DeploymentStatusDeactivating'
 	Status DeploymentStatus `json:"Status,omitempty"`
 	// ServicePackageActivationID - The ActivationId of a deployed service package. If ServicePackageActivationMode specified at the time of creating the service
 	// is 'SharedProcess' (or if it is not specified, in which case it defaults to 'SharedProcess'), then value of ServicePackageActivationId
@@ -23956,8 +23935,7 @@ func (epqsc EnsurePartitionQurumSafetyCheck) AsBasicSafetyCheck() (BasicSafetyCh
 type EntityHealth struct {
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -24385,8 +24363,7 @@ type FabricErrorError struct {
 	//   - Possible values of the error code for HTTP status code 504 (Gateway Timeout)
 	//     - "FABRIC_E_COMMUNICATION_ERROR"
 	//     - "FABRIC_E_OPERATION_NOT_COMPLETE"
-	//     - "FABRIC_E_TIMEOUT"
-	// . Possible values include: 'FABRICEINVALIDPARTITIONKEY', 'FABRICEIMAGEBUILDERVALIDATIONERROR', 'FABRICEINVALIDADDRESS', 'FABRICEAPPLICATIONNOTUPGRADING', 'FABRICEAPPLICATIONUPGRADEVALIDATIONERROR', 'FABRICEFABRICNOTUPGRADING', 'FABRICEFABRICUPGRADEVALIDATIONERROR', 'FABRICEINVALIDCONFIGURATION', 'FABRICEINVALIDNAMEURI', 'FABRICEPATHTOOLONG', 'FABRICEKEYTOOLARGE', 'FABRICESERVICEAFFINITYCHAINNOTSUPPORTED', 'FABRICEINVALIDATOMICGROUP', 'FABRICEVALUEEMPTY', 'FABRICENODENOTFOUND', 'FABRICEAPPLICATIONTYPENOTFOUND', 'FABRICEAPPLICATIONNOTFOUND', 'FABRICESERVICETYPENOTFOUND', 'FABRICESERVICEDOESNOTEXIST', 'FABRICESERVICETYPETEMPLATENOTFOUND', 'FABRICECONFIGURATIONSECTIONNOTFOUND', 'FABRICEPARTITIONNOTFOUND', 'FABRICEREPLICADOESNOTEXIST', 'FABRICESERVICEGROUPDOESNOTEXIST', 'FABRICECONFIGURATIONPARAMETERNOTFOUND', 'FABRICEDIRECTORYNOTFOUND', 'FABRICEFABRICVERSIONNOTFOUND', 'FABRICEFILENOTFOUND', 'FABRICENAMEDOESNOTEXIST', 'FABRICEPROPERTYDOESNOTEXIST', 'FABRICEENUMERATIONCOMPLETED', 'FABRICESERVICEMANIFESTNOTFOUND', 'FABRICEKEYNOTFOUND', 'FABRICEHEALTHENTITYNOTFOUND', 'FABRICEAPPLICATIONTYPEALREADYEXISTS', 'FABRICEAPPLICATIONALREADYEXISTS', 'FABRICEAPPLICATIONALREADYINTARGETVERSION', 'FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS', 'FABRICEAPPLICATIONUPGRADEINPROGRESS', 'FABRICESERVICEALREADYEXISTS', 'FABRICESERVICEGROUPALREADYEXISTS', 'FABRICEAPPLICATIONTYPEINUSE', 'FABRICEFABRICALREADYINTARGETVERSION', 'FABRICEFABRICVERSIONALREADYEXISTS', 'FABRICEFABRICVERSIONINUSE', 'FABRICEFABRICUPGRADEINPROGRESS', 'FABRICENAMEALREADYEXISTS', 'FABRICENAMENOTEMPTY', 'FABRICEPROPERTYCHECKFAILED', 'FABRICESERVICEMETADATAMISMATCH', 'FABRICESERVICETYPEMISMATCH', 'FABRICEHEALTHSTALEREPORT', 'FABRICESEQUENCENUMBERCHECKFAILED', 'FABRICENODEHASNOTSTOPPEDYET', 'FABRICEINSTANCEIDMISMATCH', 'FABRICEVALUETOOLARGE', 'FABRICENOWRITEQUORUM', 'FABRICENOTPRIMARY', 'FABRICENOTREADY', 'FABRICERECONFIGURATIONPENDING', 'FABRICESERVICEOFFLINE', 'EABORT', 'FABRICECOMMUNICATIONERROR', 'FABRICEOPERATIONNOTCOMPLETE', 'FABRICETIMEOUT', 'FABRICENODEISUP', 'EFAIL', 'FABRICEBACKUPISENABLED', 'FABRICERESTORESOURCETARGETPARTITIONMISMATCH', 'FABRICEINVALIDFORSTATELESSSERVICES', 'FABRICEBACKUPNOTENABLED', 'FABRICEBACKUPPOLICYNOTEXISTING', 'FABRICEFAULTANALYSISSERVICENOTEXISTING', 'FABRICEBACKUPINPROGRESS', 'FABRICERESTOREINPROGRESS', 'FABRICEBACKUPPOLICYALREADYEXISTING', 'FABRICEINVALIDSERVICESCALINGPOLICY', 'EINVALIDARG'
+	//     - "FABRIC_E_TIMEOUT". Possible values include: 'FABRICEINVALIDPARTITIONKEY', 'FABRICEIMAGEBUILDERVALIDATIONERROR', 'FABRICEINVALIDADDRESS', 'FABRICEAPPLICATIONNOTUPGRADING', 'FABRICEAPPLICATIONUPGRADEVALIDATIONERROR', 'FABRICEFABRICNOTUPGRADING', 'FABRICEFABRICUPGRADEVALIDATIONERROR', 'FABRICEINVALIDCONFIGURATION', 'FABRICEINVALIDNAMEURI', 'FABRICEPATHTOOLONG', 'FABRICEKEYTOOLARGE', 'FABRICESERVICEAFFINITYCHAINNOTSUPPORTED', 'FABRICEINVALIDATOMICGROUP', 'FABRICEVALUEEMPTY', 'FABRICENODENOTFOUND', 'FABRICEAPPLICATIONTYPENOTFOUND', 'FABRICEAPPLICATIONNOTFOUND', 'FABRICESERVICETYPENOTFOUND', 'FABRICESERVICEDOESNOTEXIST', 'FABRICESERVICETYPETEMPLATENOTFOUND', 'FABRICECONFIGURATIONSECTIONNOTFOUND', 'FABRICEPARTITIONNOTFOUND', 'FABRICEREPLICADOESNOTEXIST', 'FABRICESERVICEGROUPDOESNOTEXIST', 'FABRICECONFIGURATIONPARAMETERNOTFOUND', 'FABRICEDIRECTORYNOTFOUND', 'FABRICEFABRICVERSIONNOTFOUND', 'FABRICEFILENOTFOUND', 'FABRICENAMEDOESNOTEXIST', 'FABRICEPROPERTYDOESNOTEXIST', 'FABRICEENUMERATIONCOMPLETED', 'FABRICESERVICEMANIFESTNOTFOUND', 'FABRICEKEYNOTFOUND', 'FABRICEHEALTHENTITYNOTFOUND', 'FABRICEAPPLICATIONTYPEALREADYEXISTS', 'FABRICEAPPLICATIONALREADYEXISTS', 'FABRICEAPPLICATIONALREADYINTARGETVERSION', 'FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS', 'FABRICEAPPLICATIONUPGRADEINPROGRESS', 'FABRICESERVICEALREADYEXISTS', 'FABRICESERVICEGROUPALREADYEXISTS', 'FABRICEAPPLICATIONTYPEINUSE', 'FABRICEFABRICALREADYINTARGETVERSION', 'FABRICEFABRICVERSIONALREADYEXISTS', 'FABRICEFABRICVERSIONINUSE', 'FABRICEFABRICUPGRADEINPROGRESS', 'FABRICENAMEALREADYEXISTS', 'FABRICENAMENOTEMPTY', 'FABRICEPROPERTYCHECKFAILED', 'FABRICESERVICEMETADATAMISMATCH', 'FABRICESERVICETYPEMISMATCH', 'FABRICEHEALTHSTALEREPORT', 'FABRICESEQUENCENUMBERCHECKFAILED', 'FABRICENODEHASNOTSTOPPEDYET', 'FABRICEINSTANCEIDMISMATCH', 'FABRICEVALUETOOLARGE', 'FABRICENOWRITEQUORUM', 'FABRICENOTPRIMARY', 'FABRICENOTREADY', 'FABRICERECONFIGURATIONPENDING', 'FABRICESERVICEOFFLINE', 'EABORT', 'FABRICECOMMUNICATIONERROR', 'FABRICEOPERATIONNOTCOMPLETE', 'FABRICETIMEOUT', 'FABRICENODEISUP', 'EFAIL', 'FABRICEBACKUPISENABLED', 'FABRICERESTORESOURCETARGETPARTITIONMISMATCH', 'FABRICEINVALIDFORSTATELESSSERVICES', 'FABRICEBACKUPNOTENABLED', 'FABRICEBACKUPPOLICYNOTEXISTING', 'FABRICEFAULTANALYSISSERVICENOTEXISTING', 'FABRICEBACKUPINPROGRESS', 'FABRICERESTOREINPROGRESS', 'FABRICEBACKUPPOLICYALREADYEXISTING', 'FABRICEINVALIDSERVICESCALINGPOLICY', 'EINVALIDARG'
 	Code FabricErrorCodes `json:"Code,omitempty"`
 	// Message - Error message.
 	Message *string `json:"Message,omitempty"`
@@ -26447,8 +26424,7 @@ type LoadMetricReportInfo struct {
 type MonitoringPolicyDescription struct {
 	// FailureAction - The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations.
 	// Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically.
-	// Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode.
-	// . Possible values include: 'FailureActionInvalid', 'FailureActionRollback', 'FailureActionManual'
+	// Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode. Possible values include: 'FailureActionInvalid', 'FailureActionRollback', 'FailureActionManual'
 	FailureAction FailureAction `json:"FailureAction,omitempty"`
 	// HealthCheckWaitDurationInMilliseconds - The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
 	HealthCheckWaitDurationInMilliseconds *string `json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
@@ -30729,8 +30705,7 @@ type NodeHealth struct {
 	Name *string `json:"Name,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -35313,8 +35288,7 @@ type PartitionBackupConfigurationInfo struct {
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
 	// PolicyName - The name of the backup policy which is applicable to this Service Fabric application or service or partition.
 	PolicyName *string `json:"PolicyName,omitempty"`
-	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied.
-	// . Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
+	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied. Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
 	PolicyInheritedFrom BackupPolicyScope `json:"PolicyInheritedFrom,omitempty"`
 	// SuspensionInfo - Describes the backup suspension details.
 	SuspensionInfo *BackupSuspensionInfo `json:"SuspensionInfo,omitempty"`
@@ -35936,8 +35910,7 @@ type PartitionHealth struct {
 	ReplicaHealthStates *[]BasicReplicaHealthState `json:"ReplicaHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -41029,8 +41002,7 @@ type ReplicaHealth struct {
 	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -42085,8 +42057,7 @@ func (rpd *RestorePartitionDescription) UnmarshalJSON(body []byte) error {
 // RestoreProgressInfo describes the progress of a restore operation on a partition.
 type RestoreProgressInfo struct {
 	autorest.Response `json:"-"`
-	// RestoreState - Represents the current state of the partition restore operation.
-	// . Possible values include: 'RestoreStateInvalid', 'RestoreStateAccepted', 'RestoreStateRestoreInProgress', 'RestoreStateSuccess', 'RestoreStateFailure', 'RestoreStateTimeout'
+	// RestoreState - Represents the current state of the partition restore operation. Possible values include: 'RestoreStateInvalid', 'RestoreStateAccepted', 'RestoreStateRestoreInProgress', 'RestoreStateSuccess', 'RestoreStateFailure', 'RestoreStateTimeout'
 	RestoreState RestoreState `json:"RestoreState,omitempty"`
 	// TimeStampUtc - Timestamp when operation succeeded or failed.
 	TimeStampUtc *date.Time `json:"TimeStampUtc,omitempty"`
@@ -42122,8 +42093,7 @@ type RollingUpgradeUpdateDescription struct {
 	ReplicaSetCheckTimeoutInMilliseconds *int64 `json:"ReplicaSetCheckTimeoutInMilliseconds,omitempty"`
 	// FailureAction - The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations.
 	// Invalid indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically.
-	// Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode.
-	// . Possible values include: 'FailureActionInvalid', 'FailureActionRollback', 'FailureActionManual'
+	// Manual indicates that the upgrade will switch to UnmonitoredManual upgrade mode. Possible values include: 'FailureActionInvalid', 'FailureActionRollback', 'FailureActionManual'
 	FailureAction FailureAction `json:"FailureAction,omitempty"`
 	// HealthCheckWaitDurationInMilliseconds - The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
 	HealthCheckWaitDurationInMilliseconds *string `json:"HealthCheckWaitDurationInMilliseconds,omitempty"`
@@ -42918,8 +42888,7 @@ type ServiceBackupConfigurationInfo struct {
 	ServiceName *string `json:"ServiceName,omitempty"`
 	// PolicyName - The name of the backup policy which is applicable to this Service Fabric application or service or partition.
 	PolicyName *string `json:"PolicyName,omitempty"`
-	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied.
-	// . Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
+	// PolicyInheritedFrom - Specifies the scope at which the backup policy is applied. Possible values include: 'BackupPolicyScopeInvalid', 'BackupPolicyScopePartition', 'BackupPolicyScopeService', 'BackupPolicyScopeApplication'
 	PolicyInheritedFrom BackupPolicyScope `json:"PolicyInheritedFrom,omitempty"`
 	// SuspensionInfo - Describes the backup suspension details.
 	SuspensionInfo *BackupSuspensionInfo `json:"SuspensionInfo,omitempty"`
@@ -44794,8 +44763,7 @@ type ServiceHealth struct {
 	PartitionHealthStates *[]PartitionHealthState `json:"PartitionHealthStates,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -49091,8 +49059,7 @@ type StatefulServiceReplicaHealth struct {
 	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -50955,8 +50922,7 @@ type StatelessServiceInstanceHealth struct {
 	ServiceKind ServiceKindBasicReplicaHealth `json:"ServiceKind,omitempty"`
 	// AggregatedHealthState - The HealthState representing the aggregated health state of the entity computed by Health Manager.
 	// The health evaluation of the entity reflects all events reported on the entity and its children (if any).
-	// The aggregation is done by applying the desired health policy.
-	// . Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
+	// The aggregation is done by applying the desired health policy. Possible values include: 'HealthStateInvalid', 'HealthStateOk', 'HealthStateWarning', 'HealthStateError', 'HealthStateUnknown'
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 	// HealthEvents - The list of health events reported on the entity.
 	HealthEvents *[]HealthEvent `json:"HealthEvents,omitempty"`
@@ -51974,8 +51940,7 @@ func (tece TestErrorChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, bool) {
 
 // TimeBasedBackupScheduleDescription describes the time based backup schedule.
 type TimeBasedBackupScheduleDescription struct {
-	// ScheduleFrequencyType - Describes the frequency with which to run the time based backup schedule.
-	// . Possible values include: 'BackupScheduleFrequencyTypeInvalid', 'BackupScheduleFrequencyTypeDaily', 'BackupScheduleFrequencyTypeWeekly'
+	// ScheduleFrequencyType - Describes the frequency with which to run the time based backup schedule. Possible values include: 'BackupScheduleFrequencyTypeInvalid', 'BackupScheduleFrequencyTypeDaily', 'BackupScheduleFrequencyTypeWeekly'
 	ScheduleFrequencyType BackupScheduleFrequencyType `json:"ScheduleFrequencyType,omitempty"`
 	// RunDays - List of days of a week when to trigger the periodic backup. This is valid only when the backup schedule frequency type is weekly.
 	RunDays *[]DayOfWeek `json:"RunDays,omitempty"`

@@ -190,10 +190,10 @@ func (client WorkbookClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get get a single workbook by its resourceName.
 //
-// resourceName is the name of the Application Insights component resource. location is the name of location where
-// workbook is stored.
-func (client WorkbookClient) Get(ctx context.Context, resourceName string, location string) (result Workbook, err error) {
-	req, err := client.GetPreparer(ctx, resourceName, location)
+// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
+// component resource. location is the name of location where workbook is stored.
+func (client WorkbookClient) Get(ctx context.Context, resourceGroupName string, resourceName string, location string) (result Workbook, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "Get", nil, "Failure preparing request")
 		return
@@ -215,10 +215,11 @@ func (client WorkbookClient) Get(ctx context.Context, resourceName string, locat
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkbookClient) GetPreparer(ctx context.Context, resourceName string, location string) (*http.Request, error) {
+func (client WorkbookClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceName":   autorest.Encode("path", resourceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2015-05-01"
@@ -230,7 +231,7 @@ func (client WorkbookClient) GetPreparer(ctx context.Context, resourceName strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks/{resourceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -250,80 +251,6 @@ func (client WorkbookClient) GetResponder(resp *http.Response) (result Workbook,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// List gets a list of workbooks by sourceId.
-//
-// sourceID is azure Resource Id that will fetch all linked workbooks. category is category of workbook to return.
-// tags is tags presents on each workbook returned. canFetchContent is flag indicating whether or not to return the
-// full content for each applicable workbook. If false, only return summary content for workbooks.
-func (client WorkbookClient) List(ctx context.Context, sourceID string, category CategoryType, tags []string, canFetchContent *bool) (result ListWorkbook, err error) {
-	req, err := client.ListPreparer(ctx, sourceID, category, tags, canFetchContent)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client WorkbookClient) ListPreparer(ctx context.Context, sourceID string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-		"category":    autorest.Encode("query", category),
-		"sourceId":    autorest.Encode("query", sourceID),
-	}
-	if tags != nil && len(tags) > 0 {
-		queryParameters["tags"] = autorest.Encode("query", tags, ",")
-	}
-	if canFetchContent != nil {
-		queryParameters["canFetchContent"] = autorest.Encode("query", *canFetchContent)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/microsoft.insights/workbooks", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client WorkbookClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client WorkbookClient) ListResponder(resp *http.Response) (result ListWorkbook, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -54,7 +54,12 @@ func (client LiveOutputsClient) Create(ctx context.Context, resourceGroupName st
 		{TargetValue: liveOutputName,
 			Constraints: []validation.Constraint{{Target: "liveOutputName", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "liveOutputName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "liveOutputName", Name: validation.Pattern, Rule: `^([a-zA-Z0-9])+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+				{Target: "liveOutputName", Name: validation.Pattern, Rule: `^([a-zA-Z0-9])+(-*[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.LiveOutputProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.LiveOutputProperties.AssetName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.LiveOutputProperties.ArchiveWindowLength", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("media.LiveOutputsClient", "Create", err.Error())
 	}
 

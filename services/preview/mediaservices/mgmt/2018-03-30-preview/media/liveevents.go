@@ -50,7 +50,10 @@ func (client LiveEventsClient) Create(ctx context.Context, resourceGroupName str
 		{TargetValue: liveEventName,
 			Constraints: []validation.Constraint{{Target: "liveEventName", Name: validation.MaxLength, Rule: 32, Chain: nil},
 				{Target: "liveEventName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "liveEventName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+				{Target: "liveEventName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.LiveEventProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.LiveEventProperties.Input", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("media.LiveEventsClient", "Create", err.Error())
 	}
 

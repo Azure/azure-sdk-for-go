@@ -141,6 +141,7 @@ type MigrationConfigListResultIterator = original.MigrationConfigListResultItera
 type MigrationConfigListResultPage = original.MigrationConfigListResultPage
 type MigrationConfigProperties = original.MigrationConfigProperties
 type MigrationConfigPropertiesProperties = original.MigrationConfigPropertiesProperties
+type MigrationConfigurationsStartMigrationFuture = original.MigrationConfigurationsStartMigrationFuture
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Operation = original.Operation

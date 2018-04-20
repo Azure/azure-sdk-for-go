@@ -458,7 +458,7 @@ func (client MigrationConfigurationsClient) RevertResponder(resp *http.Response)
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
 // name parameters is parameters required to create Migration Configuration
-func (client MigrationConfigurationsClient) StartMigration(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (result MigrationConfigProperties, err error) {
+func (client MigrationConfigurationsClient) StartMigration(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (result MigrationConfigurationsStartMigrationFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -480,16 +480,10 @@ func (client MigrationConfigurationsClient) StartMigration(ctx context.Context, 
 		return
 	}
 
-	resp, err := client.StartMigrationSender(req)
+	result, err = client.StartMigrationSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigurationsClient", "StartMigration", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigurationsClient", "StartMigration", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.StartMigrationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigurationsClient", "StartMigration", resp, "Failure responding to request")
 	}
 
 	return
@@ -521,9 +515,17 @@ func (client MigrationConfigurationsClient) StartMigrationPreparer(ctx context.C
 
 // StartMigrationSender sends the StartMigration request. The method will close the
 // http.Response Body if it receives an error.
-func (client MigrationConfigurationsClient) StartMigrationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+func (client MigrationConfigurationsClient) StartMigrationSender(req *http.Request) (future MigrationConfigurationsStartMigrationFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	return
 }
 
 // StartMigrationResponder handles the response to the StartMigration request. The method always

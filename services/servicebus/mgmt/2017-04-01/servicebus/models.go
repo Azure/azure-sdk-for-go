@@ -1014,29 +1014,29 @@ type MigrationConfigPropertiesProperties struct {
 	PostMigrationName *string `json:"postMigrationName,omitempty"`
 }
 
-// MigrationConfigsStartMigrationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type MigrationConfigsStartMigrationFuture struct {
+// MigrationConfigsCreateAndStartMigrationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MigrationConfigsCreateAndStartMigrationFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future MigrationConfigsStartMigrationFuture) Result(client MigrationConfigsClient) (mcp MigrationConfigProperties, err error) {
+func (future MigrationConfigsCreateAndStartMigrationFuture) Result(client MigrationConfigsClient) (mcp MigrationConfigProperties, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsStartMigrationFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return mcp, azure.NewAsyncOpIncompleteError("servicebus.MigrationConfigsStartMigrationFuture")
+		return mcp, azure.NewAsyncOpIncompleteError("servicebus.MigrationConfigsCreateAndStartMigrationFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		mcp, err = client.StartMigrationResponder(future.Response())
+		mcp, err = client.CreateAndStartMigrationResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsStartMigrationFuture", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -1053,12 +1053,12 @@ func (future MigrationConfigsStartMigrationFuture) Result(client MigrationConfig
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsStartMigrationFuture", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	mcp, err = client.StartMigrationResponder(resp)
+	mcp, err = client.CreateAndStartMigrationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsStartMigrationFuture", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsCreateAndStartMigrationFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

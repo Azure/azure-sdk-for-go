@@ -40,7 +40,8 @@ func NewMigrationConfigsClientWithBaseURI(baseURI string, subscriptionID string)
 	return MigrationConfigsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CompleteMigration this operation Completes Migration
+// CompleteMigration this operation Completes Migration of entities by pointing the connection strings to Premium
+// namespace and any enties created after the operation will be under Premium Namespace.
 //
 // resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
 // name
@@ -93,7 +94,7 @@ func (client MigrationConfigsClient) CompleteMigrationPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs/{configName}/upgrade", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/upgrade", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -114,6 +115,94 @@ func (client MigrationConfigsClient) CompleteMigrationResponder(resp *http.Respo
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// CreateAndStartMigration creates Migration configuration and starts migration of enties from Standard to Premium
+// namespace
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name parameters is parameters required to create Migration Configuration
+func (client MigrationConfigsClient) CreateAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (result MigrationConfigsCreateAndStartMigrationFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.MigrationConfigPropertiesProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.MigrationConfigPropertiesProperties.TargetNamespace", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.MigrationConfigPropertiesProperties.PostMigrationName", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("servicebus.MigrationConfigsClient", "CreateAndStartMigration", err.Error())
+	}
+
+	req, err := client.CreateAndStartMigrationPreparer(ctx, resourceGroupName, namespaceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "CreateAndStartMigration", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateAndStartMigrationSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "CreateAndStartMigration", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateAndStartMigrationPreparer prepares the CreateAndStartMigration request.
+func (client MigrationConfigsClient) CreateAndStartMigrationPreparer(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"configName":        autorest.Encode("path", "$default"),
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateAndStartMigrationSender sends the CreateAndStartMigration request. The method will close the
+// http.Response Body if it receives an error.
+func (client MigrationConfigsClient) CreateAndStartMigrationSender(req *http.Request) (future MigrationConfigsCreateAndStartMigrationFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
+	return
+}
+
+// CreateAndStartMigrationResponder handles the response to the CreateAndStartMigration request. The method always
+// closes the http.Response Body.
+func (client MigrationConfigsClient) CreateAndStartMigrationResponder(resp *http.Response) (result MigrationConfigProperties, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -170,7 +259,7 @@ func (client MigrationConfigsClient) DeletePreparer(ctx context.Context, resourc
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs/{configName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,7 +336,7 @@ func (client MigrationConfigsClient) GetPreparer(ctx context.Context, resourceGr
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs/{configName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -325,7 +414,7 @@ func (client MigrationConfigsClient) ListPreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -430,7 +519,7 @@ func (client MigrationConfigsClient) RevertPreparer(ctx context.Context, resourc
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs/{configName}/revert", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/revert", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -451,92 +540,5 @@ func (client MigrationConfigsClient) RevertResponder(resp *http.Response) (resul
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
-	return
-}
-
-// StartMigration initiate Migration from Standard to Premium
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name parameters is parameters required to create Migration Configuration
-func (client MigrationConfigsClient) StartMigration(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (result MigrationConfigsStartMigrationFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: namespaceName,
-			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.MigrationConfigPropertiesProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.MigrationConfigPropertiesProperties.TargetNamespace", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.MigrationConfigPropertiesProperties.PostMigrationName", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewError("servicebus.MigrationConfigsClient", "StartMigration", err.Error())
-	}
-
-	req, err := client.StartMigrationPreparer(ctx, resourceGroupName, namespaceName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "StartMigration", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.StartMigrationSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicebus.MigrationConfigsClient", "StartMigration", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// StartMigrationPreparer prepares the StartMigration request.
-func (client MigrationConfigsClient) StartMigrationPreparer(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"configName":        autorest.Encode("path", "$default"),
-		"namespaceName":     autorest.Encode("path", namespaceName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-04-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigs/{configName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// StartMigrationSender sends the StartMigration request. The method will close the
-// http.Response Body if it receives an error.
-func (client MigrationConfigsClient) StartMigrationSender(req *http.Request) (future MigrationConfigsStartMigrationFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
-}
-
-// StartMigrationResponder handles the response to the StartMigration request. The method always
-// closes the http.Response Body.
-func (client MigrationConfigsClient) StartMigrationResponder(resp *http.Response) (result MigrationConfigProperties, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }

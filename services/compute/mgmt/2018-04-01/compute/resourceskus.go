@@ -30,13 +30,13 @@ type ResourceSkusClient struct {
 }
 
 // NewResourceSkusClient creates an instance of the ResourceSkusClient client.
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return NewResourceSkusClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewResourceSkusClient(subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
+	return NewResourceSkusClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewResourceSkusClientWithBaseURI creates an instance of the ResourceSkusClient client.
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return ResourceSkusClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ResourceSkusClient {
+	return ResourceSkusClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // List gets the list of Microsoft.Compute SKUs available for your Subscription.

@@ -31,13 +31,13 @@ type LogAnalyticsClient struct {
 }
 
 // NewLogAnalyticsClient creates an instance of the LogAnalyticsClient client.
-func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
-	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLogAnalyticsClient(subscriptionID string, resourceGroupName string, diskName string) LogAnalyticsClient {
+	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewLogAnalyticsClientWithBaseURI creates an instance of the LogAnalyticsClient client.
-func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
-	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) LogAnalyticsClient {
+	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // ExportRequestRateByInterval export logs that show Api requests made by this subscription in the given time window to
@@ -74,7 +74,7 @@ func (client LogAnalyticsClient) ExportRequestRateByIntervalPreparer(ctx context
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -151,7 +151,7 @@ func (client LogAnalyticsClient) ExportThrottledRequestsPreparer(ctx context.Con
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

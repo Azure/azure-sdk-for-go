@@ -30,13 +30,13 @@ type ImagesClient struct {
 }
 
 // NewImagesClient creates an instance of the ImagesClient client.
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewImagesClient(subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
+	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) ImagesClient {
+	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // CreateOrUpdate create or update an image.
@@ -67,7 +67,7 @@ func (client ImagesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -137,7 +137,7 @@ func (client ImagesClient) DeletePreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -212,7 +212,7 @@ func (client ImagesClient) GetPreparer(ctx context.Context, resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -279,7 +279,7 @@ func (client ImagesClient) ListPreparer(ctx context.Context) (*http.Request, err
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -372,7 +372,7 @@ func (client ImagesClient) ListByResourceGroupPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -460,7 +460,7 @@ func (client ImagesClient) UpdatePreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

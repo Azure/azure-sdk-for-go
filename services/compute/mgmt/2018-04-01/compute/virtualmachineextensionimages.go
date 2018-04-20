@@ -30,14 +30,14 @@ type VirtualMachineExtensionImagesClient struct {
 }
 
 // NewVirtualMachineExtensionImagesClient creates an instance of the VirtualMachineExtensionImagesClient client.
-func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
-	return NewVirtualMachineExtensionImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineExtensionImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return NewVirtualMachineExtensionImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineExtensionImagesClientWithBaseURI creates an instance of the VirtualMachineExtensionImagesClient
 // client.
-func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
-	return VirtualMachineExtensionImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineExtensionImagesClient {
+	return VirtualMachineExtensionImagesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // Get gets a virtual machine extension image.
@@ -75,7 +75,7 @@ func (client VirtualMachineExtensionImagesClient) GetPreparer(ctx context.Contex
 		"version":        autorest.Encode("path", version),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,7 +141,7 @@ func (client VirtualMachineExtensionImagesClient) ListTypesPreparer(ctx context.
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -208,7 +208,7 @@ func (client VirtualMachineExtensionImagesClient) ListVersionsPreparer(ctx conte
 		"type":           autorest.Encode("path", typeParameter),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

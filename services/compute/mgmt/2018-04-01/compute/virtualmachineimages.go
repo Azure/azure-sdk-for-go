@@ -30,13 +30,13 @@ type VirtualMachineImagesClient struct {
 }
 
 // NewVirtualMachineImagesClient creates an instance of the VirtualMachineImagesClient client.
-func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
-	return NewVirtualMachineImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineImagesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
+	return NewVirtualMachineImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineImagesClientWithBaseURI creates an instance of the VirtualMachineImagesClient client.
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
-	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineImagesClient {
+	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // Get gets a virtual machine image.
@@ -76,7 +76,7 @@ func (client VirtualMachineImagesClient) GetPreparer(ctx context.Context, locati
 		"version":        autorest.Encode("path", version),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -145,7 +145,7 @@ func (client VirtualMachineImagesClient) ListPreparer(ctx context.Context, locat
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -220,7 +220,7 @@ func (client VirtualMachineImagesClient) ListOffersPreparer(ctx context.Context,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -285,7 +285,7 @@ func (client VirtualMachineImagesClient) ListPublishersPreparer(ctx context.Cont
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -353,7 +353,7 @@ func (client VirtualMachineImagesClient) ListSkusPreparer(ctx context.Context, l
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01"
+	const APIVersion = "2017-12-01-alphadummy"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -124,9 +124,9 @@ func (client WorkbookClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Delete delete a workbook.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. location is the name of location where workbook is stored.
-func (client WorkbookClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, location string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, location)
+// component resource.
+func (client WorkbookClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "Delete", nil, "Failure preparing request")
 		return
@@ -148,7 +148,7 @@ func (client WorkbookClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client WorkbookClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string, location string) (*http.Request, error) {
+func (client WorkbookClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -158,7 +158,6 @@ func (client WorkbookClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"location":    autorest.Encode("query", location),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -191,9 +190,9 @@ func (client WorkbookClient) DeleteResponder(resp *http.Response) (result autore
 // Get get a single workbook by its resourceName.
 //
 // resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. location is the name of location where workbook is stored.
-func (client WorkbookClient) Get(ctx context.Context, resourceGroupName string, resourceName string, location string) (result Workbook, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, location)
+// component resource.
+func (client WorkbookClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result Workbook, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbookClient", "Get", nil, "Failure preparing request")
 		return
@@ -215,7 +214,7 @@ func (client WorkbookClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkbookClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string, location string) (*http.Request, error) {
+func (client WorkbookClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -225,7 +224,6 @@ func (client WorkbookClient) GetPreparer(ctx context.Context, resourceGroupName 
 	const APIVersion = "2015-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"location":    autorest.Encode("query", location),
 	}
 
 	preparer := autorest.CreatePreparer(

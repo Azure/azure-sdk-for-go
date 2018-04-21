@@ -528,6 +528,27 @@ type EntityPrediction struct {
 	Phrase *string `json:"phrase,omitempty"`
 }
 
+// EntityRole entity extractor role
+type EntityRole struct {
+	autorest.Response `json:"-"`
+	// ID - The entity role ID.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - The entity role name.
+	Name *string `json:"name,omitempty"`
+}
+
+// EntityRoleCreateObject object model for creating an entity role.
+type EntityRoleCreateObject struct {
+	// Name - The entity role name.
+	Name *string `json:"name,omitempty"`
+}
+
+// EntityRoleUpdateObject object model for updating an entity role.
+type EntityRoleUpdateObject struct {
+	// Name - The entity role name.
+	Name *string `json:"name,omitempty"`
+}
+
 // ErrorResponse error response when invoking an operation on the API.
 type ErrorResponse struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -555,6 +576,27 @@ type ExampleLabelObject struct {
 	EntityLabels *[]EntityLabelObject `json:"entityLabels,omitempty"`
 	// IntentName - The idenfitied intent representing the utterance.
 	IntentName *string `json:"intentName,omitempty"`
+}
+
+// ExplicitListItem explicit list item
+type ExplicitListItem struct {
+	autorest.Response `json:"-"`
+	// ID - The explicit list item ID.
+	ID *int64 `json:"id,omitempty"`
+	// ExplicitListItem - The explicit list item value.
+	ExplicitListItem *string `json:"explicitListItem,omitempty"`
+}
+
+// ExplicitListItemCreateObject object model for creating an explicit list item.
+type ExplicitListItemCreateObject struct {
+	// ExplicitListItem - The explicit list item.
+	ExplicitListItem *string `json:"explicitListItem,omitempty"`
+}
+
+// ExplicitListItemUpdateObject model object for updating an explicit list item.
+type ExplicitListItemUpdateObject struct {
+	// ExplicitListItem - The explicit list item.
+	ExplicitListItem *string `json:"explicitListItem,omitempty"`
 }
 
 // FeatureInfoObject the base class Features-related response objects inherit from.
@@ -792,6 +834,18 @@ type ListEntityExtractor struct {
 	Value             *[]EntityExtractor `json:"value,omitempty"`
 }
 
+// ListEntityRole ...
+type ListEntityRole struct {
+	autorest.Response `json:"-"`
+	Value             *[]EntityRole `json:"value,omitempty"`
+}
+
+// ListExplicitListItem ...
+type ListExplicitListItem struct {
+	autorest.Response `json:"-"`
+	Value             *[]ExplicitListItem `json:"value,omitempty"`
+}
+
 // ListHierarchicalEntityExtractor ...
 type ListHierarchicalEntityExtractor struct {
 	autorest.Response `json:"-"`
@@ -828,6 +882,18 @@ type ListModelTrainingInfo struct {
 	Value             *[]ModelTrainingInfo `json:"value,omitempty"`
 }
 
+// ListPatternAnyEntityExtractor ...
+type ListPatternAnyEntityExtractor struct {
+	autorest.Response `json:"-"`
+	Value             *[]PatternAnyEntityExtractor `json:"value,omitempty"`
+}
+
+// ListPatternRule ...
+type ListPatternRule struct {
+	autorest.Response `json:"-"`
+	Value             *[]PatternRule `json:"value,omitempty"`
+}
+
 // ListPhraseListFeatureInfo ...
 type ListPhraseListFeatureInfo struct {
 	autorest.Response `json:"-"`
@@ -844,6 +910,12 @@ type ListPrebuiltDomain struct {
 type ListPrebuiltEntityExtractor struct {
 	autorest.Response `json:"-"`
 	Value             *[]PrebuiltEntityExtractor `json:"value,omitempty"`
+}
+
+// ListRegexEntityExtractor ...
+type ListRegexEntityExtractor struct {
+	autorest.Response `json:"-"`
+	Value             *[]RegexEntityExtractor `json:"value,omitempty"`
 }
 
 // ListString ...
@@ -1020,8 +1092,44 @@ type OperationStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// PatternCreateObject object model for creating a Pattern feature.
+// PatternAnyEntityExtractor pattern.Any Entity Extractor.
+type PatternAnyEntityExtractor struct {
+	// ID - The ID of the Entity Model.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - Name of the Entity Model.
+	Name *string `json:"name,omitempty"`
+	// TypeID - The type ID of the Entity Model.
+	TypeID *int32 `json:"typeId,omitempty"`
+	// ReadableType - Possible values include: 'ReadableTypeEntityExtractor', 'ReadableTypeHierarchicalEntityExtractor', 'ReadableTypeHierarchicalChildEntityExtractor', 'ReadableTypeCompositeEntityExtractor', 'ReadableTypeClosedListEntityExtractor', 'ReadableTypePrebuiltEntityExtractor', 'ReadableTypeIntentClassifier'
+	ReadableType ReadableType `json:"readableType,omitempty"`
+}
+
+// PatternAnyModelCreateObject model object for creating a Pattern.Any entity model.
+type PatternAnyModelCreateObject struct {
+	// Name - The model name.
+	Name *string `json:"name,omitempty"`
+	// ExplicitList - The Pattern.Any explicit list.
+	ExplicitList *[]string `json:"explicitList,omitempty"`
+}
+
+// PatternAnyModelUpdateObject model object for updating a Pattern.Any entity model.
+type PatternAnyModelUpdateObject struct {
+	// Name - The model name.
+	Name *string `json:"name,omitempty"`
+	// ExplicitList - The Pattern.Any explicit list.
+	ExplicitList *[]string `json:"explicitList,omitempty"`
+}
+
+// PatternCreateObject object model for creating a pattern
 type PatternCreateObject struct {
+	// Pattern - The pattern text.
+	Pattern *string `json:"pattern,omitempty"`
+	// Intent - The intent's name which the pattern belongs to.
+	Intent *string `json:"intent,omitempty"`
+}
+
+// PatternFeatureCreateObject object model for creating a Pattern feature.
+type PatternFeatureCreateObject struct {
 	// Pattern - The Regular Expression to match.
 	Pattern *string `json:"pattern,omitempty"`
 	// Name - Name of the feature.
@@ -1040,14 +1148,35 @@ type PatternFeatureInfo struct {
 	IsActive *bool `json:"isActive,omitempty"`
 }
 
-// PatternUpdateObject object model for updating an existing Pattern feature.
-type PatternUpdateObject struct {
+// PatternFeatureUpdateObject object model for updating an existing Pattern feature.
+type PatternFeatureUpdateObject struct {
 	// Pattern - The Regular Expression to match.
 	Pattern *string `json:"pattern,omitempty"`
 	// Name - Name of the feature.
 	Name *string `json:"name,omitempty"`
 	// IsActive - Indicates if the Pattern feature is enabled.
 	IsActive *bool `json:"isActive,omitempty"`
+}
+
+// PatternRule pattern rule
+type PatternRule struct {
+	autorest.Response `json:"-"`
+	// ID - The pattern ID.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Pattern - The pattern text.
+	Pattern *string `json:"pattern,omitempty"`
+	// Intent - The intent's name where the pattern belongs to.
+	Intent *string `json:"intent,omitempty"`
+}
+
+// PatternUpdateObject object model for updating a pattern.
+type PatternUpdateObject struct {
+	// ID - The pattern ID.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Pattern - The pattern text.
+	Pattern *string `json:"pattern,omitempty"`
+	// Intent - The intent's name which the pattern belongs to.
+	Intent *string `json:"intent,omitempty"`
 }
 
 // PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the prebuilt
@@ -1184,6 +1313,35 @@ type ProductionOrStagingEndpointInfo struct {
 type ReadCloser struct {
 	autorest.Response `json:"-"`
 	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
+// RegexEntityExtractor regex Entity Extractor.
+type RegexEntityExtractor struct {
+	autorest.Response `json:"-"`
+	// ID - The ID of the Entity Model.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - Name of the Entity Model.
+	Name *string `json:"name,omitempty"`
+	// TypeID - The type ID of the Entity Model.
+	TypeID *int32 `json:"typeId,omitempty"`
+	// ReadableType - Possible values include: 'ReadableTypeEntityExtractor', 'ReadableTypeHierarchicalEntityExtractor', 'ReadableTypeHierarchicalChildEntityExtractor', 'ReadableTypeCompositeEntityExtractor', 'ReadableTypeClosedListEntityExtractor', 'ReadableTypePrebuiltEntityExtractor', 'ReadableTypeIntentClassifier'
+	ReadableType ReadableType `json:"readableType,omitempty"`
+}
+
+// RegexModelCreateObject model object for creating a regex entity model.
+type RegexModelCreateObject struct {
+	// RegexPattern - The regex entity pattern.
+	RegexPattern *string `json:"regexPattern,omitempty"`
+	// Name - The model name.
+	Name *string `json:"name,omitempty"`
+}
+
+// RegexModelUpdateObject model object for updating a regex entity model.
+type RegexModelUpdateObject struct {
+	// RegexPattern - The regex entity pattern.
+	RegexPattern *string `json:"regexPattern,omitempty"`
+	// Name - The model name.
+	Name *string `json:"name,omitempty"`
 }
 
 // SetString ...

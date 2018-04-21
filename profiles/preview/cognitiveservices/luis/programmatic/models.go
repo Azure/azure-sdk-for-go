@@ -154,8 +154,14 @@ type EntityExtractor = original.EntityExtractor
 type EntityLabel = original.EntityLabel
 type EntityLabelObject = original.EntityLabelObject
 type EntityPrediction = original.EntityPrediction
+type EntityRole = original.EntityRole
+type EntityRoleCreateObject = original.EntityRoleCreateObject
+type EntityRoleUpdateObject = original.EntityRoleUpdateObject
 type ErrorResponse = original.ErrorResponse
 type ExampleLabelObject = original.ExampleLabelObject
+type ExplicitListItem = original.ExplicitListItem
+type ExplicitListItemCreateObject = original.ExplicitListItemCreateObject
+type ExplicitListItemUpdateObject = original.ExplicitListItemUpdateObject
 type FeatureInfoObject = original.FeatureInfoObject
 type FeaturesResponseObject = original.FeaturesResponseObject
 type HierarchicalChildEntity = original.HierarchicalChildEntity
@@ -183,15 +189,20 @@ type ListCompositeEntityExtractor = original.ListCompositeEntityExtractor
 type ListCustomPrebuiltModel = original.ListCustomPrebuiltModel
 type ListEntitiesSuggestionExample = original.ListEntitiesSuggestionExample
 type ListEntityExtractor = original.ListEntityExtractor
+type ListEntityRole = original.ListEntityRole
+type ListExplicitListItem = original.ListExplicitListItem
 type ListHierarchicalEntityExtractor = original.ListHierarchicalEntityExtractor
 type ListIntentClassifier = original.ListIntentClassifier
 type ListIntentsSuggestionExample = original.ListIntentsSuggestionExample
 type ListLabeledUtterance = original.ListLabeledUtterance
 type ListModelInfoResponse = original.ListModelInfoResponse
 type ListModelTrainingInfo = original.ListModelTrainingInfo
+type ListPatternAnyEntityExtractor = original.ListPatternAnyEntityExtractor
+type ListPatternRule = original.ListPatternRule
 type ListPhraseListFeatureInfo = original.ListPhraseListFeatureInfo
 type ListPrebuiltDomain = original.ListPrebuiltDomain
 type ListPrebuiltEntityExtractor = original.ListPrebuiltEntityExtractor
+type ListRegexEntityExtractor = original.ListRegexEntityExtractor
 type ListString = original.ListString
 type ListUUID = original.ListUUID
 type ListVersionInfo = original.ListVersionInfo
@@ -204,8 +215,14 @@ type ModelTrainingInfo = original.ModelTrainingInfo
 type ModelUpdateObject = original.ModelUpdateObject
 type OperationError = original.OperationError
 type OperationStatus = original.OperationStatus
+type PatternAnyEntityExtractor = original.PatternAnyEntityExtractor
+type PatternAnyModelCreateObject = original.PatternAnyModelCreateObject
+type PatternAnyModelUpdateObject = original.PatternAnyModelUpdateObject
 type PatternCreateObject = original.PatternCreateObject
+type PatternFeatureCreateObject = original.PatternFeatureCreateObject
 type PatternFeatureInfo = original.PatternFeatureInfo
+type PatternFeatureUpdateObject = original.PatternFeatureUpdateObject
+type PatternRule = original.PatternRule
 type PatternUpdateObject = original.PatternUpdateObject
 type PersonalAssistantsResponse = original.PersonalAssistantsResponse
 type PhraselistCreateObject = original.PhraselistCreateObject
@@ -219,6 +236,9 @@ type PrebuiltDomainModelCreateObject = original.PrebuiltDomainModelCreateObject
 type PrebuiltEntityExtractor = original.PrebuiltEntityExtractor
 type ProductionOrStagingEndpointInfo = original.ProductionOrStagingEndpointInfo
 type ReadCloser = original.ReadCloser
+type RegexEntityExtractor = original.RegexEntityExtractor
+type RegexModelCreateObject = original.RegexModelCreateObject
+type RegexModelUpdateObject = original.RegexModelUpdateObject
 type SetString = original.SetString
 type String = original.String
 type SubClosedList = original.SubClosedList
@@ -230,6 +250,7 @@ type UUID = original.UUID
 type VersionInfo = original.VersionInfo
 type WordListBaseUpdateObject = original.WordListBaseUpdateObject
 type WordListObject = original.WordListObject
+type PatternClient = original.PatternClient
 type PermissionsClient = original.PermissionsClient
 type TrainClient = original.TrainClient
 type VersionsClient = original.VersionsClient
@@ -278,6 +299,9 @@ func PossibleStatus1Values() []Status1 {
 }
 func PossibleTrainingStatusValues() []TrainingStatus {
 	return original.PossibleTrainingStatusValues()
+}
+func NewPatternClient(azureRegion AzureRegions) PatternClient {
+	return original.NewPatternClient(azureRegion)
 }
 func NewPermissionsClient(azureRegion AzureRegions) PermissionsClient {
 	return original.NewPermissionsClient(azureRegion)

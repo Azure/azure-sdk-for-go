@@ -50,10 +50,7 @@ func (client StreamingEndpointsClient) Create(ctx context.Context, resourceGroup
 		{TargetValue: streamingEndpointName,
 			Constraints: []validation.Constraint{{Target: "streamingEndpointName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "streamingEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "streamingEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.StreamingEndpointProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.StreamingEndpointProperties.ScaleUnits", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				{Target: "streamingEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("media.StreamingEndpointsClient", "Create", err.Error())
 	}
 

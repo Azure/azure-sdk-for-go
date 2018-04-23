@@ -31,13 +31,13 @@ type UsageClient struct {
 }
 
 // NewUsageClient creates an instance of the UsageClient client.
-func NewUsageClient(subscriptionID string, resourceGroupName string, diskName string) UsageClient {
-	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func NewUsageClient(subscriptionID string) UsageClient {
+	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewUsageClientWithBaseURI creates an instance of the UsageClient client.
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) UsageClient {
-	return UsageClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
+	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets, for the specified location, the current compute resource usage information as well as the limits for
@@ -80,7 +80,7 @@ func (client UsageClient) ListPreparer(ctx context.Context, location string) (*h
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

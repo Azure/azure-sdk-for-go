@@ -31,13 +31,13 @@ type VirtualMachineRunCommandsClient struct {
 }
 
 // NewVirtualMachineRunCommandsClient creates an instance of the VirtualMachineRunCommandsClient client.
-func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRunCommandsClient {
-	return NewVirtualMachineRunCommandsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineRunCommandsClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
+	return NewVirtualMachineRunCommandsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
 }
 
 // NewVirtualMachineRunCommandsClientWithBaseURI creates an instance of the VirtualMachineRunCommandsClient client.
-func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
-	return VirtualMachineRunCommandsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineRunCommandsClient {
+	return VirtualMachineRunCommandsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
 }
 
 // Get gets specific run command for a subscription in a location.

@@ -31,19 +31,22 @@ type DisksClient struct {
 }
 
 // NewDisksClient creates an instance of the DisksClient client.
-func NewDisksClient(subscriptionID string, resourceGroupName string, diskName string) DisksClient {
-	return NewDisksClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func NewDisksClient(subscriptionID string) DisksClient {
+	return NewDisksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDisksClientWithBaseURI creates an instance of the DisksClient client.
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) DisksClient {
-	return DisksClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
+	return DisksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a disk.
 //
-// disk is disk object supplied in the body of the Put disk operation.
-func (client DisksClient) CreateOrUpdate(ctx context.Context, disk Disk) (result DisksCreateOrUpdateFuture, err error) {
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters. disk is disk object supplied in the body of the Put disk
+// operation.
+func (client DisksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk) (result DisksCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: disk,
 			Constraints: []validation.Constraint{{Target: "disk.DiskProperties", Name: validation.Null, Rule: false,
@@ -65,7 +68,7 @@ func (client DisksClient) CreateOrUpdate(ctx context.Context, disk Disk) (result
 		return result, validation.NewError("compute.DisksClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, disk)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, diskName, disk)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -81,14 +84,14 @@ func (client DisksClient) CreateOrUpdate(ctx context.Context, disk Disk) (result
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DisksClient) CreateOrUpdatePreparer(ctx context.Context, disk Disk) (*http.Request, error) {
+func (client DisksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, diskName string, disk Disk) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -132,8 +135,12 @@ func (client DisksClient) CreateOrUpdateResponder(resp *http.Response) (result D
 }
 
 // Delete deletes a disk.
-func (client DisksClient) Delete(ctx context.Context) (result DisksDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx)
+//
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters.
+func (client DisksClient) Delete(ctx context.Context, resourceGroupName string, diskName string) (result DisksDeleteFuture, err error) {
+	req, err := client.DeletePreparer(ctx, resourceGroupName, diskName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "Delete", nil, "Failure preparing request")
 		return
@@ -149,14 +156,14 @@ func (client DisksClient) Delete(ctx context.Context) (result DisksDeleteFuture,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DisksClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
+func (client DisksClient) DeletePreparer(ctx context.Context, resourceGroupName string, diskName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -198,8 +205,12 @@ func (client DisksClient) DeleteResponder(resp *http.Response) (result Operation
 }
 
 // Get gets information about a disk.
-func (client DisksClient) Get(ctx context.Context) (result Disk, err error) {
-	req, err := client.GetPreparer(ctx)
+//
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters.
+func (client DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string) (result Disk, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, diskName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "Get", nil, "Failure preparing request")
 		return
@@ -221,14 +232,14 @@ func (client DisksClient) Get(ctx context.Context) (result Disk, err error) {
 }
 
 // GetPreparer prepares the Get request.
-func (client DisksClient) GetPreparer(ctx context.Context) (*http.Request, error) {
+func (client DisksClient) GetPreparer(ctx context.Context, resourceGroupName string, diskName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -263,15 +274,18 @@ func (client DisksClient) GetResponder(resp *http.Response) (result Disk, err er
 
 // GrantAccess grants access to a disk.
 //
-// grantAccessData is access data object supplied in the body of the get disk access operation.
-func (client DisksClient) GrantAccess(ctx context.Context, grantAccessData GrantAccessData) (result DisksGrantAccessFuture, err error) {
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters. grantAccessData is access data object supplied in the body
+// of the get disk access operation.
+func (client DisksClient) GrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData) (result DisksGrantAccessFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: grantAccessData,
 			Constraints: []validation.Constraint{{Target: "grantAccessData.DurationInSeconds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("compute.DisksClient", "GrantAccess", err.Error())
 	}
 
-	req, err := client.GrantAccessPreparer(ctx, grantAccessData)
+	req, err := client.GrantAccessPreparer(ctx, resourceGroupName, diskName, grantAccessData)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "GrantAccess", nil, "Failure preparing request")
 		return
@@ -287,14 +301,14 @@ func (client DisksClient) GrantAccess(ctx context.Context, grantAccessData Grant
 }
 
 // GrantAccessPreparer prepares the GrantAccess request.
-func (client DisksClient) GrantAccessPreparer(ctx context.Context, grantAccessData GrantAccessData) (*http.Request, error) {
+func (client DisksClient) GrantAccessPreparer(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -367,7 +381,7 @@ func (client DisksClient) ListPreparer(ctx context.Context) (*http.Request, erro
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -428,9 +442,11 @@ func (client DisksClient) ListComplete(ctx context.Context) (result DiskListIter
 }
 
 // ListByResourceGroup lists all the disks under a resource group.
-func (client DisksClient) ListByResourceGroup(ctx context.Context) (result DiskListPage, err error) {
+//
+// resourceGroupName is the name of the resource group.
+func (client DisksClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DiskListPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -452,13 +468,13 @@ func (client DisksClient) ListByResourceGroup(ctx context.Context) (result DiskL
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client DisksClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
+func (client DisksClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -513,14 +529,18 @@ func (client DisksClient) listByResourceGroupNextResults(lastResults DiskList) (
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DisksClient) ListByResourceGroupComplete(ctx context.Context) (result DiskListIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx)
+func (client DisksClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result DiskListIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
 
 // RevokeAccess revokes access to a disk.
-func (client DisksClient) RevokeAccess(ctx context.Context) (result DisksRevokeAccessFuture, err error) {
-	req, err := client.RevokeAccessPreparer(ctx)
+//
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters.
+func (client DisksClient) RevokeAccess(ctx context.Context, resourceGroupName string, diskName string) (result DisksRevokeAccessFuture, err error) {
+	req, err := client.RevokeAccessPreparer(ctx, resourceGroupName, diskName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "RevokeAccess", nil, "Failure preparing request")
 		return
@@ -536,14 +556,14 @@ func (client DisksClient) RevokeAccess(ctx context.Context) (result DisksRevokeA
 }
 
 // RevokeAccessPreparer prepares the RevokeAccess request.
-func (client DisksClient) RevokeAccessPreparer(ctx context.Context) (*http.Request, error) {
+func (client DisksClient) RevokeAccessPreparer(ctx context.Context, resourceGroupName string, diskName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -586,9 +606,12 @@ func (client DisksClient) RevokeAccessResponder(resp *http.Response) (result Ope
 
 // Update updates (patches) a disk.
 //
-// disk is disk object supplied in the body of the Patch disk operation.
-func (client DisksClient) Update(ctx context.Context, disk DiskUpdate) (result DisksUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, disk)
+// resourceGroupName is the name of the resource group. diskName is the name of the managed disk that is being
+// created. The name can't be changed after the disk is created. Supported characters for the name are a-z, A-Z,
+// 0-9 and _. The maximum name length is 80 characters. disk is disk object supplied in the body of the Patch disk
+// operation.
+func (client DisksClient) Update(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate) (result DisksUpdateFuture, err error) {
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, diskName, disk)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksClient", "Update", nil, "Failure preparing request")
 		return
@@ -604,14 +627,14 @@ func (client DisksClient) Update(ctx context.Context, disk DiskUpdate) (result D
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DisksClient) UpdatePreparer(ctx context.Context, disk DiskUpdate) (*http.Request, error) {
+func (client DisksClient) UpdatePreparer(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"diskName":          autorest.Encode("path", client.DiskName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"diskName":          autorest.Encode("path", diskName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

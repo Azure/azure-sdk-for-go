@@ -31,13 +31,13 @@ type VirtualMachineSizesClient struct {
 }
 
 // NewVirtualMachineSizesClient creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClient(subscriptionID string, resourceGroupName string, diskName string) VirtualMachineSizesClient {
-	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
+	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVirtualMachineSizesClientWithBaseURI creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) VirtualMachineSizesClient {
-	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
+	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all available virtual machine sizes for a subscription in a location.
@@ -78,7 +78,7 @@ func (client VirtualMachineSizesClient) ListPreparer(ctx context.Context, locati
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

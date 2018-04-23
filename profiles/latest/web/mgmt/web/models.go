@@ -25,7 +25,6 @@ type AppsClient = original.AppsClient
 type AppServiceCertificateOrdersClient = original.AppServiceCertificateOrdersClient
 type AppServiceEnvironmentsClient = original.AppServiceEnvironmentsClient
 type AppServicePlansClient = original.AppServicePlansClient
-type BillingMetersClient = original.BillingMetersClient
 type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
 type CertificatesClient = original.CertificatesClient
 
@@ -449,15 +448,6 @@ const (
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
-type RenderingType = original.RenderingType
-
-const (
-	NoGraph               RenderingType = original.NoGraph
-	Table                 RenderingType = original.Table
-	TimeSeries            RenderingType = original.TimeSeries
-	TimeSeriesPerInstance RenderingType = original.TimeSeriesPerInstance
-)
-
 type ResourceScopeType = original.ResourceScopeType
 
 const (
@@ -695,11 +685,6 @@ type BackupItemProperties = original.BackupItemProperties
 type BackupRequest = original.BackupRequest
 type BackupRequestProperties = original.BackupRequestProperties
 type BackupSchedule = original.BackupSchedule
-type BillingMeter = original.BillingMeter
-type BillingMeterCollection = original.BillingMeterCollection
-type BillingMeterCollectionIterator = original.BillingMeterCollectionIterator
-type BillingMeterCollectionPage = original.BillingMeterCollectionPage
-type BillingMeterProperties = original.BillingMeterProperties
 type Capability = original.Capability
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
@@ -741,8 +726,6 @@ type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
 type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DataSource = original.DataSource
-type DataTableResponseColumn = original.DataTableResponseColumn
-type DataTableResponseObject = original.DataTableResponseObject
 type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultErrorResponseError = original.DefaultErrorResponseError
 type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
@@ -759,12 +742,6 @@ type DeploymentProperties = original.DeploymentProperties
 type DetectorAbnormalTimePeriod = original.DetectorAbnormalTimePeriod
 type DetectorDefinition = original.DetectorDefinition
 type DetectorDefinitionProperties = original.DetectorDefinitionProperties
-type DetectorInfo = original.DetectorInfo
-type DetectorResponse = original.DetectorResponse
-type DetectorResponseCollection = original.DetectorResponseCollection
-type DetectorResponseCollectionIterator = original.DetectorResponseCollectionIterator
-type DetectorResponseCollectionPage = original.DetectorResponseCollectionPage
-type DetectorResponseProperties = original.DetectorResponseProperties
 type DiagnosticAnalysis = original.DiagnosticAnalysis
 type DiagnosticAnalysisCollection = original.DiagnosticAnalysisCollection
 type DiagnosticAnalysisCollectionIterator = original.DiagnosticAnalysisCollectionIterator
@@ -775,7 +752,6 @@ type DiagnosticCategoryCollection = original.DiagnosticCategoryCollection
 type DiagnosticCategoryCollectionIterator = original.DiagnosticCategoryCollectionIterator
 type DiagnosticCategoryCollectionPage = original.DiagnosticCategoryCollectionPage
 type DiagnosticCategoryProperties = original.DiagnosticCategoryProperties
-type DiagnosticData = original.DiagnosticData
 type DiagnosticDetectorCollection = original.DiagnosticDetectorCollection
 type DiagnosticDetectorCollectionIterator = original.DiagnosticDetectorCollectionIterator
 type DiagnosticDetectorCollectionPage = original.DiagnosticDetectorCollectionPage
@@ -935,7 +911,6 @@ type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
 type RelayServiceConnectionEntityProperties = original.RelayServiceConnectionEntityProperties
-type Rendering = original.Rendering
 type RenewCertificateOrderRequest = original.RenewCertificateOrderRequest
 type RenewCertificateOrderRequestProperties = original.RenewCertificateOrderRequestProperties
 type RequestsBasedTrigger = original.RequestsBasedTrigger
@@ -1131,12 +1106,6 @@ func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
 func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
 	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClient(subscriptionID)
-}
-func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
 	return original.NewCertificateRegistrationProviderClient(subscriptionID)
 }
@@ -1304,9 +1273,6 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 }
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
-}
-func PossibleRenderingTypeValues() []RenderingType {
-	return original.PossibleRenderingTypeValues()
 }
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()

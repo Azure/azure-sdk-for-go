@@ -26,6 +26,11 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type Resource = original.Resource
+type UsageAggregate = original.UsageAggregate
+type UsageAggregateModel = original.UsageAggregateModel
+type UsageAggregatePage = original.UsageAggregatePage
+type SubscriberUsageAggregatesClient = original.SubscriberUsageAggregatesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -33,13 +38,6 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-
-type Resource = original.Resource
-type UsageAggregate = original.UsageAggregate
-type UsageAggregateModel = original.UsageAggregateModel
-type UsageAggregatePage = original.UsageAggregatePage
-type SubscriberUsageAggregatesClient = original.SubscriberUsageAggregatesClient
-
 func NewSubscriberUsageAggregatesClient(subscriptionID string) SubscriberUsageAggregatesClient {
 	return original.NewSubscriberUsageAggregatesClient(subscriptionID)
 }

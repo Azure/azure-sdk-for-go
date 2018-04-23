@@ -28,7 +28,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type CostTagsClient = original.CostTagsClient
 type MarketplacesClient = original.MarketplacesClient
 type CategoryType = original.CategoryType
 
@@ -66,9 +65,6 @@ type BudgetsListResult = original.BudgetsListResult
 type BudgetsListResultIterator = original.BudgetsListResultIterator
 type BudgetsListResultPage = original.BudgetsListResultPage
 type BudgetTimePeriod = original.BudgetTimePeriod
-type CostTag = original.CostTag
-type CostTagProperties = original.CostTagProperties
-type CostTags = original.CostTags
 type CurrentSpend = original.CurrentSpend
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
@@ -106,9 +102,6 @@ type ReservationSummariesListResultPage = original.ReservationSummariesListResul
 type ReservationSummariesProperties = original.ReservationSummariesProperties
 type Resource = original.Resource
 type ResourceAttributes = original.ResourceAttributes
-type Tag = original.Tag
-type TagProperties = original.TagProperties
-type Tags = original.Tags
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
 type UsageDetailsListResult = original.UsageDetailsListResult
@@ -119,32 +112,25 @@ type PriceSheetClient = original.PriceSheetClient
 type ReservationRecommendationsClient = original.ReservationRecommendationsClient
 type ReservationsDetailsClient = original.ReservationsDetailsClient
 type ReservationsSummariesClient = original.ReservationsSummariesClient
-type TagsClient = original.TagsClient
 type UsageDetailsClient = original.UsageDetailsClient
 
-func NewBudgetsClient(subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClient(subscriptionID)
+func NewBudgetsClient(subscriptionID string, grain Datagrain) BudgetsClient {
+	return original.NewBudgetsClient(subscriptionID, grain)
 }
-func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsClient {
-	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID)
+func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) BudgetsClient {
+	return original.NewBudgetsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, grain Datagrain) BaseClient {
+	return original.New(subscriptionID, grain)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewCostTagsClient(subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClient(subscriptionID)
+func NewMarketplacesClient(subscriptionID string, grain Datagrain) MarketplacesClient {
+	return original.NewMarketplacesClient(subscriptionID, grain)
 }
-func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
-	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClient(subscriptionID)
-}
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
+func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) MarketplacesClient {
+	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID, grain)
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
@@ -158,47 +144,41 @@ func PossibleOperatorTypeValues() []OperatorType {
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, grain Datagrain) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, grain)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClient(subscriptionID)
+func NewPriceSheetClient(subscriptionID string, grain Datagrain) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID, grain)
 }
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClient(subscriptionID)
+func NewReservationRecommendationsClient(subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClient(subscriptionID, grain)
 }
-func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) ReservationRecommendationsClient {
-	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationRecommendationsClient {
+	return original.NewReservationRecommendationsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClient(subscriptionID)
+func NewReservationsDetailsClient(subscriptionID string, grain Datagrain) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClient(subscriptionID, grain)
 }
-func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string) ReservationsDetailsClient {
-	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationsDetailsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationsDetailsClient {
+	return original.NewReservationsDetailsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClient(subscriptionID)
+func NewReservationsSummariesClient(subscriptionID string, grain Datagrain) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClient(subscriptionID, grain)
 }
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
-	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID)
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationsSummariesClient {
+	return original.NewReservationsSummariesClientWithBaseURI(baseURI, subscriptionID, grain)
 }
-func NewTagsClient(subscriptionID string) TagsClient {
-	return original.NewTagsClient(subscriptionID)
+func NewUsageDetailsClient(subscriptionID string, grain Datagrain) UsageDetailsClient {
+	return original.NewUsageDetailsClient(subscriptionID, grain)
 }
-func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
-	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClient(subscriptionID)
-}
-func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
-	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) UsageDetailsClient {
+	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID, grain)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

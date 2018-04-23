@@ -1391,8 +1391,10 @@ func (client JobClient) PatchResponder(resp *http.Response) (result autorest.Res
 }
 
 // Terminate when a Terminate Job request is received, the Batch service sets the job to the terminating state. The
-// Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release
-// tasks. The job then moves into the completed state.
+// Batch service then terminates any running tasks associated with the job and runs any required job release tasks.
+// Then the job moves into the completed state. If there are any tasks in the job in the active state, they will remain
+// in the active state. Once a job is terminated, new tasks cannot be added and any remaining active tasks will not be
+// scheduled.
 //
 // jobID is the ID of the job to terminate. jobTerminateParameter is the parameters for the request. timeout is the
 // maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.

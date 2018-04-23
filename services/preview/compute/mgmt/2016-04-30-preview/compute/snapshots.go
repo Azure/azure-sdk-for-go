@@ -31,21 +31,20 @@ type SnapshotsClient struct {
 }
 
 // NewSnapshotsClient creates an instance of the SnapshotsClient client.
-func NewSnapshotsClient(subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
-	return NewSnapshotsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
+	return NewSnapshotsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSnapshotsClientWithBaseURI creates an instance of the SnapshotsClient client.
-func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) SnapshotsClient {
-	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
+	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-// snapshot is snapshot object supplied in the body of the Put disk operation.
-func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, snapshotName string, snapshot Snapshot) (result SnapshotsCreateOrUpdateFuture, err error) {
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group. snapshot is snapshot object supplied in the body of the Put disk operation.
+func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (result SnapshotsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: snapshot,
 			Constraints: []validation.Constraint{{Target: "snapshot.DiskProperties", Name: validation.Null, Rule: false,
@@ -67,7 +66,7 @@ func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, snapshotName s
 		return result, validation.NewError("compute.SnapshotsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, snapshotName, snapshot)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, snapshotName, snapshot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -83,14 +82,14 @@ func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, snapshotName s
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SnapshotsClient) CreateOrUpdatePreparer(ctx context.Context, snapshotName string, snapshot Snapshot) (*http.Request, error) {
+func (client SnapshotsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -135,10 +134,10 @@ func (client SnapshotsClient) CreateOrUpdateResponder(resp *http.Response) (resu
 
 // Delete deletes a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-func (client SnapshotsClient) Delete(ctx context.Context, snapshotName string) (result SnapshotsDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, snapshotName)
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group.
+func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsDeleteFuture, err error) {
+	req, err := client.DeletePreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -154,14 +153,14 @@ func (client SnapshotsClient) Delete(ctx context.Context, snapshotName string) (
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SnapshotsClient) DeletePreparer(ctx context.Context, snapshotName string) (*http.Request, error) {
+func (client SnapshotsClient) DeletePreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -204,10 +203,10 @@ func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result Opera
 
 // Get gets information about a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-func (client SnapshotsClient) Get(ctx context.Context, snapshotName string) (result Snapshot, err error) {
-	req, err := client.GetPreparer(ctx, snapshotName)
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group.
+func (client SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string) (result Snapshot, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Get", nil, "Failure preparing request")
 		return
@@ -229,14 +228,14 @@ func (client SnapshotsClient) Get(ctx context.Context, snapshotName string) (res
 }
 
 // GetPreparer prepares the Get request.
-func (client SnapshotsClient) GetPreparer(ctx context.Context, snapshotName string) (*http.Request, error) {
+func (client SnapshotsClient) GetPreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -271,17 +270,17 @@ func (client SnapshotsClient) GetResponder(resp *http.Response) (result Snapshot
 
 // GrantAccess grants access to a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-// grantAccessData is access data object supplied in the body of the get snapshot access operation.
-func (client SnapshotsClient) GrantAccess(ctx context.Context, snapshotName string, grantAccessData GrantAccessData) (result SnapshotsGrantAccessFuture, err error) {
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group. grantAccessData is access data object supplied in the body of the get snapshot
+// access operation.
+func (client SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (result SnapshotsGrantAccessFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: grantAccessData,
 			Constraints: []validation.Constraint{{Target: "grantAccessData.DurationInSeconds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("compute.SnapshotsClient", "GrantAccess", err.Error())
 	}
 
-	req, err := client.GrantAccessPreparer(ctx, snapshotName, grantAccessData)
+	req, err := client.GrantAccessPreparer(ctx, resourceGroupName, snapshotName, grantAccessData)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "GrantAccess", nil, "Failure preparing request")
 		return
@@ -297,14 +296,14 @@ func (client SnapshotsClient) GrantAccess(ctx context.Context, snapshotName stri
 }
 
 // GrantAccessPreparer prepares the GrantAccess request.
-func (client SnapshotsClient) GrantAccessPreparer(ctx context.Context, snapshotName string, grantAccessData GrantAccessData) (*http.Request, error) {
+func (client SnapshotsClient) GrantAccessPreparer(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -377,7 +376,7 @@ func (client SnapshotsClient) ListPreparer(ctx context.Context) (*http.Request, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -438,9 +437,11 @@ func (client SnapshotsClient) ListComplete(ctx context.Context) (result Snapshot
 }
 
 // ListByResourceGroup lists snapshots under a resource group.
-func (client SnapshotsClient) ListByResourceGroup(ctx context.Context) (result SnapshotListPage, err error) {
+//
+// resourceGroupName is the name of the resource group.
+func (client SnapshotsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result SnapshotListPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -462,13 +463,13 @@ func (client SnapshotsClient) ListByResourceGroup(ctx context.Context) (result S
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client SnapshotsClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
+func (client SnapshotsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -523,17 +524,17 @@ func (client SnapshotsClient) listByResourceGroupNextResults(lastResults Snapsho
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SnapshotsClient) ListByResourceGroupComplete(ctx context.Context) (result SnapshotListIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx)
+func (client SnapshotsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result SnapshotListIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
 
 // RevokeAccess revokes access to a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-func (client SnapshotsClient) RevokeAccess(ctx context.Context, snapshotName string) (result SnapshotsRevokeAccessFuture, err error) {
-	req, err := client.RevokeAccessPreparer(ctx, snapshotName)
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group.
+func (client SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (result SnapshotsRevokeAccessFuture, err error) {
+	req, err := client.RevokeAccessPreparer(ctx, resourceGroupName, snapshotName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "RevokeAccess", nil, "Failure preparing request")
 		return
@@ -549,14 +550,14 @@ func (client SnapshotsClient) RevokeAccess(ctx context.Context, snapshotName str
 }
 
 // RevokeAccessPreparer prepares the RevokeAccess request.
-func (client SnapshotsClient) RevokeAccessPreparer(ctx context.Context, snapshotName string) (*http.Request, error) {
+func (client SnapshotsClient) RevokeAccessPreparer(ctx context.Context, resourceGroupName string, snapshotName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -599,11 +600,11 @@ func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result
 
 // Update updates (patches) a snapshot.
 //
-// snapshotName is the name of the snapshot that is being created. The name can't be changed after the snapshot is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
-// snapshot is snapshot object supplied in the body of the Patch snapshot operation.
-func (client SnapshotsClient) Update(ctx context.Context, snapshotName string, snapshot SnapshotUpdate) (result SnapshotsUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, snapshotName, snapshot)
+// resourceGroupName is the name of the resource group. snapshotName is the name of the snapshot within the given
+// subscription and resource group. snapshot is snapshot object supplied in the body of the Patch snapshot
+// operation.
+func (client SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (result SnapshotsUpdateFuture, err error) {
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, snapshotName, snapshot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsClient", "Update", nil, "Failure preparing request")
 		return
@@ -619,14 +620,14 @@ func (client SnapshotsClient) Update(ctx context.Context, snapshotName string, s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SnapshotsClient) UpdatePreparer(ctx context.Context, snapshotName string, snapshot SnapshotUpdate) (*http.Request, error) {
+func (client SnapshotsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"snapshotName":      autorest.Encode("path", snapshotName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

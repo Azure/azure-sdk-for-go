@@ -30,21 +30,21 @@ type AvailabilitySetsClient struct {
 }
 
 // NewAvailabilitySetsClient creates an instance of the AvailabilitySetsClient client.
-func NewAvailabilitySetsClient(subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
-	return NewAvailabilitySetsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
+	return NewAvailabilitySetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAvailabilitySetsClientWithBaseURI creates an instance of the AvailabilitySetsClient client.
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) AvailabilitySetsClient {
-	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, diskName)}
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
+	return AvailabilitySetsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update an availability set.
 //
-// resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
-// parameters is parameters supplied to the Create Availability Set operation.
-func (client AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet) (result AvailabilitySet, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, availabilitySetName, parameters)
+// resourceGroupName is the name of the resource group. name is the name of the availability set. parameters is
+// parameters supplied to the Create Availability Set operation.
+func (client AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, parameters AvailabilitySet) (result AvailabilitySet, err error) {
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, name, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -66,14 +66,14 @@ func (client AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AvailabilitySetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySet) (*http.Request, error) {
+func (client AvailabilitySetsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, name string, parameters AvailabilitySet) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"availabilitySetName": autorest.Encode("path", availabilitySetName),
+		"availabilitySetName": autorest.Encode("path", name),
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,7 +141,7 @@ func (client AvailabilitySetsClient) DeletePreparer(ctx context.Context, resourc
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -207,7 +207,7 @@ func (client AvailabilitySetsClient) GetPreparer(ctx context.Context, resourceGr
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -272,7 +272,7 @@ func (client AvailabilitySetsClient) ListPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -339,7 +339,7 @@ func (client AvailabilitySetsClient) ListAvailableSizesPreparer(ctx context.Cont
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-12-01-alphadummy"
+	const APIVersion = "2016-04-30-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -362,75 +362,6 @@ func (client AvailabilitySetsClient) ListAvailableSizesSender(req *http.Request)
 // ListAvailableSizesResponder handles the response to the ListAvailableSizes request. The method always
 // closes the http.Response Body.
 func (client AvailabilitySetsClient) ListAvailableSizesResponder(resp *http.Response) (result VirtualMachineSizeListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Update update an availability set.
-//
-// resourceGroupName is the name of the resource group. availabilitySetName is the name of the availability set.
-// parameters is parameters supplied to the Update Availability Set operation.
-func (client AvailabilitySetsClient) Update(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate) (result AvailabilitySet, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, availabilitySetName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Update", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdatePreparer prepares the Update request.
-func (client AvailabilitySetsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters AvailabilitySetUpdate) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"availabilitySetName": autorest.Encode("path", availabilitySetName),
-		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-12-01-alphadummy"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client AvailabilitySetsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client AvailabilitySetsClient) UpdateResponder(resp *http.Response) (result AvailabilitySet, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

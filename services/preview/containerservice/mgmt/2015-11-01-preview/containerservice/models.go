@@ -21,27 +21,24 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
 
-// OrchestratorTypes enumerates the values for orchestrator types.
-type OrchestratorTypes string
+// OchestratorTypes enumerates the values for ochestrator types.
+type OchestratorTypes string
 
 const (
-	// Custom ...
-	Custom OrchestratorTypes = "Custom"
 	// DCOS ...
-	DCOS OrchestratorTypes = "DCOS"
-	// Kubernetes ...
-	Kubernetes OrchestratorTypes = "Kubernetes"
-	// Swarm ...
-	Swarm OrchestratorTypes = "Swarm"
+	DCOS OchestratorTypes = "DCOS"
+	// Mesos ...
+	Mesos OchestratorTypes = "Mesos"
+	// SwarmPreview ...
+	SwarmPreview OchestratorTypes = "SwarmPreview"
 )
 
-// PossibleOrchestratorTypesValues returns an array of possible values for the OrchestratorTypes const type.
-func PossibleOrchestratorTypesValues() []OrchestratorTypes {
-	return []OrchestratorTypes{Custom, DCOS, Kubernetes, Swarm}
+// PossibleOchestratorTypesValues returns an array of possible values for the OchestratorTypes const type.
+func PossibleOchestratorTypesValues() []OchestratorTypes {
+	return []OchestratorTypes{DCOS, Mesos, SwarmPreview}
 }
 
 // VMSizeTypes enumerates the values for vm size types.
@@ -149,21 +146,21 @@ func PossibleVMSizeTypesValues() []VMSizeTypes {
 	return []VMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
 }
 
-// AgentPoolProfile profile for the container service agent pool.
+// AgentPoolProfile profile for container service agent pool
 type AgentPoolProfile struct {
-	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
+	// Name - Unique name of the agent pool profile within the context of the subscription and resource group
 	Name *string `json:"name,omitempty"`
-	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+	// Count - No. of agents (VMs) that will host docker containers
 	Count *int32 `json:"count,omitempty"`
 	// VMSize - Size of agent VMs. Possible values include: 'StandardA0', 'StandardA1', 'StandardA2', 'StandardA3', 'StandardA4', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA9', 'StandardA10', 'StandardA11', 'StandardD1', 'StandardD2', 'StandardD3', 'StandardD4', 'StandardD11', 'StandardD12', 'StandardD13', 'StandardD14', 'StandardD1V2', 'StandardD2V2', 'StandardD3V2', 'StandardD4V2', 'StandardD5V2', 'StandardD11V2', 'StandardD12V2', 'StandardD13V2', 'StandardD14V2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardDS1', 'StandardDS2', 'StandardDS3', 'StandardDS4', 'StandardDS11', 'StandardDS12', 'StandardDS13', 'StandardDS14', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5'
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
-	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
+	// DNSPrefix - DNS prefix to be used to create FQDN for this agent pool
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the agent pool.
+	// Fqdn - FDQN for the agent pool
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
-// ContainerService container service.
+// ContainerService container service
 type ContainerService struct {
 	autorest.Response `json:"-"`
 	*Properties       `json:"properties,omitempty"`
@@ -272,29 +269,28 @@ func (cs *ContainerService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ContainerServicesCreateOrUpdateFutureType an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ContainerServicesCreateOrUpdateFutureType struct {
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type CreateOrUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ContainerServicesCreateOrUpdateFutureType) Result(client ContainerServicesClient) (cs ContainerService, err error) {
+func (future CreateOrUpdateFuture) Result(client Client) (cs ContainerService, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.CreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return cs, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
+		return cs, azure.NewAsyncOpIncompleteError("containerservice.CreateOrUpdateFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		cs, err = client.CreateOrUpdateResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.CreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -311,39 +307,38 @@ func (future ContainerServicesCreateOrUpdateFutureType) Result(client ContainerS
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.CreateOrUpdateFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	cs, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesCreateOrUpdateFutureType", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.CreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ContainerServicesDeleteFutureType struct {
+// DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future ContainerServicesDeleteFutureType) Result(client ContainerServicesClient) (ar autorest.Response, err error) {
+func (future DeleteFuture) Result(client Client) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "containerservice.DeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
+		return ar, azure.NewAsyncOpIncompleteError("containerservice.DeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
 		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "containerservice.DeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -360,170 +355,68 @@ func (future ContainerServicesDeleteFutureType) Result(client ContainerServicesC
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.DeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ContainerServicesDeleteFutureType", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerservice.DeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
 
-// CustomProfile properties to configure a custom container service cluster.
-type CustomProfile struct {
-	// Orchestrator - The name of the custom orchestrator to use.
-	Orchestrator *string `json:"orchestrator,omitempty"`
-}
-
 // DiagnosticsProfile ...
 type DiagnosticsProfile struct {
-	// VMDiagnostics - Profile for the container service VM diagnostic agent.
+	// VMDiagnostics - Profile for container service VM diagnostic agent
 	VMDiagnostics *VMDiagnostics `json:"vmDiagnostics,omitempty"`
 }
 
-// LinuxProfile profile for Linux VMs in the container service cluster.
+// LinuxProfile profile for Linux VM
 type LinuxProfile struct {
-	// AdminUsername - The administrator username to use for Linux VMs.
+	// AdminUsername - The administrator username to use for all Linux VMs
 	AdminUsername *string `json:"adminUsername,omitempty"`
-	// SSH - The ssh key configuration for Linux VMs.
+	// SSH - Specifies the ssh key configuration for Linux VMs
 	SSH *SSHConfiguration `json:"ssh,omitempty"`
 }
 
-// ListResult the response from the List Container Services operation.
+// ListResult the List Container Service operation response
 type ListResult struct {
 	autorest.Response `json:"-"`
-	// Value - the list of container services.
-	Value    *[]ContainerService `json:"value,omitempty"`
-	NextLink *string             `json:"nextLink,omitempty"`
+	// Value - Gets or sets the list of container services.
+	Value *[]ContainerService `json:"value,omitempty"`
 }
 
-// ListResultIterator provides access to a complete listing of ContainerService values.
-type ListResultIterator struct {
-	i    int
-	page ListResultPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ListResultIterator) Response() ListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ListResultIterator) Value() ContainerService {
-	if !iter.page.NotDone() {
-		return ContainerService{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (lr ListResult) IsEmpty() bool {
-	return lr.Value == nil || len(*lr.Value) == 0
-}
-
-// listResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (lr ListResult) listResultPreparer() (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(lr.NextLink)))
-}
-
-// ListResultPage contains a page of ContainerService values.
-type ListResultPage struct {
-	fn func(ListResult) (ListResult, error)
-	lr ListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ListResultPage) Next() error {
-	next, err := page.fn(page.lr)
-	if err != nil {
-		return err
-	}
-	page.lr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ListResultPage) NotDone() bool {
-	return !page.lr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ListResultPage) Response() ListResult {
-	return page.lr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ListResultPage) Values() []ContainerService {
-	if page.lr.IsEmpty() {
-		return nil
-	}
-	return *page.lr.Value
-}
-
-// MasterProfile profile for the container service master.
+// MasterProfile profile for container service master
 type MasterProfile struct {
-	// Count - Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5. The default value is 1.
+	// Count - Number of masters (VMs) in the container cluster
 	Count *int32 `json:"count,omitempty"`
-	// DNSPrefix - DNS prefix to be used to create the FQDN for master.
+	// DNSPrefix - DNS prefix to be used to create FQDN for master
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// Fqdn - FDQN for the master.
+	// Fqdn - FDQN for the master
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
-// OrchestratorProfile profile for the container service orchestrator.
+// OrchestratorProfile profile for Orchestrator
 type OrchestratorProfile struct {
-	// OrchestratorType - The orchestrator to use to manage container service cluster resources. Valid values are Swarm, DCOS, and Custom. Possible values include: 'Swarm', 'DCOS', 'Custom', 'Kubernetes'
-	OrchestratorType OrchestratorTypes `json:"orchestratorType,omitempty"`
+	// OrchestratorType - Specifies what orchestrator will be used to manage container cluster resources. Possible values include: 'Mesos', 'SwarmPreview', 'DCOS'
+	OrchestratorType OchestratorTypes `json:"orchestratorType,omitempty"`
 }
 
-// Properties properties of the container service.
+// Properties properties of container service
 type Properties struct {
-	ProvisioningState   *string              `json:"provisioningState,omitempty"`
+	// ProvisioningState - Gets the provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// OrchestratorProfile - Properties of orchestrator
 	OrchestratorProfile *OrchestratorProfile `json:"orchestratorProfile,omitempty"`
-	// CustomProfile - Properties for custom clusters.
-	CustomProfile *CustomProfile `json:"customProfile,omitempty"`
-	// ServicePrincipalProfile - Properties for cluster service principals.
-	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
-	// MasterProfile - Properties of master agents.
+	// MasterProfile - Properties of master agents
 	MasterProfile *MasterProfile `json:"masterProfile,omitempty"`
-	// AgentPoolProfiles - Properties of the agent pool.
+	// AgentPoolProfiles - Properties of agent pools
 	AgentPoolProfiles *[]AgentPoolProfile `json:"agentPoolProfiles,omitempty"`
-	// WindowsProfile - Properties of Windows VMs.
+	// WindowsProfile - Properties of Windows VMs
 	WindowsProfile *WindowsProfile `json:"windowsProfile,omitempty"`
-	// LinuxProfile - Properties of Linux VMs.
+	// LinuxProfile - Properties for Linux VMs
 	LinuxProfile *LinuxProfile `json:"linuxProfile,omitempty"`
-	// DiagnosticsProfile - Properties of the diagnostic agent.
+	// DiagnosticsProfile - Properties for Diagnostic Agent
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 }
 
@@ -562,38 +455,30 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicePrincipalProfile information about a service principal identity for the cluster to use for manipulating
-// Azure APIs.
-type ServicePrincipalProfile struct {
-	// ClientID - The ID for the service principal.
-	ClientID *string `json:"clientId,omitempty"`
-	// Secret - The secret password associated with the service principal.
-	Secret *string `json:"secret,omitempty"`
-}
-
-// SSHConfiguration SSH configuration for Linux-based VMs running on Azure.
+// SSHConfiguration SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
-	// PublicKeys - the list of SSH public keys used to authenticate with Linux-based VMs.
+	// PublicKeys - Gets or sets the list of SSH public keys used to authenticate with Linux based VMs
 	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
 // SSHPublicKey contains information about SSH certificate public key data.
 type SSHPublicKey struct {
-	// KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or without headers.
+	// KeyData - Gets or sets Certificate public key used to authenticate with VM through SSH. The certificate must be in Pem format with or without headers.
 	KeyData *string `json:"keyData,omitempty"`
 }
 
-// VMDiagnostics profile for diagnostics on the container service VMs.
+// VMDiagnostics describes VM Diagnostics.
 type VMDiagnostics struct {
-	// Enabled - Whether the VM diagnostic agent is provisioned on the VM.
-	Enabled    *bool   `json:"enabled,omitempty"`
+	// Enabled - Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
+	Enabled *bool `json:"enabled,omitempty"`
+	// StorageURI - Gets or sets whether VM Diagnostic Agent should be provisioned on the Virtual Machine.
 	StorageURI *string `json:"storageUri,omitempty"`
 }
 
-// WindowsProfile profile for Windows VMs in the container service cluster.
+// WindowsProfile profile for Windows jumpbox
 type WindowsProfile struct {
-	// AdminUsername - The administrator username to use for Windows VMs.
+	// AdminUsername - The administrator username to use for Windows jumpbox
 	AdminUsername *string `json:"adminUsername,omitempty"`
-	// AdminPassword - The administrator password to use for Windows VMs.
+	// AdminPassword - The administrator password to use for Windows jumpbox
 	AdminPassword *string `json:"adminPassword,omitempty"`
 }

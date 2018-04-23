@@ -1,4 +1,4 @@
-// Package compute implements the Azure ARM Compute service API version .
+// Package compute implements the Azure ARM Compute service API version 2016-04-30-preview.
 //
 // Compute Client
 package compute
@@ -32,24 +32,20 @@ const (
 // BaseClient is the base client for Compute.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ResourceGroupName string
-	DiskName          string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, resourceGroupName string, diskName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ResourceGroupName: resourceGroupName,
-		DiskName:          diskName,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

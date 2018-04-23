@@ -1,7 +1,7 @@
-// Package compute implements the Azure ARM Compute service API version .
+// Package containerservice implements the Azure ARM Containerservice service API version 2015-11-01-preview.
 //
 // Compute Client
-package compute
+package containerservice
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,31 +25,27 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Compute
+	// DefaultBaseURI is the default URI used for the service Containerservice
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Compute.
+// BaseClient is the base client for Containerservice.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ResourceGroupName string
-	DiskName          string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, resourceGroupName string, diskName string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, diskName)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, diskName string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ResourceGroupName: resourceGroupName,
-		DiskName:          diskName,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

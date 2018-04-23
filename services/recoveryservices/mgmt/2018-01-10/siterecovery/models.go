@@ -45,6 +45,21 @@ func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
 	return []A2ARpRecoveryPointType{Latest, LatestApplicationConsistent, LatestCrashConsistent, LatestProcessed}
 }
 
+// AgentAutoUpdateStatus enumerates the values for agent auto update status.
+type AgentAutoUpdateStatus string
+
+const (
+	// Disabled ...
+	Disabled AgentAutoUpdateStatus = "Disabled"
+	// Enabled ...
+	Enabled AgentAutoUpdateStatus = "Enabled"
+)
+
+// PossibleAgentAutoUpdateStatusValues returns an array of possible values for the AgentAutoUpdateStatus const type.
+func PossibleAgentAutoUpdateStatusValues() []AgentAutoUpdateStatus {
+	return []AgentAutoUpdateStatus{Disabled, Enabled}
+}
+
 // AgentVersionStatus enumerates the values for agent version status.
 type AgentVersionStatus string
 
@@ -132,6 +147,8 @@ func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
 type HealthErrorCategory string
 
 const (
+	// AgentAutoUpdate ...
+	AgentAutoUpdate HealthErrorCategory = "AgentAutoUpdate"
 	// Configuration ...
 	Configuration HealthErrorCategory = "Configuration"
 	// FabricInfrastructure ...
@@ -148,7 +165,7 @@ const (
 
 // PossibleHealthErrorCategoryValues returns an array of possible values for the HealthErrorCategory const type.
 func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
-	return []HealthErrorCategory{Configuration, FabricInfrastructure, None, Replication, TestFailover, VersionExpiry}
+	return []HealthErrorCategory{AgentAutoUpdate, Configuration, FabricInfrastructure, None, Replication, TestFailover, VersionExpiry}
 }
 
 // HyperVReplicaAzureRpRecoveryPointType enumerates the values for hyper v replica azure rp recovery point
@@ -528,6 +545,22 @@ func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceType
 	return []InstanceTypeBasicPolicyProviderSpecificInput{InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput, InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt}
 }
 
+// InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails enumerates the values for instance type
+// basic protection container mapping provider specific details.
+type InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails string
+
+const (
+	// InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A ...
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = "A2A"
+	// InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails ...
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = "ProtectionContainerMappingProviderSpecificDetails"
+)
+
+// PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues returns an array of possible values for the InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails const type.
+func PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues() []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails {
+	return []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails{InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A, InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails}
+}
+
 // InstanceTypeBasicProviderSpecificFailoverInput enumerates the values for instance type basic provider
 // specific failover input.
 type InstanceTypeBasicProviderSpecificFailoverInput string
@@ -630,6 +663,22 @@ func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputV
 	return []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput{InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput}
 }
 
+// InstanceTypeBasicReplicationProviderSpecificContainerMappingInput enumerates the values for instance type
+// basic replication provider specific container mapping input.
+type InstanceTypeBasicReplicationProviderSpecificContainerMappingInput string
+
+const (
+	// InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A ...
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = "A2A"
+	// InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput ...
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = "ReplicationProviderSpecificContainerMappingInput"
+)
+
+// PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificContainerMappingInput const type.
+func PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput {
+	return []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput{InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput}
+}
+
 // InstanceTypeBasicReplicationProviderSpecificSettings enumerates the values for instance type basic
 // replication provider specific settings.
 type InstanceTypeBasicReplicationProviderSpecificSettings string
@@ -656,6 +705,22 @@ const (
 // PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificSettings const type.
 func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
 	return []InstanceTypeBasicReplicationProviderSpecificSettings{InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2, InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings}
+}
+
+// InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput enumerates the values for instance
+// type basic replication provider specific update container mapping input.
+type InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput string
+
+const (
+	// InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A ...
+	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = "A2A"
+	// InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput ...
+	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = "ReplicationProviderSpecificUpdateContainerMappingInput"
+)
+
+// PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues returns an array of possible values for the InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput const type.
+func PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput {
+	return []InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput{InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A, InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput}
 }
 
 // InstanceTypeBasicReverseReplicationProviderSpecificInput enumerates the values for instance type basic
@@ -796,15 +861,15 @@ func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
 type MultiVMSyncStatus string
 
 const (
-	// Disabled ...
-	Disabled MultiVMSyncStatus = "Disabled"
-	// Enabled ...
-	Enabled MultiVMSyncStatus = "Enabled"
+	// MultiVMSyncStatusDisabled ...
+	MultiVMSyncStatusDisabled MultiVMSyncStatus = "Disabled"
+	// MultiVMSyncStatusEnabled ...
+	MultiVMSyncStatusEnabled MultiVMSyncStatus = "Enabled"
 )
 
 // PossibleMultiVMSyncStatusValues returns an array of possible values for the MultiVMSyncStatus const type.
 func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
-	return []MultiVMSyncStatus{Disabled, Enabled}
+	return []MultiVMSyncStatus{MultiVMSyncStatusDisabled, MultiVMSyncStatusEnabled}
 }
 
 // PossibleOperationsDirections enumerates the values for possible operations directions.
@@ -820,6 +885,23 @@ const (
 // PossiblePossibleOperationsDirectionsValues returns an array of possible values for the PossibleOperationsDirections const type.
 func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
 	return []PossibleOperationsDirections{PrimaryToRecovery, RecoveryToPrimary}
+}
+
+// PresenceStatus enumerates the values for presence status.
+type PresenceStatus string
+
+const (
+	// NotPresent ...
+	NotPresent PresenceStatus = "NotPresent"
+	// Present ...
+	Present PresenceStatus = "Present"
+	// Unknown ...
+	Unknown PresenceStatus = "Unknown"
+)
+
+// PossiblePresenceStatusValues returns an array of possible values for the PresenceStatus const type.
+func PossiblePresenceStatusValues() []PresenceStatus {
+	return []PresenceStatus{NotPresent, Present, Unknown}
 }
 
 // RecoveryPlanActionLocation enumerates the values for recovery plan action location.
@@ -1059,6 +1141,47 @@ func (acci A2AContainerCreationInput) AsReplicationProviderSpecificContainerCrea
 // AsBasicReplicationProviderSpecificContainerCreationInput is the BasicReplicationProviderSpecificContainerCreationInput implementation for A2AContainerCreationInput.
 func (acci A2AContainerCreationInput) AsBasicReplicationProviderSpecificContainerCreationInput() (BasicReplicationProviderSpecificContainerCreationInput, bool) {
 	return &acci, true
+}
+
+// A2AContainerMappingInput a2A container mapping input.
+type A2AContainerMappingInput struct {
+	// AgentAutoUpdateStatus - A value indicating whether the auto update is enabled. Possible values include: 'Disabled', 'Enabled'
+	AgentAutoUpdateStatus AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	// AutomationAccountArmID - The automation account arm id.
+	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerMappingInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for A2AContainerMappingInput.
+func (acmi A2AContainerMappingInput) MarshalJSON() ([]byte, error) {
+	acmi.InstanceType = InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A
+	objectMap := make(map[string]interface{})
+	if acmi.AgentAutoUpdateStatus != "" {
+		objectMap["agentAutoUpdateStatus"] = acmi.AgentAutoUpdateStatus
+	}
+	if acmi.AutomationAccountArmID != nil {
+		objectMap["automationAccountArmId"] = acmi.AutomationAccountArmID
+	}
+	if acmi.InstanceType != "" {
+		objectMap["instanceType"] = acmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
+func (acmi A2AContainerMappingInput) AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool) {
+	return &acmi, true
+}
+
+// AsReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
+func (acmi A2AContainerMappingInput) AsReplicationProviderSpecificContainerMappingInput() (*ReplicationProviderSpecificContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsBasicReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for A2AContainerMappingInput.
+func (acmi A2AContainerMappingInput) AsBasicReplicationProviderSpecificContainerMappingInput() (BasicReplicationProviderSpecificContainerMappingInput, bool) {
+	return &acmi, true
 }
 
 // A2AEnableProtectionInput a2A enable protection input.
@@ -1550,6 +1673,57 @@ type A2AProtectedManagedDiskDetails struct {
 	DataPendingAtSourceAgentInMB *float64 `json:"dataPendingAtSourceAgentInMB,omitempty"`
 }
 
+// A2AProtectionContainerMappingDetails a2A provider specific settings.
+type A2AProtectionContainerMappingDetails struct {
+	// AgentAutoUpdateStatus - A value indicating whether the auto update is enabled. Possible values include: 'Disabled', 'Enabled'
+	AgentAutoUpdateStatus AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	// AutomationAccountArmID - The automation account arm id.
+	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	// ScheduleName - The schedule arm name.
+	ScheduleName *string `json:"scheduleName,omitempty"`
+	// JobScheduleName - The job schedule arm name.
+	JobScheduleName *string `json:"jobScheduleName,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A'
+	InstanceType InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for A2AProtectionContainerMappingDetails.
+func (apcmd A2AProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
+	apcmd.InstanceType = InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A
+	objectMap := make(map[string]interface{})
+	if apcmd.AgentAutoUpdateStatus != "" {
+		objectMap["agentAutoUpdateStatus"] = apcmd.AgentAutoUpdateStatus
+	}
+	if apcmd.AutomationAccountArmID != nil {
+		objectMap["automationAccountArmId"] = apcmd.AutomationAccountArmID
+	}
+	if apcmd.ScheduleName != nil {
+		objectMap["scheduleName"] = apcmd.ScheduleName
+	}
+	if apcmd.JobScheduleName != nil {
+		objectMap["jobScheduleName"] = apcmd.JobScheduleName
+	}
+	if apcmd.InstanceType != "" {
+		objectMap["instanceType"] = apcmd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
+func (apcmd A2AProtectionContainerMappingDetails) AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool) {
+	return &apcmd, true
+}
+
+// AsProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
+func (apcmd A2AProtectionContainerMappingDetails) AsProtectionContainerMappingProviderSpecificDetails() (*ProtectionContainerMappingProviderSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsBasicProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for A2AProtectionContainerMappingDetails.
+func (apcmd A2AProtectionContainerMappingDetails) AsBasicProtectionContainerMappingProviderSpecificDetails() (BasicProtectionContainerMappingProviderSpecificDetails, bool) {
+	return &apcmd, true
+}
+
 // A2ARecoveryPointDetails a2A provider specific recovery point details.
 type A2ARecoveryPointDetails struct {
 	// RecoveryPointSyncType - A value indicating whether the recovery point is multi VM consistent. Possible values include: 'MultiVMSyncRecoveryPoint', 'PerVMRecoveryPoint'
@@ -1952,6 +2126,47 @@ func (aspi A2ASwitchProtectionInput) AsSwitchProtectionProviderSpecificInput() (
 // AsBasicSwitchProtectionProviderSpecificInput is the BasicSwitchProtectionProviderSpecificInput implementation for A2ASwitchProtectionInput.
 func (aspi A2ASwitchProtectionInput) AsBasicSwitchProtectionProviderSpecificInput() (BasicSwitchProtectionProviderSpecificInput, bool) {
 	return &aspi, true
+}
+
+// A2AUpdateContainerMappingInput a2A update protection container mapping.
+type A2AUpdateContainerMappingInput struct {
+	// AgentAutoUpdateStatus - A value indicating whether the auto update is enabled. Possible values include: 'Disabled', 'Enabled'
+	AgentAutoUpdateStatus AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	// AutomationAccountArmID - The automation account arm id.
+	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for A2AUpdateContainerMappingInput.
+func (aucmi A2AUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
+	aucmi.InstanceType = InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A
+	objectMap := make(map[string]interface{})
+	if aucmi.AgentAutoUpdateStatus != "" {
+		objectMap["agentAutoUpdateStatus"] = aucmi.AgentAutoUpdateStatus
+	}
+	if aucmi.AutomationAccountArmID != nil {
+		objectMap["automationAccountArmId"] = aucmi.AutomationAccountArmID
+	}
+	if aucmi.InstanceType != "" {
+		objectMap["instanceType"] = aucmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for A2AUpdateContainerMappingInput.
+func (aucmi A2AUpdateContainerMappingInput) AsA2AUpdateContainerMappingInput() (*A2AUpdateContainerMappingInput, bool) {
+	return &aucmi, true
+}
+
+// AsReplicationProviderSpecificUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for A2AUpdateContainerMappingInput.
+func (aucmi A2AUpdateContainerMappingInput) AsReplicationProviderSpecificUpdateContainerMappingInput() (*ReplicationProviderSpecificUpdateContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsBasicReplicationProviderSpecificUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for A2AUpdateContainerMappingInput.
+func (aucmi A2AUpdateContainerMappingInput) AsBasicReplicationProviderSpecificUpdateContainerMappingInput() (BasicReplicationProviderSpecificUpdateContainerMappingInput, bool) {
+	return &aucmi, true
 }
 
 // A2AUpdateReplicationProtectedItemInput inMage Azure V2 input to update replication protected item.
@@ -3281,7 +3496,48 @@ type CreateProtectionContainerMappingInputProperties struct {
 	// PolicyID - Applicable policy.
 	PolicyID *string `json:"policyId,omitempty"`
 	// ProviderSpecificInput - Provider specific input for pairing.
-	ProviderSpecificInput *ReplicationProviderSpecificContainerMappingInput `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput BasicReplicationProviderSpecificContainerMappingInput `json:"providerSpecificInput,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CreateProtectionContainerMappingInputProperties struct.
+func (cpcmip *CreateProtectionContainerMappingInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "targetProtectionContainerId":
+			if v != nil {
+				var targetProtectionContainerID string
+				err = json.Unmarshal(*v, &targetProtectionContainerID)
+				if err != nil {
+					return err
+				}
+				cpcmip.TargetProtectionContainerID = &targetProtectionContainerID
+			}
+		case "policyId":
+			if v != nil {
+				var policyID string
+				err = json.Unmarshal(*v, &policyID)
+				if err != nil {
+					return err
+				}
+				cpcmip.PolicyID = &policyID
+			}
+		case "providerSpecificInput":
+			if v != nil {
+				providerSpecificInput, err := unmarshalBasicReplicationProviderSpecificContainerMappingInput(*v)
+				if err != nil {
+					return err
+				}
+				cpcmip.ProviderSpecificInput = providerSpecificInput
+			}
+		}
+	}
+
+	return nil
 }
 
 // CreateRecoveryPlanInput create recovery plan input class.
@@ -5166,7 +5422,7 @@ type HealthError struct {
 type HealthErrorSummary struct {
 	// SummaryCode - The code of the health error.
 	SummaryCode *string `json:"summaryCode,omitempty"`
-	// Category - The category of the health error. Possible values include: 'None', 'Replication', 'TestFailover', 'Configuration', 'FabricInfrastructure', 'VersionExpiry'
+	// Category - The category of the health error. Possible values include: 'None', 'Replication', 'TestFailover', 'Configuration', 'FabricInfrastructure', 'VersionExpiry', 'AgentAutoUpdate'
 	Category HealthErrorCategory `json:"category,omitempty"`
 	// Severity - Severity of error. Possible values include: 'NONE', 'Warning', 'Error', 'Info'
 	Severity Severity `json:"severity,omitempty"`
@@ -7258,12 +7514,12 @@ type HyperVVirtualMachineDetails struct {
 	OsDetails *OSDetails `json:"osDetails,omitempty"`
 	// DiskDetails - The Last successful failover time.
 	DiskDetails *[]DiskDetails `json:"diskDetails,omitempty"`
-	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached.
-	HasPhysicalDisk *bool `json:"hasPhysicalDisk,omitempty"`
-	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached.
-	HasFibreChannelAdapter *bool `json:"hasFibreChannelAdapter,omitempty"`
-	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached.
-	HasSharedVhd *bool `json:"hasSharedVhd,omitempty"`
+	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasPhysicalDisk PresenceStatus `json:"hasPhysicalDisk,omitempty"`
+	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasFibreChannelAdapter PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
+	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasSharedVhd PresenceStatus `json:"hasSharedVhd,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeConfigurationSettings', 'InstanceTypeHyperVVirtualMachine', 'InstanceTypeReplicationGroupDetails', 'InstanceTypeVmmVirtualMachine', 'InstanceTypeVMwareVirtualMachine'
 	InstanceType InstanceTypeBasicConfigurationSettings `json:"instanceType,omitempty"`
 }
@@ -7284,13 +7540,13 @@ func (hvvmd HyperVVirtualMachineDetails) MarshalJSON() ([]byte, error) {
 	if hvvmd.DiskDetails != nil {
 		objectMap["diskDetails"] = hvvmd.DiskDetails
 	}
-	if hvvmd.HasPhysicalDisk != nil {
+	if hvvmd.HasPhysicalDisk != "" {
 		objectMap["hasPhysicalDisk"] = hvvmd.HasPhysicalDisk
 	}
-	if hvvmd.HasFibreChannelAdapter != nil {
+	if hvvmd.HasFibreChannelAdapter != "" {
 		objectMap["hasFibreChannelAdapter"] = hvvmd.HasFibreChannelAdapter
 	}
-	if hvvmd.HasSharedVhd != nil {
+	if hvvmd.HasSharedVhd != "" {
 		objectMap["hasSharedVhd"] = hvvmd.HasSharedVhd
 	}
 	if hvvmd.InstanceType != "" {
@@ -11866,7 +12122,7 @@ type ProtectionContainerMappingProperties struct {
 	// TargetProtectionContainerFriendlyName - Friendly name of paired container.
 	TargetProtectionContainerFriendlyName *string `json:"targetProtectionContainerFriendlyName,omitempty"`
 	// ProviderSpecificDetails - Provider specific provider details.
-	ProviderSpecificDetails *ProtectionContainerMappingProviderSpecificDetails `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails BasicProtectionContainerMappingProviderSpecificDetails `json:"providerSpecificDetails,omitempty"`
 	// Health - Health of pairing.
 	Health *string `json:"health,omitempty"`
 	// HealthErrorDetails - Health error.
@@ -11885,10 +12141,191 @@ type ProtectionContainerMappingProperties struct {
 	PolicyFriendlyName *string `json:"policyFriendlyName,omitempty"`
 }
 
+// UnmarshalJSON is the custom unmarshaler for ProtectionContainerMappingProperties struct.
+func (pcmp *ProtectionContainerMappingProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "targetProtectionContainerId":
+			if v != nil {
+				var targetProtectionContainerID string
+				err = json.Unmarshal(*v, &targetProtectionContainerID)
+				if err != nil {
+					return err
+				}
+				pcmp.TargetProtectionContainerID = &targetProtectionContainerID
+			}
+		case "targetProtectionContainerFriendlyName":
+			if v != nil {
+				var targetProtectionContainerFriendlyName string
+				err = json.Unmarshal(*v, &targetProtectionContainerFriendlyName)
+				if err != nil {
+					return err
+				}
+				pcmp.TargetProtectionContainerFriendlyName = &targetProtectionContainerFriendlyName
+			}
+		case "providerSpecificDetails":
+			if v != nil {
+				providerSpecificDetails, err := unmarshalBasicProtectionContainerMappingProviderSpecificDetails(*v)
+				if err != nil {
+					return err
+				}
+				pcmp.ProviderSpecificDetails = providerSpecificDetails
+			}
+		case "health":
+			if v != nil {
+				var health string
+				err = json.Unmarshal(*v, &health)
+				if err != nil {
+					return err
+				}
+				pcmp.Health = &health
+			}
+		case "healthErrorDetails":
+			if v != nil {
+				var healthErrorDetails []HealthError
+				err = json.Unmarshal(*v, &healthErrorDetails)
+				if err != nil {
+					return err
+				}
+				pcmp.HealthErrorDetails = &healthErrorDetails
+			}
+		case "policyId":
+			if v != nil {
+				var policyID string
+				err = json.Unmarshal(*v, &policyID)
+				if err != nil {
+					return err
+				}
+				pcmp.PolicyID = &policyID
+			}
+		case "state":
+			if v != nil {
+				var state string
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				pcmp.State = &state
+			}
+		case "sourceProtectionContainerFriendlyName":
+			if v != nil {
+				var sourceProtectionContainerFriendlyName string
+				err = json.Unmarshal(*v, &sourceProtectionContainerFriendlyName)
+				if err != nil {
+					return err
+				}
+				pcmp.SourceProtectionContainerFriendlyName = &sourceProtectionContainerFriendlyName
+			}
+		case "sourceFabricFriendlyName":
+			if v != nil {
+				var sourceFabricFriendlyName string
+				err = json.Unmarshal(*v, &sourceFabricFriendlyName)
+				if err != nil {
+					return err
+				}
+				pcmp.SourceFabricFriendlyName = &sourceFabricFriendlyName
+			}
+		case "targetFabricFriendlyName":
+			if v != nil {
+				var targetFabricFriendlyName string
+				err = json.Unmarshal(*v, &targetFabricFriendlyName)
+				if err != nil {
+					return err
+				}
+				pcmp.TargetFabricFriendlyName = &targetFabricFriendlyName
+			}
+		case "policyFriendlyName":
+			if v != nil {
+				var policyFriendlyName string
+				err = json.Unmarshal(*v, &policyFriendlyName)
+				if err != nil {
+					return err
+				}
+				pcmp.PolicyFriendlyName = &policyFriendlyName
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicProtectionContainerMappingProviderSpecificDetails container mapping provider specific details.
+type BasicProtectionContainerMappingProviderSpecificDetails interface {
+	AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool)
+	AsProtectionContainerMappingProviderSpecificDetails() (*ProtectionContainerMappingProviderSpecificDetails, bool)
+}
+
 // ProtectionContainerMappingProviderSpecificDetails container mapping provider specific details.
 type ProtectionContainerMappingProviderSpecificDetails struct {
-	// InstanceType - Gets the class type. Overriden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails', 'InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A'
+	InstanceType InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicProtectionContainerMappingProviderSpecificDetails(body []byte) (BasicProtectionContainerMappingProviderSpecificDetails, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A):
+		var apcmd A2AProtectionContainerMappingDetails
+		err := json.Unmarshal(body, &apcmd)
+		return apcmd, err
+	default:
+		var pcmpsd ProtectionContainerMappingProviderSpecificDetails
+		err := json.Unmarshal(body, &pcmpsd)
+		return pcmpsd, err
+	}
+}
+func unmarshalBasicProtectionContainerMappingProviderSpecificDetailsArray(body []byte) ([]BasicProtectionContainerMappingProviderSpecificDetails, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	pcmpsdArray := make([]BasicProtectionContainerMappingProviderSpecificDetails, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		pcmpsd, err := unmarshalBasicProtectionContainerMappingProviderSpecificDetails(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		pcmpsdArray[index] = pcmpsd
+	}
+	return pcmpsdArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) MarshalJSON() ([]byte, error) {
+	pcmpsd.InstanceType = InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails
+	objectMap := make(map[string]interface{})
+	if pcmpsd.InstanceType != "" {
+		objectMap["instanceType"] = pcmpsd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AProtectionContainerMappingDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) AsA2AProtectionContainerMappingDetails() (*A2AProtectionContainerMappingDetails, bool) {
+	return nil, false
+}
+
+// AsProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) AsProtectionContainerMappingProviderSpecificDetails() (*ProtectionContainerMappingProviderSpecificDetails, bool) {
+	return &pcmpsd, true
+}
+
+// AsBasicProtectionContainerMappingProviderSpecificDetails is the BasicProtectionContainerMappingProviderSpecificDetails implementation for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) AsBasicProtectionContainerMappingProviderSpecificDetails() (BasicProtectionContainerMappingProviderSpecificDetails, bool) {
+	return &pcmpsd, true
 }
 
 // ProtectionContainerProperties protection profile custom data details.
@@ -12129,7 +12566,7 @@ type RcmAzureMigrationPolicyDetails struct {
 	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
 	// AppConsistentFrequencyInMinutes - The app consistent snapshot frequency in minutes.
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
-	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Possible values include: 'Enabled', 'Disabled'
+	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Possible values include: 'MultiVMSyncStatusEnabled', 'MultiVMSyncStatusDisabled'
 	MultiVMSyncStatus MultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
@@ -15897,6 +16334,55 @@ func (future ReplicationProtectionContainerMappingsPurgeFuture) Result(client Re
 	return
 }
 
+// ReplicationProtectionContainerMappingsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReplicationProtectionContainerMappingsUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ReplicationProtectionContainerMappingsUpdateFuture) Result(client ReplicationProtectionContainerMappingsClient) (pcm ProtectionContainerMapping, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return pcm, azure.NewAsyncOpIncompleteError("siterecovery.ReplicationProtectionContainerMappingsUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		pcm, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	pcm, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // ReplicationProtectionContainersCreateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ReplicationProtectionContainersCreateFuture struct {
@@ -16173,10 +16659,78 @@ func (rpscci ReplicationProviderSpecificContainerCreationInput) AsBasicReplicati
 	return &rpscci, true
 }
 
+// BasicReplicationProviderSpecificContainerMappingInput provider specific input for pairing operations.
+type BasicReplicationProviderSpecificContainerMappingInput interface {
+	AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool)
+	AsReplicationProviderSpecificContainerMappingInput() (*ReplicationProviderSpecificContainerMappingInput, bool)
+}
+
 // ReplicationProviderSpecificContainerMappingInput provider specific input for pairing operations.
 type ReplicationProviderSpecificContainerMappingInput struct {
-	// InstanceType - The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificContainerMappingInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicReplicationProviderSpecificContainerMappingInput(body []byte) (BasicReplicationProviderSpecificContainerMappingInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A):
+		var acmi A2AContainerMappingInput
+		err := json.Unmarshal(body, &acmi)
+		return acmi, err
+	default:
+		var rpscmi ReplicationProviderSpecificContainerMappingInput
+		err := json.Unmarshal(body, &rpscmi)
+		return rpscmi, err
+	}
+}
+func unmarshalBasicReplicationProviderSpecificContainerMappingInputArray(body []byte) ([]BasicReplicationProviderSpecificContainerMappingInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	rpscmiArray := make([]BasicReplicationProviderSpecificContainerMappingInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		rpscmi, err := unmarshalBasicReplicationProviderSpecificContainerMappingInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		rpscmiArray[index] = rpscmi
+	}
+	return rpscmiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ReplicationProviderSpecificContainerMappingInput.
+func (rpscmi ReplicationProviderSpecificContainerMappingInput) MarshalJSON() ([]byte, error) {
+	rpscmi.InstanceType = InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput
+	objectMap := make(map[string]interface{})
+	if rpscmi.InstanceType != "" {
+		objectMap["instanceType"] = rpscmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for ReplicationProviderSpecificContainerMappingInput.
+func (rpscmi ReplicationProviderSpecificContainerMappingInput) AsA2AContainerMappingInput() (*A2AContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for ReplicationProviderSpecificContainerMappingInput.
+func (rpscmi ReplicationProviderSpecificContainerMappingInput) AsReplicationProviderSpecificContainerMappingInput() (*ReplicationProviderSpecificContainerMappingInput, bool) {
+	return &rpscmi, true
+}
+
+// AsBasicReplicationProviderSpecificContainerMappingInput is the BasicReplicationProviderSpecificContainerMappingInput implementation for ReplicationProviderSpecificContainerMappingInput.
+func (rpscmi ReplicationProviderSpecificContainerMappingInput) AsBasicReplicationProviderSpecificContainerMappingInput() (BasicReplicationProviderSpecificContainerMappingInput, bool) {
+	return &rpscmi, true
 }
 
 // BasicReplicationProviderSpecificSettings replication provider specific settings.
@@ -16311,6 +16865,80 @@ func (rpss ReplicationProviderSpecificSettings) AsReplicationProviderSpecificSet
 // AsBasicReplicationProviderSpecificSettings is the BasicReplicationProviderSpecificSettings implementation for ReplicationProviderSpecificSettings.
 func (rpss ReplicationProviderSpecificSettings) AsBasicReplicationProviderSpecificSettings() (BasicReplicationProviderSpecificSettings, bool) {
 	return &rpss, true
+}
+
+// BasicReplicationProviderSpecificUpdateContainerMappingInput provider specific input for update pairing operations.
+type BasicReplicationProviderSpecificUpdateContainerMappingInput interface {
+	AsA2AUpdateContainerMappingInput() (*A2AUpdateContainerMappingInput, bool)
+	AsReplicationProviderSpecificUpdateContainerMappingInput() (*ReplicationProviderSpecificUpdateContainerMappingInput, bool)
+}
+
+// ReplicationProviderSpecificUpdateContainerMappingInput provider specific input for update pairing operations.
+type ReplicationProviderSpecificUpdateContainerMappingInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput', 'InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicReplicationProviderSpecificUpdateContainerMappingInput(body []byte) (BasicReplicationProviderSpecificUpdateContainerMappingInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A):
+		var aucmi A2AUpdateContainerMappingInput
+		err := json.Unmarshal(body, &aucmi)
+		return aucmi, err
+	default:
+		var rpsucmi ReplicationProviderSpecificUpdateContainerMappingInput
+		err := json.Unmarshal(body, &rpsucmi)
+		return rpsucmi, err
+	}
+}
+func unmarshalBasicReplicationProviderSpecificUpdateContainerMappingInputArray(body []byte) ([]BasicReplicationProviderSpecificUpdateContainerMappingInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	rpsucmiArray := make([]BasicReplicationProviderSpecificUpdateContainerMappingInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		rpsucmi, err := unmarshalBasicReplicationProviderSpecificUpdateContainerMappingInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		rpsucmiArray[index] = rpsucmi
+	}
+	return rpsucmiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ReplicationProviderSpecificUpdateContainerMappingInput.
+func (rpsucmi ReplicationProviderSpecificUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
+	rpsucmi.InstanceType = InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput
+	objectMap := make(map[string]interface{})
+	if rpsucmi.InstanceType != "" {
+		objectMap["instanceType"] = rpsucmi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for ReplicationProviderSpecificUpdateContainerMappingInput.
+func (rpsucmi ReplicationProviderSpecificUpdateContainerMappingInput) AsA2AUpdateContainerMappingInput() (*A2AUpdateContainerMappingInput, bool) {
+	return nil, false
+}
+
+// AsReplicationProviderSpecificUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for ReplicationProviderSpecificUpdateContainerMappingInput.
+func (rpsucmi ReplicationProviderSpecificUpdateContainerMappingInput) AsReplicationProviderSpecificUpdateContainerMappingInput() (*ReplicationProviderSpecificUpdateContainerMappingInput, bool) {
+	return &rpsucmi, true
+}
+
+// AsBasicReplicationProviderSpecificUpdateContainerMappingInput is the BasicReplicationProviderSpecificUpdateContainerMappingInput implementation for ReplicationProviderSpecificUpdateContainerMappingInput.
+func (rpsucmi ReplicationProviderSpecificUpdateContainerMappingInput) AsBasicReplicationProviderSpecificUpdateContainerMappingInput() (BasicReplicationProviderSpecificUpdateContainerMappingInput, bool) {
+	return &rpsucmi, true
 }
 
 // ReplicationRecoveryPlansCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -18628,6 +19256,41 @@ func (upip *UpdatePolicyInputProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// UpdateProtectionContainerMappingInput container pairing update input.
+type UpdateProtectionContainerMappingInput struct {
+	// Properties - Update protection container mapping input properties.
+	Properties *UpdateProtectionContainerMappingInputProperties `json:"properties,omitempty"`
+}
+
+// UpdateProtectionContainerMappingInputProperties container pairing update input.
+type UpdateProtectionContainerMappingInputProperties struct {
+	// ProviderSpecificInput - Provider specific input for updating protection container mapping.
+	ProviderSpecificInput BasicReplicationProviderSpecificUpdateContainerMappingInput `json:"providerSpecificInput,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateProtectionContainerMappingInputProperties struct.
+func (upcmip *UpdateProtectionContainerMappingInputProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "providerSpecificInput":
+			if v != nil {
+				providerSpecificInput, err := unmarshalBasicReplicationProviderSpecificUpdateContainerMappingInput(*v)
+				if err != nil {
+					return err
+				}
+				upcmip.ProviderSpecificInput = providerSpecificInput
+			}
+		}
+	}
+
+	return nil
+}
+
 // UpdateRecoveryPlanInput update recovery plan input class.
 type UpdateRecoveryPlanInput struct {
 	// Properties - Recovery plan update properties.
@@ -18900,6 +19563,8 @@ type VaultHealthProperties struct {
 	ProtectedItemsHealth *ResourceHealthSummary `json:"protectedItemsHealth,omitempty"`
 	// FabricsHealth - The list of the health detail of the fabrics in the vault.
 	FabricsHealth *ResourceHealthSummary `json:"fabricsHealth,omitempty"`
+	// ContainersHealth - The list of the health detail of the containers in the vault.
+	ContainersHealth *ResourceHealthSummary `json:"containersHealth,omitempty"`
 }
 
 // VCenter vCenter definition.
@@ -19045,7 +19710,7 @@ type VCenterProperties struct {
 	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
 }
 
-// VersionDetails version related deatils.
+// VersionDetails version related details.
 type VersionDetails struct {
 	// Version - The agent version.
 	Version *string `json:"version,omitempty"`
@@ -19445,12 +20110,12 @@ type VmmVirtualMachineDetails struct {
 	OsDetails *OSDetails `json:"osDetails,omitempty"`
 	// DiskDetails - The Last successful failover time.
 	DiskDetails *[]DiskDetails `json:"diskDetails,omitempty"`
-	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached.
-	HasPhysicalDisk *bool `json:"hasPhysicalDisk,omitempty"`
-	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached.
-	HasFibreChannelAdapter *bool `json:"hasFibreChannelAdapter,omitempty"`
-	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached.
-	HasSharedVhd *bool `json:"hasSharedVhd,omitempty"`
+	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasPhysicalDisk PresenceStatus `json:"hasPhysicalDisk,omitempty"`
+	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasFibreChannelAdapter PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
+	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	HasSharedVhd PresenceStatus `json:"hasSharedVhd,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeConfigurationSettings', 'InstanceTypeHyperVVirtualMachine', 'InstanceTypeReplicationGroupDetails', 'InstanceTypeVmmVirtualMachine', 'InstanceTypeVMwareVirtualMachine'
 	InstanceType InstanceTypeBasicConfigurationSettings `json:"instanceType,omitempty"`
 }
@@ -19471,13 +20136,13 @@ func (vvmd VmmVirtualMachineDetails) MarshalJSON() ([]byte, error) {
 	if vvmd.DiskDetails != nil {
 		objectMap["diskDetails"] = vvmd.DiskDetails
 	}
-	if vvmd.HasPhysicalDisk != nil {
+	if vvmd.HasPhysicalDisk != "" {
 		objectMap["hasPhysicalDisk"] = vvmd.HasPhysicalDisk
 	}
-	if vvmd.HasFibreChannelAdapter != nil {
+	if vvmd.HasFibreChannelAdapter != "" {
 		objectMap["hasFibreChannelAdapter"] = vvmd.HasFibreChannelAdapter
 	}
-	if vvmd.HasSharedVhd != nil {
+	if vvmd.HasSharedVhd != "" {
 		objectMap["hasSharedVhd"] = vvmd.HasSharedVhd
 	}
 	if vvmd.InstanceType != "" {

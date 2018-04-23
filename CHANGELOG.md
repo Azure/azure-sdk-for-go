@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## `v15.3.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|databox | 2018-01-01 |
+|devices | 2018-04-01 |
+|media | 2018-03-30-preview |
+|servicefabric | 6.2 |
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|apimanagement | 2018-01-01 |
+|batch | 2018-03-01.6.1 |
+|containerregistry | 2017-10-01 |
+|documentdb | 2015-04-08 |
+|servicebus | 2017-04-01 |
+
 ## `v15.2.0`
 
 ### New Services

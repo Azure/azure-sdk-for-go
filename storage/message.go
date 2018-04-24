@@ -95,7 +95,12 @@ func (m *Message) Put(options *PutMessageOptions) error {
 	}
 
 	if len(messages.QueueMessages) != 0 {
-		*m = *messages.QueueMessages[0]
+		m.ID = messages.QueueMessages[0].ID
+		m.PopReceipt = messages.QueueMessages[0].PopReceipt
+
+		m.Insertion = messages.QueueMessages[0].Insertion
+		m.Expiration = messages.QueueMessages[0].Expiration
+		m.NextVisible = messages.QueueMessages[0].NextVisible
 	}
 	return nil
 }

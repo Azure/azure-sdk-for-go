@@ -2928,7 +2928,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsPreparer
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}metrics", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metrics", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

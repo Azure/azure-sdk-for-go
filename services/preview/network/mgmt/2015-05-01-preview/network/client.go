@@ -1,4 +1,4 @@
-// Package network implements the Azure ARM Network service API version .
+// Package network implements the Azure ARM Network service API version 2015-05-01-preview.
 //
 // Network Client
 package network
@@ -53,9 +53,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	}
 }
 
-// CheckDNSNameAvailability checks whether a domain name in the cloudapp.azure.com zone is available for use.
+// CheckDNSNameAvailability checks whether a domain name in the cloudapp.net zone is available for use.
 //
-// location is the location of the domain name. domainNameLabel is the domain name to be verified. It must conform
+// location is the location of the domain name domainNameLabel is the domain name to be verified. It must conform
 // to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
 func (client BaseClient) CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string) (result DNSNameAvailabilityResult, err error) {
 	req, err := client.CheckDNSNameAvailabilityPreparer(ctx, location, domainNameLabel)
@@ -86,10 +86,12 @@ func (client BaseClient) CheckDNSNameAvailabilityPreparer(ctx context.Context, l
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2015-05-01-preview"
 	queryParameters := map[string]interface{}{
-		"api-version":     APIVersion,
-		"domainNameLabel": autorest.Encode("query", domainNameLabel),
+		"api-version": APIVersion,
+	}
+	if len(domainNameLabel) > 0 {
+		queryParameters["domainNameLabel"] = autorest.Encode("query", domainNameLabel)
 	}
 
 	preparer := autorest.CreatePreparer(

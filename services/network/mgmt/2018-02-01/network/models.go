@@ -12452,7 +12452,7 @@ type ProbePropertiesFormat struct {
 
 // ProtocolConfiguration configuration of the protocol.
 type ProtocolConfiguration struct {
-	HTTPConfiguration *HTTPConfiguration `json:"HTTPConfiguration,omitempty"`
+	HTTPConfiguration *HTTPConfiguration `json:"HttpConfiguration,omitempty"`
 }
 
 // PublicIPAddress public IP address resource.

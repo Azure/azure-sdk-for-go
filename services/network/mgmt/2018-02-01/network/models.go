@@ -5448,6 +5448,10 @@ type ConnectivitySource struct {
 // DdosProtectionPlan a DDoS protection plan in a resource group.
 type DdosProtectionPlan struct {
 	autorest.Response `json:"-"`
+	// DdosProtectionPlanPropertiesFormat - Properties of the DDoS protection plan.
+	*DdosProtectionPlanPropertiesFormat `json:"properties,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -5458,15 +5462,17 @@ type DdosProtectionPlan struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// DdosProtectionPlanPropertiesFormat - Properties of the DDoS protection plan.
-	*DdosProtectionPlanPropertiesFormat `json:"properties,omitempty"`
-	// Etag - A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DdosProtectionPlan.
 func (dpp DdosProtectionPlan) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if dpp.DdosProtectionPlanPropertiesFormat != nil {
+		objectMap["properties"] = dpp.DdosProtectionPlanPropertiesFormat
+	}
+	if dpp.Etag != nil {
+		objectMap["etag"] = dpp.Etag
+	}
 	if dpp.ID != nil {
 		objectMap["id"] = dpp.ID
 	}
@@ -5482,12 +5488,6 @@ func (dpp DdosProtectionPlan) MarshalJSON() ([]byte, error) {
 	if dpp.Tags != nil {
 		objectMap["tags"] = dpp.Tags
 	}
-	if dpp.DdosProtectionPlanPropertiesFormat != nil {
-		objectMap["properties"] = dpp.DdosProtectionPlanPropertiesFormat
-	}
-	if dpp.Etag != nil {
-		objectMap["etag"] = dpp.Etag
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -5500,6 +5500,24 @@ func (dpp *DdosProtectionPlan) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var ddosProtectionPlanPropertiesFormat DdosProtectionPlanPropertiesFormat
+				err = json.Unmarshal(*v, &ddosProtectionPlanPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				dpp.DdosProtectionPlanPropertiesFormat = &ddosProtectionPlanPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				dpp.Etag = &etag
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -5544,24 +5562,6 @@ func (dpp *DdosProtectionPlan) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dpp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var ddosProtectionPlanPropertiesFormat DdosProtectionPlanPropertiesFormat
-				err = json.Unmarshal(*v, &ddosProtectionPlanPropertiesFormat)
-				if err != nil {
-					return err
-				}
-				dpp.DdosProtectionPlanPropertiesFormat = &ddosProtectionPlanPropertiesFormat
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				dpp.Etag = &etag
 			}
 		}
 	}

@@ -35,6 +35,11 @@ type Message struct {
 	DequeueCount int         `xml:"DequeueCount"`
 }
 
+// QueueMessagesList represents an Azure messages list.
+type QueueMessagesList struct {
+	QueueMessages []*Message `xml:"QueueMessage"`
+}
+
 func (m *Message) buildPath() string {
 	return fmt.Sprintf("%s/%s", m.Queue.buildPathMessages(), m.ID)
 }
@@ -83,9 +88,14 @@ func (m *Message) Put(options *PutMessageOptions) error {
 	if err != nil {
 		return err
 	}
-	err = xmlUnmarshal(resp.Body, m)
+	messages := QueueMessagesList{}
+	err = xmlUnmarshal(resp.Body, &messages)
 	if err != nil {
 		return err
+	}
+
+	if len(messages.QueueMessages) != 0 {
+		*m = *messages.QueueMessages[0]
 	}
 	return nil
 }

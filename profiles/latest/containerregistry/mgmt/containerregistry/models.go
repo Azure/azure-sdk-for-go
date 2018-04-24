@@ -26,13 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ImportMode = original.ImportMode
-
-const (
-	Force   ImportMode = original.Force
-	NoForce ImportMode = original.NoForce
-)
-
 type PasswordName = original.PasswordName
 
 const (
@@ -100,8 +93,6 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
-type ImportImageParameters = original.ImportImageParameters
-type ImportSource = original.ImportSource
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
 type OperationListResult = original.OperationListResult
@@ -110,7 +101,6 @@ type OperationListResultPage = original.OperationListResultPage
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
-type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
@@ -163,9 +153,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleImportModeValues() []ImportMode {
-	return original.PossibleImportModeValues()
 }
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()

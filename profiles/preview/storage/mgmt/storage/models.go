@@ -19,9 +19,10 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2017-10-01/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-02-01/storage"
 
 type AccountsClient = original.AccountsClient
+type BlobContainersClient = original.BlobContainersClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -71,6 +72,21 @@ const (
 	Httpshttp HTTPProtocol = original.Httpshttp
 )
 
+type ImmutabilityPolicyState = original.ImmutabilityPolicyState
+
+const (
+	Locked   ImmutabilityPolicyState = original.Locked
+	Unlocked ImmutabilityPolicyState = original.Unlocked
+)
+
+type ImmutabilityPolicyUpdateType = original.ImmutabilityPolicyUpdateType
+
+const (
+	Extend ImmutabilityPolicyUpdateType = original.Extend
+	Lock   ImmutabilityPolicyUpdateType = original.Lock
+	Put    ImmutabilityPolicyUpdateType = original.Put
+)
+
 type KeyPermission = original.KeyPermission
 
 const (
@@ -93,6 +109,30 @@ const (
 	StorageV2   Kind = original.StorageV2
 )
 
+type LeaseDuration = original.LeaseDuration
+
+const (
+	Fixed    LeaseDuration = original.Fixed
+	Infinite LeaseDuration = original.Infinite
+)
+
+type LeaseState = original.LeaseState
+
+const (
+	LeaseStateAvailable LeaseState = original.LeaseStateAvailable
+	LeaseStateBreaking  LeaseState = original.LeaseStateBreaking
+	LeaseStateBroken    LeaseState = original.LeaseStateBroken
+	LeaseStateExpired   LeaseState = original.LeaseStateExpired
+	LeaseStateLeased    LeaseState = original.LeaseStateLeased
+)
+
+type LeaseStatus = original.LeaseStatus
+
+const (
+	LeaseStatusLocked   LeaseStatus = original.LeaseStatusLocked
+	LeaseStatusUnlocked LeaseStatus = original.LeaseStatusUnlocked
+)
+
 type Permissions = original.Permissions
 
 const (
@@ -112,6 +152,14 @@ const (
 	Creating     ProvisioningState = original.Creating
 	ResolvingDNS ProvisioningState = original.ResolvingDNS
 	Succeeded    ProvisioningState = original.Succeeded
+)
+
+type PublicAccess = original.PublicAccess
+
+const (
+	PublicAccessBlob      PublicAccess = original.PublicAccessBlob
+	PublicAccessContainer PublicAccess = original.PublicAccessContainer
+	PublicAccessNone      PublicAccess = original.PublicAccessNone
 )
 
 type Reason = original.Reason
@@ -205,7 +253,11 @@ type AccountRegenerateKeyParameters = original.AccountRegenerateKeyParameters
 type AccountSasParameters = original.AccountSasParameters
 type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountUpdateParameters = original.AccountUpdateParameters
+type AzureEntityResource = original.AzureEntityResource
+type AzureResource = original.AzureResource
+type BlobContainer = original.BlobContainer
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type ContainerProperties = original.ContainerProperties
 type CustomDomain = original.CustomDomain
 type Dimension = original.Dimension
 type Encryption = original.Encryption
@@ -213,9 +265,16 @@ type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
 type Identity = original.Identity
+type ImmutabilityPolicy = original.ImmutabilityPolicy
+type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
+type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
 type IPRule = original.IPRule
 type KeyVaultProperties = original.KeyVaultProperties
+type LegalHold = original.LegalHold
+type LegalHoldProperties = original.LegalHoldProperties
 type ListAccountSasResponse = original.ListAccountSasResponse
+type ListContainerItem = original.ListContainerItem
+type ListContainerItems = original.ListContainerItems
 type ListServiceSasResponse = original.ListServiceSasResponse
 type MetricSpecification = original.MetricSpecification
 type NetworkRuleSet = original.NetworkRuleSet
@@ -230,6 +289,8 @@ type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type SKUCapability = original.SKUCapability
 type SkuListResult = original.SkuListResult
+type TagProperty = original.TagProperty
+type UpdateHistoryProperty = original.UpdateHistoryProperty
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
@@ -243,6 +304,12 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBlobContainersClient(subscriptionID string) BlobContainersClient {
+	return original.NewBlobContainersClient(subscriptionID)
+}
+func NewBlobContainersClientWithBaseURI(baseURI string, subscriptionID string) BlobContainersClient {
+	return original.NewBlobContainersClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -268,6 +335,12 @@ func PossibleDefaultActionValues() []DefaultAction {
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
 }
+func PossibleImmutabilityPolicyStateValues() []ImmutabilityPolicyState {
+	return original.PossibleImmutabilityPolicyStateValues()
+}
+func PossibleImmutabilityPolicyUpdateTypeValues() []ImmutabilityPolicyUpdateType {
+	return original.PossibleImmutabilityPolicyUpdateTypeValues()
+}
 func PossibleKeyPermissionValues() []KeyPermission {
 	return original.PossibleKeyPermissionValues()
 }
@@ -277,11 +350,23 @@ func PossibleKeySourceValues() []KeySource {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
+func PossibleLeaseDurationValues() []LeaseDuration {
+	return original.PossibleLeaseDurationValues()
+}
+func PossibleLeaseStateValues() []LeaseState {
+	return original.PossibleLeaseStateValues()
+}
+func PossibleLeaseStatusValues() []LeaseStatus {
+	return original.PossibleLeaseStatusValues()
+}
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicAccessValues() []PublicAccess {
+	return original.PossiblePublicAccessValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

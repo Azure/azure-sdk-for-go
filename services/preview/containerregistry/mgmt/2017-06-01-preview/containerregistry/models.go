@@ -26,21 +26,6 @@ import (
 	"net/http"
 )
 
-// ImportMode enumerates the values for import mode.
-type ImportMode string
-
-const (
-	// Force ...
-	Force ImportMode = "Force"
-	// NoForce ...
-	NoForce ImportMode = "NoForce"
-)
-
-// PossibleImportModeValues returns an array of possible values for the ImportMode const type.
-func PossibleImportModeValues() []ImportMode {
-	return []ImportMode{Force, NoForce}
-}
-
 // PasswordName enumerates the values for password name.
 type PasswordName string
 
@@ -100,17 +85,17 @@ type SkuName string
 const (
 	// Basic ...
 	Basic SkuName = "Basic"
-	// Classic ...
-	Classic SkuName = "Classic"
-	// Premium ...
-	Premium SkuName = "Premium"
-	// Standard ...
-	Standard SkuName = "Standard"
+	// ManagedBasic ...
+	ManagedBasic SkuName = "Managed_Basic"
+	// ManagedPremium ...
+	ManagedPremium SkuName = "Managed_Premium"
+	// ManagedStandard ...
+	ManagedStandard SkuName = "Managed_Standard"
 )
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Classic, Premium, Standard}
+	return []SkuName{Basic, ManagedBasic, ManagedPremium, ManagedStandard}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -119,17 +104,13 @@ type SkuTier string
 const (
 	// SkuTierBasic ...
 	SkuTierBasic SkuTier = "Basic"
-	// SkuTierClassic ...
-	SkuTierClassic SkuTier = "Classic"
-	// SkuTierPremium ...
-	SkuTierPremium SkuTier = "Premium"
-	// SkuTierStandard ...
-	SkuTierStandard SkuTier = "Standard"
+	// SkuTierManaged ...
+	SkuTierManaged SkuTier = "Managed"
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{SkuTierBasic, SkuTierClassic, SkuTierPremium, SkuTierStandard}
+	return []SkuTier{SkuTierBasic, SkuTierManaged}
 }
 
 // WebhookAction enumerates the values for webhook action.
@@ -397,29 +378,6 @@ func (erm EventResponseMessage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ImportImageParameters ...
-type ImportImageParameters struct {
-	// Source - The source of the image.
-	Source *ImportSource `json:"source,omitempty"`
-	// TargetTags - List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is also omitted).
-	TargetTags *[]string `json:"targetTags,omitempty"`
-	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy. No tag will be created.
-	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
-	// Mode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins. Possible values include: 'NoForce', 'Force'
-	Mode ImportMode `json:"mode,omitempty"`
-}
-
-// ImportSource ...
-type ImportSource struct {
-	// ResourceID - The resource identifier of the target Azure Container Registry.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// SourceImage - Repository name of the source image.
-	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
-	// Specify an image by tag ('hello-world:latest').
-	// Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
-	SourceImage *string `json:"sourceImage,omitempty"`
-}
-
 // OperationDefinition the definition of a container registry operation.
 type OperationDefinition struct {
 	// Name - Operation name: {provider}/{resource}/{operation}.
@@ -640,55 +598,6 @@ func (future RegistriesDeleteFuture) Result(client RegistriesClient) (ar autores
 	ar, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesDeleteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// RegistriesImportImageFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RegistriesImportImageFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future RegistriesImportImageFuture) Result(client RegistriesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesImportImageFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("containerregistry.RegistriesImportImageFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.ImportImageResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesImportImageFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesImportImageFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.ImportImageResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesImportImageFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1015,7 +924,7 @@ type RegistryProperties struct {
 	Status *Status `json:"status,omitempty"`
 	// AdminUserEnabled - The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
-	// StorageAccount - The properties of the storage account for the container registry. Only applicable to Classic SKU.
+	// StorageAccount - The properties of the storage account for the container registry. Only applicable to Basic SKU.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
 }
 
@@ -1023,7 +932,7 @@ type RegistryProperties struct {
 type RegistryPropertiesUpdateParameters struct {
 	// AdminUserEnabled - The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
-	// StorageAccount - The parameters of a storage account for the container registry. Only applicable to Classic SKU. If specified, the storage account must be in the same physical location as the container registry.
+	// StorageAccount - The parameters of a storage account for the container registry. Only applicable to Basic SKU. If specified, the storage account must be in the same physical location as the container registry.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
 }
 
@@ -1543,9 +1452,9 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // Sku the SKU of a container registry.
 type Sku struct {
-	// Name - The SKU name of the container registry. Required for registry creation. Possible values include: 'Classic', 'Basic', 'Standard', 'Premium'
+	// Name - The SKU name of the container registry. Required for registry creation. Possible values include: 'Basic', 'ManagedBasic', 'ManagedStandard', 'ManagedPremium'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - The SKU tier based on the SKU name. Possible values include: 'SkuTierClassic', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	// Tier - The SKU tier based on the SKU name. Possible values include: 'SkuTierBasic', 'SkuTierManaged'
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
@@ -1568,8 +1477,8 @@ type Status struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 }
 
-// StorageAccountProperties the properties of a storage account for a container registry. Only applicable to
-// Classic SKU.
+// StorageAccountProperties the properties of a storage account for a container registry. Only applicable to Basic
+// SKU.
 type StorageAccountProperties struct {
 	// ID - The resource ID of the storage account.
 	ID *string `json:"id,omitempty"`
@@ -1581,7 +1490,7 @@ type Target struct {
 	MediaType *string `json:"mediaType,omitempty"`
 	// Size - The number of bytes of the content. Same as Length field.
 	Size *int64 `json:"size,omitempty"`
-	// Digest - The digest of the content, as defined by the Registry V2 HTTP API Specification.
+	// Digest - The digest of the content, as defined by the Registry V2 HTTP API Specificiation.
 	Digest *string `json:"digest,omitempty"`
 	// Length - The number of bytes of the content. Same as Size field.
 	Length *int64 `json:"length,omitempty"`

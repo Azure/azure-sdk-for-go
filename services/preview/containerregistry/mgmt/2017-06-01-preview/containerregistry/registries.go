@@ -83,7 +83,7 @@ func (client RegistriesClient) CheckNameAvailabilityPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -160,7 +160,7 @@ func (client RegistriesClient) CreatePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -239,7 +239,7 @@ func (client RegistriesClient) DeletePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -321,7 +321,7 @@ func (client RegistriesClient) GetPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -351,90 +351,6 @@ func (client RegistriesClient) GetResponder(resp *http.Response) (result Registr
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ImportImage copies an image to this container registry from the specified container registry.
-//
-// resourceGroupName is the name of the resource group to which the container registry belongs. registryName is the
-// name of the container registry. parameters is the parameters specifying the image to copy and the source
-// container registry.
-func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters) (result RegistriesImportImageFuture, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: registryName,
-			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Source", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.Source.SourceImage", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewError("containerregistry.RegistriesClient", "ImportImage", err.Error())
-	}
-
-	req, err := client.ImportImagePreparer(ctx, resourceGroupName, registryName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.ImportImageSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// ImportImagePreparer prepares the ImportImage request.
-func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"registryName":      autorest.Encode("path", registryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-10-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importImage", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ImportImageSender sends the ImportImage request. The method will close the
-// http.Response Body if it receives an error.
-func (client RegistriesClient) ImportImageSender(req *http.Request) (future RegistriesImportImageFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
-}
-
-// ImportImageResponder handles the response to the ImportImage request. The method always
-// closes the http.Response Body.
-func (client RegistriesClient) ImportImageResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -468,7 +384,7 @@ func (client RegistriesClient) ListPreparer(ctx context.Context) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -561,7 +477,7 @@ func (client RegistriesClient) ListByResourceGroupPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -663,7 +579,7 @@ func (client RegistriesClient) ListCredentialsPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -738,7 +654,7 @@ func (client RegistriesClient) ListUsagesPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -814,7 +730,7 @@ func (client RegistriesClient) RegenerateCredentialPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -885,7 +801,7 @@ func (client RegistriesClient) UpdatePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01"
+	const APIVersion = "2017-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

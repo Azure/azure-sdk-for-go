@@ -19,20 +19,13 @@
 
 package containerregistry
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2017-06-01-preview/containerregistry"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ImportMode = original.ImportMode
-
-const (
-	Force   ImportMode = original.Force
-	NoForce ImportMode = original.NoForce
-)
-
 type PasswordName = original.PasswordName
 
 const (
@@ -61,19 +54,17 @@ const (
 type SkuName = original.SkuName
 
 const (
-	Basic    SkuName = original.Basic
-	Classic  SkuName = original.Classic
-	Premium  SkuName = original.Premium
-	Standard SkuName = original.Standard
+	Basic           SkuName = original.Basic
+	ManagedBasic    SkuName = original.ManagedBasic
+	ManagedPremium  SkuName = original.ManagedPremium
+	ManagedStandard SkuName = original.ManagedStandard
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	SkuTierBasic    SkuTier = original.SkuTierBasic
-	SkuTierClassic  SkuTier = original.SkuTierClassic
-	SkuTierPremium  SkuTier = original.SkuTierPremium
-	SkuTierStandard SkuTier = original.SkuTierStandard
+	SkuTierBasic   SkuTier = original.SkuTierBasic
+	SkuTierManaged SkuTier = original.SkuTierManaged
 )
 
 type WebhookAction = original.WebhookAction
@@ -100,8 +91,6 @@ type EventListResultIterator = original.EventListResultIterator
 type EventListResultPage = original.EventListResultPage
 type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
-type ImportImageParameters = original.ImportImageParameters
-type ImportSource = original.ImportSource
 type OperationDefinition = original.OperationDefinition
 type OperationDisplayDefinition = original.OperationDisplayDefinition
 type OperationListResult = original.OperationListResult
@@ -110,7 +99,6 @@ type OperationListResultPage = original.OperationListResultPage
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
-type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
@@ -164,9 +152,6 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleImportModeValues() []ImportMode {
-	return original.PossibleImportModeValues()
-}
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
@@ -207,7 +192,7 @@ func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) Rep
 	return original.NewReplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()

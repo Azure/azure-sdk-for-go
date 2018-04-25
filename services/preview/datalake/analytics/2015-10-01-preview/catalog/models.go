@@ -25,230 +25,22 @@ import (
 	"net/http"
 )
 
-// ACLType enumerates the values for acl type.
-type ACLType string
-
-const (
-	// Group ...
-	Group ACLType = "Group"
-	// GroupObj ...
-	GroupObj ACLType = "GroupObj"
-	// Other ...
-	Other ACLType = "Other"
-	// User ...
-	User ACLType = "User"
-	// UserObj ...
-	UserObj ACLType = "UserObj"
-)
-
-// PossibleACLTypeValues returns an array of possible values for the ACLType const type.
-func PossibleACLTypeValues() []ACLType {
-	return []ACLType{Group, GroupObj, Other, User, UserObj}
-}
-
 // FileType enumerates the values for file type.
 type FileType string
 
 const (
 	// Assembly ...
 	Assembly FileType = "Assembly"
-	// Nodeploy ...
-	Nodeploy FileType = "Nodeploy"
 	// Resource ...
 	Resource FileType = "Resource"
 )
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
 func PossibleFileTypeValues() []FileType {
-	return []FileType{Assembly, Nodeploy, Resource}
+	return []FileType{Assembly, Resource}
 }
 
-// PermissionType enumerates the values for permission type.
-type PermissionType string
-
-const (
-	// All ...
-	All PermissionType = "All"
-	// Alter ...
-	Alter PermissionType = "Alter"
-	// Create ...
-	Create PermissionType = "Create"
-	// Drop ...
-	Drop PermissionType = "Drop"
-	// None ...
-	None PermissionType = "None"
-	// Use ...
-	Use PermissionType = "Use"
-	// Write ...
-	Write PermissionType = "Write"
-)
-
-// PossiblePermissionTypeValues returns an array of possible values for the PermissionType const type.
-func PossiblePermissionTypeValues() []PermissionType {
-	return []PermissionType{All, Alter, Create, Drop, None, Use, Write}
-}
-
-// ACL a Data Lake Analytics catalog access control list (ACL) entry.
-type ACL struct {
-	// AceType - the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'
-	AceType ACLType `json:"aceType,omitempty"`
-	// PrincipalID - the Azure AD object ID of the user or group being specified in the access control list (ACL) entry.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// Permission - the permission type of the access control list (ACL) entry. Possible values include: 'None', 'Use', 'Create', 'Drop', 'Alter', 'Write', 'All'
-	Permission PermissionType `json:"permission,omitempty"`
-}
-
-// ACLCreateOrUpdateParameters the parameters used to create or update an access control list (ACL) entry.
-type ACLCreateOrUpdateParameters struct {
-	// AceType - the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'
-	AceType ACLType `json:"aceType,omitempty"`
-	// PrincipalID - the Azure AD object ID of the user or group being specified in the access control list (ACL) entry.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// Permission - the permission type of the access control list (ACL) entry. Possible values include: 'None', 'Use', 'Create', 'Drop', 'Alter', 'Write', 'All'
-	Permission PermissionType `json:"permission,omitempty"`
-}
-
-// ACLDeleteParameters the parameters used to delete an access control list (ACL) entry.
-type ACLDeleteParameters struct {
-	// AceType - the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'
-	AceType ACLType `json:"aceType,omitempty"`
-	// PrincipalID - the Azure AD object ID of the user or group being specified in the access control list (ACL) entry.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-}
-
-// ACLList a Data Lake Analytics catalog access control list (ACL).
-type ACLList struct {
-	autorest.Response `json:"-"`
-	// Value - the access control list (ACL).
-	Value *[]ACL `json:"value,omitempty"`
-	// NextLink - the link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ACLListIterator provides access to a complete listing of ACL values.
-type ACLListIterator struct {
-	i    int
-	page ACLListPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ACLListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ACLListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ACLListIterator) Response() ACLList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ACLListIterator) Value() ACL {
-	if !iter.page.NotDone() {
-		return ACL{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (al ACLList) IsEmpty() bool {
-	return al.Value == nil || len(*al.Value) == 0
-}
-
-// aCLListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (al ACLList) aCLListPreparer() (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(al.NextLink)))
-}
-
-// ACLListPage contains a page of ACL values.
-type ACLListPage struct {
-	fn func(ACLList) (ACLList, error)
-	al ACLList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ACLListPage) Next() error {
-	next, err := page.fn(page.al)
-	if err != nil {
-		return err
-	}
-	page.al = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ACLListPage) NotDone() bool {
-	return !page.al.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ACLListPage) Response() ACLList {
-	return page.al
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ACLListPage) Values() []ACL {
-	if page.al.IsEmpty() {
-		return nil
-	}
-	return *page.al.Value
-}
-
-// DataLakeAnalyticsCatalogCredentialCreateParameters data Lake Analytics catalog credential creation parameters.
-type DataLakeAnalyticsCatalogCredentialCreateParameters struct {
-	// Password - the password for the credential and user with access to the data source.
-	Password *string `json:"password,omitempty"`
-	// URI - the URI identifier for the data source this credential can connect to in the format <hostname>:<port>
-	URI *string `json:"uri,omitempty"`
-	// UserID - the object identifier for the user associated with this credential with access to the data source.
-	UserID *string `json:"userId,omitempty"`
-}
-
-// DataLakeAnalyticsCatalogCredentialDeleteParameters data Lake Analytics catalog credential deletion parameters.
-type DataLakeAnalyticsCatalogCredentialDeleteParameters struct {
-	// Password - the current password for the credential and user with access to the data source. This is required if the requester is not the account owner.
-	Password *string `json:"password,omitempty"`
-}
-
-// DataLakeAnalyticsCatalogCredentialUpdateParameters data Lake Analytics catalog credential update parameters.
-type DataLakeAnalyticsCatalogCredentialUpdateParameters struct {
-	// Password - the current password for the credential and user with access to the data source. This is required if the requester is not the account owner.
-	Password *string `json:"password,omitempty"`
-	// NewPassword - the new password for the credential and user with access to the data source.
-	NewPassword *string `json:"newPassword,omitempty"`
-	// URI - the URI identifier for the data source this credential can connect to in the format <hostname>:<port>
-	URI *string `json:"uri,omitempty"`
-	// UserID - the object identifier for the user associated with this credential with access to the data source.
-	UserID *string `json:"userId,omitempty"`
-}
-
-// DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters data Lake Analytics catalog secret creation and update
-// parameters. This is deprecated and will be removed in the next release. Please use
-// DataLakeAnalyticsCatalogCredentialCreateOrUpdateParameters instead.
+// DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters dataLakeAnalytics DataLakeAnalyticsAccount information.
 type DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters struct {
 	// Password - the password for the secret to pass in
 	Password *string `json:"password,omitempty"`
@@ -294,6 +86,8 @@ type Item struct {
 
 // ItemList a Data Lake Analytics catalog item list.
 type ItemList struct {
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -351,7 +145,7 @@ type USQLAssemblyDependencyInfo struct {
 
 // USQLAssemblyFileInfo a Data Lake Analytics catalog U-SQL assembly file information item.
 type USQLAssemblyFileInfo struct {
-	// Type - the assembly file type. Possible values include: 'Assembly', 'Resource', 'Nodeploy'
+	// Type - the assembly file type. Possible values include: 'Assembly', 'Resource'
 	Type FileType `json:"type,omitempty"`
 	// OriginalPath - the the original path to the assembly file.
 	OriginalPath *string `json:"originalPath,omitempty"`
@@ -364,6 +158,8 @@ type USQLAssemblyList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of assemblies in the database
 	Value *[]USQLAssemblyClr `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -464,8 +260,14 @@ func (page USQLAssemblyListPage) Values() []USQLAssemblyClr {
 // USQLCredential a Data Lake Analytics catalog U-SQL credential item.
 type USQLCredential struct {
 	autorest.Response `json:"-"`
+	// DatabaseName - the name of the database the credential is in.
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// Identity - the name of the secret associated with the credential.
+	Identity *string `json:"identity,omitempty"`
 	// Name - the name of the credential.
 	Name *string `json:"credentialName,omitempty"`
+	// UserName - the user name associated with the credential.
+	UserName *string `json:"userName,omitempty"`
 	// ComputeAccountName - the name of the Data Lake Analytics account.
 	ComputeAccountName *string `json:"computeAccountName,omitempty"`
 	// Version - the version of the catalog item.
@@ -477,6 +279,8 @@ type USQLCredentialList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of credentials in the database
 	Value *[]USQLCredential `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -590,6 +394,8 @@ type USQLDatabaseList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of databases
 	Value *[]USQLDatabase `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -731,6 +537,8 @@ type USQLExternalDataSourceList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of external data sources in the database
 	Value *[]USQLExternalDataSource `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -852,125 +660,6 @@ type USQLIndex struct {
 	IsUnique *bool `json:"isUnique,omitempty"`
 }
 
-// USQLPackage a Data Lake Analytics catalog U-SQL package item.
-type USQLPackage struct {
-	autorest.Response `json:"-"`
-	// DatabaseName - the name of the database containing the package.
-	DatabaseName *string `json:"databaseName,omitempty"`
-	// SchemaName - the name of the schema associated with this package and database.
-	SchemaName *string `json:"schemaName,omitempty"`
-	// Name - the name of the package.
-	Name *string `json:"packageName,omitempty"`
-	// Definition - the definition of the package.
-	Definition *string `json:"definition,omitempty"`
-	// ComputeAccountName - the name of the Data Lake Analytics account.
-	ComputeAccountName *string `json:"computeAccountName,omitempty"`
-	// Version - the version of the catalog item.
-	Version *uuid.UUID `json:"version,omitempty"`
-}
-
-// USQLPackageList a Data Lake Analytics catalog U-SQL package item list.
-type USQLPackageList struct {
-	autorest.Response `json:"-"`
-	// Value - the list of packages in the database and schema combination
-	Value *[]USQLPackage `json:"value,omitempty"`
-	// NextLink - the link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// USQLPackageListIterator provides access to a complete listing of USQLPackage values.
-type USQLPackageListIterator struct {
-	i    int
-	page USQLPackageListPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLPackageListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLPackageListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter USQLPackageListIterator) Response() USQLPackageList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLPackageListIterator) Value() USQLPackage {
-	if !iter.page.NotDone() {
-		return USQLPackage{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (uspl USQLPackageList) IsEmpty() bool {
-	return uspl.Value == nil || len(*uspl.Value) == 0
-}
-
-// uSQLPackageListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (uspl USQLPackageList) uSQLPackageListPreparer() (*http.Request, error) {
-	if uspl.NextLink == nil || len(to.String(uspl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(uspl.NextLink)))
-}
-
-// USQLPackageListPage contains a page of USQLPackage values.
-type USQLPackageListPage struct {
-	fn  func(USQLPackageList) (USQLPackageList, error)
-	upl USQLPackageList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLPackageListPage) Next() error {
-	next, err := page.fn(page.upl)
-	if err != nil {
-		return err
-	}
-	page.upl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLPackageListPage) NotDone() bool {
-	return !page.upl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLPackageListPage) Response() USQLPackageList {
-	return page.upl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLPackageListPage) Values() []USQLPackage {
-	if page.upl.IsEmpty() {
-		return nil
-	}
-	return *page.upl.Value
-}
-
 // USQLProcedure a Data Lake Analytics catalog U-SQL procedure item.
 type USQLProcedure struct {
 	autorest.Response `json:"-"`
@@ -993,6 +682,8 @@ type USQLProcedureList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of procedure in the database and schema combination
 	Value *[]USQLProcedure `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1108,6 +799,8 @@ type USQLSchemaList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of schemas in the database
 	Value *[]USQLSchema `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1257,129 +950,13 @@ type USQLTableColumn struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// USQLTableFragment a Data Lake Analytics catalog U-SQL table fragment item.
-type USQLTableFragment struct {
-	// ParentID - the parent object Id of the table fragment. The parent could be a table or table partition.
-	ParentID *uuid.UUID `json:"parentId,omitempty"`
-	// FragmentID - the version of the catalog item.
-	FragmentID *uuid.UUID `json:"fragmentId,omitempty"`
-	// IndexID - the ordinal of the index which contains the table fragment.
-	IndexID *int32 `json:"indexId,omitempty"`
-	// Size - the data size of the table fragment in bytes.
-	Size *int64 `json:"size,omitempty"`
-	// RowCount - the number of rows in the table fragment.
-	RowCount *int64 `json:"rowCount,omitempty"`
-	// CreateDate - the creation time of the table fragment.
-	CreateDate *date.Time `json:"createDate,omitempty"`
-}
-
-// USQLTableFragmentList a Data Lake Analytics catalog U-SQL table fragment item list.
-type USQLTableFragmentList struct {
-	autorest.Response `json:"-"`
-	// Value - the list of table fragments in the database, schema and table combination
-	Value *[]USQLTableFragment `json:"value,omitempty"`
-	// NextLink - the link to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// USQLTableFragmentListIterator provides access to a complete listing of USQLTableFragment values.
-type USQLTableFragmentListIterator struct {
-	i    int
-	page USQLTableFragmentListPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *USQLTableFragmentListIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter USQLTableFragmentListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter USQLTableFragmentListIterator) Response() USQLTableFragmentList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter USQLTableFragmentListIterator) Value() USQLTableFragment {
-	if !iter.page.NotDone() {
-		return USQLTableFragment{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (ustfl USQLTableFragmentList) IsEmpty() bool {
-	return ustfl.Value == nil || len(*ustfl.Value) == 0
-}
-
-// uSQLTableFragmentListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (ustfl USQLTableFragmentList) uSQLTableFragmentListPreparer() (*http.Request, error) {
-	if ustfl.NextLink == nil || len(to.String(ustfl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ustfl.NextLink)))
-}
-
-// USQLTableFragmentListPage contains a page of USQLTableFragment values.
-type USQLTableFragmentListPage struct {
-	fn   func(USQLTableFragmentList) (USQLTableFragmentList, error)
-	utfl USQLTableFragmentList
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *USQLTableFragmentListPage) Next() error {
-	next, err := page.fn(page.utfl)
-	if err != nil {
-		return err
-	}
-	page.utfl = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page USQLTableFragmentListPage) NotDone() bool {
-	return !page.utfl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page USQLTableFragmentListPage) Response() USQLTableFragmentList {
-	return page.utfl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page USQLTableFragmentListPage) Values() []USQLTableFragment {
-	if page.utfl.IsEmpty() {
-		return nil
-	}
-	return *page.utfl.Value
-}
-
 // USQLTableList a Data Lake Analytics catalog U-SQL table item list.
 type USQLTableList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of tables in the database and schema combination
 	Value *[]USQLTable `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1505,6 +1082,8 @@ type USQLTablePartitionList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of table partitions in the database, schema and table combination
 	Value *[]USQLTablePartition `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1642,6 +1221,8 @@ type USQLTableStatisticsList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of table statistics in the database, schema and table combination
 	Value *[]USQLTableStatistics `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1785,6 +1366,8 @@ type USQLTableTypeList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of table types in the database and schema combination
 	Value *[]USQLTableType `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1904,6 +1487,8 @@ type USQLTableValuedFunctionList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of table valued functions in the database and schema combination
 	Value *[]USQLTableValuedFunction `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -2044,6 +1629,8 @@ type USQLTypeList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of types in the database and schema combination
 	Value *[]USQLType `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -2163,6 +1750,8 @@ type USQLViewList struct {
 	autorest.Response `json:"-"`
 	// Value - the list of view in the database and schema combination
 	Value *[]USQLView `json:"value,omitempty"`
+	// Count - the count of items in the list.
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }

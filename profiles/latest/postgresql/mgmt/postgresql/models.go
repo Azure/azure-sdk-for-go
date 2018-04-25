@@ -57,6 +57,13 @@ const (
 	User         OperationOrigin = original.User
 )
 
+type ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyState
+
+const (
+	ServerSecurityAlertPolicyStateDisabled ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyStateDisabled
+	ServerSecurityAlertPolicyStateEnabled  ServerSecurityAlertPolicyState = original.ServerSecurityAlertPolicyStateEnabled
+)
+
 type ServerState = original.ServerState
 
 const (
@@ -113,6 +120,8 @@ type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
 type ProxyResource = original.ProxyResource
+type Resource = original.Resource
+type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
@@ -124,6 +133,8 @@ type ServerPropertiesForGeoRestore = original.ServerPropertiesForGeoRestore
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
+type ServerSecurityAlertPoliciesCreateOrUpdateFuture = original.ServerSecurityAlertPoliciesCreateOrUpdateFuture
+type ServerSecurityAlertPolicy = original.ServerSecurityAlertPolicy
 type ServersUpdateFuture = original.ServersUpdateFuture
 type ServerUpdateParameters = original.ServerUpdateParameters
 type ServerUpdateParametersProperties = original.ServerUpdateParametersProperties
@@ -132,6 +143,7 @@ type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
 type OperationsClient = original.OperationsClient
 type ServersClient = original.ServersClient
+type ServerSecurityAlertPoliciesClient = original.ServerSecurityAlertPoliciesClient
 
 func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
 	return original.NewCheckNameAvailabilityClient(subscriptionID)
@@ -184,6 +196,9 @@ func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()
 }
+func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
+	return original.PossibleServerSecurityAlertPolicyStateValues()
+}
 func PossibleServerStateValues() []ServerState {
 	return original.PossibleServerStateValues()
 }
@@ -207,6 +222,12 @@ func NewServersClient(subscriptionID string) ServersClient {
 }
 func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersClient {
 	return original.NewServersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
+	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)
+}
+func NewServerSecurityAlertPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ServerSecurityAlertPoliciesClient {
+	return original.NewServerSecurityAlertPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

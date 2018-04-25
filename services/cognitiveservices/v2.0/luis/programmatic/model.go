@@ -4280,7 +4280,7 @@ func (client ModelClient) GetIntentSuggestionsResponder(resp *http.Response) (re
 // GetPatternAnyEntityInfo sends the get pattern any entity info request.
 //
 // appID is the application ID. versionID is the version ID. entityID is the entity extractor ID.
-func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result RegexEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfo(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result PatternAnyEntityExtractor, err error) {
 	req, err := client.GetPatternAnyEntityInfoPreparer(ctx, appID, versionID, entityID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "GetPatternAnyEntityInfo", nil, "Failure preparing request")
@@ -4330,7 +4330,7 @@ func (client ModelClient) GetPatternAnyEntityInfoSender(req *http.Request) (*htt
 
 // GetPatternAnyEntityInfoResponder handles the response to the GetPatternAnyEntityInfo request. The method always
 // closes the http.Response Body.
-func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) (result RegexEntityExtractor, err error) {
+func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) (result PatternAnyEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

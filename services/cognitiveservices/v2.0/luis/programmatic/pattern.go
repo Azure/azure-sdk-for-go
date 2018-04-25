@@ -39,7 +39,7 @@ func NewPatternClient(azureRegion AzureRegions) PatternClient {
 // AddPattern sends the add pattern request.
 //
 // appID is the application ID. versionID is the version ID. pattern is the input pattern.
-func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternCreateObject) (result PatternRule, err error) {
+func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRule, err error) {
 	req, err := client.AddPatternPreparer(ctx, appID, versionID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PatternClient", "AddPattern", nil, "Failure preparing request")
@@ -62,7 +62,7 @@ func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, ver
 }
 
 // AddPatternPreparer prepares the AddPattern request.
-func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternCreateObject) (*http.Request, error) {
+func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -104,7 +104,7 @@ func (client PatternClient) AddPatternResponder(resp *http.Response) (result Pat
 // BatchAddPatterns sends the batch add patterns request.
 //
 // appID is the application ID. versionID is the version ID. patterns is a JSON array containing patterns.
-func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternCreateObject) (result ListPatternRule, err error) {
+func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: patterns,
 			Constraints: []validation.Constraint{{Target: "patterns", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -133,7 +133,7 @@ func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUI
 }
 
 // BatchAddPatternsPreparer prepares the BatchAddPatterns request.
-func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternCreateObject) (*http.Request, error) {
+func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -165,7 +165,7 @@ func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -491,7 +491,7 @@ func (client PatternClient) GetPatternsResponder(resp *http.Response) (result Li
 //
 // appID is the application ID. versionID is the version ID. patternID is the pattern ID. pattern is an object
 // representing a pattern.
-func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternUpdateObject) (result ListPatternRule, err error) {
+func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRule, err error) {
 	req, err := client.UpdatePatternPreparer(ctx, appID, versionID, patternID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PatternClient", "UpdatePattern", nil, "Failure preparing request")
@@ -514,7 +514,7 @@ func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, 
 }
 
 // UpdatePatternPreparer prepares the UpdatePattern request.
-func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternUpdateObject) (*http.Request, error) {
+func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -543,12 +543,12 @@ func (client PatternClient) UpdatePatternSender(req *http.Request) (*http.Respon
 
 // UpdatePatternResponder handles the response to the UpdatePattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result ListPatternRule, err error) {
+func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result PatternRule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -557,7 +557,7 @@ func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result 
 // UpdatePatterns sends the update patterns request.
 //
 // appID is the application ID. versionID is the version ID. patterns is an array represents the patterns.
-func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternUpdateObject) (result ListPatternRule, err error) {
+func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: patterns,
 			Constraints: []validation.Constraint{{Target: "patterns", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -586,7 +586,7 @@ func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID,
 }
 
 // UpdatePatternsPreparer prepares the UpdatePatterns request.
-func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternUpdateObject) (*http.Request, error) {
+func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}

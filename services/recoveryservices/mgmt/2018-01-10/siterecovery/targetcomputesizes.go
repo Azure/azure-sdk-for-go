@@ -40,9 +40,10 @@ func NewTargetComputeSizesClientWithBaseURI(baseURI string, subscriptionID strin
 }
 
 // ListByReplicationProtectedItems lists the available target compute sizes for a replication protected item.
-//
-// fabricName is fabric name. protectionContainerName is protection container name. replicatedProtectedItemName is
-// replication protected item name.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// replicatedProtectedItemName - replication protected item name.
 func (client TargetComputeSizesClient) ListByReplicationProtectedItems(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result TargetComputeSizeCollectionPage, err error) {
 	result.fn = client.listByReplicationProtectedItemsNextResults
 	req, err := client.ListByReplicationProtectedItemsPreparer(ctx, fabricName, protectionContainerName, replicatedProtectedItemName)

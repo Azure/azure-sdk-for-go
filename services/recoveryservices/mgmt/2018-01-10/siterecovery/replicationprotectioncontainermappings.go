@@ -43,9 +43,11 @@ func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, 
 }
 
 // Create the operation to create a protection container mapping.
-//
-// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
-// container mapping name. creationInput is mapping creation input.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// mappingName - protection container mapping name.
+// creationInput - mapping creation input.
 func (client ReplicationProtectionContainerMappingsClient) Create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput) (result ReplicationProtectionContainerMappingsCreateFuture, err error) {
 	req, err := client.CreatePreparer(ctx, fabricName, protectionContainerName, mappingName, creationInput)
 	if err != nil {
@@ -117,9 +119,11 @@ func (client ReplicationProtectionContainerMappingsClient) CreateResponder(resp 
 }
 
 // Delete the operation to delete or remove a protection container mapping.
-//
-// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
-// container mapping name. removalInput is removal input.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// mappingName - protection container mapping name.
+// removalInput - removal input.
 func (client ReplicationProtectionContainerMappingsClient) Delete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput) (result ReplicationProtectionContainerMappingsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, fabricName, protectionContainerName, mappingName, removalInput)
 	if err != nil {
@@ -190,9 +194,10 @@ func (client ReplicationProtectionContainerMappingsClient) DeleteResponder(resp 
 }
 
 // Get gets the details of a protection container mapping.
-//
-// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
-// Container mapping name.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// mappingName - protection Container mapping name.
 func (client ReplicationProtectionContainerMappingsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, mappingName string) (result ProtectionContainerMapping, err error) {
 	req, err := client.GetPreparer(ctx, fabricName, protectionContainerName, mappingName)
 	if err != nil {
@@ -352,8 +357,9 @@ func (client ReplicationProtectionContainerMappingsClient) ListComplete(ctx cont
 }
 
 // ListByReplicationProtectionContainers lists the protection container mappings for a protection container.
-//
-// fabricName is fabric name. protectionContainerName is protection container name.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
 func (client ReplicationProtectionContainerMappingsClient) ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result ProtectionContainerMappingCollectionPage, err error) {
 	result.fn = client.listByReplicationProtectionContainersNextResults
 	req, err := client.ListByReplicationProtectionContainersPreparer(ctx, fabricName, protectionContainerName)
@@ -448,9 +454,10 @@ func (client ReplicationProtectionContainerMappingsClient) ListByReplicationProt
 }
 
 // Purge the operation to purge(force delete) a protection container mapping
-//
-// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
-// container mapping name.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// mappingName - protection container mapping name.
 func (client ReplicationProtectionContainerMappingsClient) Purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string) (result ReplicationProtectionContainerMappingsPurgeFuture, err error) {
 	req, err := client.PurgePreparer(ctx, fabricName, protectionContainerName, mappingName)
 	if err != nil {
@@ -519,9 +526,11 @@ func (client ReplicationProtectionContainerMappingsClient) PurgeResponder(resp *
 }
 
 // Update the operation to update protection container mapping.
-//
-// fabricName is fabric name. protectionContainerName is protection container name. mappingName is protection
-// container mapping name. updateInput is mapping update input.
+// Parameters:
+// fabricName - fabric name.
+// protectionContainerName - protection container name.
+// mappingName - protection container mapping name.
+// updateInput - mapping update input.
 func (client ReplicationProtectionContainerMappingsClient) Update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput) (result ReplicationProtectionContainerMappingsUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, fabricName, protectionContainerName, mappingName, updateInput)
 	if err != nil {

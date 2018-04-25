@@ -41,10 +41,11 @@ func NewNotificationRecipientUserClientWithBaseURI(baseURI string, subscriptionI
 }
 
 // CreateOrUpdate adds the API Management User to the list of Recipients for the Notification.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// notificationName is notification Name Identifier. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// notificationName - notification Name Identifier.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client NotificationRecipientUserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result RecipientUserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -123,10 +124,11 @@ func (client NotificationRecipientUserClient) CreateOrUpdateResponder(resp *http
 }
 
 // Delete removes the API Management user from the list of Notification.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// notificationName is notification Name Identifier. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// notificationName - notification Name Identifier.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client NotificationRecipientUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -204,10 +206,11 @@ func (client NotificationRecipientUserClient) DeleteResponder(resp *http.Respons
 }
 
 // Get determine if the Notification Recipient User is subscribed to the notification.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// notificationName is notification Name Identifier. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// notificationName - notification Name Identifier.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client NotificationRecipientUserClient) Get(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, UID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -285,9 +288,10 @@ func (client NotificationRecipientUserClient) GetResponder(resp *http.Response) 
 }
 
 // ListByNotification gets the list of the Notification Recipient User subscribed to the notification.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// notificationName is notification Name Identifier.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// notificationName - notification Name Identifier.
 func (client NotificationRecipientUserClient) ListByNotification(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName) (result RecipientUserCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

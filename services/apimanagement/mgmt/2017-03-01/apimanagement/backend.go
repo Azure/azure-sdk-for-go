@@ -41,10 +41,11 @@ func NewBackendClientWithBaseURI(baseURI string, subscriptionID string) BackendC
 }
 
 // CreateOrUpdate creates or Updates a backend.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
-// parameters is create parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - create parameters.
 func (client BackendClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters BackendContract) (result BackendContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -131,11 +132,12 @@ func (client BackendClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // Delete deletes the specified backend.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
-// ifMatch is the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match to
-// unconditionally apply the operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client BackendClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, backendid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -213,9 +215,10 @@ func (client BackendClient) DeleteResponder(resp *http.Response) (result autores
 }
 
 // Get gets the details of the backend specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
 func (client BackendClient) Get(ctx context.Context, resourceGroupName string, serviceName string, backendid string) (result BackendContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -293,9 +296,10 @@ func (client BackendClient) GetResponder(resp *http.Response) (result BackendCon
 }
 
 // GetEntityTag gets the entity state (Etag) version of the backend specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
 func (client BackendClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, backendid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -372,13 +376,15 @@ func (client BackendClient) GetEntityTagResponder(resp *http.Response) (result a
 }
 
 // ListByService lists a collection of backends in the specified service instance.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// filter is | Field | Supported operators    | Supported functions                         |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client BackendClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result BackendCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -495,10 +501,11 @@ func (client BackendClient) ListByServiceComplete(ctx context.Context, resourceG
 
 // Reconnect notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no
 // timeout was specified, timeout of 2 minutes is used.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
-// parameters is reconnect request parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - reconnect request parameters.
 func (client BackendClient) Reconnect(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters *BackendReconnectContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -589,11 +596,13 @@ func (client BackendClient) ReconnectResponder(resp *http.Response) (result auto
 }
 
 // Update updates an existing backend.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// backendid is identifier of the Backend entity. Must be unique in the current API Management service instance.
-// parameters is update parameters. ifMatch is the entity state (Etag) version of the backend to update. A value of
-// "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the backend to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client BackendClient) Update(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters BackendUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

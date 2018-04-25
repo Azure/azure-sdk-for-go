@@ -40,12 +40,13 @@ func NewAnalyticsItemClientWithBaseURI(baseURI string, subscriptionID string) An
 }
 
 // Delete deletes a specific Analytics Items defined within an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. scopePath is enum indicating if this item definition is owned by a specific user or is
-// shared between all users with access to the Application Insights component. ID is the Id of a specific item
-// defined in the Application Insights component name is the name of a specific item defined in the Application
-// Insights component
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// scopePath - enum indicating if this item definition is owned by a specific user or is shared between all
+// users with access to the Application Insights component.
+// ID - the Id of a specific item defined in the Application Insights component
+// name - the name of a specific item defined in the Application Insights component
 func (client AnalyticsItemClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, ID string, name string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, scopePath, ID, name)
 	if err != nil {
@@ -116,12 +117,13 @@ func (client AnalyticsItemClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get gets a specific Analytics Items defined within an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. scopePath is enum indicating if this item definition is owned by a specific user or is
-// shared between all users with access to the Application Insights component. ID is the Id of a specific item
-// defined in the Application Insights component name is the name of a specific item defined in the Application
-// Insights component
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// scopePath - enum indicating if this item definition is owned by a specific user or is shared between all
+// users with access to the Application Insights component.
+// ID - the Id of a specific item defined in the Application Insights component
+// name - the name of a specific item defined in the Application Insights component
 func (client AnalyticsItemClient) Get(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, ID string, name string) (result ApplicationInsightsComponentAnalyticsItem, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, scopePath, ID, name)
 	if err != nil {
@@ -193,14 +195,16 @@ func (client AnalyticsItemClient) GetResponder(resp *http.Response) (result Appl
 }
 
 // List gets a list of Analytics Items defined within an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. scopePath is enum indicating if this item definition is owned by a specific user or is
-// shared between all users with access to the Application Insights component. scope is enum indicating if this
-// item definition is owned by a specific user or is shared between all users with access to the Application
-// Insights component. typeParameter is enum indicating the type of the Analytics item. includeContent is flag
-// indicating whether or not to return the content of each applicable item. If false, only return the item
-// information.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// scopePath - enum indicating if this item definition is owned by a specific user or is shared between all
+// users with access to the Application Insights component.
+// scope - enum indicating if this item definition is owned by a specific user or is shared between all users
+// with access to the Application Insights component.
+// typeParameter - enum indicating the type of the Analytics item.
+// includeContent - flag indicating whether or not to return the content of each applicable item. If false,
+// only return the item information.
 func (client AnalyticsItemClient) List(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, scope ItemScope, typeParameter ItemTypeParameter, includeContent *bool) (result ListApplicationInsightsComponentAnalyticsItem, err error) {
 	req, err := client.ListPreparer(ctx, resourceGroupName, resourceName, scopePath, scope, typeParameter, includeContent)
 	if err != nil {
@@ -279,12 +283,15 @@ func (client AnalyticsItemClient) ListResponder(resp *http.Response) (result Lis
 }
 
 // Put adds or Updates a specific Analytics Item within an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. scopePath is enum indicating if this item definition is owned by a specific user or is
-// shared between all users with access to the Application Insights component. itemProperties is properties that
-// need to be specified to create a new item and add it to an Application Insights component. overrideItem is flag
-// indicating whether or not to force save an item. This allows overriding an item if it already exists.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// scopePath - enum indicating if this item definition is owned by a specific user or is shared between all
+// users with access to the Application Insights component.
+// itemProperties - properties that need to be specified to create a new item and add it to an Application
+// Insights component.
+// overrideItem - flag indicating whether or not to force save an item. This allows overriding an item if it
+// already exists.
 func (client AnalyticsItemClient) Put(ctx context.Context, resourceGroupName string, resourceName string, scopePath ItemScopePath, itemProperties ApplicationInsightsComponentAnalyticsItem, overrideItem *bool) (result ApplicationInsightsComponentAnalyticsItem, err error) {
 	req, err := client.PutPreparer(ctx, resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
 	if err != nil {

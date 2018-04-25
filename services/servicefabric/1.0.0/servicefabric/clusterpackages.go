@@ -40,8 +40,8 @@ func NewClusterPackagesClientWithBaseURI(baseURI string, timeout *int32) Cluster
 }
 
 // Register register cluster packages
-//
-// registerClusterPackage is the package of the register cluster
+// Parameters:
+// registerClusterPackage - the package of the register cluster
 func (client ClusterPackagesClient) Register(ctx context.Context, registerClusterPackage RegisterClusterPackage) (result String, err error) {
 	req, err := client.RegisterPreparer(ctx, registerClusterPackage)
 	if err != nil {
@@ -105,8 +105,8 @@ func (client ClusterPackagesClient) RegisterResponder(resp *http.Response) (resu
 }
 
 // Unregister unregister cluster packages
-//
-// unregisterClusterPackage is the package of the unregister cluster
+// Parameters:
+// unregisterClusterPackage - the package of the unregister cluster
 func (client ClusterPackagesClient) Unregister(ctx context.Context, unregisterClusterPackage UnregisterClusterPackage) (result String, err error) {
 	req, err := client.UnregisterPreparer(ctx, unregisterClusterPackage)
 	if err != nil {

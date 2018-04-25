@@ -41,10 +41,12 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) Su
 }
 
 // CreateOrUpdate creates a topic subscription.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name topicName is the topic name. subscriptionName is the subscription name. parameters is parameters supplied
-// to create a subscription resource.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+// topicName - the topic name.
+// subscriptionName - the subscription name.
+// parameters - parameters supplied to create a subscription resource.
 func (client SubscriptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, parameters SBSubscription) (result SBSubscription, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -128,9 +130,11 @@ func (client SubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes a subscription from the specified topic.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name topicName is the topic name. subscriptionName is the subscription name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+// topicName - the topic name.
+// subscriptionName - the subscription name.
 func (client SubscriptionsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -211,9 +215,11 @@ func (client SubscriptionsClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get returns a subscription description for the specified topic.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name topicName is the topic name. subscriptionName is the subscription name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+// topicName - the topic name.
+// subscriptionName - the subscription name.
 func (client SubscriptionsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result SBSubscription, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -295,9 +301,10 @@ func (client SubscriptionsClient) GetResponder(resp *http.Response) (result SBSu
 }
 
 // ListByTopic list all the subscriptions under a specified topic.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name topicName is the topic name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+// topicName - the topic name.
 func (client SubscriptionsClient) ListByTopic(ctx context.Context, resourceGroupName string, namespaceName string, topicName string) (result SBSubscriptionListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

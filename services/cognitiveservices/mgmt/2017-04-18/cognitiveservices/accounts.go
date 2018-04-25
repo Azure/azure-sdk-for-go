@@ -42,9 +42,10 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 
 // Create create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
 // developer to access intelligent APIs. It's also the resource type for billing.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account. parameters is the parameters to provide for the created account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
+// parameters - the parameters to provide for the created account.
 func (client AccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -123,9 +124,9 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result Accoun
 }
 
 // Delete deletes a Cognitive Services account from the resource group.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
 func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -197,9 +198,9 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // GetProperties returns a Cognitive Services account specified by the parameters.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
 func (client AccountsClient) GetProperties(ctx context.Context, resourceGroupName string, accountName string) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -272,10 +273,11 @@ func (client AccountsClient) GetPropertiesResponder(resp *http.Response) (result
 }
 
 // GetUsages get usages for the requested Cognitive Services account
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account. filter is an OData filter expression that describes a subset of usages to return.
-// The supported parameter is name.value (name of the metric, can have an or of multiple names).
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
+// filter - an OData filter expression that describes a subset of usages to return. The supported parameter is
+// name.value (name of the metric, can have an or of multiple names).
 func (client AccountsClient) GetUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result UsagesResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -441,8 +443,8 @@ func (client AccountsClient) ListComplete(ctx context.Context) (result AccountLi
 }
 
 // ListByResourceGroup returns all the resources of a particular type belonging to a resource group
-//
-// resourceGroupName is the name of the resource group within the user's subscription.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
 func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AccountListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -534,9 +536,9 @@ func (client AccountsClient) ListByResourceGroupComplete(ctx context.Context, re
 }
 
 // ListKeys lists the account keys for the specified Cognitive Services account.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
 func (client AccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result AccountKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -609,9 +611,9 @@ func (client AccountsClient) ListKeysResponder(resp *http.Response) (result Acco
 }
 
 // ListSkus list available SKUs for the requested Cognitive Services account
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
 func (client AccountsClient) ListSkus(ctx context.Context, resourceGroupName string, accountName string) (result AccountEnumerateSkusResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -684,9 +686,10 @@ func (client AccountsClient) ListSkusResponder(resp *http.Response) (result Acco
 }
 
 // RegenerateKey regenerates the specified account key for the specified Cognitive Services account.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account. parameters is regenerate key parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
+// parameters - regenerate key parameters.
 func (client AccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, parameters RegenerateKeyParameters) (result AccountKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -761,9 +764,10 @@ func (client AccountsClient) RegenerateKeyResponder(resp *http.Response) (result
 }
 
 // Update updates a Cognitive Services account
-//
-// resourceGroupName is the name of the resource group within the user's subscription. accountName is the name of
-// Cognitive Services account. parameters is the parameters to provide for the created account.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription.
+// accountName - the name of Cognitive Services account.
+// parameters - the parameters to provide for the created account.
 func (client AccountsClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters AccountUpdateParameters) (result Account, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,

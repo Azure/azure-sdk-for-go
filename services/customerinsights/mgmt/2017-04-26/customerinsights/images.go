@@ -42,9 +42,10 @@ func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesCli
 }
 
 // GetUploadURLForData gets data image upload URL.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub. parameters is parameters
-// supplied to the GetUploadUrlForData operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
+// parameters - parameters supplied to the GetUploadUrlForData operation.
 func (client ImagesClient) GetUploadURLForData(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
 	req, err := client.GetUploadURLForDataPreparer(ctx, resourceGroupName, hubName, parameters)
 	if err != nil {
@@ -111,9 +112,10 @@ func (client ImagesClient) GetUploadURLForDataResponder(resp *http.Response) (re
 }
 
 // GetUploadURLForEntityType gets entity type (profile or interaction) image upload URL.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub. parameters is parameters
-// supplied to the GetUploadUrlForEntityType operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
+// parameters - parameters supplied to the GetUploadUrlForEntityType operation.
 func (client ImagesClient) GetUploadURLForEntityType(ctx context.Context, resourceGroupName string, hubName string, parameters GetImageUploadURLInput) (result ImageDefinition, err error) {
 	req, err := client.GetUploadURLForEntityTypePreparer(ctx, resourceGroupName, hubName, parameters)
 	if err != nil {

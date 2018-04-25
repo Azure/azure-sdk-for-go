@@ -56,11 +56,11 @@ func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
 }
 
 // PredictImage sends the predict image request.
-//
-// projectID is the project id imageData will be closed upon successful return. Callers should ensure closure when
-// receiving an error.iterationID is optional. Specifies the id of a particular iteration to evaluate against.
-// The default iteration for the project will be used when not specified application is optional. Specifies the
-// name of application using the endpoint
+// Parameters:
+// projectID - the project id
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
+// The default iteration for the project will be used when not specified
+// application - optional. Specifies the name of application using the endpoint
 func (client BaseClient) PredictImage(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID, application string) (result ImagePredictionResultModel, err error) {
 	req, err := client.PredictImagePreparer(ctx, projectID, imageData, iterationID, application)
 	if err != nil {
@@ -132,11 +132,12 @@ func (client BaseClient) PredictImageResponder(resp *http.Response) (result Imag
 }
 
 // PredictImageURL sends the predict image url request.
-//
-// projectID is the project id imageURL is an {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to
-// be evaluated iterationID is optional. Specifies the id of a particular iteration to evaluate against.
-// The default iteration for the project will be used when not specified application is optional. Specifies the
-// name of application using the endpoint
+// Parameters:
+// projectID - the project id
+// imageURL - an {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to be evaluated
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
+// The default iteration for the project will be used when not specified
+// application - optional. Specifies the name of application using the endpoint
 func (client BaseClient) PredictImageURL(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID, application string) (result ImagePredictionResultModel, err error) {
 	req, err := client.PredictImageURLPreparer(ctx, projectID, imageURL, iterationID, application)
 	if err != nil {
@@ -205,11 +206,12 @@ func (client BaseClient) PredictImageURLResponder(resp *http.Response) (result I
 }
 
 // PredictImageURLWithNoStore sends the predict image url with no store request.
-//
-// projectID is the project id imageURL is an {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to
-// be evaluated iterationID is optional. Specifies the id of a particular iteration to evaluate against.
-// The default iteration for the project will be used when not specified application is optional. Specifies the
-// name of application using the endpoint
+// Parameters:
+// projectID - the project id
+// imageURL - an {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to be evaluated
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
+// The default iteration for the project will be used when not specified
+// application - optional. Specifies the name of application using the endpoint
 func (client BaseClient) PredictImageURLWithNoStore(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID, application string) (result ImagePredictionResultModel, err error) {
 	req, err := client.PredictImageURLWithNoStorePreparer(ctx, projectID, imageURL, iterationID, application)
 	if err != nil {
@@ -278,11 +280,11 @@ func (client BaseClient) PredictImageURLWithNoStoreResponder(resp *http.Response
 }
 
 // PredictImageWithNoStore sends the predict image with no store request.
-//
-// projectID is the project id imageData will be closed upon successful return. Callers should ensure closure when
-// receiving an error.iterationID is optional. Specifies the id of a particular iteration to evaluate against.
-// The default iteration for the project will be used when not specified application is optional. Specifies the
-// name of application using the endpoint
+// Parameters:
+// projectID - the project id
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
+// The default iteration for the project will be used when not specified
+// application - optional. Specifies the name of application using the endpoint
 func (client BaseClient) PredictImageWithNoStore(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID, application string) (result ImagePredictionResultModel, err error) {
 	req, err := client.PredictImageWithNoStorePreparer(ctx, projectID, imageData, iterationID, application)
 	if err != nil {

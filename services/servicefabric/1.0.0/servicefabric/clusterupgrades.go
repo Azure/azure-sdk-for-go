@@ -40,8 +40,8 @@ func NewClusterUpgradesClientWithBaseURI(baseURI string, timeout *int32) Cluster
 }
 
 // Resume resume cluster upgrades
-//
-// resumeClusterUpgrade is the upgrade of the cluster
+// Parameters:
+// resumeClusterUpgrade - the upgrade of the cluster
 func (client ClusterUpgradesClient) Resume(ctx context.Context, resumeClusterUpgrade ResumeClusterUpgrade) (result String, err error) {
 	req, err := client.ResumePreparer(ctx, resumeClusterUpgrade)
 	if err != nil {
@@ -166,8 +166,8 @@ func (client ClusterUpgradesClient) RollbackResponder(resp *http.Response) (resu
 }
 
 // Start start cluster upgrades
-//
-// startClusterUpgrade is the description of the start cluster upgrade
+// Parameters:
+// startClusterUpgrade - the description of the start cluster upgrade
 func (client ClusterUpgradesClient) Start(ctx context.Context, startClusterUpgrade StartClusterUpgrade) (result String, err error) {
 	req, err := client.StartPreparer(ctx, startClusterUpgrade)
 	if err != nil {
@@ -231,8 +231,8 @@ func (client ClusterUpgradesClient) StartResponder(resp *http.Response) (result 
 }
 
 // Update update cluster upgrades
-//
-// updateClusterUpgrade is the description of the update cluster upgrade
+// Parameters:
+// updateClusterUpgrade - the description of the update cluster upgrade
 func (client ClusterUpgradesClient) Update(ctx context.Context, updateClusterUpgrade UpdateClusterUpgrade) (result String, err error) {
 	req, err := client.UpdatePreparer(ctx, updateClusterUpgrade)
 	if err != nil {

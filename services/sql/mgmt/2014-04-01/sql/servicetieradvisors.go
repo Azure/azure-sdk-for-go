@@ -42,10 +42,12 @@ func NewServiceTierAdvisorsClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // Get gets a service tier advisor.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// database. serviceTierAdvisorName is the name of service tier advisor.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of database.
+// serviceTierAdvisorName - the name of service tier advisor.
 func (client ServiceTierAdvisorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, serviceTierAdvisorName string) (result ServiceTierAdvisor, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, databaseName, serviceTierAdvisorName)
 	if err != nil {
@@ -112,10 +114,11 @@ func (client ServiceTierAdvisorsClient) GetResponder(resp *http.Response) (resul
 }
 
 // ListByDatabase returns service tier advisors for specified database.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// database.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of database.
 func (client ServiceTierAdvisorsClient) ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result ServiceTierAdvisorListResult, err error) {
 	req, err := client.ListByDatabasePreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {

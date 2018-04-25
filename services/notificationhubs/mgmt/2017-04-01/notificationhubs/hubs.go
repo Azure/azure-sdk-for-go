@@ -41,9 +41,10 @@ func NewHubsClientWithBaseURI(baseURI string, subscriptionID string) HubsClient 
 }
 
 // CheckAvailability checks the availability of the given notificationHub in a namespace.
-//
-// resourceGroupName is the name of the resource group. namespaceName is the namespace name. parameters is the
-// notificationHub name.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// namespaceName - the namespace name.
+// parameters - the notificationHub name.
 func (client HubsClient) CheckAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityRequestParameters) (result CheckNameAvailabilityResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

@@ -41,9 +41,10 @@ func NewWorkbookClientWithBaseURI(baseURI string, subscriptionID string) Workboo
 }
 
 // CreateOrUpdate create a new workbook.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. workbookProperties is properties that need to be specified to create a new workbook.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// workbookProperties - properties that need to be specified to create a new workbook.
 func (client WorkbookClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (result Workbook, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: workbookProperties,
@@ -122,9 +123,10 @@ func (client WorkbookClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete delete a workbook.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. location is the name of location where workbook is stored.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// location - the name of location where workbook is stored.
 func (client WorkbookClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, location string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, location)
 	if err != nil {
@@ -189,9 +191,10 @@ func (client WorkbookClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get get a single workbook by its resourceName.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. location is the name of location where workbook is stored.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// location - the name of location where workbook is stored.
 func (client WorkbookClient) Get(ctx context.Context, resourceGroupName string, resourceName string, location string) (result Workbook, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, location)
 	if err != nil {
@@ -257,9 +260,10 @@ func (client WorkbookClient) GetResponder(resp *http.Response) (result Workbook,
 }
 
 // Update updates a workbook that has already been added.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. workbookProperties is properties that need to be specified to create a new workbook.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// workbookProperties - properties that need to be specified to create a new workbook.
 func (client WorkbookClient) Update(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties Workbook) (result Workbook, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceName, workbookProperties)
 	if err != nil {

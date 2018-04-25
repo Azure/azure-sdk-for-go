@@ -43,11 +43,12 @@ func NewDatabaseThreatDetectionPoliciesClientWithBaseURI(baseURI string, subscri
 }
 
 // CreateOrUpdate creates or updates a database's threat detection policy.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// the database for which database Threat Detection policy is defined. parameters is the database Threat Detection
-// policy.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database for which database Threat Detection policy is defined.
+// parameters - the database Threat Detection policy.
 func (client DatabaseThreatDetectionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseSecurityAlertPolicy) (result DatabaseSecurityAlertPolicy, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, databaseName, parameters)
 	if err != nil {
@@ -116,10 +117,11 @@ func (client DatabaseThreatDetectionPoliciesClient) CreateOrUpdateResponder(resp
 }
 
 // Get gets a database's threat detection policy.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// the database for which database Threat Detection policy is defined.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database for which database Threat Detection policy is defined.
 func (client DatabaseThreatDetectionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result DatabaseSecurityAlertPolicy, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {

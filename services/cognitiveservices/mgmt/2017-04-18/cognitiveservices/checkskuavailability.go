@@ -41,8 +41,9 @@ func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID str
 }
 
 // List check available SKUs.
-//
-// location is resource location. parameters is check SKU Availablity POST body.
+// Parameters:
+// location - resource location.
+// parameters - check SKU Availablity POST body.
 func (client CheckSkuAvailabilityClient) List(ctx context.Context, location string, parameters CheckSkuAvailabilityParameter) (result CheckSkuAvailabilityResultList, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

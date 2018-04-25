@@ -42,10 +42,14 @@ func NewDiagnosticsClientWithBaseURI(baseURI string, subscriptionID string) Diag
 }
 
 // ExecuteSiteAnalysis execute Analysis
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is category Name analysisName is analysis Resource Name startTime is start Time endTime is
-// end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - category Name
+// analysisName - analysis Resource Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DiagnosticAnalysis, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -131,10 +135,15 @@ func (client DiagnosticsClient) ExecuteSiteAnalysisResponder(resp *http.Response
 }
 
 // ExecuteSiteAnalysisSlot execute Analysis
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is category Name analysisName is analysis Resource Name slot is slot Name startTime is start
-// Time endTime is end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - category Name
+// analysisName - analysis Resource Name
+// slot - slot Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DiagnosticAnalysis, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -221,10 +230,14 @@ func (client DiagnosticsClient) ExecuteSiteAnalysisSlotResponder(resp *http.Resp
 }
 
 // ExecuteSiteDetector execute Detector
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// detectorName is detector Resource Name diagnosticCategory is category Name startTime is start Time endTime is
-// end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// detectorName - detector Resource Name
+// diagnosticCategory - category Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DiagnosticDetectorResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -310,10 +323,15 @@ func (client DiagnosticsClient) ExecuteSiteDetectorResponder(resp *http.Response
 }
 
 // ExecuteSiteDetectorSlot execute Detector
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// detectorName is detector Resource Name diagnosticCategory is category Name slot is slot Name startTime is start
-// Time endTime is end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// detectorName - detector Resource Name
+// diagnosticCategory - category Name
+// slot - slot Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DiagnosticDetectorResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -400,9 +418,13 @@ func (client DiagnosticsClient) ExecuteSiteDetectorSlotResponder(resp *http.Resp
 }
 
 // GetHostingEnvironmentDetectorResponse get Hosting Environment Detector Response
-//
-// resourceGroupName is name of the resource group to which the resource belongs. name is app Service Environment
-// Name detectorName is detector Resource Name startTime is start Time endTime is end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - app Service Environment Name
+// detectorName - detector Resource Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx context.Context, resourceGroupName string, name string, detectorName string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DetectorResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -487,9 +509,11 @@ func (client DiagnosticsClient) GetHostingEnvironmentDetectorResponseResponder(r
 }
 
 // GetSiteAnalysis get Site Analysis
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category analysisName is analysis Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// analysisName - analysis Name
 func (client DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string) (result DiagnosticAnalysis, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -564,9 +588,12 @@ func (client DiagnosticsClient) GetSiteAnalysisResponder(resp *http.Response) (r
 }
 
 // GetSiteAnalysisSlot get Site Analysis
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category analysisName is analysis Name slot is slot - optional
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// analysisName - analysis Name
+// slot - slot - optional
 func (client DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string) (result DiagnosticAnalysis, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -642,9 +669,11 @@ func (client DiagnosticsClient) GetSiteAnalysisSlotResponder(resp *http.Response
 }
 
 // GetSiteDetector get Detector
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category detectorName is detector Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// detectorName - detector Name
 func (client DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string) (result DiagnosticDetectorCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -747,9 +776,13 @@ func (client DiagnosticsClient) GetSiteDetectorComplete(ctx context.Context, res
 }
 
 // GetSiteDetectorResponse get site detector response
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// detectorName is detector Resource Name startTime is start Time endTime is end Time timeGrain is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// detectorName - detector Resource Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, resourceGroupName string, siteName string, detectorName string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DetectorResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -834,10 +867,14 @@ func (client DiagnosticsClient) GetSiteDetectorResponseResponder(resp *http.Resp
 }
 
 // GetSiteDetectorResponseSlot get site detector response
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// detectorName is detector Resource Name slot is slot Name startTime is start Time endTime is end Time timeGrain
-// is time Grain
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// detectorName - detector Resource Name
+// slot - slot Name
+// startTime - start Time
+// endTime - end Time
+// timeGrain - time Grain
 func (client DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, startTime *date.Time, endTime *date.Time, timeGrain string) (result DetectorResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -923,9 +960,12 @@ func (client DiagnosticsClient) GetSiteDetectorResponseSlotResponder(resp *http.
 }
 
 // GetSiteDetectorSlot get Detector
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category detectorName is detector Name slot is slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// detectorName - detector Name
+// slot - slot Name
 func (client DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string) (result DiagnosticDetectorCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1029,9 +1069,10 @@ func (client DiagnosticsClient) GetSiteDetectorSlotComplete(ctx context.Context,
 }
 
 // GetSiteDiagnosticCategory get Diagnostics Category
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
 func (client DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string) (result DiagnosticCategory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1105,9 +1146,11 @@ func (client DiagnosticsClient) GetSiteDiagnosticCategoryResponder(resp *http.Re
 }
 
 // GetSiteDiagnosticCategorySlot get Diagnostics Category
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category slot is slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// slot - slot Name
 func (client DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string) (result DiagnosticCategory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1182,8 +1225,9 @@ func (client DiagnosticsClient) GetSiteDiagnosticCategorySlotResponder(resp *htt
 }
 
 // ListHostingEnvironmentDetectorResponses list Hosting Environment Detector Responses
-//
-// resourceGroupName is name of the resource group to which the resource belongs. name is site Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site Name
 func (client DiagnosticsClient) ListHostingEnvironmentDetectorResponses(ctx context.Context, resourceGroupName string, name string) (result DetectorResponseCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1284,9 +1328,10 @@ func (client DiagnosticsClient) ListHostingEnvironmentDetectorResponsesComplete(
 }
 
 // ListSiteAnalyses get Site Analyses
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
 func (client DiagnosticsClient) ListSiteAnalyses(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string) (result DiagnosticAnalysisCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1388,9 +1433,11 @@ func (client DiagnosticsClient) ListSiteAnalysesComplete(ctx context.Context, re
 }
 
 // ListSiteAnalysesSlot get Site Analyses
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category slot is slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// slot - slot Name
 func (client DiagnosticsClient) ListSiteAnalysesSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string) (result DiagnosticAnalysisCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1493,8 +1540,9 @@ func (client DiagnosticsClient) ListSiteAnalysesSlotComplete(ctx context.Context
 }
 
 // ListSiteDetectorResponses list Site Detector Responses
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
 func (client DiagnosticsClient) ListSiteDetectorResponses(ctx context.Context, resourceGroupName string, siteName string) (result DetectorResponseCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1595,9 +1643,10 @@ func (client DiagnosticsClient) ListSiteDetectorResponsesComplete(ctx context.Co
 }
 
 // ListSiteDetectorResponsesSlot list Site Detector Responses
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name slot is
-// slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// slot - slot Name
 func (client DiagnosticsClient) ListSiteDetectorResponsesSlot(ctx context.Context, resourceGroupName string, siteName string, slot string) (result DetectorResponseCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1699,9 +1748,10 @@ func (client DiagnosticsClient) ListSiteDetectorResponsesSlotComplete(ctx contex
 }
 
 // ListSiteDetectors get Detectors
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
 func (client DiagnosticsClient) ListSiteDetectors(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string) (result DiagnosticDetectorCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1803,9 +1853,11 @@ func (client DiagnosticsClient) ListSiteDetectorsComplete(ctx context.Context, r
 }
 
 // ListSiteDetectorsSlot get Detectors
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
-// diagnosticCategory is diagnostic Category slot is slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// diagnosticCategory - diagnostic Category
+// slot - slot Name
 func (client DiagnosticsClient) ListSiteDetectorsSlot(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string) (result DiagnosticDetectorCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1908,8 +1960,9 @@ func (client DiagnosticsClient) ListSiteDetectorsSlotComplete(ctx context.Contex
 }
 
 // ListSiteDiagnosticCategories get Diagnostics Categories
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
 func (client DiagnosticsClient) ListSiteDiagnosticCategories(ctx context.Context, resourceGroupName string, siteName string) (result DiagnosticCategoryCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -2010,9 +2063,10 @@ func (client DiagnosticsClient) ListSiteDiagnosticCategoriesComplete(ctx context
 }
 
 // ListSiteDiagnosticCategoriesSlot get Diagnostics Categories
-//
-// resourceGroupName is name of the resource group to which the resource belongs. siteName is site Name slot is
-// slot Name
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// siteName - site Name
+// slot - slot Name
 func (client DiagnosticsClient) ListSiteDiagnosticCategoriesSlot(ctx context.Context, resourceGroupName string, siteName string, slot string) (result DiagnosticCategoryCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

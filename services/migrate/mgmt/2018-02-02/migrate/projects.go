@@ -40,9 +40,10 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptL
 }
 
 // Create create a project with specified name. If a project already exists, update it.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. project is new or Updated project object.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// project - new or Updated project object.
 func (client ProjectsClient) Create(ctx context.Context, resourceGroupName string, projectName string, project *Project) (result Project, err error) {
 	req, err := client.CreatePreparer(ctx, resourceGroupName, projectName, project)
 	if err != nil {
@@ -116,9 +117,9 @@ func (client ProjectsClient) CreateResponder(resp *http.Response) (result Projec
 }
 
 // Delete delete the project. Deleting non-existent project is a no-operation.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client ProjectsClient) Delete(ctx context.Context, resourceGroupName string, projectName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, projectName)
 	if err != nil {
@@ -186,9 +187,9 @@ func (client ProjectsClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get get the project with the specified name.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client ProjectsClient) Get(ctx context.Context, resourceGroupName string, projectName string) (result Project, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, projectName)
 	if err != nil {
@@ -257,9 +258,9 @@ func (client ProjectsClient) GetResponder(resp *http.Response) (result Project, 
 }
 
 // GetKeys gets the Log Analytics Workspace ID and Primary Key for the specified project.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client ProjectsClient) GetKeys(ctx context.Context, resourceGroupName string, projectName string) (result ProjectKey, err error) {
 	req, err := client.GetKeysPreparer(ctx, resourceGroupName, projectName)
 	if err != nil {
@@ -328,8 +329,8 @@ func (client ProjectsClient) GetKeysResponder(resp *http.Response) (result Proje
 }
 
 // List get all the projects in the resource group.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
 func (client ProjectsClient) List(ctx context.Context, resourceGroupName string) (result ProjectResultList, err error) {
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -397,9 +398,10 @@ func (client ProjectsClient) ListResponder(resp *http.Response) (result ProjectR
 }
 
 // Update update a project with specified name. Supports partial updates, for example only tags can be provided.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. project is updated project object.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// project - updated project object.
 func (client ProjectsClient) Update(ctx context.Context, resourceGroupName string, projectName string, project *Project) (result Project, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, projectName, project)
 	if err != nil {

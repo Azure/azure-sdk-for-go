@@ -44,10 +44,11 @@ func NewTransparentDataEncryptionActivitiesClientWithBaseURI(baseURI string, sub
 }
 
 // ListByConfiguration returns a database's transparent data encryption operation result.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// the database for which the transparent data encryption applies.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database for which the transparent data encryption applies.
 func (client TransparentDataEncryptionActivitiesClient) ListByConfiguration(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result TransparentDataEncryptionActivityListResult, err error) {
 	req, err := client.ListByConfigurationPreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {

@@ -40,11 +40,12 @@ func NewAssessedMachinesClientWithBaseURI(baseURI string, subscriptionID string,
 }
 
 // Get get an assessed machine with its size & cost estimnate that was evaluated in the specified assessment.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project. assessedMachineName is unique name of an assessed machine evaluated as part of an
-// assessment.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
+// assessedMachineName - unique name of an assessed machine evaluated as part of an assessment.
 func (client AssessedMachinesClient) Get(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string, assessedMachineName string) (result AssessedMachine, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, projectName, groupName, assessmentName, assessedMachineName)
 	if err != nil {
@@ -122,10 +123,11 @@ func (client AssessedMachinesClient) GetResponder(resp *http.Response) (result A
 // Assessment object reports 'Computing'.
 // During the period when the assessment is under computation, the list of assessed machines is empty and no assessed
 // machines are returned by this call.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
 func (client AssessedMachinesClient) ListByAssessment(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string) (result AssessedMachineResultList, err error) {
 	req, err := client.ListByAssessmentPreparer(ctx, resourceGroupName, projectName, groupName, assessmentName)
 	if err != nil {

@@ -55,11 +55,13 @@ func NewWithBaseURI(baseURI string, appID string) BaseClient {
 }
 
 // GetEvent gets the data for a single event
-//
-// eventType is the type of events to query; either a standard event type (`traces`, `customEvents`, `pageViews`,
-// `requests`, `dependencies`, `exceptions`, `availabilityResults`) or `$all` to query across all event types.
-// eventID is ID of event. timespan is optional. The timespan over which to retrieve events. This is an ISO8601
-// time period value.  This timespan is applied in addition to any that are specified in the Odata expression.
+// Parameters:
+// eventType - the type of events to query; either a standard event type (`traces`, `customEvents`,
+// `pageViews`, `requests`, `dependencies`, `exceptions`, `availabilityResults`) or `$all` to query across all
+// event types.
+// eventID - ID of event.
+// timespan - optional. The timespan over which to retrieve events. This is an ISO8601 time period value.  This
+// timespan is applied in addition to any that are specified in the Odata expression.
 func (client BaseClient) GetEvent(ctx context.Context, eventType EventType, eventID string, timespan *string) (result EventsResults, err error) {
 	req, err := client.GetEventPreparer(ctx, eventType, eventID, timespan)
 	if err != nil {
@@ -124,17 +126,22 @@ func (client BaseClient) GetEventResponder(resp *http.Response) (result EventsRe
 }
 
 // GetEvents executes an OData query for events
-//
-// eventType is the type of events to query; either a standard event type (`traces`, `customEvents`, `pageViews`,
-// `requests`, `dependencies`, `exceptions`, `availabilityResults`) or `$all` to query across all event types.
-// timespan is optional. The timespan over which to retrieve events. This is an ISO8601 time period value.  This
-// timespan is applied in addition to any that are specified in the Odata expression. filter is an expression used
-// to filter the returned events search is a free-text search expression to match for whether a particular event
-// should be returned orderby is a comma-separated list of properties with \"asc\" (the default) or \"desc\" to
-// control the order of returned events selectParameter is limits the properties to just those requested on each
-// returned event skip is the number of items to skip over before returning events top is the number of events to
-// return formatParameter is format for the returned events count is request a count of matching items included
-// with the returned events apply is an expression used for aggregation over returned events
+// Parameters:
+// eventType - the type of events to query; either a standard event type (`traces`, `customEvents`,
+// `pageViews`, `requests`, `dependencies`, `exceptions`, `availabilityResults`) or `$all` to query across all
+// event types.
+// timespan - optional. The timespan over which to retrieve events. This is an ISO8601 time period value.  This
+// timespan is applied in addition to any that are specified in the Odata expression.
+// filter - an expression used to filter the returned events
+// search - a free-text search expression to match for whether a particular event should be returned
+// orderby - a comma-separated list of properties with \"asc\" (the default) or \"desc\" to control the order
+// of returned events
+// selectParameter - limits the properties to just those requested on each returned event
+// skip - the number of items to skip over before returning events
+// top - the number of events to return
+// formatParameter - format for the returned events
+// count - request a count of matching items included with the returned events
+// apply - an expression used for aggregation over returned events
 func (client BaseClient) GetEvents(ctx context.Context, eventType EventType, timespan *string, filter string, search string, orderby string, selectParameter string, skip *int32, top *int32, formatParameter string, count *bool, apply string) (result EventsResults, err error) {
 	req, err := client.GetEventsPreparer(ctx, eventType, timespan, filter, search, orderby, selectParameter, skip, top, formatParameter, count, apply)
 	if err != nil {
@@ -281,24 +288,28 @@ func (client BaseClient) GetEventsMetadataODataResponder(resp *http.Response) (r
 }
 
 // GetMetric gets data for a single metric.
-//
-// metricID is ID of the metric. This is either a standard AI metric, or an application-specific custom metric.
-// timespan is the timespan over which to retrieve metric values. This is an ISO8601 time period value. If timespan
-// is omitted, a default time range of `PT12H` ("last 12 hours") is used. The actual timespan that is queried may
-// be adjusted by the server based. In all cases, the actual time span used for the query is included in the
-// response. interval is the time interval to use when retrieving metric values. This is an ISO8601 duration. If
-// interval is omitted, the metric value is aggregated across the entire timespan. If interval is supplied, the
-// server may adjust the interval to a more appropriate size based on the timespan used for the query. In all
-// cases, the actual interval used for the query is included in the response. aggregation is the aggregation to use
-// when computing the metric values. To retrieve more than one aggregation at a time, separate them with a comma.
-// If no aggregation is specified, then the default aggregation for the metric is used. segment is the name of the
-// dimension to segment the metric values by. This dimension must be applicable to the metric you are retrieving.
-// To segment by more than one dimension at a time, separate them with a comma (,). In this case, the metric data
-// will be segmented in the order the dimensions are listed in the parameter. top is the number of segments to
-// return.  This value is only valid when segment is specified. orderby is the aggregation function and direction
-// to sort the segments by.  This value is only valid when segment is specified. filter is an expression used to
-// filter the results.  This value should be a valid OData filter expression where the keys of each clause should
-// be applicable dimensions for the metric you are retrieving.
+// Parameters:
+// metricID - ID of the metric. This is either a standard AI metric, or an application-specific custom metric.
+// timespan - the timespan over which to retrieve metric values. This is an ISO8601 time period value. If
+// timespan is omitted, a default time range of `PT12H` ("last 12 hours") is used. The actual timespan that is
+// queried may be adjusted by the server based. In all cases, the actual time span used for the query is
+// included in the response.
+// interval - the time interval to use when retrieving metric values. This is an ISO8601 duration. If interval
+// is omitted, the metric value is aggregated across the entire timespan. If interval is supplied, the server
+// may adjust the interval to a more appropriate size based on the timespan used for the query. In all cases,
+// the actual interval used for the query is included in the response.
+// aggregation - the aggregation to use when computing the metric values. To retrieve more than one aggregation
+// at a time, separate them with a comma. If no aggregation is specified, then the default aggregation for the
+// metric is used.
+// segment - the name of the dimension to segment the metric values by. This dimension must be applicable to
+// the metric you are retrieving. To segment by more than one dimension at a time, separate them with a comma
+// (,). In this case, the metric data will be segmented in the order the dimensions are listed in the
+// parameter.
+// top - the number of segments to return.  This value is only valid when segment is specified.
+// orderby - the aggregation function and direction to sort the segments by.  This value is only valid when
+// segment is specified.
+// filter - an expression used to filter the results.  This value should be a valid OData filter expression
+// where the keys of each clause should be applicable dimensions for the metric you are retrieving.
 func (client BaseClient) GetMetric(ctx context.Context, metricID string, timespan *string, interval *string, aggregation []string, segment []string, top *int32, orderby string, filter string) (result MetricsResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: aggregation,
@@ -390,8 +401,8 @@ func (client BaseClient) GetMetricResponder(resp *http.Response) (result Metrics
 }
 
 // GetMetrics gets metric values for multiple metrics
-//
-// body is the batched metrics query.
+// Parameters:
+// body - the batched metrics query.
 func (client BaseClient) GetMetrics(ctx context.Context, body []MetricsPostBodySchema) (result ListMetricsResultsItem, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
@@ -512,11 +523,11 @@ func (client BaseClient) GetMetricsMetadataResponder(resp *http.Response) (resul
 }
 
 // GetQuery executes an Analytics query for data
-//
-// query is the Analytics query. Learn more about the [Analytics query
-// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/) timespan is
-// optional. The timespan over which to query data. This is an ISO8601 time period value.  This timespan is applied
-// in addition to any that are specified in the query expression.
+// Parameters:
+// query - the Analytics query. Learn more about the [Analytics query
+// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
+// timespan - optional. The timespan over which to query data. This is an ISO8601 time period value.  This
+// timespan is applied in addition to any that are specified in the query expression.
 func (client BaseClient) GetQuery(ctx context.Context, query string, timespan *string) (result QueryResults, err error) {
 	req, err := client.GetQueryPreparer(ctx, query, timespan)
 	if err != nil {
@@ -638,11 +649,11 @@ func (client BaseClient) GetQuerySchemaResponder(resp *http.Response) (result Qu
 
 // Query executes an Analytics query for data. [Here](/documentation/2-Using-the-API/Query) is an example for using
 // POST with an Analytics query.
-//
-// body is the Analytics query. Learn more about the [Analytics query
-// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/) timespan is
-// optional. The timespan over which to query data. This is an ISO8601 time period value.  This timespan is applied
-// in addition to any that are specified in the query expression.
+// Parameters:
+// body - the Analytics query. Learn more about the [Analytics query
+// syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/)
+// timespan - optional. The timespan over which to query data. This is an ISO8601 time period value.  This
+// timespan is applied in addition to any that are specified in the query expression.
 func (client BaseClient) Query(ctx context.Context, body QueryBody, timespan *string) (result QueryResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,

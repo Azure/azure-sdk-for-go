@@ -46,9 +46,11 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string, acceptLan
 // If a group with the groupName specified in the URL already exists, then this call acts as an update.
 //
 // This operation is Idempotent.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. group is new or Updated Group object.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// group - new or Updated Group object.
 func (client GroupsClient) Create(ctx context.Context, resourceGroupName string, projectName string, groupName string, group *Group) (result Group, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: group,
@@ -136,9 +138,10 @@ func (client GroupsClient) CreateResponder(resp *http.Response) (result Group, e
 //
 // A group is an aggregation mechanism for machines in a project. Therefore, deleting group does not delete machines in
 // it.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
 func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string, projectName string, groupName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, projectName, groupName)
 	if err != nil {
@@ -208,9 +211,10 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 
 // Get get information related to a specific group in the project. Returns a json object of type 'group' as specified
 // in the models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
 func (client GroupsClient) Get(ctx context.Context, resourceGroupName string, projectName string, groupName string) (result Group, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, projectName, groupName)
 	if err != nil {
@@ -281,9 +285,9 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err 
 
 // ListByProject get all groups created in the project. Returns a json array of objects of type 'group' as specified in
 // the Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client GroupsClient) ListByProject(ctx context.Context, resourceGroupName string, projectName string) (result GroupResultList, err error) {
 	req, err := client.ListByProjectPreparer(ctx, resourceGroupName, projectName)
 	if err != nil {

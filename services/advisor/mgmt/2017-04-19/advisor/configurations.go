@@ -40,9 +40,9 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 }
 
 // CreateInResourceGroup sends the create in resource group request.
-//
-// configContract is the Azure Advisor configuration data structure. resourceGroup is the name of the Azure
-// resource group.
+// Parameters:
+// configContract - the Azure Advisor configuration data structure.
+// resourceGroup - the name of the Azure resource group.
 func (client ConfigurationsClient) CreateInResourceGroup(ctx context.Context, configContract ConfigData, resourceGroup string) (result ARMErrorResponseBody, err error) {
 	req, err := client.CreateInResourceGroupPreparer(ctx, configContract, resourceGroup)
 	if err != nil {
@@ -109,8 +109,8 @@ func (client ConfigurationsClient) CreateInResourceGroupResponder(resp *http.Res
 
 // CreateInSubscription create/Overwrite Azure Advisor configuration and also delete all configurations of contained
 // resource groups.
-//
-// configContract is the Azure Advisor configuration data structure.
+// Parameters:
+// configContract - the Azure Advisor configuration data structure.
 func (client ConfigurationsClient) CreateInSubscription(ctx context.Context, configContract ConfigData) (result ARMErrorResponseBody, err error) {
 	req, err := client.CreateInSubscriptionPreparer(ctx, configContract)
 	if err != nil {
@@ -175,8 +175,8 @@ func (client ConfigurationsClient) CreateInSubscriptionResponder(resp *http.Resp
 }
 
 // ListByResourceGroup sends the list by resource group request.
-//
-// resourceGroup is the name of the Azure resource group.
+// Parameters:
+// resourceGroup - the name of the Azure resource group.
 func (client ConfigurationsClient) ListByResourceGroup(ctx context.Context, resourceGroup string) (result ConfigurationListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroup)
 	if err != nil {

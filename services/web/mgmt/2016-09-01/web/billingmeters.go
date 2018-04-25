@@ -40,8 +40,8 @@ func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) Bi
 }
 
 // List gets a list of meters for a given location.
-//
-// billingLocation is azure Location of billable resource
+// Parameters:
+// billingLocation - azure Location of billable resource
 func (client BillingMetersClient) List(ctx context.Context, billingLocation string) (result BillingMeterCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, billingLocation)

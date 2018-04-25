@@ -40,11 +40,13 @@ func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) Workbo
 }
 
 // ListByResourceGroup get all Workbooks defined within a specified resource group and category.
-//
-// resourceGroupName is the name of the resource group. location is the name of location where workbook is stored.
-// category is category of workbook to return. tags is tags presents on each workbook returned. canFetchContent is
-// flag indicating whether or not to return the full content for each applicable workbook. If false, only return
-// summary content for workbooks.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// location - the name of location where workbook is stored.
+// category - category of workbook to return.
+// tags - tags presents on each workbook returned.
+// canFetchContent - flag indicating whether or not to return the full content for each applicable workbook. If
+// false, only return summary content for workbooks.
 func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, location string, category CategoryType, tags []string, canFetchContent *bool) (result Workbooks, err error) {
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, location, category, tags, canFetchContent)
 	if err != nil {

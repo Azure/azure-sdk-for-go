@@ -43,8 +43,8 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 }
 
 // CheckNameAvailability determines whether a resource can be created with the specified name.
-//
-// parameters is the parameters to request for name availability.
+// Parameters:
+// parameters - the parameters to request for name availability.
 func (client ServersClient) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityRequest) (result CheckNameAvailabilityResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

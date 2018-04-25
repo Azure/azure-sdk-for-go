@@ -53,9 +53,9 @@ func NewTextModerationClient(baseURL AzureRegionBaseURL) TextModerationClient {
 // DetectLanguage this operation will detect the language of given input content. Returns the <a
 // href="http://www-01.sil.org/iso639-3/codes.asp">ISO 639-3 code</a> for the predominant language comprising the
 // submitted text. Over 110 languages supported.
-//
-// textContentType is the content type. textContent is content to screen. textContent will be closed upon
-// successful return. Callers should ensure closure when receiving an error.
+// Parameters:
+// textContentType - the content type.
+// textContent - content to screen.
 func (client TextModerationClient) DetectLanguage(ctx context.Context, textContentType string, textContent io.ReadCloser) (result DetectedLanguage, err error) {
 	req, err := client.DetectLanguagePreparer(ctx, textContentType, textContent)
 	if err != nil {
@@ -115,11 +115,14 @@ func (client TextModerationClient) DetectLanguageResponder(resp *http.Response) 
 }
 
 // ScreenText detects profanity in more than 100 languages and match against custom and shared blacklists.
-//
-// textContentType is the content type. textContent is content to screen. textContent will be closed upon
-// successful return. Callers should ensure closure when receiving an error.language is language of the text.
-// autocorrect is autocorrect text. pii is detect personal identifiable information. listID is the list Id.
-// classify is classify input.
+// Parameters:
+// textContentType - the content type.
+// textContent - content to screen.
+// language - language of the text.
+// autocorrect - autocorrect text.
+// pii - detect personal identifiable information.
+// listID - the list Id.
+// classify - classify input.
 func (client TextModerationClient) ScreenText(ctx context.Context, textContentType string, textContent io.ReadCloser, language string, autocorrect *bool, pii *bool, listID string, classify *bool) (result Screen, err error) {
 	req, err := client.ScreenTextPreparer(ctx, textContentType, textContent, language, autocorrect, pii, listID, classify)
 	if err != nil {

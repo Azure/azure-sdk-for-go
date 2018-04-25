@@ -42,9 +42,10 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 
 // Capture captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create
 // similar VMs.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. parameters is
-// parameters supplied to the Capture Virtual Machine operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// parameters - parameters supplied to the Capture Virtual Machine operation.
 func (client VirtualMachinesClient) Capture(ctx context.Context, resourceGroupName string, VMName string, parameters VirtualMachineCaptureParameters) (result VirtualMachinesCaptureFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -122,8 +123,9 @@ func (client VirtualMachinesClient) CaptureResponder(resp *http.Response) (resul
 
 // ConvertToManagedDisks converts virtual machine disks from blob-based to managed disks. Virtual machine must be
 // stop-deallocated before invoking this operation.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) ConvertToManagedDisks(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesConvertToManagedDisksFuture, err error) {
 	req, err := client.ConvertToManagedDisksPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -190,9 +192,10 @@ func (client VirtualMachinesClient) ConvertToManagedDisksResponder(resp *http.Re
 }
 
 // CreateOrUpdate the operation to create or update a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. parameters is
-// parameters supplied to the Create Virtual Machine operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// parameters - parameters supplied to the Create Virtual Machine operation.
 func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, VMName string, parameters VirtualMachine) (result VirtualMachinesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -283,8 +286,9 @@ func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response)
 
 // Deallocate shuts down the virtual machine and releases the compute resources. You are not billed for the compute
 // resources that this virtual machine uses.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Deallocate(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesDeallocateFuture, err error) {
 	req, err := client.DeallocatePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -351,8 +355,9 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 }
 
 // Delete the operation to delete a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -419,8 +424,9 @@ func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result
 }
 
 // Generalize sets the state of the virtual machine to generalized.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Generalize(ctx context.Context, resourceGroupName string, VMName string) (result OperationStatusResponse, err error) {
 	req, err := client.GeneralizePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -485,9 +491,10 @@ func (client VirtualMachinesClient) GeneralizeResponder(resp *http.Response) (re
 }
 
 // Get retrieves information about the model view or the instance view of a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. expand is the
-// expand expression to apply on the operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// expand - the expand expression to apply on the operation.
 func (client VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, VMName string, expand InstanceViewTypes) (result VirtualMachine, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, VMName, expand)
 	if err != nil {
@@ -555,9 +562,10 @@ func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result Vi
 }
 
 // GetExtensions the operation to get all extensions of a Virtual Machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine containing the
-// extension. expand is the expand expression to apply on the operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine containing the extension.
+// expand - the expand expression to apply on the operation.
 func (client VirtualMachinesClient) GetExtensions(ctx context.Context, resourceGroupName string, VMName string, expand string) (result VirtualMachineExtensionsListResult, err error) {
 	req, err := client.GetExtensionsPreparer(ctx, resourceGroupName, VMName, expand)
 	if err != nil {
@@ -625,8 +633,9 @@ func (client VirtualMachinesClient) GetExtensionsResponder(resp *http.Response) 
 }
 
 // InstanceView retrieves information about the run-time state of a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachineInstanceView, err error) {
 	req, err := client.InstanceViewPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -692,8 +701,8 @@ func (client VirtualMachinesClient) InstanceViewResponder(resp *http.Response) (
 
 // List lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
 // get the next page of virtual machines.
-//
-// resourceGroupName is the name of the resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group.
 func (client VirtualMachinesClient) List(ctx context.Context, resourceGroupName string) (result VirtualMachineListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
@@ -876,8 +885,9 @@ func (client VirtualMachinesClient) ListAllComplete(ctx context.Context) (result
 }
 
 // ListAvailableSizes lists all available virtual machine sizes to which the specified virtual machine can be resized.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachineSizeListResult, err error) {
 	req, err := client.ListAvailableSizesPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -942,8 +952,9 @@ func (client VirtualMachinesClient) ListAvailableSizesResponder(resp *http.Respo
 }
 
 // PerformMaintenance the operation to perform maintenance on a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesPerformMaintenanceFuture, err error) {
 	req, err := client.PerformMaintenancePreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -1011,8 +1022,9 @@ func (client VirtualMachinesClient) PerformMaintenanceResponder(resp *http.Respo
 
 // PowerOff the operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
 // provisioned resources. You are still charged for this virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) PowerOff(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesPowerOffFuture, err error) {
 	req, err := client.PowerOffPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -1079,8 +1091,9 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 }
 
 // Redeploy the operation to redeploy a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesRedeployFuture, err error) {
 	req, err := client.RedeployPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -1147,8 +1160,9 @@ func (client VirtualMachinesClient) RedeployResponder(resp *http.Response) (resu
 }
 
 // Restart the operation to restart a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Restart(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesRestartFuture, err error) {
 	req, err := client.RestartPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -1215,9 +1229,10 @@ func (client VirtualMachinesClient) RestartResponder(resp *http.Response) (resul
 }
 
 // RunCommand run command on the VM.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. parameters is
-// parameters supplied to the Run command operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// parameters - parameters supplied to the Run command operation.
 func (client VirtualMachinesClient) RunCommand(ctx context.Context, resourceGroupName string, VMName string, parameters RunCommandInput) (result VirtualMachinesRunCommandFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -1292,8 +1307,9 @@ func (client VirtualMachinesClient) RunCommandResponder(resp *http.Response) (re
 }
 
 // Start the operation to start a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
 func (client VirtualMachinesClient) Start(ctx context.Context, resourceGroupName string, VMName string) (result VirtualMachinesStartFuture, err error) {
 	req, err := client.StartPreparer(ctx, resourceGroupName, VMName)
 	if err != nil {
@@ -1360,9 +1376,10 @@ func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result 
 }
 
 // Update the operation to update a virtual machine.
-//
-// resourceGroupName is the name of the resource group. VMName is the name of the virtual machine. parameters is
-// parameters supplied to the Update Virtual Machine operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// VMName - the name of the virtual machine.
+// parameters - parameters supplied to the Update Virtual Machine operation.
 func (client VirtualMachinesClient) Update(ctx context.Context, resourceGroupName string, VMName string, parameters VirtualMachineUpdate) (result VirtualMachinesUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, VMName, parameters)
 	if err != nil {

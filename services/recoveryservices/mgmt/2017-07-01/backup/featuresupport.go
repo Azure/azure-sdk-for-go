@@ -40,8 +40,9 @@ func NewFeatureSupportClientWithBaseURI(baseURI string, subscriptionID string) F
 }
 
 // Validate sends the validate request.
-//
-// azureRegion is azure region to hit Api parameters is feature support request object
+// Parameters:
+// azureRegion - azure region to hit Api
+// parameters - feature support request object
 func (client FeatureSupportClient) Validate(ctx context.Context, azureRegion string, parameters BasicFeatureSupportRequest) (result AzureVMResourceFeatureSupportResponse, err error) {
 	req, err := client.ValidatePreparer(ctx, azureRegion, parameters)
 	if err != nil {

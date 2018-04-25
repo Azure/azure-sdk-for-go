@@ -41,9 +41,10 @@ func NewRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) Re
 }
 
 // CreateOrUpdate create or update an Azure Stack registration.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// tokenParameter is registration token
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// tokenParameter - registration token
 func (client RegistrationsClient) CreateOrUpdate(ctx context.Context, resourceGroup string, registrationName string, tokenParameter RegistrationParameter) (result Registration, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: tokenParameter,
@@ -117,8 +118,9 @@ func (client RegistrationsClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete delete the requested Azure Stack registration.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
 func (client RegistrationsClient) Delete(ctx context.Context, resourceGroup string, registrationName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroup, registrationName)
 	if err != nil {
@@ -182,8 +184,9 @@ func (client RegistrationsClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get returns the properties of an Azure Stack registration.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
 func (client RegistrationsClient) Get(ctx context.Context, resourceGroup string, registrationName string) (result Registration, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroup, registrationName)
 	if err != nil {
@@ -248,8 +251,9 @@ func (client RegistrationsClient) GetResponder(resp *http.Response) (result Regi
 }
 
 // GetActivationKey returns Azure Stack Activation Key.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
 func (client RegistrationsClient) GetActivationKey(ctx context.Context, resourceGroup string, registrationName string) (result ActivationKeyResult, err error) {
 	req, err := client.GetActivationKeyPreparer(ctx, resourceGroup, registrationName)
 	if err != nil {
@@ -314,8 +318,8 @@ func (client RegistrationsClient) GetActivationKeyResponder(resp *http.Response)
 }
 
 // List returns a list of all registrations.
-//
-// resourceGroup is name of the resource group.
+// Parameters:
+// resourceGroup - name of the resource group.
 func (client RegistrationsClient) List(ctx context.Context, resourceGroup string) (result RegistrationListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroup)

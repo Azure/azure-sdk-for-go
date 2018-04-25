@@ -57,8 +57,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 
 // CheckNameAvailability check the availability of a resource name. This is needed for resources where name is globally
 // unique, such as a CDN endpoint.
-//
-// checkNameAvailabilityInput is input to check.
+// Parameters:
+// checkNameAvailabilityInput - input to check.
 func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput) (result CheckNameAvailabilityOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: checkNameAvailabilityInput,

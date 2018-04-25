@@ -41,10 +41,11 @@ func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClien
 }
 
 // CreateOrUpdate creates or Updates a group.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. parameters is create
-// parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// parameters - create parameters.
 func (client GroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupCreateParameters) (result GroupContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -131,11 +132,12 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result G
 }
 
 // Delete deletes specific group of the API Management service instance.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. ifMatch is eTag of
-// the Group Entity. ETag should match the current entity state from the header response of the GET request or it
-// should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// ifMatch - eTag of the Group Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client GroupClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -213,9 +215,10 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 }
 
 // Get gets the details of the group specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
 func (client GroupClient) Get(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (result GroupContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -293,9 +296,10 @@ func (client GroupClient) GetResponder(resp *http.Response) (result GroupContrac
 }
 
 // GetEntityTag gets the entity state (Etag) version of the group specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
 func (client GroupClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, groupID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -372,15 +376,17 @@ func (client GroupClient) GetEntityTagResponder(resp *http.Response) (result aut
 }
 
 // ListByService lists a collection of groups defined within a service instance.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// filter is | Field       | Supported operators    | Supported functions                         |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// filter - | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | type        | eq, ne                 | N/A                                         | top is number of records
-// to return. skip is number of records to skip.
+// | type        | eq, ne                 | N/A                                         |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client GroupClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result GroupCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -496,11 +502,13 @@ func (client GroupClient) ListByServiceComplete(ctx context.Context, resourceGro
 }
 
 // Update updates the details of the group specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. parameters is update
-// parameters. ifMatch is eTag of the Group Entity. ETag should match the current entity state from the header
-// response of the GET request or it should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - eTag of the Group Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client GroupClient) Update(ctx context.Context, resourceGroupName string, serviceName string, groupID string, parameters GroupUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

@@ -41,8 +41,9 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 }
 
 // ListAvailableSkus this method provides the list of available skus for the given subscription and location.
-//
-// location is the location of the resource availableSkuRequest is filters for showing the available skus.
+// Parameters:
+// location - the location of the resource
+// availableSkuRequest - filters for showing the available skus.
 func (client ServiceClient) ListAvailableSkus(ctx context.Context, location string, availableSkuRequest AvailableSkuRequest) (result AvailableSkusResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: availableSkuRequest,
@@ -144,8 +145,9 @@ func (client ServiceClient) ListAvailableSkusComplete(ctx context.Context, locat
 }
 
 // ValidateAddressMethod this method validates the customer shipping address and provide alternate addresses if any.
-//
-// location is the location of the resource validateAddress is shipping address of the customer.
+// Parameters:
+// location - the location of the resource
+// validateAddress - shipping address of the customer.
 func (client ServiceClient) ValidateAddressMethod(ctx context.Context, location string, validateAddress ValidateAddress) (result AddressValidationOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: validateAddress,

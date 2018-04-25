@@ -41,10 +41,11 @@ func NewSavedSearchesClientWithBaseURI(baseURI string, subscriptionID string, pu
 }
 
 // CreateOrUpdate creates or updates a saved search for a given workspace.
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name savedSearchName is the id of the saved search. parameters is the parameters required to
-// save a search.
+// Parameters:
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - log Analytics workspace name
+// savedSearchName - the id of the saved search.
+// parameters - the parameters required to save a search.
 func (client SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchName string, parameters SavedSearch) (result SavedSearch, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -130,9 +131,10 @@ func (client SavedSearchesClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes the specified saved search in a given workspace.
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name savedSearchName is name of the saved search.
+// Parameters:
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - log Analytics workspace name
+// savedSearchName - name of the saved search.
 func (client SavedSearchesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -205,9 +207,10 @@ func (client SavedSearchesClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get gets the specified saved search for a given workspace.
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name savedSearchName is the id of the saved search.
+// Parameters:
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - log Analytics workspace name
+// savedSearchName - the id of the saved search.
 func (client SavedSearchesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchName string) (result SavedSearch, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -281,9 +284,10 @@ func (client SavedSearchesClient) GetResponder(resp *http.Response) (result Save
 }
 
 // GetResults gets the results from a saved search for a given workspace.
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name savedSearchName is the name of the saved search.
+// Parameters:
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - log Analytics workspace name
+// savedSearchName - the name of the saved search.
 func (client SavedSearchesClient) GetResults(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchName string) (result SearchResultsResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -357,9 +361,9 @@ func (client SavedSearchesClient) GetResultsResponder(resp *http.Response) (resu
 }
 
 // ListByWorkspace gets the saved searches for a given Log Analytics Workspace
-//
-// resourceGroupName is the name of the resource group to get. The name is case insensitive. workspaceName is log
-// Analytics workspace name
+// Parameters:
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - log Analytics workspace name
 func (client SavedSearchesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result SavedSearchesListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

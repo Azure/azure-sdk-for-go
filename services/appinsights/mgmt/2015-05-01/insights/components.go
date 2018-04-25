@@ -42,10 +42,10 @@ func NewComponentsClientWithBaseURI(baseURI string, subscriptionID string) Compo
 
 // CreateOrUpdate creates (or updates) an Application Insights component. Note: You cannot specify a different value
 // for InstrumentationKey nor AppId in the Put operation.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. insightProperties is properties that need to be specified to create an Application Insights
-// component.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// insightProperties - properties that need to be specified to create an Application Insights component.
 func (client ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, insightProperties ApplicationInsightsComponent) (result ApplicationInsightsComponent, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: insightProperties,
@@ -118,9 +118,9 @@ func (client ComponentsClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
 func (client ComponentsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
@@ -184,9 +184,9 @@ func (client ComponentsClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // Get returns an Application Insights component.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
 func (client ComponentsClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result ApplicationInsightsComponent, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
@@ -341,8 +341,8 @@ func (client ComponentsClient) ListComplete(ctx context.Context) (result Applica
 }
 
 // ListByResourceGroup gets a list of Application Insights components within a resource group.
-//
-// resourceGroupName is the name of the resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group.
 func (client ComponentsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ApplicationInsightsComponentListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -434,10 +434,10 @@ func (client ComponentsClient) ListByResourceGroupComplete(ctx context.Context, 
 }
 
 // Purge purges data in an Application Insights component by a set of user-defined filters.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. body is describes the body of a request to purge data in a single table of an Application
-// Insights component
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// body - describes the body of a request to purge data in a single table of an Application Insights component
 func (client ComponentsClient) Purge(ctx context.Context, resourceGroupName string, resourceName string, body ComponentPurgeBody) (result ComponentsPurgeFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
@@ -513,9 +513,10 @@ func (client ComponentsClient) PurgeResponder(resp *http.Response) (result SetOb
 }
 
 // UpdateTags updates an existing component's tags. To update other fields use the CreateOrUpdate method.
-//
-// resourceGroupName is the name of the resource group. resourceName is the name of the Application Insights
-// component resource. componentTags is updated tag information to set into the component instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// componentTags - updated tag information to set into the component instance.
 func (client ComponentsClient) UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, componentTags TagsResource) (result ApplicationInsightsComponent, err error) {
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, resourceName, componentTags)
 	if err != nil {

@@ -42,11 +42,12 @@ func NewTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscription
 }
 
 // CreateOrUpdate creates or updates a database's transparent data encryption configuration.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// the database for which setting the transparent data encryption applies. parameters is the required parameters
-// for creating or updating transparent data encryption.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database for which setting the transparent data encryption applies.
+// parameters - the required parameters for creating or updating transparent data encryption.
 func (client TransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters TransparentDataEncryption) (result TransparentDataEncryption, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, databaseName, parameters)
 	if err != nil {
@@ -115,10 +116,11 @@ func (client TransparentDataEncryptionsClient) CreateOrUpdateResponder(resp *htt
 }
 
 // Get gets a database's transparent data encryption configuration.
-//
-// resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
-// the Azure Resource Manager API or the portal. serverName is the name of the server. databaseName is the name of
-// the database for which the transparent data encryption applies.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+// databaseName - the name of the database for which the transparent data encryption applies.
 func (client TransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result TransparentDataEncryption, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {

@@ -41,10 +41,11 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 }
 
 // BookShipmentPickUp book shipment pick up.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only shipmentPickUpRequest is details of shipment pick up request.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// shipmentPickUpRequest - details of shipment pick up request.
 func (client JobsClient) BookShipmentPickUp(ctx context.Context, resourceGroupName string, jobName string, shipmentPickUpRequest ShipmentPickUpRequest) (result ShipmentPickUpResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -119,10 +120,11 @@ func (client JobsClient) BookShipmentPickUpResponder(resp *http.Response) (resul
 }
 
 // Cancel cancelJob.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only cancellationReason is reason for cancellation.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// cancellationReason - reason for cancellation.
 func (client JobsClient) Cancel(ctx context.Context, resourceGroupName string, jobName string, cancellationReason CancellationReason) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -199,10 +201,11 @@ func (client JobsClient) CancelResponder(resp *http.Response) (result autorest.R
 
 // Create creates a new job with the specified parameters. Existing job cannot be updated with this API and should
 // instead be updated with the Update job API.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only jobResource is job details from request body.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// jobResource - job details from request body.
 func (client JobsClient) Create(ctx context.Context, resourceGroupName string, jobName string, jobResource JobResource) (result JobsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -296,10 +299,10 @@ func (client JobsClient) CreateResponder(resp *http.Response) (result JobResourc
 }
 
 // Delete deletes a job.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
 func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, jobName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -371,10 +374,10 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 }
 
 // DownloadShippingLabelURI get shipping label sas uri.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
 func (client JobsClient) DownloadShippingLabelURI(ctx context.Context, resourceGroupName string, jobName string) (result ShippingLabelDetails, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -447,10 +450,11 @@ func (client JobsClient) DownloadShippingLabelURIResponder(resp *http.Response) 
 }
 
 // Get gets information about the specified job.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only expand is $expand is supported on details parameter for job, which provides details on the job stages.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// expand - $expand is supported on details parameter for job, which provides details on the job stages.
 func (client JobsClient) Get(ctx context.Context, resourceGroupName string, jobName string, expand string) (result JobResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -526,10 +530,10 @@ func (client JobsClient) GetResponder(resp *http.Response) (result JobResource, 
 }
 
 // GetCopyLogsURI provides list of copy logs uri.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
 func (client JobsClient) GetCopyLogsURI(ctx context.Context, resourceGroupName string, jobName string) (result GetCopyLogsURIOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -602,8 +606,8 @@ func (client JobsClient) GetCopyLogsURIResponder(resp *http.Response) (result Ge
 }
 
 // List lists all the jobs available under the subscription.
-//
-// skipToken is $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
+// Parameters:
+// skipToken - $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
 func (client JobsClient) List(ctx context.Context, skipToken string) (result JobResourceListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, skipToken)
@@ -697,9 +701,9 @@ func (client JobsClient) ListComplete(ctx context.Context, skipToken string) (re
 }
 
 // ListByResourceGroup lists all the jobs available under the given resource group.
-//
-// resourceGroupName is the Resource Group Name skipToken is $skipToken is supported on Get list of jobs, which
-// provides the next page in the list of jobs.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// skipToken - $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
 func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, skipToken string) (result JobResourceListPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, skipToken)
@@ -794,10 +798,10 @@ func (client JobsClient) ListByResourceGroupComplete(ctx context.Context, resour
 }
 
 // ListSecrets this method gets the unencrypted secrets related to the job.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
 func (client JobsClient) ListSecrets(ctx context.Context, resourceGroupName string, jobName string) (result UnencryptedSecrets, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -870,10 +874,11 @@ func (client JobsClient) ListSecretsResponder(resp *http.Response) (result Unenc
 }
 
 // ReportIssue reports an issue.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only reportIssueDetails is details of reported issue.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// reportIssueDetails - details of reported issue.
 func (client JobsClient) ReportIssue(ctx context.Context, resourceGroupName string, jobName string, reportIssueDetails ReportIssueDetails) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,
@@ -947,11 +952,13 @@ func (client JobsClient) ReportIssueResponder(resp *http.Response) (result autor
 }
 
 // Update updates the properties of an existing job.
-//
-// resourceGroupName is the Resource Group Name jobName is the name of the job Resource within the specified
-// resource group. job names must be between 3 and 24 characters in length and use any alphanumeric and underscore
-// only jobResourceUpdateParameter is job update parameters from request body. ifMatch is defines the If-Match
-// condition. The patch will be performed only if the ETag of the job on the server matches this value.
+// Parameters:
+// resourceGroupName - the Resource Group Name
+// jobName - the name of the job Resource within the specified resource group. job names must be between 3 and
+// 24 characters in length and use any alphanumeric and underscore only
+// jobResourceUpdateParameter - job update parameters from request body.
+// ifMatch - defines the If-Match condition. The patch will be performed only if the ETag of the job on the
+// server matches this value.
 func (client JobsClient) Update(ctx context.Context, resourceGroupName string, jobName string, jobResourceUpdateParameter JobResourceUpdateParameter, ifMatch string) (result JobsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: jobName,

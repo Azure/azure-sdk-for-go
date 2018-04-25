@@ -40,8 +40,9 @@ func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // Create the operation to create a replication policy
-//
-// policyName is replication policy name input is create policy input
+// Parameters:
+// policyName - replication policy name
+// input - create policy input
 func (client ReplicationPoliciesClient) Create(ctx context.Context, policyName string, input CreatePolicyInput) (result ReplicationPoliciesCreateFuture, err error) {
 	req, err := client.CreatePreparer(ctx, policyName, input)
 	if err != nil {
@@ -111,8 +112,8 @@ func (client ReplicationPoliciesClient) CreateResponder(resp *http.Response) (re
 }
 
 // Delete the operation to delete a replication policy.
-//
-// policyName is replication policy name.
+// Parameters:
+// policyName - replication policy name.
 func (client ReplicationPoliciesClient) Delete(ctx context.Context, policyName string) (result ReplicationPoliciesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, policyName)
 	if err != nil {
@@ -179,8 +180,8 @@ func (client ReplicationPoliciesClient) DeleteResponder(resp *http.Response) (re
 }
 
 // Get gets the details of a replication policy.
-//
-// policyName is replication policy name.
+// Parameters:
+// policyName - replication policy name.
 func (client ReplicationPoliciesClient) Get(ctx context.Context, policyName string) (result Policy, err error) {
 	req, err := client.GetPreparer(ctx, policyName)
 	if err != nil {
@@ -338,8 +339,9 @@ func (client ReplicationPoliciesClient) ListComplete(ctx context.Context) (resul
 }
 
 // Update the operation to update a replication policy.
-//
-// policyName is policy Id. input is update Policy Input
+// Parameters:
+// policyName - policy Id.
+// input - update Policy Input
 func (client ReplicationPoliciesClient) Update(ctx context.Context, policyName string, input UpdatePolicyInput) (result ReplicationPoliciesUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, policyName, input)
 	if err != nil {

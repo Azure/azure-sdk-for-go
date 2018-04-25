@@ -43,9 +43,9 @@ func NewMigrationConfigsClientWithBaseURI(baseURI string, subscriptionID string)
 // CompleteMigration this operation Completes Migration of entities by pointing the connection strings to Premium
 // namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation
 // will fail when entity migration is in-progress.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
 func (client MigrationConfigsClient) CompleteMigration(ctx context.Context, resourceGroupName string, namespaceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -121,9 +121,10 @@ func (client MigrationConfigsClient) CompleteMigrationResponder(resp *http.Respo
 
 // CreateAndStartMigration creates Migration configuration and starts migration of enties from Standard to Premium
 // namespace
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name parameters is parameters required to create Migration Configuration
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+// parameters - parameters required to create Migration Configuration
 func (client MigrationConfigsClient) CreateAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, parameters MigrationConfigProperties) (result MigrationConfigsCreateAndStartMigrationFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -208,9 +209,9 @@ func (client MigrationConfigsClient) CreateAndStartMigrationResponder(resp *http
 }
 
 // Delete deletes a MigrationConfiguration
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
 func (client MigrationConfigsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -285,9 +286,9 @@ func (client MigrationConfigsClient) DeleteResponder(resp *http.Response) (resul
 }
 
 // Get retrieves Migration Config
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
 func (client MigrationConfigsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string) (result MigrationConfigProperties, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -363,9 +364,9 @@ func (client MigrationConfigsClient) GetResponder(resp *http.Response) (result M
 }
 
 // List gets all migrationConfigurations
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
 func (client MigrationConfigsClient) List(ctx context.Context, resourceGroupName string, namespaceName string) (result MigrationConfigListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -468,9 +469,9 @@ func (client MigrationConfigsClient) ListComplete(ctx context.Context, resourceG
 }
 
 // Revert this operation reverts Migration
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
-// name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
 func (client MigrationConfigsClient) Revert(ctx context.Context, resourceGroupName string, namespaceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

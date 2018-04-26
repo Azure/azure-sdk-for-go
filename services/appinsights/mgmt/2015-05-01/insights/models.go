@@ -1001,12 +1001,6 @@ type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
 }
 
-// ListWorkbook ...
-type ListWorkbook struct {
-	autorest.Response `json:"-"`
-	Value             *[]Workbook `json:"value,omitempty"`
-}
-
 // ListWorkItemConfiguration ...
 type ListWorkItemConfiguration struct {
 	autorest.Response `json:"-"`

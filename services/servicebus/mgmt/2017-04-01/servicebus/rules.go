@@ -41,13 +41,10 @@ func NewRulesClientWithBaseURI(baseURI string, subscriptionID string) RulesClien
 }
 
 // CreateOrUpdate creates a new rule and updates an existing rule
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// topicName - the topic name.
-// subscriptionName - the subscription name.
-// ruleName - the rule name.
-// parameters - parameters supplied to create a rule.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name topicName is the topic name. subscriptionName is the subscription name. ruleName is the rule name.
+// parameters is parameters supplied to create a rule.
 func (client RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string, parameters Rule) (result Rule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -135,12 +132,9 @@ func (client RulesClient) CreateOrUpdateResponder(resp *http.Response) (result R
 }
 
 // Delete deletes an existing rule.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// topicName - the topic name.
-// subscriptionName - the subscription name.
-// ruleName - the rule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name topicName is the topic name. subscriptionName is the subscription name. ruleName is the rule name.
 func (client RulesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -225,12 +219,9 @@ func (client RulesClient) DeleteResponder(resp *http.Response) (result autorest.
 }
 
 // Get retrieves the description for the specified rule.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// topicName - the topic name.
-// subscriptionName - the subscription name.
-// ruleName - the rule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name topicName is the topic name. subscriptionName is the subscription name. ruleName is the rule name.
 func (client RulesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, ruleName string) (result Rule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -316,12 +307,13 @@ func (client RulesClient) GetResponder(resp *http.Response) (result Rule, err er
 }
 
 // ListBySubscriptions list all the rules within given topic-subscription
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// topicName - the topic name.
-// subscriptionName - the subscription name.
-func (client RulesClient) ListBySubscriptions(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result RuleListResultPage, err error) {
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name topicName is the topic name. subscriptionName is the subscription name. skip is skip is only used if a
+// previous operation returned a partial result. If a previous response contains a nextLink element, the value of
+// the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+// top is may be used to limit the number of results to the most recent N usageDetails.
+func (client RulesClient) ListBySubscriptions(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, skip *int32, top *int32) (result RuleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -333,12 +325,22 @@ func (client RulesClient) ListBySubscriptions(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "topicName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: subscriptionName,
 			Constraints: []validation.Constraint{{Target: "subscriptionName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+				{Target: "subscriptionName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+				}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("servicebus.RulesClient", "ListBySubscriptions", err.Error())
 	}
 
 	result.fn = client.listBySubscriptionsNextResults
-	req, err := client.ListBySubscriptionsPreparer(ctx, resourceGroupName, namespaceName, topicName, subscriptionName)
+	req, err := client.ListBySubscriptionsPreparer(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, skip, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.RulesClient", "ListBySubscriptions", nil, "Failure preparing request")
 		return
@@ -360,7 +362,7 @@ func (client RulesClient) ListBySubscriptions(ctx context.Context, resourceGroup
 }
 
 // ListBySubscriptionsPreparer prepares the ListBySubscriptions request.
-func (client RulesClient) ListBySubscriptionsPreparer(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (*http.Request, error) {
+func (client RulesClient) ListBySubscriptionsPreparer(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, skip *int32, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -372,6 +374,12 @@ func (client RulesClient) ListBySubscriptionsPreparer(ctx context.Context, resou
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -424,7 +432,7 @@ func (client RulesClient) listBySubscriptionsNextResults(lastResults RuleListRes
 }
 
 // ListBySubscriptionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RulesClient) ListBySubscriptionsComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string) (result RuleListResultIterator, err error) {
-	result.page, err = client.ListBySubscriptions(ctx, resourceGroupName, namespaceName, topicName, subscriptionName)
+func (client RulesClient) ListBySubscriptionsComplete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, skip *int32, top *int32) (result RuleListResultIterator, err error) {
+	result.page, err = client.ListBySubscriptions(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, skip, top)
 	return
 }

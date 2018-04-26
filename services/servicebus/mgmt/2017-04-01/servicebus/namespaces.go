@@ -41,8 +41,8 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 }
 
 // CheckNameAvailabilityMethod check the give namespace name availability.
-// Parameters:
-// parameters - parameters to check availability of the given namespace name
+//
+// parameters is parameters to check availability of the given namespace name
 func (client NamespacesClient) CheckNameAvailabilityMethod(ctx context.Context, parameters CheckNameAvailability) (result CheckNameAvailabilityResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -114,10 +114,9 @@ func (client NamespacesClient) CheckNameAvailabilityMethodResponder(resp *http.R
 
 // CreateOrUpdate creates or updates a service namespace. Once created, this namespace's resource manifest is
 // immutable. This operation is idempotent.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name.
-// parameters - parameters supplied to create a namespace resource.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name. parameters is parameters supplied to create a namespace resource.
 func (client NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters SBNamespace) (result NamespacesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -193,11 +192,9 @@ func (client NamespacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // CreateOrUpdateAuthorizationRule creates or updates an authorization rule for a namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// authorizationRuleName - the authorizationrule name.
-// parameters - the shared access authorization rule.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name authorizationRuleName is the authorizationrule name. parameters is the shared access authorization rule.
 func (client NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters SBAuthorizationRule) (result SBAuthorizationRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -281,9 +278,9 @@ func (client NamespacesClient) CreateOrUpdateAuthorizationRuleResponder(resp *ht
 }
 
 // Delete deletes an existing namespace. This operation also removes all associated resources under the namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name
 func (client NamespacesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string) (result NamespacesDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -359,10 +356,9 @@ func (client NamespacesClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // DeleteAuthorizationRule deletes a namespace authorization rule.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name authorizationRuleName is the authorizationrule name.
 func (client NamespacesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -440,9 +436,9 @@ func (client NamespacesClient) DeleteAuthorizationRuleResponder(resp *http.Respo
 }
 
 // Get gets a description for the specified namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name
 func (client NamespacesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string) (result SBNamespace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -517,10 +513,9 @@ func (client NamespacesClient) GetResponder(resp *http.Response) (result SBNames
 }
 
 // GetAuthorizationRule gets an authorization rule for a namespace by rule name.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name authorizationRuleName is the authorizationrule name.
 func (client NamespacesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result SBAuthorizationRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -599,9 +594,28 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 }
 
 // List gets all the available namespaces within the subscription, irrespective of the resource groups.
-func (client NamespacesClient) List(ctx context.Context) (result SBNamespaceListResultPage, err error) {
+//
+// skip is skip is only used if a previous operation returned a partial result. If a previous response contains a
+// nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+// point to use for subsequent calls. top is may be used to limit the number of results to the most recent N
+// usageDetails.
+func (client NamespacesClient) List(ctx context.Context, skip *int32, top *int32) (result SBNamespaceListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+				}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("servicebus.NamespacesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, skip, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "List", nil, "Failure preparing request")
 		return
@@ -623,7 +637,7 @@ func (client NamespacesClient) List(ctx context.Context) (result SBNamespaceList
 }
 
 // ListPreparer prepares the List request.
-func (client NamespacesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client NamespacesClient) ListPreparer(ctx context.Context, skip *int32, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -631,6 +645,12 @@ func (client NamespacesClient) ListPreparer(ctx context.Context) (*http.Request,
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -683,15 +703,15 @@ func (client NamespacesClient) listNextResults(lastResults SBNamespaceListResult
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NamespacesClient) ListComplete(ctx context.Context) (result SBNamespaceListResultIterator, err error) {
-	result.page, err = client.List(ctx)
+func (client NamespacesClient) ListComplete(ctx context.Context, skip *int32, top *int32) (result SBNamespaceListResultIterator, err error) {
+	result.page, err = client.List(ctx, skip, top)
 	return
 }
 
 // ListAuthorizationRules gets the authorization rules for a namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name
 func (client NamespacesClient) ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string) (result SBAuthorizationRuleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -794,18 +814,31 @@ func (client NamespacesClient) ListAuthorizationRulesComplete(ctx context.Contex
 }
 
 // ListByResourceGroup gets the available namespaces within a resource group.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result SBNamespaceListResultPage, err error) {
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. skip is skip is only used if a
+// previous operation returned a partial result. If a previous response contains a nextLink element, the value of
+// the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
+// top is may be used to limit the number of results to the most recent N usageDetails.
+func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (result SBNamespaceListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+				}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("servicebus.NamespacesClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, skip, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -827,7 +860,7 @@ func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resource
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -836,6 +869,12 @@ func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, 
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -888,16 +927,15 @@ func (client NamespacesClient) listByResourceGroupNextResults(lastResults SBName
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NamespacesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result SBNamespaceListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+func (client NamespacesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (result SBNamespaceListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, skip, top)
 	return
 }
 
 // ListKeys gets the primary and secondary connection strings for the namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name authorizationRuleName is the authorizationrule name.
 func (client NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result AccessKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -976,11 +1014,10 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Ac
 }
 
 // RegenerateKeys regenerates the primary or secondary connection strings for the namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// authorizationRuleName - the authorizationrule name.
-// parameters - parameters supplied to regenerate the authorization rule.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name authorizationRuleName is the authorizationrule name. parameters is parameters supplied to regenerate the
+// authorization rule.
 func (client NamespacesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (result AccessKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1062,10 +1099,9 @@ func (client NamespacesClient) RegenerateKeysResponder(resp *http.Response) (res
 
 // Update updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
 // idempotent.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// parameters - parameters supplied to update a namespace resource.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name parameters is parameters supplied to update a namespace resource.
 func (client NamespacesClient) Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters SBNamespaceUpdateParameters) (result SBNamespace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

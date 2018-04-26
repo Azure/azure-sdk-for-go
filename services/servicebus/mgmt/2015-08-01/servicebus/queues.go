@@ -41,11 +41,9 @@ func NewQueuesClientWithBaseURI(baseURI string, subscriptionID string) QueuesCli
 }
 
 // CreateOrUpdate creates or updates a Service Bus queue. This operation is idempotent.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// parameters - parameters supplied to create or update a queue resource.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. parameters is parameters supplied to create or update a queue resource.
 func (client QueuesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, parameters QueueCreateOrUpdateParameters) (result QueueResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -128,12 +126,10 @@ func (client QueuesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // CreateOrUpdateAuthorizationRule creates an authorization rule for a queue.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
-// parameters - the shared access authorization rule.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name. parameters is the shared
+// access authorization rule.
 func (client QueuesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters SharedAccessAuthorizationRuleCreateOrUpdateParameters) (result SharedAccessAuthorizationRuleResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -221,10 +217,9 @@ func (client QueuesClient) CreateOrUpdateAuthorizationRuleResponder(resp *http.R
 }
 
 // Delete deletes a queue from the specified namespace in a resource group.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name.
 func (client QueuesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -302,11 +297,9 @@ func (client QueuesClient) DeleteResponder(resp *http.Response) (result autorest
 }
 
 // DeleteAuthorizationRule deletes a queue authorization rule.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name.
 func (client QueuesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -388,10 +381,9 @@ func (client QueuesClient) DeleteAuthorizationRuleResponder(resp *http.Response)
 }
 
 // Get returns a description for the specified queue.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name.
 func (client QueuesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result QueueResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -470,11 +462,9 @@ func (client QueuesClient) GetResponder(resp *http.Response) (result QueueResour
 }
 
 // GetAuthorizationRule gets an authorization rule for a queue by rule name.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name.
 func (client QueuesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -557,9 +547,9 @@ func (client QueuesClient) GetAuthorizationRuleResponder(resp *http.Response) (r
 }
 
 // ListAll gets the queues within a namespace.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name
 func (client QueuesClient) ListAll(ctx context.Context, resourceGroupName string, namespaceName string) (result QueueListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -662,10 +652,9 @@ func (client QueuesClient) ListAllComplete(ctx context.Context, resourceGroupNam
 }
 
 // ListAuthorizationRules gets all authorization rules for a queue.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name.
 func (client QueuesClient) ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, queueName string) (result SharedAccessAuthorizationRuleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -772,11 +761,9 @@ func (client QueuesClient) ListAuthorizationRulesComplete(ctx context.Context, r
 }
 
 // ListKeys primary and secondary connection strings to the queue.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name.
 func (client QueuesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result ResourceListKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -859,11 +846,9 @@ func (client QueuesClient) ListKeysResponder(resp *http.Response) (result Resour
 }
 
 // PostAuthorizationRule gets an authorization rule for a queue by rule name.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name.
 func (client QueuesClient) PostAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -946,12 +931,10 @@ func (client QueuesClient) PostAuthorizationRuleResponder(resp *http.Response) (
 }
 
 // RegenerateKeys regenerates the primary or secondary connection strings to the queue.
-// Parameters:
-// resourceGroupName - name of the Resource group within the Azure subscription.
-// namespaceName - the namespace name
-// queueName - the queue name.
-// authorizationRuleName - the authorizationrule name.
-// parameters - parameters supplied to regenerate the authorization rule.
+//
+// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the namespace
+// name queueName is the queue name. authorizationRuleName is the authorizationrule name. parameters is parameters
+// supplied to regenerate the authorization rule.
 func (client QueuesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, queueName string, authorizationRuleName string, parameters RegenerateKeysParameters) (result ResourceListKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

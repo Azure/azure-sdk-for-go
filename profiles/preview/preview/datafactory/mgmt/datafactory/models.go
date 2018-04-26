@@ -19,7 +19,7 @@
 
 package datafactory
 
-import original "github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2017-09-01-preview/datafactory"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
 
 type ActivityRunsClient = original.ActivityRunsClient
 

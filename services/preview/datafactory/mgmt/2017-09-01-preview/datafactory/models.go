@@ -33234,6 +33234,8 @@ type FactoryProperties struct {
 type FactoryRepoUpdate struct {
 	// FactoryResourceID - The factory resource id.
 	FactoryResourceID *string `json:"factoryResourceId,omitempty"`
+	// ResourceGroupName - The resource group name.
+	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
 	// VstsConfiguration - VSTS repo information of the factory.
 	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
 }

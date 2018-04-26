@@ -40,10 +40,9 @@ func NewDdosProtectionPlansClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // CreateOrUpdate creates or updates a DDoS protection plan.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// ddosProtectionPlanName - the name of the DDoS protection plan.
-// parameters - parameters supplied to the create or update operation.
+//
+// resourceGroupName is the name of the resource group. ddosProtectionPlanName is the name of the DDoS protection
+// plan. parameters is parameters supplied to the create or update operation.
 func (client DdosProtectionPlansClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (result DdosProtectionPlansCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
 	if err != nil {
@@ -112,9 +111,9 @@ func (client DdosProtectionPlansClient) CreateOrUpdateResponder(resp *http.Respo
 }
 
 // Delete deletes the specified DDoS protection plan.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// ddosProtectionPlanName - the name of the DDoS protection plan.
+//
+// resourceGroupName is the name of the resource group. ddosProtectionPlanName is the name of the DDoS protection
+// plan.
 func (client DdosProtectionPlansClient) Delete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result DdosProtectionPlansDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, ddosProtectionPlanName)
 	if err != nil {
@@ -180,9 +179,9 @@ func (client DdosProtectionPlansClient) DeleteResponder(resp *http.Response) (re
 }
 
 // Get gets information about the specified DDoS protection plan.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// ddosProtectionPlanName - the name of the DDoS protection plan.
+//
+// resourceGroupName is the name of the resource group. ddosProtectionPlanName is the name of the DDoS protection
+// plan.
 func (client DdosProtectionPlansClient) Get(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (result DdosProtectionPlan, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, ddosProtectionPlanName)
 	if err != nil {
@@ -337,8 +336,8 @@ func (client DdosProtectionPlansClient) ListComplete(ctx context.Context) (resul
 }
 
 // ListByResourceGroup gets all the DDoS protection plans in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client DdosProtectionPlansClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DdosProtectionPlanListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)

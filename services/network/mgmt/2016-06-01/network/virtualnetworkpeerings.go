@@ -40,11 +40,10 @@ func NewVirtualNetworkPeeringsClientWithBaseURI(baseURI string, subscriptionID s
 }
 
 // CreateOrUpdate the Put virtual network peering operation creates/updates a peering in the specified virtual network
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// virtualNetworkPeeringName - the name of the peering.
-// virtualNetworkPeeringParameters - parameters supplied to the create/update virtual network peering operation
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// virtualNetworkPeeringName is the name of the peering. virtualNetworkPeeringParameters is parameters supplied to
+// the create/update virtual network peering operation
 func (client VirtualNetworkPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering) (result VirtualNetworkPeeringsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters)
 	if err != nil {
@@ -114,10 +113,9 @@ func (client VirtualNetworkPeeringsClient) CreateOrUpdateResponder(resp *http.Re
 }
 
 // Delete the delete virtual network peering operation deletes the specified peering.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// virtualNetworkPeeringName - the name of the virtual network peering.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// virtualNetworkPeeringName is the name of the virtual network peering.
 func (client VirtualNetworkPeeringsClient) Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (result VirtualNetworkPeeringsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
 	if err != nil {
@@ -184,10 +182,9 @@ func (client VirtualNetworkPeeringsClient) DeleteResponder(resp *http.Response) 
 }
 
 // Get the Get virtual network peering operation retrieves information about the specified virtual network peering.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// virtualNetworkPeeringName - the name of the virtual network peering.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// virtualNetworkPeeringName is the name of the virtual network peering.
 func (client VirtualNetworkPeeringsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string) (result VirtualNetworkPeering, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
 	if err != nil {
@@ -253,9 +250,8 @@ func (client VirtualNetworkPeeringsClient) GetResponder(resp *http.Response) (re
 }
 
 // List the List virtual network peerings operation retrieves all the peerings in a virtual network.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client VirtualNetworkPeeringsClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result VirtualNetworkPeeringListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, virtualNetworkName)

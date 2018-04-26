@@ -40,10 +40,9 @@ func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 
 // CreateOrUpdate creates or updates a virtual network in the specified resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// parameters - parameters supplied to the create or update virtual network operation
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// parameters is parameters supplied to the create or update virtual network operation
 func (client VirtualNetworksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork) (result VirtualNetworksCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualNetworkName, parameters)
 	if err != nil {
@@ -112,9 +111,8 @@ func (client VirtualNetworksClient) CreateOrUpdateResponder(resp *http.Response)
 }
 
 // Delete deletes the specified virtual network.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client VirtualNetworksClient) Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result VirtualNetworksDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkName)
 	if err != nil {
@@ -180,10 +178,9 @@ func (client VirtualNetworksClient) DeleteResponder(resp *http.Response) (result
 }
 
 // Get gets the specified virtual network by resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// expand - expands referenced resources.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// expand is expands referenced resources.
 func (client VirtualNetworksClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, expand string) (result VirtualNetwork, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkName, expand)
 	if err != nil {
@@ -251,8 +248,8 @@ func (client VirtualNetworksClient) GetResponder(resp *http.Response) (result Vi
 }
 
 // List gets all virtual networks in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client VirtualNetworksClient) List(ctx context.Context, resourceGroupName string) (result VirtualNetworkListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)

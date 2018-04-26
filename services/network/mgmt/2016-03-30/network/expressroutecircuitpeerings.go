@@ -40,11 +40,10 @@ func NewExpressRouteCircuitPeeringsClientWithBaseURI(baseURI string, subscriptio
 }
 
 // CreateOrUpdate the Put Pering operation creates/updates an peering in the specified ExpressRouteCircuits
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
-// peeringParameters - parameters supplied to the create/update ExpressRouteCircuit Peering operation
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering. peeringParameters is parameters supplied to the create/update
+// ExpressRouteCircuit Peering operation
 func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering) (result ExpressRouteCircuitPeeringsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, circuitName, peeringName, peeringParameters)
 	if err != nil {
@@ -114,10 +113,9 @@ func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdateResponder(resp *ht
 }
 
 // Delete the delete peering operation deletes the specified peering from the ExpressRouteCircuit.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering.
 func (client ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result ExpressRouteCircuitPeeringsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
@@ -184,10 +182,9 @@ func (client ExpressRouteCircuitPeeringsClient) DeleteResponder(resp *http.Respo
 }
 
 // Get the GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering.
 func (client ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (result ExpressRouteCircuitPeering, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
@@ -253,9 +250,8 @@ func (client ExpressRouteCircuitPeeringsClient) GetResponder(resp *http.Response
 }
 
 // List the List peering operation retrieves all the peerings in an ExpressRouteCircuit.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the curcuit.
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the curcuit.
 func (client ExpressRouteCircuitPeeringsClient) List(ctx context.Context, resourceGroupName string, circuitName string) (result ExpressRouteCircuitPeeringListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, circuitName)

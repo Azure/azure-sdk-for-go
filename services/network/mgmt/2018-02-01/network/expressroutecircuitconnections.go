@@ -41,12 +41,10 @@ func NewExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscrip
 }
 
 // CreateOrUpdate creates or updates a Express Route Circuit Connection in the specified express route circuits.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
-// connectionName - the name of the express route circuit connection.
-// expressRouteCircuitConnectionParameters - parameters supplied to the create or update express route circuit
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering. connectionName is the name of the express route circuit connection.
+// expressRouteCircuitConnectionParameters is parameters supplied to the create or update express route circuit
 // circuit connection operation.
 func (client ExpressRouteCircuitConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection) (result ExpressRouteCircuitConnectionsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
@@ -118,11 +116,9 @@ func (client ExpressRouteCircuitConnectionsClient) CreateOrUpdateResponder(resp 
 }
 
 // Delete deletes the specified Express Route Circuit Connection from the specified express route circuit.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
-// connectionName - the name of the express route circuit connection.
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering. connectionName is the name of the express route circuit connection.
 func (client ExpressRouteCircuitConnectionsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result ExpressRouteCircuitConnectionsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName, peeringName, connectionName)
 	if err != nil {
@@ -190,11 +186,9 @@ func (client ExpressRouteCircuitConnectionsClient) DeleteResponder(resp *http.Re
 }
 
 // Get gets the specified Express Route Circuit Connection from the specified express route circuit.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// circuitName - the name of the express route circuit.
-// peeringName - the name of the peering.
-// connectionName - the name of the express route circuit connection.
+//
+// resourceGroupName is the name of the resource group. circuitName is the name of the express route circuit.
+// peeringName is the name of the peering. connectionName is the name of the express route circuit connection.
 func (client ExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (result ExpressRouteCircuitConnection, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName, peeringName, connectionName)
 	if err != nil {

@@ -43,12 +43,10 @@ func NewExpressRouteCrossConnectionPeeringsClientWithBaseURI(baseURI string, sub
 }
 
 // CreateOrUpdate creates or updates a peering in the specified ExpressRouteCrossConnection.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// crossConnectionName - the name of the ExpressRouteCrossConnection.
-// peeringName - the name of the peering.
-// peeringParameters - parameters supplied to the create or update ExpressRouteCrossConnection peering
-// operation.
+//
+// resourceGroupName is the name of the resource group. crossConnectionName is the name of the
+// ExpressRouteCrossConnection. peeringName is the name of the peering. peeringParameters is parameters supplied to
+// the create or update ExpressRouteCrossConnection peering operation.
 func (client ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering) (result ExpressRouteCrossConnectionPeeringsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: peeringParameters,
@@ -129,10 +127,9 @@ func (client ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateResponder(
 }
 
 // Delete deletes the specified peering from the ExpressRouteCrossConnection.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// crossConnectionName - the name of the ExpressRouteCrossConnection.
-// peeringName - the name of the peering.
+//
+// resourceGroupName is the name of the resource group. crossConnectionName is the name of the
+// ExpressRouteCrossConnection. peeringName is the name of the peering.
 func (client ExpressRouteCrossConnectionPeeringsClient) Delete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string) (result ExpressRouteCrossConnectionPeeringsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, crossConnectionName, peeringName)
 	if err != nil {
@@ -199,10 +196,9 @@ func (client ExpressRouteCrossConnectionPeeringsClient) DeleteResponder(resp *ht
 }
 
 // Get gets the specified peering for the ExpressRouteCrossConnection.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// crossConnectionName - the name of the ExpressRouteCrossConnection.
-// peeringName - the name of the peering.
+//
+// resourceGroupName is the name of the resource group. crossConnectionName is the name of the
+// ExpressRouteCrossConnection. peeringName is the name of the peering.
 func (client ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string) (result ExpressRouteCrossConnectionPeering, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, crossConnectionName, peeringName)
 	if err != nil {
@@ -268,9 +264,9 @@ func (client ExpressRouteCrossConnectionPeeringsClient) GetResponder(resp *http.
 }
 
 // List gets all peerings in a specified ExpressRouteCrossConnection.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// crossConnectionName - the name of the ExpressRouteCrossConnection.
+//
+// resourceGroupName is the name of the resource group. crossConnectionName is the name of the
+// ExpressRouteCrossConnection.
 func (client ExpressRouteCrossConnectionPeeringsClient) List(ctx context.Context, resourceGroupName string, crossConnectionName string) (result ExpressRouteCrossConnectionPeeringListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, crossConnectionName)

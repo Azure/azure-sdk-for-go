@@ -120,7 +120,6 @@ type PerformanceTierListResult = original.PerformanceTierListResult
 type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
 type ProxyResource = original.ProxyResource
-type Resource = original.Resource
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerForCreate = original.ServerForCreate

@@ -912,16 +912,6 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ARM resource.
-type Resource struct {
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'ServerSecurityAlertPolicyStateEnabled', 'ServerSecurityAlertPolicyStateDisabled'

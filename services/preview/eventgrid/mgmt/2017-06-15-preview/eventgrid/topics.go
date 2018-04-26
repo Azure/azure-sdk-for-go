@@ -68,7 +68,7 @@ func (client TopicsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -139,7 +139,7 @@ func (client TopicsClient) DeletePreparer(ctx context.Context, resourceGroupName
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -213,7 +213,7 @@ func (client TopicsClient) GetPreparer(ctx context.Context, resourceGroupName st
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -278,7 +278,7 @@ func (client TopicsClient) ListByResourceGroupPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -340,7 +340,7 @@ func (client TopicsClient) ListBySubscriptionPreparer(ctx context.Context) (*htt
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -410,7 +410,7 @@ func (client TopicsClient) ListEventTypesPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -477,7 +477,7 @@ func (client TopicsClient) ListSharedAccessKeysPreparer(ctx context.Context, res
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -550,7 +550,7 @@ func (client TopicsClient) RegenerateKeyPreparer(ctx context.Context, resourceGr
 		"topicName":         autorest.Encode("path", topicName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -579,77 +579,6 @@ func (client TopicsClient) RegenerateKeyResponder(resp *http.Response) (result T
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Update asynchronously updates a topic with the specified parameters.
-//
-// resourceGroupName is the name of the resource group within the user's subscription. topicName is name of the
-// topic topicUpdateParameters is topic update information
-func (client TopicsClient) Update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters) (result TopicsUpdateFuture, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, topicName, topicUpdateParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Update", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.UpdateSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "Update", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// UpdatePreparer prepares the Update request.
-func (client TopicsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"topicName":         autorest.Encode("path", topicName),
-	}
-
-	const APIVersion = "2018-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}", pathParameters),
-		autorest.WithJSON(topicUpdateParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client TopicsClient) UpdateSender(req *http.Request) (future TopicsUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated))
-	return
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client TopicsClient) UpdateResponder(resp *http.Response) (result Topic, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

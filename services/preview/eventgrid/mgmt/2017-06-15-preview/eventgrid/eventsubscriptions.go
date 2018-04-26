@@ -39,43 +39,43 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 	return EventSubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate asynchronously creates a new event subscription or updates an existing event subscription based on
-// the specified scope.
+// Create asynchronously creates a new event subscription to the specified scope. Existing event subscriptions cannot
+// be updated with this API and should instead use the Update event subscription API.
 //
-// scope is the identifier of the resource to which the event subscription needs to be created or updated. The
-// scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-// namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+// scope is the scope of the resource to which the event subscription needs to be created. The scope can be a
+// subscription, or a resource group, or a top level resource belonging to a resource provider namespace, or an
+// EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
 // for a resource, and
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-// for an EventGrid topic. eventSubscriptionName is name of the event subscription. Event subscription names must
-// be between 3 and 64 characters in length and should use alphanumeric letters only. eventSubscriptionInfo is
-// event subscription properties containing the destination and filter information
-func (client EventSubscriptionsClient) CreateOrUpdate(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription) (result EventSubscriptionsCreateOrUpdateFuture, err error) {
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, eventSubscriptionName, eventSubscriptionInfo)
+// for an EventGrid topic. eventSubscriptionName is name of the event subscription to be created. Event
+// subscription names must be between 3 and 64 characters in length and use alphanumeric letters only.
+// eventSubscriptionInfo is event subscription properties containing the destination and filter information
+func (client EventSubscriptionsClient) Create(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription) (result EventSubscriptionsCreateFuture, err error) {
+	req, err := client.CreatePreparer(ctx, scope, eventSubscriptionName, eventSubscriptionInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client EventSubscriptionsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client EventSubscriptionsClient) CreatePreparer(ctx context.Context, scope string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"eventSubscriptionName": autorest.Encode("path", eventSubscriptionName),
 		"scope":                 scope,
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -90,9 +90,9 @@ func (client EventSubscriptionsClient) CreateOrUpdatePreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (future EventSubscriptionsCreateOrUpdateFuture, err error) {
+func (client EventSubscriptionsClient) CreateSender(req *http.Request) (future EventSubscriptionsCreateFuture, err error) {
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	future.Future = azure.NewFuture(req)
 	future.req = req
@@ -105,9 +105,9 @@ func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (
 	return
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client EventSubscriptionsClient) CreateOrUpdateResponder(resp *http.Response) (result EventSubscription, err error) {
+func (client EventSubscriptionsClient) CreateResponder(resp *http.Response) (result EventSubscription, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -151,7 +151,7 @@ func (client EventSubscriptionsClient) DeletePreparer(ctx context.Context, scope
 		"scope":                 scope,
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -230,7 +230,7 @@ func (client EventSubscriptionsClient) GetPreparer(ctx context.Context, scope st
 		"scope":                 scope,
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -302,7 +302,7 @@ func (client EventSubscriptionsClient) GetFullURLPreparer(ctx context.Context, s
 		"scope":                 scope,
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -372,7 +372,7 @@ func (client EventSubscriptionsClient) ListByResourcePreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -437,7 +437,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupPreparer(ctx con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -505,7 +505,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypePrep
 		"topicTypeName":     autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -567,7 +567,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionPreparer(ctx cont
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -633,7 +633,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypePrepa
 		"topicTypeName":  autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -701,7 +701,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupPreparer(ctx c
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -770,7 +770,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypePr
 		"topicTypeName":     autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -835,7 +835,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionPreparer(ctx co
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -902,7 +902,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicTypePre
 		"topicTypeName":  autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -969,7 +969,7 @@ func (client EventSubscriptionsClient) UpdatePreparer(ctx context.Context, scope
 		"scope":                 scope,
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

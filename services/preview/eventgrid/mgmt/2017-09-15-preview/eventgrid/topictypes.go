@@ -70,7 +70,7 @@ func (client TopicTypesClient) GetPreparer(ctx context.Context, topicTypeName st
 		"topicTypeName": autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-09-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -128,7 +128,7 @@ func (client TopicTypesClient) List(ctx context.Context) (result TopicTypesListR
 
 // ListPreparer prepares the List request.
 func (client TopicTypesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-09-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -192,7 +192,7 @@ func (client TopicTypesClient) ListEventTypesPreparer(ctx context.Context, topic
 		"topicTypeName": autorest.Encode("path", topicTypeName),
 	}
 
-	const APIVersion = "2018-01-01"
+	const APIVersion = "2017-09-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

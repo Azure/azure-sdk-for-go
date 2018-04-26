@@ -449,6 +449,15 @@ const (
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
 )
 
+type RenderingType = original.RenderingType
+
+const (
+	NoGraph               RenderingType = original.NoGraph
+	Table                 RenderingType = original.Table
+	TimeSeries            RenderingType = original.TimeSeries
+	TimeSeriesPerInstance RenderingType = original.TimeSeriesPerInstance
+)
+
 type ResourceScopeType = original.ResourceScopeType
 
 const (
@@ -732,6 +741,8 @@ type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
 type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DataSource = original.DataSource
+type DataTableResponseColumn = original.DataTableResponseColumn
+type DataTableResponseObject = original.DataTableResponseObject
 type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultErrorResponseError = original.DefaultErrorResponseError
 type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
@@ -748,6 +759,12 @@ type DeploymentProperties = original.DeploymentProperties
 type DetectorAbnormalTimePeriod = original.DetectorAbnormalTimePeriod
 type DetectorDefinition = original.DetectorDefinition
 type DetectorDefinitionProperties = original.DetectorDefinitionProperties
+type DetectorInfo = original.DetectorInfo
+type DetectorResponse = original.DetectorResponse
+type DetectorResponseCollection = original.DetectorResponseCollection
+type DetectorResponseCollectionIterator = original.DetectorResponseCollectionIterator
+type DetectorResponseCollectionPage = original.DetectorResponseCollectionPage
+type DetectorResponseProperties = original.DetectorResponseProperties
 type DiagnosticAnalysis = original.DiagnosticAnalysis
 type DiagnosticAnalysisCollection = original.DiagnosticAnalysisCollection
 type DiagnosticAnalysisCollectionIterator = original.DiagnosticAnalysisCollectionIterator
@@ -758,6 +775,7 @@ type DiagnosticCategoryCollection = original.DiagnosticCategoryCollection
 type DiagnosticCategoryCollectionIterator = original.DiagnosticCategoryCollectionIterator
 type DiagnosticCategoryCollectionPage = original.DiagnosticCategoryCollectionPage
 type DiagnosticCategoryProperties = original.DiagnosticCategoryProperties
+type DiagnosticData = original.DiagnosticData
 type DiagnosticDetectorCollection = original.DiagnosticDetectorCollection
 type DiagnosticDetectorCollectionIterator = original.DiagnosticDetectorCollectionIterator
 type DiagnosticDetectorCollectionPage = original.DiagnosticDetectorCollectionPage
@@ -917,6 +935,7 @@ type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
 type RelayServiceConnectionEntityProperties = original.RelayServiceConnectionEntityProperties
+type Rendering = original.Rendering
 type RenewCertificateOrderRequest = original.RenewCertificateOrderRequest
 type RenewCertificateOrderRequestProperties = original.RenewCertificateOrderRequestProperties
 type RequestsBasedTrigger = original.RequestsBasedTrigger
@@ -1285,6 +1304,9 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 }
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
+}
+func PossibleRenderingTypeValues() []RenderingType {
+	return original.PossibleRenderingTypeValues()
 }
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()

@@ -24,6 +24,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // OperationsClient is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
@@ -31,16 +32,19 @@ type OperationsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewOperationsClient creates an instance of the OperationsClient client.
 func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
 	return NewOperationsClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
 func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
 	return OperationsClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // List lists all of the available Management REST API operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
 	result.fn = client.listNextResults
@@ -65,6 +69,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2018-01-01-preview"
@@ -80,6 +85,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -87,6 +93,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
@@ -121,6 +128,7 @@ func (client OperationsClient) listNextResults(lastResults OperationListResult) 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResultIterator, err error) {
 	result.page, err = client.List(ctx)

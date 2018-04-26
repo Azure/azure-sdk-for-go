@@ -24,21 +24,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // CanonicalSupportPlanTypesClient is the the service for managing third party addons.
 type CanonicalSupportPlanTypesClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // NewCanonicalSupportPlanTypesClient creates an instance of the CanonicalSupportPlanTypesClient client.
 func NewCanonicalSupportPlanTypesClient(subscriptionID string) CanonicalSupportPlanTypesClient {
 	return NewCanonicalSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // NewCanonicalSupportPlanTypesClientWithBaseURI creates an instance of the CanonicalSupportPlanTypesClient client.
 func NewCanonicalSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) CanonicalSupportPlanTypesClient {
 	return CanonicalSupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // Get returns the Canonical Support Plans as well as whether they are enabled or not for the subscription.
 //
 // providerName is the support plan type. For now the only valid type is "canonical".
@@ -64,6 +68,7 @@ func (client CanonicalSupportPlanTypesClient) Get(ctx context.Context, providerN
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetPreparer prepares the Get request.
 func (client CanonicalSupportPlanTypesClient) GetPreparer(ctx context.Context, providerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -84,6 +89,7 @@ func (client CanonicalSupportPlanTypesClient) GetPreparer(ctx context.Context, p
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -91,6 +97,7 @@ func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*htt
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client CanonicalSupportPlanTypesClient) GetResponder(resp *http.Response) (result ListCanonicalSupportPlanStatusItem, err error) {

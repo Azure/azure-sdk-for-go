@@ -25,21 +25,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // PeriodsClient is the billing client provides access to billing resources for Azure subscriptions.
 type PeriodsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // NewPeriodsClient creates an instance of the PeriodsClient client.
 func NewPeriodsClient(subscriptionID string) PeriodsClient {
 	return NewPeriodsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // NewPeriodsClientWithBaseURI creates an instance of the PeriodsClient client.
 func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string) PeriodsClient {
 	return PeriodsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // Get gets a named billing period.  This is only supported for Azure Web-Direct subscriptions. Other subscription
 // types which were not purchased directly through the Azure web portal are not supported through this preview API.
 //
@@ -66,6 +70,7 @@ func (client PeriodsClient) Get(ctx context.Context, billingPeriodName string) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetPreparer prepares the Get request.
 func (client PeriodsClient) GetPreparer(ctx context.Context, billingPeriodName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -86,6 +91,7 @@ func (client PeriodsClient) GetPreparer(ctx context.Context, billingPeriodName s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeriodsClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -93,6 +99,7 @@ func (client PeriodsClient) GetSender(req *http.Request) (*http.Response, error)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client PeriodsClient) GetResponder(resp *http.Response) (result Period, err error) {
@@ -106,6 +113,7 @@ func (client PeriodsClient) GetResponder(resp *http.Response) (result Period, er
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // List lists the available billing periods for a subscription in reverse chronological order. This is only supported
 // for Azure Web-Direct subscriptions. Other subscription types which were not purchased directly through the Azure web
 // portal are not supported through this preview API.
@@ -147,6 +155,7 @@ func (client PeriodsClient) List(ctx context.Context, filter string, skiptoken s
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListPreparer prepares the List request.
 func (client PeriodsClient) ListPreparer(ctx context.Context, filter string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -175,6 +184,7 @@ func (client PeriodsClient) ListPreparer(ctx context.Context, filter string, ski
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeriodsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -182,6 +192,7 @@ func (client PeriodsClient) ListSender(req *http.Request) (*http.Response, error
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client PeriodsClient) ListResponder(resp *http.Response) (result PeriodsListResult, err error) {
@@ -216,6 +227,7 @@ func (client PeriodsClient) listNextResults(lastResults PeriodsListResult) (resu
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client PeriodsClient) ListComplete(ctx context.Context, filter string, skiptoken string, top *int32) (result PeriodsListResultIterator, err error) {
 	result.page, err = client.List(ctx, filter, skiptoken, top)

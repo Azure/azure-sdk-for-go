@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Accuracy enumerates the values for accuracy.
 type Accuracy string
 
@@ -35,11 +36,13 @@ const (
 	Estimated Accuracy = "estimated"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleAccuracyValues returns an array of possible values for the Accuracy const type.
 func PossibleAccuracyValues() []Accuracy {
 	return []Accuracy{Actual, Estimated}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureCloudServiceRoleType enumerates the values for azure cloud service role type.
 type AzureCloudServiceRoleType string
 
@@ -52,11 +55,13 @@ const (
 	Worker AzureCloudServiceRoleType = "worker"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleAzureCloudServiceRoleTypeValues returns an array of possible values for the AzureCloudServiceRoleType const type.
 func PossibleAzureCloudServiceRoleTypeValues() []AzureCloudServiceRoleType {
 	return []AzureCloudServiceRoleType{Unknown, Web, Worker}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Bitness enumerates the values for bitness.
 type Bitness string
 
@@ -67,11 +72,13 @@ const (
 	ThreeTwobit Bitness = "32bit"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleBitnessValues returns an array of possible values for the Bitness const type.
 func PossibleBitnessValues() []Bitness {
 	return []Bitness{SixFourbit, ThreeTwobit}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ConnectionFailureState enumerates the values for connection failure state.
 type ConnectionFailureState string
 
@@ -84,11 +91,13 @@ const (
 	Ok ConnectionFailureState = "ok"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleConnectionFailureStateValues returns an array of possible values for the ConnectionFailureState const type.
 func PossibleConnectionFailureStateValues() []ConnectionFailureState {
 	return []ConnectionFailureState{Failed, Mixed, Ok}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // HypervisorType enumerates the values for hypervisor type.
 type HypervisorType string
 
@@ -99,11 +108,13 @@ const (
 	HypervisorTypeUnknown HypervisorType = "unknown"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleHypervisorTypeValues returns an array of possible values for the HypervisorType const type.
 func PossibleHypervisorTypeValues() []HypervisorType {
 	return []HypervisorType{HypervisorTypeHyperv, HypervisorTypeUnknown}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -122,11 +133,13 @@ const (
 	KindResourceReference Kind = "ResourceReference"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{KindRefclientgroup, KindRefmachine, KindRefmachinewithhints, KindRefport, KindRefprocess, KindResourceReference}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // KindBasicCoreResource enumerates the values for kind basic core resource.
 type KindBasicCoreResource string
 
@@ -145,11 +158,13 @@ const (
 	KindProcess KindBasicCoreResource = "process"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindBasicCoreResourceValues returns an array of possible values for the KindBasicCoreResource const type.
 func PossibleKindBasicCoreResourceValues() []KindBasicCoreResource {
 	return []KindBasicCoreResource{KindClientGroup, KindCoreResource, KindMachine, KindMachineGroup, KindPort, KindProcess}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // KindBasicHostingConfiguration enumerates the values for kind basic hosting configuration.
 type KindBasicHostingConfiguration string
 
@@ -160,11 +175,13 @@ const (
 	KindProviderazure KindBasicHostingConfiguration = "provider:azure"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindBasicHostingConfigurationValues returns an array of possible values for the KindBasicHostingConfiguration const type.
 func PossibleKindBasicHostingConfigurationValues() []KindBasicHostingConfiguration {
 	return []KindBasicHostingConfiguration{KindHostingConfiguration, KindProviderazure}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // KindBasicMapRequest enumerates the values for kind basic map request.
 type KindBasicMapRequest string
 
@@ -181,11 +198,13 @@ const (
 	KindMultipleMachinesMapRequest KindBasicMapRequest = "MultipleMachinesMapRequest"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindBasicMapRequestValues returns an array of possible values for the KindBasicMapRequest const type.
 func PossibleKindBasicMapRequestValues() []KindBasicMapRequest {
 	return []KindBasicMapRequest{KindMapmachineGroupDependency, KindMapmachineListDependency, KindMapRequest, KindMapsingleMachineDependency, KindMultipleMachinesMapRequest}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // KindBasicProcessHostingConfiguration enumerates the values for kind basic process hosting configuration.
 type KindBasicProcessHostingConfiguration string
 
@@ -196,11 +215,13 @@ const (
 	KindBasicProcessHostingConfigurationKindProviderazure KindBasicProcessHostingConfiguration = "provider:azure"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindBasicProcessHostingConfigurationValues returns an array of possible values for the KindBasicProcessHostingConfiguration const type.
 func PossibleKindBasicProcessHostingConfigurationValues() []KindBasicProcessHostingConfiguration {
 	return []KindBasicProcessHostingConfiguration{KindBasicProcessHostingConfigurationKindProcessHostingConfiguration, KindBasicProcessHostingConfigurationKindProviderazure}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // KindBasicRelationship enumerates the values for kind basic relationship.
 type KindBasicRelationship string
 
@@ -213,11 +234,13 @@ const (
 	KindRelconnection KindBasicRelationship = "rel:connection"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleKindBasicRelationshipValues returns an array of possible values for the KindBasicRelationship const type.
 func PossibleKindBasicRelationshipValues() []KindBasicRelationship {
 	return []KindBasicRelationship{KindRelacceptor, KindRelationship, KindRelconnection}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupType enumerates the values for machine group type.
 type MachineGroupType string
 
@@ -234,11 +257,13 @@ const (
 	MachineGroupTypeUserStatic MachineGroupType = "user-static"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleMachineGroupTypeValues returns an array of possible values for the MachineGroupType const type.
 func PossibleMachineGroupTypeValues() []MachineGroupType {
 	return []MachineGroupType{MachineGroupTypeAzureCs, MachineGroupTypeAzureSf, MachineGroupTypeAzureVmss, MachineGroupTypeUnknown, MachineGroupTypeUserStatic}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineRebootStatus enumerates the values for machine reboot status.
 type MachineRebootStatus string
 
@@ -251,11 +276,13 @@ const (
 	MachineRebootStatusUnknown MachineRebootStatus = "unknown"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleMachineRebootStatusValues returns an array of possible values for the MachineRebootStatus const type.
 func PossibleMachineRebootStatusValues() []MachineRebootStatus {
 	return []MachineRebootStatus{MachineRebootStatusNotRebooted, MachineRebootStatusRebooted, MachineRebootStatusUnknown}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MonitoringState enumerates the values for monitoring state.
 type MonitoringState string
 
@@ -266,11 +293,13 @@ const (
 	Monitored MonitoringState = "monitored"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleMonitoringStateValues returns an array of possible values for the MonitoringState const type.
 func PossibleMonitoringStateValues() []MonitoringState {
 	return []MonitoringState{Discovered, Monitored}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // OperatingSystemFamily enumerates the values for operating system family.
 type OperatingSystemFamily string
 
@@ -287,11 +316,13 @@ const (
 	OperatingSystemFamilyWindows OperatingSystemFamily = "windows"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleOperatingSystemFamilyValues returns an array of possible values for the OperatingSystemFamily const type.
 func PossibleOperatingSystemFamilyValues() []OperatingSystemFamily {
 	return []OperatingSystemFamily{OperatingSystemFamilyAix, OperatingSystemFamilyLinux, OperatingSystemFamilySolaris, OperatingSystemFamilyUnknown, OperatingSystemFamilyWindows}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessRole enumerates the values for process role.
 type ProcessRole string
 
@@ -308,11 +339,13 @@ const (
 	WebServer ProcessRole = "webServer"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleProcessRoleValues returns an array of possible values for the ProcessRole const type.
 func PossibleProcessRoleValues() []ProcessRole {
 	return []ProcessRole{AppServer, DatabaseServer, LdapServer, SmbServer, WebServer}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Provider enumerates the values for provider.
 type Provider string
 
@@ -321,11 +354,13 @@ const (
 	Azure Provider = "azure"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleProviderValues returns an array of possible values for the Provider const type.
 func PossibleProviderValues() []Provider {
 	return []Provider{Azure}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Provider1 enumerates the values for provider 1.
 type Provider1 string
 
@@ -334,11 +369,13 @@ const (
 	Provider1Azure Provider1 = "azure"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleProvider1Values returns an array of possible values for the Provider1 const type.
 func PossibleProvider1Values() []Provider1 {
 	return []Provider1{Provider1Azure}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // VirtualizationState enumerates the values for virtualization state.
 type VirtualizationState string
 
@@ -353,11 +390,13 @@ const (
 	VirtualizationStateVirtual VirtualizationState = "virtual"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleVirtualizationStateValues returns an array of possible values for the VirtualizationState const type.
 func PossibleVirtualizationStateValues() []VirtualizationState {
 	return []VirtualizationState{VirtualizationStateHypervisor, VirtualizationStatePhysical, VirtualizationStateUnknown, VirtualizationStateVirtual}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // VirtualMachineType enumerates the values for virtual machine type.
 type VirtualMachineType string
 
@@ -378,11 +417,13 @@ const (
 	VirtualMachineTypeXen VirtualMachineType = "xen"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PossibleVirtualMachineTypeValues returns an array of possible values for the VirtualMachineType const type.
 func PossibleVirtualMachineTypeValues() []VirtualMachineType {
 	return []VirtualMachineType{VirtualMachineTypeHyperv, VirtualMachineTypeLdom, VirtualMachineTypeLpar, VirtualMachineTypeUnknown, VirtualMachineTypeVirtualPc, VirtualMachineTypeVmware, VirtualMachineTypeXen}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Acceptor a process accepting on a port.
 type Acceptor struct {
 	*AcceptorProperties `json:"properties,omitempty"`
@@ -396,6 +437,7 @@ type Acceptor struct {
 	Kind KindBasicRelationship `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Acceptor.
 func (a Acceptor) MarshalJSON() ([]byte, error) {
 	a.Kind = KindRelacceptor
@@ -418,26 +460,31 @@ func (a Acceptor) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsConnection is the BasicRelationship implementation for Acceptor.
 func (a Acceptor) AsConnection() (*Connection, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAcceptor is the BasicRelationship implementation for Acceptor.
 func (a Acceptor) AsAcceptor() (*Acceptor, bool) {
 	return &a, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsRelationship is the BasicRelationship implementation for Acceptor.
 func (a Acceptor) AsRelationship() (*Relationship, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicRelationship is the BasicRelationship implementation for Acceptor.
 func (a Acceptor) AsBasicRelationship() (BasicRelationship, bool) {
 	return &a, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for Acceptor struct.
 func (a *Acceptor) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -498,6 +545,7 @@ func (a *Acceptor) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AcceptorProperties properties for an acceptor relationship.
 type AcceptorProperties struct {
 	// Source - Port being accepted.
@@ -510,6 +558,7 @@ type AcceptorProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AgentConfiguration describes the configuration of the Dependency Agent installed on a machine.
 type AgentConfiguration struct {
 	// AgentID - Health Service Agent unique identifier.
@@ -526,6 +575,7 @@ type AgentConfiguration struct {
 	ClockGranularity *int32 `json:"clockGranularity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureCloudServiceConfiguration describes an Azure Cloud Service
 type AzureCloudServiceConfiguration struct {
 	// Name - Cloud Service name
@@ -540,6 +590,7 @@ type AzureCloudServiceConfiguration struct {
 	RoleType AzureCloudServiceRoleType `json:"roleType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureHostingConfiguration provides information about how a machine is hosted in Azure
 type AzureHostingConfiguration struct {
 	// VMID - Virtual Machine ID (unique identifier).
@@ -574,6 +625,7 @@ type AzureHostingConfiguration struct {
 	Kind KindBasicHostingConfiguration `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for AzureHostingConfiguration.
 func (ahc AzureHostingConfiguration) MarshalJSON() ([]byte, error) {
 	ahc.Kind = KindProviderazure
@@ -626,21 +678,25 @@ func (ahc AzureHostingConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAzureHostingConfiguration is the BasicHostingConfiguration implementation for AzureHostingConfiguration.
 func (ahc AzureHostingConfiguration) AsAzureHostingConfiguration() (*AzureHostingConfiguration, bool) {
 	return &ahc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsHostingConfiguration is the BasicHostingConfiguration implementation for AzureHostingConfiguration.
 func (ahc AzureHostingConfiguration) AsHostingConfiguration() (*HostingConfiguration, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicHostingConfiguration is the BasicHostingConfiguration implementation for AzureHostingConfiguration.
 func (ahc AzureHostingConfiguration) AsBasicHostingConfiguration() (BasicHostingConfiguration, bool) {
 	return &ahc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureProcessHostingConfiguration describes the hosting configuration of a process when hosted on azure
 type AzureProcessHostingConfiguration struct {
 	// CloudService - Contains information about the cloud service the process belongs to
@@ -651,6 +707,7 @@ type AzureProcessHostingConfiguration struct {
 	Kind KindBasicProcessHostingConfiguration `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for AzureProcessHostingConfiguration.
 func (aphc AzureProcessHostingConfiguration) MarshalJSON() ([]byte, error) {
 	aphc.Kind = KindBasicProcessHostingConfigurationKindProviderazure
@@ -667,21 +724,25 @@ func (aphc AzureProcessHostingConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAzureProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for AzureProcessHostingConfiguration.
 func (aphc AzureProcessHostingConfiguration) AsAzureProcessHostingConfiguration() (*AzureProcessHostingConfiguration, bool) {
 	return &aphc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for AzureProcessHostingConfiguration.
 func (aphc AzureProcessHostingConfiguration) AsProcessHostingConfiguration() (*ProcessHostingConfiguration, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for AzureProcessHostingConfiguration.
 func (aphc AzureProcessHostingConfiguration) AsBasicProcessHostingConfiguration() (BasicProcessHostingConfiguration, bool) {
 	return &aphc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureServiceFabricClusterConfiguration describes an Azure Service Fabric Cluster
 type AzureServiceFabricClusterConfiguration struct {
 	// Name - Service Fabric cluster name.
@@ -690,6 +751,7 @@ type AzureServiceFabricClusterConfiguration struct {
 	ClusterID *string `json:"clusterId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AzureVMScaleSetConfiguration describes an Azure Virtual Machine Scale Set
 type AzureVMScaleSetConfiguration struct {
 	// Name - Virtual Machine Scale Set name
@@ -702,6 +764,7 @@ type AzureVMScaleSetConfiguration struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroup represents a collection of clients of a resource. A client group can represent the clients of a
 // port, process, or a machine.
 type ClientGroup struct {
@@ -720,6 +783,7 @@ type ClientGroup struct {
 	Kind KindBasicCoreResource `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ClientGroup.
 func (cg ClientGroup) MarshalJSON() ([]byte, error) {
 	cg.Kind = KindClientGroup
@@ -745,41 +809,49 @@ func (cg ClientGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsMachine() (*Machine, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsProcess() (*Process, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsPort() (*Port, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsClientGroup() (*ClientGroup, bool) {
 	return &cg, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsMachineGroup() (*MachineGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsCoreResource() (*CoreResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for ClientGroup.
 func (cg ClientGroup) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &cg, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ClientGroup struct.
 func (cg *ClientGroup) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -849,6 +921,7 @@ func (cg *ClientGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMember represents a member of a client group
 type ClientGroupMember struct {
 	// ClientGroupMemberProperties - Resource properties.
@@ -861,6 +934,7 @@ type ClientGroupMember struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ClientGroupMember.
 func (cgm ClientGroupMember) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -879,6 +953,7 @@ func (cgm ClientGroupMember) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ClientGroupMember struct.
 func (cgm *ClientGroupMember) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -930,6 +1005,7 @@ func (cgm *ClientGroupMember) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMemberProperties resource properties.
 type ClientGroupMemberProperties struct {
 	// IPAddress - IP address.
@@ -940,6 +1016,7 @@ type ClientGroupMemberProperties struct {
 	Processes *[]ProcessReference `json:"processes,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMembersCollection collection of ClientGroupMember resources.
 type ClientGroupMembersCollection struct {
 	autorest.Response `json:"-"`
@@ -949,12 +1026,14 @@ type ClientGroupMembersCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMembersCollectionIterator provides access to a complete listing of ClientGroupMember values.
 type ClientGroupMembersCollectionIterator struct {
 	i    int
 	page ClientGroupMembersCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ClientGroupMembersCollectionIterator) Next() error {
@@ -971,16 +1050,19 @@ func (iter *ClientGroupMembersCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ClientGroupMembersCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter ClientGroupMembersCollectionIterator) Response() ClientGroupMembersCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ClientGroupMembersCollectionIterator) Value() ClientGroupMember {
@@ -990,6 +1072,7 @@ func (iter ClientGroupMembersCollectionIterator) Value() ClientGroupMember {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cgmc ClientGroupMembersCollection) IsEmpty() bool {
 	return cgmc.Value == nil || len(*cgmc.Value) == 0
@@ -1007,12 +1090,14 @@ func (cgmc ClientGroupMembersCollection) clientGroupMembersCollectionPreparer() 
 		autorest.WithBaseURL(to.String(cgmc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMembersCollectionPage contains a page of ClientGroupMember values.
 type ClientGroupMembersCollectionPage struct {
 	fn   func(ClientGroupMembersCollection) (ClientGroupMembersCollection, error)
 	cgmc ClientGroupMembersCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ClientGroupMembersCollectionPage) Next() error {
@@ -1024,16 +1109,19 @@ func (page *ClientGroupMembersCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ClientGroupMembersCollectionPage) NotDone() bool {
 	return !page.cgmc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page ClientGroupMembersCollectionPage) Response() ClientGroupMembersCollection {
 	return page.cgmc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ClientGroupMembersCollectionPage) Values() []ClientGroupMember {
 	if page.cgmc.IsEmpty() {
@@ -1042,6 +1130,7 @@ func (page ClientGroupMembersCollectionPage) Values() []ClientGroupMember {
 	return *page.cgmc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupMembersCount specifies the number of members in a client group.
 type ClientGroupMembersCount struct {
 	autorest.Response `json:"-"`
@@ -1057,12 +1146,14 @@ type ClientGroupMembersCount struct {
 	Accuracy Accuracy `json:"accuracy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupProperties resource properties.
 type ClientGroupProperties struct {
 	// ClientsOf - Reference to the resource whose clients are represented by this group.
 	ClientsOf BasicResourceReference `json:"clientsOf,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ClientGroupProperties struct.
 func (cg *ClientGroupProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1086,6 +1177,7 @@ func (cg *ClientGroupProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ClientGroupReference reference to a client group.
 type ClientGroupReference struct {
 	// ID - Resource URI.
@@ -1098,6 +1190,7 @@ type ClientGroupReference struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ClientGroupReference.
 func (cgr ClientGroupReference) MarshalJSON() ([]byte, error) {
 	cgr.Kind = KindRefclientgroup
@@ -1117,41 +1210,49 @@ func (cgr ClientGroupReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsMachineReference() (*MachineReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsProcessReference() (*ProcessReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsPortReference() (*PortReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return &cgr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsResourceReference() (*ResourceReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for ClientGroupReference.
 func (cgr ClientGroupReference) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &cgr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Connection a network connection.
 type Connection struct {
 	*ConnectionProperties `json:"properties,omitempty"`
@@ -1165,6 +1266,7 @@ type Connection struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Connection.
 func (c Connection) MarshalJSON() ([]byte, error) {
 	c.Kind = KindRelconnection
@@ -1187,26 +1289,31 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsConnection is the BasicRelationship implementation for Connection.
 func (c Connection) AsConnection() (*Connection, bool) {
 	return &c, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAcceptor is the BasicRelationship implementation for Connection.
 func (c Connection) AsAcceptor() (*Acceptor, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsRelationship is the BasicRelationship implementation for Connection.
 func (c Connection) AsRelationship() (*Relationship, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicRelationship is the BasicRelationship implementation for Connection.
 func (c Connection) AsBasicRelationship() (BasicRelationship, bool) {
 	return &c, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for Connection struct.
 func (c *Connection) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1267,6 +1374,7 @@ func (c *Connection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ConnectionCollection collection of Connection resources.
 type ConnectionCollection struct {
 	autorest.Response `json:"-"`
@@ -1276,12 +1384,14 @@ type ConnectionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ConnectionCollectionIterator provides access to a complete listing of Connection values.
 type ConnectionCollectionIterator struct {
 	i    int
 	page ConnectionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ConnectionCollectionIterator) Next() error {
@@ -1298,16 +1408,19 @@ func (iter *ConnectionCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ConnectionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter ConnectionCollectionIterator) Response() ConnectionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ConnectionCollectionIterator) Value() Connection {
@@ -1317,6 +1430,7 @@ func (iter ConnectionCollectionIterator) Value() Connection {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cc ConnectionCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
@@ -1334,12 +1448,14 @@ func (cc ConnectionCollection) connectionCollectionPreparer() (*http.Request, er
 		autorest.WithBaseURL(to.String(cc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ConnectionCollectionPage contains a page of Connection values.
 type ConnectionCollectionPage struct {
 	fn func(ConnectionCollection) (ConnectionCollection, error)
 	cc ConnectionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ConnectionCollectionPage) Next() error {
@@ -1351,16 +1467,19 @@ func (page *ConnectionCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ConnectionCollectionPage) NotDone() bool {
 	return !page.cc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page ConnectionCollectionPage) Response() ConnectionCollection {
 	return page.cc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ConnectionCollectionPage) Values() []Connection {
 	if page.cc.IsEmpty() {
@@ -1369,6 +1488,7 @@ func (page ConnectionCollectionPage) Values() []Connection {
 	return *page.cc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ConnectionProperties properties for a connection resource.
 type ConnectionProperties struct {
 	// ServerPort - Reference to the server port via which this connection has been established.
@@ -1385,6 +1505,7 @@ type ConnectionProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ConnectionProperties struct.
 func (cp *ConnectionProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1452,6 +1573,7 @@ func (cp *ConnectionProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicCoreResource marker resource for the core Service Map resources
 type BasicCoreResource interface {
 	AsMachine() (*Machine, bool)
@@ -1462,6 +1584,7 @@ type BasicCoreResource interface {
 	AsCoreResource() (*CoreResource, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // CoreResource marker resource for the core Service Map resources
 type CoreResource struct {
 	// Etag - Resource ETAG.
@@ -1529,6 +1652,7 @@ func unmarshalBasicCoreResourceArray(body []byte) ([]BasicCoreResource, error) {
 	return crArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for CoreResource.
 func (cr CoreResource) MarshalJSON() ([]byte, error) {
 	cr.Kind = KindCoreResource
@@ -1551,41 +1675,49 @@ func (cr CoreResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsMachine() (*Machine, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsProcess() (*Process, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsPort() (*Port, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsClientGroup() (*ClientGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsMachineGroup() (*MachineGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsCoreResource() (*CoreResource, bool) {
 	return &cr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for CoreResource.
 func (cr CoreResource) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &cr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Error error details.
 type Error struct {
 	// Code - Error code identifying the specific error.
@@ -1594,18 +1726,21 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ErrorResponse an error response from the API.
 type ErrorResponse struct {
 	// Error - Error information.
 	Error *Error `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicHostingConfiguration describes the hosting configuration of a machine.
 type BasicHostingConfiguration interface {
 	AsAzureHostingConfiguration() (*AzureHostingConfiguration, bool)
 	AsHostingConfiguration() (*HostingConfiguration, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // HostingConfiguration describes the hosting configuration of a machine.
 type HostingConfiguration struct {
 	// Provider - The hosting provider of the VM. Possible values include: 'Azure'
@@ -1651,6 +1786,7 @@ func unmarshalBasicHostingConfigurationArray(body []byte) ([]BasicHostingConfigu
 	return hcArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for HostingConfiguration.
 func (hc HostingConfiguration) MarshalJSON() ([]byte, error) {
 	hc.Kind = KindHostingConfiguration
@@ -1664,21 +1800,25 @@ func (hc HostingConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAzureHostingConfiguration is the BasicHostingConfiguration implementation for HostingConfiguration.
 func (hc HostingConfiguration) AsAzureHostingConfiguration() (*AzureHostingConfiguration, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsHostingConfiguration is the BasicHostingConfiguration implementation for HostingConfiguration.
 func (hc HostingConfiguration) AsHostingConfiguration() (*HostingConfiguration, bool) {
 	return &hc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicHostingConfiguration is the BasicHostingConfiguration implementation for HostingConfiguration.
 func (hc HostingConfiguration) AsBasicHostingConfiguration() (BasicHostingConfiguration, bool) {
 	return &hc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // HypervisorConfiguration describes the hypervisor configuration of a machine.
 type HypervisorConfiguration struct {
 	// HypervisorType - Specifies the virtualization technology used by the hypervisor (hyperv, vmware, etc.). Possible values include: 'HypervisorTypeUnknown', 'HypervisorTypeHyperv'
@@ -1687,6 +1827,7 @@ type HypervisorConfiguration struct {
 	NativeHostMachineID *string `json:"nativeHostMachineId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ImageConfiguration describes the VM image of a machine.
 type ImageConfiguration struct {
 	// Publisher - Publisher of the VM image.
@@ -1699,6 +1840,7 @@ type ImageConfiguration struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Ipv4NetworkInterface describes an IPv4 network interface.
 type Ipv4NetworkInterface struct {
 	// IPAddress - IPv4 address.
@@ -1707,12 +1849,14 @@ type Ipv4NetworkInterface struct {
 	SubnetMask *string `json:"subnetMask,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Ipv6NetworkInterface describes an IPv6 network interface.
 type Ipv6NetworkInterface struct {
 	// IPAddress - IPv6 address.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Liveness specifies the contents of a check liveness response.
 type Liveness struct {
 	autorest.Response `json:"-"`
@@ -1724,6 +1868,7 @@ type Liveness struct {
 	Live *bool `json:"live,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Machine a machine resource represents a discovered computer system. It can be *monitored*, i.e., a Dependency
 // Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the data stream from
 // monitored machines. As machines change, prior versions of the machine resource are preserved and available for
@@ -1746,6 +1891,7 @@ type Machine struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Machine.
 func (mVar Machine) MarshalJSON() ([]byte, error) {
 	mVar.Kind = KindMachine
@@ -1771,41 +1917,49 @@ func (mVar Machine) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsMachine() (*Machine, bool) {
 	return &mVar, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsProcess() (*Process, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsPort() (*Port, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsClientGroup() (*ClientGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsMachineGroup() (*MachineGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsCoreResource() (*CoreResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for Machine.
 func (mVar Machine) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &mVar, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for Machine struct.
 func (mVar *Machine) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1875,6 +2029,7 @@ func (mVar *Machine) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineCollection collection of Machine resources.
 type MachineCollection struct {
 	autorest.Response `json:"-"`
@@ -1884,12 +2039,14 @@ type MachineCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineCollectionIterator provides access to a complete listing of Machine values.
 type MachineCollectionIterator struct {
 	i    int
 	page MachineCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *MachineCollectionIterator) Next() error {
@@ -1906,16 +2063,19 @@ func (iter *MachineCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter MachineCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter MachineCollectionIterator) Response() MachineCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter MachineCollectionIterator) Value() Machine {
@@ -1925,6 +2085,7 @@ func (iter MachineCollectionIterator) Value() Machine {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (mc MachineCollection) IsEmpty() bool {
 	return mc.Value == nil || len(*mc.Value) == 0
@@ -1942,12 +2103,14 @@ func (mc MachineCollection) machineCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(mc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineCollectionPage contains a page of Machine values.
 type MachineCollectionPage struct {
 	fn func(MachineCollection) (MachineCollection, error)
 	mc MachineCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *MachineCollectionPage) Next() error {
@@ -1959,16 +2122,19 @@ func (page *MachineCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page MachineCollectionPage) NotDone() bool {
 	return !page.mc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page MachineCollectionPage) Response() MachineCollection {
 	return page.mc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page MachineCollectionPage) Values() []Machine {
 	if page.mc.IsEmpty() {
@@ -1977,6 +2143,7 @@ func (page MachineCollectionPage) Values() []Machine {
 	return *page.mc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineCountsByOperatingSystem machines by operating system.
 type MachineCountsByOperatingSystem struct {
 	// Windows - Number of live Windows machines.
@@ -1985,6 +2152,7 @@ type MachineCountsByOperatingSystem struct {
 	Linux *int32 `json:"linux,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroup a user-defined logical grouping of machines.
 type MachineGroup struct {
 	autorest.Response `json:"-"`
@@ -2002,6 +2170,7 @@ type MachineGroup struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachineGroup.
 func (mg MachineGroup) MarshalJSON() ([]byte, error) {
 	mg.Kind = KindMachineGroup
@@ -2027,41 +2196,49 @@ func (mg MachineGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsMachine() (*Machine, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsProcess() (*Process, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsPort() (*Port, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsClientGroup() (*ClientGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsMachineGroup() (*MachineGroup, bool) {
 	return &mg, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsCoreResource() (*CoreResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for MachineGroup.
 func (mg MachineGroup) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &mg, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for MachineGroup struct.
 func (mg *MachineGroup) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2131,6 +2308,7 @@ func (mg *MachineGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupCollection collection of Machine Group resources.
 type MachineGroupCollection struct {
 	autorest.Response `json:"-"`
@@ -2140,12 +2318,14 @@ type MachineGroupCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupCollectionIterator provides access to a complete listing of MachineGroup values.
 type MachineGroupCollectionIterator struct {
 	i    int
 	page MachineGroupCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *MachineGroupCollectionIterator) Next() error {
@@ -2162,16 +2342,19 @@ func (iter *MachineGroupCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter MachineGroupCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter MachineGroupCollectionIterator) Response() MachineGroupCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter MachineGroupCollectionIterator) Value() MachineGroup {
@@ -2181,6 +2364,7 @@ func (iter MachineGroupCollectionIterator) Value() MachineGroup {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (mgc MachineGroupCollection) IsEmpty() bool {
 	return mgc.Value == nil || len(*mgc.Value) == 0
@@ -2198,12 +2382,14 @@ func (mgc MachineGroupCollection) machineGroupCollectionPreparer() (*http.Reques
 		autorest.WithBaseURL(to.String(mgc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupCollectionPage contains a page of MachineGroup values.
 type MachineGroupCollectionPage struct {
 	fn  func(MachineGroupCollection) (MachineGroupCollection, error)
 	mgc MachineGroupCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *MachineGroupCollectionPage) Next() error {
@@ -2215,16 +2401,19 @@ func (page *MachineGroupCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page MachineGroupCollectionPage) NotDone() bool {
 	return !page.mgc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page MachineGroupCollectionPage) Response() MachineGroupCollection {
 	return page.mgc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page MachineGroupCollectionPage) Values() []MachineGroup {
 	if page.mgc.IsEmpty() {
@@ -2233,6 +2422,7 @@ func (page MachineGroupCollectionPage) Values() []MachineGroup {
 	return *page.mgc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupMapRequest specifies the computation of a machine group dependency map. A machine group dependency
 // map includes all direct dependencies the machines in the group.
 type MachineGroupMapRequest struct {
@@ -2248,6 +2438,7 @@ type MachineGroupMapRequest struct {
 	Kind KindBasicMapRequest `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) MarshalJSON() ([]byte, error) {
 	mgmr.Kind = KindMapmachineGroupDependency
@@ -2270,41 +2461,49 @@ func (mgmr MachineGroupMapRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsSingleMachineDependencyMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMultipleMachinesMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMultipleMachinesMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsBasicMultipleMachinesMapRequest() (BasicMultipleMachinesMapRequest, bool) {
 	return &mgmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineListMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsMachineListMapRequest() (*MachineListMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroupMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsMachineGroupMapRequest() (*MachineGroupMapRequest, bool) {
 	return &mgmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsMapRequest() (*MapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMapRequest is the BasicMapRequest implementation for MachineGroupMapRequest.
 func (mgmr MachineGroupMapRequest) AsBasicMapRequest() (BasicMapRequest, bool) {
 	return &mgmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineGroupProperties resource properties.
 type MachineGroupProperties struct {
 	// GroupType - Type of the machine group. Possible values include: 'MachineGroupTypeUnknown', 'MachineGroupTypeAzureCs', 'MachineGroupTypeAzureSf', 'MachineGroupTypeAzureVmss', 'MachineGroupTypeUserStatic'
@@ -2317,6 +2516,7 @@ type MachineGroupProperties struct {
 	Machines *[]MachineReferenceWithHints `json:"machines,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineListMapRequest specifies the computation of a one hope dependency map for a list of machines. The
 // resulting map includes all direct dependencies for the specified machines.
 type MachineListMapRequest struct {
@@ -2332,6 +2532,7 @@ type MachineListMapRequest struct {
 	Kind KindBasicMapRequest `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachineListMapRequest.
 func (mlmr MachineListMapRequest) MarshalJSON() ([]byte, error) {
 	mlmr.Kind = KindMapmachineListDependency
@@ -2354,41 +2555,49 @@ func (mlmr MachineListMapRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsSingleMachineDependencyMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMultipleMachinesMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMultipleMachinesMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsBasicMultipleMachinesMapRequest() (BasicMultipleMachinesMapRequest, bool) {
 	return &mlmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineListMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsMachineListMapRequest() (*MachineListMapRequest, bool) {
 	return &mlmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroupMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsMachineGroupMapRequest() (*MachineGroupMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsMapRequest() (*MapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMapRequest is the BasicMapRequest implementation for MachineListMapRequest.
 func (mlmr MachineListMapRequest) AsBasicMapRequest() (BasicMapRequest, bool) {
 	return &mlmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineProperties resource properties.
 type MachineProperties struct {
 	// Timestamp - UTC date and time when this resource was updated in the system.
@@ -2423,6 +2632,7 @@ type MachineProperties struct {
 	Hosting BasicHostingConfiguration `json:"hosting,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for MachineProperties struct.
 func (mVar *MachineProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2572,6 +2782,7 @@ func (mVar *MachineProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineReference reference to a machine.
 type MachineReference struct {
 	// ID - Resource URI.
@@ -2584,6 +2795,7 @@ type MachineReference struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachineReference.
 func (mr MachineReference) MarshalJSON() ([]byte, error) {
 	mr.Kind = KindRefmachine
@@ -2603,41 +2815,49 @@ func (mr MachineReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsMachineReference() (*MachineReference, bool) {
 	return &mr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsProcessReference() (*ProcessReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsPortReference() (*PortReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsResourceReference() (*ResourceReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for MachineReference.
 func (mr MachineReference) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &mr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineReferenceWithHints a machine reference with a hint of the machine's name and operating system.
 type MachineReferenceWithHints struct {
 	// MachineReferenceWithHintsProperties - Machine reference with name and os hints.
@@ -2652,6 +2872,7 @@ type MachineReferenceWithHints struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) MarshalJSON() ([]byte, error) {
 	mrwh.Kind = KindRefmachinewithhints
@@ -2674,41 +2895,49 @@ func (mrwh MachineReferenceWithHints) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsMachineReference() (*MachineReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsProcessReference() (*ProcessReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsPortReference() (*PortReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return &mrwh, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsResourceReference() (*ResourceReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for MachineReferenceWithHints.
 func (mrwh MachineReferenceWithHints) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &mrwh, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for MachineReferenceWithHints struct.
 func (mrwh *MachineReferenceWithHints) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2769,6 +2998,7 @@ func (mrwh *MachineReferenceWithHints) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineReferenceWithHintsProperties machine reference with name and os hints.
 type MachineReferenceWithHintsProperties struct {
 	// DisplayNameHint - Last known display name.
@@ -2777,6 +3007,7 @@ type MachineReferenceWithHintsProperties struct {
 	OsFamilyHint OperatingSystemFamily `json:"osFamilyHint,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachineResourcesConfiguration describes the resources of a machine.
 type MachineResourcesConfiguration struct {
 	// PhysicalMemory - Physical memory in megabytes (MB).
@@ -2789,6 +3020,7 @@ type MachineResourcesConfiguration struct {
 	CPUSpeedAccuracy Accuracy `json:"cpuSpeedAccuracy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachinesSummary a summary of the machines in the workspace.
 type MachinesSummary struct {
 	autorest.Response          `json:"-"`
@@ -2801,6 +3033,7 @@ type MachinesSummary struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MachinesSummary.
 func (ms MachinesSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2819,6 +3052,7 @@ func (ms MachinesSummary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for MachinesSummary struct.
 func (ms *MachinesSummary) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2870,6 +3104,7 @@ func (ms *MachinesSummary) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MachinesSummaryProperties summarizes machines in the workspace.
 type MachinesSummaryProperties struct {
 	// Total - Total number of machines.
@@ -2884,12 +3119,14 @@ type MachinesSummaryProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Map a map of resources and relationships between them.
 type Map struct {
 	Nodes *MapNodes `json:"nodes,omitempty"`
 	Edges *MapEdges `json:"edges,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MapEdges the edges (relationships) of a map.
 type MapEdges struct {
 	// Connections - Network connections.
@@ -2898,6 +3135,7 @@ type MapEdges struct {
 	Acceptors *[]Acceptor `json:"acceptors,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MapNodes the nodes (entities) of a map.
 type MapNodes struct {
 	// Machines - Machine resources.
@@ -2910,6 +3148,7 @@ type MapNodes struct {
 	ClientGroups *[]ClientGroup `json:"clientGroups,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicMapRequest specifies the contents of request to generate a map.
 type BasicMapRequest interface {
 	AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool)
@@ -2920,6 +3159,7 @@ type BasicMapRequest interface {
 	AsMapRequest() (*MapRequest, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MapRequest specifies the contents of request to generate a map.
 type MapRequest struct {
 	// StartTime - Map interval start time.
@@ -2979,6 +3219,7 @@ func unmarshalBasicMapRequestArray(body []byte) ([]BasicMapRequest, error) {
 	return mrArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MapRequest.
 func (mr MapRequest) MarshalJSON() ([]byte, error) {
 	mr.Kind = KindMapRequest
@@ -2995,41 +3236,49 @@ func (mr MapRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsSingleMachineDependencyMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMultipleMachinesMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMultipleMachinesMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsBasicMultipleMachinesMapRequest() (BasicMultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineListMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsMachineListMapRequest() (*MachineListMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroupMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsMachineGroupMapRequest() (*MachineGroupMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsMapRequest() (*MapRequest, bool) {
 	return &mr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMapRequest is the BasicMapRequest implementation for MapRequest.
 func (mr MapRequest) AsBasicMapRequest() (BasicMapRequest, bool) {
 	return &mr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MapResponse specified the contents of a map response.
 type MapResponse struct {
 	autorest.Response `json:"-"`
@@ -3041,6 +3290,7 @@ type MapResponse struct {
 	Map *Map `json:"map,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicMultipleMachinesMapRequest provides a base class for describing map requests for a collection of machines
 type BasicMultipleMachinesMapRequest interface {
 	AsMachineListMapRequest() (*MachineListMapRequest, bool)
@@ -3048,6 +3298,7 @@ type BasicMultipleMachinesMapRequest interface {
 	AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MultipleMachinesMapRequest provides a base class for describing map requests for a collection of machines
 type MultipleMachinesMapRequest struct {
 	// FilterProcesses - If true, only processes between specified machines will be included. Any connections in or out of those processes will be included.
@@ -3101,6 +3352,7 @@ func unmarshalBasicMultipleMachinesMapRequestArray(body []byte) ([]BasicMultiple
 	return mmmrArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) MarshalJSON() ([]byte, error) {
 	mmmr.Kind = KindMultipleMachinesMapRequest
@@ -3120,41 +3372,49 @@ func (mmmr MultipleMachinesMapRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsSingleMachineDependencyMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMultipleMachinesMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool) {
 	return &mmmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMultipleMachinesMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsBasicMultipleMachinesMapRequest() (BasicMultipleMachinesMapRequest, bool) {
 	return &mmmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineListMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsMachineListMapRequest() (*MachineListMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroupMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsMachineGroupMapRequest() (*MachineGroupMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsMapRequest() (*MapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMapRequest is the BasicMapRequest implementation for MultipleMachinesMapRequest.
 func (mmmr MultipleMachinesMapRequest) AsBasicMapRequest() (BasicMapRequest, bool) {
 	return &mmmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NetworkConfiguration describes the network configuration of a machine.
 type NetworkConfiguration struct {
 	// Ipv4Interfaces - IPv4 interfaces.
@@ -3169,6 +3429,7 @@ type NetworkConfiguration struct {
 	DNSNames *[]string `json:"dnsNames,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // OperatingSystemConfiguration describes the configuration of the operating system of a machine.
 type OperatingSystemConfiguration struct {
 	// Family - Windows, Linux, etc. Possible values include: 'OperatingSystemFamilyUnknown', 'OperatingSystemFamilyWindows', 'OperatingSystemFamilyLinux', 'OperatingSystemFamilySolaris', 'OperatingSystemFamilyAix'
@@ -3179,6 +3440,7 @@ type OperatingSystemConfiguration struct {
 	Bitness Bitness `json:"bitness,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e., a
 // Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by observing the
 // data stream from monitored machines. A port is live during an interval of time, if that port had associated
@@ -3199,6 +3461,7 @@ type Port struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Port.
 func (p Port) MarshalJSON() ([]byte, error) {
 	p.Kind = KindPort
@@ -3224,41 +3487,49 @@ func (p Port) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for Port.
 func (p Port) AsMachine() (*Machine, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for Port.
 func (p Port) AsProcess() (*Process, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for Port.
 func (p Port) AsPort() (*Port, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for Port.
 func (p Port) AsClientGroup() (*ClientGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for Port.
 func (p Port) AsMachineGroup() (*MachineGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for Port.
 func (p Port) AsCoreResource() (*CoreResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for Port.
 func (p Port) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for Port struct.
 func (p *Port) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3328,6 +3599,7 @@ func (p *Port) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortCollection collection of Port resources.
 type PortCollection struct {
 	autorest.Response `json:"-"`
@@ -3337,12 +3609,14 @@ type PortCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortCollectionIterator provides access to a complete listing of Port values.
 type PortCollectionIterator struct {
 	i    int
 	page PortCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *PortCollectionIterator) Next() error {
@@ -3359,16 +3633,19 @@ func (iter *PortCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter PortCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter PortCollectionIterator) Response() PortCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter PortCollectionIterator) Value() Port {
@@ -3378,6 +3655,7 @@ func (iter PortCollectionIterator) Value() Port {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (pc PortCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -3395,12 +3673,14 @@ func (pc PortCollection) portCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(pc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortCollectionPage contains a page of Port values.
 type PortCollectionPage struct {
 	fn func(PortCollection) (PortCollection, error)
 	pc PortCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *PortCollectionPage) Next() error {
@@ -3412,16 +3692,19 @@ func (page *PortCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page PortCollectionPage) NotDone() bool {
 	return !page.pc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page PortCollectionPage) Response() PortCollection {
 	return page.pc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page PortCollectionPage) Values() []Port {
 	if page.pc.IsEmpty() {
@@ -3430,6 +3713,7 @@ func (page PortCollectionPage) Values() []Port {
 	return *page.pc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortProperties resource properties.
 type PortProperties struct {
 	// MonitoringState - Specifies whether the port is actively monitored or discovered. Possible values include: 'Monitored', 'Discovered'
@@ -3444,6 +3728,7 @@ type PortProperties struct {
 	PortNumber *int32 `json:"portNumber,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for PortProperties struct.
 func (p *PortProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3503,6 +3788,7 @@ func (p *PortProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortReference reference to a port.
 type PortReference struct {
 	// PortReferenceProperties - Resource properties.
@@ -3517,6 +3803,7 @@ type PortReference struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for PortReference.
 func (pr PortReference) MarshalJSON() ([]byte, error) {
 	pr.Kind = KindRefport
@@ -3539,41 +3826,49 @@ func (pr PortReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsMachineReference() (*MachineReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsProcessReference() (*ProcessReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsPortReference() (*PortReference, bool) {
 	return &pr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsResourceReference() (*ResourceReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for PortReference.
 func (pr PortReference) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &pr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for PortReference struct.
 func (pr *PortReference) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3634,6 +3929,7 @@ func (pr *PortReference) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // PortReferenceProperties resource properties.
 type PortReferenceProperties struct {
 	// Machine - Machine hosting the port.
@@ -3644,6 +3940,7 @@ type PortReferenceProperties struct {
 	PortNumber *int32 `json:"portNumber,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Process a process resource represents a process running on a machine. The process may be actively *monitored*,
 // i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by
 // observing the data stream from monitored machines. A process resource represents a pool of actual operating
@@ -3666,6 +3963,7 @@ type Process struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Process.
 func (p Process) MarshalJSON() ([]byte, error) {
 	p.Kind = KindProcess
@@ -3691,41 +3989,49 @@ func (p Process) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachine is the BasicCoreResource implementation for Process.
 func (p Process) AsMachine() (*Machine, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcess is the BasicCoreResource implementation for Process.
 func (p Process) AsProcess() (*Process, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPort is the BasicCoreResource implementation for Process.
 func (p Process) AsPort() (*Port, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroup is the BasicCoreResource implementation for Process.
 func (p Process) AsClientGroup() (*ClientGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroup is the BasicCoreResource implementation for Process.
 func (p Process) AsMachineGroup() (*MachineGroup, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsCoreResource is the BasicCoreResource implementation for Process.
 func (p Process) AsCoreResource() (*CoreResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicCoreResource is the BasicCoreResource implementation for Process.
 func (p Process) AsBasicCoreResource() (BasicCoreResource, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for Process struct.
 func (p *Process) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3795,6 +4101,7 @@ func (p *Process) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessCollection collection of Process resources.
 type ProcessCollection struct {
 	autorest.Response `json:"-"`
@@ -3804,12 +4111,14 @@ type ProcessCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessCollectionIterator provides access to a complete listing of Process values.
 type ProcessCollectionIterator struct {
 	i    int
 	page ProcessCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ProcessCollectionIterator) Next() error {
@@ -3826,16 +4135,19 @@ func (iter *ProcessCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ProcessCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (iter ProcessCollectionIterator) Response() ProcessCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ProcessCollectionIterator) Value() Process {
@@ -3845,6 +4157,7 @@ func (iter ProcessCollectionIterator) Value() Process {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (pc ProcessCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
@@ -3862,12 +4175,14 @@ func (pc ProcessCollection) processCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(pc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessCollectionPage contains a page of Process values.
 type ProcessCollectionPage struct {
 	fn func(ProcessCollection) (ProcessCollection, error)
 	pc ProcessCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ProcessCollectionPage) Next() error {
@@ -3879,16 +4194,19 @@ func (page *ProcessCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ProcessCollectionPage) NotDone() bool {
 	return !page.pc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Response returns the raw server response from the last page request.
 func (page ProcessCollectionPage) Response() ProcessCollection {
 	return page.pc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ProcessCollectionPage) Values() []Process {
 	if page.pc.IsEmpty() {
@@ -3897,6 +4215,7 @@ func (page ProcessCollectionPage) Values() []Process {
 	return *page.pc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessDetails describes process metadata.
 type ProcessDetails struct {
 	// PersistentKey - A unique indentifier for a process, generally resilient to process restart, computed by Service Map.
@@ -3929,6 +4248,7 @@ type ProcessDetails struct {
 	ZoneName *string `json:"zoneName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessHostedService a service hosted by a process.
 type ProcessHostedService struct {
 	// Name - The name of the service.
@@ -3937,12 +4257,14 @@ type ProcessHostedService struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicProcessHostingConfiguration describes the hosting configuration of a process.
 type BasicProcessHostingConfiguration interface {
 	AsAzureProcessHostingConfiguration() (*AzureProcessHostingConfiguration, bool)
 	AsProcessHostingConfiguration() (*ProcessHostingConfiguration, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessHostingConfiguration describes the hosting configuration of a process.
 type ProcessHostingConfiguration struct {
 	// Provider - The hosting provider of the VM. Possible values include: 'Provider1Azure'
@@ -3988,6 +4310,7 @@ func unmarshalBasicProcessHostingConfigurationArray(body []byte) ([]BasicProcess
 	return phcArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ProcessHostingConfiguration.
 func (phc ProcessHostingConfiguration) MarshalJSON() ([]byte, error) {
 	phc.Kind = KindBasicProcessHostingConfigurationKindProcessHostingConfiguration
@@ -4001,21 +4324,25 @@ func (phc ProcessHostingConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAzureProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for ProcessHostingConfiguration.
 func (phc ProcessHostingConfiguration) AsAzureProcessHostingConfiguration() (*AzureProcessHostingConfiguration, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for ProcessHostingConfiguration.
 func (phc ProcessHostingConfiguration) AsProcessHostingConfiguration() (*ProcessHostingConfiguration, bool) {
 	return &phc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicProcessHostingConfiguration is the BasicProcessHostingConfiguration implementation for ProcessHostingConfiguration.
 func (phc ProcessHostingConfiguration) AsBasicProcessHostingConfiguration() (BasicProcessHostingConfiguration, bool) {
 	return &phc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessProperties resource properties.
 type ProcessProperties struct {
 	// Timestamp - UTC date and time when this process resource was updated in the system
@@ -4046,6 +4373,7 @@ type ProcessProperties struct {
 	Hosting BasicProcessHostingConfiguration `json:"hosting,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ProcessProperties struct.
 func (p *ProcessProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4174,6 +4502,7 @@ func (p *ProcessProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessReference reference to a process.
 type ProcessReference struct {
 	// ProcessReferenceProperties - Resource properties.
@@ -4188,6 +4517,7 @@ type ProcessReference struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ProcessReference.
 func (pr ProcessReference) MarshalJSON() ([]byte, error) {
 	pr.Kind = KindRefprocess
@@ -4210,41 +4540,49 @@ func (pr ProcessReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsMachineReference() (*MachineReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsProcessReference() (*ProcessReference, bool) {
 	return &pr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsPortReference() (*PortReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsResourceReference() (*ResourceReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for ProcessReference.
 func (pr ProcessReference) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &pr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for ProcessReference struct.
 func (pr *ProcessReference) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4305,12 +4643,14 @@ func (pr *ProcessReference) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessReferenceProperties resource properties.
 type ProcessReferenceProperties struct {
 	// Machine - Machine hosting the process.
 	Machine *MachineReference `json:"machine,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ProcessUser describes the user under which a process is running.
 type ProcessUser struct {
 	// UserName - User name under which the process is running.
@@ -4319,6 +4659,7 @@ type ProcessUser struct {
 	UserDomain *string `json:"userDomain,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicRelationship a typed relationship between two entities.
 type BasicRelationship interface {
 	AsConnection() (*Connection, bool)
@@ -4326,6 +4667,7 @@ type BasicRelationship interface {
 	AsRelationship() (*Relationship, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Relationship a typed relationship between two entities.
 type Relationship struct {
 	// Kind - Possible values include: 'KindRelationship', 'KindRelconnection', 'KindRelacceptor'
@@ -4379,6 +4721,7 @@ func unmarshalBasicRelationshipArray(body []byte) ([]BasicRelationship, error) {
 	return rArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for Relationship.
 func (r Relationship) MarshalJSON() ([]byte, error) {
 	r.Kind = KindRelationship
@@ -4398,26 +4741,31 @@ func (r Relationship) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsConnection is the BasicRelationship implementation for Relationship.
 func (r Relationship) AsConnection() (*Connection, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsAcceptor is the BasicRelationship implementation for Relationship.
 func (r Relationship) AsAcceptor() (*Acceptor, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsRelationship is the BasicRelationship implementation for Relationship.
 func (r Relationship) AsRelationship() (*Relationship, bool) {
 	return &r, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicRelationship is the BasicRelationship implementation for Relationship.
 func (r Relationship) AsBasicRelationship() (BasicRelationship, bool) {
 	return &r, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // RelationshipProperties relationship properties.
 type RelationshipProperties struct {
 	// Source - Source resource of the relationship.
@@ -4430,6 +4778,7 @@ type RelationshipProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // UnmarshalJSON is the custom unmarshaler for RelationshipProperties struct.
 func (rp *RelationshipProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4479,6 +4828,7 @@ func (rp *RelationshipProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Resource resource model definition.
 type Resource struct {
 	// ID - Resource identifier.
@@ -4489,6 +4839,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // BasicResourceReference represents a reference to another resource.
 type BasicResourceReference interface {
 	AsMachineReference() (*MachineReference, bool)
@@ -4499,6 +4850,7 @@ type BasicResourceReference interface {
 	AsResourceReference() (*ResourceReference, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // ResourceReference represents a reference to another resource.
 type ResourceReference struct {
 	// ID - Resource URI.
@@ -4564,6 +4916,7 @@ func unmarshalBasicResourceReferenceArray(body []byte) ([]BasicResourceReference
 	return rrArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for ResourceReference.
 func (rr ResourceReference) MarshalJSON() ([]byte, error) {
 	rr.Kind = KindResourceReference
@@ -4583,41 +4936,49 @@ func (rr ResourceReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsMachineReference() (*MachineReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsProcessReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsProcessReference() (*ProcessReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsPortReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsPortReference() (*PortReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineReferenceWithHints is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsMachineReferenceWithHints() (*MachineReferenceWithHints, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsClientGroupReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsClientGroupReference() (*ClientGroupReference, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsResourceReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsResourceReference() (*ResourceReference, bool) {
 	return &rr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicResourceReference is the BasicResourceReference implementation for ResourceReference.
 func (rr ResourceReference) AsBasicResourceReference() (BasicResourceReference, bool) {
 	return &rr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // SingleMachineDependencyMapRequest specifies the computation of a single server dependency map. A single server
 // dependency map includes all direct dependencies of a given machine.
 type SingleMachineDependencyMapRequest struct {
@@ -4631,6 +4992,7 @@ type SingleMachineDependencyMapRequest struct {
 	Kind KindBasicMapRequest `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // MarshalJSON is the custom marshaler for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) MarshalJSON() ([]byte, error) {
 	smdmr.Kind = KindMapsingleMachineDependency
@@ -4650,41 +5012,49 @@ func (smdmr SingleMachineDependencyMapRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsSingleMachineDependencyMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsSingleMachineDependencyMapRequest() (*SingleMachineDependencyMapRequest, bool) {
 	return &smdmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMultipleMachinesMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsMultipleMachinesMapRequest() (*MultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMultipleMachinesMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsBasicMultipleMachinesMapRequest() (BasicMultipleMachinesMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineListMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsMachineListMapRequest() (*MachineListMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMachineGroupMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsMachineGroupMapRequest() (*MachineGroupMapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsMapRequest() (*MapRequest, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // AsBasicMapRequest is the BasicMapRequest implementation for SingleMachineDependencyMapRequest.
 func (smdmr SingleMachineDependencyMapRequest) AsBasicMapRequest() (BasicMapRequest, bool) {
 	return &smdmr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Summary base for all resource summaries.
 type Summary struct {
 	// ID - Resource identifier.
@@ -4695,6 +5065,7 @@ type Summary struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // SummaryProperties base for all summaries.
 type SummaryProperties struct {
 	// StartTime - Summary interval start time.
@@ -4703,12 +5074,14 @@ type SummaryProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // Timezone describes a timezone.
 type Timezone struct {
 	// FullName - Timezone full name.
 	FullName *string `json:"fullName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap instead.
 // VirtualMachineConfiguration describes the virtualizaton-related configuration of a machine.
 type VirtualMachineConfiguration struct {
 	// VirtualMachineType - Specifies the virtualization technology used by the machine (hyperv, vmware, etc.). Possible values include: 'VirtualMachineTypeUnknown', 'VirtualMachineTypeHyperv', 'VirtualMachineTypeLdom', 'VirtualMachineTypeLpar', 'VirtualMachineTypeVmware', 'VirtualMachineTypeVirtualPc', 'VirtualMachineTypeXen'

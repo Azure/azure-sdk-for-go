@@ -27,6 +27,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CompileMode enumerates the values for compile mode.
 type CompileMode string
 
@@ -39,11 +40,13 @@ const (
 	SingleBox CompileMode = "SingleBox"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleCompileModeValues returns an array of possible values for the CompileMode const type.
 func PossibleCompileModeValues() []CompileMode {
 	return []CompileMode{Full, Semantic, SingleBox}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // ResourceType enumerates the values for resource type.
 type ResourceType string
 
@@ -62,11 +65,13 @@ const (
 	VertexResourceInUserFolder ResourceType = "VertexResourceInUserFolder"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
 func PossibleResourceTypeValues() []ResourceType {
 	return []ResourceType{JobManagerResource, JobManagerResourceInUserFolder, StatisticsResource, StatisticsResourceInUserFolder, VertexResource, VertexResourceInUserFolder}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Result enumerates the values for result.
 type Result string
 
@@ -81,11 +86,13 @@ const (
 	Succeeded Result = "Succeeded"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleResultValues returns an array of possible values for the Result const type.
 func PossibleResultValues() []Result {
 	return []Result{Cancelled, Failed, None, Succeeded}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // SeverityTypes enumerates the values for severity types.
 type SeverityTypes string
 
@@ -104,11 +111,13 @@ const (
 	Warning SeverityTypes = "Warning"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleSeverityTypesValues returns an array of possible values for the SeverityTypes const type.
 func PossibleSeverityTypesValues() []SeverityTypes {
 	return []SeverityTypes{Deprecated, Error, Info, SevereWarning, UserWarning, Warning}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // State enumerates the values for state.
 type State string
 
@@ -135,11 +144,13 @@ const (
 	StateWaitingForCapacity State = "WaitingForCapacity"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Type enumerates the values for type.
 type Type string
 
@@ -154,11 +165,13 @@ const (
 	TypeUSQL Type = "USql"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
 	return []Type{TypeHive, TypeJobProperties, TypeScope, TypeUSQL}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // TypeBasicCreateJobProperties enumerates the values for type basic create job properties.
 type TypeBasicCreateJobProperties string
 
@@ -171,11 +184,13 @@ const (
 	TypeBasicCreateJobPropertiesTypeUSQL TypeBasicCreateJobProperties = "USql"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleTypeBasicCreateJobPropertiesValues returns an array of possible values for the TypeBasicCreateJobProperties const type.
 func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties {
 	return []TypeBasicCreateJobProperties{TypeBasicCreateJobPropertiesTypeCreateJobProperties, TypeBasicCreateJobPropertiesTypeScope, TypeBasicCreateJobPropertiesTypeUSQL}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // TypeEnum enumerates the values for type enum.
 type TypeEnum string
 
@@ -188,11 +203,13 @@ const (
 	USQL TypeEnum = "USql"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PossibleTypeEnumValues returns an array of possible values for the TypeEnum const type.
 func PossibleTypeEnumValues() []TypeEnum {
 	return []TypeEnum{Hive, Scope, USQL}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // BaseJobParameters data Lake Analytics Job Parameters base class for build and submit.
 type BaseJobParameters struct {
 	// Type - The job type of the current job (Hive, USql, or Scope (for internal use only)). Possible values include: 'USQL', 'Hive', 'Scope'
@@ -201,6 +218,7 @@ type BaseJobParameters struct {
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UnmarshalJSON is the custom unmarshaler for BaseJobParameters struct.
 func (bjp *BaseJobParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -233,6 +251,7 @@ func (bjp *BaseJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // BuildJobParameters the parameters used to build a new Data Lake Analytics job.
 type BuildJobParameters struct {
 	// Name - The friendly name of the job to build.
@@ -243,6 +262,7 @@ type BuildJobParameters struct {
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UnmarshalJSON is the custom unmarshaler for BuildJobParameters struct.
 func (bjp *BuildJobParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -284,12 +304,14 @@ func (bjp *BuildJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CancelFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CancelFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future CancelFuture) Result(client Client) (ar autorest.Response, err error) {
@@ -332,6 +354,7 @@ func (future CancelFuture) Result(client Client) (ar autorest.Response, err erro
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CreateJobParameters the parameters used to submit a new Data Lake Analytics job.
 type CreateJobParameters struct {
 	// Name - The friendly name of the job to submit.
@@ -350,6 +373,7 @@ type CreateJobParameters struct {
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UnmarshalJSON is the custom unmarshaler for CreateJobParameters struct.
 func (cjp *CreateJobParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -427,6 +451,7 @@ func (cjp *CreateJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // BasicCreateJobProperties the common Data Lake Analytics job properties for job submission.
 type BasicCreateJobProperties interface {
 	AsCreateUSQLJobProperties() (*CreateUSQLJobProperties, bool)
@@ -434,6 +459,7 @@ type BasicCreateJobProperties interface {
 	AsCreateJobProperties() (*CreateJobProperties, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CreateJobProperties the common Data Lake Analytics job properties for job submission.
 type CreateJobProperties struct {
 	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
@@ -485,6 +511,7 @@ func unmarshalBasicCreateJobPropertiesArray(body []byte) ([]BasicCreateJobProper
 	return cjpArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for CreateJobProperties.
 func (cjp CreateJobProperties) MarshalJSON() ([]byte, error) {
 	cjp.Type = TypeBasicCreateJobPropertiesTypeCreateJobProperties
@@ -501,26 +528,31 @@ func (cjp CreateJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateUSQLJobProperties is the BasicCreateJobProperties implementation for CreateJobProperties.
 func (cjp CreateJobProperties) AsCreateUSQLJobProperties() (*CreateUSQLJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateScopeJobProperties is the BasicCreateJobProperties implementation for CreateJobProperties.
 func (cjp CreateJobProperties) AsCreateScopeJobProperties() (*CreateScopeJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateJobProperties is the BasicCreateJobProperties implementation for CreateJobProperties.
 func (cjp CreateJobProperties) AsCreateJobProperties() (*CreateJobProperties, bool) {
 	return &cjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicCreateJobProperties is the BasicCreateJobProperties implementation for CreateJobProperties.
 func (cjp CreateJobProperties) AsBasicCreateJobProperties() (BasicCreateJobProperties, bool) {
 	return &cjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CreateScopeJobParameters the parameters used to submit a new Data Lake Analytics Scope job. (Only for use
 // internally with Scope job type.)
 type CreateScopeJobParameters struct {
@@ -542,6 +574,7 @@ type CreateScopeJobParameters struct {
 	Properties BasicCreateJobProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for CreateScopeJobParameters.
 func (csjp CreateScopeJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -570,6 +603,7 @@ func (csjp CreateScopeJobParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UnmarshalJSON is the custom unmarshaler for CreateScopeJobParameters struct.
 func (csjp *CreateScopeJobParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -656,6 +690,7 @@ func (csjp *CreateScopeJobParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CreateScopeJobProperties scope job properties used when submitting Scope jobs. (Only for use internally with
 // Scope job type.)
 type CreateScopeJobProperties struct {
@@ -671,6 +706,7 @@ type CreateScopeJobProperties struct {
 	Type TypeBasicCreateJobProperties `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for CreateScopeJobProperties.
 func (csjp CreateScopeJobProperties) MarshalJSON() ([]byte, error) {
 	csjp.Type = TypeBasicCreateJobPropertiesTypeScope
@@ -693,26 +729,31 @@ func (csjp CreateScopeJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateUSQLJobProperties is the BasicCreateJobProperties implementation for CreateScopeJobProperties.
 func (csjp CreateScopeJobProperties) AsCreateUSQLJobProperties() (*CreateUSQLJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateScopeJobProperties is the BasicCreateJobProperties implementation for CreateScopeJobProperties.
 func (csjp CreateScopeJobProperties) AsCreateScopeJobProperties() (*CreateScopeJobProperties, bool) {
 	return &csjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateJobProperties is the BasicCreateJobProperties implementation for CreateScopeJobProperties.
 func (csjp CreateScopeJobProperties) AsCreateJobProperties() (*CreateJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicCreateJobProperties is the BasicCreateJobProperties implementation for CreateScopeJobProperties.
 func (csjp CreateScopeJobProperties) AsBasicCreateJobProperties() (BasicCreateJobProperties, bool) {
 	return &csjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // CreateUSQLJobProperties u-SQL job properties used when submitting U-SQL jobs.
 type CreateUSQLJobProperties struct {
 	// CompileMode - The specific compilation mode for the job used during execution. If this is not specified during submission, the server will determine the optimal compilation mode. Possible values include: 'Semantic', 'Full', 'SingleBox'
@@ -725,6 +766,7 @@ type CreateUSQLJobProperties struct {
 	Type TypeBasicCreateJobProperties `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for CreateUSQLJobProperties.
 func (cusjp CreateUSQLJobProperties) MarshalJSON() ([]byte, error) {
 	cusjp.Type = TypeBasicCreateJobPropertiesTypeUSQL
@@ -744,26 +786,31 @@ func (cusjp CreateUSQLJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateUSQLJobProperties is the BasicCreateJobProperties implementation for CreateUSQLJobProperties.
 func (cusjp CreateUSQLJobProperties) AsCreateUSQLJobProperties() (*CreateUSQLJobProperties, bool) {
 	return &cusjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateScopeJobProperties is the BasicCreateJobProperties implementation for CreateUSQLJobProperties.
 func (cusjp CreateUSQLJobProperties) AsCreateScopeJobProperties() (*CreateScopeJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsCreateJobProperties is the BasicCreateJobProperties implementation for CreateUSQLJobProperties.
 func (cusjp CreateUSQLJobProperties) AsCreateJobProperties() (*CreateJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicCreateJobProperties is the BasicCreateJobProperties implementation for CreateUSQLJobProperties.
 func (cusjp CreateUSQLJobProperties) AsBasicCreateJobProperties() (BasicCreateJobProperties, bool) {
 	return &cusjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // DataPath a Data Lake Analytics job data path item.
 type DataPath struct {
 	autorest.Response `json:"-"`
@@ -775,6 +822,7 @@ type DataPath struct {
 	Paths *[]string `json:"paths,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Diagnostics error diagnostic information for failed jobs.
 type Diagnostics struct {
 	// Message - The error message.
@@ -791,6 +839,7 @@ type Diagnostics struct {
 	End *int32 `json:"end,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // ErrorDetails the Data Lake Analytics job error details.
 type ErrorDetails struct {
 	// ErrorID - The specific identifier for the type of error encountered in the job.
@@ -823,6 +872,7 @@ type ErrorDetails struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // HiveJobProperties hive job properties used when retrieving Hive jobs.
 type HiveJobProperties struct {
 	// LogsLocation - The Hive logs location.
@@ -841,6 +891,7 @@ type HiveJobProperties struct {
 	Type Type `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for HiveJobProperties.
 func (hjp HiveJobProperties) MarshalJSON() ([]byte, error) {
 	hjp.Type = TypeHive
@@ -869,31 +920,37 @@ func (hjp HiveJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsUSQLJobProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsHiveJobProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return &hjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsScopeJobProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsProperties() (*Properties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicProperties is the BasicProperties implementation for HiveJobProperties.
 func (hjp HiveJobProperties) AsBasicProperties() (BasicProperties, bool) {
 	return &hjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // InfoListResult list of JobInfo items.
 type InfoListResult struct {
 	autorest.Response `json:"-"`
@@ -903,12 +960,14 @@ type InfoListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // InfoListResultIterator provides access to a complete listing of InformationBasic values.
 type InfoListResultIterator struct {
 	i    int
 	page InfoListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *InfoListResultIterator) Next() error {
@@ -925,16 +984,19 @@ func (iter *InfoListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter InfoListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (iter InfoListResultIterator) Response() InfoListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter InfoListResultIterator) Value() InformationBasic {
@@ -944,6 +1006,7 @@ func (iter InfoListResultIterator) Value() InformationBasic {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ilr InfoListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
@@ -961,12 +1024,14 @@ func (ilr InfoListResult) infoListResultPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(ilr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // InfoListResultPage contains a page of InformationBasic values.
 type InfoListResultPage struct {
 	fn  func(InfoListResult) (InfoListResult, error)
 	ilr InfoListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *InfoListResultPage) Next() error {
@@ -978,16 +1043,19 @@ func (page *InfoListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page InfoListResultPage) NotDone() bool {
 	return !page.ilr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (page InfoListResultPage) Response() InfoListResult {
 	return page.ilr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page InfoListResultPage) Values() []InformationBasic {
 	if page.ilr.IsEmpty() {
@@ -996,6 +1064,7 @@ func (page InfoListResultPage) Values() []InformationBasic {
 	return *page.ilr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Information the extended Data Lake Analytics job information properties returned when retrieving a specific job.
 type Information struct {
 	autorest.Response `json:"-"`
@@ -1037,6 +1106,7 @@ type Information struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for Information.
 func (i Information) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1095,6 +1165,7 @@ func (i Information) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UnmarshalJSON is the custom unmarshaler for Information struct.
 func (i *Information) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1271,6 +1342,7 @@ func (i *Information) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // InformationBasic the common Data Lake Analytics job information properties.
 type InformationBasic struct {
 	// JobID - The job's unique identifier (a GUID).
@@ -1305,6 +1377,7 @@ type InformationBasic struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for InformationBasic.
 func (ib InformationBasic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1356,6 +1429,7 @@ func (ib InformationBasic) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // InnerError the Data Lake Analytics job error details.
 type InnerError struct {
 	// ErrorID - The specific identifier for the type of error encountered in the job.
@@ -1384,6 +1458,7 @@ type InnerError struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those jobs in
 // a pipeline.
 type PipelineInformation struct {
@@ -1414,6 +1489,7 @@ type PipelineInformation struct {
 	Recurrences *[]uuid.UUID `json:"recurrences,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PipelineInformationListResult list of job pipeline information items.
 type PipelineInformationListResult struct {
 	autorest.Response `json:"-"`
@@ -1423,12 +1499,14 @@ type PipelineInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation values.
 type PipelineInformationListResultIterator struct {
 	i    int
 	page PipelineInformationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *PipelineInformationListResultIterator) Next() error {
@@ -1445,16 +1523,19 @@ func (iter *PipelineInformationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter PipelineInformationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (iter PipelineInformationListResultIterator) Response() PipelineInformationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter PipelineInformationListResultIterator) Value() PipelineInformation {
@@ -1464,6 +1545,7 @@ func (iter PipelineInformationListResultIterator) Value() PipelineInformation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (pilr PipelineInformationListResult) IsEmpty() bool {
 	return pilr.Value == nil || len(*pilr.Value) == 0
@@ -1481,12 +1563,14 @@ func (pilr PipelineInformationListResult) pipelineInformationListResultPreparer(
 		autorest.WithBaseURL(to.String(pilr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PipelineInformationListResultPage contains a page of PipelineInformation values.
 type PipelineInformationListResultPage struct {
 	fn   func(PipelineInformationListResult) (PipelineInformationListResult, error)
 	pilr PipelineInformationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *PipelineInformationListResultPage) Next() error {
@@ -1498,16 +1582,19 @@ func (page *PipelineInformationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page PipelineInformationListResultPage) NotDone() bool {
 	return !page.pilr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (page PipelineInformationListResultPage) Response() PipelineInformationListResult {
 	return page.pilr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 	if page.pilr.IsEmpty() {
@@ -1516,6 +1603,7 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 	return *page.pilr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // PipelineRunInformation run info for a specific job pipeline.
 type PipelineRunInformation struct {
 	// RunID - The run identifier of an instance of pipeline executions (a GUID).
@@ -1524,6 +1612,7 @@ type PipelineRunInformation struct {
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // BasicProperties the common Data Lake Analytics job properties.
 type BasicProperties interface {
 	AsUSQLJobProperties() (*USQLJobProperties, bool)
@@ -1532,6 +1621,7 @@ type BasicProperties interface {
 	AsProperties() (*Properties, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Properties the common Data Lake Analytics job properties.
 type Properties struct {
 	// RuntimeVersion - The runtime version of the Data Lake Analytics engine to use for the specific type of job being run.
@@ -1587,6 +1677,7 @@ func unmarshalBasicPropertiesArray(body []byte) ([]BasicProperties, error) {
 	return pArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	p.Type = TypeJobProperties
@@ -1603,31 +1694,37 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsUSQLJobProperties is the BasicProperties implementation for Properties.
 func (p Properties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsHiveJobProperties is the BasicProperties implementation for Properties.
 func (p Properties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsScopeJobProperties is the BasicProperties implementation for Properties.
 func (p Properties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsProperties is the BasicProperties implementation for Properties.
 func (p Properties) AsProperties() (*Properties, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicProperties is the BasicProperties implementation for Properties.
 func (p Properties) AsBasicProperties() (BasicProperties, bool) {
 	return &p, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // RecurrenceInformation recurrence job information for a specific recurrence.
 type RecurrenceInformation struct {
 	autorest.Response `json:"-"`
@@ -1651,6 +1748,7 @@ type RecurrenceInformation struct {
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // RecurrenceInformationListResult list of job recurrence information items.
 type RecurrenceInformationListResult struct {
 	autorest.Response `json:"-"`
@@ -1660,12 +1758,14 @@ type RecurrenceInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // RecurrenceInformationListResultIterator provides access to a complete listing of RecurrenceInformation values.
 type RecurrenceInformationListResultIterator struct {
 	i    int
 	page RecurrenceInformationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *RecurrenceInformationListResultIterator) Next() error {
@@ -1682,16 +1782,19 @@ func (iter *RecurrenceInformationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter RecurrenceInformationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (iter RecurrenceInformationListResultIterator) Response() RecurrenceInformationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter RecurrenceInformationListResultIterator) Value() RecurrenceInformation {
@@ -1701,6 +1804,7 @@ func (iter RecurrenceInformationListResultIterator) Value() RecurrenceInformatio
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (rilr RecurrenceInformationListResult) IsEmpty() bool {
 	return rilr.Value == nil || len(*rilr.Value) == 0
@@ -1718,12 +1822,14 @@ func (rilr RecurrenceInformationListResult) recurrenceInformationListResultPrepa
 		autorest.WithBaseURL(to.String(rilr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // RecurrenceInformationListResultPage contains a page of RecurrenceInformation values.
 type RecurrenceInformationListResultPage struct {
 	fn   func(RecurrenceInformationListResult) (RecurrenceInformationListResult, error)
 	rilr RecurrenceInformationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *RecurrenceInformationListResultPage) Next() error {
@@ -1735,16 +1841,19 @@ func (page *RecurrenceInformationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page RecurrenceInformationListResultPage) NotDone() bool {
 	return !page.rilr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Response returns the raw server response from the last page request.
 func (page RecurrenceInformationListResultPage) Response() RecurrenceInformationListResult {
 	return page.rilr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation {
 	if page.rilr.IsEmpty() {
@@ -1753,6 +1862,7 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 	return *page.rilr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // RelationshipProperties job relationship information properties including pipeline information, correlation
 // information, etc.
 type RelationshipProperties struct {
@@ -1770,6 +1880,7 @@ type RelationshipProperties struct {
 	RecurrenceName *string `json:"recurrenceName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Resource the Data Lake Analytics job resources.
 type Resource struct {
 	// Name - The name of the resource.
@@ -1780,6 +1891,7 @@ type Resource struct {
 	Type ResourceType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // ResourceUsageStatistics the statistics information for resource usage.
 type ResourceUsageStatistics struct {
 	// Average - The average value.
@@ -1790,6 +1902,7 @@ type ResourceUsageStatistics struct {
 	Maximum *int64 `json:"maximum,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // ScopeJobProperties scope job properties used when submitting and retrieving Scope jobs. (Only for use internally
 // with Scope job type.)
 type ScopeJobProperties struct {
@@ -1819,6 +1932,7 @@ type ScopeJobProperties struct {
 	Type Type `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for ScopeJobProperties.
 func (sjp ScopeJobProperties) MarshalJSON() ([]byte, error) {
 	sjp.Type = TypeScope
@@ -1862,31 +1976,37 @@ func (sjp ScopeJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsUSQLJobProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsHiveJobProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsScopeJobProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return &sjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsProperties() (*Properties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicProperties is the BasicProperties implementation for ScopeJobProperties.
 func (sjp ScopeJobProperties) AsBasicProperties() (BasicProperties, bool) {
 	return &sjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // ScopeJobResource the Scope job resources. (Only for use internally with Scope job type.)
 type ScopeJobResource struct {
 	// Name - The name of the resource.
@@ -1895,6 +2015,7 @@ type ScopeJobResource struct {
 	Path *string `json:"path,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // StateAuditRecord the Data Lake Analytics job state audit records for tracking the lifecycle of a job.
 type StateAuditRecord struct {
 	// NewState - The new state the job is in.
@@ -1907,6 +2028,7 @@ type StateAuditRecord struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Statistics the Data Lake Analytics job execution statistics.
 type Statistics struct {
 	autorest.Response `json:"-"`
@@ -1918,6 +2040,7 @@ type Statistics struct {
 	Stages *[]StatisticsVertexStage `json:"stages,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // StatisticsVertex the detailed information for a vertex.
 type StatisticsVertex struct {
 	// Name - The name of the vertex.
@@ -1932,6 +2055,7 @@ type StatisticsVertex struct {
 	PeakMemUsage *int64 `json:"peakMemUsage,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // StatisticsVertexStage the Data Lake Analytics job statistics vertex stage information.
 type StatisticsVertexStage struct {
 	// DataRead - The amount of data read, in bytes.
@@ -2000,12 +2124,14 @@ type StatisticsVertexStage struct {
 	UsedVertexPeakMemSize *ResourceUsageStatistics `json:"usedVertexPeakMemSize,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type UpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future UpdateFuture) Result(client Client) (i Information, err error) {
@@ -2048,6 +2174,7 @@ func (future UpdateFuture) Result(client Client) (i Information, err error) {
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // UpdateJobParameters the parameters that can be used to update existing Data Lake Analytics job information
 // properties. (Only for use internally with Scope job type.)
 type UpdateJobParameters struct {
@@ -2059,6 +2186,7 @@ type UpdateJobParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for UpdateJobParameters.
 func (ujp UpdateJobParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2074,6 +2202,7 @@ func (ujp UpdateJobParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // USQLJobProperties u-SQL job properties used when retrieving U-SQL jobs.
 type USQLJobProperties struct {
 	// Resources - The list of resources that are required by the job.
@@ -2110,6 +2239,7 @@ type USQLJobProperties struct {
 	Type Type `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // MarshalJSON is the custom marshaler for USQLJobProperties.
 func (usjp USQLJobProperties) MarshalJSON() ([]byte, error) {
 	usjp.Type = TypeUSQL
@@ -2165,37 +2295,44 @@ func (usjp USQLJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsUSQLJobProperties is the BasicProperties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsUSQLJobProperties() (*USQLJobProperties, bool) {
 	return &usjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsHiveJobProperties is the BasicProperties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsHiveJobProperties() (*HiveJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsScopeJobProperties is the BasicProperties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsScopeJobProperties() (*ScopeJobProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsProperties is the BasicProperties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsProperties() (*Properties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // AsBasicProperties is the BasicProperties implementation for USQLJobProperties.
 func (usjp USQLJobProperties) AsBasicProperties() (BasicProperties, bool) {
 	return &usjp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // YieldFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type YieldFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future YieldFuture) Result(client Client) (ar autorest.Response, err error) {

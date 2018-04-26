@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // Client is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
@@ -32,16 +33,19 @@ type Client struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // NewClient creates an instance of the Client client.
 func NewClient(groupID uuid.UUID) Client {
 	return NewClientWithBaseURI(DefaultBaseURI, groupID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // NewClientWithBaseURI creates an instance of the Client client.
 func NewClientWithBaseURI(baseURI string, groupID uuid.UUID) Client {
 	return Client{NewWithBaseURI(baseURI, groupID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // Get get the details of the management group.
 //
 // expand is the $expand=children query string parameter allows clients to request inclusion of children in the
@@ -69,6 +73,7 @@ func (client Client) Get(ctx context.Context, expand string, recurse *bool) (res
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // GetPreparer prepares the Get request.
 func (client Client) GetPreparer(ctx context.Context, expand string, recurse *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -94,6 +99,7 @@ func (client Client) GetPreparer(ctx context.Context, expand string, recurse *bo
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSender(req *http.Request) (*http.Response, error) {
@@ -101,6 +107,7 @@ func (client Client) GetSender(req *http.Request) (*http.Response, error) {
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client Client) GetResponder(resp *http.Response) (result WithHierarchy, err error) {
@@ -114,6 +121,7 @@ func (client Client) GetResponder(resp *http.Response) (result WithHierarchy, er
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // List list management groups for the authenticated user.
 //
 // skiptoken is page continuation token is only used if a previous operation returned a partial result.
@@ -142,6 +150,7 @@ func (client Client) List(ctx context.Context, skiptoken string) (result ListRes
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // ListPreparer prepares the List request.
 func (client Client) ListPreparer(ctx context.Context, skiptoken string) (*http.Request, error) {
 	const APIVersion = "2017-08-31-preview"
@@ -160,6 +169,7 @@ func (client Client) ListPreparer(ctx context.Context, skiptoken string) (*http.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListSender(req *http.Request) (*http.Response, error) {
@@ -167,6 +177,7 @@ func (client Client) ListSender(req *http.Request) (*http.Response, error) {
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client Client) ListResponder(resp *http.Response) (result ListResult, err error) {
@@ -201,6 +212,7 @@ func (client Client) listNextResults(lastResults ListResult) (result ListResult,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/management instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client Client) ListComplete(ctx context.Context, skiptoken string) (result ListResultIterator, err error) {
 	result.page, err = client.List(ctx, skiptoken)

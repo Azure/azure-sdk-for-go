@@ -24,21 +24,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // EnrollmentAccountsClient is the billing client provides access to billing resources for Azure subscriptions.
 type EnrollmentAccountsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // NewEnrollmentAccountsClient creates an instance of the EnrollmentAccountsClient client.
 func NewEnrollmentAccountsClient(subscriptionID string) EnrollmentAccountsClient {
 	return NewEnrollmentAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // NewEnrollmentAccountsClientWithBaseURI creates an instance of the EnrollmentAccountsClient client.
 func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) EnrollmentAccountsClient {
 	return EnrollmentAccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // Get gets a enrollment account by name.
 //
 // name is enrollment Account name.
@@ -64,6 +68,7 @@ func (client EnrollmentAccountsClient) Get(ctx context.Context, name string) (re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetPreparer prepares the Get request.
 func (client EnrollmentAccountsClient) GetPreparer(ctx context.Context, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -83,6 +88,7 @@ func (client EnrollmentAccountsClient) GetPreparer(ctx context.Context, name str
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -90,6 +96,7 @@ func (client EnrollmentAccountsClient) GetSender(req *http.Request) (*http.Respo
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result EnrollmentAccount, err error) {
@@ -103,6 +110,7 @@ func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // List lists the enrollment accounts the caller has access to.
 func (client EnrollmentAccountsClient) List(ctx context.Context) (result EnrollmentAccountListResultPage, err error) {
 	result.fn = client.listNextResults
@@ -127,6 +135,7 @@ func (client EnrollmentAccountsClient) List(ctx context.Context) (result Enrollm
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListPreparer prepares the List request.
 func (client EnrollmentAccountsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2018-03-01-preview"
@@ -142,6 +151,7 @@ func (client EnrollmentAccountsClient) ListPreparer(ctx context.Context) (*http.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -149,6 +159,7 @@ func (client EnrollmentAccountsClient) ListSender(req *http.Request) (*http.Resp
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client EnrollmentAccountsClient) ListResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
@@ -183,6 +194,7 @@ func (client EnrollmentAccountsClient) listNextResults(lastResults EnrollmentAcc
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client EnrollmentAccountsClient) ListComplete(ctx context.Context) (result EnrollmentAccountListResultIterator, err error) {
 	result.page, err = client.List(ctx)

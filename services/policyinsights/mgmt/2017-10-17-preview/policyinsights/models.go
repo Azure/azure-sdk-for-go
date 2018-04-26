@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PolicyStatesResource enumerates the values for policy states resource.
 type PolicyStatesResource string
 
@@ -33,11 +34,13 @@ const (
 	Latest PolicyStatesResource = "latest"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return []PolicyStatesResource{Default, Latest}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // Operation operation definition.
 type Operation struct {
 	// Name - Operation name.
@@ -46,6 +49,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // OperationDisplay display metadata associated with the operation.
 type OperationDisplay struct {
 	// Provider - Resource provider name.
@@ -58,6 +62,7 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // OperationsListResults list of available operations.
 type OperationsListResults struct {
 	autorest.Response `json:"-"`
@@ -67,6 +72,7 @@ type OperationsListResults struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PolicyEvent policy event record.
 type PolicyEvent struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -131,6 +137,7 @@ type PolicyEvent struct {
 	PrincipalOid *string `json:"principalOid,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // MarshalJSON is the custom marshaler for PolicyEvent.
 func (peVar PolicyEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -227,6 +234,7 @@ func (peVar PolicyEvent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PolicyEventsQueryResults query results.
 type PolicyEventsQueryResults struct {
 	autorest.Response `json:"-"`
@@ -238,6 +246,7 @@ type PolicyEventsQueryResults struct {
 	Value *[]PolicyEvent `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PolicyState policy state record.
 type PolicyState struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -298,6 +307,7 @@ type PolicyState struct {
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // MarshalJSON is the custom marshaler for PolicyState.
 func (ps PolicyState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -388,6 +398,7 @@ func (ps PolicyState) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // PolicyStatesQueryResults query results.
 type PolicyStatesQueryResults struct {
 	autorest.Response `json:"-"`
@@ -399,12 +410,14 @@ type PolicyStatesQueryResults struct {
 	Value *[]PolicyState `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // QueryFailure error response.
 type QueryFailure struct {
 	// Error - Error definition.
 	Error *QueryFailureError `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // QueryFailureError error definition.
 type QueryFailureError struct {
 	// Code - Service specific error code which serves as the substatus for the HTTP error code.
@@ -413,6 +426,7 @@ type QueryFailureError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-10-17-preview/policyinsights instead.
 // String ...
 type String struct {
 	autorest.Response `json:"-"`

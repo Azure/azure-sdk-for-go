@@ -24,6 +24,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // EntitiesClient is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
@@ -31,16 +32,19 @@ type EntitiesClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewEntitiesClient creates an instance of the EntitiesClient client.
 func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
 	return NewEntitiesClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewEntitiesClientWithBaseURI creates an instance of the EntitiesClient client.
 func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
 	return EntitiesClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // List list all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
 //
 // groupName is a filter which allows the call to be filtered for a specific group. cacheControl is indicates that
@@ -68,6 +72,7 @@ func (client EntitiesClient) List(ctx context.Context, groupName string, cacheCo
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListPreparer prepares the List request.
 func (client EntitiesClient) ListPreparer(ctx context.Context, groupName string, cacheControl string) (*http.Request, error) {
 	const APIVersion = "2018-01-01-preview"
@@ -96,6 +101,7 @@ func (client EntitiesClient) ListPreparer(ctx context.Context, groupName string,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client EntitiesClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -103,6 +109,7 @@ func (client EntitiesClient) ListSender(req *http.Request) (*http.Response, erro
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityListResult, err error) {
@@ -137,6 +144,7 @@ func (client EntitiesClient) listNextResults(lastResults EntityListResult) (resu
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client EntitiesClient) ListComplete(ctx context.Context, groupName string, cacheControl string) (result EntityListResultIterator, err error) {
 	result.page, err = client.List(ctx, groupName, cacheControl)

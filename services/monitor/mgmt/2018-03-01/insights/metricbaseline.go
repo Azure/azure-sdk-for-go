@@ -25,21 +25,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // MetricBaselineClient is the monitor Management Client
 type MetricBaselineClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricBaselineClient creates an instance of the MetricBaselineClient client.
 func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
 	return NewMetricBaselineClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricBaselineClientWithBaseURI creates an instance of the MetricBaselineClient client.
 func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
 	return MetricBaselineClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // CalculateBaseline **Lists the baseline values for a resource**.
 //
 // resourceURI is the identifier of the resource. It has the following structure:
@@ -76,6 +80,7 @@ func (client MetricBaselineClient) CalculateBaseline(ctx context.Context, resour
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // CalculateBaselinePreparer prepares the CalculateBaseline request.
 func (client MetricBaselineClient) CalculateBaselinePreparer(ctx context.Context, resourceURI string, timeSeriesInformation TimeSeriesInformation) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -97,6 +102,7 @@ func (client MetricBaselineClient) CalculateBaselinePreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // CalculateBaselineSender sends the CalculateBaseline request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricBaselineClient) CalculateBaselineSender(req *http.Request) (*http.Response, error) {
@@ -104,6 +110,7 @@ func (client MetricBaselineClient) CalculateBaselineSender(req *http.Request) (*
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // CalculateBaselineResponder handles the response to the CalculateBaseline request. The method always
 // closes the http.Response Body.
 func (client MetricBaselineClient) CalculateBaselineResponder(resp *http.Response) (result CalculateBaselineResponse, err error) {
@@ -117,6 +124,7 @@ func (client MetricBaselineClient) CalculateBaselineResponder(resp *http.Respons
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // Get **Gets the baseline values for a specific metric**.
 //
 // resourceURI is the identifier of the resource. It has the following structure:
@@ -150,6 +158,7 @@ func (client MetricBaselineClient) Get(ctx context.Context, resourceURI string, 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // GetPreparer prepares the Get request.
 func (client MetricBaselineClient) GetPreparer(ctx context.Context, resourceURI string, metricName string, timespan string, interval *string, aggregation string, sensitivities string, resultType ResultType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -185,6 +194,7 @@ func (client MetricBaselineClient) GetPreparer(ctx context.Context, resourceURI 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricBaselineClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -192,6 +202,7 @@ func (client MetricBaselineClient) GetSender(req *http.Request) (*http.Response,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client MetricBaselineClient) GetResponder(resp *http.Response) (result BaselineResponse, err error) {

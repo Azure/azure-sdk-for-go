@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperationsClient is the the Azure SQL Database management API provides a RESTful set of web services that
 // interact with Azure SQL Database services to manage your databases. The API enables you to create, retrieve, update,
 // and delete databases.
@@ -32,16 +33,19 @@ type ElasticPoolOperationsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NewElasticPoolOperationsClient creates an instance of the ElasticPoolOperationsClient client.
 func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
 	return NewElasticPoolOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NewElasticPoolOperationsClientWithBaseURI creates an instance of the ElasticPoolOperationsClient client.
 func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
 	return ElasticPoolOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Cancel cancels the asynchronous operation on the elastic pool.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
@@ -69,6 +73,7 @@ func (client ElasticPoolOperationsClient) Cancel(ctx context.Context, resourceGr
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // CancelPreparer prepares the Cancel request.
 func (client ElasticPoolOperationsClient) CancelPreparer(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string, operationID uuid.UUID) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -92,6 +97,7 @@ func (client ElasticPoolOperationsClient) CancelPreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // CancelSender sends the Cancel request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolOperationsClient) CancelSender(req *http.Request) (*http.Response, error) {
@@ -99,6 +105,7 @@ func (client ElasticPoolOperationsClient) CancelSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // CancelResponder handles the response to the Cancel request. The method always
 // closes the http.Response Body.
 func (client ElasticPoolOperationsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -111,6 +118,7 @@ func (client ElasticPoolOperationsClient) CancelResponder(resp *http.Response) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ListByElasticPool gets a list of operations performed on the elastic pool.
 //
 // resourceGroupName is the name of the resource group that contains the resource. You can obtain this value from
@@ -138,6 +146,7 @@ func (client ElasticPoolOperationsClient) ListByElasticPool(ctx context.Context,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ListByElasticPoolPreparer prepares the ListByElasticPool request.
 func (client ElasticPoolOperationsClient) ListByElasticPoolPreparer(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -160,6 +169,7 @@ func (client ElasticPoolOperationsClient) ListByElasticPoolPreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ListByElasticPoolSender sends the ListByElasticPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client ElasticPoolOperationsClient) ListByElasticPoolSender(req *http.Request) (*http.Response, error) {
@@ -167,6 +177,7 @@ func (client ElasticPoolOperationsClient) ListByElasticPoolSender(req *http.Requ
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ListByElasticPoolResponder handles the response to the ListByElasticPool request. The method always
 // closes the http.Response Body.
 func (client ElasticPoolOperationsClient) ListByElasticPoolResponder(resp *http.Response) (result ElasticPoolOperationListResult, err error) {
@@ -201,6 +212,7 @@ func (client ElasticPoolOperationsClient) listByElasticPoolNextResults(lastResul
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ListByElasticPoolComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ElasticPoolOperationsClient) ListByElasticPoolComplete(ctx context.Context, resourceGroupName string, serverName string, elasticPoolName string) (result ElasticPoolOperationListResultIterator, err error) {
 	result.page, err = client.ListByElasticPool(ctx, resourceGroupName, serverName, elasticPoolName)

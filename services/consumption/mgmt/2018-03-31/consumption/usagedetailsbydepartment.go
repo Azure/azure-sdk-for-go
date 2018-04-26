@@ -116,7 +116,7 @@ func (client UsageDetailsByDepartmentClient) ListPreparer(ctx context.Context, d
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CostManagement/departments/{departmentId}/providers/Microsoft.Consumption/usageDetails", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Consumption/usageDetails", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -244,7 +244,7 @@ func (client UsageDetailsByDepartmentClient) ListByBillingPeriodPreparer(ctx con
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CostManagement/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/usageDetails", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

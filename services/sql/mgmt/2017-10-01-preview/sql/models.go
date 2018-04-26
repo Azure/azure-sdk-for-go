@@ -94,6 +94,40 @@ func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailover
 	return []ReadWriteEndpointFailoverPolicy{Automatic, Manual}
 }
 
+// VulnerabilityAssessmentScanState enumerates the values for vulnerability assessment scan state.
+type VulnerabilityAssessmentScanState string
+
+const (
+	// VulnerabilityAssessmentScanStateFailed ...
+	VulnerabilityAssessmentScanStateFailed VulnerabilityAssessmentScanState = "Failed"
+	// VulnerabilityAssessmentScanStateFailedToRun ...
+	VulnerabilityAssessmentScanStateFailedToRun VulnerabilityAssessmentScanState = "FailedToRun"
+	// VulnerabilityAssessmentScanStateInProgress ...
+	VulnerabilityAssessmentScanStateInProgress VulnerabilityAssessmentScanState = "InProgress"
+	// VulnerabilityAssessmentScanStatePassed ...
+	VulnerabilityAssessmentScanStatePassed VulnerabilityAssessmentScanState = "Passed"
+)
+
+// PossibleVulnerabilityAssessmentScanStateValues returns an array of possible values for the VulnerabilityAssessmentScanState const type.
+func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
+	return []VulnerabilityAssessmentScanState{VulnerabilityAssessmentScanStateFailed, VulnerabilityAssessmentScanStateFailedToRun, VulnerabilityAssessmentScanStateInProgress, VulnerabilityAssessmentScanStatePassed}
+}
+
+// VulnerabilityAssessmentScanTriggerType enumerates the values for vulnerability assessment scan trigger type.
+type VulnerabilityAssessmentScanTriggerType string
+
+const (
+	// OnDemand ...
+	OnDemand VulnerabilityAssessmentScanTriggerType = "OnDemand"
+	// Recurring ...
+	Recurring VulnerabilityAssessmentScanTriggerType = "Recurring"
+)
+
+// PossibleVulnerabilityAssessmentScanTriggerTypeValues returns an array of possible values for the VulnerabilityAssessmentScanTriggerType const type.
+func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
+	return []VulnerabilityAssessmentScanTriggerType{OnDemand, Recurring}
+}
+
 // DatabaseOperation a database operation.
 type DatabaseOperation struct {
 	// DatabaseOperationProperties - Resource properties.
@@ -307,6 +341,234 @@ type DatabaseOperationProperties struct {
 	Description *string `json:"description,omitempty"`
 	// IsCancellable - Whether the operation can be cancelled.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessment a database vulnerability assessment.
+type DatabaseVulnerabilityAssessment struct {
+	// DatabaseVulnerabilityAssessmentProperties - Resource properties.
+	*DatabaseVulnerabilityAssessmentProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseVulnerabilityAssessment.
+func (dva DatabaseVulnerabilityAssessment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dva.DatabaseVulnerabilityAssessmentProperties != nil {
+		objectMap["properties"] = dva.DatabaseVulnerabilityAssessmentProperties
+	}
+	if dva.ID != nil {
+		objectMap["id"] = dva.ID
+	}
+	if dva.Name != nil {
+		objectMap["name"] = dva.Name
+	}
+	if dva.Type != nil {
+		objectMap["type"] = dva.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseVulnerabilityAssessment struct.
+func (dva *DatabaseVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var databaseVulnerabilityAssessmentProperties DatabaseVulnerabilityAssessmentProperties
+				err = json.Unmarshal(*v, &databaseVulnerabilityAssessmentProperties)
+				if err != nil {
+					return err
+				}
+				dva.DatabaseVulnerabilityAssessmentProperties = &databaseVulnerabilityAssessmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dva.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dva.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dva.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
+type DatabaseVulnerabilityAssessmentProperties struct {
+	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
+	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
+	// StorageContainerSasKey - A shared access signature (SAS Key) that has write access to the blob container specified in 'storageContainerPath' parameter.
+	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
+	// RecurringScans - The recurring scans settings
+	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation’s result.
+type DatabaseVulnerabilityAssessmentScanExportProperties struct {
+	// ExportedReportLocation - Location of the exported report (e.g. https://myStorage.blob.core.windows.net/VaScans/scans/serverName/databaseName/scan_scanId.xlsx).
+	ExportedReportLocation *string `json:"exportedReportLocation,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentScansExecuteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DatabaseVulnerabilityAssessmentScansExecuteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabaseVulnerabilityAssessmentScansExecuteFuture) Result(client DatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansExecuteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.ExecuteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.ExecuteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabaseVulnerabilityAssessmentScansExport a database Vulnerability Assessment scan export resource.
+type DatabaseVulnerabilityAssessmentScansExport struct {
+	autorest.Response `json:"-"`
+	// DatabaseVulnerabilityAssessmentScanExportProperties - Resource properties.
+	*DatabaseVulnerabilityAssessmentScanExportProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseVulnerabilityAssessmentScansExport.
+func (dvase DatabaseVulnerabilityAssessmentScansExport) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dvase.DatabaseVulnerabilityAssessmentScanExportProperties != nil {
+		objectMap["properties"] = dvase.DatabaseVulnerabilityAssessmentScanExportProperties
+	}
+	if dvase.ID != nil {
+		objectMap["id"] = dvase.ID
+	}
+	if dvase.Name != nil {
+		objectMap["name"] = dvase.Name
+	}
+	if dvase.Type != nil {
+		objectMap["type"] = dvase.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseVulnerabilityAssessmentScansExport struct.
+func (dvase *DatabaseVulnerabilityAssessmentScansExport) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var databaseVulnerabilityAssessmentScanExportProperties DatabaseVulnerabilityAssessmentScanExportProperties
+				err = json.Unmarshal(*v, &databaseVulnerabilityAssessmentScanExportProperties)
+				if err != nil {
+					return err
+				}
+				dvase.DatabaseVulnerabilityAssessmentScanExportProperties = &databaseVulnerabilityAssessmentScanExportProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dvase.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dvase.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dvase.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // ElasticPoolOperation a elastic pool operation.
@@ -968,4 +1230,241 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// Sku an ARM Resource SKU.
+type Sku struct {
+	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	Name *string `json:"name,omitempty"`
+	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	Tier *string `json:"tier,omitempty"`
+	// Size - Size of the particular SKU
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - Capacity of the particular SKU.
+	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring scans.
+type VulnerabilityAssessmentRecurringScansProperties struct {
+	// IsEnabled - Recurring scans state.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// EmailSubscriptionAdmins - Specifies that the schedule scan notification will be is sent to the subscription administrators.
+	EmailSubscriptionAdmins *bool `json:"emailSubscriptionAdmins,omitempty"`
+	// Emails - Specifies an array of e-mail addresses to which the scan notification is sent.
+	Emails *[]string `json:"emails,omitempty"`
+}
+
+// VulnerabilityAssessmentScanError properties of a vulnerability assessment scan error.
+type VulnerabilityAssessmentScanError struct {
+	// Code - The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// VulnerabilityAssessmentScanRecord a vulnerability assessment scan record.
+type VulnerabilityAssessmentScanRecord struct {
+	autorest.Response `json:"-"`
+	// VulnerabilityAssessmentScanRecordProperties - Resource properties.
+	*VulnerabilityAssessmentScanRecordProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VulnerabilityAssessmentScanRecord.
+func (vasr VulnerabilityAssessmentScanRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vasr.VulnerabilityAssessmentScanRecordProperties != nil {
+		objectMap["properties"] = vasr.VulnerabilityAssessmentScanRecordProperties
+	}
+	if vasr.ID != nil {
+		objectMap["id"] = vasr.ID
+	}
+	if vasr.Name != nil {
+		objectMap["name"] = vasr.Name
+	}
+	if vasr.Type != nil {
+		objectMap["type"] = vasr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VulnerabilityAssessmentScanRecord struct.
+func (vasr *VulnerabilityAssessmentScanRecord) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var vulnerabilityAssessmentScanRecordProperties VulnerabilityAssessmentScanRecordProperties
+				err = json.Unmarshal(*v, &vulnerabilityAssessmentScanRecordProperties)
+				if err != nil {
+					return err
+				}
+				vasr.VulnerabilityAssessmentScanRecordProperties = &vulnerabilityAssessmentScanRecordProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vasr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vasr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vasr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// VulnerabilityAssessmentScanRecordListResult a list of vulnerability assessment scan records.
+type VulnerabilityAssessmentScanRecordListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]VulnerabilityAssessmentScanRecord `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// VulnerabilityAssessmentScanRecordListResultIterator provides access to a complete listing of
+// VulnerabilityAssessmentScanRecord values.
+type VulnerabilityAssessmentScanRecordListResultIterator struct {
+	i    int
+	page VulnerabilityAssessmentScanRecordListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *VulnerabilityAssessmentScanRecordListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter VulnerabilityAssessmentScanRecordListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter VulnerabilityAssessmentScanRecordListResultIterator) Response() VulnerabilityAssessmentScanRecordListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter VulnerabilityAssessmentScanRecordListResultIterator) Value() VulnerabilityAssessmentScanRecord {
+	if !iter.page.NotDone() {
+		return VulnerabilityAssessmentScanRecord{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (vasrlr VulnerabilityAssessmentScanRecordListResult) IsEmpty() bool {
+	return vasrlr.Value == nil || len(*vasrlr.Value) == 0
+}
+
+// vulnerabilityAssessmentScanRecordListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (vasrlr VulnerabilityAssessmentScanRecordListResult) vulnerabilityAssessmentScanRecordListResultPreparer() (*http.Request, error) {
+	if vasrlr.NextLink == nil || len(to.String(vasrlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(vasrlr.NextLink)))
+}
+
+// VulnerabilityAssessmentScanRecordListResultPage contains a page of VulnerabilityAssessmentScanRecord values.
+type VulnerabilityAssessmentScanRecordListResultPage struct {
+	fn     func(VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)
+	vasrlr VulnerabilityAssessmentScanRecordListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *VulnerabilityAssessmentScanRecordListResultPage) Next() error {
+	next, err := page.fn(page.vasrlr)
+	if err != nil {
+		return err
+	}
+	page.vasrlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page VulnerabilityAssessmentScanRecordListResultPage) NotDone() bool {
+	return !page.vasrlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page VulnerabilityAssessmentScanRecordListResultPage) Response() VulnerabilityAssessmentScanRecordListResult {
+	return page.vasrlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page VulnerabilityAssessmentScanRecordListResultPage) Values() []VulnerabilityAssessmentScanRecord {
+	if page.vasrlr.IsEmpty() {
+		return nil
+	}
+	return *page.vasrlr.Value
+}
+
+// VulnerabilityAssessmentScanRecordProperties properties of a vulnerability assessment scan record.
+type VulnerabilityAssessmentScanRecordProperties struct {
+	// ScanID - The scan ID.
+	ScanID *string `json:"scanId,omitempty"`
+	// TriggerType - The scan trigger type. Possible values include: 'OnDemand', 'Recurring'
+	TriggerType VulnerabilityAssessmentScanTriggerType `json:"triggerType,omitempty"`
+	// State - The scan status. Possible values include: 'VulnerabilityAssessmentScanStatePassed', 'VulnerabilityAssessmentScanStateFailed', 'VulnerabilityAssessmentScanStateFailedToRun', 'VulnerabilityAssessmentScanStateInProgress'
+	State VulnerabilityAssessmentScanState `json:"state,omitempty"`
+	// StartTime - The scan start time (UTC).
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The scan end time (UTC).
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Errors - The scan errors.
+	Errors *[]VulnerabilityAssessmentScanError `json:"errors,omitempty"`
+	// StorageContainerPath - The scan results storage container path.
+	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
+	// NumberOfFailedSecurityChecks - The number of failed security checks.
+	NumberOfFailedSecurityChecks *int32 `json:"numberOfFailedSecurityChecks,omitempty"`
 }

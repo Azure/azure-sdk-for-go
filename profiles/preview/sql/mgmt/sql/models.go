@@ -27,6 +27,7 @@ const (
 
 type BaseClient = original.BaseClient
 type DatabaseOperationsClient = original.DatabaseOperationsClient
+type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerabilityAssessmentScansClient
 type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
 type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
 type InstanceFailoverGroupReplicationRole = original.InstanceFailoverGroupReplicationRole
@@ -61,11 +62,32 @@ const (
 	Manual    ReadWriteEndpointFailoverPolicy = original.Manual
 )
 
+type VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanState
+
+const (
+	VulnerabilityAssessmentScanStateFailed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailed
+	VulnerabilityAssessmentScanStateFailedToRun VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailedToRun
+	VulnerabilityAssessmentScanStateInProgress  VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateInProgress
+	VulnerabilityAssessmentScanStatePassed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStatePassed
+)
+
+type VulnerabilityAssessmentScanTriggerType = original.VulnerabilityAssessmentScanTriggerType
+
+const (
+	OnDemand  VulnerabilityAssessmentScanTriggerType = original.OnDemand
+	Recurring VulnerabilityAssessmentScanTriggerType = original.Recurring
+)
+
 type DatabaseOperation = original.DatabaseOperation
 type DatabaseOperationListResult = original.DatabaseOperationListResult
 type DatabaseOperationListResultIterator = original.DatabaseOperationListResultIterator
 type DatabaseOperationListResultPage = original.DatabaseOperationListResultPage
 type DatabaseOperationProperties = original.DatabaseOperationProperties
+type DatabaseVulnerabilityAssessment = original.DatabaseVulnerabilityAssessment
+type DatabaseVulnerabilityAssessmentProperties = original.DatabaseVulnerabilityAssessmentProperties
+type DatabaseVulnerabilityAssessmentScanExportProperties = original.DatabaseVulnerabilityAssessmentScanExportProperties
+type DatabaseVulnerabilityAssessmentScansExecuteFuture = original.DatabaseVulnerabilityAssessmentScansExecuteFuture
+type DatabaseVulnerabilityAssessmentScansExport = original.DatabaseVulnerabilityAssessmentScansExport
 type ElasticPoolOperation = original.ElasticPoolOperation
 type ElasticPoolOperationListResult = original.ElasticPoolOperationListResult
 type ElasticPoolOperationListResultIterator = original.ElasticPoolOperationListResultIterator
@@ -86,6 +108,14 @@ type ManagedInstancePairInfo = original.ManagedInstancePairInfo
 type PartnerRegionInfo = original.PartnerRegionInfo
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type Sku = original.Sku
+type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAssessmentRecurringScansProperties
+type VulnerabilityAssessmentScanError = original.VulnerabilityAssessmentScanError
+type VulnerabilityAssessmentScanRecord = original.VulnerabilityAssessmentScanRecord
+type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessmentScanRecordListResult
+type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
+type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
+type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -98,6 +128,12 @@ func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient
 }
 func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
 	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
+	return original.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID)
+}
+func NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
+	return original.NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
 	return original.NewElasticPoolOperationsClient(subscriptionID)
@@ -122,6 +158,12 @@ func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPo
 }
 func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
 	return original.PossibleReadWriteEndpointFailoverPolicyValues()
+}
+func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
+	return original.PossibleVulnerabilityAssessmentScanStateValues()
+}
+func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
+	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

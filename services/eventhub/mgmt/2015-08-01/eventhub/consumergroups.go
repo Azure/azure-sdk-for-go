@@ -41,12 +41,10 @@ func NewConsumerGroupsClientWithBaseURI(baseURI string, subscriptionID string) C
 }
 
 // CreateOrUpdate creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-// Parameters:
-// resourceGroupName - name of the resource group within the azure subscription.
-// namespaceName - the Namespace name
-// eventHubName - the Event Hub name
-// consumerGroupName - the consumer group name
-// parameters - parameters supplied to create or update a consumer group resource.
+//
+// resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace
+// name eventHubName is the Event Hub name consumerGroupName is the consumer group name parameters is parameters
+// supplied to create or update a consumer group resource.
 func (client ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroupCreateOrUpdateParameters) (result ConsumerGroupResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -133,11 +131,9 @@ func (client ConsumerGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Delete deletes a consumer group from the specified Event Hub and resource group.
-// Parameters:
-// resourceGroupName - name of the resource group within the azure subscription.
-// namespaceName - the Namespace name
-// eventHubName - the Event Hub name
-// consumerGroupName - the consumer group name
+//
+// resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace
+// name eventHubName is the Event Hub name consumerGroupName is the consumer group name
 func (client ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -219,11 +215,9 @@ func (client ConsumerGroupsClient) DeleteResponder(resp *http.Response) (result 
 }
 
 // Get gets a description for the specified consumer group.
-// Parameters:
-// resourceGroupName - name of the resource group within the azure subscription.
-// namespaceName - the Namespace name
-// eventHubName - the Event Hub name
-// consumerGroupName - the consumer group name
+//
+// resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace
+// name eventHubName is the Event Hub name consumerGroupName is the consumer group name
 func (client ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (result ConsumerGroupResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -307,10 +301,9 @@ func (client ConsumerGroupsClient) GetResponder(resp *http.Response) (result Con
 
 // ListAll gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
 // Namespace.
-// Parameters:
-// resourceGroupName - name of the resource group within the azure subscription.
-// namespaceName - the Namespace name
-// eventHubName - the Event Hub name
+//
+// resourceGroupName is name of the resource group within the azure subscription. namespaceName is the Namespace
+// name eventHubName is the Event Hub name
 func (client ConsumerGroupsClient) ListAll(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (result ConsumerGroupListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

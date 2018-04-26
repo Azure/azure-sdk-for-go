@@ -71,8 +71,6 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.Output.Type", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "createOrUpdatePayload.Properties.Output.Properties", Name: validation.Null, Rule: true, Chain: nil},
 						}},
-					{Target: "createOrUpdatePayload.Properties.PayloadsLocation", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createOrUpdatePayload.Properties.PayloadsLocation.URI", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("webservices.Client", "CreateOrUpdate", err.Error())
 	}
@@ -100,7 +98,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -143,86 +141,13 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result WebSer
 	return
 }
 
-// CreateRegionalProperties creates an encrypted credentials parameter blob for the specified region. To get the web
-// service from a region other than the region in which it has been created, you must first call Create Regional Web
-// Services Properties to create a copy of the encrypted credential parameter blob in that region. You only need to do
-// this before the first time that you get the web service in the new region.
-//
-// resourceGroupName is name of the resource group in which the web service is located. webServiceName is the name
-// of the web service. region is the region for which encrypted credential parameters are created.
-func (client Client) CreateRegionalProperties(ctx context.Context, resourceGroupName string, webServiceName string, region string) (result CreateRegionalPropertiesFuture, err error) {
-	req, err := client.CreateRegionalPropertiesPreparer(ctx, resourceGroupName, webServiceName, region)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateRegionalProperties", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.CreateRegionalPropertiesSender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateRegionalProperties", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// CreateRegionalPropertiesPreparer prepares the CreateRegionalProperties request.
-func (client Client) CreateRegionalPropertiesPreparer(ctx context.Context, resourceGroupName string, webServiceName string, region string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"webServiceName":    autorest.Encode("path", webServiceName),
-	}
-
-	const APIVersion = "2017-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-		"region":      autorest.Encode("query", region),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearning/webServices/{webServiceName}/CreateRegionalBlob", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateRegionalPropertiesSender sends the CreateRegionalProperties request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) CreateRegionalPropertiesSender(req *http.Request) (future CreateRegionalPropertiesFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	return
-}
-
-// CreateRegionalPropertiesResponder handles the response to the CreateRegionalProperties request. The method always
-// closes the http.Response Body.
-func (client Client) CreateRegionalPropertiesResponder(resp *http.Response) (result AsyncOperationStatus, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Get gets the Web Service Definition as specified by a subscription, resource group, and name. Note that the storage
+// Get gets the Web Service Definiton as specified by a subscription, resource group, and name. Note that the storage
 // credentials and web service keys are not returned by this call. To get the web service access keys, call List Keys.
 //
 // resourceGroupName is name of the resource group in which the web service is located. webServiceName is the name
-// of the web service. region is the region for which encrypted credential parameters are valid.
-func (client Client) Get(ctx context.Context, resourceGroupName string, webServiceName string, region string) (result WebService, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, webServiceName, region)
+// of the web service.
+func (client Client) Get(ctx context.Context, resourceGroupName string, webServiceName string) (result WebService, err error) {
+	req, err := client.GetPreparer(ctx, resourceGroupName, webServiceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "Get", nil, "Failure preparing request")
 		return
@@ -244,19 +169,16 @@ func (client Client) Get(ctx context.Context, resourceGroupName string, webServi
 }
 
 // GetPreparer prepares the Get request.
-func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, webServiceName string, region string) (*http.Request, error) {
+func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, webServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(region) > 0 {
-		queryParameters["region"] = autorest.Encode("query", region)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -284,6 +206,101 @@ func (client Client) GetResponder(resp *http.Response) (result WebService, err e
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List gets the web services in the specified subscription.
+//
+// skiptoken is continuation token for pagination.
+func (client Client) List(ctx context.Context, skiptoken string) (result PaginatedWebServicesListPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, skiptoken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.Client", "List", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.pwsl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure sending request")
+		return
+	}
+
+	result.pwsl, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPreparer prepares the List request.
+func (client Client) ListPreparer(ctx context.Context, skiptoken string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-05-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/webServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client Client) ListResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client Client) listNextResults(lastResults PaginatedWebServicesList) (result PaginatedWebServicesList, err error) {
+	req, err := lastResults.paginatedWebServicesListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "webservices.Client", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "webservices.Client", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListComplete(ctx context.Context, skiptoken string) (result PaginatedWebServicesListIterator, err error) {
+	result.page, err = client.List(ctx, skiptoken)
 	return
 }
 
@@ -321,7 +338,7 @@ func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -384,101 +401,6 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListBySubscriptionID gets the web services in the specified subscription.
-//
-// skiptoken is continuation token for pagination.
-func (client Client) ListBySubscriptionID(ctx context.Context, skiptoken string) (result PaginatedWebServicesListPage, err error) {
-	result.fn = client.listBySubscriptionIDNextResults
-	req, err := client.ListBySubscriptionIDPreparer(ctx, skiptoken)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "ListBySubscriptionID", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListBySubscriptionIDSender(req)
-	if err != nil {
-		result.pwsl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "webservices.Client", "ListBySubscriptionID", resp, "Failure sending request")
-		return
-	}
-
-	result.pwsl, err = client.ListBySubscriptionIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "ListBySubscriptionID", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListBySubscriptionIDPreparer prepares the ListBySubscriptionID request.
-func (client Client) ListBySubscriptionIDPreparer(ctx context.Context, skiptoken string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearning/webServices", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListBySubscriptionIDSender sends the ListBySubscriptionID request. The method will close the
-// http.Response Body if it receives an error.
-func (client Client) ListBySubscriptionIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListBySubscriptionIDResponder handles the response to the ListBySubscriptionID request. The method always
-// closes the http.Response Body.
-func (client Client) ListBySubscriptionIDResponder(resp *http.Response) (result PaginatedWebServicesList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listBySubscriptionIDNextResults retrieves the next set of results, if any.
-func (client Client) listBySubscriptionIDNextResults(lastResults PaginatedWebServicesList) (result PaginatedWebServicesList, err error) {
-	req, err := lastResults.paginatedWebServicesListPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "webservices.Client", "listBySubscriptionIDNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListBySubscriptionIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "webservices.Client", "listBySubscriptionIDNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListBySubscriptionIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "listBySubscriptionIDNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListBySubscriptionIDComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListBySubscriptionIDComplete(ctx context.Context, skiptoken string) (result PaginatedWebServicesListIterator, err error) {
-	result.page, err = client.ListBySubscriptionID(ctx, skiptoken)
-	return
-}
-
 // ListKeys gets the access keys for the specified web service.
 //
 // resourceGroupName is name of the resource group in which the web service is located. webServiceName is the name
@@ -513,7 +435,7 @@ func (client Client) ListKeysPreparer(ctx context.Context, resourceGroupName str
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -575,7 +497,7 @@ func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -646,7 +568,7 @@ func (client Client) RemovePreparer(ctx context.Context, resourceGroupName strin
 		"webServiceName":    autorest.Encode("path", webServiceName),
 	}
 
-	const APIVersion = "2017-01-01"
+	const APIVersion = "2016-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

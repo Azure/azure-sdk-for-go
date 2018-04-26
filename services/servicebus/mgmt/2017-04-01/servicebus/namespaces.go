@@ -594,28 +594,9 @@ func (client NamespacesClient) GetAuthorizationRuleResponder(resp *http.Response
 }
 
 // List gets all the available namespaces within the subscription, irrespective of the resource groups.
-//
-// skip is skip is only used if a previous operation returned a partial result. If a previous response contains a
-// nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
-// point to use for subsequent calls. top is may be used to limit the number of results to the most recent N
-// usageDetails.
-func (client NamespacesClient) List(ctx context.Context, skip *int32, top *int32) (result SBNamespaceListResultPage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: skip,
-			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
-					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-				}}}},
-		{TargetValue: top,
-			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewError("servicebus.NamespacesClient", "List", err.Error())
-	}
-
+func (client NamespacesClient) List(ctx context.Context) (result SBNamespaceListResultPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, skip, top)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "List", nil, "Failure preparing request")
 		return
@@ -637,7 +618,7 @@ func (client NamespacesClient) List(ctx context.Context, skip *int32, top *int32
 }
 
 // ListPreparer prepares the List request.
-func (client NamespacesClient) ListPreparer(ctx context.Context, skip *int32, top *int32) (*http.Request, error) {
+func (client NamespacesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -645,12 +626,6 @@ func (client NamespacesClient) ListPreparer(ctx context.Context, skip *int32, to
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -703,8 +678,8 @@ func (client NamespacesClient) listNextResults(lastResults SBNamespaceListResult
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NamespacesClient) ListComplete(ctx context.Context, skip *int32, top *int32) (result SBNamespaceListResultIterator, err error) {
-	result.page, err = client.List(ctx, skip, top)
+func (client NamespacesClient) ListComplete(ctx context.Context) (result SBNamespaceListResultIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }
 
@@ -815,30 +790,17 @@ func (client NamespacesClient) ListAuthorizationRulesComplete(ctx context.Contex
 
 // ListByResourceGroup gets the available namespaces within a resource group.
 //
-// resourceGroupName is name of the Resource group within the Azure subscription. skip is skip is only used if a
-// previous operation returned a partial result. If a previous response contains a nextLink element, the value of
-// the nextLink element will include a skip parameter that specifies a starting point to use for subsequent calls.
-// top is may be used to limit the number of results to the most recent N usageDetails.
-func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (result SBNamespaceListResultPage, err error) {
+// resourceGroupName is name of the Resource group within the Azure subscription.
+func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result SBNamespaceListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: skip,
-			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
-					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-				}}}},
-		{TargetValue: top,
-			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
-					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("servicebus.NamespacesClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, skip, top)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -860,7 +822,7 @@ func (client NamespacesClient) ListByResourceGroup(ctx context.Context, resource
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (*http.Request, error) {
+func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -869,12 +831,6 @@ func (client NamespacesClient) ListByResourceGroupPreparer(ctx context.Context, 
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *skip)
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -927,8 +883,8 @@ func (client NamespacesClient) listByResourceGroupNextResults(lastResults SBName
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NamespacesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, skip *int32, top *int32) (result SBNamespaceListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, skip, top)
+func (client NamespacesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result SBNamespaceListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
 

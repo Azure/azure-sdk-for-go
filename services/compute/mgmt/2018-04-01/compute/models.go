@@ -3779,6 +3779,16 @@ func (ru ResourceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation
+type RollbackStatusInfo struct {
+	// SuccessfullyRolledbackInstanceCount - The number of instances which have been successfully rolled back.
+	SuccessfullyRolledbackInstanceCount *int32 `json:"successfullyRolledbackInstanceCount,omitempty"`
+	// FailedRolledbackInstanceCount - The number of instances which failed to rollback.
+	FailedRolledbackInstanceCount *int32 `json:"failedRolledbackInstanceCount,omitempty"`
+	// RollbackError - Error Details if OS rollback failed.
+	RollbackError *APIError `json:"rollbackError,omitempty"`
+}
+
 // RollingUpgradePolicy the configuration parameters used while performing a rolling upgrade.
 type RollingUpgradePolicy struct {
 	// MaxBatchInstancePercent - The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. The default value for this parameter is 20%.
@@ -4876,6 +4886,8 @@ type UpgradeOperationHistoricalStatusInfoProperties struct {
 	StartedBy UpgradeOperationInvoker `json:"startedBy,omitempty"`
 	// TargetImageReference - Image Reference details
 	TargetImageReference *ImageReference `json:"targetImageReference,omitempty"`
+	// RollbackInfo - Information about OS rollback if performed
+	RollbackInfo *RollbackStatusInfo `json:"rollbackInfo,omitempty"`
 }
 
 // UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.

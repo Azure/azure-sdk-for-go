@@ -5287,7 +5287,7 @@ type SQLMigrationTaskInput struct {
 	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
 }
 
-// StartMigrationScenarioServerRoleResult ...
+// StartMigrationScenarioServerRoleResult server role migration result
 type StartMigrationScenarioServerRoleResult struct {
 	// Name - Name of server role.
 	Name *string `json:"name,omitempty"`

@@ -64,13 +64,6 @@ const (
 	GreaterThanOrEqualTo OperatorType = original.GreaterThanOrEqualTo
 )
 
-type PriceHidden = original.PriceHidden
-
-const (
-	False PriceHidden = original.False
-	True  PriceHidden = original.True
-)
-
 type TimeGrainType = original.TimeGrainType
 
 const (
@@ -207,9 +200,6 @@ func PossibleDatagrainValues() []Datagrain {
 }
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
-}
-func PossiblePriceHiddenValues() []PriceHidden {
-	return original.PossiblePriceHiddenValues()
 }
 func PossibleTimeGrainTypeValues() []TimeGrainType {
 	return original.PossibleTimeGrainTypeValues()

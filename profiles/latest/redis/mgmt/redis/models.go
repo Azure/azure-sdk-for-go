@@ -42,6 +42,12 @@ const (
 	Weekend   DayOfWeek = original.Weekend
 )
 
+type DefaultName = original.DefaultName
+
+const (
+	MicrosoftCacheredis DefaultName = original.MicrosoftCacheredis
+)
+
 type KeyType = original.KeyType
 
 const (
@@ -141,6 +147,9 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type PatchSchedule = original.PatchSchedule
+type PatchScheduleListResult = original.PatchScheduleListResult
+type PatchScheduleListResultIterator = original.PatchScheduleListResultIterator
+type PatchScheduleListResultPage = original.PatchScheduleListResultPage
 type Properties = original.Properties
 type ProxyResource = original.ProxyResource
 type RebootParameters = original.RebootParameters
@@ -178,6 +187,9 @@ func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) Lin
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
+}
+func PossibleDefaultNameValues() []DefaultName {
+	return original.PossibleDefaultNameValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()

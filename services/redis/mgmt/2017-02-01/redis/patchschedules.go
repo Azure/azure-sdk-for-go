@@ -41,10 +41,9 @@ func NewPatchSchedulesClientWithBaseURI(baseURI string, subscriptionID string) P
 }
 
 // CreateOrUpdate create or replace the patching schedule for Redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
-// parameters - parameters to set the patching schedule for Redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is
+// parameters to set the patching schedule for Redis cache.
 func (client PatchSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, parameters PatchSchedule) (result PatchSchedule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -118,9 +117,8 @@ func (client PatchSchedulesClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Delete deletes the patching schedule of a redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client PatchSchedulesClient) Delete(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -184,9 +182,8 @@ func (client PatchSchedulesClient) DeleteResponder(resp *http.Response) (result 
 }
 
 // Get gets the patching schedule of a redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client PatchSchedulesClient) Get(ctx context.Context, resourceGroupName string, name string) (result PatchSchedule, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, name)
 	if err != nil {

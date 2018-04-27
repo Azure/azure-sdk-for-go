@@ -41,12 +41,11 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 }
 
 // Create adds a cluster. A cluster is a collection of compute nodes. Multiple jobs can be run on the same cluster.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// clusterName - the name of the cluster within the specified resource group. Cluster names can only contain a
-// combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1
-// through 64 characters long.
-// parameters - the parameters to provide for cluster creation.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// parameters is the parameters to provide for cluster creation.
 func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterCreateParameters) (result ClustersCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -166,11 +165,10 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 }
 
 // Delete deletes a Cluster.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// clusterName - the name of the cluster within the specified resource group. Cluster names can only contain a
-// combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1
-// through 64 characters long.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -246,11 +244,10 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get gets information about the specified Cluster.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// clusterName - the name of the cluster within the specified resource group. Cluster names can only contain a
-// combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1
-// through 64 characters long.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -325,10 +322,10 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 }
 
 // List gets information about the Clusters associated with the subscription.
-// Parameters:
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
+//
+// filter is an OData $filter clause.. Used to filter results that are returned in the GET respnose.
+// selectParameter is an OData $select clause. Used to select the properties to be returned in the GET respnose.
+// maxResults is the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) List(ctx context.Context, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: maxResults,
@@ -439,11 +436,11 @@ func (client ClustersClient) ListComplete(ctx context.Context, filter string, se
 }
 
 // ListByResourceGroup gets information about the Clusters associated within the specified resource group.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// filter - an OData $filter clause.. Used to filter results that are returned in the GET respnose.
-// selectParameter - an OData $select clause. Used to select the properties to be returned in the GET respnose.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. filter is an OData $filter
+// clause.. Used to filter results that are returned in the GET respnose. selectParameter is an OData $select
+// clause. Used to select the properties to be returned in the GET respnose. maxResults is the maximum number of
+// items to return in the response. A maximum of 1000 files can be returned.
 func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, maxResults *int32) (result ClusterListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -557,11 +554,10 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 }
 
 // ListRemoteLoginInformation get the IP address, port of all the compute nodes in the cluster.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// clusterName - the name of the cluster within the specified resource group. Cluster names can only contain a
-// combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1
-// through 64 characters long.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
 func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, resourceGroupName string, clusterName string) (result RemoteLoginInformationListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -664,12 +660,11 @@ func (client ClustersClient) ListRemoteLoginInformationComplete(ctx context.Cont
 }
 
 // Update update the properties of a given cluster.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// clusterName - the name of the cluster within the specified resource group. Cluster names can only contain a
-// combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1
-// through 64 characters long.
-// parameters - additional parameters for cluster update.
+//
+// resourceGroupName is name of the resource group to which the resource belongs. clusterName is the name of the
+// cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// parameters is additional parameters for cluster update.
 func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters) (result Cluster, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

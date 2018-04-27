@@ -42,8 +42,8 @@ func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string)
 
 // CheckNameExists checks that the Azure Cosmos DB account name already exists. A valid account name may contain only
 // lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
-// Parameters:
-// accountName - cosmos DB database account name.
+//
+// accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) CheckNameExists(ctx context.Context, accountName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: accountName,
@@ -112,10 +112,9 @@ func (client DatabaseAccountsClient) CheckNameExistsResponder(resp *http.Respons
 }
 
 // CreateOrUpdate creates or updates an Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// createUpdateParameters - the parameters to provide for the current database account.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// createUpdateParameters is the parameters to provide for the current database account.
 func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters) (result DatabaseAccountsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -210,9 +209,8 @@ func (client DatabaseAccountsClient) CreateOrUpdateResponder(resp *http.Response
 }
 
 // Delete deletes an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result DatabaseAccountsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -291,10 +289,9 @@ func (client DatabaseAccountsClient) DeleteResponder(resp *http.Response) (resul
 // FailoverPriorityChange changes the failover priority for the Azure Cosmos DB database account. A failover priority
 // of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover
 // priority values must be unique for each of the regions in which the database account exists.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// failoverParameters - the new failover policies for the database account.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// failoverParameters is the new failover policies for the database account.
 func (client DatabaseAccountsClient) FailoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies) (result DatabaseAccountsFailoverPriorityChangeFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -375,9 +372,8 @@ func (client DatabaseAccountsClient) FailoverPriorityChangeResponder(resp *http.
 }
 
 // Get retrieves the properties of an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string) (result DatabaseAccount, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -515,8 +511,8 @@ func (client DatabaseAccountsClient) ListResponder(resp *http.Response) (result 
 }
 
 // ListByResourceGroup lists all the Azure Cosmos DB database accounts available under the given resource group.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
+//
+// resourceGroupName is name of an Azure resource group.
 func (client DatabaseAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DatabaseAccountsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -588,9 +584,8 @@ func (client DatabaseAccountsClient) ListByResourceGroupResponder(resp *http.Res
 }
 
 // ListConnectionStrings lists the connection strings for the specified Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, accountName string) (result DatabaseAccountListConnectionStringsResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -666,9 +661,8 @@ func (client DatabaseAccountsClient) ListConnectionStringsResponder(resp *http.R
 }
 
 // ListKeys lists the access keys for the specified Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result DatabaseAccountListKeysResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -744,9 +738,8 @@ func (client DatabaseAccountsClient) ListKeysResponder(resp *http.Response) (res
 }
 
 // ListMetricDefinitions retrieves metric defintions for the given database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, accountName string) (result MetricDefinitionsListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -822,12 +815,11 @@ func (client DatabaseAccountsClient) ListMetricDefinitionsResponder(resp *http.R
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// filter - an OData filter expression that describes a subset of metrics to return. The parameters that can be
-// filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-// timeGrain. The supported operator is eq.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. filter is
+// an OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+// name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The
+// supported operator is eq.
 func (client DatabaseAccountsClient) ListMetrics(ctx context.Context, resourceGroupName string, accountName string, filter string) (result MetricListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -904,9 +896,8 @@ func (client DatabaseAccountsClient) ListMetricsResponder(resp *http.Response) (
 }
 
 // ListReadOnlyKeys lists the read-only access keys for the specified Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
 func (client DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, resourceGroupName string, accountName string) (result DatabaseAccountListReadOnlyKeysResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -982,11 +973,10 @@ func (client DatabaseAccountsClient) ListReadOnlyKeysResponder(resp *http.Respon
 }
 
 // ListUsages retrieves the usages (most recent data) for the given database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// filter - an OData filter expression that describes a subset of usages to return. The supported parameter is
-// name.value (name of the metric, can have an or of multiple names).
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. filter is
+// an OData filter expression that describes a subset of usages to return. The supported parameter is name.value
+// (name of the metric, can have an or of multiple names).
 func (client DatabaseAccountsClient) ListUsages(ctx context.Context, resourceGroupName string, accountName string, filter string) (result UsagesResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1064,11 +1054,170 @@ func (client DatabaseAccountsClient) ListUsagesResponder(resp *http.Response) (r
 	return
 }
 
+// OfflineRegion offline the specified region for the specified Azure Cosmos DB database account.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
+// cosmos DB region, with spaces between words and each word capitalized.
+func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resourceGroupName string, accountName string, region string) (result DatabaseAccountsOfflineRegionFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "OfflineRegion", err.Error())
+	}
+
+	req, err := client.OfflineRegionPreparer(ctx, resourceGroupName, accountName, region)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OfflineRegion", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.OfflineRegionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OfflineRegion", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// OfflineRegionPreparer prepares the OfflineRegion request.
+func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"region":            autorest.Encode("path", region),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/offlineRegion", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// OfflineRegionSender sends the OfflineRegion request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) OfflineRegionSender(req *http.Request) (future DatabaseAccountsOfflineRegionFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// OfflineRegionResponder handles the response to the OfflineRegion request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) OfflineRegionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// OnlineRegion online the specified region for the specified Azure Cosmos DB database account.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
+// cosmos DB region, with spaces between words and each word capitalized.
+func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceGroupName string, accountName string, region string) (result DatabaseAccountsOnlineRegionFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "OnlineRegion", err.Error())
+	}
+
+	req, err := client.OnlineRegionPreparer(ctx, resourceGroupName, accountName, region)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OnlineRegion", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.OnlineRegionSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OnlineRegion", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// OnlineRegionPreparer prepares the OnlineRegion request.
+func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"region":            autorest.Encode("path", region),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/onlineRegion", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// OnlineRegionSender sends the OnlineRegion request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) OnlineRegionSender(req *http.Request) (future DatabaseAccountsOnlineRegionFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// OnlineRegionResponder handles the response to the OnlineRegion request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) OnlineRegionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Patch patches the properties of an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// updateParameters - the tags parameter to patch for the current database account.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// updateParameters is the tags parameter to patch for the current database account.
 func (client DatabaseAccountsClient) Patch(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountPatchParameters) (result DatabaseAccountsPatchFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1148,10 +1297,9 @@ func (client DatabaseAccountsClient) PatchResponder(resp *http.Response) (result
 }
 
 // RegenerateKey regenerates an access key for the specified Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// keyToRegenerate - the name of the key to regenerate.
+//
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// keyToRegenerate is the name of the key to regenerate.
 func (client DatabaseAccountsClient) RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters) (result DatabaseAccountsRegenerateKeyFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

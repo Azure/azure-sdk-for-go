@@ -40,10 +40,9 @@ func NewApplicationSecurityGroupsClientWithBaseURI(baseURI string, subscriptionI
 }
 
 // CreateOrUpdate creates or updates an application security group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// applicationSecurityGroupName - the name of the application security group.
-// parameters - parameters supplied to the create or update ApplicationSecurityGroup operation.
+//
+// resourceGroupName is the name of the resource group. applicationSecurityGroupName is the name of the application
+// security group. parameters is parameters supplied to the create or update ApplicationSecurityGroup operation.
 func (client ApplicationSecurityGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, parameters ApplicationSecurityGroup) (result ApplicationSecurityGroupsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, applicationSecurityGroupName, parameters)
 	if err != nil {
@@ -112,9 +111,9 @@ func (client ApplicationSecurityGroupsClient) CreateOrUpdateResponder(resp *http
 }
 
 // Delete deletes the specified application security group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// applicationSecurityGroupName - the name of the application security group.
+//
+// resourceGroupName is the name of the resource group. applicationSecurityGroupName is the name of the application
+// security group.
 func (client ApplicationSecurityGroupsClient) Delete(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (result ApplicationSecurityGroupsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, applicationSecurityGroupName)
 	if err != nil {
@@ -180,9 +179,9 @@ func (client ApplicationSecurityGroupsClient) DeleteResponder(resp *http.Respons
 }
 
 // Get gets information about the specified application security group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// applicationSecurityGroupName - the name of the application security group.
+//
+// resourceGroupName is the name of the resource group. applicationSecurityGroupName is the name of the application
+// security group.
 func (client ApplicationSecurityGroupsClient) Get(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string) (result ApplicationSecurityGroup, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, applicationSecurityGroupName)
 	if err != nil {
@@ -247,8 +246,8 @@ func (client ApplicationSecurityGroupsClient) GetResponder(resp *http.Response) 
 }
 
 // List gets all the application security groups in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client ApplicationSecurityGroupsClient) List(ctx context.Context, resourceGroupName string) (result ApplicationSecurityGroupListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)

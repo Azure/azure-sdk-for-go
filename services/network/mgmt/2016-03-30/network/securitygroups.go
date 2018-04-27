@@ -41,10 +41,9 @@ func NewSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string) S
 
 // CreateOrUpdate the Put NetworkSecurityGroup operation creates/updates a network security groupin the specified
 // resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// networkSecurityGroupName - the name of the network security group.
-// parameters - parameters supplied to the create/update Network Security Group operation
+//
+// resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network
+// security group. parameters is parameters supplied to the create/update Network Security Group operation
 func (client SecurityGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, parameters SecurityGroup) (result SecurityGroupsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, networkSecurityGroupName, parameters)
 	if err != nil {
@@ -113,9 +112,9 @@ func (client SecurityGroupsClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Delete the Delete NetworkSecurityGroup operation deletes the specifed network security group
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// networkSecurityGroupName - the name of the network security group.
+//
+// resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network
+// security group.
 func (client SecurityGroupsClient) Delete(ctx context.Context, resourceGroupName string, networkSecurityGroupName string) (result SecurityGroupsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkSecurityGroupName)
 	if err != nil {
@@ -181,10 +180,9 @@ func (client SecurityGroupsClient) DeleteResponder(resp *http.Response) (result 
 }
 
 // Get the Get NetworkSecurityGroups operation retrieves information about the specified network security group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// networkSecurityGroupName - the name of the network security group.
-// expand - expand references resources.
+//
+// resourceGroupName is the name of the resource group. networkSecurityGroupName is the name of the network
+// security group. expand is expand references resources.
 func (client SecurityGroupsClient) Get(ctx context.Context, resourceGroupName string, networkSecurityGroupName string, expand string) (result SecurityGroup, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkSecurityGroupName, expand)
 	if err != nil {
@@ -252,8 +250,8 @@ func (client SecurityGroupsClient) GetResponder(resp *http.Response) (result Sec
 }
 
 // List the list NetworkSecurityGroups returns all network security groups in a resource group
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client SecurityGroupsClient) List(ctx context.Context, resourceGroupName string) (result SecurityGroupListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)

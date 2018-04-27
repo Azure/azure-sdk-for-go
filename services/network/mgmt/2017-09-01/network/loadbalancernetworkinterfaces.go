@@ -41,9 +41,8 @@ func NewLoadBalancerNetworkInterfacesClientWithBaseURI(baseURI string, subscript
 }
 
 // List gets associated load balancer network interfaces.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// loadBalancerName - the name of the load balancer.
+//
+// resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client LoadBalancerNetworkInterfacesClient) List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result InterfaceListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, loadBalancerName)

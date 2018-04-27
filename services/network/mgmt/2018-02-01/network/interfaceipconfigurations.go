@@ -40,10 +40,9 @@ func NewInterfaceIPConfigurationsClientWithBaseURI(baseURI string, subscriptionI
 }
 
 // Get gets the specified network interface ip configuration.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// networkInterfaceName - the name of the network interface.
-// IPConfigurationName - the name of the ip configuration name.
+//
+// resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
+// IPConfigurationName is the name of the ip configuration name.
 func (client InterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, IPConfigurationName string) (result InterfaceIPConfiguration, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkInterfaceName, IPConfigurationName)
 	if err != nil {
@@ -109,9 +108,8 @@ func (client InterfaceIPConfigurationsClient) GetResponder(resp *http.Response) 
 }
 
 // List get all ip configurations in a network interface
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// networkInterfaceName - the name of the network interface.
+//
+// resourceGroupName is the name of the resource group. networkInterfaceName is the name of the network interface.
 func (client InterfaceIPConfigurationsClient) List(ctx context.Context, resourceGroupName string, networkInterfaceName string) (result InterfaceIPConfigurationListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, networkInterfaceName)

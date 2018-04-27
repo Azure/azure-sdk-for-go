@@ -40,11 +40,10 @@ func NewSubnetsClientWithBaseURI(baseURI string, subscriptionID string) SubnetsC
 }
 
 // CreateOrUpdate the Put Subnet operation creates/updates a subnet in the specified virtual network
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// subnetName - the name of the subnet.
-// subnetParameters - parameters supplied to the create/update Subnet operation
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// subnetName is the name of the subnet. subnetParameters is parameters supplied to the create/update Subnet
+// operation
 func (client SubnetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, subnetParameters Subnet) (result SubnetsCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
 	if err != nil {
@@ -114,10 +113,9 @@ func (client SubnetsClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // Delete the delete subnet operation deletes the specified subnet.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// subnetName - the name of the subnet.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// subnetName is the name of the subnet.
 func (client SubnetsClient) Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (result SubnetsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkName, subnetName)
 	if err != nil {
@@ -184,11 +182,9 @@ func (client SubnetsClient) DeleteResponder(resp *http.Response) (result autores
 }
 
 // Get the Get subnet operation retrieves information about the specified subnet.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
-// subnetName - the name of the subnet.
-// expand - expand references resources.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
+// subnetName is the name of the subnet. expand is expand references resources.
 func (client SubnetsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result Subnet, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, expand)
 	if err != nil {
@@ -257,9 +253,8 @@ func (client SubnetsClient) GetResponder(resp *http.Response) (result Subnet, er
 }
 
 // List the List subnets operation retrieves all the subnets in a virtual network.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// virtualNetworkName - the name of the virtual network.
+//
+// resourceGroupName is the name of the resource group. virtualNetworkName is the name of the virtual network.
 func (client SubnetsClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result SubnetListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, virtualNetworkName)

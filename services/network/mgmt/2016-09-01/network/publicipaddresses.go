@@ -41,10 +41,9 @@ func NewPublicIPAddressesClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // CreateOrUpdate creates or updates a static or dynamic public IP address.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// publicIPAddressName - the name of the public IP address.
-// parameters - parameters supplied to the create or update public IP address operation.
+//
+// resourceGroupName is the name of the resource group. publicIPAddressName is the name of the public IP address.
+// parameters is parameters supplied to the create or update public IP address operation.
 func (client PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (result PublicIPAddressesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -124,9 +123,8 @@ func (client PublicIPAddressesClient) CreateOrUpdateResponder(resp *http.Respons
 }
 
 // Delete deletes the specified public IP address.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// publicIPAddressName - the name of the subnet.
+//
+// resourceGroupName is the name of the resource group. publicIPAddressName is the name of the subnet.
 func (client PublicIPAddressesClient) Delete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (result PublicIPAddressesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, publicIPAddressName)
 	if err != nil {
@@ -192,10 +190,9 @@ func (client PublicIPAddressesClient) DeleteResponder(resp *http.Response) (resu
 }
 
 // Get gets the specified public IP address in a specified resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// publicIPAddressName - the name of the subnet.
-// expand - expands referenced resources.
+//
+// resourceGroupName is the name of the resource group. publicIPAddressName is the name of the subnet. expand is
+// expands referenced resources.
 func (client PublicIPAddressesClient) Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, expand string) (result PublicIPAddress, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, publicIPAddressName, expand)
 	if err != nil {
@@ -263,8 +260,8 @@ func (client PublicIPAddressesClient) GetResponder(resp *http.Response) (result 
 }
 
 // List gets all public IP addresses in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client PublicIPAddressesClient) List(ctx context.Context, resourceGroupName string) (result PublicIPAddressListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)

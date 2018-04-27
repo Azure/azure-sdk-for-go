@@ -41,11 +41,10 @@ func NewInboundNatRulesClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 
 // CreateOrUpdate creates or updates a load balancer inbound nat rule.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// loadBalancerName - the name of the load balancer.
-// inboundNatRuleName - the name of the inbound nat rule.
-// inboundNatRuleParameters - parameters supplied to the create or update inbound nat rule operation.
+//
+// resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
+// inboundNatRuleName is the name of the inbound nat rule. inboundNatRuleParameters is parameters supplied to the
+// create or update inbound nat rule operation.
 func (client InboundNatRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, inboundNatRuleParameters InboundNatRule) (result InboundNatRulesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: inboundNatRuleParameters,
@@ -134,10 +133,9 @@ func (client InboundNatRulesClient) CreateOrUpdateResponder(resp *http.Response)
 }
 
 // Delete deletes the specified load balancer inbound nat rule.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// loadBalancerName - the name of the load balancer.
-// inboundNatRuleName - the name of the inbound nat rule.
+//
+// resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
+// inboundNatRuleName is the name of the inbound nat rule.
 func (client InboundNatRulesClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string) (result InboundNatRulesDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName)
 	if err != nil {
@@ -204,11 +202,9 @@ func (client InboundNatRulesClient) DeleteResponder(resp *http.Response) (result
 }
 
 // Get gets the specified load balancer inbound nat rule.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// loadBalancerName - the name of the load balancer.
-// inboundNatRuleName - the name of the inbound nat rule.
-// expand - expands referenced resources.
+//
+// resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
+// inboundNatRuleName is the name of the inbound nat rule. expand is expands referenced resources.
 func (client InboundNatRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, inboundNatRuleName string, expand string) (result InboundNatRule, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName, expand)
 	if err != nil {
@@ -277,9 +273,8 @@ func (client InboundNatRulesClient) GetResponder(resp *http.Response) (result In
 }
 
 // List gets all the inbound nat rules in a load balancer.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// loadBalancerName - the name of the load balancer.
+//
+// resourceGroupName is the name of the resource group. loadBalancerName is the name of the load balancer.
 func (client InboundNatRulesClient) List(ctx context.Context, resourceGroupName string, loadBalancerName string) (result InboundNatRuleListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, loadBalancerName)

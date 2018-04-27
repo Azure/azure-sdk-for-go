@@ -798,9 +798,9 @@ type ConnectToSourceSQLServerTaskInput struct {
 	// CheckPermissionsGroup - Permission group for validations. Possible values include: 'Default', 'MigrationFromSQLServerToAzureDB'
 	CheckPermissionsGroup ServerLevelPermissionsGroup `json:"checkPermissionsGroup,omitempty"`
 	// CollectLogins - Flag for whether to collect logins from source server.
-	CollectLogins *bool `json:"CollectLogins,omitempty"`
+	CollectLogins *bool `json:"collectLogins,omitempty"`
 	// CollectAgentJobs - Flag for whether to collect agent jobs from source server.
-	CollectAgentJobs *bool `json:"CollectAgentJobs,omitempty"`
+	CollectAgentJobs *bool `json:"collectAgentJobs,omitempty"`
 }
 
 // BasicConnectToSourceSQLServerTaskOutput output for the task that validates connection to SQL Server and also
@@ -1156,9 +1156,9 @@ type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	// Databases - Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
 	// Logins - Source logins as a map from login name to login id.
-	Logins map[string]*string `json:"Logins"`
+	Logins map[string]*string `json:"logins"`
 	// AgentJobs - Source agent jobs as a map from agent job name to id.
-	AgentJobs map[string]*string `json:"AgentJobs"`
+	AgentJobs map[string]*string `json:"agentJobs"`
 	// SourceServerVersion - Source server version
 	SourceServerVersion *string `json:"sourceServerVersion,omitempty"`
 	// SourceServerBrandVersion - Source server brand version
@@ -1179,10 +1179,10 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) MarshalJSON() ([]by
 		objectMap["databases"] = ctssstotl.Databases
 	}
 	if ctssstotl.Logins != nil {
-		objectMap["Logins"] = ctssstotl.Logins
+		objectMap["logins"] = ctssstotl.Logins
 	}
 	if ctssstotl.AgentJobs != nil {
-		objectMap["AgentJobs"] = ctssstotl.AgentJobs
+		objectMap["agentJobs"] = ctssstotl.AgentJobs
 	}
 	if ctssstotl.SourceServerVersion != nil {
 		objectMap["sourceServerVersion"] = ctssstotl.SourceServerVersion
@@ -1510,9 +1510,9 @@ type ConnectToTargetSQLMITaskOutput struct {
 	// TargetServerBrandVersion - Target server brand version
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
 	// Logins - List of logins on the target server.
-	Logins *[]string `json:"Logins,omitempty"`
+	Logins *[]string `json:"logins,omitempty"`
 	// AgentJobs - List of agent jobs on the target server.
-	AgentJobs *[]string `json:"AgentJobs,omitempty"`
+	AgentJobs *[]string `json:"agentJobs,omitempty"`
 	// ValidationErrors - Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }

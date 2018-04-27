@@ -1089,7 +1089,6 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"region":            autorest.Encode("path", region),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -1097,6 +1096,7 @@ func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, 
 	const APIVersion = "2015-04-08"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+		"region":      autorest.Encode("query", region),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1169,7 +1169,6 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"region":            autorest.Encode("path", region),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -1177,6 +1176,7 @@ func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, r
 	const APIVersion = "2015-04-08"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+		"region":      autorest.Encode("query", region),
 	}
 
 	preparer := autorest.CreatePreparer(

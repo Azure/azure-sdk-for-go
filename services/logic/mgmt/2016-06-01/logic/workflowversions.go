@@ -40,10 +40,9 @@ func NewWorkflowVersionsClientWithBaseURI(baseURI string, subscriptionID string)
 }
 
 // Get gets a workflow version.
-// Parameters:
-// resourceGroupName - the resource group name.
-// workflowName - the workflow name.
-// versionID - the workflow versionId.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow name. versionID is the workflow
+// versionId.
 func (client WorkflowVersionsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, versionID string) (result WorkflowVersion, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, workflowName, versionID)
 	if err != nil {
@@ -109,10 +108,9 @@ func (client WorkflowVersionsClient) GetResponder(resp *http.Response) (result W
 }
 
 // List gets a list of workflow versions.
-// Parameters:
-// resourceGroupName - the resource group name.
-// workflowName - the workflow name.
-// top - the number of items to be included in the result.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow name. top is the number of items to
+// be included in the result.
 func (client WorkflowVersionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, top *int32) (result WorkflowVersionListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, workflowName, top)
@@ -208,12 +206,9 @@ func (client WorkflowVersionsClient) ListComplete(ctx context.Context, resourceG
 }
 
 // ListCallbackURL lists the callback URL for a trigger of a workflow version.
-// Parameters:
-// resourceGroupName - the resource group name.
-// workflowName - the workflow name.
-// versionID - the workflow versionId.
-// triggerName - the workflow trigger name.
-// parameters - the callback URL parameters.
+//
+// resourceGroupName is the resource group name. workflowName is the workflow name. versionID is the workflow
+// versionId. triggerName is the workflow trigger name. parameters is the callback URL parameters.
 func (client WorkflowVersionsClient) ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, versionID string, triggerName string, parameters *GetCallbackURLParameters) (result WorkflowTriggerCallbackURL, err error) {
 	req, err := client.ListCallbackURLPreparer(ctx, resourceGroupName, workflowName, versionID, triggerName, parameters)
 	if err != nil {

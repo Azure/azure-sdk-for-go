@@ -41,11 +41,9 @@ func NewMapsClientWithBaseURI(baseURI string, subscriptionID string) MapsClient 
 }
 
 // CreateOrUpdate creates or updates an integration account map.
-// Parameters:
-// resourceGroupName - the resource group name.
-// integrationAccountName - the integration account name.
-// mapName - the integration account map name.
-// mapParameter - the integration account map.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is
+// the integration account map name. mapParameter is the integration account map.
 func (client MapsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, mapParameter IntegrationAccountMap) (result IntegrationAccountMap, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: mapParameter,
@@ -119,10 +117,9 @@ func (client MapsClient) CreateOrUpdateResponder(resp *http.Response) (result In
 }
 
 // Delete deletes an integration account map.
-// Parameters:
-// resourceGroupName - the resource group name.
-// integrationAccountName - the integration account name.
-// mapName - the integration account map name.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is
+// the integration account map name.
 func (client MapsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
@@ -187,10 +184,9 @@ func (client MapsClient) DeleteResponder(resp *http.Response) (result autorest.R
 }
 
 // Get gets an integration account map.
-// Parameters:
-// resourceGroupName - the resource group name.
-// integrationAccountName - the integration account name.
-// mapName - the integration account map name.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is
+// the integration account map name.
 func (client MapsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string) (result IntegrationAccountMap, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, integrationAccountName, mapName)
 	if err != nil {
@@ -256,11 +252,9 @@ func (client MapsClient) GetResponder(resp *http.Response) (result IntegrationAc
 }
 
 // ListByIntegrationAccounts gets a list of integration account maps.
-// Parameters:
-// resourceGroupName - the resource group name.
-// integrationAccountName - the integration account name.
-// top - the number of items to be included in the result.
-// filter - the filter to apply on the operation.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. top is the
+// number of items to be included in the result. filter is the filter to apply on the operation.
 func (client MapsClient) ListByIntegrationAccounts(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountMapListResultPage, err error) {
 	result.fn = client.listByIntegrationAccountsNextResults
 	req, err := client.ListByIntegrationAccountsPreparer(ctx, resourceGroupName, integrationAccountName, top, filter)
@@ -355,5 +349,75 @@ func (client MapsClient) listByIntegrationAccountsNextResults(lastResults Integr
 // ListByIntegrationAccountsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client MapsClient) ListByIntegrationAccountsComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, top *int32, filter string) (result IntegrationAccountMapListResultIterator, err error) {
 	result.page, err = client.ListByIntegrationAccounts(ctx, resourceGroupName, integrationAccountName, top, filter)
+	return
+}
+
+// ListContentCallbackURL list content callback url.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is
+// the integration account map name.
+func (client MapsClient) ListContentCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters) (result WorkflowTriggerCallbackURL, err error) {
+	req, err := client.ListContentCallbackURLPreparer(ctx, resourceGroupName, integrationAccountName, mapName, listContentCallbackURL)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListContentCallbackURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListContentCallbackURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListContentCallbackURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListContentCallbackURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.MapsClient", "ListContentCallbackURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListContentCallbackURLPreparer prepares the ListContentCallbackURL request.
+func (client MapsClient) ListContentCallbackURLPreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, mapName string, listContentCallbackURL GetCallbackURLParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"mapName":                autorest.Encode("path", mapName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/maps/{mapName}/listContentCallbackUrl", pathParameters),
+		autorest.WithJSON(listContentCallbackURL),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListContentCallbackURLSender sends the ListContentCallbackURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client MapsClient) ListContentCallbackURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListContentCallbackURLResponder handles the response to the ListContentCallbackURL request. The method always
+// closes the http.Response Body.
+func (client MapsClient) ListContentCallbackURLResponder(resp *http.Response) (result WorkflowTriggerCallbackURL, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }

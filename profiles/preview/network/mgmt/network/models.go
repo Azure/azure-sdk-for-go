@@ -19,7 +19,7 @@
 
 package network
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-02-01/network"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-04-01/network"
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient

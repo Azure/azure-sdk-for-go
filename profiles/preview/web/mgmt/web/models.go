@@ -19,13 +19,12 @@
 
 package web
 
-import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web"
+import original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web"
 
 type AppsClient = original.AppsClient
 type AppServiceCertificateOrdersClient = original.AppServiceCertificateOrdersClient
 type AppServiceEnvironmentsClient = original.AppServiceEnvironmentsClient
 type AppServicePlansClient = original.AppServicePlansClient
-type BillingMetersClient = original.BillingMetersClient
 type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
 type CertificatesClient = original.CertificatesClient
 
@@ -90,6 +89,7 @@ type BackupRestoreOperationType = original.BackupRestoreOperationType
 
 const (
 	BackupRestoreOperationTypeClone      BackupRestoreOperationType = original.BackupRestoreOperationTypeClone
+	BackupRestoreOperationTypeCloudFS    BackupRestoreOperationType = original.BackupRestoreOperationTypeCloudFS
 	BackupRestoreOperationTypeDefault    BackupRestoreOperationType = original.BackupRestoreOperationTypeDefault
 	BackupRestoreOperationTypeRelocation BackupRestoreOperationType = original.BackupRestoreOperationTypeRelocation
 	BackupRestoreOperationTypeSnapshot   BackupRestoreOperationType = original.BackupRestoreOperationTypeSnapshot
@@ -377,6 +377,7 @@ type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
 	SystemAssigned ManagedServiceIdentityType = original.SystemAssigned
+	UserAssigned   ManagedServiceIdentityType = original.UserAssigned
 )
 
 type MSDeployLogEntryType = original.MSDeployLogEntryType
@@ -447,15 +448,6 @@ const (
 	FileZilla3 PublishingProfileFormat = original.FileZilla3
 	Ftp        PublishingProfileFormat = original.Ftp
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
-)
-
-type RenderingType = original.RenderingType
-
-const (
-	NoGraph               RenderingType = original.NoGraph
-	Table                 RenderingType = original.Table
-	TimeSeries            RenderingType = original.TimeSeries
-	TimeSeriesPerInstance RenderingType = original.TimeSeriesPerInstance
 )
 
 type ResourceScopeType = original.ResourceScopeType
@@ -652,6 +644,8 @@ type AppServiceEnvironmentCollectionIterator = original.AppServiceEnvironmentCol
 type AppServiceEnvironmentCollectionPage = original.AppServiceEnvironmentCollectionPage
 type AppServiceEnvironmentPatchResource = original.AppServiceEnvironmentPatchResource
 type AppServiceEnvironmentResource = original.AppServiceEnvironmentResource
+type AppServiceEnvironmentsChangeVnetAllFuture = original.AppServiceEnvironmentsChangeVnetAllFuture
+type AppServiceEnvironmentsChangeVnetFuture = original.AppServiceEnvironmentsChangeVnetFuture
 type AppServiceEnvironmentsCreateOrUpdateFuture = original.AppServiceEnvironmentsCreateOrUpdateFuture
 type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture = original.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture
 type AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture = original.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture
@@ -674,10 +668,12 @@ type AppsListPublishingCredentialsFuture = original.AppsListPublishingCredential
 type AppsListPublishingCredentialsSlotFuture = original.AppsListPublishingCredentialsSlotFuture
 type AppsMigrateMySQLFuture = original.AppsMigrateMySQLFuture
 type AppsMigrateStorageFuture = original.AppsMigrateStorageFuture
-type AppsRecoverFuture = original.AppsRecoverFuture
-type AppsRecoverSlotFuture = original.AppsRecoverSlotFuture
+type AppsRestoreFromBackupBlobFuture = original.AppsRestoreFromBackupBlobFuture
+type AppsRestoreFromBackupBlobSlotFuture = original.AppsRestoreFromBackupBlobSlotFuture
 type AppsRestoreFuture = original.AppsRestoreFuture
 type AppsRestoreSlotFuture = original.AppsRestoreSlotFuture
+type AppsRestoreSnapshotFuture = original.AppsRestoreSnapshotFuture
+type AppsRestoreSnapshotSlotFuture = original.AppsRestoreSnapshotSlotFuture
 type AppsSwapSlotSlotFuture = original.AppsSwapSlotSlotFuture
 type AppsSwapSlotWithProductionFuture = original.AppsSwapSlotWithProductionFuture
 type AutoHealActions = original.AutoHealActions
@@ -741,8 +737,6 @@ type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
 type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DataSource = original.DataSource
-type DataTableResponseColumn = original.DataTableResponseColumn
-type DataTableResponseObject = original.DataTableResponseObject
 type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultErrorResponseError = original.DefaultErrorResponseError
 type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
@@ -759,12 +753,6 @@ type DeploymentProperties = original.DeploymentProperties
 type DetectorAbnormalTimePeriod = original.DetectorAbnormalTimePeriod
 type DetectorDefinition = original.DetectorDefinition
 type DetectorDefinitionProperties = original.DetectorDefinitionProperties
-type DetectorInfo = original.DetectorInfo
-type DetectorResponse = original.DetectorResponse
-type DetectorResponseCollection = original.DetectorResponseCollection
-type DetectorResponseCollectionIterator = original.DetectorResponseCollectionIterator
-type DetectorResponseCollectionPage = original.DetectorResponseCollectionPage
-type DetectorResponseProperties = original.DetectorResponseProperties
 type DiagnosticAnalysis = original.DiagnosticAnalysis
 type DiagnosticAnalysisCollection = original.DiagnosticAnalysisCollection
 type DiagnosticAnalysisCollectionIterator = original.DiagnosticAnalysisCollectionIterator
@@ -775,7 +763,6 @@ type DiagnosticCategoryCollection = original.DiagnosticCategoryCollection
 type DiagnosticCategoryCollectionIterator = original.DiagnosticCategoryCollectionIterator
 type DiagnosticCategoryCollectionPage = original.DiagnosticCategoryCollectionPage
 type DiagnosticCategoryProperties = original.DiagnosticCategoryProperties
-type DiagnosticData = original.DiagnosticData
 type DiagnosticDetectorCollection = original.DiagnosticDetectorCollection
 type DiagnosticDetectorCollectionIterator = original.DiagnosticDetectorCollectionIterator
 type DiagnosticDetectorCollectionPage = original.DiagnosticDetectorCollectionPage
@@ -803,7 +790,6 @@ type DomainRecommendationSearchParameters = original.DomainRecommendationSearchP
 type DomainsCreateOrUpdateFuture = original.DomainsCreateOrUpdateFuture
 type EnabledConfig = original.EnabledConfig
 type ErrorEntity = original.ErrorEntity
-type ErrorResponse = original.ErrorResponse
 type Experiments = original.Experiments
 type FileSystemApplicationLogsConfig = original.FileSystemApplicationLogsConfig
 type FileSystemHTTPLogsConfig = original.FileSystemHTTPLogsConfig
@@ -899,6 +885,10 @@ type PremierAddOnOfferCollectionIterator = original.PremierAddOnOfferCollectionI
 type PremierAddOnOfferCollectionPage = original.PremierAddOnOfferCollectionPage
 type PremierAddOnOfferProperties = original.PremierAddOnOfferProperties
 type PremierAddOnProperties = original.PremierAddOnProperties
+type PrivateAccess = original.PrivateAccess
+type PrivateAccessProperties = original.PrivateAccessProperties
+type PrivateAccessSubnet = original.PrivateAccessSubnet
+type PrivateAccessVirtualNetwork = original.PrivateAccessVirtualNetwork
 type ProcessInfo = original.ProcessInfo
 type ProcessInfoCollection = original.ProcessInfoCollection
 type ProcessInfoCollectionIterator = original.ProcessInfoCollectionIterator
@@ -935,7 +925,6 @@ type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
 type RelayServiceConnectionEntityProperties = original.RelayServiceConnectionEntityProperties
-type Rendering = original.Rendering
 type RenewCertificateOrderRequest = original.RenewCertificateOrderRequest
 type RenewCertificateOrderRequestProperties = original.RenewCertificateOrderRequestProperties
 type RequestsBasedTrigger = original.RequestsBasedTrigger
@@ -943,11 +932,6 @@ type Resource = original.Resource
 type ResourceCollection = original.ResourceCollection
 type ResourceCollectionIterator = original.ResourceCollectionIterator
 type ResourceCollectionPage = original.ResourceCollectionPage
-type ResourceHealthMetadata = original.ResourceHealthMetadata
-type ResourceHealthMetadataCollection = original.ResourceHealthMetadataCollection
-type ResourceHealthMetadataCollectionIterator = original.ResourceHealthMetadataCollectionIterator
-type ResourceHealthMetadataCollectionPage = original.ResourceHealthMetadataCollectionPage
-type ResourceHealthMetadataProperties = original.ResourceHealthMetadataProperties
 type ResourceMetric = original.ResourceMetric
 type ResourceMetricAvailability = original.ResourceMetricAvailability
 type ResourceMetricCollection = original.ResourceMetricCollection
@@ -966,8 +950,6 @@ type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
 type ResponseMetaData = original.ResponseMetaData
 type RestoreRequest = original.RestoreRequest
 type RestoreRequestProperties = original.RestoreRequestProperties
-type RestoreResponse = original.RestoreResponse
-type RestoreResponseProperties = original.RestoreResponseProperties
 type ServiceSpecification = original.ServiceSpecification
 type SetObject = original.SetObject
 type Site = original.Site
@@ -1028,7 +1010,10 @@ type SnapshotCollectionPage = original.SnapshotCollectionPage
 type SnapshotProperties = original.SnapshotProperties
 type SnapshotRecoveryRequest = original.SnapshotRecoveryRequest
 type SnapshotRecoveryRequestProperties = original.SnapshotRecoveryRequestProperties
+type SnapshotRecoverySource = original.SnapshotRecoverySource
 type SnapshotRecoveryTarget = original.SnapshotRecoveryTarget
+type SnapshotRestoreRequest = original.SnapshotRestoreRequest
+type SnapshotRestoreRequestProperties = original.SnapshotRestoreRequestProperties
 type Solution = original.Solution
 type SourceControl = original.SourceControl
 type SourceControlCollection = original.SourceControlCollection
@@ -1104,7 +1089,6 @@ type WorkerPoolCollectionPage = original.WorkerPoolCollectionPage
 type WorkerPoolResource = original.WorkerPoolResource
 type ProviderClient = original.ProviderClient
 type RecommendationsClient = original.RecommendationsClient
-type ResourceHealthMetadataClient = original.ResourceHealthMetadataClient
 type TopLevelDomainsClient = original.TopLevelDomainsClient
 
 func NewAppsClient(subscriptionID string) AppsClient {
@@ -1130,12 +1114,6 @@ func NewAppServicePlansClient(subscriptionID string) AppServicePlansClient {
 }
 func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) AppServicePlansClient {
 	return original.NewAppServicePlansClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBillingMetersClient(subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClient(subscriptionID)
-}
-func NewBillingMetersClientWithBaseURI(baseURI string, subscriptionID string) BillingMetersClient {
-	return original.NewBillingMetersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCertificateRegistrationProviderClient(subscriptionID string) CertificateRegistrationProviderClient {
 	return original.NewCertificateRegistrationProviderClient(subscriptionID)
@@ -1305,9 +1283,6 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
 }
-func PossibleRenderingTypeValues() []RenderingType {
-	return original.PossibleRenderingTypeValues()
-}
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()
 }
@@ -1367,12 +1342,6 @@ func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 }
 func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceHealthMetadataClient(subscriptionID string) ResourceHealthMetadataClient {
-	return original.NewResourceHealthMetadataClient(subscriptionID)
-}
-func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID string) ResourceHealthMetadataClient {
-	return original.NewResourceHealthMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTopLevelDomainsClient(subscriptionID string) TopLevelDomainsClient {
 	return original.NewTopLevelDomainsClient(subscriptionID)

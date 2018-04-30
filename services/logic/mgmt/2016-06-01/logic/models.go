@@ -3147,7 +3147,7 @@ type KeyVaultKeyAttributes struct {
 type KeyVaultKeyCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The key vault keys.
-	Value *[]ListKeyVaultKeysDefinition `json:"value,omitempty"`
+	Value *[]KeyVaultKey `json:"value,omitempty"`
 	// SkipToken - The skip token.
 	SkipToken *string `json:"skipToken,omitempty"`
 }
@@ -4462,6 +4462,8 @@ type WorkflowRunTrigger struct {
 	Outputs interface{} `json:"outputs,omitempty"`
 	// OutputsLink - Gets the link to outputs.
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
+	// ScheduledTime - Gets the scheduled time.
+	ScheduledTime *date.Time `json:"scheduledTime,omitempty"`
 	// StartTime - Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the end time.

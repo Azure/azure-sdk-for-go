@@ -183,7 +183,7 @@ func (client WorkflowRunActionRepetitionsClient) ListResponder(resp *http.Respon
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name. repetitionName is the workflow repetition.
-func (client WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result SetListExpression, err error) {
+func (client WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result ExpressionTraces, err error) {
 	req, err := client.ListExpressionTracesPreparer(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "ListExpressionTraces", nil, "Failure preparing request")
@@ -238,12 +238,12 @@ func (client WorkflowRunActionRepetitionsClient) ListExpressionTracesSender(req 
 
 // ListExpressionTracesResponder handles the response to the ListExpressionTraces request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionRepetitionsClient) ListExpressionTracesResponder(resp *http.Response) (result SetListExpression, err error) {
+func (client WorkflowRunActionRepetitionsClient) ListExpressionTracesResponder(resp *http.Response) (result ExpressionTraces, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -1517,6 +1517,22 @@ type Expression struct {
 	Error          *AzureResourceErrorInfo `json:"error,omitempty"`
 }
 
+// ExpressionRoot ...
+type ExpressionRoot struct {
+	// Path - The path.
+	Path           *string                 `json:"path,omitempty"`
+	Text           *string                 `json:"text,omitempty"`
+	Value          interface{}             `json:"value,omitempty"`
+	Subexpressions *[]Expression           `json:"subexpressions,omitempty"`
+	Error          *AzureResourceErrorInfo `json:"error,omitempty"`
+}
+
+// ExpressionTraces ...
+type ExpressionTraces struct {
+	autorest.Response `json:"-"`
+	Inputs            *[]ExpressionRoot `json:"inputs,omitempty"`
+}
+
 // GenerateUpgradedDefinitionParameters the parameters to generate upgraded definition.
 type GenerateUpgradedDefinitionParameters struct {
 	// TargetSchemaVersion - The target schema version.
@@ -3465,21 +3481,6 @@ type RunCorrelation struct {
 	ClientKeywords *[]string `json:"clientKeywords,omitempty"`
 }
 
-// SetListExpression ...
-type SetListExpression struct {
-	autorest.Response `json:"-"`
-	Value             map[string][]Expression `json:"value"`
-}
-
-// MarshalJSON is the custom marshaler for SetListExpression.
-func (sle SetListExpression) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sle.Value != nil {
-		objectMap["value"] = sle.Value
-	}
-	return json.Marshal(objectMap)
-}
-
 // SetObject ...
 type SetObject struct {
 	autorest.Response `json:"-"`
@@ -4804,6 +4805,8 @@ type WorkflowTriggerListCallbackURLQueries struct {
 	Sv *string `json:"sv,omitempty"`
 	// Sig - The SAS signature.
 	Sig *string `json:"sig,omitempty"`
+	// Se - The SAS timestamp.
+	Se *string `json:"se,omitempty"`
 }
 
 // WorkflowTriggerListResult the list of workflow triggers.

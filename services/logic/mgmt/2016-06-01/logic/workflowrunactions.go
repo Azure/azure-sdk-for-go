@@ -214,7 +214,7 @@ func (client WorkflowRunActionsClient) ListComplete(ctx context.Context, resourc
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name.
-func (client WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result SetListExpression, err error) {
+func (client WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result ExpressionTraces, err error) {
 	req, err := client.ListExpressionTracesPreparer(ctx, resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "ListExpressionTraces", nil, "Failure preparing request")
@@ -268,12 +268,12 @@ func (client WorkflowRunActionsClient) ListExpressionTracesSender(req *http.Requ
 
 // ListExpressionTracesResponder handles the response to the ListExpressionTraces request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionsClient) ListExpressionTracesResponder(resp *http.Response) (result SetListExpression, err error) {
+func (client WorkflowRunActionsClient) ListExpressionTracesResponder(resp *http.Response) (result ExpressionTraces, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

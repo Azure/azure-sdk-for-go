@@ -41,10 +41,10 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 }
 
 // CreateOrUpdate the operation to create or update a container service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// containerServiceName - the name of the container service within the given subscription and resource group.
-// parameters - parameters supplied to the Create Container Service operation.
+//
+// resourceGroupName is the name of the resource group. containerServiceName is the name of the container service
+// within the given subscription and resource group. parameters is parameters supplied to the Create Container
+// Service operation.
 func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (result CreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -131,9 +131,9 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Contai
 }
 
 // Delete the operation to delete a container service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// containerServiceName - the name of the container service within the given subscription and resource group.
+//
+// resourceGroupName is the name of the resource group. containerServiceName is the name of the container service
+// within the given subscription and resource group.
 func (client Client) Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (result DeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, containerServiceName)
 	if err != nil {
@@ -199,9 +199,9 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 }
 
 // Get the operation to get a container service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// containerServiceName - the name of the container service within the given subscription and resource group.
+//
+// resourceGroupName is the name of the resource group. containerServiceName is the name of the container service
+// within the given subscription and resource group.
 func (client Client) Get(ctx context.Context, resourceGroupName string, containerServiceName string) (result ContainerService, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, containerServiceName)
 	if err != nil {
@@ -266,8 +266,8 @@ func (client Client) GetResponder(resp *http.Response) (result ContainerService,
 }
 
 // ListByResourceGroup the operation to list container services.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {

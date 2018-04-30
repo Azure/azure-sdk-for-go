@@ -42,9 +42,9 @@ func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) Log
 
 // ExportRequestRateByInterval export logs that show Api requests made by this subscription in the given time window to
 // show throttling activities.
-// Parameters:
-// parameters - parameters supplied to the LogAnalytics getRequestRateByInterval Api.
-// location - the location upon which virtual-machine-sizes is queried.
+//
+// parameters is parameters supplied to the LogAnalytics getRequestRateByInterval Api. location is the location
+// upon which virtual-machine-sizes is queried.
 func (client LogAnalyticsClient) ExportRequestRateByInterval(ctx context.Context, parameters RequestRateByIntervalInput, location string) (result LogAnalyticsExportRequestRateByIntervalFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: location,
@@ -119,9 +119,9 @@ func (client LogAnalyticsClient) ExportRequestRateByIntervalResponder(resp *http
 
 // ExportThrottledRequests export logs that show total throttled Api requests for this subscription in the given time
 // window.
-// Parameters:
-// parameters - parameters supplied to the LogAnalytics getThrottledRequests Api.
-// location - the location upon which virtual-machine-sizes is queried.
+//
+// parameters is parameters supplied to the LogAnalytics getThrottledRequests Api. location is the location upon
+// which virtual-machine-sizes is queried.
 func (client LogAnalyticsClient) ExportThrottledRequests(ctx context.Context, parameters ThrottledRequestsInput, location string) (result LogAnalyticsExportThrottledRequestsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: location,

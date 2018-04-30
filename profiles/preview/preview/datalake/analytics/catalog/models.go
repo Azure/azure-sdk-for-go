@@ -19,7 +19,7 @@
 
 package catalog
 
-import original "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01-preview/catalog"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
 
 type Client = original.Client
 
@@ -28,45 +28,13 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ACLType = original.ACLType
-
-const (
-	Group    ACLType = original.Group
-	GroupObj ACLType = original.GroupObj
-	Other    ACLType = original.Other
-	User     ACLType = original.User
-	UserObj  ACLType = original.UserObj
-)
-
 type FileType = original.FileType
 
 const (
 	Assembly FileType = original.Assembly
-	Nodeploy FileType = original.Nodeploy
 	Resource FileType = original.Resource
 )
 
-type PermissionType = original.PermissionType
-
-const (
-	All    PermissionType = original.All
-	Alter  PermissionType = original.Alter
-	Create PermissionType = original.Create
-	Drop   PermissionType = original.Drop
-	None   PermissionType = original.None
-	Use    PermissionType = original.Use
-	Write  PermissionType = original.Write
-)
-
-type ACL = original.ACL
-type ACLCreateOrUpdateParameters = original.ACLCreateOrUpdateParameters
-type ACLDeleteParameters = original.ACLDeleteParameters
-type ACLList = original.ACLList
-type ACLListIterator = original.ACLListIterator
-type ACLListPage = original.ACLListPage
-type DataLakeAnalyticsCatalogCredentialCreateParameters = original.DataLakeAnalyticsCatalogCredentialCreateParameters
-type DataLakeAnalyticsCatalogCredentialDeleteParameters = original.DataLakeAnalyticsCatalogCredentialDeleteParameters
-type DataLakeAnalyticsCatalogCredentialUpdateParameters = original.DataLakeAnalyticsCatalogCredentialUpdateParameters
 type DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters = original.DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters
 type DdlName = original.DdlName
 type EntityID = original.EntityID
@@ -96,10 +64,6 @@ type USQLExternalDataSourceList = original.USQLExternalDataSourceList
 type USQLExternalDataSourceListIterator = original.USQLExternalDataSourceListIterator
 type USQLExternalDataSourceListPage = original.USQLExternalDataSourceListPage
 type USQLIndex = original.USQLIndex
-type USQLPackage = original.USQLPackage
-type USQLPackageList = original.USQLPackageList
-type USQLPackageListIterator = original.USQLPackageListIterator
-type USQLPackageListPage = original.USQLPackageListPage
 type USQLProcedure = original.USQLProcedure
 type USQLProcedureList = original.USQLProcedureList
 type USQLProcedureListIterator = original.USQLProcedureListIterator
@@ -111,10 +75,6 @@ type USQLSchemaListPage = original.USQLSchemaListPage
 type USQLSecret = original.USQLSecret
 type USQLTable = original.USQLTable
 type USQLTableColumn = original.USQLTableColumn
-type USQLTableFragment = original.USQLTableFragment
-type USQLTableFragmentList = original.USQLTableFragmentList
-type USQLTableFragmentListIterator = original.USQLTableFragmentListIterator
-type USQLTableFragmentListPage = original.USQLTableFragmentListPage
 type USQLTableList = original.USQLTableList
 type USQLTableListIterator = original.USQLTableListIterator
 type USQLTableListPage = original.USQLTableListPage
@@ -152,14 +112,8 @@ func New() BaseClient {
 func NewWithoutDefaults(adlaCatalogDNSSuffix string) BaseClient {
 	return original.NewWithoutDefaults(adlaCatalogDNSSuffix)
 }
-func PossibleACLTypeValues() []ACLType {
-	return original.PossibleACLTypeValues()
-}
 func PossibleFileTypeValues() []FileType {
 	return original.PossibleFileTypeValues()
-}
-func PossiblePermissionTypeValues() []PermissionType {
-	return original.PossiblePermissionTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

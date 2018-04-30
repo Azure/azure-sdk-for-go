@@ -42,9 +42,9 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 }
 
 // List list all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-// Parameters:
-// groupName - a filter which allows the call to be filtered for a specific group.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupName is a filter which allows the call to be filtered for a specific group. cacheControl is indicates that
+// the request shouldn't utilize any caches.
 func (client EntitiesClient) List(ctx context.Context, groupName string, cacheControl string) (result EntityListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, groupName, cacheControl)

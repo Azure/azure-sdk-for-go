@@ -44,10 +44,9 @@ func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken st
 // CreateOrUpdate create or update a management group.
 // If a management group is already created and a subsequent create request is issued with different properties, the
 // management group properties will be updated.
-// Parameters:
-// groupID - management Group ID.
-// createManagementGroupRequest - management group creation parameters.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. createManagementGroupRequest is management group creation parameters.
+// cacheControl is indicates that the request shouldn't utilize any caches.
 func (client Client) CreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, cacheControl string) (result CreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, groupID, createManagementGroupRequest, cacheControl)
 	if err != nil {
@@ -122,9 +121,8 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result SetObj
 
 // Delete delete management group.
 // If a management group contains child resources, the request will fail.
-// Parameters:
-// groupID - management Group ID.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. cacheControl is indicates that the request shouldn't utilize any caches.
 func (client Client) Delete(ctx context.Context, groupID string, cacheControl string) (result DeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, groupID, cacheControl)
 	if err != nil {
@@ -196,15 +194,13 @@ func (client Client) DeleteResponder(resp *http.Response) (result OperationResul
 }
 
 // Get get the details of the management group.
-// Parameters:
-// groupID - management Group ID.
-// expand - the $expand=children query string parameter allows clients to request inclusion of children in the
-// response payload.
-// recurse - the $recurse=true query string parameter allows clients to request inclusion of entire hierarchy
-// in the response payload. Note that  $expand=children must be passed up if $recurse is set to true.
-// filter - a filter which allows the exclusion of subscriptions from results (i.e. '$filter=children.childType
-// ne Subscription')
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. expand is the $expand=children query string parameter allows clients to request
+// inclusion of children in the response payload. recurse is the $recurse=true query string parameter allows
+// clients to request inclusion of entire hierarchy in the response payload. Note that  $expand=children must be
+// passed up if $recurse is set to true. filter is a filter which allows the exclusion of subscriptions from
+// results (i.e. '$filter=children.childType ne Subscription') cacheControl is indicates that the request shouldn't
+// utilize any caches.
 func (client Client) Get(ctx context.Context, groupID string, expand string, recurse *bool, filter string, cacheControl string) (result ManagementGroup, err error) {
 	req, err := client.GetPreparer(ctx, groupID, expand, recurse, filter, cacheControl)
 	if err != nil {
@@ -283,8 +279,8 @@ func (client Client) GetResponder(resp *http.Response) (result ManagementGroup, 
 }
 
 // List list management groups for the authenticated user.
-// Parameters:
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// cacheControl is indicates that the request shouldn't utilize any caches.
 func (client Client) List(ctx context.Context, cacheControl string) (result ListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, cacheControl)
@@ -381,10 +377,9 @@ func (client Client) ListComplete(ctx context.Context, cacheControl string) (res
 }
 
 // Update update a management group.
-// Parameters:
-// groupID - management Group ID.
-// patchGroupRequest - management group patch parameters.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. patchGroupRequest is management group patch parameters. cacheControl is
+// indicates that the request shouldn't utilize any caches.
 func (client Client) Update(ctx context.Context, groupID string, patchGroupRequest PatchManagementGroupRequest, cacheControl string) (result ManagementGroup, err error) {
 	req, err := client.UpdatePreparer(ctx, groupID, patchGroupRequest, cacheControl)
 	if err != nil {

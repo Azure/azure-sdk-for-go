@@ -42,10 +42,9 @@ func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string,
 }
 
 // Create associates existing subscription with the management group.
-// Parameters:
-// groupID - management Group ID.
-// subscriptionID - subscription ID.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
 func (client SubscriptionsClient) Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
 	req, err := client.CreatePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {
@@ -115,10 +114,9 @@ func (client SubscriptionsClient) CreateResponder(resp *http.Response) (result a
 }
 
 // Delete de-associates subscription from the management group.
-// Parameters:
-// groupID - management Group ID.
-// subscriptionID - subscription ID.
-// cacheControl - indicates that the request shouldn't utilize any caches.
+//
+// groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
+// shouldn't utilize any caches.
 func (client SubscriptionsClient) Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, groupID, subscriptionID, cacheControl)
 	if err != nil {

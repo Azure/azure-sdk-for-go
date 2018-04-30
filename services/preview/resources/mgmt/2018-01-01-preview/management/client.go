@@ -59,8 +59,8 @@ func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) 
 }
 
 // CheckNameAvailability checks if the specified management group name is valid and unique
-// Parameters:
-// checkNameAvailabilityRequest - management group name availability check parameters.
+//
+// checkNameAvailabilityRequest is management group name availability check parameters.
 func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityRequest CheckNameAvailabilityRequest) (result CheckNameAvailabilityResult, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(ctx, checkNameAvailabilityRequest)
 	if err != nil {

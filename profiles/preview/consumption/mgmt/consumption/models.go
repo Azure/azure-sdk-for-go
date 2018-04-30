@@ -29,7 +29,19 @@ const (
 
 type BaseClient = original.BaseClient
 type CostTagsClient = original.CostTagsClient
+type GetBalancesByBillingAccountClient = original.GetBalancesByBillingAccountClient
 type MarketplacesClient = original.MarketplacesClient
+type MarketplacesByBillingAccountClient = original.MarketplacesByBillingAccountClient
+type MarketplacesByDepartmentClient = original.MarketplacesByDepartmentClient
+type MarketplacesByEnrollmentAccountsClient = original.MarketplacesByEnrollmentAccountsClient
+type BillingFrequency = original.BillingFrequency
+
+const (
+	Month   BillingFrequency = original.Month
+	Quarter BillingFrequency = original.Quarter
+	Year    BillingFrequency = original.Year
+)
+
 type CategoryType = original.CategoryType
 
 const (
@@ -60,6 +72,10 @@ const (
 	Quarterly TimeGrainType = original.Quarterly
 )
 
+type Balance = original.Balance
+type BalanceProperties = original.BalanceProperties
+type BalancePropertiesAdjustmentDetailsItem = original.BalancePropertiesAdjustmentDetailsItem
+type BalancePropertiesNewPurchasesDetailsItem = original.BalancePropertiesNewPurchasesDetailsItem
 type Budget = original.Budget
 type BudgetProperties = original.BudgetProperties
 type BudgetsListResult = original.BudgetsListResult
@@ -121,6 +137,9 @@ type ReservationsDetailsClient = original.ReservationsDetailsClient
 type ReservationsSummariesClient = original.ReservationsSummariesClient
 type TagsClient = original.TagsClient
 type UsageDetailsClient = original.UsageDetailsClient
+type UsageDetailsByBillingAccountClient = original.UsageDetailsByBillingAccountClient
+type UsageDetailsByDepartmentClient = original.UsageDetailsByDepartmentClient
+type UsageDetailsByEnrollmentAccountClient = original.UsageDetailsByEnrollmentAccountClient
 
 func NewBudgetsClient(subscriptionID string) BudgetsClient {
 	return original.NewBudgetsClient(subscriptionID)
@@ -140,11 +159,38 @@ func NewCostTagsClient(subscriptionID string) CostTagsClient {
 func NewCostTagsClientWithBaseURI(baseURI string, subscriptionID string) CostTagsClient {
 	return original.NewCostTagsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewGetBalancesByBillingAccountClient(subscriptionID string) GetBalancesByBillingAccountClient {
+	return original.NewGetBalancesByBillingAccountClient(subscriptionID)
+}
+func NewGetBalancesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) GetBalancesByBillingAccountClient {
+	return original.NewGetBalancesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
 	return original.NewMarketplacesClient(subscriptionID)
 }
 func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
 	return original.NewMarketplacesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMarketplacesByBillingAccountClient(subscriptionID string) MarketplacesByBillingAccountClient {
+	return original.NewMarketplacesByBillingAccountClient(subscriptionID)
+}
+func NewMarketplacesByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByBillingAccountClient {
+	return original.NewMarketplacesByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepartmentClient {
+	return original.NewMarketplacesByDepartmentClient(subscriptionID)
+}
+func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
+	return original.NewMarketplacesByDepartmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMarketplacesByEnrollmentAccountsClient(subscriptionID string) MarketplacesByEnrollmentAccountsClient {
+	return original.NewMarketplacesByEnrollmentAccountsClient(subscriptionID)
+}
+func NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByEnrollmentAccountsClient {
+	return original.NewMarketplacesByEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleBillingFrequencyValues() []BillingFrequency {
+	return original.PossibleBillingFrequencyValues()
 }
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
@@ -199,6 +245,24 @@ func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 }
 func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByBillingAccountClient(subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClient(subscriptionID)
+}
+func NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByDepartmentClient(subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClient(subscriptionID)
+}
+func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByEnrollmentAccountClient(subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClient(subscriptionID)
+}
+func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

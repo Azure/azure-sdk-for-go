@@ -488,7 +488,6 @@ type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultKeyReferenceKeyVault = original.KeyVaultKeyReferenceKeyVault
 type KeyVaultReference = original.KeyVaultReference
 type ListKeyVaultKeysDefinition = original.ListKeyVaultKeysDefinition
-type ListWorkflowRunActionRepetitionDefinition = original.ListWorkflowRunActionRepetitionDefinition
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult

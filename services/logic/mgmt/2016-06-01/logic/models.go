@@ -3148,6 +3148,8 @@ type KeyVaultKeyCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The key vault keys.
 	Value *[]ListKeyVaultKeysDefinition `json:"value,omitempty"`
+	// SkipToken - The skip token.
+	SkipToken *string `json:"skipToken,omitempty"`
 }
 
 // KeyVaultKeyReference the reference to the key vault key.
@@ -3186,12 +3188,6 @@ type ListKeyVaultKeysDefinition struct {
 	KeyVault *KeyVaultReference `json:"keyVault,omitempty"`
 	// SkipToken - The skip token.
 	SkipToken *string `json:"skipToken,omitempty"`
-}
-
-// ListWorkflowRunActionRepetitionDefinition ...
-type ListWorkflowRunActionRepetitionDefinition struct {
-	autorest.Response `json:"-"`
-	Value             *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
 }
 
 // Operation logic REST API operation
@@ -4388,6 +4384,8 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 
 // WorkflowRunProperties the workflow run properties.
 type WorkflowRunProperties struct {
+	// WaitEndTime - Gets the wait end time.
+	WaitEndTime *date.Time `json:"waitEndTime,omitempty"`
 	// StartTime - Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the end time.
@@ -4415,6 +4413,9 @@ type WorkflowRunProperties struct {
 // MarshalJSON is the custom marshaler for WorkflowRunProperties.
 func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if wrp.WaitEndTime != nil {
+		objectMap["waitEndTime"] = wrp.WaitEndTime
+	}
 	if wrp.StartTime != nil {
 		objectMap["startTime"] = wrp.StartTime
 	}
@@ -4945,9 +4946,9 @@ type WorkflowTriggerRecurrence struct {
 	// Interval - The interval.
 	Interval *int32 `json:"interval,omitempty"`
 	// StartTime - The start time.
-	StartTime *date.Time `json:"startTime,omitempty"`
+	StartTime *string `json:"startTime,omitempty"`
 	// EndTime - The end time.
-	EndTime *date.Time `json:"endTime,omitempty"`
+	EndTime *string `json:"endTime,omitempty"`
 	// TimeZone - The time zone.
 	TimeZone *string `json:"timeZone,omitempty"`
 	// Schedule - The recurrence schedule.

@@ -114,7 +114,7 @@ func (client WorkflowRunActionRepetitionsClient) GetResponder(resp *http.Respons
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name.
-func (client WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result ListWorkflowRunActionRepetitionDefinition, err error) {
+func (client WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
 	req, err := client.ListPreparer(ctx, resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "List", nil, "Failure preparing request")
@@ -168,12 +168,12 @@ func (client WorkflowRunActionRepetitionsClient) ListSender(req *http.Request) (
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunActionRepetitionsClient) ListResponder(resp *http.Response) (result ListWorkflowRunActionRepetitionDefinition, err error) {
+func (client WorkflowRunActionRepetitionsClient) ListResponder(resp *http.Response) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

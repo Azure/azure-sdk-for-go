@@ -32,17 +32,20 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // BaseClient is the base client for Managementgroups.
 type BaseClient struct {
 	autorest.Client
 	BaseURI string
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // New creates an instance of the BaseClient client.
 func New() BaseClient {
 	return NewWithBaseURI(DefaultBaseURI)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{

@@ -51,10 +51,12 @@ func NewAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, acce
 // PUT or DELETE operations can happen on the assessment.
 //
 // When assessment is under computation, any PUT will lead to a 400 - Bad Request error.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project. assessment is new or Updated Assessment object.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
+// assessment - new or Updated Assessment object.
 func (client AssessmentsClient) Create(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string, assessment *Assessment) (result Assessment, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: assessment,
@@ -145,10 +147,11 @@ func (client AssessmentsClient) CreateResponder(resp *http.Response) (result Ass
 //
 // When an assessment is under computation, as indicated by the 'computationState' field, it cannot be deleted. Any
 // such attempt will return a 400 - Bad Request.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
 func (client AssessmentsClient) Delete(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, projectName, groupName, assessmentName)
 	if err != nil {
@@ -219,10 +222,11 @@ func (client AssessmentsClient) DeleteResponder(resp *http.Response) (result aut
 
 // Get get an existing assessment with the specified name. Returns a json object of type 'assessment' as specified in
 // Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
 func (client AssessmentsClient) Get(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string) (result Assessment, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, projectName, groupName, assessmentName)
 	if err != nil {
@@ -293,10 +297,11 @@ func (client AssessmentsClient) GetResponder(resp *http.Response) (result Assess
 }
 
 // GetReportDownloadURL get the URL for downloading the assessment in a report format.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project. assessmentName is unique name of an
-// assessment within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
+// assessmentName - unique name of an assessment within a project.
 func (client AssessmentsClient) GetReportDownloadURL(ctx context.Context, resourceGroupName string, projectName string, groupName string, assessmentName string) (result DownloadURL, err error) {
 	req, err := client.GetReportDownloadURLPreparer(ctx, resourceGroupName, projectName, groupName, assessmentName)
 	if err != nil {
@@ -369,9 +374,10 @@ func (client AssessmentsClient) GetReportDownloadURLResponder(resp *http.Respons
 // ListByGroup get all assessments created for the specified group.
 //
 // Returns a json array of objects of type 'assessment' as specified in Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. groupName is unique name of a group within a project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// groupName - unique name of a group within a project.
 func (client AssessmentsClient) ListByGroup(ctx context.Context, resourceGroupName string, projectName string, groupName string) (result AssessmentResultList, err error) {
 	req, err := client.ListByGroupPreparer(ctx, resourceGroupName, projectName, groupName)
 	if err != nil {
@@ -443,9 +449,9 @@ func (client AssessmentsClient) ListByGroupResponder(resp *http.Response) (resul
 // ListByProject get all assessments created in the project.
 //
 // Returns a json array of objects of type 'assessment' as specified in Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client AssessmentsClient) ListByProject(ctx context.Context, resourceGroupName string, projectName string) (result AssessmentResultList, err error) {
 	req, err := client.ListByProjectPreparer(ctx, resourceGroupName, projectName)
 	if err != nil {

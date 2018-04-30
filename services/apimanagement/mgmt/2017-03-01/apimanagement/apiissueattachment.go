@@ -41,13 +41,15 @@ func NewAPIIssueAttachmentClientWithBaseURI(baseURI string, subscriptionID strin
 }
 
 // CreateOrUpdate creates a new Attachment for the Issue in an API or updates an existing one.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
-// within an Issue. Must be unique in the current Issue. parameters is create parameters. ifMatch is eTag of the
-// Issue Entity. ETag should match the current entity state from the header response of the GET request or it
-// should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
+// parameters - create parameters.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueAttachmentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, parameters IssueAttachmentContract, ifMatch string) (result IssueAttachmentContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -147,12 +149,14 @@ func (client APIIssueAttachmentClient) CreateOrUpdateResponder(resp *http.Respon
 }
 
 // Delete deletes the specified comment from an Issue.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
-// within an Issue. Must be unique in the current Issue. ifMatch is eTag of the Issue Entity. ETag should match the
-// current entity state from the header response of the GET request or it should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueAttachmentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -240,11 +244,12 @@ func (client APIIssueAttachmentClient) DeleteResponder(resp *http.Response) (res
 }
 
 // Get gets the details of the issue Attachment for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
-// within an Issue. Must be unique in the current Issue.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
 func (client APIIssueAttachmentClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result IssueAttachmentContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

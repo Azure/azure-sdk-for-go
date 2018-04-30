@@ -111,6 +111,7 @@ type RefreshIndexAdvancedInfoItem = original.RefreshIndexAdvancedInfoItem
 type Review = original.Review
 type Screen = original.Screen
 type SetObject = original.SetObject
+type SSN = original.SSN
 type Status = original.Status
 type String = original.String
 type Tag = original.Tag

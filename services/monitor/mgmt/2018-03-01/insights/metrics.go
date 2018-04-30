@@ -24,21 +24,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // MetricsClient is the monitor Management Client
 type MetricsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricsClient creates an instance of the MetricsClient client.
 func NewMetricsClient(subscriptionID string) MetricsClient {
 	return NewMetricsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricsClientWithBaseURI creates an instance of the MetricsClient client.
 func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsClient {
 	return MetricsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // List **Lists the metric values for a resource**.
 //
 // resourceURI is the identifier of the resource. timespan is the timespan of the query. It is a string with the
@@ -78,6 +82,7 @@ func (client MetricsClient) List(ctx context.Context, resourceURI string, timesp
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListPreparer prepares the List request.
 func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType ResultType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -121,6 +126,7 @@ func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -128,6 +134,7 @@ func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client MetricsClient) ListResponder(resp *http.Response) (result Response, err error) {

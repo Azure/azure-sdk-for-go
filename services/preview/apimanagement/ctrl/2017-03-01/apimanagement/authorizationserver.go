@@ -36,10 +36,11 @@ func NewAuthorizationServerClient() AuthorizationServerClient {
 }
 
 // CreateOrUpdate creates new authorization server or updates an existing authorization server.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. authsid is identifier of the authorization server. parameters is
-// create or update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// authsid - identifier of the authorization server.
+// parameters - create or update parameters.
 func (client AuthorizationServerClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, authsid string, parameters AuthorizationServerContract) (result AuthorizationServerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: authsid,
@@ -115,11 +116,12 @@ func (client AuthorizationServerClient) CreateOrUpdateResponder(resp *http.Respo
 }
 
 // Delete deletes specific authorization server instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. authsid is identifier of the authorization server. ifMatch is
-// the entity state (Etag) version of the authentication server to delete. A value of "*" can be used for If-Match
-// to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// authsid - identifier of the authorization server.
+// ifMatch - the entity state (Etag) version of the authentication server to delete. A value of "*" can be used
+// for If-Match to unconditionally apply the operation.
 func (client AuthorizationServerClient) Delete(ctx context.Context, apimBaseURL string, authsid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: authsid,
@@ -193,9 +195,10 @@ func (client AuthorizationServerClient) DeleteResponder(resp *http.Response) (re
 }
 
 // Get gets the details of the authorization server specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. authsid is identifier of the authorization server.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// authsid - identifier of the authorization server.
 func (client AuthorizationServerClient) Get(ctx context.Context, apimBaseURL string, authsid string) (result AuthorizationServerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: authsid,
@@ -269,14 +272,15 @@ func (client AuthorizationServerClient) GetResponder(resp *http.Response) (resul
 }
 
 // List lists a collection of authorization servers defined within a service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client AuthorizationServerClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result AuthorizationServerCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -386,11 +390,13 @@ func (client AuthorizationServerClient) ListComplete(ctx context.Context, apimBa
 }
 
 // Update updates the details of the authorization server specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. authsid is identifier of the authorization server. parameters is
-// oAuth2 Server settings Update parameters. ifMatch is the entity state (Etag) version of the authorization server
-// to update. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// authsid - identifier of the authorization server.
+// parameters - oAuth2 Server settings Update parameters.
+// ifMatch - the entity state (Etag) version of the authorization server to update. A value of "*" can be used
+// for If-Match to unconditionally apply the operation.
 func (client AuthorizationServerClient) Update(ctx context.Context, apimBaseURL string, authsid string, parameters AuthorizationServerUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: authsid,

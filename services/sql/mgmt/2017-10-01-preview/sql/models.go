@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ManagementOperationState enumerates the values for management operation state.
 type ManagementOperationState string
 
@@ -43,11 +44,13 @@ const (
 	Succeeded ManagementOperationState = "Succeeded"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
 func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // DatabaseOperation a database operation.
 type DatabaseOperation struct {
 	// DatabaseOperationProperties - Resource properties.
@@ -60,6 +63,7 @@ type DatabaseOperation struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // MarshalJSON is the custom marshaler for DatabaseOperation.
 func (do DatabaseOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -78,6 +82,7 @@ func (do DatabaseOperation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // UnmarshalJSON is the custom unmarshaler for DatabaseOperation struct.
 func (do *DatabaseOperation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -129,6 +134,7 @@ func (do *DatabaseOperation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // DatabaseOperationListResult the response to a list database operations request
 type DatabaseOperationListResult struct {
 	autorest.Response `json:"-"`
@@ -138,12 +144,14 @@ type DatabaseOperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // DatabaseOperationListResultIterator provides access to a complete listing of DatabaseOperation values.
 type DatabaseOperationListResultIterator struct {
 	i    int
 	page DatabaseOperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *DatabaseOperationListResultIterator) Next() error {
@@ -160,16 +168,19 @@ func (iter *DatabaseOperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter DatabaseOperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Response returns the raw server response from the last page request.
 func (iter DatabaseOperationListResultIterator) Response() DatabaseOperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter DatabaseOperationListResultIterator) Value() DatabaseOperation {
@@ -179,6 +190,7 @@ func (iter DatabaseOperationListResultIterator) Value() DatabaseOperation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (dolr DatabaseOperationListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
@@ -196,12 +208,14 @@ func (dolr DatabaseOperationListResult) databaseOperationListResultPreparer() (*
 		autorest.WithBaseURL(to.String(dolr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // DatabaseOperationListResultPage contains a page of DatabaseOperation values.
 type DatabaseOperationListResultPage struct {
 	fn   func(DatabaseOperationListResult) (DatabaseOperationListResult, error)
 	dolr DatabaseOperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *DatabaseOperationListResultPage) Next() error {
@@ -213,16 +227,19 @@ func (page *DatabaseOperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page DatabaseOperationListResultPage) NotDone() bool {
 	return !page.dolr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Response returns the raw server response from the last page request.
 func (page DatabaseOperationListResultPage) Response() DatabaseOperationListResult {
 	return page.dolr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 	if page.dolr.IsEmpty() {
@@ -231,6 +248,7 @@ func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 	return *page.dolr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // DatabaseOperationProperties the properties of a database operation.
 type DatabaseOperationProperties struct {
 	// DatabaseName - The name of the database the operation is being performed on.
@@ -263,6 +281,7 @@ type DatabaseOperationProperties struct {
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperation a elastic pool operation.
 type ElasticPoolOperation struct {
 	// ElasticPoolOperationProperties - Resource properties.
@@ -275,6 +294,7 @@ type ElasticPoolOperation struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // MarshalJSON is the custom marshaler for ElasticPoolOperation.
 func (epo ElasticPoolOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -293,6 +313,7 @@ func (epo ElasticPoolOperation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // UnmarshalJSON is the custom unmarshaler for ElasticPoolOperation struct.
 func (epo *ElasticPoolOperation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -344,6 +365,7 @@ func (epo *ElasticPoolOperation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperationListResult the response to a list elastic pool operations request
 type ElasticPoolOperationListResult struct {
 	autorest.Response `json:"-"`
@@ -353,12 +375,14 @@ type ElasticPoolOperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperationListResultIterator provides access to a complete listing of ElasticPoolOperation values.
 type ElasticPoolOperationListResultIterator struct {
 	i    int
 	page ElasticPoolOperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ElasticPoolOperationListResultIterator) Next() error {
@@ -375,16 +399,19 @@ func (iter *ElasticPoolOperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ElasticPoolOperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Response returns the raw server response from the last page request.
 func (iter ElasticPoolOperationListResultIterator) Response() ElasticPoolOperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ElasticPoolOperationListResultIterator) Value() ElasticPoolOperation {
@@ -394,6 +421,7 @@ func (iter ElasticPoolOperationListResultIterator) Value() ElasticPoolOperation 
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (epolr ElasticPoolOperationListResult) IsEmpty() bool {
 	return epolr.Value == nil || len(*epolr.Value) == 0
@@ -411,12 +439,14 @@ func (epolr ElasticPoolOperationListResult) elasticPoolOperationListResultPrepar
 		autorest.WithBaseURL(to.String(epolr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperationListResultPage contains a page of ElasticPoolOperation values.
 type ElasticPoolOperationListResultPage struct {
 	fn    func(ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)
 	epolr ElasticPoolOperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ElasticPoolOperationListResultPage) Next() error {
@@ -428,16 +458,19 @@ func (page *ElasticPoolOperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ElasticPoolOperationListResultPage) NotDone() bool {
 	return !page.epolr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Response returns the raw server response from the last page request.
 func (page ElasticPoolOperationListResultPage) Response() ElasticPoolOperationListResult {
 	return page.epolr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ElasticPoolOperationListResultPage) Values() []ElasticPoolOperation {
 	if page.epolr.IsEmpty() {
@@ -446,6 +479,7 @@ func (page ElasticPoolOperationListResultPage) Values() []ElasticPoolOperation {
 	return *page.epolr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ElasticPoolOperationProperties the properties of a elastic pool operation.
 type ElasticPoolOperationProperties struct {
 	// ElasticPoolName - The name of the elastic pool the operation is being performed on.
@@ -478,6 +512,7 @@ type ElasticPoolOperationProperties struct {
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - Resource ID.
@@ -488,6 +523,7 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql instead.
 // Resource ARM resource.
 type Resource struct {
 	// ID - Resource ID.

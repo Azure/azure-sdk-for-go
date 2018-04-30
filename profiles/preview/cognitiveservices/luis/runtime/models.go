@@ -47,6 +47,7 @@ type EntityWithResolution = original.EntityWithResolution
 type EntityWithScore = original.EntityWithScore
 type IntentModel = original.IntentModel
 type LuisResult = original.LuisResult
+type Sentiment = original.Sentiment
 type PredictionClient = original.PredictionClient
 
 func New(azureRegion AzureRegions) BaseClient {

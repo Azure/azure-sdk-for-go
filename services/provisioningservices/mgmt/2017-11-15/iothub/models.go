@@ -45,8 +45,8 @@ const (
 )
 
 // PossibleAccessRightsDescriptionValues returns an array of possible values for the AccessRightsDescription const type.
-func PossibleAccessRightsDescriptionValues() [6]AccessRightsDescription {
-	return [6]AccessRightsDescription{DeviceConnect, EnrollmentRead, EnrollmentWrite, RegistrationStatusRead, RegistrationStatusWrite, ServiceConfig}
+func PossibleAccessRightsDescriptionValues() []AccessRightsDescription {
+	return []AccessRightsDescription{DeviceConnect, EnrollmentRead, EnrollmentWrite, RegistrationStatusRead, RegistrationStatusWrite, ServiceConfig}
 }
 
 // AllocationPolicy enumerates the values for allocation policy.
@@ -62,8 +62,8 @@ const (
 )
 
 // PossibleAllocationPolicyValues returns an array of possible values for the AllocationPolicy const type.
-func PossibleAllocationPolicyValues() [3]AllocationPolicy {
-	return [3]AllocationPolicy{GeoLatency, Hashed, Static}
+func PossibleAllocationPolicyValues() []AllocationPolicy {
+	return []AllocationPolicy{GeoLatency, Hashed, Static}
 }
 
 // CertificatePurpose enumerates the values for certificate purpose.
@@ -77,8 +77,8 @@ const (
 )
 
 // PossibleCertificatePurposeValues returns an array of possible values for the CertificatePurpose const type.
-func PossibleCertificatePurposeValues() [2]CertificatePurpose {
-	return [2]CertificatePurpose{ClientAuthentication, ServerAuthentication}
+func PossibleCertificatePurposeValues() []CertificatePurpose {
+	return []CertificatePurpose{ClientAuthentication, ServerAuthentication}
 }
 
 // IotDpsSku enumerates the values for iot dps sku.
@@ -90,8 +90,8 @@ const (
 )
 
 // PossibleIotDpsSkuValues returns an array of possible values for the IotDpsSku const type.
-func PossibleIotDpsSkuValues() [1]IotDpsSku {
-	return [1]IotDpsSku{S1}
+func PossibleIotDpsSkuValues() []IotDpsSku {
+	return []IotDpsSku{S1}
 }
 
 // NameUnavailabilityReason enumerates the values for name unavailability reason.
@@ -105,8 +105,8 @@ const (
 )
 
 // PossibleNameUnavailabilityReasonValues returns an array of possible values for the NameUnavailabilityReason const type.
-func PossibleNameUnavailabilityReasonValues() [2]NameUnavailabilityReason {
-	return [2]NameUnavailabilityReason{AlreadyExists, Invalid}
+func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
+	return []NameUnavailabilityReason{AlreadyExists, Invalid}
 }
 
 // State enumerates the values for state.
@@ -140,8 +140,8 @@ const (
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() [12]State {
-	return [12]State{Activating, ActivationFailed, Active, Deleted, Deleting, DeletionFailed, FailingOver, FailoverFailed, Resuming, Suspended, Suspending, Transitioning}
+func PossibleStateValues() []State {
+	return []State{Activating, ActivationFailed, Active, Deleted, Deleting, DeletionFailed, FailingOver, FailoverFailed, Resuming, Suspended, Suspending, Transitioning}
 }
 
 // AsyncOperationResult result of a long running operation.

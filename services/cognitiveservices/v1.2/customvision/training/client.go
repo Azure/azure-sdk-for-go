@@ -59,9 +59,9 @@ func NewWithBaseURI(baseURI string, aPIKey string) BaseClient {
 // CreateImagesFromData this API accepts body content as multipart/form-data and application/octet-stream. When using
 // multipart
 // multiple image files can be sent at once, with a maximum of 64 files
-//
-// projectID is the project id imageData will be closed upon successful return. Callers should ensure closure when
-// receiving an error.tagIds is the tags ids with which to tag each image. Limited to 20
+// Parameters:
+// projectID - the project id
+// tagIds - the tags ids with which to tag each image. Limited to 20
 func (client BaseClient) CreateImagesFromData(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, tagIds []string) (result ImageCreateSummary, err error) {
 	req, err := client.CreateImagesFromDataPreparer(ctx, projectID, imageData, tagIds)
 	if err != nil {
@@ -130,8 +130,9 @@ func (client BaseClient) CreateImagesFromDataResponder(resp *http.Response) (res
 }
 
 // CreateImagesFromFiles sends the create images from files request.
-//
-// projectID is the project id batch is the batch of image files to add. Limited to 64 images and 20 tags per batch
+// Parameters:
+// projectID - the project id
+// batch - the batch of image files to add. Limited to 64 images and 20 tags per batch
 func (client BaseClient) CreateImagesFromFiles(ctx context.Context, projectID uuid.UUID, batch ImageFileCreateBatch) (result ImageCreateSummary, err error) {
 	req, err := client.CreateImagesFromFilesPreparer(ctx, projectID, batch)
 	if err != nil {
@@ -191,8 +192,9 @@ func (client BaseClient) CreateImagesFromFilesResponder(resp *http.Response) (re
 }
 
 // CreateImagesFromPredictions sends the create images from predictions request.
-//
-// projectID is the project id batch is image and tag ids. Limted to 64 images and 20 tags per batch
+// Parameters:
+// projectID - the project id
+// batch - image and tag ids. Limted to 64 images and 20 tags per batch
 func (client BaseClient) CreateImagesFromPredictions(ctx context.Context, projectID uuid.UUID, batch ImageIDCreateBatch) (result ImageCreateSummary, err error) {
 	req, err := client.CreateImagesFromPredictionsPreparer(ctx, projectID, batch)
 	if err != nil {
@@ -252,8 +254,9 @@ func (client BaseClient) CreateImagesFromPredictionsResponder(resp *http.Respons
 }
 
 // CreateImagesFromUrls sends the create images from urls request.
-//
-// projectID is the project id batch is image urls and tag ids. Limited to 64 images and 20 tags per batch
+// Parameters:
+// projectID - the project id
+// batch - image urls and tag ids. Limited to 64 images and 20 tags per batch
 func (client BaseClient) CreateImagesFromUrls(ctx context.Context, projectID uuid.UUID, batch ImageURLCreateBatch) (result ImageCreateSummary, err error) {
 	req, err := client.CreateImagesFromUrlsPreparer(ctx, projectID, batch)
 	if err != nil {
@@ -313,9 +316,10 @@ func (client BaseClient) CreateImagesFromUrlsResponder(resp *http.Response) (res
 }
 
 // CreateProject sends the create project request.
-//
-// name is name of the project description is the description of the project domainID is the id of the domain to
-// use for this project. Defaults to General
+// Parameters:
+// name - name of the project
+// description - the description of the project
+// domainID - the id of the domain to use for this project. Defaults to General
 func (client BaseClient) CreateProject(ctx context.Context, name string, description string, domainID *uuid.UUID) (result Project, err error) {
 	req, err := client.CreateProjectPreparer(ctx, name, description, domainID)
 	if err != nil {
@@ -380,8 +384,10 @@ func (client BaseClient) CreateProjectResponder(resp *http.Response) (result Pro
 }
 
 // CreateTag sends the create tag request.
-//
-// projectID is the project id name is the tag name description is optional description for the tag
+// Parameters:
+// projectID - the project id
+// name - the tag name
+// description - optional description for the tag
 func (client BaseClient) CreateTag(ctx context.Context, projectID uuid.UUID, name string, description string) (result Tag, err error) {
 	req, err := client.CreateTagPreparer(ctx, projectID, name, description)
 	if err != nil {
@@ -447,8 +453,9 @@ func (client BaseClient) CreateTagResponder(resp *http.Response) (result Tag, er
 }
 
 // DeleteImages sends the delete images request.
-//
-// projectID is the project id imageIds is ids of the images to be deleted. Limted to 256 images per batch
+// Parameters:
+// projectID - the project id
+// imageIds - ids of the images to be deleted. Limted to 256 images per batch
 func (client BaseClient) DeleteImages(ctx context.Context, projectID uuid.UUID, imageIds []string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageIds,
@@ -516,9 +523,10 @@ func (client BaseClient) DeleteImagesResponder(resp *http.Response) (result auto
 }
 
 // DeleteImageTags sends the delete image tags request.
-//
-// projectID is the project id imageIds is image ids. Limited to 64 images tagIds is tags to be deleted from the
-// specified images. Limted to 20 tags
+// Parameters:
+// projectID - the project id
+// imageIds - image ids. Limited to 64 images
+// tagIds - tags to be deleted from the specified images. Limted to 20 tags
 func (client BaseClient) DeleteImageTags(ctx context.Context, projectID uuid.UUID, imageIds []string, tagIds []string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageIds,
@@ -589,8 +597,9 @@ func (client BaseClient) DeleteImageTagsResponder(resp *http.Response) (result a
 }
 
 // DeleteIteration sends the delete iteration request.
-//
-// projectID is the project id iterationID is the iteration id
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id
 func (client BaseClient) DeleteIteration(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (result autorest.Response, err error) {
 	req, err := client.DeleteIterationPreparer(ctx, projectID, iterationID)
 	if err != nil {
@@ -648,8 +657,9 @@ func (client BaseClient) DeleteIterationResponder(resp *http.Response) (result a
 }
 
 // DeletePrediction sends the delete prediction request.
-//
-// projectID is the project id ids is the prediction ids. Limited to 64
+// Parameters:
+// projectID - the project id
+// ids - the prediction ids. Limited to 64
 func (client BaseClient) DeletePrediction(ctx context.Context, projectID uuid.UUID, ids []string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: ids,
@@ -717,8 +727,8 @@ func (client BaseClient) DeletePredictionResponder(resp *http.Response) (result 
 }
 
 // DeleteProject sends the delete project request.
-//
-// projectID is the project id
+// Parameters:
+// projectID - the project id
 func (client BaseClient) DeleteProject(ctx context.Context, projectID uuid.UUID) (result autorest.Response, err error) {
 	req, err := client.DeleteProjectPreparer(ctx, projectID)
 	if err != nil {
@@ -775,8 +785,9 @@ func (client BaseClient) DeleteProjectResponder(resp *http.Response) (result aut
 }
 
 // DeleteTag sends the delete tag request.
-//
-// projectID is the project id tagID is id of the tag to be deleted
+// Parameters:
+// projectID - the project id
+// tagID - id of the tag to be deleted
 func (client BaseClient) DeleteTag(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID) (result autorest.Response, err error) {
 	req, err := client.DeleteTagPreparer(ctx, projectID, tagID)
 	if err != nil {
@@ -834,9 +845,10 @@ func (client BaseClient) DeleteTagResponder(resp *http.Response) (result autores
 }
 
 // ExportIteration sends the export iteration request.
-//
-// projectID is the project id iterationID is the iteration id platform is the target platform (coreml or
-// tensorflow)
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id
+// platform - the target platform (coreml or tensorflow)
 func (client BaseClient) ExportIteration(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, platform string) (result Export, err error) {
 	req, err := client.ExportIterationPreparer(ctx, projectID, iterationID, platform)
 	if err != nil {
@@ -953,8 +965,8 @@ func (client BaseClient) GetAccountInfoResponder(resp *http.Response) (result Ac
 }
 
 // GetDomain sends the get domain request.
-//
-// domainID is the id of the domain to get information about
+// Parameters:
+// domainID - the id of the domain to get information about
 func (client BaseClient) GetDomain(ctx context.Context, domainID uuid.UUID) (result Domain, err error) {
 	req, err := client.GetDomainPreparer(ctx, domainID)
 	if err != nil {
@@ -1065,8 +1077,9 @@ func (client BaseClient) GetDomainsResponder(resp *http.Response) (result ListDo
 }
 
 // GetExports sends the get exports request.
-//
-// projectID is the project id iterationID is the iteration id
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id
 func (client BaseClient) GetExports(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (result ListExport, err error) {
 	req, err := client.GetExportsPreparer(ctx, projectID, iterationID)
 	if err != nil {
@@ -1125,8 +1138,9 @@ func (client BaseClient) GetExportsResponder(resp *http.Response) (result ListEx
 }
 
 // GetIteration sends the get iteration request.
-//
-// projectID is the id of the project the iteration belongs to iterationID is the id of the iteration to get
+// Parameters:
+// projectID - the id of the project the iteration belongs to
+// iterationID - the id of the iteration to get
 func (client BaseClient) GetIteration(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (result Iteration, err error) {
 	req, err := client.GetIterationPreparer(ctx, projectID, iterationID)
 	if err != nil {
@@ -1185,9 +1199,10 @@ func (client BaseClient) GetIterationResponder(resp *http.Response) (result Iter
 }
 
 // GetIterationPerformance sends the get iteration performance request.
-//
-// projectID is the project id iterationID is the id of the trained iteration threshold is the 0 to 1 threshold to
-// determine positive prediction
+// Parameters:
+// projectID - the project id
+// iterationID - the id of the trained iteration
+// threshold - the 0 to 1 threshold to determine positive prediction
 func (client BaseClient) GetIterationPerformance(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, threshold float64) (result IterationPerformance, err error) {
 	req, err := client.GetIterationPerformancePreparer(ctx, projectID, iterationID, threshold)
 	if err != nil {
@@ -1251,8 +1266,8 @@ func (client BaseClient) GetIterationPerformanceResponder(resp *http.Response) (
 }
 
 // GetIterations sends the get iterations request.
-//
-// projectID is the project id
+// Parameters:
+// projectID - the project id
 func (client BaseClient) GetIterations(ctx context.Context, projectID uuid.UUID) (result ListIteration, err error) {
 	req, err := client.GetIterationsPreparer(ctx, projectID)
 	if err != nil {
@@ -1310,8 +1325,8 @@ func (client BaseClient) GetIterationsResponder(resp *http.Response) (result Lis
 }
 
 // GetProject sends the get project request.
-//
-// projectID is the id of the project to get
+// Parameters:
+// projectID - the id of the project to get
 func (client BaseClient) GetProject(ctx context.Context, projectID uuid.UUID) (result Project, err error) {
 	req, err := client.GetProjectPreparer(ctx, projectID)
 	if err != nil {
@@ -1422,9 +1437,10 @@ func (client BaseClient) GetProjectsResponder(resp *http.Response) (result ListP
 }
 
 // GetTag sends the get tag request.
-//
-// projectID is the project this tag belongs to tagID is the tag id iterationID is the iteration to retrieve this
-// tag from. Optional, defaults to current training set
+// Parameters:
+// projectID - the project this tag belongs to
+// tagID - the tag id
+// iterationID - the iteration to retrieve this tag from. Optional, defaults to current training set
 func (client BaseClient) GetTag(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID, iterationID *uuid.UUID) (result Tag, err error) {
 	req, err := client.GetTagPreparer(ctx, projectID, tagID, iterationID)
 	if err != nil {
@@ -1493,11 +1509,13 @@ func (client BaseClient) GetTagResponder(resp *http.Response) (result Tag, err e
 // Use the {take} and {skip} parameters to control how many images to return in a given batch.
 // The filtering is on an and/or relationship. For example, if the provided tag ids are for the "Dog" and
 // "Cat" tags, then only images tagged with Dog and/or Cat will be returned
-//
-// projectID is the project id iterationID is the iteration id. Defaults to workspace tagIds is an list of tags ids
-// to filter the images. Defaults to all tagged images when null. Limited to 20 orderBy is the ordering. Defaults
-// to newest take is maximum number of images to return. Defaults to 50, limited to 256 skip is number of images to
-// skip before beginning the image batch. Defaults to 0
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id. Defaults to workspace
+// tagIds - an list of tags ids to filter the images. Defaults to all tagged images when null. Limited to 20
+// orderBy - the ordering. Defaults to newest
+// take - maximum number of images to return. Defaults to 50, limited to 256
+// skip - number of images to skip before beginning the image batch. Defaults to 0
 func (client BaseClient) GetTaggedImages(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID, tagIds []string, orderBy string, take *int32, skip *int32) (result ListImage, err error) {
 	req, err := client.GetTaggedImagesPreparer(ctx, projectID, iterationID, tagIds, orderBy, take, skip)
 	if err != nil {
@@ -1577,8 +1595,9 @@ func (client BaseClient) GetTaggedImagesResponder(resp *http.Response) (result L
 }
 
 // GetTags sends the get tags request.
-//
-// projectID is the project id iterationID is the iteration id. Defaults to workspace
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id. Defaults to workspace
 func (client BaseClient) GetTags(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID) (result TagList, err error) {
 	req, err := client.GetTagsPreparer(ctx, projectID, iterationID)
 	if err != nil {
@@ -1644,10 +1663,12 @@ func (client BaseClient) GetTagsResponder(resp *http.Response) (result TagList, 
 // GetUntaggedImages this API supports batching and range selection. By default it will only return first 50 images
 // matching images.
 // Use the {take} and {skip} parameters to control how many images to return in a given batch.
-//
-// projectID is the project id iterationID is the iteration id. Defaults to workspace orderBy is the ordering.
-// Defaults to newest take is maximum number of images to return. Defaults to 50, limited to 256 skip is number of
-// images to skip before beginning the image batch. Defaults to 0
+// Parameters:
+// projectID - the project id
+// iterationID - the iteration id. Defaults to workspace
+// orderBy - the ordering. Defaults to newest
+// take - maximum number of images to return. Defaults to 50, limited to 256
+// skip - number of images to skip before beginning the image batch. Defaults to 0
 func (client BaseClient) GetUntaggedImages(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID, orderBy string, take *int32, skip *int32) (result ListImage, err error) {
 	req, err := client.GetUntaggedImagesPreparer(ctx, projectID, iterationID, orderBy, take, skip)
 	if err != nil {
@@ -1724,8 +1745,9 @@ func (client BaseClient) GetUntaggedImagesResponder(resp *http.Response) (result
 }
 
 // PostImageTags sends the post image tags request.
-//
-// projectID is the project id batch is batch of image tags. Limited to 128 tags per batch
+// Parameters:
+// projectID - the project id
+// batch - batch of image tags. Limited to 128 tags per batch
 func (client BaseClient) PostImageTags(ctx context.Context, projectID uuid.UUID, batch ImageTagCreateBatch) (result ImageTagCreateSummary, err error) {
 	req, err := client.PostImageTagsPreparer(ctx, projectID, batch)
 	if err != nil {
@@ -1785,8 +1807,9 @@ func (client BaseClient) PostImageTagsResponder(resp *http.Response) (result Ima
 }
 
 // QueryPredictionResults sends the query prediction results request.
-//
-// projectID is the project id query is parameters used to query the predictions. Limited to combining 2 tags
+// Parameters:
+// projectID - the project id
+// query - parameters used to query the predictions. Limited to combining 2 tags
 func (client BaseClient) QueryPredictionResults(ctx context.Context, projectID uuid.UUID, query PredictionQueryToken) (result PredictionQuery, err error) {
 	req, err := client.QueryPredictionResultsPreparer(ctx, projectID, query)
 	if err != nil {
@@ -1846,9 +1869,9 @@ func (client BaseClient) QueryPredictionResultsResponder(resp *http.Response) (r
 }
 
 // QuickTestImage sends the quick test image request.
-//
-// projectID is the project id imageData will be closed upon successful return. Callers should ensure closure when
-// receiving an error.iterationID is optional. Specifies the id of a particular iteration to evaluate against.
+// Parameters:
+// projectID - the project id
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
 // The default iteration for the project will be used when not specified.
 func (client BaseClient) QuickTestImage(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID) (result ImagePredictionResult, err error) {
 	req, err := client.QuickTestImagePreparer(ctx, projectID, imageData, iterationID)
@@ -1918,10 +1941,10 @@ func (client BaseClient) QuickTestImageResponder(resp *http.Response) (result Im
 }
 
 // QuickTestImageURL sends the quick test image url request.
-//
-// projectID is the project to evaluate against imageURL is an {Iris.Web.Api.Models.ImageUrl} that contains the url
-// of the image to be evaluated iterationID is optional. Specifies the id of a particular iteration to evaluate
-// against.
+// Parameters:
+// projectID - the project to evaluate against
+// imageURL - an {Iris.Web.Api.Models.ImageUrl} that contains the url of the image to be evaluated
+// iterationID - optional. Specifies the id of a particular iteration to evaluate against.
 // The default iteration for the project will be used when not specified.
 func (client BaseClient) QuickTestImageURL(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID) (result ImagePredictionResult, err error) {
 	req, err := client.QuickTestImageURLPreparer(ctx, projectID, imageURL, iterationID)
@@ -1988,8 +2011,8 @@ func (client BaseClient) QuickTestImageURLResponder(resp *http.Response) (result
 }
 
 // TrainProject sends the train project request.
-//
-// projectID is the project id
+// Parameters:
+// projectID - the project id
 func (client BaseClient) TrainProject(ctx context.Context, projectID uuid.UUID) (result Iteration, err error) {
 	req, err := client.TrainProjectPreparer(ctx, projectID)
 	if err != nil {
@@ -2047,8 +2070,10 @@ func (client BaseClient) TrainProjectResponder(resp *http.Response) (result Iter
 }
 
 // UpdateIteration sends the update iteration request.
-//
-// projectID is project id iterationID is iteration id updatedIteration is the updated iteration model
+// Parameters:
+// projectID - project id
+// iterationID - iteration id
+// updatedIteration - the updated iteration model
 func (client BaseClient) UpdateIteration(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, updatedIteration Iteration) (result Iteration, err error) {
 	req, err := client.UpdateIterationPreparer(ctx, projectID, iterationID, updatedIteration)
 	if err != nil {
@@ -2109,8 +2134,9 @@ func (client BaseClient) UpdateIterationResponder(resp *http.Response) (result I
 }
 
 // UpdateProject sends the update project request.
-//
-// projectID is the id of the project to update updatedProject is the updated project model
+// Parameters:
+// projectID - the id of the project to update
+// updatedProject - the updated project model
 func (client BaseClient) UpdateProject(ctx context.Context, projectID uuid.UUID, updatedProject Project) (result Project, err error) {
 	req, err := client.UpdateProjectPreparer(ctx, projectID, updatedProject)
 	if err != nil {
@@ -2170,8 +2196,10 @@ func (client BaseClient) UpdateProjectResponder(resp *http.Response) (result Pro
 }
 
 // UpdateTag sends the update tag request.
-//
-// projectID is the project id tagID is the id of the target tag updatedTag is the updated tag model
+// Parameters:
+// projectID - the project id
+// tagID - the id of the target tag
+// updatedTag - the updated tag model
 func (client BaseClient) UpdateTag(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID, updatedTag Tag) (result Tag, err error) {
 	req, err := client.UpdateTagPreparer(ctx, projectID, tagID, updatedTag)
 	if err != nil {

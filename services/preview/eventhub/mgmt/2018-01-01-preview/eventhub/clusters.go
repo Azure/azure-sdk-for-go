@@ -41,9 +41,9 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 }
 
 // Get gets the resource description of the specified Event Hubs Cluster.
-//
-// resourceGroupName is name of the resource group within the Azure subscription. clusterName is the name of the
-// Event Hubs Cluster.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// clusterName - the name of the Event Hubs Cluster.
 func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -118,8 +118,8 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 }
 
 // ListByResourceGroup lists the available Event Hubs Clusters within an ARM resource group.
-//
-// resourceGroupName is name of the resource group within the Azure subscription.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
 func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -218,9 +218,10 @@ func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, re
 }
 
 // Patch modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
-//
-// resourceGroupName is name of the resource group within the Azure subscription. clusterName is the name of the
-// Event Hubs Cluster. parameters is the properties of the Event Hubs Cluster which should be updated.
+// Parameters:
+// resourceGroupName - name of the resource group within the Azure subscription.
+// clusterName - the name of the Event Hubs Cluster.
+// parameters - the properties of the Event Hubs Cluster which should be updated.
 func (client ClustersClient) Patch(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersPatchFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

@@ -41,10 +41,12 @@ func NewHardwareComponentGroupsClientWithBaseURI(baseURI string, subscriptionID 
 }
 
 // ChangeControllerPowerState changes the power state of the controller.
-//
-// deviceName is the device name hardwareComponentGroupName is the hardware component group name. parameters is the
-// controller power state change request. resourceGroupName is the resource group name managerName is the manager
-// name
+// Parameters:
+// deviceName - the device name
+// hardwareComponentGroupName - the hardware component group name.
+// parameters - the controller power state change request.
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client HardwareComponentGroupsClient) ChangeControllerPowerState(ctx context.Context, deviceName string, hardwareComponentGroupName string, parameters ControllerPowerStateChangeRequest, resourceGroupName string, managerName string) (result HardwareComponentGroupsChangeControllerPowerStateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -123,8 +125,10 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStateResponder(
 }
 
 // ListByDevice lists the hardware component groups at device-level.
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client HardwareComponentGroupsClient) ListByDevice(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result HardwareComponentGroupList, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,

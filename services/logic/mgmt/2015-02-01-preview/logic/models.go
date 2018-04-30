@@ -26,6 +26,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // KeyType enumerates the values for key type.
 type KeyType string
 
@@ -38,11 +39,13 @@ const (
 	Secondary KeyType = "Secondary"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
 	return []KeyType{NotSpecified, Primary, Secondary}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // ParameterType enumerates the values for parameter type.
 type ParameterType string
 
@@ -67,11 +70,13 @@ const (
 	ParameterTypeString ParameterType = "String"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
 func PossibleParameterTypeValues() []ParameterType {
 	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // RecurrenceFrequency enumerates the values for recurrence frequency.
 type RecurrenceFrequency string
 
@@ -92,11 +97,13 @@ const (
 	Year RecurrenceFrequency = "Year"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return []RecurrenceFrequency{Day, Hour, Minute, Month, Second, Week, Year}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -115,11 +122,13 @@ const (
 	SkuNameStandard SkuName = "Standard"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
 	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowProvisioningState enumerates the values for workflow provisioning state.
 type WorkflowProvisioningState string
 
@@ -132,11 +141,13 @@ const (
 	WorkflowProvisioningStateSucceeded WorkflowProvisioningState = "Succeeded"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleWorkflowProvisioningStateValues returns an array of possible values for the WorkflowProvisioningState const type.
 func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
 	return []WorkflowProvisioningState{WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateSucceeded}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowState enumerates the values for workflow state.
 type WorkflowState string
 
@@ -153,11 +164,13 @@ const (
 	WorkflowStateSuspended WorkflowState = "Suspended"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleWorkflowStateValues returns an array of possible values for the WorkflowState const type.
 func PossibleWorkflowStateValues() []WorkflowState {
 	return []WorkflowState{WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowStatus enumerates the values for workflow status.
 type WorkflowStatus string
 
@@ -188,11 +201,13 @@ const (
 	WorkflowStatusWaiting WorkflowStatus = "Waiting"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleWorkflowStatusValues returns an array of possible values for the WorkflowStatus const type.
 func PossibleWorkflowStatusValues() []WorkflowStatus {
 	return []WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerProvisioningState enumerates the values for workflow trigger provisioning state.
 type WorkflowTriggerProvisioningState string
 
@@ -207,11 +222,13 @@ const (
 	WorkflowTriggerProvisioningStateUpdating WorkflowTriggerProvisioningState = "Updating"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // PossibleWorkflowTriggerProvisioningStateValues returns an array of possible values for the WorkflowTriggerProvisioningState const type.
 func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
 	return []WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUpdating}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // ContentHash ...
 type ContentHash struct {
 	// Algorithm - Gets or sets the algorithm.
@@ -220,6 +237,7 @@ type ContentHash struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // ContentLink ...
 type ContentLink struct {
 	// URI - Gets or sets the content link URI.
@@ -234,12 +252,14 @@ type ContentLink struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // RegenerateSecretKeyParameters ...
 type RegenerateSecretKeyParameters struct {
 	// KeyType - Gets or sets the key type. Possible values include: 'NotSpecified', 'Primary', 'Secondary'
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Resource ...
 type Resource struct {
 	// ID - Gets or sets the resource id.
@@ -254,6 +274,7 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -275,6 +296,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // ResourceReference ...
 type ResourceReference struct {
 	// ID - Gets or sets the resource id.
@@ -285,6 +307,7 @@ type ResourceReference struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // RunWorkflowParameters ...
 type RunWorkflowParameters struct {
 	// Name - Gets or sets the name of workflow run trigger.
@@ -293,6 +316,7 @@ type RunWorkflowParameters struct {
 	Outputs interface{} `json:"outputs,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Sku ...
 type Sku struct {
 	// Name - Gets or sets the name. Possible values include: 'SkuNameNotSpecified', 'SkuNameFree', 'SkuNameShared', 'SkuNameBasic', 'SkuNameStandard', 'SkuNamePremium'
@@ -301,12 +325,14 @@ type Sku struct {
 	Plan *ResourceReference `json:"plan,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // SubResource ...
 type SubResource struct {
 	// ID - Gets or sets the resource id.
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Workflow ...
 type Workflow struct {
 	autorest.Response `json:"-"`
@@ -324,6 +350,7 @@ type Workflow struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for Workflow.
 func (w Workflow) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -348,6 +375,7 @@ func (w Workflow) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for Workflow struct.
 func (w *Workflow) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -417,6 +445,7 @@ func (w *Workflow) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowAccessKey ...
 type WorkflowAccessKey struct {
 	autorest.Response `json:"-"`
@@ -430,6 +459,7 @@ type WorkflowAccessKey struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowAccessKey.
 func (wak WorkflowAccessKey) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -448,6 +478,7 @@ func (wak WorkflowAccessKey) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowAccessKey struct.
 func (wak *WorkflowAccessKey) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -499,6 +530,7 @@ func (wak *WorkflowAccessKey) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowAccessKeyListResult ...
 type WorkflowAccessKeyListResult struct {
 	autorest.Response `json:"-"`
@@ -508,12 +540,14 @@ type WorkflowAccessKeyListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowAccessKeyListResultIterator provides access to a complete listing of WorkflowAccessKey values.
 type WorkflowAccessKeyListResultIterator struct {
 	i    int
 	page WorkflowAccessKeyListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowAccessKeyListResultIterator) Next() error {
@@ -530,16 +564,19 @@ func (iter *WorkflowAccessKeyListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowAccessKeyListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowAccessKeyListResultIterator) Response() WorkflowAccessKeyListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowAccessKeyListResultIterator) Value() WorkflowAccessKey {
@@ -549,6 +586,7 @@ func (iter WorkflowAccessKeyListResultIterator) Value() WorkflowAccessKey {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (waklr WorkflowAccessKeyListResult) IsEmpty() bool {
 	return waklr.Value == nil || len(*waklr.Value) == 0
@@ -566,12 +604,14 @@ func (waklr WorkflowAccessKeyListResult) workflowAccessKeyListResultPreparer() (
 		autorest.WithBaseURL(to.String(waklr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowAccessKeyListResultPage contains a page of WorkflowAccessKey values.
 type WorkflowAccessKeyListResultPage struct {
 	fn    func(WorkflowAccessKeyListResult) (WorkflowAccessKeyListResult, error)
 	waklr WorkflowAccessKeyListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowAccessKeyListResultPage) Next() error {
@@ -583,16 +623,19 @@ func (page *WorkflowAccessKeyListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowAccessKeyListResultPage) NotDone() bool {
 	return !page.waklr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowAccessKeyListResultPage) Response() WorkflowAccessKeyListResult {
 	return page.waklr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowAccessKeyListResultPage) Values() []WorkflowAccessKey {
 	if page.waklr.IsEmpty() {
@@ -601,6 +644,7 @@ func (page WorkflowAccessKeyListResultPage) Values() []WorkflowAccessKey {
 	return *page.waklr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowAccessKeyProperties ...
 type WorkflowAccessKeyProperties struct {
 	// NotBefore - Gets or sets the not-before time.
@@ -609,12 +653,14 @@ type WorkflowAccessKeyProperties struct {
 	NotAfter *date.Time `json:"notAfter,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowFilter ...
 type WorkflowFilter struct {
 	// State - Gets or sets the state of workflows. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
 	State WorkflowState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowListResult ...
 type WorkflowListResult struct {
 	autorest.Response `json:"-"`
@@ -624,12 +670,14 @@ type WorkflowListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowListResultIterator provides access to a complete listing of Workflow values.
 type WorkflowListResultIterator struct {
 	i    int
 	page WorkflowListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowListResultIterator) Next() error {
@@ -646,16 +694,19 @@ func (iter *WorkflowListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowListResultIterator) Response() WorkflowListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowListResultIterator) Value() Workflow {
@@ -665,6 +716,7 @@ func (iter WorkflowListResultIterator) Value() Workflow {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wlr WorkflowListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
@@ -682,12 +734,14 @@ func (wlr WorkflowListResult) workflowListResultPreparer() (*http.Request, error
 		autorest.WithBaseURL(to.String(wlr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowListResultPage contains a page of Workflow values.
 type WorkflowListResultPage struct {
 	fn  func(WorkflowListResult) (WorkflowListResult, error)
 	wlr WorkflowListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowListResultPage) Next() error {
@@ -699,16 +753,19 @@ func (page *WorkflowListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowListResultPage) NotDone() bool {
 	return !page.wlr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowListResultPage) Response() WorkflowListResult {
 	return page.wlr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowListResultPage) Values() []Workflow {
 	if page.wlr.IsEmpty() {
@@ -717,6 +774,7 @@ func (page WorkflowListResultPage) Values() []Workflow {
 	return *page.wlr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowOutputParameter ...
 type WorkflowOutputParameter struct {
 	// Error - Gets the error.
@@ -729,6 +787,7 @@ type WorkflowOutputParameter struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowParameter ...
 type WorkflowParameter struct {
 	// Type - Gets or sets the type. Possible values include: 'ParameterTypeNotSpecified', 'ParameterTypeString', 'ParameterTypeSecureString', 'ParameterTypeInt', 'ParameterTypeFloat', 'ParameterTypeBool', 'ParameterTypeArray', 'ParameterTypeObject', 'ParameterTypeSecureObject'
@@ -739,6 +798,7 @@ type WorkflowParameter struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowProperties ...
 type WorkflowProperties struct {
 	// ProvisioningState - Gets the provisioning state. Possible values include: 'WorkflowProvisioningStateNotSpecified', 'WorkflowProvisioningStateMoving', 'WorkflowProvisioningStateSucceeded'
@@ -765,6 +825,7 @@ type WorkflowProperties struct {
 	Parameters map[string]*WorkflowParameter `json:"parameters"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowProperties.
 func (wp WorkflowProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -802,6 +863,7 @@ func (wp WorkflowProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRun ...
 type WorkflowRun struct {
 	autorest.Response `json:"-"`
@@ -815,6 +877,7 @@ type WorkflowRun struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowRun.
 func (wr WorkflowRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -833,6 +896,7 @@ func (wr WorkflowRun) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowRun struct.
 func (wr *WorkflowRun) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -884,6 +948,7 @@ func (wr *WorkflowRun) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunAction ...
 type WorkflowRunAction struct {
 	autorest.Response `json:"-"`
@@ -897,6 +962,7 @@ type WorkflowRunAction struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowRunAction.
 func (wra WorkflowRunAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -915,6 +981,7 @@ func (wra WorkflowRunAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowRunAction struct.
 func (wra *WorkflowRunAction) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -966,12 +1033,14 @@ func (wra *WorkflowRunAction) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunActionFilter ...
 type WorkflowRunActionFilter struct {
 	// Status - Gets or sets the status of workflow run action. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunActionListResult ...
 type WorkflowRunActionListResult struct {
 	autorest.Response `json:"-"`
@@ -981,12 +1050,14 @@ type WorkflowRunActionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunActionListResultIterator provides access to a complete listing of WorkflowRunAction values.
 type WorkflowRunActionListResultIterator struct {
 	i    int
 	page WorkflowRunActionListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowRunActionListResultIterator) Next() error {
@@ -1003,16 +1074,19 @@ func (iter *WorkflowRunActionListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowRunActionListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowRunActionListResultIterator) Response() WorkflowRunActionListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowRunActionListResultIterator) Value() WorkflowRunAction {
@@ -1022,6 +1096,7 @@ func (iter WorkflowRunActionListResultIterator) Value() WorkflowRunAction {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wralr WorkflowRunActionListResult) IsEmpty() bool {
 	return wralr.Value == nil || len(*wralr.Value) == 0
@@ -1039,12 +1114,14 @@ func (wralr WorkflowRunActionListResult) workflowRunActionListResultPreparer() (
 		autorest.WithBaseURL(to.String(wralr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunActionListResultPage contains a page of WorkflowRunAction values.
 type WorkflowRunActionListResultPage struct {
 	fn    func(WorkflowRunActionListResult) (WorkflowRunActionListResult, error)
 	wralr WorkflowRunActionListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowRunActionListResultPage) Next() error {
@@ -1056,16 +1133,19 @@ func (page *WorkflowRunActionListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowRunActionListResultPage) NotDone() bool {
 	return !page.wralr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowRunActionListResultPage) Response() WorkflowRunActionListResult {
 	return page.wralr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 	if page.wralr.IsEmpty() {
@@ -1074,6 +1154,7 @@ func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 	return *page.wralr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunActionProperties ...
 type WorkflowRunActionProperties struct {
 	// StartTime - Gets the start time.
@@ -1094,12 +1175,14 @@ type WorkflowRunActionProperties struct {
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunFilter ...
 type WorkflowRunFilter struct {
 	// Status - Gets or sets the status of workflow run. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunListResult ...
 type WorkflowRunListResult struct {
 	autorest.Response `json:"-"`
@@ -1109,12 +1192,14 @@ type WorkflowRunListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunListResultIterator provides access to a complete listing of WorkflowRun values.
 type WorkflowRunListResultIterator struct {
 	i    int
 	page WorkflowRunListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowRunListResultIterator) Next() error {
@@ -1131,16 +1216,19 @@ func (iter *WorkflowRunListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowRunListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowRunListResultIterator) Response() WorkflowRunListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowRunListResultIterator) Value() WorkflowRun {
@@ -1150,6 +1238,7 @@ func (iter WorkflowRunListResultIterator) Value() WorkflowRun {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wrlr WorkflowRunListResult) IsEmpty() bool {
 	return wrlr.Value == nil || len(*wrlr.Value) == 0
@@ -1167,12 +1256,14 @@ func (wrlr WorkflowRunListResult) workflowRunListResultPreparer() (*http.Request
 		autorest.WithBaseURL(to.String(wrlr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunListResultPage contains a page of WorkflowRun values.
 type WorkflowRunListResultPage struct {
 	fn   func(WorkflowRunListResult) (WorkflowRunListResult, error)
 	wrlr WorkflowRunListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowRunListResultPage) Next() error {
@@ -1184,16 +1275,19 @@ func (page *WorkflowRunListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowRunListResultPage) NotDone() bool {
 	return !page.wrlr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowRunListResultPage) Response() WorkflowRunListResult {
 	return page.wrlr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 	if page.wrlr.IsEmpty() {
@@ -1202,6 +1296,7 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 	return *page.wrlr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunProperties ...
 type WorkflowRunProperties struct {
 	// StartTime - Gets the start time.
@@ -1224,6 +1319,7 @@ type WorkflowRunProperties struct {
 	Outputs map[string]*WorkflowOutputParameter `json:"outputs"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowRunProperties.
 func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1255,6 +1351,7 @@ func (wrp WorkflowRunProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowRunTrigger ...
 type WorkflowRunTrigger struct {
 	// Name - Gets the name.
@@ -1281,6 +1378,7 @@ type WorkflowRunTrigger struct {
 	Error interface{} `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowSecretKeys ...
 type WorkflowSecretKeys struct {
 	autorest.Response `json:"-"`
@@ -1290,12 +1388,14 @@ type WorkflowSecretKeys struct {
 	SecondarySecretKey *string `json:"secondarySecretKey,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowsRunFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WorkflowsRunFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future WorkflowsRunFuture) Result(client WorkflowsClient) (wr WorkflowRun, err error) {
@@ -1338,6 +1438,7 @@ func (future WorkflowsRunFuture) Result(client WorkflowsClient) (wr WorkflowRun,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTrigger ...
 type WorkflowTrigger struct {
 	autorest.Response `json:"-"`
@@ -1351,6 +1452,7 @@ type WorkflowTrigger struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowTrigger.
 func (wt WorkflowTrigger) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1369,6 +1471,7 @@ func (wt WorkflowTrigger) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowTrigger struct.
 func (wt *WorkflowTrigger) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1420,12 +1523,14 @@ func (wt *WorkflowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerFilter ...
 type WorkflowTriggerFilter struct {
 	// State - Gets or sets the state of workflow trigger. Possible values include: 'WorkflowStateNotSpecified', 'WorkflowStateEnabled', 'WorkflowStateDisabled', 'WorkflowStateDeleted', 'WorkflowStateSuspended'
 	State WorkflowState `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistory ...
 type WorkflowTriggerHistory struct {
 	autorest.Response `json:"-"`
@@ -1439,6 +1544,7 @@ type WorkflowTriggerHistory struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowTriggerHistory.
 func (wth WorkflowTriggerHistory) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1457,6 +1563,7 @@ func (wth WorkflowTriggerHistory) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowTriggerHistory struct.
 func (wth *WorkflowTriggerHistory) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1508,12 +1615,14 @@ func (wth *WorkflowTriggerHistory) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistoryFilter ...
 type WorkflowTriggerHistoryFilter struct {
 	// Status - Gets or sets the status of workflow trigger history. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
 	Status WorkflowStatus `json:"status,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistoryListResult ...
 type WorkflowTriggerHistoryListResult struct {
 	autorest.Response `json:"-"`
@@ -1523,12 +1632,14 @@ type WorkflowTriggerHistoryListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistoryListResultIterator provides access to a complete listing of WorkflowTriggerHistory values.
 type WorkflowTriggerHistoryListResultIterator struct {
 	i    int
 	page WorkflowTriggerHistoryListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowTriggerHistoryListResultIterator) Next() error {
@@ -1545,16 +1656,19 @@ func (iter *WorkflowTriggerHistoryListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowTriggerHistoryListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowTriggerHistoryListResultIterator) Response() WorkflowTriggerHistoryListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowTriggerHistoryListResultIterator) Value() WorkflowTriggerHistory {
@@ -1564,6 +1678,7 @@ func (iter WorkflowTriggerHistoryListResultIterator) Value() WorkflowTriggerHist
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wthlr WorkflowTriggerHistoryListResult) IsEmpty() bool {
 	return wthlr.Value == nil || len(*wthlr.Value) == 0
@@ -1581,12 +1696,14 @@ func (wthlr WorkflowTriggerHistoryListResult) workflowTriggerHistoryListResultPr
 		autorest.WithBaseURL(to.String(wthlr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistoryListResultPage contains a page of WorkflowTriggerHistory values.
 type WorkflowTriggerHistoryListResultPage struct {
 	fn    func(WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)
 	wthlr WorkflowTriggerHistoryListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowTriggerHistoryListResultPage) Next() error {
@@ -1598,16 +1715,19 @@ func (page *WorkflowTriggerHistoryListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowTriggerHistoryListResultPage) NotDone() bool {
 	return !page.wthlr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowTriggerHistoryListResultPage) Response() WorkflowTriggerHistoryListResult {
 	return page.wthlr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHistory {
 	if page.wthlr.IsEmpty() {
@@ -1616,6 +1736,7 @@ func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHisto
 	return *page.wthlr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerHistoryProperties ...
 type WorkflowTriggerHistoryProperties struct {
 	// StartTime - Gets the start time.
@@ -1640,6 +1761,7 @@ type WorkflowTriggerHistoryProperties struct {
 	Run *ResourceReference `json:"run,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerListResult ...
 type WorkflowTriggerListResult struct {
 	autorest.Response `json:"-"`
@@ -1649,12 +1771,14 @@ type WorkflowTriggerListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerListResultIterator provides access to a complete listing of WorkflowTrigger values.
 type WorkflowTriggerListResultIterator struct {
 	i    int
 	page WorkflowTriggerListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkflowTriggerListResultIterator) Next() error {
@@ -1671,16 +1795,19 @@ func (iter *WorkflowTriggerListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkflowTriggerListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkflowTriggerListResultIterator) Response() WorkflowTriggerListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkflowTriggerListResultIterator) Value() WorkflowTrigger {
@@ -1690,6 +1817,7 @@ func (iter WorkflowTriggerListResultIterator) Value() WorkflowTrigger {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wtlr WorkflowTriggerListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
@@ -1707,12 +1835,14 @@ func (wtlr WorkflowTriggerListResult) workflowTriggerListResultPreparer() (*http
 		autorest.WithBaseURL(to.String(wtlr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerListResultPage contains a page of WorkflowTrigger values.
 type WorkflowTriggerListResultPage struct {
 	fn   func(WorkflowTriggerListResult) (WorkflowTriggerListResult, error)
 	wtlr WorkflowTriggerListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkflowTriggerListResultPage) Next() error {
@@ -1724,16 +1854,19 @@ func (page *WorkflowTriggerListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkflowTriggerListResultPage) NotDone() bool {
 	return !page.wtlr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Response returns the raw server response from the last page request.
 func (page WorkflowTriggerListResultPage) Response() WorkflowTriggerListResult {
 	return page.wtlr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 	if page.wtlr.IsEmpty() {
@@ -1742,6 +1875,7 @@ func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 	return *page.wtlr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerProperties ...
 type WorkflowTriggerProperties struct {
 	// ProvisioningState - Gets the provisioning state. Possible values include: 'WorkflowTriggerProvisioningStateNotSpecified', 'WorkflowTriggerProvisioningStateCreating', 'WorkflowTriggerProvisioningStateSucceeded', 'WorkflowTriggerProvisioningStateUpdating'
@@ -1764,6 +1898,7 @@ type WorkflowTriggerProperties struct {
 	Workflow *ResourceReference `json:"workflow,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowTriggerRecurrence ...
 type WorkflowTriggerRecurrence struct {
 	// Frequency - Gets or sets the frequency. Possible values include: 'Second', 'Minute', 'Hour', 'Day', 'Week', 'Month', 'Year'
@@ -1776,6 +1911,7 @@ type WorkflowTriggerRecurrence struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowVersion ...
 type WorkflowVersion struct {
 	autorest.Response `json:"-"`
@@ -1793,6 +1929,7 @@ type WorkflowVersion struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowVersion.
 func (wv WorkflowVersion) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1817,6 +1954,7 @@ func (wv WorkflowVersion) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // UnmarshalJSON is the custom unmarshaler for WorkflowVersion struct.
 func (wv *WorkflowVersion) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1886,6 +2024,7 @@ func (wv *WorkflowVersion) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // WorkflowVersionProperties ...
 type WorkflowVersionProperties struct {
 	// CreatedTime - Gets the created time.
@@ -1910,6 +2049,7 @@ type WorkflowVersionProperties struct {
 	Parameters map[string]*WorkflowParameter `json:"parameters"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic instead.
 // MarshalJSON is the custom marshaler for WorkflowVersionProperties.
 func (wvp WorkflowVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

@@ -26,6 +26,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Category enumerates the values for category.
 type Category string
 
@@ -40,11 +41,13 @@ const (
 	Security Category = "Security"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // PossibleCategoryValues returns an array of possible values for the Category const type.
 func PossibleCategoryValues() []Category {
 	return []Category{Cost, HighAvailability, Performance, Security}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Impact enumerates the values for impact.
 type Impact string
 
@@ -57,11 +60,13 @@ const (
 	Medium Impact = "Medium"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // PossibleImpactValues returns an array of possible values for the Impact const type.
 func PossibleImpactValues() []Impact {
 	return []Impact{High, Low, Medium}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Risk enumerates the values for risk.
 type Risk string
 
@@ -74,17 +79,20 @@ const (
 	Warning Risk = "Warning"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // PossibleRiskValues returns an array of possible values for the Risk const type.
 func PossibleRiskValues() []Risk {
 	return []Risk{Error, None, Warning}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ListSuppressionContract ...
 type ListSuppressionContract struct {
 	autorest.Response `json:"-"`
 	Value             *[]SuppressionContract `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // OperationDisplayInfo the operation supported by Advisor.
 type OperationDisplayInfo struct {
 	// Description - The description of the operation.
@@ -97,6 +105,7 @@ type OperationDisplayInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // OperationEntity the operation supported by Advisor.
 type OperationEntity struct {
 	// Name - Operation name: {provider}/{resource}/{operation}.
@@ -105,6 +114,7 @@ type OperationEntity struct {
 	Display *OperationDisplayInfo `json:"display,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // OperationEntityListResult the list of Advisor operations.
 type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
@@ -114,12 +124,14 @@ type OperationEntityListResult struct {
 	Value *[]OperationEntity `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // OperationEntityListResultIterator provides access to a complete listing of OperationEntity values.
 type OperationEntityListResultIterator struct {
 	i    int
 	page OperationEntityListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationEntityListResultIterator) Next() error {
@@ -136,16 +148,19 @@ func (iter *OperationEntityListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationEntityListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationEntityListResultIterator) Response() OperationEntityListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationEntityListResultIterator) Value() OperationEntity {
@@ -155,6 +170,7 @@ func (iter OperationEntityListResultIterator) Value() OperationEntity {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
@@ -172,12 +188,14 @@ func (oelr OperationEntityListResult) operationEntityListResultPreparer() (*http
 		autorest.WithBaseURL(to.String(oelr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // OperationEntityListResultPage contains a page of OperationEntity values.
 type OperationEntityListResultPage struct {
 	fn   func(OperationEntityListResult) (OperationEntityListResult, error)
 	oelr OperationEntityListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationEntityListResultPage) Next() error {
@@ -189,16 +207,19 @@ func (page *OperationEntityListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationEntityListResultPage) NotDone() bool {
 	return !page.oelr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Response returns the raw server response from the last page request.
 func (page OperationEntityListResultPage) Response() OperationEntityListResult {
 	return page.oelr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationEntityListResultPage) Values() []OperationEntity {
 	if page.oelr.IsEmpty() {
@@ -207,6 +228,7 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 	return *page.oelr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // RecommendationProperties the properties of the recommendation.
 type RecommendationProperties struct {
 	// Category - The category of the recommendation. Possible values include: 'HighAvailability', 'Security', 'Performance', 'Cost'
@@ -229,6 +251,7 @@ type RecommendationProperties struct {
 	ShortDescription *ShortDescription `json:"shortDescription,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // MarshalJSON is the custom marshaler for RecommendationProperties.
 func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -262,6 +285,7 @@ func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Resource an Azure resource.
 type Resource struct {
 	// ID - The resource ID.
@@ -276,6 +300,7 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -297,6 +322,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ResourceRecommendationBase advisor Recommendation.
 type ResourceRecommendationBase struct {
 	autorest.Response `json:"-"`
@@ -312,6 +338,7 @@ type ResourceRecommendationBase struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // MarshalJSON is the custom marshaler for ResourceRecommendationBase.
 func (rrb ResourceRecommendationBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -333,6 +360,7 @@ func (rrb ResourceRecommendationBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // UnmarshalJSON is the custom unmarshaler for ResourceRecommendationBase struct.
 func (rrb *ResourceRecommendationBase) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -393,6 +421,7 @@ func (rrb *ResourceRecommendationBase) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ResourceRecommendationBaseListResult the list of Advisor recommendations.
 type ResourceRecommendationBaseListResult struct {
 	autorest.Response `json:"-"`
@@ -402,6 +431,7 @@ type ResourceRecommendationBaseListResult struct {
 	Value *[]ResourceRecommendationBase `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ResourceRecommendationBaseListResultIterator provides access to a complete listing of ResourceRecommendationBase
 // values.
 type ResourceRecommendationBaseListResultIterator struct {
@@ -409,6 +439,7 @@ type ResourceRecommendationBaseListResultIterator struct {
 	page ResourceRecommendationBaseListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ResourceRecommendationBaseListResultIterator) Next() error {
@@ -425,16 +456,19 @@ func (iter *ResourceRecommendationBaseListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ResourceRecommendationBaseListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Response returns the raw server response from the last page request.
 func (iter ResourceRecommendationBaseListResultIterator) Response() ResourceRecommendationBaseListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ResourceRecommendationBaseListResultIterator) Value() ResourceRecommendationBase {
@@ -444,6 +478,7 @@ func (iter ResourceRecommendationBaseListResultIterator) Value() ResourceRecomme
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (rrblr ResourceRecommendationBaseListResult) IsEmpty() bool {
 	return rrblr.Value == nil || len(*rrblr.Value) == 0
@@ -461,12 +496,14 @@ func (rrblr ResourceRecommendationBaseListResult) resourceRecommendationBaseList
 		autorest.WithBaseURL(to.String(rrblr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ResourceRecommendationBaseListResultPage contains a page of ResourceRecommendationBase values.
 type ResourceRecommendationBaseListResultPage struct {
 	fn    func(ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)
 	rrblr ResourceRecommendationBaseListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ResourceRecommendationBaseListResultPage) Next() error {
@@ -478,16 +515,19 @@ func (page *ResourceRecommendationBaseListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ResourceRecommendationBaseListResultPage) NotDone() bool {
 	return !page.rrblr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Response returns the raw server response from the last page request.
 func (page ResourceRecommendationBaseListResultPage) Response() ResourceRecommendationBaseListResult {
 	return page.rrblr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommendationBase {
 	if page.rrblr.IsEmpty() {
@@ -496,6 +536,7 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 	return *page.rrblr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // ShortDescription a summary of the recommendation.
 type ShortDescription struct {
 	// Problem - The issue or opportunity identified by the recommendation.
@@ -504,6 +545,7 @@ type ShortDescription struct {
 	Solution *string `json:"solution,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and GUID
 // associated with the rule.
 type SuppressionContract struct {
@@ -524,6 +566,7 @@ type SuppressionContract struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor instead.
 // MarshalJSON is the custom marshaler for SuppressionContract.
 func (sc SuppressionContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

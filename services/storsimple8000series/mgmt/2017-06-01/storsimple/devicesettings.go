@@ -41,9 +41,11 @@ func NewDeviceSettingsClientWithBaseURI(baseURI string, subscriptionID string) D
 }
 
 // CreateOrUpdateAlertSettings creates or updates the alert settings of the specified device.
-//
-// deviceName is the device name parameters is the alert settings to be added or updated. resourceGroupName is the
-// resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// parameters - the alert settings to be added or updated.
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) CreateOrUpdateAlertSettings(ctx context.Context, deviceName string, parameters AlertSettings, resourceGroupName string, managerName string) (result DeviceSettingsCreateOrUpdateAlertSettingsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -122,9 +124,11 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsResponder(resp *ht
 }
 
 // CreateOrUpdateTimeSettings creates or updates the time settings of the specified device.
-//
-// deviceName is the device name parameters is the time settings to be added or updated. resourceGroupName is the
-// resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// parameters - the time settings to be added or updated.
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) CreateOrUpdateTimeSettings(ctx context.Context, deviceName string, parameters TimeSettings, resourceGroupName string, managerName string) (result DeviceSettingsCreateOrUpdateTimeSettingsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -204,8 +208,10 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsResponder(resp *htt
 }
 
 // GetAlertSettings gets the alert settings of the specified device.
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) GetAlertSettings(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result AlertSettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -278,8 +284,10 @@ func (client DeviceSettingsClient) GetAlertSettingsResponder(resp *http.Response
 }
 
 // GetNetworkSettings gets the network settings of the specified device.
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) GetNetworkSettings(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result NetworkSettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -352,8 +360,10 @@ func (client DeviceSettingsClient) GetNetworkSettingsResponder(resp *http.Respon
 }
 
 // GetSecuritySettings returns the Security properties of the specified device name.
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) GetSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result SecuritySettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -426,8 +436,10 @@ func (client DeviceSettingsClient) GetSecuritySettingsResponder(resp *http.Respo
 }
 
 // GetTimeSettings gets the time settings of the specified device.
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) GetTimeSettings(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result TimeSettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -500,8 +512,10 @@ func (client DeviceSettingsClient) GetTimeSettingsResponder(resp *http.Response)
 }
 
 // SyncRemotemanagementCertificate sync Remote management Certificate between appliance and Service
-//
-// deviceName is the device name resourceGroupName is the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) SyncRemotemanagementCertificate(ctx context.Context, deviceName string, resourceGroupName string, managerName string) (result DeviceSettingsSyncRemotemanagementCertificateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -575,9 +589,11 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificateResponder(resp
 }
 
 // UpdateNetworkSettings updates the network settings on the specified device.
-//
-// deviceName is the device name parameters is the network settings to be updated. resourceGroupName is the
-// resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// parameters - the network settings to be updated.
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) UpdateNetworkSettings(ctx context.Context, deviceName string, parameters NetworkSettingsPatch, resourceGroupName string, managerName string) (result DeviceSettingsUpdateNetworkSettingsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,
@@ -654,9 +670,11 @@ func (client DeviceSettingsClient) UpdateNetworkSettingsResponder(resp *http.Res
 }
 
 // UpdateSecuritySettings patch Security properties of the specified device name.
-//
-// deviceName is the device name parameters is the security settings properties to be patched. resourceGroupName is
-// the resource group name managerName is the manager name
+// Parameters:
+// deviceName - the device name
+// parameters - the security settings properties to be patched.
+// resourceGroupName - the resource group name
+// managerName - the manager name
 func (client DeviceSettingsClient) UpdateSecuritySettings(ctx context.Context, deviceName string, parameters SecuritySettingsPatch, resourceGroupName string, managerName string) (result DeviceSettingsUpdateSecuritySettingsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: managerName,

@@ -35,8 +35,8 @@ func NewTenantAccessClient() TenantAccessClient {
 }
 
 // Get get tenant access information details.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessClient) Get(ctx context.Context, apimBaseURL string) (result AccessInformationContract, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL)
@@ -104,8 +104,8 @@ func (client TenantAccessClient) GetResponder(resp *http.Response) (result Acces
 }
 
 // RegeneratePrimaryKey regenerate primary access key.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessClient) RegeneratePrimaryKey(ctx context.Context, apimBaseURL string) (result autorest.Response, err error) {
 	req, err := client.RegeneratePrimaryKeyPreparer(ctx, apimBaseURL)
@@ -172,8 +172,8 @@ func (client TenantAccessClient) RegeneratePrimaryKeyResponder(resp *http.Respon
 }
 
 // RegenerateSecondaryKey regenerate secondary access key.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessClient) RegenerateSecondaryKey(ctx context.Context, apimBaseURL string) (result autorest.Response, err error) {
 	req, err := client.RegenerateSecondaryKeyPreparer(ctx, apimBaseURL)
@@ -240,11 +240,12 @@ func (client TenantAccessClient) RegenerateSecondaryKeyResponder(resp *http.Resp
 }
 
 // Update update tenant access information details.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is parameters supplied to retrieve the Tenant Access
-// Information. ifMatch is the entity state (Etag) version of the property to update. A value of "*" can be used
-// for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - parameters supplied to retrieve the Tenant Access Information.
+// ifMatch - the entity state (Etag) version of the property to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client TenantAccessClient) Update(ctx context.Context, apimBaseURL string, parameters AccessInformationUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, parameters, ifMatch)
 	if err != nil {

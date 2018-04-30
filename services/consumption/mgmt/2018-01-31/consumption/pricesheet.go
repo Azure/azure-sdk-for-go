@@ -43,12 +43,13 @@ func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) Price
 
 // Get gets the price sheet for a scope by subscriptionId. Price sheet is available via this API only for May 1, 2014
 // or later.
-//
-// expand is may be used to expand the properties/meterDetails within a price sheet. By default, these fields are
-// not included when returning price sheet. skiptoken is skiptoken is only used if a previous operation returned a
-// partial result. If a previous response contains a nextLink element, the value of the nextLink element will
-// include a skiptoken parameter that specifies a starting point to use for subsequent calls. top is may be used to
-// limit the number of results to the top N results.
+// Parameters:
+// expand - may be used to expand the properties/meterDetails within a price sheet. By default, these fields
+// are not included when returning price sheet.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the top N results.
 func (client PriceSheetClient) Get(ctx context.Context, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -130,12 +131,14 @@ func (client PriceSheetClient) GetResponder(resp *http.Response) (result PriceSh
 
 // GetByBillingPeriod get the price sheet for a scope by subscriptionId and billing period. Price sheet is available
 // via this API only for May 1, 2014 or later.
-//
-// billingPeriodName is billing Period Name. expand is may be used to expand the properties/meterDetails within a
-// price sheet. By default, these fields are not included when returning price sheet. skiptoken is skiptoken is
-// only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
-// the value of the nextLink element will include a skiptoken parameter that specifies a starting point to use for
-// subsequent calls. top is may be used to limit the number of results to the top N results.
+// Parameters:
+// billingPeriodName - billing Period Name.
+// expand - may be used to expand the properties/meterDetails within a price sheet. By default, these fields
+// are not included when returning price sheet.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the top N results.
 func (client PriceSheetClient) GetByBillingPeriod(ctx context.Context, billingPeriodName string, expand string, skiptoken string, top *int32) (result PriceSheetResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,

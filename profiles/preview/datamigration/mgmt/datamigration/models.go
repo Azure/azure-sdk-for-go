@@ -384,7 +384,6 @@ type SQLMigrationTaskInput = original.SQLMigrationTaskInput
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
 type TaskListPage = original.TaskListPage
-type TaskOutput = original.TaskOutput
 type TrackedResource = original.TrackedResource
 type ValidationError = original.ValidationError
 type WaitStatistics = original.WaitStatistics

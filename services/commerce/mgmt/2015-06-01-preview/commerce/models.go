@@ -27,6 +27,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AggregationGranularity enumerates the values for aggregation granularity.
 type AggregationGranularity string
 
@@ -37,11 +38,13 @@ const (
 	Hourly AggregationGranularity = "Hourly"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // PossibleAggregationGranularityValues returns an array of possible values for the AggregationGranularity const type.
 func PossibleAggregationGranularityValues() []AggregationGranularity {
 	return []AggregationGranularity{Daily, Hourly}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Name enumerates the values for name.
 type Name string
 
@@ -56,11 +59,13 @@ const (
 	NameRecurringCharge Name = "Recurring Charge"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // PossibleNameValues returns an array of possible values for the Name const type.
 func PossibleNameValues() []Name {
 	return []Name{NameMonetaryCommitment, NameMonetaryCredit, NameOfferTermInfo, NameRecurringCharge}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
 	// Code - Error code
@@ -69,12 +74,14 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // InfoField key-value pairs of instance details in the legacy format.
 type InfoField struct {
 	// Project - Identifies the name of the instance provisioned by the user.
 	Project *string `json:"project,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MeterInfo detailed information about the meter.
 type MeterInfo struct {
 	// MeterID - The unique identifier of the resource.
@@ -99,6 +106,7 @@ type MeterInfo struct {
 	IncludedQuantity *float64 `json:"IncludedQuantity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for MeterInfo.
 func (mi MeterInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -135,6 +143,7 @@ func (mi MeterInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MonetaryCommitment indicates that a monetary commitment is required for this offer
 type MonetaryCommitment struct {
 	// TieredDiscount - The list of key/value pairs for the tiered meter rates, in the format 'key':'value' where key = price, and value = the corresponding discount percentage. This field is used only by offer terms of type 'Monetary Commitment'.
@@ -147,6 +156,7 @@ type MonetaryCommitment struct {
 	Name Name `json:"Name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for MonetaryCommitment.
 func (mc MonetaryCommitment) MarshalJSON() ([]byte, error) {
 	mc.Name = NameMonetaryCommitment
@@ -166,31 +176,37 @@ func (mc MonetaryCommitment) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCredit is the BasicOfferTermInfo implementation for MonetaryCommitment.
 func (mc MonetaryCommitment) AsMonetaryCredit() (*MonetaryCredit, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCommitment is the BasicOfferTermInfo implementation for MonetaryCommitment.
 func (mc MonetaryCommitment) AsMonetaryCommitment() (*MonetaryCommitment, bool) {
 	return &mc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsRecurringCharge is the BasicOfferTermInfo implementation for MonetaryCommitment.
 func (mc MonetaryCommitment) AsRecurringCharge() (*RecurringCharge, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsOfferTermInfo is the BasicOfferTermInfo implementation for MonetaryCommitment.
 func (mc MonetaryCommitment) AsOfferTermInfo() (*OfferTermInfo, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsBasicOfferTermInfo is the BasicOfferTermInfo implementation for MonetaryCommitment.
 func (mc MonetaryCommitment) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &mc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MonetaryCredit indicates that this is a monetary credit offer.
 type MonetaryCredit struct {
 	// Credit - The amount of credit provided under the terms of the given offer level.
@@ -203,6 +219,7 @@ type MonetaryCredit struct {
 	Name Name `json:"Name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for MonetaryCredit.
 func (mc MonetaryCredit) MarshalJSON() ([]byte, error) {
 	mc.Name = NameMonetaryCredit
@@ -222,31 +239,37 @@ func (mc MonetaryCredit) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCredit is the BasicOfferTermInfo implementation for MonetaryCredit.
 func (mc MonetaryCredit) AsMonetaryCredit() (*MonetaryCredit, bool) {
 	return &mc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCommitment is the BasicOfferTermInfo implementation for MonetaryCredit.
 func (mc MonetaryCredit) AsMonetaryCommitment() (*MonetaryCommitment, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsRecurringCharge is the BasicOfferTermInfo implementation for MonetaryCredit.
 func (mc MonetaryCredit) AsRecurringCharge() (*RecurringCharge, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsOfferTermInfo is the BasicOfferTermInfo implementation for MonetaryCredit.
 func (mc MonetaryCredit) AsOfferTermInfo() (*OfferTermInfo, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsBasicOfferTermInfo is the BasicOfferTermInfo implementation for MonetaryCredit.
 func (mc MonetaryCredit) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &mc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // BasicOfferTermInfo describes the offer term.
 type BasicOfferTermInfo interface {
 	AsMonetaryCredit() (*MonetaryCredit, bool)
@@ -255,6 +278,7 @@ type BasicOfferTermInfo interface {
 	AsOfferTermInfo() (*OfferTermInfo, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // OfferTermInfo describes the offer term.
 type OfferTermInfo struct {
 	// EffectiveDate - Indicates the date from which the offer term is effective.
@@ -308,6 +332,7 @@ func unmarshalBasicOfferTermInfoArray(body []byte) ([]BasicOfferTermInfo, error)
 	return otiArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for OfferTermInfo.
 func (oti OfferTermInfo) MarshalJSON() ([]byte, error) {
 	oti.Name = NameOfferTermInfo
@@ -321,31 +346,37 @@ func (oti OfferTermInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCredit is the BasicOfferTermInfo implementation for OfferTermInfo.
 func (oti OfferTermInfo) AsMonetaryCredit() (*MonetaryCredit, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCommitment is the BasicOfferTermInfo implementation for OfferTermInfo.
 func (oti OfferTermInfo) AsMonetaryCommitment() (*MonetaryCommitment, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsRecurringCharge is the BasicOfferTermInfo implementation for OfferTermInfo.
 func (oti OfferTermInfo) AsRecurringCharge() (*RecurringCharge, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsOfferTermInfo is the BasicOfferTermInfo implementation for OfferTermInfo.
 func (oti OfferTermInfo) AsOfferTermInfo() (*OfferTermInfo, bool) {
 	return &oti, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsBasicOfferTermInfo is the BasicOfferTermInfo implementation for OfferTermInfo.
 func (oti OfferTermInfo) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &oti, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // RateCardQueryParameters parameters that are used in the odata $filter query parameter for providing RateCard
 // information.
 type RateCardQueryParameters struct {
@@ -359,6 +390,7 @@ type RateCardQueryParameters struct {
 	RegionInfo *string `json:"RegionInfo,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // RecurringCharge indicates a recurring charge is present for this offer.
 type RecurringCharge struct {
 	// RecurringCharge - The amount of recurring charge as per the offer term.
@@ -369,6 +401,7 @@ type RecurringCharge struct {
 	Name Name `json:"Name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for RecurringCharge.
 func (rc RecurringCharge) MarshalJSON() ([]byte, error) {
 	rc.Name = NameRecurringCharge
@@ -385,31 +418,37 @@ func (rc RecurringCharge) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCredit is the BasicOfferTermInfo implementation for RecurringCharge.
 func (rc RecurringCharge) AsMonetaryCredit() (*MonetaryCredit, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsMonetaryCommitment is the BasicOfferTermInfo implementation for RecurringCharge.
 func (rc RecurringCharge) AsMonetaryCommitment() (*MonetaryCommitment, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsRecurringCharge is the BasicOfferTermInfo implementation for RecurringCharge.
 func (rc RecurringCharge) AsRecurringCharge() (*RecurringCharge, bool) {
 	return &rc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsOfferTermInfo is the BasicOfferTermInfo implementation for RecurringCharge.
 func (rc RecurringCharge) AsOfferTermInfo() (*OfferTermInfo, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // AsBasicOfferTermInfo is the BasicOfferTermInfo implementation for RecurringCharge.
 func (rc RecurringCharge) AsBasicOfferTermInfo() (BasicOfferTermInfo, bool) {
 	return &rc, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // ResourceRateCardInfo price and Metadata information for resources
 type ResourceRateCardInfo struct {
 	autorest.Response `json:"-"`
@@ -425,6 +464,7 @@ type ResourceRateCardInfo struct {
 	Meters *[]MeterInfo `json:"Meters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UnmarshalJSON is the custom unmarshaler for ResourceRateCardInfo struct.
 func (rrci *ResourceRateCardInfo) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -484,6 +524,7 @@ func (rrci *ResourceRateCardInfo) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UsageAggregation describes the usageAggregation.
 type UsageAggregation struct {
 	// ID - Unique Id for the usage aggregate.
@@ -496,6 +537,7 @@ type UsageAggregation struct {
 	*UsageSample `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // MarshalJSON is the custom marshaler for UsageAggregation.
 func (ua UsageAggregation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -514,6 +556,7 @@ func (ua UsageAggregation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UnmarshalJSON is the custom unmarshaler for UsageAggregation struct.
 func (ua *UsageAggregation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -565,6 +608,7 @@ func (ua *UsageAggregation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UsageAggregationListResult the Get UsageAggregates operation response.
 type UsageAggregationListResult struct {
 	autorest.Response `json:"-"`
@@ -574,12 +618,14 @@ type UsageAggregationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UsageAggregationListResultIterator provides access to a complete listing of UsageAggregation values.
 type UsageAggregationListResultIterator struct {
 	i    int
 	page UsageAggregationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *UsageAggregationListResultIterator) Next() error {
@@ -596,16 +642,19 @@ func (iter *UsageAggregationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter UsageAggregationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Response returns the raw server response from the last page request.
 func (iter UsageAggregationListResultIterator) Response() UsageAggregationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter UsageAggregationListResultIterator) Value() UsageAggregation {
@@ -615,6 +664,7 @@ func (iter UsageAggregationListResultIterator) Value() UsageAggregation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ualr UsageAggregationListResult) IsEmpty() bool {
 	return ualr.Value == nil || len(*ualr.Value) == 0
@@ -632,12 +682,14 @@ func (ualr UsageAggregationListResult) usageAggregationListResultPreparer() (*ht
 		autorest.WithBaseURL(to.String(ualr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UsageAggregationListResultPage contains a page of UsageAggregation values.
 type UsageAggregationListResultPage struct {
 	fn   func(UsageAggregationListResult) (UsageAggregationListResult, error)
 	ualr UsageAggregationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *UsageAggregationListResultPage) Next() error {
@@ -649,16 +701,19 @@ func (page *UsageAggregationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page UsageAggregationListResultPage) NotDone() bool {
 	return !page.ualr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Response returns the raw server response from the last page request.
 func (page UsageAggregationListResultPage) Response() UsageAggregationListResult {
 	return page.ualr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page UsageAggregationListResultPage) Values() []UsageAggregation {
 	if page.ualr.IsEmpty() {
@@ -667,6 +722,7 @@ func (page UsageAggregationListResultPage) Values() []UsageAggregation {
 	return *page.ualr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce instead.
 // UsageSample describes a sample of the usageAggregation.
 type UsageSample struct {
 	// SubscriptionID - The subscription identifier for the Azure user.

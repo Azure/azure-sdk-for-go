@@ -42,9 +42,9 @@ func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
 }
 
 // CheckNameAvailability check if an IoTSpaces instance name is available.
-//
-// operationInputs is set the name parameter in the OperationInputs structure to the name of the IoTSpaces instance
-// to check.
+// Parameters:
+// operationInputs - set the name parameter in the OperationInputs structure to the name of the IoTSpaces
+// instance to check.
 func (client Client) CheckNameAvailability(ctx context.Context, operationInputs OperationInputs) (result NameAvailabilityInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: operationInputs,
@@ -117,9 +117,10 @@ func (client Client) CheckNameAvailabilityResponder(resp *http.Response) (result
 // CreateOrUpdate create or update the metadata of an IoTSpaces instance. The usual pattern to modify a property is to
 // retrieve the IoTSpaces instance metadata and security metadata, and then combine them with the modified values in a
 // new body to update the IoTSpaces instance.
-//
-// resourceGroupName is the name of the resource group that contains the IoTSpaces instance. resourceName is the
-// name of the IoTSpaces instance. iotSpaceDescription is the IoTSpaces instance metadata and security metadata.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the IoTSpaces instance.
+// resourceName - the name of the IoTSpaces instance.
+// iotSpaceDescription - the IoTSpaces instance metadata and security metadata.
 func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotSpaceDescription Description) (result CreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -200,9 +201,9 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Descri
 }
 
 // Delete delete an IoTSpaces instance.
-//
-// resourceGroupName is the name of the resource group that contains the IoTSpaces instance. resourceName is the
-// name of the IoTSpaces instance.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the IoTSpaces instance.
+// resourceName - the name of the IoTSpaces instance.
 func (client Client) Delete(ctx context.Context, resourceGroupName string, resourceName string) (result DeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -279,9 +280,9 @@ func (client Client) DeleteResponder(resp *http.Response) (result Description, e
 }
 
 // Get get the metadata of a IoTSpaces instance.
-//
-// resourceGroupName is the name of the resource group that contains the IoTSpaces instance. resourceName is the
-// name of the IoTSpaces instance.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the IoTSpaces instance.
+// resourceName - the name of the IoTSpaces instance.
 func (client Client) Get(ctx context.Context, resourceGroupName string, resourceName string) (result Description, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -446,8 +447,8 @@ func (client Client) ListComplete(ctx context.Context) (result DescriptionListRe
 }
 
 // ListByResourceGroup get all the IoTSpaces instances in a resource group.
-//
-// resourceGroupName is the name of the resource group that contains the IoTSpaces instance.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the IoTSpaces instance.
 func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DescriptionListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -546,10 +547,10 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 }
 
 // Update update the metadata of a IoTSpaces instance.
-//
-// resourceGroupName is the name of the resource group that contains the IoTSpaces instance. resourceName is the
-// name of the IoTSpaces instance. iotSpacePatchDescription is the IoTSpaces instance metadata and security
-// metadata.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the IoTSpaces instance.
+// resourceName - the name of the IoTSpaces instance.
+// iotSpacePatchDescription - the IoTSpaces instance metadata and security metadata.
 func (client Client) Update(ctx context.Context, resourceGroupName string, resourceName string, iotSpacePatchDescription PatchDescription) (result UpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

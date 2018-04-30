@@ -41,11 +41,12 @@ func NewAPIIssuCommentClientWithBaseURI(baseURI string, subscriptionID string) A
 }
 
 // Head gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. commentID is comment identifier
-// within an Issue. Must be unique in the current Issue.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// commentID - comment identifier within an Issue. Must be unique in the current Issue.
 func (client APIIssuCommentClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

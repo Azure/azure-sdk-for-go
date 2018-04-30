@@ -80,6 +80,20 @@ const (
 	Unknown   QuotaUsageStatus = original.Unknown
 )
 
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -138,28 +152,35 @@ type OperationEntityListResultIterator = original.OperationEntityListResultItera
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type ResourceAndSku = original.ResourceAndSku
+type ResourceSku = original.ResourceSku
+type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
+type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusResult = original.ResourceSkusResult
+type ResourceSkusResultIterator = original.ResourceSkusResultIterator
+type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type OperationsClient = original.OperationsClient
+type ResourceSkusClient = original.ResourceSkusClient
 
-func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID, filter)
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
+func NewCheckSkuAvailabilityClient(subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID)
 }
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string, filter string) BaseClient {
-	return original.New(subscriptionID, filter)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
@@ -173,6 +194,12 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	return original.PossibleQuotaUsageStatusValues()
 }
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
@@ -182,11 +209,17 @@ func PossibleSkuTierValues() []SkuTier {
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()
 }
-func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, filter)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -40,8 +40,8 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 }
 
 // List this method returns region-specific quotas and resource usage information for the Data Migration Service.
-//
-// location is the Azure region of the operation
+// Parameters:
+// location - the Azure region of the operation
 func (client UsagesClient) List(ctx context.Context, location string) (result QuotaListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, location)

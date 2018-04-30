@@ -39,13 +39,14 @@ func NewListClient(azureRegion AzureRegions) ListClient {
 
 // AddFaceFromStream add a face to a face list. The input face is specified as an image with a targetFace rectangle. It
 // returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-//
-// faceListID is id referencing a particular face list. imageParameter is an image stream. imageParameter will be
-// closed upon successful return. Callers should ensure closure when receiving an error.userData is user-specified
-// data about the face for any purpose. The maximum length is 1KB. targetFace is a face rectangle to specify the
-// target face to be added to a person in the format of "targetFace=left,top,width,height". E.g.
-// "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which
-// face to add. No targetFace means there is only one face detected in the entire image.
+// Parameters:
+// faceListID - id referencing a particular face list.
+// imageParameter - an image stream.
+// userData - user-specified data about the face for any purpose. The maximum length is 1KB.
+// targetFace - a face rectangle to specify the target face to be added to a person in the format of
+// "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
+// image, targetFace is required to specify which face to add. No targetFace means there is only one face
+// detected in the entire image.
 func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -127,13 +128,14 @@ func (client ListClient) AddFaceFromStreamResponder(resp *http.Response) (result
 
 // AddFaceFromURL add a face to a face list. The input face is specified as an image with a targetFace rectangle. It
 // returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
-//
-// faceListID is id referencing a particular face list. imageURL is a JSON document with a URL pointing to the
-// image that is to be analyzed. userData is user-specified data about the face for any purpose. The maximum length
-// is 1KB. targetFace is a face rectangle to specify the target face to be added to a person in the format of
+// Parameters:
+// faceListID - id referencing a particular face list.
+// imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
+// userData - user-specified data about the face for any purpose. The maximum length is 1KB.
+// targetFace - a face rectangle to specify the target face to be added to a person in the format of
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
-// image, targetFace is required to specify which face to add. No targetFace means there is only one face detected
-// in the entire image.
+// image, targetFace is required to specify which face to add. No targetFace means there is only one face
+// detected in the entire image.
 func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -216,8 +218,9 @@ func (client ListClient) AddFaceFromURLResponder(resp *http.Response) (result Pe
 }
 
 // Create create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
-//
-// faceListID is id referencing a particular face list. body is request body for creating a face list.
+// Parameters:
+// faceListID - id referencing a particular face list.
+// body - request body for creating a face list.
 func (client ListClient) Create(ctx context.Context, faceListID string, body NameAndUserDataContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -292,8 +295,8 @@ func (client ListClient) CreateResponder(resp *http.Response) (result autorest.R
 
 // Delete delete an existing face list according to faceListId. Persisted face images in the face list will also be
 // deleted.
-//
-// faceListID is id referencing a particular face list.
+// Parameters:
+// faceListID - id referencing a particular face list.
 func (client ListClient) Delete(ctx context.Context, faceListID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -361,9 +364,9 @@ func (client ListClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // DeleteFace delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image
 // related to the face will also be deleted.
-//
-// faceListID is id referencing a particular face list. persistedFaceID is id referencing a particular
-// persistedFaceId of an existing face.
+// Parameters:
+// faceListID - id referencing a particular face list.
+// persistedFaceID - id referencing a particular persistedFaceId of an existing face.
 func (client ListClient) DeleteFace(ctx context.Context, faceListID string, persistedFaceID uuid.UUID) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -431,8 +434,8 @@ func (client ListClient) DeleteFaceResponder(resp *http.Response) (result autore
 }
 
 // Get retrieve a face list's information.
-//
-// faceListID is id referencing a particular face list.
+// Parameters:
+// faceListID - id referencing a particular face list.
 func (client ListClient) Get(ctx context.Context, faceListID string) (result List, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,
@@ -556,8 +559,9 @@ func (client ListClient) ListResponder(resp *http.Response) (result ListList, er
 }
 
 // Update update information of a face list.
-//
-// faceListID is id referencing a particular face list. body is request body for updating a face list.
+// Parameters:
+// faceListID - id referencing a particular face list.
+// body - request body for updating a face list.
 func (client ListClient) Update(ctx context.Context, faceListID string, body NameAndUserDataContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: faceListID,

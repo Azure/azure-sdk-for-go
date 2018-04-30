@@ -36,10 +36,11 @@ func NewLoggerClient() LoggerClient {
 }
 
 // CreateOrUpdate creates or Updates a logger.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. loggerid is logger identifier. Must be unique in the API
-// Management service instance. parameters is create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// loggerid - logger identifier. Must be unique in the API Management service instance.
+// parameters - create parameters.
 func (client LoggerClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, loggerid string, parameters LoggerContract) (result LoggerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: loggerid,
@@ -115,11 +116,12 @@ func (client LoggerClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // Delete deletes the specified logger.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. loggerid is logger identifier. Must be unique in the API
-// Management service instance. ifMatch is the entity state (Etag) version of the logger to delete. A value of "*"
-// can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// loggerid - logger identifier. Must be unique in the API Management service instance.
+// ifMatch - the entity state (Etag) version of the logger to delete. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client LoggerClient) Delete(ctx context.Context, apimBaseURL string, loggerid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: loggerid,
@@ -193,10 +195,10 @@ func (client LoggerClient) DeleteResponder(resp *http.Response) (result autorest
 }
 
 // Get gets the details of the logger specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. loggerid is logger identifier. Must be unique in the API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// loggerid - logger identifier. Must be unique in the API Management service instance.
 func (client LoggerClient) Get(ctx context.Context, apimBaseURL string, loggerid string) (result LoggerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: loggerid,
@@ -270,14 +272,15 @@ func (client LoggerClient) GetResponder(resp *http.Response) (result LoggerContr
 }
 
 // List lists a collection of loggers in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | type  | eq                     |                                             | top is number of records to
-// return. skip is number of records to skip.
+// | type  | eq                     |                                             |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client LoggerClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result LoggerCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -387,11 +390,13 @@ func (client LoggerClient) ListComplete(ctx context.Context, apimBaseURL string,
 }
 
 // Update updates an existing logger.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. loggerid is logger identifier. Must be unique in the API
-// Management service instance. parameters is update parameters. ifMatch is the entity state (Etag) version of the
-// logger to update. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// loggerid - logger identifier. Must be unique in the API Management service instance.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the logger to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client LoggerClient) Update(ctx context.Context, apimBaseURL string, loggerid string, parameters LoggerUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: loggerid,

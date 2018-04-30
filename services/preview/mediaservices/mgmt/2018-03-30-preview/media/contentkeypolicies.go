@@ -41,9 +41,11 @@ func NewContentKeyPoliciesClientWithBaseURI(baseURI string, subscriptionID strin
 }
 
 // CreateOrUpdate create or update a Content Key Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. contentKeyPolicyName is the Content Key Policy name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// contentKeyPolicyName - the Content Key Policy name.
+// parameters - the request parameters
 func (client ContentKeyPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy) (result ContentKeyPolicy, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -118,9 +120,10 @@ func (client ContentKeyPoliciesClient) CreateOrUpdateResponder(resp *http.Respon
 }
 
 // Delete deletes a Content Key Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. contentKeyPolicyName is the Content Key Policy name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// contentKeyPolicyName - the Content Key Policy name.
 func (client ContentKeyPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, contentKeyPolicyName)
 	if err != nil {
@@ -185,9 +188,10 @@ func (client ContentKeyPoliciesClient) DeleteResponder(resp *http.Response) (res
 }
 
 // Get get the details of a Content Key Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. contentKeyPolicyName is the Content Key Policy name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// contentKeyPolicyName - the Content Key Policy name.
 func (client ContentKeyPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string) (result ContentKeyPolicy, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, contentKeyPolicyName)
 	if err != nil {
@@ -253,9 +257,10 @@ func (client ContentKeyPoliciesClient) GetResponder(resp *http.Response) (result
 }
 
 // GetPolicyPropertiesWithSecrets get a Content Key Policy including secret values
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. contentKeyPolicyName is the Content Key Policy name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// contentKeyPolicyName - the Content Key Policy name.
 func (client ContentKeyPoliciesClient) GetPolicyPropertiesWithSecrets(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string) (result ContentKeyPolicyProperties, err error) {
 	req, err := client.GetPolicyPropertiesWithSecretsPreparer(ctx, resourceGroupName, accountName, contentKeyPolicyName)
 	if err != nil {
@@ -321,12 +326,13 @@ func (client ContentKeyPoliciesClient) GetPolicyPropertiesWithSecretsResponder(r
 }
 
 // List lists the Content Key Policies in the account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. filter is restricts the set of items returned. top is specifies a non-negative integer n
-// that limits the number of items returned from a collection. The service returns the number of available items up
-// to but not greater than the specified value n. orderby is specifies the the key by which the result collection
-// should be ordered.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// orderby - specifies the the key by which the result collection should be ordered.
 func (client ContentKeyPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result ContentKeyPolicyCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, orderby)
@@ -428,9 +434,11 @@ func (client ContentKeyPoliciesClient) ListComplete(ctx context.Context, resourc
 }
 
 // Update updates an existing Content Key Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. contentKeyPolicyName is the Content Key Policy name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// contentKeyPolicyName - the Content Key Policy name.
+// parameters - the request parameters
 func (client ContentKeyPoliciesClient) Update(ctx context.Context, resourceGroupName string, accountName string, contentKeyPolicyName string, parameters ContentKeyPolicy) (result ContentKeyPolicy, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, contentKeyPolicyName, parameters)
 	if err != nil {

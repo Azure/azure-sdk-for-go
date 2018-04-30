@@ -26,6 +26,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterState enumerates the values for cluster state.
 type ClusterState string
 
@@ -52,11 +53,13 @@ const (
 	WaitingForNodes ClusterState = "WaitingForNodes"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleClusterStateValues returns an array of possible values for the ClusterState const type.
 func PossibleClusterStateValues() []ClusterState {
 	return []ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // DefaultMoveCost enumerates the values for default move cost.
 type DefaultMoveCost string
 
@@ -71,11 +74,13 @@ const (
 	Zero DefaultMoveCost = "Zero"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleDefaultMoveCostValues returns an array of possible values for the DefaultMoveCost const type.
 func PossibleDefaultMoveCostValues() []DefaultMoveCost {
 	return []DefaultMoveCost{High, Low, Medium, Zero}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // DurabilityLevel enumerates the values for durability level.
 type DurabilityLevel string
 
@@ -88,11 +93,13 @@ const (
 	Silver DurabilityLevel = "Silver"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleDurabilityLevelValues returns an array of possible values for the DurabilityLevel const type.
 func PossibleDurabilityLevelValues() []DurabilityLevel {
 	return []DurabilityLevel{Bronze, Gold, Silver}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Environment enumerates the values for environment.
 type Environment string
 
@@ -103,11 +110,13 @@ const (
 	Windows Environment = "Windows"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleEnvironmentValues returns an array of possible values for the Environment const type.
 func PossibleEnvironmentValues() []Environment {
 	return []Environment{Linux, Windows}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PartitionScheme enumerates the values for partition scheme.
 type PartitionScheme string
 
@@ -122,11 +131,13 @@ const (
 	PartitionSchemeUniformInt64Range PartitionScheme = "UniformInt64Range"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
 func PossiblePartitionSchemeValues() []PartitionScheme {
 	return []PartitionScheme{PartitionSchemeNamed, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -141,11 +152,13 @@ const (
 	Updating ProvisioningState = "Updating"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Failed, Succeeded, Updating}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ReliabilityLevel enumerates the values for reliability level.
 type ReliabilityLevel string
 
@@ -162,11 +175,13 @@ const (
 	ReliabilityLevelSilver ReliabilityLevel = "Silver"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleReliabilityLevelValues returns an array of possible values for the ReliabilityLevel const type.
 func PossibleReliabilityLevelValues() []ReliabilityLevel {
 	return []ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelNone, ReliabilityLevelPlatinum, ReliabilityLevelSilver}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ReliabilityLevel1 enumerates the values for reliability level 1.
 type ReliabilityLevel1 string
 
@@ -179,11 +194,13 @@ const (
 	ReliabilityLevel1Silver ReliabilityLevel1 = "Silver"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleReliabilityLevel1Values returns an array of possible values for the ReliabilityLevel1 const type.
 func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
 	return []ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Silver}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Scheme enumerates the values for scheme.
 type Scheme string
 
@@ -198,11 +215,13 @@ const (
 	NonAlignedAffinity Scheme = "NonAlignedAffinity"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleSchemeValues returns an array of possible values for the Scheme const type.
 func PossibleSchemeValues() []Scheme {
 	return []Scheme{Affinity, AlignedAffinity, Invalid, NonAlignedAffinity}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceKind enumerates the values for service kind.
 type ServiceKind string
 
@@ -215,11 +234,13 @@ const (
 	ServiceKindStateless ServiceKind = "Stateless"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
 func PossibleServiceKindValues() []ServiceKind {
 	return []ServiceKind{ServiceKindServiceProperties, ServiceKindStateful, ServiceKindStateless}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceKindBasicServiceUpdateProperties enumerates the values for service kind basic service update
 // properties.
 type ServiceKindBasicServiceUpdateProperties string
@@ -233,11 +254,13 @@ const (
 	ServiceKindBasicServiceUpdatePropertiesServiceKindStateless ServiceKindBasicServiceUpdateProperties = "Stateless"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleServiceKindBasicServiceUpdatePropertiesValues returns an array of possible values for the ServiceKindBasicServiceUpdateProperties const type.
 func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
 	return []ServiceKindBasicServiceUpdateProperties{ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties, ServiceKindBasicServiceUpdatePropertiesServiceKindStateful, ServiceKindBasicServiceUpdatePropertiesServiceKindStateless}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Type enumerates the values for type.
 type Type string
 
@@ -246,11 +269,13 @@ const (
 	TypeServicePlacementPolicyDescription Type = "ServicePlacementPolicyDescription"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
 	return []Type{TypeServicePlacementPolicyDescription}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UpgradeMode enumerates the values for upgrade mode.
 type UpgradeMode string
 
@@ -261,11 +286,13 @@ const (
 	Manual UpgradeMode = "Manual"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{Automatic, Manual}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UpgradeMode1 enumerates the values for upgrade mode 1.
 type UpgradeMode1 string
 
@@ -276,11 +303,13 @@ const (
 	UpgradeMode1Manual UpgradeMode1 = "Manual"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleUpgradeMode1Values returns an array of possible values for the UpgradeMode1 const type.
 func PossibleUpgradeMode1Values() []UpgradeMode1 {
 	return []UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Weight enumerates the values for weight.
 type Weight string
 
@@ -295,11 +324,13 @@ const (
 	WeightZero Weight = "Zero"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleWeightValues returns an array of possible values for the Weight const type.
 func PossibleWeightValues() []Weight {
 	return []Weight{WeightHigh, WeightLow, WeightMedium, WeightZero}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // X509StoreName enumerates the values for x509 store name.
 type X509StoreName string
 
@@ -322,17 +353,20 @@ const (
 	TrustedPublisher X509StoreName = "TrustedPublisher"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PossibleX509StoreNameValues returns an array of possible values for the X509StoreName const type.
 func PossibleX509StoreNameValues() []X509StoreName {
 	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ApplicationDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ApplicationDeleteFuture) Result(client ApplicationClient) (ar autorest.Response, err error) {
@@ -375,6 +409,7 @@ func (future ApplicationDeleteFuture) Result(client ApplicationClient) (ar autor
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
 // children entities.
 type ApplicationHealthPolicy struct {
@@ -389,6 +424,7 @@ type ApplicationHealthPolicy struct {
 	ServiceTypeHealthPolicyMap              *[]ServiceTypeHealthPolicyMapItem `json:"ServiceTypeHealthPolicyMap,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can be
 // used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
@@ -412,6 +448,7 @@ type ApplicationMetricDescription struct {
 	TotalApplicationCapacity *int64 `json:"TotalApplicationCapacity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationParameter describes an application parameter override to be applied when creating or upgrading an
 // application.
 type ApplicationParameter struct {
@@ -421,12 +458,14 @@ type ApplicationParameter struct {
 	Value *string `json:"Value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationPatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ApplicationPatchFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ApplicationPatchFuture) Result(client ApplicationClient) (aru ApplicationResourceUpdate, err error) {
@@ -469,6 +508,7 @@ func (future ApplicationPatchFuture) Result(client ApplicationClient) (aru Appli
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationProperties the application resource properties.
 type ApplicationProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
@@ -486,12 +526,14 @@ type ApplicationProperties struct {
 	Metrics                   *[]ApplicationMetricDescription `json:"metrics,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationPutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ApplicationPutFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ApplicationPutFuture) Result(client ApplicationClient) (ar ApplicationResource, err error) {
@@ -534,6 +576,7 @@ func (future ApplicationPutFuture) Result(client ApplicationClient) (ar Applicat
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationResource the application resource.
 type ApplicationResource struct {
 	autorest.Response      `json:"-"`
@@ -548,6 +591,7 @@ type ApplicationResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ApplicationResource.
 func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -569,6 +613,7 @@ func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ApplicationResource struct.
 func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -629,12 +674,14 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationResourceList the list of application resources.
 type ApplicationResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationResourceUpdate the application resource for patch operations.
 type ApplicationResourceUpdate struct {
 	autorest.Response            `json:"-"`
@@ -649,6 +696,7 @@ type ApplicationResourceUpdate struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ApplicationResourceUpdate.
 func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -670,6 +718,7 @@ func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ApplicationResourceUpdate struct.
 func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -730,6 +779,7 @@ func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationTypeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ApplicationTypeDeleteFuture struct {
@@ -737,6 +787,7 @@ type ApplicationTypeDeleteFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ApplicationTypeDeleteFuture) Result(client ApplicationTypeClient) (ar autorest.Response, err error) {
@@ -779,12 +830,14 @@ func (future ApplicationTypeDeleteFuture) Result(client ApplicationTypeClient) (
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationTypeProperties the application type name properties
 type ApplicationTypeProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationTypeResource the application type name resource
 type ApplicationTypeResource struct {
 	autorest.Response          `json:"-"`
@@ -799,6 +852,7 @@ type ApplicationTypeResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ApplicationTypeResource.
 func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -820,6 +874,7 @@ func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ApplicationTypeResource struct.
 func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -880,12 +935,14 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationTypeResourceList the list of application type names.
 type ApplicationTypeResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationTypeResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationUpdateProperties the application resource properties for patch operations.
 type ApplicationUpdateProperties struct {
 	TypeVersion   *string                   `json:"typeVersion,omitempty"`
@@ -900,6 +957,7 @@ type ApplicationUpdateProperties struct {
 	Metrics                   *[]ApplicationMetricDescription `json:"metrics,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ApplicationUpgradePolicy describes the policy for a monitored application upgrade.
 type ApplicationUpgradePolicy struct {
 	UpgradeReplicaSetCheckTimeout  *int64                          `json:"upgradeReplicaSetCheckTimeout,omitempty"`
@@ -908,6 +966,7 @@ type ApplicationUpgradePolicy struct {
 	ApplicationHealthPolicy        *ApplicationHealthPolicy        `json:"applicationHealthPolicy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AvailableOperationDisplay operation supported by Service Fabric resource provider
 type AvailableOperationDisplay struct {
 	// Provider - The name of the provider.
@@ -920,6 +979,7 @@ type AvailableOperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AzureActiveDirectory the settings to enable AAD authentication on the cluster.
 type AzureActiveDirectory struct {
 	// TenantID - Azure active directory tenant id.
@@ -930,6 +990,7 @@ type AzureActiveDirectory struct {
 	ClientApplication *string `json:"clientApplication,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // CertificateDescription describes the certificate details.
 type CertificateDescription struct {
 	// Thumbprint - Thumbprint of the primary certificate.
@@ -940,6 +1001,7 @@ type CertificateDescription struct {
 	X509StoreName X509StoreName `json:"x509StoreName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClientCertificateCommonName describes the client certificate details using common name.
 type ClientCertificateCommonName struct {
 	// IsAdmin - Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only operations on the cluster.
@@ -950,6 +1012,7 @@ type ClientCertificateCommonName struct {
 	CertificateIssuerThumbprint *string `json:"certificateIssuerThumbprint,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClientCertificateThumbprint describes the client certificate details using thumbprint.
 type ClientCertificateThumbprint struct {
 	// IsAdmin - Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only operations on the cluster.
@@ -958,6 +1021,7 @@ type ClientCertificateThumbprint struct {
 	CertificateThumbprint *string `json:"certificateThumbprint,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Cluster the cluster resource
 type Cluster struct {
 	autorest.Response `json:"-"`
@@ -975,6 +1039,7 @@ type Cluster struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for Cluster.
 func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -999,6 +1064,7 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for Cluster struct.
 func (c *Cluster) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1068,6 +1134,7 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterCodeVersionsListResult the list results of the ServiceFabric runtime versions.
 type ClusterCodeVersionsListResult struct {
 	autorest.Response `json:"-"`
@@ -1076,6 +1143,7 @@ type ClusterCodeVersionsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterCodeVersionsResult the result of the ServiceFabric runtime versions
 type ClusterCodeVersionsResult struct {
 	// ID - The identification of the result
@@ -1087,6 +1155,7 @@ type ClusterCodeVersionsResult struct {
 	*ClusterVersionDetails `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ClusterCodeVersionsResult.
 func (ccvr ClusterCodeVersionsResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1105,6 +1174,7 @@ func (ccvr ClusterCodeVersionsResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ClusterCodeVersionsResult struct.
 func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1156,6 +1226,7 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
@@ -1164,6 +1235,7 @@ type ClusterHealthPolicy struct {
 	MaxPercentUnhealthyApplications *int32 `json:"maxPercentUnhealthyApplications,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterListResult cluster list results
 type ClusterListResult struct {
 	autorest.Response `json:"-"`
@@ -1172,6 +1244,7 @@ type ClusterListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterProperties describes the cluster resource properties.
 type ClusterProperties struct {
 	// AvailableClusterVersions - The Service Fabric runtime versions available for this cluster.
@@ -1216,6 +1289,7 @@ type ClusterProperties struct {
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during PATCH
 // operation.
 type ClusterPropertiesUpdateParameters struct {
@@ -1243,12 +1317,14 @@ type ClusterPropertiesUpdateParameters struct {
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersCreateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err error) {
@@ -1291,12 +1367,14 @@ func (future ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ClustersUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
@@ -1339,6 +1417,7 @@ func (future ClustersUpdateFuture) Result(client ClustersClient) (c Cluster, err
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterUpdateParameters cluster update request
 type ClusterUpdateParameters struct {
 	*ClusterPropertiesUpdateParameters `json:"properties,omitempty"`
@@ -1346,6 +1425,7 @@ type ClusterUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ClusterUpdateParameters.
 func (cup ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1358,6 +1438,7 @@ func (cup ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ClusterUpdateParameters struct.
 func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1391,6 +1472,7 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterUpgradeDeltaHealthPolicy describes the delta health policies for the cluster upgrade.
 type ClusterUpgradeDeltaHealthPolicy struct {
 	// MaxPercentDeltaUnhealthyNodes - The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits.
@@ -1401,6 +1483,7 @@ type ClusterUpgradeDeltaHealthPolicy struct {
 	MaxPercentDeltaUnhealthyApplications *int32 `json:"maxPercentDeltaUnhealthyApplications,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterUpgradePolicy describes the policy used when upgrading the cluster.
 type ClusterUpgradePolicy struct {
 	// ForceRestart - If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or data).
@@ -1423,6 +1506,7 @@ type ClusterUpgradePolicy struct {
 	DeltaHealthPolicy *ClusterUpgradeDeltaHealthPolicy `json:"deltaHealthPolicy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ClusterVersionDetails the detail of the Service Fabric runtime version result
 type ClusterVersionDetails struct {
 	// CodeVersion - The Service Fabric runtime version of the cluster.
@@ -1433,6 +1517,7 @@ type ClusterVersionDetails struct {
 	Environment Environment `json:"environment,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic logs.
 type DiagnosticsStorageAccountConfig struct {
 	// StorageAccountName - The Azure storage account name.
@@ -1447,6 +1532,7 @@ type DiagnosticsStorageAccountConfig struct {
 	TableEndpoint *string `json:"tableEndpoint,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // EndpointRangeDescription port range details
 type EndpointRangeDescription struct {
 	// StartPort - Starting port of a range of ports
@@ -1455,6 +1541,7 @@ type EndpointRangeDescription struct {
 	EndPort *int32 `json:"endPort,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ErrorModel the error details.
 type ErrorModel struct {
 	// Code - The error code.
@@ -1463,6 +1550,7 @@ type ErrorModel struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // NamedPartitionSchemeDescription describes the named partition scheme of the service.
 type NamedPartitionSchemeDescription struct {
 	// Count - The number of partitions.
@@ -1473,6 +1561,7 @@ type NamedPartitionSchemeDescription struct {
 	PartitionScheme PartitionScheme `json:"PartitionScheme,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	npsd.PartitionScheme = PartitionSchemeNamed
@@ -1489,31 +1578,37 @@ func (npsd NamedPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsNamedPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) AsNamedPartitionSchemeDescription() (*NamedPartitionSchemeDescription, bool) {
 	return &npsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsSingletonPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) AsSingletonPartitionSchemeDescription() (*SingletonPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsUniformInt64RangePartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) AsUniformInt64RangePartitionSchemeDescription() (*UniformInt64RangePartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) AsPartitionSchemeDescription() (*PartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for NamedPartitionSchemeDescription.
 func (npsd NamedPartitionSchemeDescription) AsBasicPartitionSchemeDescription() (BasicPartitionSchemeDescription, bool) {
 	return &npsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
 // cluster.
 type NodeTypeDescription struct {
@@ -1541,6 +1636,7 @@ type NodeTypeDescription struct {
 	ReverseProxyEndpointPort *int32 `json:"reverseProxyEndpointPort,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for NodeTypeDescription.
 func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1580,6 +1676,7 @@ func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // OperationListResult describes the result of the request to list Service Fabric operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1589,12 +1686,14 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // OperationListResultIterator provides access to a complete listing of OperationResult values.
 type OperationListResultIterator struct {
 	i    int
 	page OperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListResultIterator) Next() error {
@@ -1611,16 +1710,19 @@ func (iter *OperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListResultIterator) Response() OperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListResultIterator) Value() OperationResult {
@@ -1630,6 +1732,7 @@ func (iter OperationListResultIterator) Value() OperationResult {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1647,12 +1750,14 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 		autorest.WithBaseURL(to.String(olr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // OperationListResultPage contains a page of OperationResult values.
 type OperationListResultPage struct {
 	fn  func(OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListResultPage) Next() error {
@@ -1664,16 +1769,19 @@ func (page *OperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListResultPage) NotDone() bool {
 	return !page.olr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListResultPage) Response() OperationListResult {
 	return page.olr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListResultPage) Values() []OperationResult {
 	if page.olr.IsEmpty() {
@@ -1682,6 +1790,7 @@ func (page OperationListResultPage) Values() []OperationResult {
 	return *page.olr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // OperationResult available operation list result
 type OperationResult struct {
 	// Name - The name of the operation.
@@ -1694,6 +1803,7 @@ type OperationResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // BasicPartitionSchemeDescription describes how the service is partitioned.
 type BasicPartitionSchemeDescription interface {
 	AsNamedPartitionSchemeDescription() (*NamedPartitionSchemeDescription, bool)
@@ -1702,6 +1812,7 @@ type BasicPartitionSchemeDescription interface {
 	AsPartitionSchemeDescription() (*PartitionSchemeDescription, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // PartitionSchemeDescription describes how the service is partitioned.
 type PartitionSchemeDescription struct {
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
@@ -1753,6 +1864,7 @@ func unmarshalBasicPartitionSchemeDescriptionArray(body []byte) ([]BasicPartitio
 	return psdArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	psd.PartitionScheme = PartitionSchemePartitionSchemeDescription
@@ -1763,31 +1875,37 @@ func (psd PartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsNamedPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) AsNamedPartitionSchemeDescription() (*NamedPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsSingletonPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) AsSingletonPartitionSchemeDescription() (*SingletonPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsUniformInt64RangePartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) AsUniformInt64RangePartitionSchemeDescription() (*UniformInt64RangePartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) AsPartitionSchemeDescription() (*PartitionSchemeDescription, bool) {
 	return &psd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for PartitionSchemeDescription.
 func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (BasicPartitionSchemeDescription, bool) {
 	return &psd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ProxyResource the resource model definition for proxy-only resource.
 type ProxyResource struct {
 	// ID - Azure resource ID.
@@ -1800,6 +1918,7 @@ type ProxyResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Resource the resource model definition.
 type Resource struct {
 	// ID - Azure resource ID.
@@ -1814,6 +1933,7 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1835,6 +1955,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // RollingUpgradeMonitoringPolicy the policy used for monitoring the application upgrade
 type RollingUpgradeMonitoringPolicy struct {
 	HealthCheckWaitDuration   *string `json:"healthCheckWaitDuration,omitempty"`
@@ -1844,6 +1965,7 @@ type RollingUpgradeMonitoringPolicy struct {
 	UpgradeDomainTimeout      *string `json:"upgradeDomainTimeout,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceCorrelationDescription creates a particular correlation between services.
 type ServiceCorrelationDescription struct {
 	// Scheme - Possible values include: 'Invalid', 'Affinity', 'AlignedAffinity', 'NonAlignedAffinity'
@@ -1851,12 +1973,14 @@ type ServiceCorrelationDescription struct {
 	ServiceName *string `json:"ServiceName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServiceDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Response, err error) {
@@ -1899,6 +2023,7 @@ func (future ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Resp
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceLoadMetricDescription specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
 	// Name - The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
@@ -1913,12 +2038,14 @@ type ServiceLoadMetricDescription struct {
 	DefaultLoad *int32 `json:"DefaultLoad,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServicePatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicePatchFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ServicePatchFuture) Result(client ServiceClient) (sru ServiceResourceUpdate, err error) {
@@ -1961,11 +2088,13 @@ func (future ServicePatchFuture) Result(client ServiceClient) (sru ServiceResour
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // BasicServicePlacementPolicyDescription describes the policy to be used for placement of a Service Fabric service.
 type BasicServicePlacementPolicyDescription interface {
 	AsServicePlacementPolicyDescription() (*ServicePlacementPolicyDescription, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServicePlacementPolicyDescription describes the policy to be used for placement of a Service Fabric service.
 type ServicePlacementPolicyDescription struct {
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription'
@@ -2005,6 +2134,7 @@ func unmarshalBasicServicePlacementPolicyDescriptionArray(body []byte) ([]BasicS
 	return sppdArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ServicePlacementPolicyDescription.
 func (sppd ServicePlacementPolicyDescription) MarshalJSON() ([]byte, error) {
 	sppd.Type = TypeServicePlacementPolicyDescription
@@ -2015,16 +2145,19 @@ func (sppd ServicePlacementPolicyDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServicePlacementPolicyDescription is the BasicServicePlacementPolicyDescription implementation for ServicePlacementPolicyDescription.
 func (sppd ServicePlacementPolicyDescription) AsServicePlacementPolicyDescription() (*ServicePlacementPolicyDescription, bool) {
 	return &sppd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServicePlacementPolicyDescription is the BasicServicePlacementPolicyDescription implementation for ServicePlacementPolicyDescription.
 func (sppd ServicePlacementPolicyDescription) AsBasicServicePlacementPolicyDescription() (BasicServicePlacementPolicyDescription, bool) {
 	return &sppd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // BasicServiceProperties the service resource properties.
 type BasicServiceProperties interface {
 	AsStatelessServiceProperties() (*StatelessServiceProperties, bool)
@@ -2032,6 +2165,7 @@ type BasicServiceProperties interface {
 	AsServiceProperties() (*ServiceProperties, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceProperties the service resource properties.
 type ServiceProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
@@ -2091,6 +2225,7 @@ func unmarshalBasicServicePropertiesArray(body []byte) ([]BasicServiceProperties
 	return spArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ServiceProperties.
 func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	sp.ServiceKind = ServiceKindServiceProperties
@@ -2123,26 +2258,31 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceProperties is the BasicServiceProperties implementation for ServiceProperties.
 func (sp ServiceProperties) AsStatelessServiceProperties() (*StatelessServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceProperties is the BasicServiceProperties implementation for ServiceProperties.
 func (sp ServiceProperties) AsStatefulServiceProperties() (*StatefulServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceProperties is the BasicServiceProperties implementation for ServiceProperties.
 func (sp ServiceProperties) AsServiceProperties() (*ServiceProperties, bool) {
 	return &sp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceProperties is the BasicServiceProperties implementation for ServiceProperties.
 func (sp ServiceProperties) AsBasicServiceProperties() (BasicServiceProperties, bool) {
 	return &sp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceProperties struct.
 func (sp *ServiceProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2237,6 +2377,7 @@ func (sp *ServiceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServicePropertiesBase the common service resource properties.
 type ServicePropertiesBase struct {
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
@@ -2248,6 +2389,7 @@ type ServicePropertiesBase struct {
 	DefaultMoveCost DefaultMoveCost `json:"defaultMoveCost,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ServicePropertiesBase struct.
 func (spb *ServicePropertiesBase) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2307,12 +2449,14 @@ func (spb *ServicePropertiesBase) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServicePutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicePutFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ServicePutFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
@@ -2355,6 +2499,7 @@ func (future ServicePutFuture) Result(client ServiceClient) (sr ServiceResource,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceResource the service resource.
 type ServiceResource struct {
 	autorest.Response      `json:"-"`
@@ -2369,6 +2514,7 @@ type ServiceResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ServiceResource.
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2388,6 +2534,7 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceResource struct.
 func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2447,12 +2594,14 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceResourceList the list of service resources.
 type ServiceResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ServiceResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceResourceUpdate the service resource for patch operations.
 type ServiceResourceUpdate struct {
 	autorest.Response            `json:"-"`
@@ -2467,6 +2616,7 @@ type ServiceResourceUpdate struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ServiceResourceUpdate.
 func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2486,6 +2636,7 @@ func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceResourceUpdate struct.
 func (sru *ServiceResourceUpdate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2545,12 +2696,14 @@ func (sru *ServiceResourceUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceTypeDeltaHealthPolicy service health policy
 type ServiceTypeDeltaHealthPolicy struct {
 	// MaxPercentDeltaUnhealthyServices - Maximum percentage of unhealthy services in cluster
 	MaxPercentDeltaUnhealthyServices *int32 `json:"maxPercentDeltaUnhealthyServices,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
 // service type.
 type ServiceTypeHealthPolicy struct {
@@ -2574,6 +2727,7 @@ type ServiceTypeHealthPolicy struct {
 	MaxPercentUnhealthyServices *int32 `json:"MaxPercentUnhealthyServices,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceTypeHealthPolicyMapItem defines an item in ServiceTypeHealthPolicyMap.
 type ServiceTypeHealthPolicyMapItem struct {
 	// Key - The key of the service type health policy map item. This is the name of the service type.
@@ -2581,6 +2735,7 @@ type ServiceTypeHealthPolicyMapItem struct {
 	Value *ServiceTypeHealthPolicy `json:"Value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // BasicServiceUpdateProperties the service resource properties for patch operations.
 type BasicServiceUpdateProperties interface {
 	AsStatelessServiceUpdateProperties() (*StatelessServiceUpdateProperties, bool)
@@ -2588,6 +2743,7 @@ type BasicServiceUpdateProperties interface {
 	AsServiceUpdateProperties() (*ServiceUpdateProperties, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // ServiceUpdateProperties the service resource properties for patch operations.
 type ServiceUpdateProperties struct {
 	// ServiceKind - Possible values include: 'ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties', 'ServiceKindBasicServiceUpdatePropertiesServiceKindStateless', 'ServiceKindBasicServiceUpdatePropertiesServiceKindStateful'
@@ -2642,6 +2798,7 @@ func unmarshalBasicServiceUpdatePropertiesArray(body []byte) ([]BasicServiceUpda
 	return supArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	sup.ServiceKind = ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties
@@ -2667,26 +2824,31 @@ func (sup ServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceUpdateProperties is the BasicServiceUpdateProperties implementation for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) AsStatelessServiceUpdateProperties() (*StatelessServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceUpdateProperties is the BasicServiceUpdateProperties implementation for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) AsStatefulServiceUpdateProperties() (*StatefulServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceUpdateProperties is the BasicServiceUpdateProperties implementation for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) AsServiceUpdateProperties() (*ServiceUpdateProperties, bool) {
 	return &sup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceUpdateProperties is the BasicServiceUpdateProperties implementation for ServiceUpdateProperties.
 func (sup ServiceUpdateProperties) AsBasicServiceUpdateProperties() (BasicServiceUpdateProperties, bool) {
 	return &sup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for ServiceUpdateProperties struct.
 func (sup *ServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2755,6 +2917,7 @@ func (sup *ServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // SettingsParameterDescription describes a parameter in fabric settings of the cluster.
 type SettingsParameterDescription struct {
 	// Name - The parameter name of fabric setting.
@@ -2763,6 +2926,7 @@ type SettingsParameterDescription struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // SettingsSectionDescription describes a section in the fabric settings of the cluster.
 type SettingsSectionDescription struct {
 	// Name - The section name of the fabric settings.
@@ -2771,6 +2935,7 @@ type SettingsSectionDescription struct {
 	Parameters *[]SettingsParameterDescription `json:"parameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // SingletonPartitionSchemeDescription describes the partition scheme of a singleton-partitioned, or
 // non-partitioned service.
 type SingletonPartitionSchemeDescription struct {
@@ -2778,6 +2943,7 @@ type SingletonPartitionSchemeDescription struct {
 	PartitionScheme PartitionScheme `json:"PartitionScheme,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	spsd.PartitionScheme = PartitionSchemeSingleton
@@ -2788,31 +2954,37 @@ func (spsd SingletonPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsNamedPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) AsNamedPartitionSchemeDescription() (*NamedPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsSingletonPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) AsSingletonPartitionSchemeDescription() (*SingletonPartitionSchemeDescription, bool) {
 	return &spsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsUniformInt64RangePartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) AsUniformInt64RangePartitionSchemeDescription() (*UniformInt64RangePartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) AsPartitionSchemeDescription() (*PartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for SingletonPartitionSchemeDescription.
 func (spsd SingletonPartitionSchemeDescription) AsBasicPartitionSchemeDescription() (BasicPartitionSchemeDescription, bool) {
 	return &spsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // StatefulServiceProperties the properties of a stateful service resource.
 type StatefulServiceProperties struct {
 	// HasPersistedState - A flag indicating whether this is a persistent service which stores states on the local disk. If it is then the value of this property is true, if not it is false.
@@ -2843,6 +3015,7 @@ type StatefulServiceProperties struct {
 	DefaultMoveCost DefaultMoveCost `json:"defaultMoveCost,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for StatefulServiceProperties.
 func (ssp StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 	ssp.ServiceKind = ServiceKindStateful
@@ -2893,26 +3066,31 @@ func (ssp StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceProperties is the BasicServiceProperties implementation for StatefulServiceProperties.
 func (ssp StatefulServiceProperties) AsStatelessServiceProperties() (*StatelessServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceProperties is the BasicServiceProperties implementation for StatefulServiceProperties.
 func (ssp StatefulServiceProperties) AsStatefulServiceProperties() (*StatefulServiceProperties, bool) {
 	return &ssp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceProperties is the BasicServiceProperties implementation for StatefulServiceProperties.
 func (ssp StatefulServiceProperties) AsServiceProperties() (*ServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceProperties is the BasicServiceProperties implementation for StatefulServiceProperties.
 func (ssp StatefulServiceProperties) AsBasicServiceProperties() (BasicServiceProperties, bool) {
 	return &ssp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for StatefulServiceProperties struct.
 func (ssp *StatefulServiceProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3061,6 +3239,7 @@ func (ssp *StatefulServiceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // StatefulServiceUpdateProperties the properties of a stateful service resource for patch operations.
 type StatefulServiceUpdateProperties struct {
 	// TargetReplicaSetSize - The target replica set size as a number.
@@ -3084,6 +3263,7 @@ type StatefulServiceUpdateProperties struct {
 	DefaultMoveCost DefaultMoveCost `json:"defaultMoveCost,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for StatefulServiceUpdateProperties.
 func (ssup StatefulServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	ssup.ServiceKind = ServiceKindBasicServiceUpdatePropertiesServiceKindStateful
@@ -3124,26 +3304,31 @@ func (ssup StatefulServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatefulServiceUpdateProperties.
 func (ssup StatefulServiceUpdateProperties) AsStatelessServiceUpdateProperties() (*StatelessServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatefulServiceUpdateProperties.
 func (ssup StatefulServiceUpdateProperties) AsStatefulServiceUpdateProperties() (*StatefulServiceUpdateProperties, bool) {
 	return &ssup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatefulServiceUpdateProperties.
 func (ssup StatefulServiceUpdateProperties) AsServiceUpdateProperties() (*ServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatefulServiceUpdateProperties.
 func (ssup StatefulServiceUpdateProperties) AsBasicServiceUpdateProperties() (BasicServiceUpdateProperties, bool) {
 	return &ssup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for StatefulServiceUpdateProperties struct.
 func (ssup *StatefulServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3257,6 +3442,7 @@ func (ssup *StatefulServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // StatelessServiceProperties the properties of a stateless service resource.
 type StatelessServiceProperties struct {
 	// InstanceCount - The instance count.
@@ -3277,6 +3463,7 @@ type StatelessServiceProperties struct {
 	DefaultMoveCost DefaultMoveCost `json:"defaultMoveCost,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for StatelessServiceProperties.
 func (ssp StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 	ssp.ServiceKind = ServiceKindStateless
@@ -3312,26 +3499,31 @@ func (ssp StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceProperties is the BasicServiceProperties implementation for StatelessServiceProperties.
 func (ssp StatelessServiceProperties) AsStatelessServiceProperties() (*StatelessServiceProperties, bool) {
 	return &ssp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceProperties is the BasicServiceProperties implementation for StatelessServiceProperties.
 func (ssp StatelessServiceProperties) AsStatefulServiceProperties() (*StatefulServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceProperties is the BasicServiceProperties implementation for StatelessServiceProperties.
 func (ssp StatelessServiceProperties) AsServiceProperties() (*ServiceProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceProperties is the BasicServiceProperties implementation for StatelessServiceProperties.
 func (ssp StatelessServiceProperties) AsBasicServiceProperties() (BasicServiceProperties, bool) {
 	return &ssp, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for StatelessServiceProperties struct.
 func (ssp *StatelessServiceProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3435,6 +3627,7 @@ func (ssp *StatelessServiceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // StatelessServiceUpdateProperties the properties of a stateless service resource for patch operations.
 type StatelessServiceUpdateProperties struct {
 	// InstanceCount - The instance count.
@@ -3450,6 +3643,7 @@ type StatelessServiceUpdateProperties struct {
 	DefaultMoveCost DefaultMoveCost `json:"defaultMoveCost,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for StatelessServiceUpdateProperties.
 func (ssup StatelessServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	ssup.ServiceKind = ServiceKindBasicServiceUpdatePropertiesServiceKindStateless
@@ -3478,26 +3672,31 @@ func (ssup StatelessServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatelessServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatelessServiceUpdateProperties.
 func (ssup StatelessServiceUpdateProperties) AsStatelessServiceUpdateProperties() (*StatelessServiceUpdateProperties, bool) {
 	return &ssup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsStatefulServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatelessServiceUpdateProperties.
 func (ssup StatelessServiceUpdateProperties) AsStatefulServiceUpdateProperties() (*StatefulServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatelessServiceUpdateProperties.
 func (ssup StatelessServiceUpdateProperties) AsServiceUpdateProperties() (*ServiceUpdateProperties, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicServiceUpdateProperties is the BasicServiceUpdateProperties implementation for StatelessServiceUpdateProperties.
 func (ssup StatelessServiceUpdateProperties) AsBasicServiceUpdateProperties() (BasicServiceUpdateProperties, bool) {
 	return &ssup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for StatelessServiceUpdateProperties struct.
 func (ssup *StatelessServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3575,6 +3774,7 @@ func (ssup *StatelessServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UniformInt64RangePartitionSchemeDescription describes a partitioning scheme where an integer range is allocated
 // evenly across a number of partitions.
 type UniformInt64RangePartitionSchemeDescription struct {
@@ -3590,6 +3790,7 @@ type UniformInt64RangePartitionSchemeDescription struct {
 	PartitionScheme PartitionScheme `json:"PartitionScheme,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	ui6rpsd.PartitionScheme = PartitionSchemeUniformInt64Range
@@ -3609,37 +3810,44 @@ func (ui6rpsd UniformInt64RangePartitionSchemeDescription) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsNamedPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsNamedPartitionSchemeDescription() (*NamedPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsSingletonPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsSingletonPartitionSchemeDescription() (*SingletonPartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsUniformInt64RangePartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsUniformInt64RangePartitionSchemeDescription() (*UniformInt64RangePartitionSchemeDescription, bool) {
 	return &ui6rpsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsPartitionSchemeDescription() (*PartitionSchemeDescription, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // AsBasicPartitionSchemeDescription is the BasicPartitionSchemeDescription implementation for UniformInt64RangePartitionSchemeDescription.
 func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsBasicPartitionSchemeDescription() (BasicPartitionSchemeDescription, bool) {
 	return &ui6rpsd, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // VersionDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type VersionDeleteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future VersionDeleteFuture) Result(client VersionClient) (ar autorest.Response, err error) {
@@ -3682,6 +3890,7 @@ func (future VersionDeleteFuture) Result(client VersionClient) (ar autorest.Resp
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // VersionProperties the properties of the version resource.
 type VersionProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
@@ -3691,12 +3900,14 @@ type VersionProperties struct {
 	DefaultParameterList *[]ApplicationParameter `json:"defaultParameterList,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // VersionPutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type VersionPutFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future VersionPutFuture) Result(client VersionClient) (vr VersionResource, err error) {
@@ -3739,6 +3950,7 @@ func (future VersionPutFuture) Result(client VersionClient) (vr VersionResource,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // VersionResource a version resource for the specified application type name.
 type VersionResource struct {
 	autorest.Response  `json:"-"`
@@ -3753,6 +3965,7 @@ type VersionResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // MarshalJSON is the custom marshaler for VersionResource.
 func (vr VersionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3774,6 +3987,7 @@ func (vr VersionResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // UnmarshalJSON is the custom unmarshaler for VersionResource struct.
 func (vr *VersionResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3834,6 +4048,7 @@ func (vr *VersionResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric instead.
 // VersionResourceList the list of version resources for the specified application type name.
 type VersionResourceList struct {
 	autorest.Response `json:"-"`

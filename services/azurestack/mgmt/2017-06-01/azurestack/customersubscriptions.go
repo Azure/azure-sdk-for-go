@@ -40,10 +40,11 @@ func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID st
 }
 
 // Create creates a new customer subscription under a registration.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// customerSubscriptionName is name of the product. customerCreationParameters is parameters use to create a
-// customer subscription.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// customerSubscriptionName - name of the product.
+// customerCreationParameters - parameters use to create a customer subscription.
 func (client CustomerSubscriptionsClient) Create(ctx context.Context, resourceGroup string, registrationName string, customerSubscriptionName string, customerCreationParameters CustomerSubscription) (result CustomerSubscription, err error) {
 	req, err := client.CreatePreparer(ctx, resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters)
 	if err != nil {
@@ -111,9 +112,10 @@ func (client CustomerSubscriptionsClient) CreateResponder(resp *http.Response) (
 }
 
 // Delete deletes a customer subscription under a registration.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// customerSubscriptionName is name of the product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// customerSubscriptionName - name of the product.
 func (client CustomerSubscriptionsClient) Delete(ctx context.Context, resourceGroup string, registrationName string, customerSubscriptionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroup, registrationName, customerSubscriptionName)
 	if err != nil {
@@ -178,9 +180,10 @@ func (client CustomerSubscriptionsClient) DeleteResponder(resp *http.Response) (
 }
 
 // Get returns the specified product.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// customerSubscriptionName is name of the product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// customerSubscriptionName - name of the product.
 func (client CustomerSubscriptionsClient) Get(ctx context.Context, resourceGroup string, registrationName string, customerSubscriptionName string) (result CustomerSubscription, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroup, registrationName, customerSubscriptionName)
 	if err != nil {
@@ -246,8 +249,9 @@ func (client CustomerSubscriptionsClient) GetResponder(resp *http.Response) (res
 }
 
 // List returns a list of products.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
 func (client CustomerSubscriptionsClient) List(ctx context.Context, resourceGroup string, registrationName string) (result CustomerSubscriptionListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroup, registrationName)

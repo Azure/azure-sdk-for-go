@@ -24,21 +24,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // SupportPlanTypesClient is the the service for managing third party addons.
 type SupportPlanTypesClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // NewSupportPlanTypesClient creates an instance of the SupportPlanTypesClient client.
 func NewSupportPlanTypesClient(subscriptionID string) SupportPlanTypesClient {
 	return NewSupportPlanTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // NewSupportPlanTypesClientWithBaseURI creates an instance of the SupportPlanTypesClient client.
 func NewSupportPlanTypesClientWithBaseURI(baseURI string, subscriptionID string) SupportPlanTypesClient {
 	return SupportPlanTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // CreateOrUpdate creates or updates the Canonical support plan of type {type} for the subscription.
 //
 // providerName is the support plan type. For now the only valid type is "canonical". planTypeName is the Canonical
@@ -59,6 +63,7 @@ func (client SupportPlanTypesClient) CreateOrUpdate(ctx context.Context, provide
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context, providerName string, planTypeName PlanTypeName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -80,6 +85,7 @@ func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (future SupportPlanTypesCreateOrUpdateFuture, err error) {
@@ -95,6 +101,7 @@ func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (fu
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client SupportPlanTypesClient) CreateOrUpdateResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {
@@ -108,6 +115,7 @@ func (client SupportPlanTypesClient) CreateOrUpdateResponder(resp *http.Response
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // Delete cancels the Canonical support plan of type {type} for the subscription.
 //
 // providerName is the support plan type. For now the only valid type is "canonical". planTypeName is the Canonical
@@ -128,6 +136,7 @@ func (client SupportPlanTypesClient) Delete(ctx context.Context, providerName st
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // DeletePreparer prepares the Delete request.
 func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, providerName string, planTypeName PlanTypeName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -149,6 +158,7 @@ func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, provide
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future SupportPlanTypesDeleteFuture, err error) {
@@ -164,6 +174,7 @@ func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future Sup
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client SupportPlanTypesClient) DeleteResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {
@@ -177,6 +188,7 @@ func (client SupportPlanTypesClient) DeleteResponder(resp *http.Response) (resul
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // Get returns whether or not the canonical support plan of type {type} is enabled for the subscription.
 //
 // providerName is the support plan type. For now the only valid type is "canonical". planTypeName is the Canonical
@@ -203,6 +215,7 @@ func (client SupportPlanTypesClient) Get(ctx context.Context, providerName strin
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetPreparer prepares the Get request.
 func (client SupportPlanTypesClient) GetPreparer(ctx context.Context, providerName string, planTypeName PlanTypeName) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -224,6 +237,7 @@ func (client SupportPlanTypesClient) GetPreparer(ctx context.Context, providerNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -231,6 +245,7 @@ func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client SupportPlanTypesClient) GetResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {

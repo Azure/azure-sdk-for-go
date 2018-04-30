@@ -23,6 +23,7 @@ import (
 	"io"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AppendModeType enumerates the values for append mode type.
 type AppendModeType string
 
@@ -31,11 +32,13 @@ const (
 	Autocreate AppendModeType = "autocreate"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // PossibleAppendModeTypeValues returns an array of possible values for the AppendModeType const type.
 func PossibleAppendModeTypeValues() []AppendModeType {
 	return []AppendModeType{Autocreate}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // Exception enumerates the values for exception.
 type Exception string
 
@@ -62,11 +65,13 @@ const (
 	ExceptionUnsupportedOperationException Exception = "UnsupportedOperationException"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // PossibleExceptionValues returns an array of possible values for the Exception const type.
 func PossibleExceptionValues() []Exception {
 	return []Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionUnsupportedOperationException}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ExpiryOptionType enumerates the values for expiry option type.
 type ExpiryOptionType string
 
@@ -81,11 +86,13 @@ const (
 	RelativeToNow ExpiryOptionType = "RelativeToNow"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // PossibleExpiryOptionTypeValues returns an array of possible values for the ExpiryOptionType const type.
 func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
 	return []ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileType enumerates the values for file type.
 type FileType string
 
@@ -96,11 +103,13 @@ const (
 	FILE FileType = "FILE"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
 func PossibleFileTypeValues() []FileType {
 	return []FileType{DIRECTORY, FILE}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ACLStatus data Lake Store file or directory Access Control List information.
 type ACLStatus struct {
 	// Entries - the list of ACLSpec entries on a file or directory.
@@ -115,6 +124,7 @@ type ACLStatus struct {
 	StickyBit *bool `json:"stickyBit,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ACLStatusResult data Lake Store file or directory Access Control List information.
 type ACLStatusResult struct {
 	autorest.Response `json:"-"`
@@ -122,6 +132,7 @@ type ACLStatusResult struct {
 	ACLStatus *ACLStatus `json:"AclStatus,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsAccessControlException a WebHDFS exception thrown indicating that access is denied due to insufficient
 // permissions. Thrown when a 403 error response code is returned (forbidden).
 type AdlsAccessControlException struct {
@@ -133,6 +144,7 @@ type AdlsAccessControlException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsAccessControlException.
 func (aace AdlsAccessControlException) MarshalJSON() ([]byte, error) {
 	aace.Exception = ExceptionAccessControlException
@@ -149,61 +161,73 @@ func (aace AdlsAccessControlException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return &aace, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsAccessControlException.
 func (aace AdlsAccessControlException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &aace, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsBadOffsetException a WebHDFS exception thrown indicating the append or read is from a bad offset. Thrown
 // when a 400 error response code is returned for append and open operations (Bad request).
 type AdlsBadOffsetException struct {
@@ -215,6 +239,7 @@ type AdlsBadOffsetException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) MarshalJSON() ([]byte, error) {
 	aboe.Exception = ExceptionBadOffsetException
@@ -231,67 +256,80 @@ func (aboe AdlsBadOffsetException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return &aboe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsBadOffsetException.
 func (aboe AdlsBadOffsetException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &aboe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsError data Lake Store filesystem error containing a specific WebHDFS exception.
 type AdlsError struct {
 	// RemoteException - the object representing the actual WebHDFS exception being returned.
 	RemoteException BasicAdlsRemoteException `json:"RemoteException,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // UnmarshalJSON is the custom unmarshaler for AdlsError struct.
 func (ae *AdlsError) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -315,6 +353,7 @@ func (ae *AdlsError) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsFileAlreadyExistsException a WebHDFS exception thrown indicating the file or folder already exists. Thrown
 // when a 403 error response code is returned (forbidden).
 type AdlsFileAlreadyExistsException struct {
@@ -326,6 +365,7 @@ type AdlsFileAlreadyExistsException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) MarshalJSON() ([]byte, error) {
 	afaee.Exception = ExceptionFileAlreadyExistsException
@@ -342,61 +382,73 @@ func (afaee AdlsFileAlreadyExistsException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return &afaee, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsFileAlreadyExistsException.
 func (afaee AdlsFileAlreadyExistsException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &afaee, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsFileNotFoundException a WebHDFS exception thrown indicating the file or folder could not be found. Thrown
 // when a 404 error response code is returned (not found).
 type AdlsFileNotFoundException struct {
@@ -408,6 +460,7 @@ type AdlsFileNotFoundException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) MarshalJSON() ([]byte, error) {
 	afnfe.Exception = ExceptionFileNotFoundException
@@ -424,61 +477,73 @@ func (afnfe AdlsFileNotFoundException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return &afnfe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsFileNotFoundException.
 func (afnfe AdlsFileNotFoundException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &afnfe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsIllegalArgumentException a WebHDFS exception thrown indicating that one more arguments is incorrect. Thrown
 // when a 400 error response code is returned (bad request).
 type AdlsIllegalArgumentException struct {
@@ -490,6 +555,7 @@ type AdlsIllegalArgumentException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) MarshalJSON() ([]byte, error) {
 	aiae.Exception = ExceptionIllegalArgumentException
@@ -506,61 +572,73 @@ func (aiae AdlsIllegalArgumentException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return &aiae, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsIllegalArgumentException.
 func (aiae AdlsIllegalArgumentException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &aiae, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsIOException a WebHDFS exception thrown indicating there was an IO (read or write) error. Thrown when a 403
 // error response code is returned (forbidden).
 type AdlsIOException struct {
@@ -572,6 +650,7 @@ type AdlsIOException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsIOException.
 func (aie AdlsIOException) MarshalJSON() ([]byte, error) {
 	aie.Exception = ExceptionIOException
@@ -588,61 +667,73 @@ func (aie AdlsIOException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return &aie, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsIOException.
 func (aie AdlsIOException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &aie, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // BasicAdlsRemoteException data Lake Store filesystem exception based on the WebHDFS definition for RemoteExceptions.
 type BasicAdlsRemoteException interface {
 	AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool)
@@ -657,6 +748,7 @@ type BasicAdlsRemoteException interface {
 	AsAdlsRemoteException() (*AdlsRemoteException, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsRemoteException data Lake Store filesystem exception based on the WebHDFS definition for RemoteExceptions.
 type AdlsRemoteException struct {
 	// JavaClassName - the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
@@ -736,6 +828,7 @@ func unmarshalBasicAdlsRemoteExceptionArray(body []byte) ([]BasicAdlsRemoteExcep
 	return areArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsRemoteException.
 func (are AdlsRemoteException) MarshalJSON() ([]byte, error) {
 	are.Exception = ExceptionAdlsRemoteException
@@ -752,61 +845,73 @@ func (are AdlsRemoteException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return &are, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsRemoteException.
 func (are AdlsRemoteException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &are, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsRuntimeException a WebHDFS exception thrown when an unexpected error occurs during an operation. Thrown when
 // a 500 error response code is returned (Internal server error).
 type AdlsRuntimeException struct {
@@ -818,6 +923,7 @@ type AdlsRuntimeException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsRuntimeException.
 func (are AdlsRuntimeException) MarshalJSON() ([]byte, error) {
 	are.Exception = ExceptionRuntimeException
@@ -834,61 +940,73 @@ func (are AdlsRuntimeException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return &are, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsRuntimeException.
 func (are AdlsRuntimeException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &are, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsSecurityException a WebHDFS exception thrown indicating that access is denied. Thrown when a 401 error
 // response code is returned (Unauthorized).
 type AdlsSecurityException struct {
@@ -900,6 +1018,7 @@ type AdlsSecurityException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsSecurityException.
 func (ase AdlsSecurityException) MarshalJSON() ([]byte, error) {
 	ase.Exception = ExceptionSecurityException
@@ -916,61 +1035,73 @@ func (ase AdlsSecurityException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return &ase, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsSecurityException.
 func (ase AdlsSecurityException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &ase, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AdlsUnsupportedOperationException a WebHDFS exception thrown indicating that the requested operation is not
 // supported. Thrown when a 400 error response code is returned (bad request).
 type AdlsUnsupportedOperationException struct {
@@ -982,6 +1113,7 @@ type AdlsUnsupportedOperationException struct {
 	Exception Exception `json:"exception,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // MarshalJSON is the custom marshaler for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) MarshalJSON() ([]byte, error) {
 	auoe.Exception = ExceptionUnsupportedOperationException
@@ -998,61 +1130,73 @@ func (auoe AdlsUnsupportedOperationException) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIllegalArgumentException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsIllegalArgumentException() (*AdlsIllegalArgumentException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsUnsupportedOperationException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsUnsupportedOperationException() (*AdlsUnsupportedOperationException, bool) {
 	return &auoe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsSecurityException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsSecurityException() (*AdlsSecurityException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsIOException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsIOException() (*AdlsIOException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileNotFoundException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsFileNotFoundException() (*AdlsFileNotFoundException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsFileAlreadyExistsException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsFileAlreadyExistsException() (*AdlsFileAlreadyExistsException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsBadOffsetException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsBadOffsetException() (*AdlsBadOffsetException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRuntimeException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsRuntimeException() (*AdlsRuntimeException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsAccessControlException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsAccessControlException() (*AdlsAccessControlException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsAdlsRemoteException() (*AdlsRemoteException, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // AsBasicAdlsRemoteException is the BasicAdlsRemoteException implementation for AdlsUnsupportedOperationException.
 func (auoe AdlsUnsupportedOperationException) AsBasicAdlsRemoteException() (BasicAdlsRemoteException, bool) {
 	return &auoe, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ContentSummary data Lake Store content summary information
 type ContentSummary struct {
 	// DirectoryCount - the number of directories.
@@ -1065,6 +1209,7 @@ type ContentSummary struct {
 	SpaceConsumed *int64 `json:"spaceConsumed,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ContentSummaryResult data Lake Store filesystem content summary information response.
 type ContentSummaryResult struct {
 	autorest.Response `json:"-"`
@@ -1072,6 +1217,7 @@ type ContentSummaryResult struct {
 	ContentSummary *ContentSummary `json:"ContentSummary,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileOperationResult the result of the request or operation.
 type FileOperationResult struct {
 	autorest.Response `json:"-"`
@@ -1079,12 +1225,14 @@ type FileOperationResult struct {
 	OperationResult *bool `json:"boolean,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileStatuses data Lake Store file status list information.
 type FileStatuses struct {
 	// FileStatus - the object containing the list of properties of the files.
 	FileStatus *[]FileStatusProperties `json:"FileStatus,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileStatusesResult data Lake Store filesystem file status list information response.
 type FileStatusesResult struct {
 	autorest.Response `json:"-"`
@@ -1092,6 +1240,7 @@ type FileStatusesResult struct {
 	FileStatuses *FileStatuses `json:"FileStatuses,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileStatusProperties data Lake Store file or directory information.
 type FileStatusProperties struct {
 	// AccessTime - the last access time as ticks since the epoch.
@@ -1118,6 +1267,7 @@ type FileStatusProperties struct {
 	Type FileType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // FileStatusResult data Lake Store filesystem file status information response.
 type FileStatusResult struct {
 	autorest.Response `json:"-"`
@@ -1125,6 +1275,7 @@ type FileStatusResult struct {
 	FileStatus *FileStatusProperties `json:"FileStatus,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem instead.
 // ReadCloser ...
 type ReadCloser struct {
 	autorest.Response `json:"-"`

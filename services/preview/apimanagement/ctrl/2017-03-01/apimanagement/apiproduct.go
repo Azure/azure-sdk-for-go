@@ -36,14 +36,15 @@ func NewAPIProductClient() APIProductClient {
 }
 
 // ListByApis lists all Products, which the API is part of.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client APIProductClient) ListByApis(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result ProductCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

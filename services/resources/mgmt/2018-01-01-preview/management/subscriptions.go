@@ -24,6 +24,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // SubscriptionsClient is the the Azure Management Groups API enables consolidation of multiple
 // subscriptions/resources into an organizational hierarchy and centrally
 // manage access control, policies, alerting and reporting for those resources.
@@ -31,16 +32,19 @@ type SubscriptionsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
 func NewSubscriptionsClient(operationResultID string, skiptoken string) SubscriptionsClient {
 	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client.
 func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) SubscriptionsClient {
 	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skiptoken)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // Create associates existing subscription with the management group.
 //
 // groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
@@ -67,6 +71,7 @@ func (client SubscriptionsClient) Create(ctx context.Context, groupID string, su
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CreatePreparer prepares the Create request.
 func (client SubscriptionsClient) CreatePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -94,6 +99,7 @@ func (client SubscriptionsClient) CreatePreparer(ctx context.Context, groupID st
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionsClient) CreateSender(req *http.Request) (*http.Response, error) {
@@ -101,6 +107,7 @@ func (client SubscriptionsClient) CreateSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
 func (client SubscriptionsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -113,6 +120,7 @@ func (client SubscriptionsClient) CreateResponder(resp *http.Response) (result a
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // Delete de-associates subscription from the management group.
 //
 // groupID is management Group ID. subscriptionID is subscription ID. cacheControl is indicates that the request
@@ -139,6 +147,7 @@ func (client SubscriptionsClient) Delete(ctx context.Context, groupID string, su
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // DeletePreparer prepares the Delete request.
 func (client SubscriptionsClient) DeletePreparer(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -166,6 +175,7 @@ func (client SubscriptionsClient) DeletePreparer(ctx context.Context, groupID st
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -173,6 +183,7 @@ func (client SubscriptionsClient) DeleteSender(req *http.Request) (*http.Respons
 		azure.DoRetryWithRegistration(client.Client))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client SubscriptionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {

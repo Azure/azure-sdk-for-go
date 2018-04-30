@@ -35,8 +35,8 @@ func NewTenantAccessGitClient() TenantAccessGitClient {
 }
 
 // Get gets the Git access configuration for the tenant.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessGitClient) Get(ctx context.Context, apimBaseURL string) (result AccessInformationContract, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL)
@@ -104,8 +104,8 @@ func (client TenantAccessGitClient) GetResponder(resp *http.Response) (result Ac
 }
 
 // RegeneratePrimaryKey regenerate primary access key for GIT.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, apimBaseURL string) (result autorest.Response, err error) {
 	req, err := client.RegeneratePrimaryKeyPreparer(ctx, apimBaseURL)
@@ -172,8 +172,8 @@ func (client TenantAccessGitClient) RegeneratePrimaryKeyResponder(resp *http.Res
 }
 
 // RegenerateSecondaryKey regenerate secondary access key for GIT.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, apimBaseURL string) (result autorest.Response, err error) {
 	req, err := client.RegenerateSecondaryKeyPreparer(ctx, apimBaseURL)

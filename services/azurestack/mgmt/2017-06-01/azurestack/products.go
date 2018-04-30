@@ -40,9 +40,10 @@ func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) Product
 }
 
 // Get returns the specified product.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// productName is name of the product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// productName - name of the product.
 func (client ProductsClient) Get(ctx context.Context, resourceGroup string, registrationName string, productName string) (result Product, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroup, registrationName, productName)
 	if err != nil {
@@ -108,8 +109,9 @@ func (client ProductsClient) GetResponder(resp *http.Response) (result Product, 
 }
 
 // List returns a list of products.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
 func (client ProductsClient) List(ctx context.Context, resourceGroup string, registrationName string) (result ProductListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroup, registrationName)
@@ -202,9 +204,10 @@ func (client ProductsClient) ListComplete(ctx context.Context, resourceGroup str
 }
 
 // ListDetails returns the extended properties of a product.
-//
-// resourceGroup is name of the resource group. registrationName is name of the Azure Stack registration.
-// productName is name of the product.
+// Parameters:
+// resourceGroup - name of the resource group.
+// registrationName - name of the Azure Stack registration.
+// productName - name of the product.
 func (client ProductsClient) ListDetails(ctx context.Context, resourceGroup string, registrationName string, productName string) (result ExtendedProduct, err error) {
 	req, err := client.ListDetailsPreparer(ctx, resourceGroup, registrationName, productName)
 	if err != nil {

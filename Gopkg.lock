@@ -11,8 +11,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "9ad9326b278af8fa5cc67c30c0ce9a58cc0862b2"
-  version = "v10.6.0"
+  revision = "5cdef8c5dbd65369ef90f1b8d7ea2b7348ffc862"
+  version = "v10.7.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
@@ -45,7 +45,7 @@
     "internal/sasl",
     "internal/scram"
   ]
-  revision = "f76e4f9da92ecd56e3be26f5ba92580af1ef97b4"
+  revision = "efe0945164a7e582241f37ae8983c075f8f2e870"
 
 [[projects]]
   branch = "master"
@@ -176,13 +176,13 @@
     "pkcs12",
     "pkcs12/internal/rc2"
   ]
-  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
+  revision = "ae8bce0030810cf999bb2b9868ae5c7c58e6343b"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "ecfd8b563e1320e7282dccf28ad48ec2c68aaebf"
+  revision = "4adea008a5e5f820b6028611ae0b6b3fbcec534b"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -205,7 +205,7 @@
     "imports",
     "internal/fastwalk"
   ]
-  revision = "94b14834a20132093826ea5e2da5502a13908ad3"
+  revision = "165bdd618e6d174c61ee7bd73a28f3e5c6fdced1"
 
 [[projects]]
   branch = "v1"
@@ -222,6 +222,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5e51ba405ce99f3a95f60553bdd1bdf8a9eecf637914d0dd24a22b2932e51900"
+  inputs-digest = "0e2d3b4f9b2d64898a839f67fbeceb76217ef2f9df2a88ef7f41c2596d5529db"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -41,10 +41,11 @@ func NewHybridConnectionsClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // CreateOrUpdate creates or Updates a service HybridConnection. This operation is idempotent.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. parameters is parameters supplied to create a
-// HybridConnection.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// parameters - parameters supplied to create a HybridConnection.
 func (client HybridConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, parameters HybridConnection) (result HybridConnection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -132,10 +133,12 @@ func (client HybridConnectionsClient) CreateOrUpdateResponder(resp *http.Respons
 }
 
 // CreateOrUpdateAuthorizationRule creates or Updates an authorization rule for a HybridConnection
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
-// parameters is the authorization rule parameters
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
+// parameters - the authorization rule parameters
 func (client HybridConnectionsClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, parameters AuthorizationRule) (result AuthorizationRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -225,9 +228,10 @@ func (client HybridConnectionsClient) CreateOrUpdateAuthorizationRuleResponder(r
 }
 
 // Delete deletes a HybridConnection .
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
 func (client HybridConnectionsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -305,9 +309,11 @@ func (client HybridConnectionsClient) DeleteResponder(resp *http.Response) (resu
 }
 
 // DeleteAuthorizationRule deletes a HybridConnection authorization rule
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
 func (client HybridConnectionsClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -389,9 +395,10 @@ func (client HybridConnectionsClient) DeleteAuthorizationRuleResponder(resp *htt
 }
 
 // Get returns the description for the specified HybridConnection.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
 func (client HybridConnectionsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result HybridConnection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -470,9 +477,11 @@ func (client HybridConnectionsClient) GetResponder(resp *http.Response) (result 
 }
 
 // GetAuthorizationRule hybridConnection authorizationRule for a HybridConnection by name.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
 func (client HybridConnectionsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result AuthorizationRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -555,9 +564,10 @@ func (client HybridConnectionsClient) GetAuthorizationRuleResponder(resp *http.R
 }
 
 // ListAuthorizationRules authorization rules for a HybridConnection.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
 func (client HybridConnectionsClient) ListAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result AuthorizationRuleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -664,9 +674,9 @@ func (client HybridConnectionsClient) ListAuthorizationRulesComplete(ctx context
 }
 
 // ListByNamespace lists the HybridConnection within the namespace.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
 func (client HybridConnectionsClient) ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string) (result HybridConnectionListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -769,9 +779,11 @@ func (client HybridConnectionsClient) ListByNamespaceComplete(ctx context.Contex
 }
 
 // ListKeys primary and Secondary ConnectionStrings to the HybridConnection.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
 func (client HybridConnectionsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result AuthorizationRuleKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -854,9 +866,10 @@ func (client HybridConnectionsClient) ListKeysResponder(resp *http.Response) (re
 }
 
 // ListPostAuthorizationRules authorization rules for a HybridConnection.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
 func (client HybridConnectionsClient) ListPostAuthorizationRules(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string) (result AuthorizationRuleListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -963,9 +976,11 @@ func (client HybridConnectionsClient) ListPostAuthorizationRulesComplete(ctx con
 }
 
 // PostAuthorizationRule hybridConnection authorizationRule for a HybridConnection by name.
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
 func (client HybridConnectionsClient) PostAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string) (result AuthorizationRule, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1048,10 +1063,12 @@ func (client HybridConnectionsClient) PostAuthorizationRuleResponder(resp *http.
 }
 
 // RegenerateKeys regenerates the Primary or Secondary ConnectionStrings to the HybridConnection
-//
-// resourceGroupName is name of the Resource group within the Azure subscription. namespaceName is the Namespace
-// Name hybridConnectionName is the hybrid connection name. authorizationRuleName is the authorizationRule name.
-// parameters is parameters supplied to regenerate Auth Rule.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the Namespace Name
+// hybridConnectionName - the hybrid connection name.
+// authorizationRuleName - the authorizationRule name.
+// parameters - parameters supplied to regenerate Auth Rule.
 func (client HybridConnectionsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, parameters RegenerateKeysParameters) (result AuthorizationRuleKeys, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

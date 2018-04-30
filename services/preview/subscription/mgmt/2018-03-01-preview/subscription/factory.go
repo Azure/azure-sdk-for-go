@@ -40,9 +40,9 @@ func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
 }
 
 // CreateSubscriptionInEnrollmentAccount creates an Azure subscription
-//
-// enrollmentAccountName is the name of the enrollment account to which the subscription will be billed. body is
-// the subscription creation parameters.
+// Parameters:
+// enrollmentAccountName - the name of the enrollment account to which the subscription will be billed.
+// body - the subscription creation parameters.
 func (client FactoryClient) CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body CreationParameters) (result FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
 	req, err := client.CreateSubscriptionInEnrollmentAccountPreparer(ctx, enrollmentAccountName, body)
 	if err != nil {

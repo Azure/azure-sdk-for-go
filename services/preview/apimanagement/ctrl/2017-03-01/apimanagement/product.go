@@ -36,10 +36,11 @@ func NewProductClient() ProductClient {
 }
 
 // CreateOrUpdate creates or Updates a product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. parameters is create or update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// parameters - create or update parameters.
 func (client ProductClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, productID string, parameters ProductContract) (result ProductContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -116,12 +117,13 @@ func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // Delete delete product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. ifMatch is eTag of the Product Entity. ETag should match the current entity
-// state from the header response of the GET request or it should be * for unconditional update.
-// deleteSubscriptions is delete existing subscriptions to the product or not.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// ifMatch - eTag of the Product Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
+// deleteSubscriptions - delete existing subscriptions to the product or not.
 func (client ProductClient) Delete(ctx context.Context, apimBaseURL string, productID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -199,10 +201,10 @@ func (client ProductClient) DeleteResponder(resp *http.Response) (result autores
 }
 
 // Get gets the details of the product specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
 func (client ProductClient) Get(ctx context.Context, apimBaseURL string, productID string) (result ProductContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -277,18 +279,20 @@ func (client ProductClient) GetResponder(resp *http.Response) (result ProductCon
 }
 
 // List lists a collection of products in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field       | Supported operators    | Supported
-// functions                         |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | terms       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | state       | eq                     |                                             | top is number of records
-// to return. skip is number of records to skip. expandGroups is when set to true, the response contains an array
-// of groups that have visibility to the product. The default is false.
+// | state       | eq                     |                                             |
+// top - number of records to return.
+// skip - number of records to skip.
+// expandGroups - when set to true, the response contains an array of groups that have visibility to the
+// product. The default is false.
 func (client ProductClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32, expandGroups *bool) (result ProductCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -401,12 +405,13 @@ func (client ProductClient) ListComplete(ctx context.Context, apimBaseURL string
 }
 
 // Update update product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. parameters is update parameters. ifMatch is eTag of the Product Entity. ETag
-// should match the current entity state from the header response of the GET request or it should be * for
-// unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - eTag of the Product Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client ProductClient) Update(ctx context.Context, apimBaseURL string, productID string, parameters ProductUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,

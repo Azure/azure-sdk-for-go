@@ -31,22 +31,24 @@ type ReservationsSummariesClient struct {
 }
 
 // NewReservationsSummariesClient creates an instance of the ReservationsSummariesClient client.
-func NewReservationsSummariesClient(subscriptionID string, grain Datagrain) ReservationsSummariesClient {
-	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID, grain)
+func NewReservationsSummariesClient(subscriptionID string) ReservationsSummariesClient {
+	return NewReservationsSummariesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewReservationsSummariesClientWithBaseURI creates an instance of the ReservationsSummariesClient client.
-func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string, grain Datagrain) ReservationsSummariesClient {
-	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID, grain)}
+func NewReservationsSummariesClientWithBaseURI(baseURI string, subscriptionID string) ReservationsSummariesClient {
+	return ReservationsSummariesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByReservationOrder lists the reservations summaries for daily or monthly grain.
-//
-// reservationOrderID is order Id of the reservation filter is required only for daily grain. The
-// properties/UsageDate for start date and end date. The filter supports 'le' and  'ge'
-func (client ReservationsSummariesClient) ListByReservationOrder(ctx context.Context, reservationOrderID string, filter string) (result ReservationSummariesListResultPage, err error) {
+// Parameters:
+// reservationOrderID - order Id of the reservation
+// grain - can be daily or monthly
+// filter - required only for daily grain. The properties/UsageDate for start date and end date. The filter
+// supports 'le' and  'ge'
+func (client ReservationsSummariesClient) ListByReservationOrder(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
 	result.fn = client.listByReservationOrderNextResults
-	req, err := client.ListByReservationOrderPreparer(ctx, reservationOrderID, filter)
+	req, err := client.ListByReservationOrderPreparer(ctx, reservationOrderID, grain, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrder", nil, "Failure preparing request")
 		return
@@ -68,7 +70,7 @@ func (client ReservationsSummariesClient) ListByReservationOrder(ctx context.Con
 }
 
 // ListByReservationOrderPreparer prepares the ListByReservationOrder request.
-func (client ReservationsSummariesClient) ListByReservationOrderPreparer(ctx context.Context, reservationOrderID string, filter string) (*http.Request, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderPreparer(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
@@ -76,7 +78,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderPreparer(ctx con
 	const APIVersion = "2018-03-31"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"grain":       autorest.Encode("query", client.Grain),
+		"grain":       autorest.Encode("query", grain),
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -132,18 +134,21 @@ func (client ReservationsSummariesClient) listByReservationOrderNextResults(last
 }
 
 // ListByReservationOrderComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationsSummariesClient) ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, filter string) (result ReservationSummariesListResultIterator, err error) {
-	result.page, err = client.ListByReservationOrder(ctx, reservationOrderID, filter)
+func (client ReservationsSummariesClient) ListByReservationOrderComplete(ctx context.Context, reservationOrderID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
+	result.page, err = client.ListByReservationOrder(ctx, reservationOrderID, grain, filter)
 	return
 }
 
 // ListByReservationOrderAndReservation lists the reservations summaries for daily or monthly grain.
-//
-// reservationOrderID is order Id of the reservation reservationID is id of the reservation filter is required only
-// for daily grain. The properties/UsageDate for start date and end date. The filter supports 'le' and  'ge'
-func (client ReservationsSummariesClient) ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, filter string) (result ReservationSummariesListResultPage, err error) {
+// Parameters:
+// reservationOrderID - order Id of the reservation
+// reservationID - id of the reservation
+// grain - can be daily or monthly
+// filter - required only for daily grain. The properties/UsageDate for start date and end date. The filter
+// supports 'le' and  'ge'
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservation(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultPage, err error) {
 	result.fn = client.listByReservationOrderAndReservationNextResults
-	req, err := client.ListByReservationOrderAndReservationPreparer(ctx, reservationOrderID, reservationID, filter)
+	req, err := client.ListByReservationOrderAndReservationPreparer(ctx, reservationOrderID, reservationID, grain, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsSummariesClient", "ListByReservationOrderAndReservation", nil, "Failure preparing request")
 		return
@@ -165,7 +170,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderAndReservation(c
 }
 
 // ListByReservationOrderAndReservationPreparer prepares the ListByReservationOrderAndReservation request.
-func (client ReservationsSummariesClient) ListByReservationOrderAndReservationPreparer(ctx context.Context, reservationOrderID string, reservationID string, filter string) (*http.Request, error) {
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationPreparer(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationId":      autorest.Encode("path", reservationID),
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
@@ -174,7 +179,7 @@ func (client ReservationsSummariesClient) ListByReservationOrderAndReservationPr
 	const APIVersion = "2018-03-31"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"grain":       autorest.Encode("query", client.Grain),
+		"grain":       autorest.Encode("query", grain),
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
@@ -230,7 +235,7 @@ func (client ReservationsSummariesClient) listByReservationOrderAndReservationNe
 }
 
 // ListByReservationOrderAndReservationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ReservationsSummariesClient) ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, filter string) (result ReservationSummariesListResultIterator, err error) {
-	result.page, err = client.ListByReservationOrderAndReservation(ctx, reservationOrderID, reservationID, filter)
+func (client ReservationsSummariesClient) ListByReservationOrderAndReservationComplete(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, filter string) (result ReservationSummariesListResultIterator, err error) {
+	result.page, err = client.ListByReservationOrderAndReservation(ctx, reservationOrderID, reservationID, grain, filter)
 	return
 }

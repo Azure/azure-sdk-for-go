@@ -52,8 +52,8 @@ func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
 
 // DetectLanguage scores close to 1 indicate 100% certainty that the identified language is true. A total of 120
 // languages are supported.
-//
-// input is collection of documents to analyze.
+// Parameters:
+// input - collection of documents to analyze.
 func (client BaseClient) DetectLanguage(ctx context.Context, input BatchInput) (result LanguageBatchResult, err error) {
 	req, err := client.DetectLanguagePreparer(ctx, input)
 	if err != nil {
@@ -114,8 +114,8 @@ func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result La
 // KeyPhrases we employ techniques from Microsoft Office's sophisticated Natural Language Processing toolkit. See the
 // <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
 // Analytics Documentation</a> for details about the languages that are supported by key phrase extraction.
-//
-// input is collection of documents to analyze. Documents can now contain a language field to indicate the text
+// Parameters:
+// input - collection of documents to analyze. Documents can now contain a language field to indicate the text
 // language
 func (client BaseClient) KeyPhrases(ctx context.Context, input MultiLanguageBatchInput) (result KeyPhraseBatchResult, err error) {
 	req, err := client.KeyPhrasesPreparer(ctx, input)
@@ -179,8 +179,8 @@ func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhr
 // features generated from part-of-speech tags, and word embeddings. See the <a
 // href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
 // Analytics Documentation</a> for details about the languages that are supported by sentiment analysis.
-//
-// input is collection of documents to analyze.
+// Parameters:
+// input - collection of documents to analyze.
 func (client BaseClient) Sentiment(ctx context.Context, input MultiLanguageBatchInput) (result SentimentBatchResult, err error) {
 	req, err := client.SentimentPreparer(ctx, input)
 	if err != nil {

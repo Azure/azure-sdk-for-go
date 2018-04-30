@@ -29,7 +29,6 @@ type BaseClient = original.BaseClient
 type ConsumerGroupsClient = original.ConsumerGroupsClient
 type DisasterRecoveryConfigsClient = original.DisasterRecoveryConfigsClient
 type EventHubsClient = original.EventHubsClient
-type MessagingPlanClient = original.MessagingPlanClient
 type AccessRights = original.AccessRights
 
 const (
@@ -138,7 +137,7 @@ type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type MessagingPlan = original.MessagingPlan
-type MessagingPlanproperties = original.MessagingPlanproperties
+type MessagingPlanProperties = original.MessagingPlanProperties
 type MessagingRegions = original.MessagingRegions
 type MessagingRegionsListResult = original.MessagingRegionsListResult
 type MessagingRegionsListResultIterator = original.MessagingRegionsListResultIterator
@@ -184,12 +183,6 @@ func NewEventHubsClient(subscriptionID string) EventHubsClient {
 }
 func NewEventHubsClientWithBaseURI(baseURI string, subscriptionID string) EventHubsClient {
 	return original.NewEventHubsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMessagingPlanClient(subscriptionID string) MessagingPlanClient {
-	return original.NewMessagingPlanClient(subscriptionID)
-}
-func NewMessagingPlanClientWithBaseURI(baseURI string, subscriptionID string) MessagingPlanClient {
-	return original.NewMessagingPlanClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()

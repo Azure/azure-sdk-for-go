@@ -43,9 +43,11 @@ func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string) Conne
 }
 
 // CreateOrUpdate creates a connector or updates an existing connector in the hub.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub. connectorName is the name
-// of the connector. parameters is parameters supplied to the CreateOrUpdate Connector operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
+// connectorName - the name of the connector.
+// parameters - parameters supplied to the CreateOrUpdate Connector operation.
 func (client ConnectorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hubName string, connectorName string, parameters ConnectorResourceFormat) (result ConnectorsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: connectorName,
@@ -126,9 +128,10 @@ func (client ConnectorsClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes a connector in the hub.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub. connectorName is the name
-// of the connector.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
+// connectorName - the name of the connector.
 func (client ConnectorsClient) Delete(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result ConnectorsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, hubName, connectorName)
 	if err != nil {
@@ -195,9 +198,10 @@ func (client ConnectorsClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // Get gets a connector in the hub.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub. connectorName is the name
-// of the connector.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
+// connectorName - the name of the connector.
 func (client ConnectorsClient) Get(ctx context.Context, resourceGroupName string, hubName string, connectorName string) (result ConnectorResourceFormat, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, hubName, connectorName)
 	if err != nil {
@@ -263,8 +267,9 @@ func (client ConnectorsClient) GetResponder(resp *http.Response) (result Connect
 }
 
 // ListByHub gets all the connectors in the specified hub.
-//
-// resourceGroupName is the name of the resource group. hubName is the name of the hub.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the hub.
 func (client ConnectorsClient) ListByHub(ctx context.Context, resourceGroupName string, hubName string) (result ConnectorListResultPage, err error) {
 	result.fn = client.listByHubNextResults
 	req, err := client.ListByHubPreparer(ctx, resourceGroupName, hubName)

@@ -36,11 +36,13 @@ func NewAPIOperationClient() APIOperationClient {
 }
 
 // CreateOrUpdate creates a new operation in the API or updates an existing one.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. operationID is operation identifier within an API. Must be unique in the current
-// API Management service instance. parameters is create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// operationID - operation identifier within an API. Must be unique in the current API Management service
+// instance.
+// parameters - create parameters.
 func (client APIOperationClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters OperationContract) (result OperationContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -122,12 +124,14 @@ func (client APIOperationClient) CreateOrUpdateResponder(resp *http.Response) (r
 }
 
 // Delete deletes the specified operation in the API.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. operationID is operation identifier within an API. Must be unique in the current
-// API Management service instance. ifMatch is eTag of the API Operation Entity. ETag should match the current
-// entity state from the header response of the GET request or it should be * for unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// operationID - operation identifier within an API. Must be unique in the current API Management service
+// instance.
+// ifMatch - eTag of the API Operation Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
 func (client APIOperationClient) Delete(ctx context.Context, apimBaseURL string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -207,11 +211,12 @@ func (client APIOperationClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // Get gets the details of the API Operation specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. operationID is operation identifier within an API. Must be unique in the current
-// API Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// operationID - operation identifier within an API. Must be unique in the current API Management service
+// instance.
 func (client APIOperationClient) Get(ctx context.Context, apimBaseURL string, apiid string, operationID string) (result OperationContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -291,17 +296,18 @@ func (client APIOperationClient) GetResponder(resp *http.Response) (result Opera
 }
 
 // ListByAPI lists a collection of the operations for the specified API.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. filter is | Field       | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | name        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | method      | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | urlTemplate | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to return.
-// skip is number of records to skip.
+// | urlTemplate | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client APIOperationClient) ListByAPI(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (result OperationCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -419,13 +425,15 @@ func (client APIOperationClient) ListByAPIComplete(ctx context.Context, apimBase
 }
 
 // Update updates the details of the operation in the API specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. operationID is operation identifier within an API. Must be unique in the current
-// API Management service instance. parameters is API Operation Update parameters. ifMatch is eTag of the API
-// Operation Entity. ETag should match the current entity state from the header response of the GET request or it
-// should be * for unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// operationID - operation identifier within an API. Must be unique in the current API Management service
+// instance.
+// parameters - API Operation Update parameters.
+// ifMatch - eTag of the API Operation Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
 func (client APIOperationClient) Update(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters OperationUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

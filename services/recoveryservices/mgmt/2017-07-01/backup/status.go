@@ -40,8 +40,9 @@ func NewStatusClientWithBaseURI(baseURI string, subscriptionID string) StatusCli
 }
 
 // Get sends the get request.
-//
-// azureRegion is azure region to hit Api parameters is container Backup Status Request
+// Parameters:
+// azureRegion - azure region to hit Api
+// parameters - container Backup Status Request
 func (client StatusClient) Get(ctx context.Context, azureRegion string, parameters StatusRequest) (result StatusResponse, err error) {
 	req, err := client.GetPreparer(ctx, azureRegion, parameters)
 	if err != nil {

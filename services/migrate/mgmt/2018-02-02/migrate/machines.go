@@ -40,9 +40,10 @@ func NewMachinesClientWithBaseURI(baseURI string, subscriptionID string, acceptL
 }
 
 // Get get the machine with the specified name. Returns a json object of type 'machine' defined in Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project. machineName is unique name of a machine in private datacenter.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
+// machineName - unique name of a machine in private datacenter.
 func (client MachinesClient) Get(ctx context.Context, resourceGroupName string, projectName string, machineName string) (result Machine, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, projectName, machineName)
 	if err != nil {
@@ -113,9 +114,9 @@ func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, 
 
 // ListByProject get data of all the machines available in the project. Returns a json array of objects of type
 // 'machine' defined in Models section.
-//
-// resourceGroupName is name of the Azure Resource Group that project is part of. projectName is name of the Azure
-// Migrate project.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+// projectName - name of the Azure Migrate project.
 func (client MachinesClient) ListByProject(ctx context.Context, resourceGroupName string, projectName string) (result MachineResultList, err error) {
 	req, err := client.ListByProjectPreparer(ctx, resourceGroupName, projectName)
 	if err != nil {

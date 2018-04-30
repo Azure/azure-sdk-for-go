@@ -27,6 +27,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyRole enumerates the values for access policy role.
 type AccessPolicyRole string
 
@@ -37,11 +38,13 @@ const (
 	Reader AccessPolicyRole = "Reader"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleAccessPolicyRoleValues returns an array of possible values for the AccessPolicyRole const type.
 func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
 	return []AccessPolicyRole{Contributor, Reader}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Kind enumerates the values for kind.
 type Kind string
 
@@ -54,11 +57,13 @@ const (
 	KindMicrosoftIoTHub Kind = "Microsoft.IoTHub"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{KindEventSourceCreateOrUpdateParameters, KindMicrosoftEventHub, KindMicrosoftIoTHub}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // KindBasicEventSourceResource enumerates the values for kind basic event source resource.
 type KindBasicEventSourceResource string
 
@@ -71,11 +76,13 @@ const (
 	KindBasicEventSourceResourceKindMicrosoftIotHub KindBasicEventSourceResource = "Microsoft.IotHub"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleKindBasicEventSourceResourceValues returns an array of possible values for the KindBasicEventSourceResource const type.
 func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
 	return []KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIotHub}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // LocalTimestampFormat enumerates the values for local timestamp format.
 type LocalTimestampFormat string
 
@@ -88,11 +95,13 @@ const (
 	TimeSpan LocalTimestampFormat = "TimeSpan"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleLocalTimestampFormatValues returns an array of possible values for the LocalTimestampFormat const type.
 func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
 	return []LocalTimestampFormat{Embedded, Iana, TimeSpan}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -111,11 +120,13 @@ const (
 	Updating ProvisioningState = "Updating"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Accepted, Creating, Deleting, Failed, Succeeded, Updating}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataKeyPropertyType enumerates the values for reference data key property type.
 type ReferenceDataKeyPropertyType string
 
@@ -130,11 +141,13 @@ const (
 	String ReferenceDataKeyPropertyType = "String"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleReferenceDataKeyPropertyTypeValues returns an array of possible values for the ReferenceDataKeyPropertyType const type.
 func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
 	return []ReferenceDataKeyPropertyType{Bool, DateTime, Double, String}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // SkuName enumerates the values for sku name.
 type SkuName string
 
@@ -145,11 +158,13 @@ const (
 	S2 SkuName = "S2"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
 	return []SkuName{S1, S2}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
 type StorageLimitExceededBehavior string
 
@@ -160,16 +175,19 @@ const (
 	PurgeOldData StorageLimitExceededBehavior = "PurgeOldData"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyCreateOrUpdateParameters ...
 type AccessPolicyCreateOrUpdateParameters struct {
 	*AccessPolicyResourceProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for AccessPolicyCreateOrUpdateParameters.
 func (apcoup AccessPolicyCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -179,6 +197,7 @@ func (apcoup AccessPolicyCreateOrUpdateParameters) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyCreateOrUpdateParameters struct.
 func (apcoup *AccessPolicyCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -203,6 +222,7 @@ func (apcoup *AccessPolicyCreateOrUpdateParameters) UnmarshalJSON(body []byte) e
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyListResponse the response of the List access policies operation.
 type AccessPolicyListResponse struct {
 	autorest.Response `json:"-"`
@@ -210,6 +230,7 @@ type AccessPolicyListResponse struct {
 	Value *[]AccessPolicyResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyMutableProperties an object that represents a set of mutable access policy resource properties.
 type AccessPolicyMutableProperties struct {
 	// Description - An description of the access policy.
@@ -218,6 +239,7 @@ type AccessPolicyMutableProperties struct {
 	Roles *[]AccessPolicyRole `json:"roles,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyResource an access policy is used to grant users and applications access to the environment. Roles
 // are assigned to service principals in Azure Active Directory. These roles define the actions the principal can
 // perform through the Time Series Insights data plane APIs.
@@ -232,6 +254,7 @@ type AccessPolicyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for AccessPolicyResource.
 func (apr AccessPolicyResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -250,6 +273,7 @@ func (apr AccessPolicyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyResource struct.
 func (apr *AccessPolicyResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -301,6 +325,7 @@ func (apr *AccessPolicyResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyResourceProperties ...
 type AccessPolicyResourceProperties struct {
 	// PrincipalObjectID - The objectId of the principal in Azure Active Directory.
@@ -311,11 +336,13 @@ type AccessPolicyResourceProperties struct {
 	Roles *[]AccessPolicyRole `json:"roles,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AccessPolicyUpdateParameters ...
 type AccessPolicyUpdateParameters struct {
 	*AccessPolicyMutableProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for AccessPolicyUpdateParameters.
 func (apup AccessPolicyUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -325,6 +352,7 @@ func (apup AccessPolicyUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for AccessPolicyUpdateParameters struct.
 func (apup *AccessPolicyUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -349,6 +377,7 @@ func (apup *AccessPolicyUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AzureEventSourceProperties properties of an event source that reads events from an event broker in Azure.
 type AzureEventSourceProperties struct {
 	// EventSourceResourceID - The resource id of the event source in Azure Resource Manager.
@@ -361,11 +390,13 @@ type AzureEventSourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // CloudError contains information about an API error.
 type CloudError struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // CloudErrorBody describes a particular API error with an error code and a message.
 type CloudErrorBody struct {
 	// Code - An error code that describes the error condition more precisely than an HTTP status code. Can be used to programatically handle specific error cases.
@@ -378,6 +409,7 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure Resource
 // Manager.
 type CreateOrUpdateTrackedResourceProperties struct {
@@ -387,6 +419,7 @@ type CreateOrUpdateTrackedResourceProperties struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for CreateOrUpdateTrackedResourceProperties.
 func (coutrp CreateOrUpdateTrackedResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -399,6 +432,7 @@ func (coutrp CreateOrUpdateTrackedResourceProperties) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentCreateOrUpdateParameters parameters supplied to the CreateOrUpdate Environment operation.
 type EnvironmentCreateOrUpdateParameters struct {
 	Sku                            *Sku `json:"sku,omitempty"`
@@ -409,6 +443,7 @@ type EnvironmentCreateOrUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EnvironmentCreateOrUpdateParameters.
 func (ecoup EnvironmentCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -427,6 +462,7 @@ func (ecoup EnvironmentCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EnvironmentCreateOrUpdateParameters struct.
 func (ecoup *EnvironmentCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -478,6 +514,7 @@ func (ecoup *EnvironmentCreateOrUpdateParameters) UnmarshalJSON(body []byte) err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentCreationProperties properties used to create an environment.
 type EnvironmentCreationProperties struct {
 	// DataRetentionTime - ISO8601 timespan specifying the minimum number of days the environment's events will be available for query.
@@ -486,6 +523,7 @@ type EnvironmentCreationProperties struct {
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentListResponse the response of the List Environments operation.
 type EnvironmentListResponse struct {
 	autorest.Response `json:"-"`
@@ -493,12 +531,14 @@ type EnvironmentListResponse struct {
 	Value *[]EnvironmentResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentMutableProperties an object that represents a set of mutable environment resource properties.
 type EnvironmentMutableProperties struct {
 	// DataRetentionTime - ISO8601 timespan specifying the minimum number of days the environment's events will be available for query.
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentResource an environment is a set of time-series data avaliable for query, and is the top level Azure
 // Time Series Insights resource.
 type EnvironmentResource struct {
@@ -517,6 +557,7 @@ type EnvironmentResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EnvironmentResource.
 func (er EnvironmentResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -544,6 +585,7 @@ func (er EnvironmentResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EnvironmentResource struct.
 func (er *EnvironmentResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -622,6 +664,7 @@ func (er *EnvironmentResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentResourceProperties properties of the environment.
 type EnvironmentResourceProperties struct {
 	// DataRetentionTime - ISO8601 timespan specifying the minimum number of days the environment's events will be available for query.
@@ -638,6 +681,7 @@ type EnvironmentResourceProperties struct {
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type EnvironmentsCreateOrUpdateFuture struct {
@@ -645,6 +689,7 @@ type EnvironmentsCreateOrUpdateFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient) (er EnvironmentResource, err error) {
@@ -687,12 +732,14 @@ func (future EnvironmentsCreateOrUpdateFuture) Result(client EnvironmentsClient)
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EnvironmentsUpdateFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future EnvironmentsUpdateFuture) Result(client EnvironmentsClient) (er EnvironmentResource, err error) {
@@ -735,6 +782,7 @@ func (future EnvironmentsUpdateFuture) Result(client EnvironmentsClient) (er Env
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EnvironmentUpdateParameters parameters supplied to the Update Environment operation.
 type EnvironmentUpdateParameters struct {
 	// Sku - The sku of the environment.
@@ -745,6 +793,7 @@ type EnvironmentUpdateParameters struct {
 	*EnvironmentMutableProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EnvironmentUpdateParameters.
 func (eup EnvironmentUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -760,6 +809,7 @@ func (eup EnvironmentUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EnvironmentUpdateParameters struct.
 func (eup *EnvironmentUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -802,6 +852,7 @@ func (eup *EnvironmentUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceCommonProperties properties of the EventHub event source.
 type EventHubEventSourceCommonProperties struct {
 	// ServiceBusNamespace - The name of the service bus that contains the event hub.
@@ -822,6 +873,7 @@ type EventHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation
 // for an EventHub event source.
 type EventHubEventSourceCreateOrUpdateParameters struct {
@@ -834,6 +886,7 @@ type EventHubEventSourceCreateOrUpdateParameters struct {
 	Kind Kind `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventHubEventSourceCreateOrUpdateParameters.
 func (ehescoup EventHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	ehescoup.Kind = KindMicrosoftEventHub
@@ -853,26 +906,31 @@ func (ehescoup EventHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byt
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventHubEventSourceCreateOrUpdateParameters.
 func (ehescoup EventHubEventSourceCreateOrUpdateParameters) AsEventHubEventSourceCreateOrUpdateParameters() (*EventHubEventSourceCreateOrUpdateParameters, bool) {
 	return &ehescoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventHubEventSourceCreateOrUpdateParameters.
 func (ehescoup EventHubEventSourceCreateOrUpdateParameters) AsIoTHubEventSourceCreateOrUpdateParameters() (*IoTHubEventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventHubEventSourceCreateOrUpdateParameters.
 func (ehescoup EventHubEventSourceCreateOrUpdateParameters) AsEventSourceCreateOrUpdateParameters() (*EventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventHubEventSourceCreateOrUpdateParameters.
 func (ehescoup EventHubEventSourceCreateOrUpdateParameters) AsBasicEventSourceCreateOrUpdateParameters() (BasicEventSourceCreateOrUpdateParameters, bool) {
 	return &ehescoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EventHubEventSourceCreateOrUpdateParameters struct.
 func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -924,6 +982,7 @@ func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body 
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceCreationProperties properties of the EventHub event source that are required on create or
 // update requests.
 type EventHubEventSourceCreationProperties struct {
@@ -947,6 +1006,7 @@ type EventHubEventSourceCreationProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceMutableProperties an object that represents a set of mutable EventHub event source resource
 // properties.
 type EventHubEventSourceMutableProperties struct {
@@ -957,6 +1017,7 @@ type EventHubEventSourceMutableProperties struct {
 	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceResource an event source that receives its data from an Azure EventHub.
 type EventHubEventSourceResource struct {
 	*EventHubEventSourceResourceProperties `json:"properties,omitempty"`
@@ -974,6 +1035,7 @@ type EventHubEventSourceResource struct {
 	Kind KindBasicEventSourceResource `json:"kind,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventHubEventSourceResource.
 func (ehesr EventHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	ehesr.Kind = KindBasicEventSourceResourceKindMicrosoftEventHub
@@ -1002,26 +1064,31 @@ func (ehesr EventHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceResource is the BasicEventSourceResource implementation for EventHubEventSourceResource.
 func (ehesr EventHubEventSourceResource) AsEventHubEventSourceResource() (*EventHubEventSourceResource, bool) {
 	return &ehesr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceResource is the BasicEventSourceResource implementation for EventHubEventSourceResource.
 func (ehesr EventHubEventSourceResource) AsIoTHubEventSourceResource() (*IoTHubEventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceResource is the BasicEventSourceResource implementation for EventHubEventSourceResource.
 func (ehesr EventHubEventSourceResource) AsEventSourceResource() (*EventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceResource is the BasicEventSourceResource implementation for EventHubEventSourceResource.
 func (ehesr EventHubEventSourceResource) AsBasicEventSourceResource() (BasicEventSourceResource, bool) {
 	return &ehesr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EventHubEventSourceResource struct.
 func (ehesr *EventHubEventSourceResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1100,6 +1167,7 @@ func (ehesr *EventHubEventSourceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceResourceProperties properties of the EventHub event source resource.
 type EventHubEventSourceResourceProperties struct {
 	// ServiceBusNamespace - The name of the service bus that contains the event hub.
@@ -1120,6 +1188,7 @@ type EventHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
 // EventHub event source.
 type EventHubEventSourceUpdateParameters struct {
@@ -1129,6 +1198,7 @@ type EventHubEventSourceUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventHubEventSourceUpdateParameters.
 func (ehesup EventHubEventSourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1141,6 +1211,7 @@ func (ehesup EventHubEventSourceUpdateParameters) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EventHubEventSourceUpdateParameters struct.
 func (ehesup *EventHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1174,6 +1245,7 @@ func (ehesup *EventHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) er
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceCommonProperties properties of the event source.
 type EventSourceCommonProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
@@ -1184,6 +1256,7 @@ type EventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // BasicEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation.
 type BasicEventSourceCreateOrUpdateParameters interface {
 	AsEventHubEventSourceCreateOrUpdateParameters() (*EventHubEventSourceCreateOrUpdateParameters, bool)
@@ -1191,6 +1264,7 @@ type BasicEventSourceCreateOrUpdateParameters interface {
 	AsEventSourceCreateOrUpdateParameters() (*EventSourceCreateOrUpdateParameters, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation.
 type EventSourceCreateOrUpdateParameters struct {
 	// Kind - Possible values include: 'KindEventSourceCreateOrUpdateParameters', 'KindMicrosoftEventHub', 'KindMicrosoftIoTHub'
@@ -1242,6 +1316,7 @@ func unmarshalBasicEventSourceCreateOrUpdateParametersArray(body []byte) ([]Basi
 	return escoupArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventSourceCreateOrUpdateParameters.
 func (escoup EventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	escoup.Kind = KindEventSourceCreateOrUpdateParameters
@@ -1258,26 +1333,31 @@ func (escoup EventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventSourceCreateOrUpdateParameters.
 func (escoup EventSourceCreateOrUpdateParameters) AsEventHubEventSourceCreateOrUpdateParameters() (*EventHubEventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventSourceCreateOrUpdateParameters.
 func (escoup EventSourceCreateOrUpdateParameters) AsIoTHubEventSourceCreateOrUpdateParameters() (*IoTHubEventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventSourceCreateOrUpdateParameters.
 func (escoup EventSourceCreateOrUpdateParameters) AsEventSourceCreateOrUpdateParameters() (*EventSourceCreateOrUpdateParameters, bool) {
 	return &escoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for EventSourceCreateOrUpdateParameters.
 func (escoup EventSourceCreateOrUpdateParameters) AsBasicEventSourceCreateOrUpdateParameters() (BasicEventSourceCreateOrUpdateParameters, bool) {
 	return &escoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceListResponse the response of the List EventSources operation.
 type EventSourceListResponse struct {
 	autorest.Response `json:"-"`
@@ -1285,6 +1365,7 @@ type EventSourceListResponse struct {
 	Value *[]BasicEventSourceResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EventSourceListResponse struct.
 func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1308,6 +1389,7 @@ func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceMutableProperties an object that represents a set of mutable event source resource properties.
 type EventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
@@ -1315,6 +1397,7 @@ type EventSourceMutableProperties struct {
 	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // BasicEventSourceResource an environment receives data from one or more event sources. Each event source has
 // associated connection info that allows the Time Series Insights ingress pipeline to connect to and pull data from
 // the event source
@@ -1324,6 +1407,7 @@ type BasicEventSourceResource interface {
 	AsEventSourceResource() (*EventSourceResource, bool)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceResource an environment receives data from one or more event sources. Each event source has
 // associated connection info that allows the Time Series Insights ingress pipeline to connect to and pull data
 // from the event source
@@ -1384,6 +1468,7 @@ func unmarshalBasicEventSourceResourceArray(body []byte) ([]BasicEventSourceReso
 	return esrArray, nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventSourceResource.
 func (esr EventSourceResource) MarshalJSON() ([]byte, error) {
 	esr.Kind = KindBasicEventSourceResourceKindEventSourceResource
@@ -1409,32 +1494,38 @@ func (esr EventSourceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceResource is the BasicEventSourceResource implementation for EventSourceResource.
 func (esr EventSourceResource) AsEventHubEventSourceResource() (*EventHubEventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceResource is the BasicEventSourceResource implementation for EventSourceResource.
 func (esr EventSourceResource) AsIoTHubEventSourceResource() (*IoTHubEventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceResource is the BasicEventSourceResource implementation for EventSourceResource.
 func (esr EventSourceResource) AsEventSourceResource() (*EventSourceResource, bool) {
 	return &esr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceResource is the BasicEventSourceResource implementation for EventSourceResource.
 func (esr EventSourceResource) AsBasicEventSourceResource() (BasicEventSourceResource, bool) {
 	return &esr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceResourceModel ...
 type EventSourceResourceModel struct {
 	autorest.Response `json:"-"`
 	Value             BasicEventSourceResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for EventSourceResourceModel struct.
 func (esrm *EventSourceResourceModel) UnmarshalJSON(body []byte) error {
 	esr, err := unmarshalBasicEventSourceResource(body)
@@ -1446,12 +1537,14 @@ func (esrm *EventSourceResourceModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // EventSourceUpdateParameters parameters supplied to the Update Event Source operation.
 type EventSourceUpdateParameters struct {
 	// Tags - Key-value pairs of additional properties for the event source.
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for EventSourceUpdateParameters.
 func (esup EventSourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1461,6 +1554,7 @@ func (esup EventSourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceCommonProperties properties of the IoTHub event source.
 type IoTHubEventSourceCommonProperties struct {
 	// IotHubName - The name of the iot hub.
@@ -1479,6 +1573,7 @@ type IoTHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation for
 // an IoTHub event source.
 type IoTHubEventSourceCreateOrUpdateParameters struct {
@@ -1491,6 +1586,7 @@ type IoTHubEventSourceCreateOrUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for IoTHubEventSourceCreateOrUpdateParameters.
 func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	ithescoup.Kind = KindMicrosoftIoTHub
@@ -1510,26 +1606,31 @@ func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for IoTHubEventSourceCreateOrUpdateParameters.
 func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) AsEventHubEventSourceCreateOrUpdateParameters() (*EventHubEventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for IoTHubEventSourceCreateOrUpdateParameters.
 func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) AsIoTHubEventSourceCreateOrUpdateParameters() (*IoTHubEventSourceCreateOrUpdateParameters, bool) {
 	return &ithescoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for IoTHubEventSourceCreateOrUpdateParameters.
 func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) AsEventSourceCreateOrUpdateParameters() (*EventSourceCreateOrUpdateParameters, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceCreateOrUpdateParameters is the BasicEventSourceCreateOrUpdateParameters implementation for IoTHubEventSourceCreateOrUpdateParameters.
 func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) AsBasicEventSourceCreateOrUpdateParameters() (BasicEventSourceCreateOrUpdateParameters, bool) {
 	return &ithescoup, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for IoTHubEventSourceCreateOrUpdateParameters struct.
 func (ithescoup *IoTHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1581,6 +1682,7 @@ func (ithescoup *IoTHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body [
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceCreationProperties properties of the IoTHub event source that are required on create or update
 // requests.
 type IoTHubEventSourceCreationProperties struct {
@@ -1602,6 +1704,7 @@ type IoTHubEventSourceCreationProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source resource
 // properties.
 type IoTHubEventSourceMutableProperties struct {
@@ -1612,6 +1715,7 @@ type IoTHubEventSourceMutableProperties struct {
 	LocalTimestamp        *LocalTimestamp `json:"localTimestamp,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceResource an event source that receives its data from an Azure IoTHub.
 type IoTHubEventSourceResource struct {
 	*IoTHubEventSourceResourceProperties `json:"properties,omitempty"`
@@ -1629,6 +1733,7 @@ type IoTHubEventSourceResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	ithesr.Kind = KindBasicEventSourceResourceKindMicrosoftIotHub
@@ -1657,26 +1762,31 @@ func (ithesr IoTHubEventSourceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventHubEventSourceResource is the BasicEventSourceResource implementation for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) AsEventHubEventSourceResource() (*EventHubEventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsIoTHubEventSourceResource is the BasicEventSourceResource implementation for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) AsIoTHubEventSourceResource() (*IoTHubEventSourceResource, bool) {
 	return &ithesr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsEventSourceResource is the BasicEventSourceResource implementation for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) AsEventSourceResource() (*EventSourceResource, bool) {
 	return nil, false
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // AsBasicEventSourceResource is the BasicEventSourceResource implementation for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) AsBasicEventSourceResource() (BasicEventSourceResource, bool) {
 	return &ithesr, true
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for IoTHubEventSourceResource struct.
 func (ithesr *IoTHubEventSourceResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1755,6 +1865,7 @@ func (ithesr *IoTHubEventSourceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceResourceProperties properties of the IoTHub event source resource.
 type IoTHubEventSourceResourceProperties struct {
 	// IotHubName - The name of the iot hub.
@@ -1773,6 +1884,7 @@ type IoTHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IoTHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an IoTHub
 // event source.
 type IoTHubEventSourceUpdateParameters struct {
@@ -1782,6 +1894,7 @@ type IoTHubEventSourceUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for IoTHubEventSourceUpdateParameters.
 func (ithesup IoTHubEventSourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1794,6 +1907,7 @@ func (ithesup IoTHubEventSourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for IoTHubEventSourceUpdateParameters struct.
 func (ithesup *IoTHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1827,6 +1941,7 @@ func (ithesup *IoTHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) err
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // LocalTimestamp an object that represents the local timestamp property. It contains the format of local timestamp
 // that needs to be used and the corresponding timezone offset information. If a value isn't specified for
 // localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
@@ -1837,6 +1952,7 @@ type LocalTimestamp struct {
 	TimeZoneOffset *LocalTimestampTimeZoneOffset `json:"timeZoneOffset,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp format
 // specified. Should not be specified for LocalTimestampFormat - Embedded.
 type LocalTimestampTimeZoneOffset struct {
@@ -1844,6 +1960,7 @@ type LocalTimestampTimeZoneOffset struct {
 	PropertyName *string `json:"propertyName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Operation a Time Series Insights REST API operation
 type Operation struct {
 	// Name - The name of the operation being performed on this particular object.
@@ -1852,6 +1969,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // OperationDisplay contains the localized display information for this particular operation / action.
 type OperationDisplay struct {
 	// Provider - The localized friendly form of the resource provider name.
@@ -1864,6 +1982,7 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // OperationListResult result of the request to list Time Series Insights operations. It contains a list of
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
@@ -1874,12 +1993,14 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // OperationListResultIterator provides access to a complete listing of Operation values.
 type OperationListResultIterator struct {
 	i    int
 	page OperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListResultIterator) Next() error {
@@ -1896,16 +2017,19 @@ func (iter *OperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListResultIterator) Response() OperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListResultIterator) Value() Operation {
@@ -1915,6 +2039,7 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -1932,12 +2057,14 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 		autorest.WithBaseURL(to.String(olr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
 	fn  func(OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListResultPage) Next() error {
@@ -1949,16 +2076,19 @@ func (page *OperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListResultPage) NotDone() bool {
 	return !page.olr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListResultPage) Response() OperationListResult {
 	return page.olr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListResultPage) Values() []Operation {
 	if page.olr.IsEmpty() {
@@ -1967,6 +2097,7 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetCreateOrUpdateParameters ...
 type ReferenceDataSetCreateOrUpdateParameters struct {
 	*ReferenceDataSetCreationProperties `json:"properties,omitempty"`
@@ -1976,6 +2107,7 @@ type ReferenceDataSetCreateOrUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for ReferenceDataSetCreateOrUpdateParameters.
 func (rdscoup ReferenceDataSetCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1991,6 +2123,7 @@ func (rdscoup ReferenceDataSetCreateOrUpdateParameters) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for ReferenceDataSetCreateOrUpdateParameters struct.
 func (rdscoup *ReferenceDataSetCreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2033,12 +2166,14 @@ func (rdscoup *ReferenceDataSetCreateOrUpdateParameters) UnmarshalJSON(body []by
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetCreationProperties properties used to create a reference data set.
 type ReferenceDataSetCreationProperties struct {
 	// KeyProperties - The list of key properties for the reference data set.
 	KeyProperties *[]ReferenceDataSetKeyProperty `json:"keyProperties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetKeyProperty a key property for the reference data set. A reference data set can have multiple
 // key properties.
 type ReferenceDataSetKeyProperty struct {
@@ -2048,6 +2183,7 @@ type ReferenceDataSetKeyProperty struct {
 	Type ReferenceDataKeyPropertyType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetListResponse the response of the List Reference Data Sets operation.
 type ReferenceDataSetListResponse struct {
 	autorest.Response `json:"-"`
@@ -2055,6 +2191,7 @@ type ReferenceDataSetListResponse struct {
 	Value *[]ReferenceDataSetResource `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetResource a reference data set provides metadata about the events in an environment. Metadata in
 // the reference data set will be joined with events as they are read from event sources. The metadata that makes
 // up the reference data set is uploaded or modified through the Time Series Insights data plane APIs.
@@ -2073,6 +2210,7 @@ type ReferenceDataSetResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for ReferenceDataSetResource.
 func (rdsr ReferenceDataSetResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2097,6 +2235,7 @@ func (rdsr ReferenceDataSetResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // UnmarshalJSON is the custom unmarshaler for ReferenceDataSetResource struct.
 func (rdsr *ReferenceDataSetResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2166,6 +2305,7 @@ func (rdsr *ReferenceDataSetResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetResourceProperties properties of the reference data set.
 type ReferenceDataSetResourceProperties struct {
 	// KeyProperties - The list of key properties for the reference data set.
@@ -2176,12 +2316,14 @@ type ReferenceDataSetResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ReferenceDataSetUpdateParameters parameters supplied to the Update Reference Data Set operation.
 type ReferenceDataSetUpdateParameters struct {
 	// Tags - Key-value pairs of additional properties for the reference data set.
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for ReferenceDataSetUpdateParameters.
 func (rdsup ReferenceDataSetUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2191,6 +2333,7 @@ func (rdsup ReferenceDataSetUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Resource time Series Insights resource
 type Resource struct {
 	// ID - Resource Id
@@ -2201,6 +2344,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // ResourceProperties properties that are common to all tracked resources.
 type ResourceProperties struct {
 	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
@@ -2209,6 +2353,7 @@ type ResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // Sku the sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and
 // the billing rate.
 type Sku struct {
@@ -2218,6 +2363,7 @@ type Sku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // TrackedResource time Series Insights resource that is tracked by Azure Resource Manager.
 type TrackedResource struct {
 	// Location - Resource location
@@ -2232,6 +2378,7 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights instead.
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

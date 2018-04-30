@@ -41,10 +41,11 @@ func NewUserClientWithBaseURI(baseURI string, subscriptionID string) UserClient 
 }
 
 // CreateOrUpdate creates or Updates a user.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance. parameters is create or
-// update parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - create or update parameters.
 func (client UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserCreateParameters) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -139,11 +140,13 @@ func (client UserClient) CreateOrUpdateResponder(resp *http.Response) (result Us
 }
 
 // Delete deletes specific user.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance. ifMatch is the entity state
-// (Etag) version of the user to delete. A value of "*" can be used for If-Match to unconditionally apply the
-// operation. deleteSubscriptions is whether to delete user's subscription or not.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the user to delete. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
+// deleteSubscriptions - whether to delete user's subscription or not.
 func (client UserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, UID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -225,9 +228,10 @@ func (client UserClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // GenerateSsoURL retrieves a redirection URL containing an authentication token for signing a given user into the
 // developer portal.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result GenerateSsoURLResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -305,9 +309,10 @@ func (client UserClient) GenerateSsoURLResponder(resp *http.Response) (result Ge
 }
 
 // Get gets the details of the user specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserClient) Get(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -385,9 +390,10 @@ func (client UserClient) GetResponder(resp *http.Response) (result UserContract,
 }
 
 // GetEntityTag gets the entity state (Etag) version of the user specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, UID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -464,10 +470,11 @@ func (client UserClient) GetEntityTagResponder(resp *http.Response) (result auto
 }
 
 // GetSharedAccessToken gets the Shared Access Authorization Token for the User.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance. parameters is create
-// Authorization Token parameters.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - create Authorization Token parameters.
 func (client UserClient) GetSharedAccessToken(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserTokenParameters) (result UserTokenResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -549,9 +556,10 @@ func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (res
 }
 
 // ListByService lists a collection of registered users in the specified service instance.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// filter is | Field            | Supported operators    | Supported functions               |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// filter - | Field            | Supported operators    | Supported functions               |
 // |------------------|------------------------|-----------------------------------|
 // | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
@@ -559,8 +567,9 @@ func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (res
 // | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | state            | eq                     | N/A                               |
 // | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
-// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of
-// records to return. skip is number of records to skip.
+// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client UserClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result UserCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -676,11 +685,13 @@ func (client UserClient) ListByServiceComplete(ctx context.Context, resourceGrou
 }
 
 // Update updates the details of the user specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. UID
-// is user identifier. Must be unique in the current API Management service instance. parameters is update
-// parameters. ifMatch is the entity state (Etag) version of the user to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the user to update. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client UserClient) Update(ctx context.Context, resourceGroupName string, serviceName string, UID string, parameters UserUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

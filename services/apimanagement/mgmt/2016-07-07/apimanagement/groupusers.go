@@ -41,10 +41,11 @@ func NewGroupUsersClientWithBaseURI(baseURI string, subscriptionID string) Group
 }
 
 // Add adds a user to the specified group.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. UID is user
-// identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client GroupUsersClient) Add(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -127,10 +128,11 @@ func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBo
 }
 
 // ListByGroup lists a collection of the members of the group, specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. filter is | Field
-// | Supported operators    | Supported functions               |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// filter - | Field            | Supported operators    | Supported functions               |
 // |------------------|------------------------|-----------------------------------|
 // | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
@@ -138,8 +140,9 @@ func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBo
 // | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | state            | eq                     | N/A                               |
 // | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
-// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of
-// records to return. skip is number of records to skip.
+// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client GroupUsersClient) ListByGroup(ctx context.Context, resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result UserCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -260,10 +263,11 @@ func (client GroupUsersClient) ListByGroupComplete(ctx context.Context, resource
 }
 
 // Remove remove existing user from existing group.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// groupID is group identifier. Must be unique in the current API Management service instance. UID is user
-// identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client GroupUsersClient) Remove(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

@@ -540,6 +540,57 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	return []UpgradeMode{Automatic, Manual, Rolling}
 }
 
+// UpgradeOperationInvoker enumerates the values for upgrade operation invoker.
+type UpgradeOperationInvoker string
+
+const (
+	// Platform ...
+	Platform UpgradeOperationInvoker = "Platform"
+	// Unknown ...
+	Unknown UpgradeOperationInvoker = "Unknown"
+	// User ...
+	User UpgradeOperationInvoker = "User"
+)
+
+// PossibleUpgradeOperationInvokerValues returns an array of possible values for the UpgradeOperationInvoker const type.
+func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
+	return []UpgradeOperationInvoker{Platform, Unknown, User}
+}
+
+// UpgradeState enumerates the values for upgrade state.
+type UpgradeState string
+
+const (
+	// UpgradeStateCancelled ...
+	UpgradeStateCancelled UpgradeState = "Cancelled"
+	// UpgradeStateCompleted ...
+	UpgradeStateCompleted UpgradeState = "Completed"
+	// UpgradeStateFaulted ...
+	UpgradeStateFaulted UpgradeState = "Faulted"
+	// UpgradeStateRollingForward ...
+	UpgradeStateRollingForward UpgradeState = "RollingForward"
+)
+
+// PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
+func PossibleUpgradeStateValues() []UpgradeState {
+	return []UpgradeState{UpgradeStateCancelled, UpgradeStateCompleted, UpgradeStateFaulted, UpgradeStateRollingForward}
+}
+
+// VirtualMachineEvictionPolicyTypes enumerates the values for virtual machine eviction policy types.
+type VirtualMachineEvictionPolicyTypes string
+
+const (
+	// Deallocate ...
+	Deallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
+	// Delete ...
+	Delete VirtualMachineEvictionPolicyTypes = "Delete"
+)
+
+// PossibleVirtualMachineEvictionPolicyTypesValues returns an array of possible values for the VirtualMachineEvictionPolicyTypes const type.
+func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
+	return []VirtualMachineEvictionPolicyTypes{Deallocate, Delete}
+}
+
 // VirtualMachinePriorityTypes enumerates the values for virtual machine priority types.
 type VirtualMachinePriorityTypes string
 
@@ -1192,13 +1243,7 @@ type AvailabilitySetProperties struct {
 }
 
 // AvailabilitySetUpdate specifies information about the availability set that the virtual machine should be
-// assigned to. Virtual machines specified in the same availability set are allocated to different nodes to
-// maximize availability. For more information about availability sets, see [Manage the availability of virtual
-// machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-// <br><br> For more information on Azure planned maintainance, see [Planned maintenance for virtual machines in
-// Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-// <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added
-// to an availability set.
+// assigned to. Only tags may be updated.
 type AvailabilitySetUpdate struct {
 	*AvailabilitySetProperties `json:"properties,omitempty"`
 	// Sku - Sku of the availability set
@@ -2822,8 +2867,7 @@ func (future ImagesUpdateFuture) Result(client ImagesClient) (i Image, err error
 	return
 }
 
-// ImageUpdate the source user image virtual hard disk. The virtual hard disk will be copied before being attached
-// to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
+// ImageUpdate the source user image virtual hard disk. Only tags may be updated.
 type ImageUpdate struct {
 	*ImageProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
@@ -3733,6 +3777,16 @@ func (ru ResourceUpdate) MarshalJSON() ([]byte, error) {
 		objectMap["sku"] = ru.Sku
 	}
 	return json.Marshal(objectMap)
+}
+
+// RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation
+type RollbackStatusInfo struct {
+	// SuccessfullyRolledbackInstanceCount - The number of instances which have been successfully rolled back.
+	SuccessfullyRolledbackInstanceCount *int32 `json:"successfullyRolledbackInstanceCount,omitempty"`
+	// FailedRolledbackInstanceCount - The number of instances which failed to rollback.
+	FailedRolledbackInstanceCount *int32 `json:"failedRolledbackInstanceCount,omitempty"`
+	// RollbackError - Error Details if OS rollback failed.
+	RollbackError *APIError `json:"rollbackError,omitempty"`
 }
 
 // RollingUpgradePolicy the configuration parameters used while performing a rolling upgrade.
@@ -4808,6 +4862,42 @@ func (ur UpdateResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = ur.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UpgradeOperationHistoricalStatusInfo virtual Machine Scale Set OS Upgrade History operation response.
+type UpgradeOperationHistoricalStatusInfo struct {
+	// Properties - Information about the properties of the upgrade operation.
+	Properties *UpgradeOperationHistoricalStatusInfoProperties `json:"properties,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+}
+
+// UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale Set.
+type UpgradeOperationHistoricalStatusInfoProperties struct {
+	// RunningStatus - Information about the overall status of the upgrade operation.
+	RunningStatus *UpgradeOperationHistoryStatus `json:"runningStatus,omitempty"`
+	// Progress - Counts of the VM's in each state.
+	Progress *RollingUpgradeProgressInfo `json:"progress,omitempty"`
+	// Error - Error Details for this upgrade if there are any.
+	Error *APIError `json:"error,omitempty"`
+	// StartedBy - Invoker of the Upgrade Operation. Possible values include: 'Unknown', 'User', 'Platform'
+	StartedBy UpgradeOperationInvoker `json:"startedBy,omitempty"`
+	// TargetImageReference - Image Reference details
+	TargetImageReference *ImageReference `json:"targetImageReference,omitempty"`
+	// RollbackInfo - Information about OS rollback if performed
+	RollbackInfo *RollbackStatusInfo `json:"rollbackInfo,omitempty"`
+}
+
+// UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.
+type UpgradeOperationHistoryStatus struct {
+	// Code - Code indicating the current status of the upgrade. Possible values include: 'UpgradeStateRollingForward', 'UpgradeStateCancelled', 'UpgradeStateCompleted', 'UpgradeStateFaulted'
+	Code UpgradeState `json:"code,omitempty"`
+	// StartTime - Start time of the upgrade.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - End time of the upgrade.
+	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
 // UpgradePolicy describes an upgrade policy - automatic, manual, or rolling.
@@ -6504,6 +6594,110 @@ type VirtualMachineScaleSetIPConfigurationProperties struct {
 	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 	// LoadBalancerInboundNatPools - Specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer
 	LoadBalancerInboundNatPools *[]SubResource `json:"loadBalancerInboundNatPools,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistory list of Virtual Machine Scale Set OS Upgrade History operation
+// response.
+type VirtualMachineScaleSetListOSUpgradeHistory struct {
+	autorest.Response `json:"-"`
+	// Value - The list of OS upgrades performed on the virtual machine scale set.
+	Value *[]UpgradeOperationHistoricalStatusInfo `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to fetch the next page of history of upgrades.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryIterator provides access to a complete listing of
+// UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryIterator struct {
+	i    int
+	page VirtualMachineScaleSetListOSUpgradeHistoryPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *VirtualMachineScaleSetListOSUpgradeHistoryIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter VirtualMachineScaleSetListOSUpgradeHistoryIterator) Value() UpgradeOperationHistoricalStatusInfo {
+	if !iter.page.NotDone() {
+		return UpgradeOperationHistoricalStatusInfo{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) IsEmpty() bool {
+	return vmsslouh.Value == nil || len(*vmsslouh.Value) == 0
+}
+
+// virtualMachineScaleSetListOSUpgradeHistoryPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (vmsslouh VirtualMachineScaleSetListOSUpgradeHistory) virtualMachineScaleSetListOSUpgradeHistoryPreparer() (*http.Request, error) {
+	if vmsslouh.NextLink == nil || len(to.String(vmsslouh.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(vmsslouh.NextLink)))
+}
+
+// VirtualMachineScaleSetListOSUpgradeHistoryPage contains a page of UpgradeOperationHistoricalStatusInfo values.
+type VirtualMachineScaleSetListOSUpgradeHistoryPage struct {
+	fn       func(VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)
+	vmsslouh VirtualMachineScaleSetListOSUpgradeHistory
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *VirtualMachineScaleSetListOSUpgradeHistoryPage) Next() error {
+	next, err := page.fn(page.vmsslouh)
+	if err != nil {
+		return err
+	}
+	page.vmsslouh = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) NotDone() bool {
+	return !page.vmsslouh.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Response() VirtualMachineScaleSetListOSUpgradeHistory {
+	return page.vmsslouh
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOperationHistoricalStatusInfo {
+	if page.vmsslouh.IsEmpty() {
+		return nil
+	}
+	return *page.vmsslouh.Value
 }
 
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.
@@ -8543,6 +8737,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	LicenseType *string `json:"licenseType,omitempty"`
 	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.
@@ -9680,7 +9876,7 @@ func (future VirtualMachinesUpdateFuture) Result(client VirtualMachinesClient) (
 	return
 }
 
-// VirtualMachineUpdate describes a Virtual Machine.
+// VirtualMachineUpdate describes a Virtual Machine Update.
 type VirtualMachineUpdate struct {
 	// Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
 	Plan                      *Plan `json:"plan,omitempty"`

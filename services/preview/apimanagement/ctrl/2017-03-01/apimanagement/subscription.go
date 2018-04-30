@@ -36,11 +36,13 @@ func NewSubscriptionClient() SubscriptionClient {
 }
 
 // CreateOrUpdate creates or updates the subscription of specified user to the specified product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management. parameters is create parameters. notify is notify
-// the subscriber of the subscription state change to Submitted or Active state.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
+// parameters - create parameters.
+// notify - notify the subscriber of the subscription state change to Submitted or Active state.
 func (client SubscriptionClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, sid string, parameters SubscriptionCreateParameters, notify string) (result SubscriptionContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,
@@ -136,12 +138,13 @@ func (client SubscriptionClient) CreateOrUpdateResponder(resp *http.Response) (r
 }
 
 // Delete deletes the specified subscription.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management. ifMatch is eTag of the Subscription Entity. ETag
-// should match the current entity state from the header response of the GET request or it should be * for
-// unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
+// ifMatch - eTag of the Subscription Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
 func (client SubscriptionClient) Delete(ctx context.Context, apimBaseURL string, sid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,
@@ -215,10 +218,11 @@ func (client SubscriptionClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // Get gets the specified Subscription entity.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
 func (client SubscriptionClient) Get(ctx context.Context, apimBaseURL string, sid string) (result SubscriptionContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,
@@ -292,18 +296,19 @@ func (client SubscriptionClient) GetResponder(resp *http.Response) (result Subsc
 }
 
 // List lists all subscriptions of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field        | Supported operators    | Supported
-// functions                         |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field        | Supported operators    | Supported functions                         |
 // |--------------|------------------------|---------------------------------------------|
 // | id           | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | stateComment | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | userId       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | productId    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | state        | eq                     |                                             | top is number of records
-// to return. skip is number of records to skip.
+// | state        | eq                     |                                             |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client SubscriptionClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result SubscriptionCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -413,10 +418,11 @@ func (client SubscriptionClient) ListComplete(ctx context.Context, apimBaseURL s
 }
 
 // RegeneratePrimaryKey regenerates primary key of existing subscription of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
 func (client SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, apimBaseURL string, sid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,
@@ -489,10 +495,11 @@ func (client SubscriptionClient) RegeneratePrimaryKeyResponder(resp *http.Respon
 }
 
 // RegenerateSecondaryKey regenerates secondary key of existing subscription of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
 func (client SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, apimBaseURL string, sid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,
@@ -565,13 +572,15 @@ func (client SubscriptionClient) RegenerateSecondaryKeyResponder(resp *http.Resp
 }
 
 // Update updates the details of a subscription specificied by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. sid is subscription entity Identifier. The entity represents the
-// association between a user and a product in API Management. parameters is update parameters. ifMatch is eTag of
-// the Subscription Entity. ETag should match the current entity state from the header response of the GET request
-// or it should be * for unconditional update. notify is notify the subscriber of the subscription state change to
-// Submitted or Active state.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// sid - subscription entity Identifier. The entity represents the association between a user and a product in
+// API Management.
+// parameters - update parameters.
+// ifMatch - eTag of the Subscription Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
+// notify - notify the subscriber of the subscription state change to Submitted or Active state.
 func (client SubscriptionClient) Update(ctx context.Context, apimBaseURL string, sid string, parameters SubscriptionUpdateParameters, ifMatch string, notify string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sid,

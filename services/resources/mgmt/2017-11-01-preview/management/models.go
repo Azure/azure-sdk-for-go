@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ChildType enumerates the values for child type.
 type ChildType string
 
@@ -35,11 +36,13 @@ const (
 	ChildTypeSubscription ChildType = "Subscription"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // PossibleChildTypeValues returns an array of possible values for the ChildType const type.
 func PossibleChildTypeValues() []ChildType {
 	return []ChildType{ChildTypeManagementGroup, ChildTypeSubscription}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ChildInfo the child information of a management group.
 type ChildInfo struct {
 	// ChildType - Possible values include: 'ChildTypeManagementGroup', 'ChildTypeSubscription'
@@ -52,6 +55,7 @@ type ChildInfo struct {
 	Children *[]ChildInfo `json:"children,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // CreateManagementGroupRequest management group creation parameters.
 type CreateManagementGroupRequest struct {
 	// DisplayName - The friendly name of the management group.
@@ -60,6 +64,7 @@ type CreateManagementGroupRequest struct {
 	ParentID *string `json:"parentId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Details the details of a management group.
 type Details struct {
 	// Version - The version number of the object.
@@ -71,6 +76,7 @@ type Details struct {
 	Parent    *ParentGroupInfo `json:"parent,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - One of a server-defined set of error codes.
@@ -79,11 +85,13 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ErrorResponse the error object.
 type ErrorResponse struct {
 	Error *ErrorDetails `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Info the management group resource.
 type Info struct {
 	// ID - The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
@@ -95,6 +103,7 @@ type Info struct {
 	*InfoProperties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // MarshalJSON is the custom marshaler for Info.
 func (i Info) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -113,6 +122,7 @@ func (i Info) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // UnmarshalJSON is the custom unmarshaler for Info struct.
 func (i *Info) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -164,6 +174,7 @@ func (i *Info) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // InfoProperties the generic properties of a management group.
 type InfoProperties struct {
 	// TenantID - The AAD Tenant ID associated with the management group. For example, 00000000-0000-0000-0000-000000000000
@@ -172,6 +183,7 @@ type InfoProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ListResult describes the result of the request to list management groups.
 type ListResult struct {
 	autorest.Response `json:"-"`
@@ -181,12 +193,14 @@ type ListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ListResultIterator provides access to a complete listing of Info values.
 type ListResultIterator struct {
 	i    int
 	page ListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ListResultIterator) Next() error {
@@ -203,16 +217,19 @@ func (iter *ListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Response returns the raw server response from the last page request.
 func (iter ListResultIterator) Response() ListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ListResultIterator) Value() Info {
@@ -222,6 +239,7 @@ func (iter ListResultIterator) Value() Info {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
@@ -239,12 +257,14 @@ func (lr ListResult) listResultPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(lr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ListResultPage contains a page of Info values.
 type ListResultPage struct {
 	fn func(ListResult) (ListResult, error)
 	lr ListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ListResultPage) Next() error {
@@ -256,16 +276,19 @@ func (page *ListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ListResultPage) NotDone() bool {
 	return !page.lr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Response returns the raw server response from the last page request.
 func (page ListResultPage) Response() ListResult {
 	return page.lr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ListResultPage) Values() []Info {
 	if page.lr.IsEmpty() {
@@ -274,6 +297,7 @@ func (page ListResultPage) Values() []Info {
 	return *page.lr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ManagementGroup the management group details.
 type ManagementGroup struct {
 	autorest.Response `json:"-"`
@@ -286,6 +310,7 @@ type ManagementGroup struct {
 	*Properties `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // MarshalJSON is the custom marshaler for ManagementGroup.
 func (mg ManagementGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -304,6 +329,7 @@ func (mg ManagementGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // UnmarshalJSON is the custom unmarshaler for ManagementGroup struct.
 func (mg *ManagementGroup) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -355,6 +381,7 @@ func (mg *ManagementGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Operation operation supported by the Microsoft.Management resource provider.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}.
@@ -363,6 +390,7 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - The name of the provider.
@@ -375,6 +403,7 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // OperationListResult describes the result of the request to list Microsoft.Management operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -384,12 +413,14 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // OperationListResultIterator provides access to a complete listing of Operation values.
 type OperationListResultIterator struct {
 	i    int
 	page OperationListResultPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListResultIterator) Next() error {
@@ -406,16 +437,19 @@ func (iter *OperationListResultIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListResultIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListResultIterator) Response() OperationListResult {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListResultIterator) Value() Operation {
@@ -425,6 +459,7 @@ func (iter OperationListResultIterator) Value() Operation {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -442,12 +477,14 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 		autorest.WithBaseURL(to.String(olr.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // OperationListResultPage contains a page of Operation values.
 type OperationListResultPage struct {
 	fn  func(OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListResultPage) Next() error {
@@ -459,16 +496,19 @@ func (page *OperationListResultPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListResultPage) NotDone() bool {
 	return !page.olr.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListResultPage) Response() OperationListResult {
 	return page.olr
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListResultPage) Values() []Operation {
 	if page.olr.IsEmpty() {
@@ -477,6 +517,7 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // ParentGroupInfo (Optional) The ID of the parent management group.
 type ParentGroupInfo struct {
 	// ParentID - The fully qualified ID for the parent management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
@@ -485,6 +526,7 @@ type ParentGroupInfo struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/management instead.
 // Properties the generic properties of a management group.
 type Properties struct {
 	// TenantID - The AAD Tenant ID associated with the management group. For example, 00000000-0000-0000-0000-000000000000

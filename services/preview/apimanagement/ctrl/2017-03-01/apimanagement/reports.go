@@ -36,10 +36,12 @@ func NewReportsClient() ReportsClient {
 }
 
 // ListByAPI lists report records by API.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByAPI(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -147,10 +149,12 @@ func (client ReportsClient) ListByAPIComplete(ctx context.Context, apimBaseURL s
 }
 
 // ListByGeo lists report records by GeoGraphy.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByGeo(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -260,10 +264,12 @@ func (client ReportsClient) ListByGeoComplete(ctx context.Context, apimBaseURL s
 }
 
 // ListByOperation lists report records by API Operations.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByOperation(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -371,10 +377,12 @@ func (client ReportsClient) ListByOperationComplete(ctx context.Context, apimBas
 }
 
 // ListByProduct lists report records by Product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByProduct(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -482,10 +490,12 @@ func (client ReportsClient) ListByProductComplete(ctx context.Context, apimBaseU
 }
 
 // ListByRequest lists report records by Request.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByRequest(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result RequestReportCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -565,10 +575,12 @@ func (client ReportsClient) ListByRequestResponder(resp *http.Response) (result 
 }
 
 // ListBySubscription lists report records by subscription.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListBySubscription(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -678,13 +690,15 @@ func (client ReportsClient) ListBySubscriptionComplete(ctx context.Context, apim
 }
 
 // ListByTime lists report records by Time.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. interval is by time interval. Interval must be multiple of 15
-// minutes and may not be zero. The value should be in ISO  8601 format
-// (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval
-// string: XmlConvert.ToString(new TimeSpan(hours, minutes, secconds)) filter is the filter to apply on the
-// operation. top is number of records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// interval - by time interval. Interval must be multiple of 15 minutes and may not be zero. The value should
+// be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
+// TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, secconds))
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByTime(ctx context.Context, apimBaseURL string, interval string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -795,10 +809,12 @@ func (client ReportsClient) ListByTimeComplete(ctx context.Context, apimBaseURL 
 }
 
 // ListByUser lists report records by User.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is the filter to apply on the operation. top is number of
-// records to return. skip is number of records to skip.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - the filter to apply on the operation.
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ReportsClient) ListByUser(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,

@@ -40,9 +40,10 @@ func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // CreateOrUpdate creates or updates an integration account.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
-// integrationAccount is the integration account.
+// Parameters:
+// resourceGroupName - the resource group name.
+// integrationAccountName - the integration account name.
+// integrationAccount - the integration account.
 func (client IntegrationAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {
@@ -109,8 +110,9 @@ func (client IntegrationAccountsClient) CreateOrUpdateResponder(resp *http.Respo
 }
 
 // Delete deletes an integration account.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// Parameters:
+// resourceGroupName - the resource group name.
+// integrationAccountName - the integration account name.
 func (client IntegrationAccountsClient) Delete(ctx context.Context, resourceGroupName string, integrationAccountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, integrationAccountName)
 	if err != nil {
@@ -174,8 +176,9 @@ func (client IntegrationAccountsClient) DeleteResponder(resp *http.Response) (re
 }
 
 // Get gets an integration account.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// Parameters:
+// resourceGroupName - the resource group name.
+// integrationAccountName - the integration account name.
 func (client IntegrationAccountsClient) Get(ctx context.Context, resourceGroupName string, integrationAccountName string) (result IntegrationAccount, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, integrationAccountName)
 	if err != nil {
@@ -240,9 +243,10 @@ func (client IntegrationAccountsClient) GetResponder(resp *http.Response) (resul
 }
 
 // GetCallbackURL gets the integration account callback URL.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. parameters
-// is the callback URL parameters.
+// Parameters:
+// resourceGroupName - the resource group name.
+// integrationAccountName - the integration account name.
+// parameters - the callback URL parameters.
 func (client IntegrationAccountsClient) GetCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (result CallbackURL, err error) {
 	req, err := client.GetCallbackURLPreparer(ctx, resourceGroupName, integrationAccountName, parameters)
 	if err != nil {
@@ -309,8 +313,9 @@ func (client IntegrationAccountsClient) GetCallbackURLResponder(resp *http.Respo
 }
 
 // ListByResourceGroup gets a list of integration accounts by resource group.
-//
-// resourceGroupName is the resource group name. top is the number of items to be included in the result.
+// Parameters:
+// resourceGroupName - the resource group name.
+// top - the number of items to be included in the result.
 func (client IntegrationAccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, top *int32) (result IntegrationAccountListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, top)
@@ -405,8 +410,8 @@ func (client IntegrationAccountsClient) ListByResourceGroupComplete(ctx context.
 }
 
 // ListBySubscription gets a list of integration accounts by subscription.
-//
-// top is the number of items to be included in the result.
+// Parameters:
+// top - the number of items to be included in the result.
 func (client IntegrationAccountsClient) ListBySubscription(ctx context.Context, top *int32) (result IntegrationAccountListResultPage, err error) {
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx, top)
@@ -500,9 +505,10 @@ func (client IntegrationAccountsClient) ListBySubscriptionComplete(ctx context.C
 }
 
 // Update updates an integration account.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
-// integrationAccount is the integration account.
+// Parameters:
+// resourceGroupName - the resource group name.
+// integrationAccountName - the integration account name.
+// integrationAccount - the integration account.
 func (client IntegrationAccountsClient) Update(ctx context.Context, resourceGroupName string, integrationAccountName string, integrationAccount IntegrationAccount) (result IntegrationAccount, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, integrationAccountName, integrationAccount)
 	if err != nil {

@@ -36,10 +36,11 @@ func NewPropertyClient() PropertyClient {
 }
 
 // CreateOrUpdate creates or updates a property.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. propID is identifier of the property. parameters is create
-// parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// propID - identifier of the property.
+// parameters - create parameters.
 func (client PropertyClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, propID string, parameters PropertyContract) (result PropertyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: propID,
@@ -115,11 +116,12 @@ func (client PropertyClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete deletes specific property from the the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. propID is identifier of the property. ifMatch is the entity
-// state (Etag) version of the property to delete. A value of "*" can be used for If-Match to unconditionally apply
-// the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// propID - identifier of the property.
+// ifMatch - the entity state (Etag) version of the property to delete. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client PropertyClient) Delete(ctx context.Context, apimBaseURL string, propID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: propID,
@@ -193,9 +195,10 @@ func (client PropertyClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get gets the details of the property specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. propID is identifier of the property.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// propID - identifier of the property.
 func (client PropertyClient) Get(ctx context.Context, apimBaseURL string, propID string) (result PropertyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: propID,
@@ -269,14 +272,15 @@ func (client PropertyClient) GetResponder(resp *http.Response) (result PropertyC
 }
 
 // List lists a collection of properties defined within a service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field | Supported operators    | Supported functions                                   |
 // |-------|------------------------|-------------------------------------------------------|
 // | tags  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith, any, all |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith           | top is number of
-// records to return. skip is number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith           |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client PropertyClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result PropertyCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -386,11 +390,13 @@ func (client PropertyClient) ListComplete(ctx context.Context, apimBaseURL strin
 }
 
 // Update updates the specific property.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. propID is identifier of the property. parameters is update
-// parameters. ifMatch is the entity state (Etag) version of the property to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// propID - identifier of the property.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the property to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client PropertyClient) Update(ctx context.Context, apimBaseURL string, propID string, parameters PropertyUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: propID,

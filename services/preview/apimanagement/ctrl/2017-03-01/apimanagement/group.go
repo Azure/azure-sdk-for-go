@@ -36,10 +36,11 @@ func NewGroupClient() GroupClient {
 }
 
 // CreateOrUpdate creates or Updates a group.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. groupID is group identifier. Must be unique in the current API
-// Management service instance. parameters is create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// parameters - create parameters.
 func (client GroupClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, groupID string, parameters GroupCreateParameters) (result GroupContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: groupID,
@@ -121,11 +122,12 @@ func (client GroupClient) CreateOrUpdateResponder(resp *http.Response) (result G
 }
 
 // Delete deletes specific group of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. groupID is group identifier. Must be unique in the current API
-// Management service instance. ifMatch is eTag of the Group Entity. ETag should match the current entity state
-// from the header response of the GET request or it should be * for unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// ifMatch - eTag of the Group Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client GroupClient) Delete(ctx context.Context, apimBaseURL string, groupID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: groupID,
@@ -200,10 +202,10 @@ func (client GroupClient) DeleteResponder(resp *http.Response) (result autorest.
 }
 
 // Get gets the details of the group specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. groupID is group identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// groupID - group identifier. Must be unique in the current API Management service instance.
 func (client GroupClient) Get(ctx context.Context, apimBaseURL string, groupID string) (result GroupContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: groupID,
@@ -278,16 +280,17 @@ func (client GroupClient) GetResponder(resp *http.Response) (result GroupContrac
 }
 
 // List lists a collection of groups defined within a service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field       | Supported operators    | Supported
-// functions                         |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | type        | eq, ne                 | N/A                                         | top is number of records
-// to return. skip is number of records to skip.
+// | type        | eq, ne                 | N/A                                         |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client GroupClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result GroupCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -397,12 +400,13 @@ func (client GroupClient) ListComplete(ctx context.Context, apimBaseURL string, 
 }
 
 // Update updates the details of the group specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. groupID is group identifier. Must be unique in the current API
-// Management service instance. parameters is update parameters. ifMatch is eTag of the Group Entity. ETag should
-// match the current entity state from the header response of the GET request or it should be * for unconditional
-// update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// groupID - group identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - eTag of the Group Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client GroupClient) Update(ctx context.Context, apimBaseURL string, groupID string, parameters GroupUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: groupID,

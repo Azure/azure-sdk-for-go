@@ -25,6 +25,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Code enumerates the values for code.
 type Code string
 
@@ -37,11 +38,13 @@ const (
 	NotFound Code = "NotFound"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // PossibleCodeValues returns an array of possible values for the Code const type.
 func PossibleCodeValues() []Code {
 	return []Code{BadRequest, Conflict, NotFound}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // State enumerates the values for state.
 type State string
 
@@ -52,17 +55,20 @@ const (
 	Deleted State = "Deleted"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
 	return []State{Active, Deleted}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Error this is the management partner operations error
 type Error struct {
 	// Error - this is the ExtendedErrorInfo property
 	Error *ExtendedErrorInfo `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // ExtendedErrorInfo this is the extended error info
 type ExtendedErrorInfo struct {
 	// Code - this is the error response code. Possible values include: 'NotFound', 'Conflict', 'BadRequest'
@@ -71,6 +77,7 @@ type ExtendedErrorInfo struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // OperationDisplay this is the management partner operation
 type OperationDisplay struct {
 	// Provider - the is management partner provider
@@ -83,6 +90,7 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // OperationList this is the management partner operations list
 type OperationList struct {
 	autorest.Response `json:"-"`
@@ -92,12 +100,14 @@ type OperationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // OperationListIterator provides access to a complete listing of OperationResponse values.
 type OperationListIterator struct {
 	i    int
 	page OperationListPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *OperationListIterator) Next() error {
@@ -114,16 +124,19 @@ func (iter *OperationListIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter OperationListIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Response returns the raw server response from the last page request.
 func (iter OperationListIterator) Response() OperationList {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter OperationListIterator) Value() OperationResponse {
@@ -133,6 +146,7 @@ func (iter OperationListIterator) Value() OperationResponse {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
@@ -150,12 +164,14 @@ func (ol OperationList) operationListPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(ol.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // OperationListPage contains a page of OperationResponse values.
 type OperationListPage struct {
 	fn func(OperationList) (OperationList, error)
 	ol OperationList
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *OperationListPage) Next() error {
@@ -167,16 +183,19 @@ func (page *OperationListPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page OperationListPage) NotDone() bool {
 	return !page.ol.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Response returns the raw server response from the last page request.
 func (page OperationListPage) Response() OperationList {
 	return page.ol
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page OperationListPage) Values() []OperationResponse {
 	if page.ol.IsEmpty() {
@@ -185,6 +204,7 @@ func (page OperationListPage) Values() []OperationResponse {
 	return *page.ol.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // OperationResponse this is the management partner operations response
 type OperationResponse struct {
 	// Name - this is the operation response name
@@ -195,6 +215,7 @@ type OperationResponse struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // PartnerProperties this is the management partner properties
 type PartnerProperties struct {
 	// PartnerID - This is the partner id
@@ -215,6 +236,7 @@ type PartnerProperties struct {
 	State State `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // PartnerResponse this is the management partner operations response
 type PartnerResponse struct {
 	autorest.Response `json:"-"`
@@ -230,6 +252,7 @@ type PartnerResponse struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // MarshalJSON is the custom marshaler for PartnerResponse.
 func (pr PartnerResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -251,6 +274,7 @@ func (pr PartnerResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner instead.
 // UnmarshalJSON is the custom unmarshaler for PartnerResponse struct.
 func (pr *PartnerResponse) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage

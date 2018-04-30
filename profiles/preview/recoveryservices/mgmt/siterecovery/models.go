@@ -35,6 +35,13 @@ const (
 	LatestProcessed             A2ARpRecoveryPointType = original.LatestProcessed
 )
 
+type AgentAutoUpdateStatus = original.AgentAutoUpdateStatus
+
+const (
+	Disabled AgentAutoUpdateStatus = original.Disabled
+	Enabled  AgentAutoUpdateStatus = original.Enabled
+)
+
 type AgentVersionStatus = original.AgentVersionStatus
 
 const (
@@ -77,6 +84,7 @@ const (
 type HealthErrorCategory = original.HealthErrorCategory
 
 const (
+	AgentAutoUpdate      HealthErrorCategory = original.AgentAutoUpdate
 	Configuration        HealthErrorCategory = original.Configuration
 	FabricInfrastructure HealthErrorCategory = original.FabricInfrastructure
 	None                 HealthErrorCategory = original.None
@@ -259,6 +267,13 @@ const (
 	InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt                   InstanceTypeBasicPolicyProviderSpecificInput = original.InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt
 )
 
+type InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails
+
+const (
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A                                               InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeA2A
+	InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails = original.InstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsInstanceTypeProtectionContainerMappingProviderSpecificDetails
+)
+
 type InstanceTypeBasicProviderSpecificFailoverInput = original.InstanceTypeBasicProviderSpecificFailoverInput
 
 const (
@@ -305,6 +320,13 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
 )
 
+type InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInput
+
+const (
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A                                              InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeA2A
+	InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInputInstanceTypeReplicationProviderSpecificContainerMappingInput
+)
+
 type InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettings
 
 const (
@@ -316,6 +338,13 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage                              InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage
 	InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2                       InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2
 	InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings
+)
+
+type InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput
+
+const (
+	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A                                                    InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A
+	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput
 )
 
 type InstanceTypeBasicReverseReplicationProviderSpecificInput = original.InstanceTypeBasicReverseReplicationProviderSpecificInput
@@ -383,8 +412,8 @@ const (
 type MultiVMSyncStatus = original.MultiVMSyncStatus
 
 const (
-	Disabled MultiVMSyncStatus = original.Disabled
-	Enabled  MultiVMSyncStatus = original.Enabled
+	MultiVMSyncStatusDisabled MultiVMSyncStatus = original.MultiVMSyncStatusDisabled
+	MultiVMSyncStatusEnabled  MultiVMSyncStatus = original.MultiVMSyncStatusEnabled
 )
 
 type PossibleOperationsDirections = original.PossibleOperationsDirections
@@ -392,6 +421,14 @@ type PossibleOperationsDirections = original.PossibleOperationsDirections
 const (
 	PrimaryToRecovery PossibleOperationsDirections = original.PrimaryToRecovery
 	RecoveryToPrimary PossibleOperationsDirections = original.RecoveryToPrimary
+)
+
+type PresenceStatus = original.PresenceStatus
+
+const (
+	NotPresent PresenceStatus = original.NotPresent
+	Present    PresenceStatus = original.Present
+	Unknown    PresenceStatus = original.Unknown
 )
 
 type RecoveryPlanActionLocation = original.RecoveryPlanActionLocation
@@ -475,6 +512,7 @@ const (
 
 type A2AApplyRecoveryPointInput = original.A2AApplyRecoveryPointInput
 type A2AContainerCreationInput = original.A2AContainerCreationInput
+type A2AContainerMappingInput = original.A2AContainerMappingInput
 type A2AEnableProtectionInput = original.A2AEnableProtectionInput
 type A2AEventDetails = original.A2AEventDetails
 type A2AFailoverProviderInput = original.A2AFailoverProviderInput
@@ -482,10 +520,12 @@ type A2APolicyCreationInput = original.A2APolicyCreationInput
 type A2APolicyDetails = original.A2APolicyDetails
 type A2AProtectedDiskDetails = original.A2AProtectedDiskDetails
 type A2AProtectedManagedDiskDetails = original.A2AProtectedManagedDiskDetails
+type A2AProtectionContainerMappingDetails = original.A2AProtectionContainerMappingDetails
 type A2ARecoveryPointDetails = original.A2ARecoveryPointDetails
 type A2AReplicationDetails = original.A2AReplicationDetails
 type A2AReprotectInput = original.A2AReprotectInput
 type A2ASwitchProtectionInput = original.A2ASwitchProtectionInput
+type A2AUpdateContainerMappingInput = original.A2AUpdateContainerMappingInput
 type A2AUpdateReplicationProtectedItemInput = original.A2AUpdateReplicationProtectedItemInput
 type A2AVMDiskInputDetails = original.A2AVMDiskInputDetails
 type A2AVMManagedDiskInputDetails = original.A2AVMManagedDiskInputDetails
@@ -699,6 +739,7 @@ type ProtectionContainerMappingCollection = original.ProtectionContainerMappingC
 type ProtectionContainerMappingCollectionIterator = original.ProtectionContainerMappingCollectionIterator
 type ProtectionContainerMappingCollectionPage = original.ProtectionContainerMappingCollectionPage
 type ProtectionContainerMappingProperties = original.ProtectionContainerMappingProperties
+type BasicProtectionContainerMappingProviderSpecificDetails = original.BasicProtectionContainerMappingProviderSpecificDetails
 type ProtectionContainerMappingProviderSpecificDetails = original.ProtectionContainerMappingProviderSpecificDetails
 type ProtectionContainerProperties = original.ProtectionContainerProperties
 type ProviderError = original.ProviderError
@@ -790,6 +831,7 @@ type ReplicationProtectedItemsUpdateMobilityServiceFuture = original.Replication
 type ReplicationProtectionContainerMappingsCreateFuture = original.ReplicationProtectionContainerMappingsCreateFuture
 type ReplicationProtectionContainerMappingsDeleteFuture = original.ReplicationProtectionContainerMappingsDeleteFuture
 type ReplicationProtectionContainerMappingsPurgeFuture = original.ReplicationProtectionContainerMappingsPurgeFuture
+type ReplicationProtectionContainerMappingsUpdateFuture = original.ReplicationProtectionContainerMappingsUpdateFuture
 type ReplicationProtectionContainersCreateFuture = original.ReplicationProtectionContainersCreateFuture
 type ReplicationProtectionContainersDeleteFuture = original.ReplicationProtectionContainersDeleteFuture
 type ReplicationProtectionContainersDiscoverProtectableItemFuture = original.ReplicationProtectionContainersDiscoverProtectableItemFuture
@@ -797,9 +839,12 @@ type ReplicationProtectionContainersSwitchProtectionFuture = original.Replicatio
 type ReplicationProviderContainerUnmappingInput = original.ReplicationProviderContainerUnmappingInput
 type BasicReplicationProviderSpecificContainerCreationInput = original.BasicReplicationProviderSpecificContainerCreationInput
 type ReplicationProviderSpecificContainerCreationInput = original.ReplicationProviderSpecificContainerCreationInput
+type BasicReplicationProviderSpecificContainerMappingInput = original.BasicReplicationProviderSpecificContainerMappingInput
 type ReplicationProviderSpecificContainerMappingInput = original.ReplicationProviderSpecificContainerMappingInput
 type BasicReplicationProviderSpecificSettings = original.BasicReplicationProviderSpecificSettings
 type ReplicationProviderSpecificSettings = original.ReplicationProviderSpecificSettings
+type BasicReplicationProviderSpecificUpdateContainerMappingInput = original.BasicReplicationProviderSpecificUpdateContainerMappingInput
+type ReplicationProviderSpecificUpdateContainerMappingInput = original.ReplicationProviderSpecificUpdateContainerMappingInput
 type ReplicationRecoveryPlansCreateFuture = original.ReplicationRecoveryPlansCreateFuture
 type ReplicationRecoveryPlansDeleteFuture = original.ReplicationRecoveryPlansDeleteFuture
 type ReplicationRecoveryPlansFailoverCommitFuture = original.ReplicationRecoveryPlansFailoverCommitFuture
@@ -870,6 +915,8 @@ type UpdateNetworkMappingInput = original.UpdateNetworkMappingInput
 type UpdateNetworkMappingInputProperties = original.UpdateNetworkMappingInputProperties
 type UpdatePolicyInput = original.UpdatePolicyInput
 type UpdatePolicyInputProperties = original.UpdatePolicyInputProperties
+type UpdateProtectionContainerMappingInput = original.UpdateProtectionContainerMappingInput
+type UpdateProtectionContainerMappingInputProperties = original.UpdateProtectionContainerMappingInputProperties
 type UpdateRecoveryPlanInput = original.UpdateRecoveryPlanInput
 type UpdateRecoveryPlanInputProperties = original.UpdateRecoveryPlanInputProperties
 type UpdateReplicationProtectedItemInput = original.UpdateReplicationProtectedItemInput
@@ -934,6 +981,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName str
 }
 func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
 	return original.PossibleA2ARpRecoveryPointTypeValues()
+}
+func PossibleAgentAutoUpdateStatusValues() []AgentAutoUpdateStatus {
+	return original.PossibleAgentAutoUpdateStatusValues()
 }
 func PossibleAgentVersionStatusValues() []AgentVersionStatus {
 	return original.PossibleAgentVersionStatusValues()
@@ -1007,6 +1057,9 @@ func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() []InstanceTy
 func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceTypeBasicPolicyProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicPolicyProviderSpecificInputValues()
 }
+func PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues() []InstanceTypeBasicProtectionContainerMappingProviderSpecificDetails {
+	return original.PossibleInstanceTypeBasicProtectionContainerMappingProviderSpecificDetailsValues()
+}
 func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() []InstanceTypeBasicProviderSpecificFailoverInput {
 	return original.PossibleInstanceTypeBasicProviderSpecificFailoverInputValues()
 }
@@ -1022,8 +1075,14 @@ func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() 
 func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
 	return original.PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues()
 }
+func PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerMappingInput {
+	return original.PossibleInstanceTypeBasicReplicationProviderSpecificContainerMappingInputValues()
+}
 func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
 	return original.PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues()
+}
+func PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput {
+	return original.PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues()
 }
 func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues()
@@ -1051,6 +1110,9 @@ func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
 }
 func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
 	return original.PossiblePossibleOperationsDirectionsValues()
+}
+func PossiblePresenceStatusValues() []PresenceStatus {
+	return original.PossiblePresenceStatusValues()
 }
 func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
 	return original.PossibleRecoveryPlanActionLocationValues()

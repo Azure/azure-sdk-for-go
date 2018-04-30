@@ -36,10 +36,11 @@ func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
 }
 
 // CreateOrUpdate creates or updates the OpenID Connect Provider.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. opid is identifier of the OpenID Connect Provider. parameters is
-// create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// opid - identifier of the OpenID Connect Provider.
+// parameters - create parameters.
 func (client OpenIDConnectProviderClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, opid string, parameters OpenidConnectProviderContract) (result OpenidConnectProviderContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: opid,
@@ -115,11 +116,12 @@ func (client OpenIDConnectProviderClient) CreateOrUpdateResponder(resp *http.Res
 }
 
 // Delete deletes specific OpenID Connect Provider of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. opid is identifier of the OpenID Connect Provider. ifMatch is
-// the entity state (Etag) version of the OpenID Connect Provider to delete. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// opid - identifier of the OpenID Connect Provider.
+// ifMatch - the entity state (Etag) version of the OpenID Connect Provider to delete. A value of "*" can be
+// used for If-Match to unconditionally apply the operation.
 func (client OpenIDConnectProviderClient) Delete(ctx context.Context, apimBaseURL string, opid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: opid,
@@ -193,9 +195,10 @@ func (client OpenIDConnectProviderClient) DeleteResponder(resp *http.Response) (
 }
 
 // Get gets specific OpenID Connect Provider.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. opid is identifier of the OpenID Connect Provider.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// opid - identifier of the OpenID Connect Provider.
 func (client OpenIDConnectProviderClient) Get(ctx context.Context, apimBaseURL string, opid string) (result OpenidConnectProviderContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: opid,
@@ -269,14 +272,15 @@ func (client OpenIDConnectProviderClient) GetResponder(resp *http.Response) (res
 }
 
 // List lists all OpenID Connect Providers.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client OpenIDConnectProviderClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result OpenIDConnectProviderCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -386,11 +390,13 @@ func (client OpenIDConnectProviderClient) ListComplete(ctx context.Context, apim
 }
 
 // Update updates the specific OpenID Connect Provider.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. opid is identifier of the OpenID Connect Provider. parameters is
-// update parameters. ifMatch is the entity state (Etag) version of the OpenID Connect Provider to update. A value
-// of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// opid - identifier of the OpenID Connect Provider.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the OpenID Connect Provider to update. A value of "*" can be
+// used for If-Match to unconditionally apply the operation.
 func (client OpenIDConnectProviderClient) Update(ctx context.Context, apimBaseURL string, opid string, parameters OpenidConnectProviderUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: opid,

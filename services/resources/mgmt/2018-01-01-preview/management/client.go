@@ -35,6 +35,7 @@ const (
 	DefaultBaseURI = "https://management.azure.com"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // BaseClient is the base client for Managementgroups.
 type BaseClient struct {
 	autorest.Client
@@ -43,11 +44,13 @@ type BaseClient struct {
 	Skiptoken         string
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // New creates an instance of the BaseClient client.
 func New(operationResultID string, skiptoken string) BaseClient {
 	return NewWithBaseURI(DefaultBaseURI, operationResultID, skiptoken)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // NewWithBaseURI creates an instance of the BaseClient client.
 func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
 	return BaseClient{
@@ -58,6 +61,7 @@ func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) 
 	}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CheckNameAvailability checks if the specified management group name is valid and unique
 //
 // checkNameAvailabilityRequest is management group name availability check parameters.
@@ -83,6 +87,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAva
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
 func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, checkNameAvailabilityRequest CheckNameAvailabilityRequest) (*http.Request, error) {
 	const APIVersion = "2018-01-01-preview"
@@ -100,6 +105,7 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, chec
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
@@ -107,6 +113,7 @@ func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.R
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management instead.
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
 func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityResult, err error) {

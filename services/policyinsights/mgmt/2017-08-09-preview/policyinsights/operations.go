@@ -24,21 +24,25 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // OperationsClient is the client for the Operations methods of the Policyinsights service.
 type OperationsClient struct {
 	BaseClient
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // NewOperationsClient creates an instance of the OperationsClient client.
 func NewOperationsClient() OperationsClient {
 	return NewOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // List lists available operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationsListResults, err error) {
 	req, err := client.ListPreparer(ctx)
@@ -62,6 +66,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationsListR
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2017-08-09-preview"
@@ -77,6 +82,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -84,6 +90,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2017-08-09-preview/policyinsights instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client OperationsClient) ListResponder(resp *http.Response) (result OperationsListResults, err error) {

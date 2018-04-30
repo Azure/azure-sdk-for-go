@@ -41,10 +41,12 @@ func NewLiveEventsClientWithBaseURI(baseURI string, subscriptionID string) LiveE
 }
 
 // Create creates a Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. parameters is live Event properties needed
-// for creation. autoStart is the flag indicates if auto start the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// parameters - live Event properties needed for creation.
+// autoStart - the flag indicates if auto start the Live Event.
 func (client LiveEventsClient) Create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent, autoStart *bool) (result LiveEventsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -128,9 +130,10 @@ func (client LiveEventsClient) CreateResponder(resp *http.Response) (result Live
 }
 
 // Delete deletes a Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
 func (client LiveEventsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result LiveEventsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -205,9 +208,10 @@ func (client LiveEventsClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // Get gets a Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
 func (client LiveEventsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result LiveEvent, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -281,9 +285,9 @@ func (client LiveEventsClient) GetResponder(resp *http.Response) (result LiveEve
 }
 
 // List lists the Live Events in the account.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
 func (client LiveEventsClient) List(ctx context.Context, resourceGroupName string, accountName string) (result LiveEventListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
@@ -376,9 +380,10 @@ func (client LiveEventsClient) ListComplete(ctx context.Context, resourceGroupNa
 }
 
 // Reset resets an existing Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
 func (client LiveEventsClient) Reset(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result LiveEventsResetFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -453,9 +458,10 @@ func (client LiveEventsClient) ResetResponder(resp *http.Response) (result autor
 }
 
 // Start starts an existing Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
 func (client LiveEventsClient) Start(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result LiveEventsStartFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -530,9 +536,11 @@ func (client LiveEventsClient) StartResponder(resp *http.Response) (result autor
 }
 
 // Stop stops an existing Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. parameters is liveEvent stop parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// parameters - liveEvent stop parameters
 func (client LiveEventsClient) Stop(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEventActionInput) (result LiveEventsStopFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -609,10 +617,11 @@ func (client LiveEventsClient) StopResponder(resp *http.Response) (result autore
 }
 
 // Update updates a existing Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. parameters is live Event properties needed
-// for creation.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// parameters - live Event properties needed for creation.
 func (client LiveEventsClient) Update(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, parameters LiveEvent) (result LiveEventsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,

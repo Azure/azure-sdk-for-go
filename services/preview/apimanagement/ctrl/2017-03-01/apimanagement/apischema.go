@@ -36,13 +36,14 @@ func NewAPISchemaClient() APISchemaClient {
 }
 
 // CreateOrUpdate creates or updates schema configuration for the API.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. schemaID is schema identifier within an API. Must be unique in the current API
-// Management service instance. parameters is the schema contents to apply. ifMatch is the entity state (Etag)
-// version of the Api Schema to update. A value of "*" can be used for If-Match to unconditionally apply the
-// operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// schemaID - schema identifier within an API. Must be unique in the current API Management service instance.
+// parameters - the schema contents to apply.
+// ifMatch - the entity state (Etag) version of the Api Schema to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client APISchemaClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (result SchemaContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -128,12 +129,13 @@ func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (resu
 }
 
 // Delete deletes the schema configuration at the Api.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. schemaID is schema identifier within an API. Must be unique in the current API
-// Management service instance. ifMatch is the entity state (Etag) version of the Api schema to update. A value of
-// "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// schemaID - schema identifier within an API. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the Api schema to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client APISchemaClient) Delete(ctx context.Context, apimBaseURL string, apiid string, schemaID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -213,11 +215,11 @@ func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autor
 }
 
 // Get get the schema configuration at the API level.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. schemaID is schema identifier within an API. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// schemaID - schema identifier within an API. Must be unique in the current API Management service instance.
 func (client APISchemaClient) Get(ctx context.Context, apimBaseURL string, apiid string, schemaID string) (result SchemaContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -297,10 +299,10 @@ func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaCo
 }
 
 // ListByAPI get the schema configuration at the API level.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client APISchemaClient) ListByAPI(ctx context.Context, apimBaseURL string, apiid string) (result SchemaCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

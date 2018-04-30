@@ -27,6 +27,7 @@ import (
 	"net/http"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AccessControlEntryAction enumerates the values for access control entry action.
 type AccessControlEntryAction string
 
@@ -37,11 +38,13 @@ const (
 	Permit AccessControlEntryAction = "Permit"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleAccessControlEntryActionValues returns an array of possible values for the AccessControlEntryAction const type.
 func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
 	return []AccessControlEntryAction{Deny, Permit}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AutoHealActionType enumerates the values for auto heal action type.
 type AutoHealActionType string
 
@@ -54,11 +57,13 @@ const (
 	Recycle AutoHealActionType = "Recycle"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleAutoHealActionTypeValues returns an array of possible values for the AutoHealActionType const type.
 func PossibleAutoHealActionTypeValues() []AutoHealActionType {
 	return []AutoHealActionType{CustomAction, LogEvent, Recycle}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AzureResourceType enumerates the values for azure resource type.
 type AzureResourceType string
 
@@ -69,11 +74,13 @@ const (
 	Website AzureResourceType = "Website"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleAzureResourceTypeValues returns an array of possible values for the AzureResourceType const type.
 func PossibleAzureResourceTypeValues() []AzureResourceType {
 	return []AzureResourceType{TrafficManager, Website}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItemStatus enumerates the values for backup item status.
 type BackupItemStatus string
 
@@ -100,11 +107,13 @@ const (
 	TimedOut BackupItemStatus = "TimedOut"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleBackupItemStatusValues returns an array of possible values for the BackupItemStatus const type.
 func PossibleBackupItemStatusValues() []BackupItemStatus {
 	return []BackupItemStatus{Created, Deleted, DeleteFailed, DeleteInProgress, Failed, InProgress, PartiallySucceeded, Skipped, Succeeded, TimedOut}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupRestoreOperationType enumerates the values for backup restore operation type.
 type BackupRestoreOperationType string
 
@@ -117,11 +126,13 @@ const (
 	Relocation BackupRestoreOperationType = "Relocation"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleBackupRestoreOperationTypeValues returns an array of possible values for the BackupRestoreOperationType const type.
 func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
 	return []BackupRestoreOperationType{Clone, Default, Relocation}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BuiltInAuthenticationProvider enumerates the values for built in authentication provider.
 type BuiltInAuthenticationProvider string
 
@@ -138,11 +149,13 @@ const (
 	Twitter BuiltInAuthenticationProvider = "Twitter"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleBuiltInAuthenticationProviderValues returns an array of possible values for the BuiltInAuthenticationProvider const type.
 func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
 	return []BuiltInAuthenticationProvider{AzureActiveDirectory, Facebook, Google, MicrosoftAccount, Twitter}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderActionType enumerates the values for certificate order action type.
 type CertificateOrderActionType string
 
@@ -167,11 +180,13 @@ const (
 	SanDrop CertificateOrderActionType = "SanDrop"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleCertificateOrderActionTypeValues returns an array of possible values for the CertificateOrderActionType const type.
 func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
 	return []CertificateOrderActionType{CertificateIssued, CertificateOrderCanceled, CertificateOrderCreated, CertificateRevoked, DomainValidationComplete, FraudDetected, OrgNameChange, OrgValidationComplete, SanDrop}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderStatus enumerates the values for certificate order status.
 type CertificateOrderStatus string
 
@@ -198,11 +213,13 @@ const (
 	Unused CertificateOrderStatus = "Unused"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleCertificateOrderStatusValues returns an array of possible values for the CertificateOrderStatus const type.
 func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
 	return []CertificateOrderStatus{Canceled, Denied, Expired, Issued, NotSubmitted, Pendingissuance, PendingRekey, Pendingrevocation, Revoked, Unused}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateProductType enumerates the values for certificate product type.
 type CertificateProductType string
 
@@ -213,11 +230,13 @@ const (
 	StandardDomainValidatedWildCardSsl CertificateProductType = "StandardDomainValidatedWildCardSsl"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleCertificateProductTypeValues returns an array of possible values for the CertificateProductType const type.
 func PossibleCertificateProductTypeValues() []CertificateProductType {
 	return []CertificateProductType{StandardDomainValidatedSsl, StandardDomainValidatedWildCardSsl}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Channels enumerates the values for channels.
 type Channels string
 
@@ -232,11 +251,13 @@ const (
 	Notification Channels = "Notification"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleChannelsValues returns an array of possible values for the Channels const type.
 func PossibleChannelsValues() []Channels {
 	return []Channels{All, API, Email, Notification}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CloneAbilityResult enumerates the values for clone ability result.
 type CloneAbilityResult string
 
@@ -249,11 +270,13 @@ const (
 	PartiallyCloneable CloneAbilityResult = "PartiallyCloneable"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleCloneAbilityResultValues returns an array of possible values for the CloneAbilityResult const type.
 func PossibleCloneAbilityResultValues() []CloneAbilityResult {
 	return []CloneAbilityResult{Cloneable, NotCloneable, PartiallyCloneable}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ComputeModeOptions enumerates the values for compute mode options.
 type ComputeModeOptions string
 
@@ -266,11 +289,13 @@ const (
 	Shared ComputeModeOptions = "Shared"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleComputeModeOptionsValues returns an array of possible values for the ComputeModeOptions const type.
 func PossibleComputeModeOptionsValues() []ComputeModeOptions {
 	return []ComputeModeOptions{Dedicated, Dynamic, Shared}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionParameterType enumerates the values for connection parameter type.
 type ConnectionParameterType string
 
@@ -295,11 +320,13 @@ const (
 	ConnectionParameterTypeString ConnectionParameterType = "string"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleConnectionParameterTypeValues returns an array of possible values for the ConnectionParameterType const type.
 func PossibleConnectionParameterTypeValues() []ConnectionParameterType {
 	return []ConnectionParameterType{ConnectionParameterTypeArray, ConnectionParameterTypeBool, ConnectionParameterTypeConnection, ConnectionParameterTypeInt, ConnectionParameterTypeOauthSetting, ConnectionParameterTypeObject, ConnectionParameterTypeSecureobject, ConnectionParameterTypeSecurestring, ConnectionParameterTypeString}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CustomHostNameDNSRecordType enumerates the values for custom host name dns record type.
 type CustomHostNameDNSRecordType string
 
@@ -310,11 +337,13 @@ const (
 	CName CustomHostNameDNSRecordType = "CName"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleCustomHostNameDNSRecordTypeValues returns an array of possible values for the CustomHostNameDNSRecordType const type.
 func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
 	return []CustomHostNameDNSRecordType{A, CName}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DatabaseServerType enumerates the values for database server type.
 type DatabaseServerType string
 
@@ -329,11 +358,13 @@ const (
 	SQLServer DatabaseServerType = "SQLServer"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleDatabaseServerTypeValues returns an array of possible values for the DatabaseServerType const type.
 func PossibleDatabaseServerTypeValues() []DatabaseServerType {
 	return []DatabaseServerType{Custom, MySQL, SQLAzure, SQLServer}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainStatus enumerates the values for domain status.
 type DomainStatus string
 
@@ -382,11 +413,13 @@ const (
 	DomainStatusUpdated DomainStatus = "Updated"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleDomainStatusValues returns an array of possible values for the DomainStatus const type.
 func PossibleDomainStatusValues() []DomainStatus {
 	return []DomainStatus{DomainStatusActive, DomainStatusAwaiting, DomainStatusCancelled, DomainStatusConfiscated, DomainStatusDisabled, DomainStatusExcluded, DomainStatusExpired, DomainStatusFailed, DomainStatusHeld, DomainStatusJSONConverterFailed, DomainStatusLocked, DomainStatusParked, DomainStatusPending, DomainStatusReserved, DomainStatusReverted, DomainStatusSuspended, DomainStatusTransferred, DomainStatusUnknown, DomainStatusUnlocked, DomainStatusUnparked, DomainStatusUpdated}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainType enumerates the values for domain type.
 type DomainType string
 
@@ -397,11 +430,13 @@ const (
 	SoftDeleted DomainType = "SoftDeleted"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
 func PossibleDomainTypeValues() []DomainType {
 	return []DomainType{Regular, SoftDeleted}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // FrequencyUnit enumerates the values for frequency unit.
 type FrequencyUnit string
 
@@ -412,11 +447,13 @@ const (
 	Hour FrequencyUnit = "Hour"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleFrequencyUnitValues returns an array of possible values for the FrequencyUnit const type.
 func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return []FrequencyUnit{Day, Hour}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentStatus enumerates the values for hosting environment status.
 type HostingEnvironmentStatus string
 
@@ -431,11 +468,13 @@ const (
 	Scaling HostingEnvironmentStatus = "Scaling"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleHostingEnvironmentStatusValues returns an array of possible values for the HostingEnvironmentStatus const type.
 func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
 	return []HostingEnvironmentStatus{Deleting, Preparing, Ready, Scaling}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameType enumerates the values for host name type.
 type HostNameType string
 
@@ -446,11 +485,13 @@ const (
 	Verified HostNameType = "Verified"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleHostNameTypeValues returns an array of possible values for the HostNameType const type.
 func PossibleHostNameTypeValues() []HostNameType {
 	return []HostNameType{Managed, Verified}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // InternalLoadBalancingMode enumerates the values for internal load balancing mode.
 type InternalLoadBalancingMode string
 
@@ -463,11 +504,13 @@ const (
 	Web InternalLoadBalancingMode = "Web"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleInternalLoadBalancingModeValues returns an array of possible values for the InternalLoadBalancingMode const type.
 func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
 	return []InternalLoadBalancingMode{None, Publishing, Web}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // KeyVaultSecretStatus enumerates the values for key vault secret status.
 type KeyVaultSecretStatus string
 
@@ -494,11 +537,13 @@ const (
 	KeyVaultSecretStatusWaitingOnCertificateOrder KeyVaultSecretStatus = "WaitingOnCertificateOrder"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleKeyVaultSecretStatusValues returns an array of possible values for the KeyVaultSecretStatus const type.
 func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
 	return []KeyVaultSecretStatus{KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault, KeyVaultSecretStatusCertificateOrderFailed, KeyVaultSecretStatusInitialized, KeyVaultSecretStatusKeyVaultDoesNotExist, KeyVaultSecretStatusKeyVaultSecretDoesNotExist, KeyVaultSecretStatusOperationNotPermittedOnKeyVault, KeyVaultSecretStatusSucceeded, KeyVaultSecretStatusUnknown, KeyVaultSecretStatusUnknownError, KeyVaultSecretStatusWaitingOnCertificateOrder}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // LinkState enumerates the values for link state.
 type LinkState string
 
@@ -511,11 +556,13 @@ const (
 	Unauthenticated LinkState = "Unauthenticated"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleLinkStateValues returns an array of possible values for the LinkState const type.
 func PossibleLinkStateValues() []LinkState {
 	return []LinkState{Authenticated, Error, Unauthenticated}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // LogLevel enumerates the values for log level.
 type LogLevel string
 
@@ -532,11 +579,13 @@ const (
 	LogLevelWarning LogLevel = "Warning"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleLogLevelValues returns an array of possible values for the LogLevel const type.
 func PossibleLogLevelValues() []LogLevel {
 	return []LogLevel{LogLevelError, LogLevelInformation, LogLevelOff, LogLevelVerbose, LogLevelWarning}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentStatus enumerates the values for managed hosting environment status.
 type ManagedHostingEnvironmentStatus string
 
@@ -549,11 +598,13 @@ const (
 	ManagedHostingEnvironmentStatusReady ManagedHostingEnvironmentStatus = "Ready"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleManagedHostingEnvironmentStatusValues returns an array of possible values for the ManagedHostingEnvironmentStatus const type.
 func PossibleManagedHostingEnvironmentStatusValues() []ManagedHostingEnvironmentStatus {
 	return []ManagedHostingEnvironmentStatus{ManagedHostingEnvironmentStatusDeleting, ManagedHostingEnvironmentStatusPreparing, ManagedHostingEnvironmentStatusReady}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedPipelineMode enumerates the values for managed pipeline mode.
 type ManagedPipelineMode string
 
@@ -564,11 +615,13 @@ const (
 	Integrated ManagedPipelineMode = "Integrated"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleManagedPipelineModeValues returns an array of possible values for the ManagedPipelineMode const type.
 func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
 	return []ManagedPipelineMode{Classic, Integrated}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotificationLevel enumerates the values for notification level.
 type NotificationLevel string
 
@@ -583,11 +636,13 @@ const (
 	Warning NotificationLevel = "Warning"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleNotificationLevelValues returns an array of possible values for the NotificationLevel const type.
 func PossibleNotificationLevelValues() []NotificationLevel {
 	return []NotificationLevel{Critical, Information, NonUrgentSuggestion, Warning}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PrincipalType enumerates the values for principal type.
 type PrincipalType string
 
@@ -600,11 +655,13 @@ const (
 	PrincipalTypeMicrosoftAccount PrincipalType = "MicrosoftAccount"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossiblePrincipalTypeValues returns an array of possible values for the PrincipalType const type.
 func PossiblePrincipalTypeValues() []PrincipalType {
 	return []PrincipalType{PrincipalTypeActiveDirectory, PrincipalTypeConnection, PrincipalTypeMicrosoftAccount}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -621,11 +678,13 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInProgress, ProvisioningStateSucceeded}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteAvailabilityState enumerates the values for site availability state.
 type SiteAvailabilityState string
 
@@ -638,11 +697,13 @@ const (
 	Normal SiteAvailabilityState = "Normal"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleSiteAvailabilityStateValues returns an array of possible values for the SiteAvailabilityState const type.
 func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
 	return []SiteAvailabilityState{DisasterRecoveryMode, Limited, Normal}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteLoadBalancing enumerates the values for site load balancing.
 type SiteLoadBalancing string
 
@@ -659,11 +720,13 @@ const (
 	WeightedTotalTraffic SiteLoadBalancing = "WeightedTotalTraffic"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleSiteLoadBalancingValues returns an array of possible values for the SiteLoadBalancing const type.
 func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
 	return []SiteLoadBalancing{LeastRequests, LeastResponseTime, RequestHash, WeightedRoundRobin, WeightedTotalTraffic}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SslState enumerates the values for ssl state.
 type SslState string
 
@@ -676,11 +739,13 @@ const (
 	SniEnabled SslState = "SniEnabled"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleSslStateValues returns an array of possible values for the SslState const type.
 func PossibleSslStateValues() []SslState {
 	return []SslState{Disabled, IPBasedEnabled, SniEnabled}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StatusOptions enumerates the values for status options.
 type StatusOptions string
 
@@ -691,11 +756,13 @@ const (
 	StatusOptionsReady StatusOptions = "Ready"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleStatusOptionsValues returns an array of possible values for the StatusOptions const type.
 func PossibleStatusOptionsValues() []StatusOptions {
 	return []StatusOptions{StatusOptionsPending, StatusOptionsReady}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnauthenticatedClientAction enumerates the values for unauthenticated client action.
 type UnauthenticatedClientAction string
 
@@ -706,11 +773,13 @@ const (
 	RedirectToLoginPage UnauthenticatedClientAction = "RedirectToLoginPage"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleUnauthenticatedClientActionValues returns an array of possible values for the UnauthenticatedClientAction const type.
 func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
 	return []UnauthenticatedClientAction{AllowAnonymous, RedirectToLoginPage}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UsageState enumerates the values for usage state.
 type UsageState string
 
@@ -721,11 +790,13 @@ const (
 	UsageStateNormal UsageState = "Normal"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleUsageStateValues returns an array of possible values for the UsageState const type.
 func PossibleUsageStateValues() []UsageState {
 	return []UsageState{UsageStateExceeded, UsageStateNormal}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerSizeOptions enumerates the values for worker size options.
 type WorkerSizeOptions string
 
@@ -740,11 +811,13 @@ const (
 	WorkerSizeOptionsSmall WorkerSizeOptions = "Small"
 )
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PossibleWorkerSizeOptionsValues returns an array of possible values for the WorkerSizeOptions const type.
 func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
 	return []WorkerSizeOptions{WorkerSizeOptionsDefault, WorkerSizeOptionsLarge, WorkerSizeOptionsMedium, WorkerSizeOptionsSmall}
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Address address information for domain registration
 type Address struct {
 	// Address1 - Address 1
@@ -761,6 +834,7 @@ type Address struct {
 	State *string `json:"state,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AddressResponse describes main public ip address and any extra vips
 type AddressResponse struct {
 	autorest.Response `json:"-"`
@@ -774,12 +848,14 @@ type AddressResponse struct {
 	VipMappings *[]VirtualIPMapping `json:"vipMappings,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIDefinitionInfo information about the formal API definition for the web app.
 type APIDefinitionInfo struct {
 	// URL - The URL of the API definition.
 	URL *string `json:"url,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIEntity API Management
 type APIEntity struct {
 	autorest.Response    `json:"-"`
@@ -798,6 +874,7 @@ type APIEntity struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for APIEntity.
 func (ae APIEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -825,6 +902,7 @@ func (ae APIEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for APIEntity struct.
 func (ae *APIEntity) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -903,6 +981,7 @@ func (ae *APIEntity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIEntityProperties ...
 type APIEntityProperties struct {
 	// Name - Name of the API
@@ -934,6 +1013,7 @@ type APIEntityProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for APIEntityProperties.
 func (ae APIEntityProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -977,6 +1057,7 @@ func (ae APIEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIOAuthSettings oAuth settings for the conenction provider
 type APIOAuthSettings struct {
 	// IdentityProvider - Identity provider
@@ -995,6 +1076,7 @@ type APIOAuthSettings struct {
 	CustomParameters map[string]*APIOAuthSettingsParameter `json:"customParameters"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for APIOAuthSettings.
 func (aoas APIOAuthSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1020,6 +1102,7 @@ func (aoas APIOAuthSettings) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIOAuthSettingsParameter oAuth Settings Parameter
 type APIOAuthSettingsParameter struct {
 	// Value - Value
@@ -1030,6 +1113,7 @@ type APIOAuthSettingsParameter struct {
 	UIDefinition interface{} `json:"uiDefinition,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIPolicies api policies
 type APIPolicies struct {
 	*APIPoliciesProperties `json:"properties,omitempty"`
@@ -1047,6 +1131,7 @@ type APIPolicies struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for APIPolicies.
 func (ap APIPolicies) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1074,6 +1159,7 @@ func (ap APIPolicies) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for APIPolicies struct.
 func (ap *APIPolicies) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1152,12 +1238,14 @@ func (ap *APIPolicies) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // APIPoliciesProperties ...
 type APIPoliciesProperties struct {
 	// Content - Content of xml policy
 	Content *string `json:"content,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ApisCollection collection of Apis
 type ApisCollection struct {
 	autorest.Response `json:"-"`
@@ -1167,12 +1255,14 @@ type ApisCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ApisCollectionIterator provides access to a complete listing of APIEntity values.
 type ApisCollectionIterator struct {
 	i    int
 	page ApisCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ApisCollectionIterator) Next() error {
@@ -1189,16 +1279,19 @@ func (iter *ApisCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ApisCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ApisCollectionIterator) Response() ApisCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ApisCollectionIterator) Value() APIEntity {
@@ -1208,6 +1301,7 @@ func (iter ApisCollectionIterator) Value() APIEntity {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (ac ApisCollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
@@ -1225,12 +1319,14 @@ func (ac ApisCollection) apisCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(ac.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ApisCollectionPage contains a page of APIEntity values.
 type ApisCollectionPage struct {
 	fn func(ApisCollection) (ApisCollection, error)
 	ac ApisCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ApisCollectionPage) Next() error {
@@ -1242,16 +1338,19 @@ func (page *ApisCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ApisCollectionPage) NotDone() bool {
 	return !page.ac.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ApisCollectionPage) Response() ApisCollection {
 	return page.ac
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ApisCollectionPage) Values() []APIEntity {
 	if page.ac.IsEmpty() {
@@ -1260,6 +1359,7 @@ func (page ApisCollectionPage) Values() []APIEntity {
 	return *page.ac.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ApplicationLogsConfig application logs configuration
 type ApplicationLogsConfig struct {
 	// FileSystem - Application logs to file system configuration
@@ -1270,6 +1370,7 @@ type ApplicationLogsConfig struct {
 	AzureBlobStorage *AzureBlobStorageApplicationLogsConfig `json:"azureBlobStorage,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ArmPlan the plan object in an ARM, represents a marketplace plan
 type ArmPlan struct {
 	// Name - The name
@@ -1284,6 +1385,7 @@ type ArmPlan struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AutoHealActions autoHealActions - Describes the actions which can be
 // taken by the auto-heal module when a rule is triggered.
 type AutoHealActions struct {
@@ -1296,6 +1398,7 @@ type AutoHealActions struct {
 	MinProcessExecutionTime *string `json:"minProcessExecutionTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AutoHealCustomAction autoHealCustomAction - Describes the custom action to be executed
 // when an auto heal rule is triggered.
 type AutoHealCustomAction struct {
@@ -1305,6 +1408,7 @@ type AutoHealCustomAction struct {
 	Parameters *string `json:"parameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AutoHealRules autoHealRules - describes the rules which can be defined for auto-heal
 type AutoHealRules struct {
 	// Triggers - Triggers - Conditions that describe when to execute the auto-heal actions
@@ -1313,6 +1417,7 @@ type AutoHealRules struct {
 	Actions *AutoHealActions `json:"actions,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AutoHealTriggers autoHealTriggers - describes the triggers for auto-heal.
 type AutoHealTriggers struct {
 	// Requests - Requests - Defines a rule based on total requests
@@ -1325,6 +1430,7 @@ type AutoHealTriggers struct {
 	SlowRequests *SlowRequestsBasedTrigger `json:"slowRequests,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AzureBlobStorageApplicationLogsConfig application logs azure blob storage configuration
 type AzureBlobStorageApplicationLogsConfig struct {
 	// Level - Log level. Possible values include: 'LogLevelOff', 'LogLevelVerbose', 'LogLevelInformation', 'LogLevelWarning', 'LogLevelError'
@@ -1337,6 +1443,7 @@ type AzureBlobStorageApplicationLogsConfig struct {
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AzureBlobStorageHTTPLogsConfig http logs to azure blob storage configuration
 type AzureBlobStorageHTTPLogsConfig struct {
 	// SasURL - SAS url to a azure blob container with read/write/list/delete permissions
@@ -1349,6 +1456,7 @@ type AzureBlobStorageHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // AzureTableStorageApplicationLogsConfig application logs to azure table storage configuration
 type AzureTableStorageApplicationLogsConfig struct {
 	// Level - Log level. Possible values include: 'LogLevelOff', 'LogLevelVerbose', 'LogLevelInformation', 'LogLevelWarning', 'LogLevelError'
@@ -1357,6 +1465,7 @@ type AzureTableStorageApplicationLogsConfig struct {
 	SasURL *string `json:"sasUrl,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackendServiceDefinition API definitions with backend urls
 type BackendServiceDefinition struct {
 	*BackendServiceDefinitionProperties `json:"properties,omitempty"`
@@ -1374,6 +1483,7 @@ type BackendServiceDefinition struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for BackendServiceDefinition.
 func (bsd BackendServiceDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1401,6 +1511,7 @@ func (bsd BackendServiceDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for BackendServiceDefinition struct.
 func (bsd *BackendServiceDefinition) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1479,6 +1590,7 @@ func (bsd *BackendServiceDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackendServiceDefinitionProperties ...
 type BackendServiceDefinitionProperties struct {
 	// ServiceURL - Url from which the swagger payload will be fetched
@@ -1487,6 +1599,7 @@ type BackendServiceDefinitionProperties struct {
 	HostingEnvironmentServiceUrls *[]HostingEnvironmentServiceDescriptions `json:"hostingEnvironmentServiceUrls,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItem backup description
 type BackupItem struct {
 	autorest.Response     `json:"-"`
@@ -1505,6 +1618,7 @@ type BackupItem struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for BackupItem.
 func (bi BackupItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1532,6 +1646,7 @@ func (bi BackupItem) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for BackupItem struct.
 func (bi *BackupItem) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1610,6 +1725,7 @@ func (bi *BackupItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItemCollection collection of Backup Items
 type BackupItemCollection struct {
 	autorest.Response `json:"-"`
@@ -1619,12 +1735,14 @@ type BackupItemCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItemCollectionIterator provides access to a complete listing of BackupItem values.
 type BackupItemCollectionIterator struct {
 	i    int
 	page BackupItemCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *BackupItemCollectionIterator) Next() error {
@@ -1641,16 +1759,19 @@ func (iter *BackupItemCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter BackupItemCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter BackupItemCollectionIterator) Response() BackupItemCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter BackupItemCollectionIterator) Value() BackupItem {
@@ -1660,6 +1781,7 @@ func (iter BackupItemCollectionIterator) Value() BackupItem {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (bic BackupItemCollection) IsEmpty() bool {
 	return bic.Value == nil || len(*bic.Value) == 0
@@ -1677,12 +1799,14 @@ func (bic BackupItemCollection) backupItemCollectionPreparer() (*http.Request, e
 		autorest.WithBaseURL(to.String(bic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItemCollectionPage contains a page of BackupItem values.
 type BackupItemCollectionPage struct {
 	fn  func(BackupItemCollection) (BackupItemCollection, error)
 	bic BackupItemCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *BackupItemCollectionPage) Next() error {
@@ -1694,16 +1818,19 @@ func (page *BackupItemCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page BackupItemCollectionPage) NotDone() bool {
 	return !page.bic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page BackupItemCollectionPage) Response() BackupItemCollection {
 	return page.bic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page BackupItemCollectionPage) Values() []BackupItem {
 	if page.bic.IsEmpty() {
@@ -1712,6 +1839,7 @@ func (page BackupItemCollectionPage) Values() []BackupItem {
 	return *page.bic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupItemProperties ...
 type BackupItemProperties struct {
 	// ID - Id of the backup.
@@ -1744,6 +1872,7 @@ type BackupItemProperties struct {
 	WebsiteSizeInBytes *int64 `json:"websiteSizeInBytes,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupRequest description of a backup which will be performed
 type BackupRequest struct {
 	autorest.Response        `json:"-"`
@@ -1762,6 +1891,7 @@ type BackupRequest struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for BackupRequest.
 func (br BackupRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1789,6 +1919,7 @@ func (br BackupRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for BackupRequest struct.
 func (br *BackupRequest) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1867,6 +1998,7 @@ func (br *BackupRequest) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupRequestProperties ...
 type BackupRequestProperties struct {
 	// Name - Name of the backup
@@ -1883,6 +2015,7 @@ type BackupRequestProperties struct {
 	Type BackupRestoreOperationType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // BackupSchedule description of a backup schedule. Describes how often should be the backup performed and what
 // should be the retention policy.
 type BackupSchedule struct {
@@ -1900,6 +2033,7 @@ type BackupSchedule struct {
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Certificate app certificate
 type Certificate struct {
 	autorest.Response      `json:"-"`
@@ -1918,6 +2052,7 @@ type Certificate struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Certificate.
 func (c Certificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -1945,6 +2080,7 @@ func (c Certificate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Certificate struct.
 func (c *Certificate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2023,6 +2159,7 @@ func (c *Certificate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateCollection collection of certificates
 type CertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -2032,12 +2169,14 @@ type CertificateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateCollectionIterator provides access to a complete listing of Certificate values.
 type CertificateCollectionIterator struct {
 	i    int
 	page CertificateCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *CertificateCollectionIterator) Next() error {
@@ -2054,16 +2193,19 @@ func (iter *CertificateCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter CertificateCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter CertificateCollectionIterator) Response() CertificateCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter CertificateCollectionIterator) Value() Certificate {
@@ -2073,6 +2215,7 @@ func (iter CertificateCollectionIterator) Value() Certificate {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
@@ -2090,12 +2233,14 @@ func (cc CertificateCollection) certificateCollectionPreparer() (*http.Request, 
 		autorest.WithBaseURL(to.String(cc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateCollectionPage contains a page of Certificate values.
 type CertificateCollectionPage struct {
 	fn func(CertificateCollection) (CertificateCollection, error)
 	cc CertificateCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *CertificateCollectionPage) Next() error {
@@ -2107,16 +2252,19 @@ func (page *CertificateCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page CertificateCollectionPage) NotDone() bool {
 	return !page.cc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page CertificateCollectionPage) Response() CertificateCollection {
 	return page.cc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page CertificateCollectionPage) Values() []Certificate {
 	if page.cc.IsEmpty() {
@@ -2125,6 +2273,7 @@ func (page CertificateCollectionPage) Values() []Certificate {
 	return *page.cc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateDetails certificate Details
 type CertificateDetails struct {
 	*CertificateDetailsProperties `json:"properties,omitempty"`
@@ -2142,6 +2291,7 @@ type CertificateDetails struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateDetails.
 func (cd CertificateDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2169,6 +2319,7 @@ func (cd CertificateDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateDetails struct.
 func (cd *CertificateDetails) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2247,6 +2398,7 @@ func (cd *CertificateDetails) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateDetailsProperties ...
 type CertificateDetailsProperties struct {
 	// Version - Version
@@ -2269,6 +2421,7 @@ type CertificateDetailsProperties struct {
 	RawData *string `json:"rawData,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateEmail certificate Email
 type CertificateEmail struct {
 	*CertificateEmailProperties `json:"properties,omitempty"`
@@ -2286,6 +2439,7 @@ type CertificateEmail struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateEmail.
 func (ce CertificateEmail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2313,6 +2467,7 @@ func (ce CertificateEmail) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateEmail struct.
 func (ce *CertificateEmail) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2391,6 +2546,7 @@ func (ce *CertificateEmail) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateEmailProperties ...
 type CertificateEmailProperties struct {
 	// EmailID - Email id
@@ -2399,6 +2555,7 @@ type CertificateEmailProperties struct {
 	TimeStamp *date.Time `json:"timeStamp,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrder certificate purchase order
 type CertificateOrder struct {
 	autorest.Response           `json:"-"`
@@ -2417,6 +2574,7 @@ type CertificateOrder struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateOrder.
 func (co CertificateOrder) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2444,6 +2602,7 @@ func (co CertificateOrder) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateOrder struct.
 func (co *CertificateOrder) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2522,6 +2681,7 @@ func (co *CertificateOrder) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderAction represents a certificate action
 type CertificateOrderAction struct {
 	*CertificateOrderActionProperties `json:"properties,omitempty"`
@@ -2539,6 +2699,7 @@ type CertificateOrderAction struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateOrderAction.
 func (coa CertificateOrderAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2566,6 +2727,7 @@ func (coa CertificateOrderAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateOrderAction struct.
 func (coa *CertificateOrderAction) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2644,6 +2806,7 @@ func (coa *CertificateOrderAction) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderActionProperties ...
 type CertificateOrderActionProperties struct {
 	// Type - Type. Possible values include: 'CertificateIssued', 'CertificateOrderCanceled', 'CertificateOrderCreated', 'CertificateRevoked', 'DomainValidationComplete', 'FraudDetected', 'OrgNameChange', 'OrgValidationComplete', 'SanDrop'
@@ -2652,6 +2815,7 @@ type CertificateOrderActionProperties struct {
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCertificate class representing the Key Vault container for certificate purchased through Azure
 type CertificateOrderCertificate struct {
 	autorest.Response                      `json:"-"`
@@ -2670,6 +2834,7 @@ type CertificateOrderCertificate struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateOrderCertificate.
 func (coc CertificateOrderCertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2697,6 +2862,7 @@ func (coc CertificateOrderCertificate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CertificateOrderCertificate struct.
 func (coc *CertificateOrderCertificate) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2775,6 +2941,7 @@ func (coc *CertificateOrderCertificate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCertificateCollection collection of ceritificateorder certificates
 type CertificateOrderCertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -2784,6 +2951,7 @@ type CertificateOrderCertificateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCertificateCollectionIterator provides access to a complete listing of
 // CertificateOrderCertificate values.
 type CertificateOrderCertificateCollectionIterator struct {
@@ -2791,6 +2959,7 @@ type CertificateOrderCertificateCollectionIterator struct {
 	page CertificateOrderCertificateCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *CertificateOrderCertificateCollectionIterator) Next() error {
@@ -2807,16 +2976,19 @@ func (iter *CertificateOrderCertificateCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter CertificateOrderCertificateCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter CertificateOrderCertificateCollectionIterator) Response() CertificateOrderCertificateCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter CertificateOrderCertificateCollectionIterator) Value() CertificateOrderCertificate {
@@ -2826,6 +2998,7 @@ func (iter CertificateOrderCertificateCollectionIterator) Value() CertificateOrd
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cocc CertificateOrderCertificateCollection) IsEmpty() bool {
 	return cocc.Value == nil || len(*cocc.Value) == 0
@@ -2843,12 +3016,14 @@ func (cocc CertificateOrderCertificateCollection) certificateOrderCertificateCol
 		autorest.WithBaseURL(to.String(cocc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCertificateCollectionPage contains a page of CertificateOrderCertificate values.
 type CertificateOrderCertificateCollectionPage struct {
 	fn   func(CertificateOrderCertificateCollection) (CertificateOrderCertificateCollection, error)
 	cocc CertificateOrderCertificateCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *CertificateOrderCertificateCollectionPage) Next() error {
@@ -2860,16 +3035,19 @@ func (page *CertificateOrderCertificateCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page CertificateOrderCertificateCollectionPage) NotDone() bool {
 	return !page.cocc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page CertificateOrderCertificateCollectionPage) Response() CertificateOrderCertificateCollection {
 	return page.cocc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page CertificateOrderCertificateCollectionPage) Values() []CertificateOrderCertificate {
 	if page.cocc.IsEmpty() {
@@ -2878,6 +3056,7 @@ func (page CertificateOrderCertificateCollectionPage) Values() []CertificateOrde
 	return *page.cocc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCertificateProperties ...
 type CertificateOrderCertificateProperties struct {
 	// KeyVaultID - Key Vault Csm resource Id
@@ -2888,6 +3067,7 @@ type CertificateOrderCertificateProperties struct {
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCollection collection of ceritificate orders
 type CertificateOrderCollection struct {
 	autorest.Response `json:"-"`
@@ -2897,12 +3077,14 @@ type CertificateOrderCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCollectionIterator provides access to a complete listing of CertificateOrder values.
 type CertificateOrderCollectionIterator struct {
 	i    int
 	page CertificateOrderCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *CertificateOrderCollectionIterator) Next() error {
@@ -2919,16 +3101,19 @@ func (iter *CertificateOrderCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter CertificateOrderCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter CertificateOrderCollectionIterator) Response() CertificateOrderCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter CertificateOrderCollectionIterator) Value() CertificateOrder {
@@ -2938,6 +3123,7 @@ func (iter CertificateOrderCollectionIterator) Value() CertificateOrder {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (coc CertificateOrderCollection) IsEmpty() bool {
 	return coc.Value == nil || len(*coc.Value) == 0
@@ -2955,12 +3141,14 @@ func (coc CertificateOrderCollection) certificateOrderCollectionPreparer() (*htt
 		autorest.WithBaseURL(to.String(coc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderCollectionPage contains a page of CertificateOrder values.
 type CertificateOrderCollectionPage struct {
 	fn  func(CertificateOrderCollection) (CertificateOrderCollection, error)
 	coc CertificateOrderCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *CertificateOrderCollectionPage) Next() error {
@@ -2972,16 +3160,19 @@ func (page *CertificateOrderCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page CertificateOrderCollectionPage) NotDone() bool {
 	return !page.coc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page CertificateOrderCollectionPage) Response() CertificateOrderCollection {
 	return page.coc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page CertificateOrderCollectionPage) Values() []CertificateOrder {
 	if page.coc.IsEmpty() {
@@ -2990,6 +3181,7 @@ func (page CertificateOrderCollectionPage) Values() []CertificateOrder {
 	return *page.coc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrderProperties ...
 type CertificateOrderProperties struct {
 	// Certificates - State of the Key Vault secret
@@ -3026,6 +3218,7 @@ type CertificateOrderProperties struct {
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CertificateOrderProperties.
 func (co CertificateOrderProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3080,6 +3273,7 @@ func (co CertificateOrderProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateProperties ...
 type CertificateProperties struct {
 	// FriendlyName - Friendly name of the certificate
@@ -3114,6 +3308,7 @@ type CertificateProperties struct {
 	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ClassicMobileService a mobile service
 type ClassicMobileService struct {
 	autorest.Response               `json:"-"`
@@ -3132,6 +3327,7 @@ type ClassicMobileService struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ClassicMobileService.
 func (cms ClassicMobileService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3159,6 +3355,7 @@ func (cms ClassicMobileService) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ClassicMobileService struct.
 func (cms *ClassicMobileService) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3237,6 +3434,7 @@ func (cms *ClassicMobileService) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ClassicMobileServiceCollection collection of Classic Mobile Services
 type ClassicMobileServiceCollection struct {
 	autorest.Response `json:"-"`
@@ -3246,12 +3444,14 @@ type ClassicMobileServiceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ClassicMobileServiceCollectionIterator provides access to a complete listing of ClassicMobileService values.
 type ClassicMobileServiceCollectionIterator struct {
 	i    int
 	page ClassicMobileServiceCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ClassicMobileServiceCollectionIterator) Next() error {
@@ -3268,16 +3468,19 @@ func (iter *ClassicMobileServiceCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ClassicMobileServiceCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ClassicMobileServiceCollectionIterator) Response() ClassicMobileServiceCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ClassicMobileServiceCollectionIterator) Value() ClassicMobileService {
@@ -3287,6 +3490,7 @@ func (iter ClassicMobileServiceCollectionIterator) Value() ClassicMobileService 
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cmsc ClassicMobileServiceCollection) IsEmpty() bool {
 	return cmsc.Value == nil || len(*cmsc.Value) == 0
@@ -3304,12 +3508,14 @@ func (cmsc ClassicMobileServiceCollection) classicMobileServiceCollectionPrepare
 		autorest.WithBaseURL(to.String(cmsc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ClassicMobileServiceCollectionPage contains a page of ClassicMobileService values.
 type ClassicMobileServiceCollectionPage struct {
 	fn   func(ClassicMobileServiceCollection) (ClassicMobileServiceCollection, error)
 	cmsc ClassicMobileServiceCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ClassicMobileServiceCollectionPage) Next() error {
@@ -3321,16 +3527,19 @@ func (page *ClassicMobileServiceCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ClassicMobileServiceCollectionPage) NotDone() bool {
 	return !page.cmsc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ClassicMobileServiceCollectionPage) Response() ClassicMobileServiceCollection {
 	return page.cmsc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ClassicMobileServiceCollectionPage) Values() []ClassicMobileService {
 	if page.cmsc.IsEmpty() {
@@ -3339,12 +3548,14 @@ func (page ClassicMobileServiceCollectionPage) Values() []ClassicMobileService {
 	return *page.cmsc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ClassicMobileServiceProperties ...
 type ClassicMobileServiceProperties struct {
 	// Name - Name of the mobile service
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CloningInfo represents information needed for cloning operation
 type CloningInfo struct {
 	// CorrelationID - Correlation Id of cloning operation. This id ties multiple cloning operations
@@ -3374,6 +3585,7 @@ type CloningInfo struct {
 	TrafficManagerProfileName *string `json:"trafficManagerProfileName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CloningInfo.
 func (ci CloningInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3410,6 +3622,7 @@ func (ci CloningInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCodeInput confirm Consent Code Input payload
 type ConfirmConsentCodeInput struct {
 	*ConfirmConsentCodeInputProperties `json:"properties,omitempty"`
@@ -3427,6 +3640,7 @@ type ConfirmConsentCodeInput struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConfirmConsentCodeInput.
 func (ccci ConfirmConsentCodeInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3454,6 +3668,7 @@ func (ccci ConfirmConsentCodeInput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ConfirmConsentCodeInput struct.
 func (ccci *ConfirmConsentCodeInput) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3532,6 +3747,7 @@ func (ccci *ConfirmConsentCodeInput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCodeInputProperties ...
 type ConfirmConsentCodeInputProperties struct {
 	// PrincipalType - Principal type. Possible values include: 'PrincipalTypeActiveDirectory', 'PrincipalTypeConnection', 'PrincipalTypeMicrosoftAccount'
@@ -3544,6 +3760,7 @@ type ConfirmConsentCodeInputProperties struct {
 	Code *string `json:"code,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Connection api Connection
 type Connection struct {
 	autorest.Response     `json:"-"`
@@ -3562,6 +3779,7 @@ type Connection struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Connection.
 func (c Connection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3589,6 +3807,7 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Connection struct.
 func (c *Connection) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3667,6 +3886,7 @@ func (c *Connection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionCollection collection of conenctions
 type ConnectionCollection struct {
 	autorest.Response `json:"-"`
@@ -3676,12 +3896,14 @@ type ConnectionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionCollectionIterator provides access to a complete listing of Connection values.
 type ConnectionCollectionIterator struct {
 	i    int
 	page ConnectionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ConnectionCollectionIterator) Next() error {
@@ -3698,16 +3920,19 @@ func (iter *ConnectionCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ConnectionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ConnectionCollectionIterator) Response() ConnectionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ConnectionCollectionIterator) Value() Connection {
@@ -3717,6 +3942,7 @@ func (iter ConnectionCollectionIterator) Value() Connection {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cc ConnectionCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
@@ -3734,12 +3960,14 @@ func (cc ConnectionCollection) connectionCollectionPreparer() (*http.Request, er
 		autorest.WithBaseURL(to.String(cc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionCollectionPage contains a page of Connection values.
 type ConnectionCollectionPage struct {
 	fn func(ConnectionCollection) (ConnectionCollection, error)
 	cc ConnectionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ConnectionCollectionPage) Next() error {
@@ -3751,16 +3979,19 @@ func (page *ConnectionCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ConnectionCollectionPage) NotDone() bool {
 	return !page.cc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ConnectionCollectionPage) Response() ConnectionCollection {
 	return page.cc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ConnectionCollectionPage) Values() []Connection {
 	if page.cc.IsEmpty() {
@@ -3769,6 +4000,7 @@ func (page ConnectionCollectionPage) Values() []Connection {
 	return *page.cc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionError connection error
 type ConnectionError struct {
 	*ConnectionErrorProperties `json:"properties,omitempty"`
@@ -3786,6 +4018,7 @@ type ConnectionError struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConnectionError.
 func (ce ConnectionError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3813,6 +4046,7 @@ func (ce ConnectionError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ConnectionError struct.
 func (ce *ConnectionError) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -3891,6 +4125,7 @@ func (ce *ConnectionError) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionErrorProperties ...
 type ConnectionErrorProperties struct {
 	// Code - code of the status
@@ -3899,6 +4134,7 @@ type ConnectionErrorProperties struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionParameter connection provider parameters
 type ConnectionParameter struct {
 	// Type - Type of the parameter. Possible values include: 'ConnectionParameterTypeString', 'ConnectionParameterTypeSecurestring', 'ConnectionParameterTypeSecureobject', 'ConnectionParameterTypeInt', 'ConnectionParameterTypeBool', 'ConnectionParameterTypeObject', 'ConnectionParameterTypeArray', 'ConnectionParameterTypeOauthSetting', 'ConnectionParameterTypeConnection'
@@ -3911,6 +4147,7 @@ type ConnectionParameter struct {
 	UIDefinition interface{} `json:"uiDefinition,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionProperties ...
 type ConnectionProperties struct {
 	// Name - connection name
@@ -3939,6 +4176,7 @@ type ConnectionProperties struct {
 	API *ExpandedParentAPIEntity `json:"api,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConnectionProperties.
 func (c ConnectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3982,6 +4220,7 @@ func (c ConnectionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionSecrets ...
 type ConnectionSecrets struct {
 	autorest.Response `json:"-"`
@@ -3991,6 +4230,7 @@ type ConnectionSecrets struct {
 	ConnectionKey *string `json:"connectionKey,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConnectionSecrets.
 func (cs ConnectionSecrets) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4003,6 +4243,7 @@ func (cs ConnectionSecrets) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionStatus connection status
 type ConnectionStatus struct {
 	*ConnectionStatusProperties `json:"properties,omitempty"`
@@ -4020,6 +4261,7 @@ type ConnectionStatus struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConnectionStatus.
 func (cs ConnectionStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4047,6 +4289,7 @@ func (cs ConnectionStatus) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ConnectionStatus struct.
 func (cs *ConnectionStatus) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4125,6 +4368,7 @@ func (cs *ConnectionStatus) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionStatusProperties ...
 type ConnectionStatusProperties struct {
 	// Status - Status
@@ -4135,6 +4379,7 @@ type ConnectionStatusProperties struct {
 	Error *ConnectionError `json:"error,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionStringDictionary string dictionary resource
 type ConnectionStringDictionary struct {
 	autorest.Response `json:"-"`
@@ -4154,6 +4399,7 @@ type ConnectionStringDictionary struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConnectionStringDictionary.
 func (csd ConnectionStringDictionary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4181,6 +4427,7 @@ func (csd ConnectionStringDictionary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnStringInfo represents database connection string information
 type ConnStringInfo struct {
 	// Name - Name of connection string
@@ -4191,6 +4438,7 @@ type ConnStringInfo struct {
 	Type DatabaseServerType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnStringValueTypePair database connection string value to type pair
 type ConnStringValueTypePair struct {
 	// Value - Value of pair
@@ -4199,6 +4447,7 @@ type ConnStringValueTypePair struct {
 	Type DatabaseServerType `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConsentLink ...
 type ConsentLink struct {
 	// Link - Uri for the consent link
@@ -4211,6 +4460,7 @@ type ConsentLink struct {
 	Status LinkState `json:"status,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConsentLinkInput connection Constent Link payload
 type ConsentLinkInput struct {
 	*ConsentLinkInputProperties `json:"properties,omitempty"`
@@ -4228,6 +4478,7 @@ type ConsentLinkInput struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ConsentLinkInput.
 func (cli ConsentLinkInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4255,6 +4506,7 @@ func (cli ConsentLinkInput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ConsentLinkInput struct.
 func (cli *ConsentLinkInput) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4333,6 +4585,7 @@ func (cli *ConsentLinkInput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConsentLinkInputParameter ...
 type ConsentLinkInputParameter struct {
 	// PrincipalType - Principal type. Possible values include: 'PrincipalTypeActiveDirectory', 'PrincipalTypeConnection', 'PrincipalTypeMicrosoftAccount'
@@ -4348,12 +4601,14 @@ type ConsentLinkInputParameter struct {
 	RedirectURL *string `json:"redirectUrl,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConsentLinkInputProperties ...
 type ConsentLinkInputProperties struct {
 	// Parameters - Array of links
 	Parameters *[]ConsentLinkInputParameter `json:"parameters,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConsentLinkPayload collection of consent links
 type ConsentLinkPayload struct {
 	autorest.Response `json:"-"`
@@ -4361,6 +4616,7 @@ type ConsentLinkPayload struct {
 	Value *[]ConsentLink `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Contact contact information for domain registration. If 'Domain Privacy' option is not selected then the contact
 // information will be  be made publicly available through the Whois directories as per ICANN requirements.
 type Contact struct {
@@ -4384,6 +4640,7 @@ type Contact struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CorsSettings cross-Origin Resource Sharing (CORS) settings for the web app.
 type CorsSettings struct {
 	// AllowedOrigins - Gets or sets the list of origins that should be allowed to make cross-origin
@@ -4391,6 +4648,7 @@ type CorsSettings struct {
 	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmMoveResourceEnvelope class containing a list of the resources that need to be moved and the resource group
 // they should be moved to
 type CsmMoveResourceEnvelope struct {
@@ -4398,6 +4656,7 @@ type CsmMoveResourceEnvelope struct {
 	Resources           *[]string `json:"resources,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmPublishingProfileOptions publishing options for requested profile
 type CsmPublishingProfileOptions struct {
 	// Format - Name of the format. Valid values are:
@@ -4407,6 +4666,7 @@ type CsmPublishingProfileOptions struct {
 	Format *string `json:"format,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmSiteRecoveryEntity class containting details about site recovery operation.
 type CsmSiteRecoveryEntity struct {
 	// SnapshotTime - Point in time in which the site recover should be attempted.
@@ -4419,6 +4679,7 @@ type CsmSiteRecoveryEntity struct {
 	SlotName *string `json:"slotName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmSlotEntity class containing deployment slot parameters
 type CsmSlotEntity struct {
 	// TargetSlot - Set the destination deployment slot during swap operation
@@ -4427,6 +4688,7 @@ type CsmSlotEntity struct {
 	PreserveVnet *bool `json:"preserveVnet,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmUsageQuota usage of the quota resource
 type CsmUsageQuota struct {
 	// Unit - Units of measurement for the quota resourse
@@ -4441,6 +4703,7 @@ type CsmUsageQuota struct {
 	Name *LocalizableString `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmUsageQuotaCollection collection of csm usage quotas
 type CsmUsageQuotaCollection struct {
 	autorest.Response `json:"-"`
@@ -4450,12 +4713,14 @@ type CsmUsageQuotaCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmUsageQuotaCollectionIterator provides access to a complete listing of CsmUsageQuota values.
 type CsmUsageQuotaCollectionIterator struct {
 	i    int
 	page CsmUsageQuotaCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *CsmUsageQuotaCollectionIterator) Next() error {
@@ -4472,16 +4737,19 @@ func (iter *CsmUsageQuotaCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter CsmUsageQuotaCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter CsmUsageQuotaCollectionIterator) Response() CsmUsageQuotaCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter CsmUsageQuotaCollectionIterator) Value() CsmUsageQuota {
@@ -4491,6 +4759,7 @@ func (iter CsmUsageQuotaCollectionIterator) Value() CsmUsageQuota {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (cuqc CsmUsageQuotaCollection) IsEmpty() bool {
 	return cuqc.Value == nil || len(*cuqc.Value) == 0
@@ -4508,12 +4777,14 @@ func (cuqc CsmUsageQuotaCollection) csmUsageQuotaCollectionPreparer() (*http.Req
 		autorest.WithBaseURL(to.String(cuqc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsmUsageQuotaCollectionPage contains a page of CsmUsageQuota values.
 type CsmUsageQuotaCollectionPage struct {
 	fn   func(CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)
 	cuqc CsmUsageQuotaCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *CsmUsageQuotaCollectionPage) Next() error {
@@ -4525,16 +4796,19 @@ func (page *CsmUsageQuotaCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page CsmUsageQuotaCollectionPage) NotDone() bool {
 	return !page.cuqc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page CsmUsageQuotaCollectionPage) Response() CsmUsageQuotaCollection {
 	return page.cuqc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page CsmUsageQuotaCollectionPage) Values() []CsmUsageQuota {
 	if page.cuqc.IsEmpty() {
@@ -4543,6 +4817,7 @@ func (page CsmUsageQuotaCollectionPage) Values() []CsmUsageQuota {
 	return *page.cuqc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Csr certificate signing request object
 type Csr struct {
 	autorest.Response `json:"-"`
@@ -4561,6 +4836,7 @@ type Csr struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Csr.
 func (c Csr) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4588,6 +4864,7 @@ func (c Csr) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Csr struct.
 func (c *Csr) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4666,6 +4943,7 @@ func (c *Csr) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CsrProperties ...
 type CsrProperties struct {
 	// Name - Name used to locate CSR object
@@ -4684,6 +4962,7 @@ type CsrProperties struct {
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CustomLoginSettingValue custom logging setting value
 type CustomLoginSettingValue struct {
 	*CustomLoginSettingValueProperties `json:"properties,omitempty"`
@@ -4701,6 +4980,7 @@ type CustomLoginSettingValue struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for CustomLoginSettingValue.
 func (clsv CustomLoginSettingValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4728,6 +5008,7 @@ func (clsv CustomLoginSettingValue) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for CustomLoginSettingValue struct.
 func (clsv *CustomLoginSettingValue) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4806,12 +5087,14 @@ func (clsv *CustomLoginSettingValue) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CustomLoginSettingValueProperties ...
 type CustomLoginSettingValueProperties struct {
 	// Option - Option selected for this custom login setting value
 	Option *string `json:"option,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DatabaseBackupSetting note: properties are serialized in JSON format and stored in DB.
 // if new properties are added they might not be in the previous data rows
 // so please handle nulls
@@ -4826,6 +5109,7 @@ type DatabaseBackupSetting struct {
 	ConnectionString *string `json:"connectionString,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletedSite reports deleted site including the timestamp of operation
 type DeletedSite struct {
 	*DeletedSiteProperties `json:"properties,omitempty"`
@@ -4843,6 +5127,7 @@ type DeletedSite struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for DeletedSite.
 func (ds DeletedSite) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4870,6 +5155,7 @@ func (ds DeletedSite) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for DeletedSite struct.
 func (ds *DeletedSite) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -4948,6 +5234,7 @@ func (ds *DeletedSite) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletedSiteCollection collection of deleted sites
 type DeletedSiteCollection struct {
 	autorest.Response `json:"-"`
@@ -4957,12 +5244,14 @@ type DeletedSiteCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletedSiteCollectionIterator provides access to a complete listing of DeletedSite values.
 type DeletedSiteCollectionIterator struct {
 	i    int
 	page DeletedSiteCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *DeletedSiteCollectionIterator) Next() error {
@@ -4979,16 +5268,19 @@ func (iter *DeletedSiteCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter DeletedSiteCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter DeletedSiteCollectionIterator) Response() DeletedSiteCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter DeletedSiteCollectionIterator) Value() DeletedSite {
@@ -4998,6 +5290,7 @@ func (iter DeletedSiteCollectionIterator) Value() DeletedSite {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (dsc DeletedSiteCollection) IsEmpty() bool {
 	return dsc.Value == nil || len(*dsc.Value) == 0
@@ -5015,12 +5308,14 @@ func (dsc DeletedSiteCollection) deletedSiteCollectionPreparer() (*http.Request,
 		autorest.WithBaseURL(to.String(dsc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletedSiteCollectionPage contains a page of DeletedSite values.
 type DeletedSiteCollectionPage struct {
 	fn  func(DeletedSiteCollection) (DeletedSiteCollection, error)
 	dsc DeletedSiteCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *DeletedSiteCollectionPage) Next() error {
@@ -5032,16 +5327,19 @@ func (page *DeletedSiteCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page DeletedSiteCollectionPage) NotDone() bool {
 	return !page.dsc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page DeletedSiteCollectionPage) Response() DeletedSiteCollection {
 	return page.dsc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page DeletedSiteCollectionPage) Values() []DeletedSite {
 	if page.dsc.IsEmpty() {
@@ -5050,6 +5348,7 @@ func (page DeletedSiteCollectionPage) Values() []DeletedSite {
 	return *page.dsc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletedSiteProperties ...
 type DeletedSiteProperties struct {
 	// DeletedTimestamp - Time when the site was deleted
@@ -5118,6 +5417,7 @@ type DeletedSiteProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Deployment represents user crendentials used for publishing activity
 type Deployment struct {
 	autorest.Response     `json:"-"`
@@ -5136,6 +5436,7 @@ type Deployment struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Deployment.
 func (d Deployment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5163,6 +5464,7 @@ func (d Deployment) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Deployment struct.
 func (d *Deployment) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5241,6 +5543,7 @@ func (d *Deployment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeploymentCollection collection of app deployments
 type DeploymentCollection struct {
 	autorest.Response `json:"-"`
@@ -5250,12 +5553,14 @@ type DeploymentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeploymentCollectionIterator provides access to a complete listing of Deployment values.
 type DeploymentCollectionIterator struct {
 	i    int
 	page DeploymentCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *DeploymentCollectionIterator) Next() error {
@@ -5272,16 +5577,19 @@ func (iter *DeploymentCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter DeploymentCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter DeploymentCollectionIterator) Response() DeploymentCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter DeploymentCollectionIterator) Value() Deployment {
@@ -5291,6 +5599,7 @@ func (iter DeploymentCollectionIterator) Value() Deployment {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (dc DeploymentCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
@@ -5308,12 +5617,14 @@ func (dc DeploymentCollection) deploymentCollectionPreparer() (*http.Request, er
 		autorest.WithBaseURL(to.String(dc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeploymentCollectionPage contains a page of Deployment values.
 type DeploymentCollectionPage struct {
 	fn func(DeploymentCollection) (DeploymentCollection, error)
 	dc DeploymentCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *DeploymentCollectionPage) Next() error {
@@ -5325,16 +5636,19 @@ func (page *DeploymentCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page DeploymentCollectionPage) NotDone() bool {
 	return !page.dc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page DeploymentCollectionPage) Response() DeploymentCollection {
 	return page.dc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page DeploymentCollectionPage) Values() []Deployment {
 	if page.dc.IsEmpty() {
@@ -5343,6 +5657,7 @@ func (page DeploymentCollectionPage) Values() []Deployment {
 	return *page.dc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeploymentProperties ...
 type DeploymentProperties struct {
 	// ID - Id
@@ -5367,6 +5682,7 @@ type DeploymentProperties struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Domain represents a domain
 type Domain struct {
 	autorest.Response `json:"-"`
@@ -5385,6 +5701,7 @@ type Domain struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Domain.
 func (d Domain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5412,6 +5729,7 @@ func (d Domain) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Domain struct.
 func (d *Domain) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5490,6 +5808,7 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainAvailablilityCheckResult domain availablility check result
 type DomainAvailablilityCheckResult struct {
 	autorest.Response `json:"-"`
@@ -5501,6 +5820,7 @@ type DomainAvailablilityCheckResult struct {
 	DomainType DomainType `json:"domainType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainCollection collection of domains
 type DomainCollection struct {
 	autorest.Response `json:"-"`
@@ -5510,12 +5830,14 @@ type DomainCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainCollectionIterator provides access to a complete listing of Domain values.
 type DomainCollectionIterator struct {
 	i    int
 	page DomainCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *DomainCollectionIterator) Next() error {
@@ -5532,16 +5854,19 @@ func (iter *DomainCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter DomainCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter DomainCollectionIterator) Response() DomainCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter DomainCollectionIterator) Value() Domain {
@@ -5551,6 +5876,7 @@ func (iter DomainCollectionIterator) Value() Domain {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (dc DomainCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
@@ -5568,12 +5894,14 @@ func (dc DomainCollection) domainCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(dc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainCollectionPage contains a page of Domain values.
 type DomainCollectionPage struct {
 	fn func(DomainCollection) (DomainCollection, error)
 	dc DomainCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *DomainCollectionPage) Next() error {
@@ -5585,16 +5913,19 @@ func (page *DomainCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page DomainCollectionPage) NotDone() bool {
 	return !page.dc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page DomainCollectionPage) Response() DomainCollection {
 	return page.dc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page DomainCollectionPage) Values() []Domain {
 	if page.dc.IsEmpty() {
@@ -5603,6 +5934,7 @@ func (page DomainCollectionPage) Values() []Domain {
 	return *page.dc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainControlCenterSsoRequest single sign on request information for domain management
 type DomainControlCenterSsoRequest struct {
 	autorest.Response `json:"-"`
@@ -5614,6 +5946,7 @@ type DomainControlCenterSsoRequest struct {
 	PostParameterValue *string `json:"postParameterValue,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainProperties ...
 type DomainProperties struct {
 	// ContactAdmin - Admin contact information
@@ -5650,6 +5983,7 @@ type DomainProperties struct {
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainPurchaseConsent domain purchase consent object representing acceptance of applicable legal agreements
 type DomainPurchaseConsent struct {
 	// AgreementKeys - List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements Api under TopLevelDomain resource
@@ -5660,6 +5994,7 @@ type DomainPurchaseConsent struct {
 	AgreedAt *date.Time `json:"agreedAt,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainRecommendationSearchParameters domain recommendation search parameters
 type DomainRecommendationSearchParameters struct {
 	// Keywords - Keywords to be used for generating domain recommendations
@@ -5668,6 +6003,7 @@ type DomainRecommendationSearchParameters struct {
 	MaxDomainRecommendations *int32 `json:"maxDomainRecommendations,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainRegistrationInput domain registration input for validation Api
 type DomainRegistrationInput struct {
 	*DomainRegistrationInputProperties `json:"properties,omitempty"`
@@ -5685,6 +6021,7 @@ type DomainRegistrationInput struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for DomainRegistrationInput.
 func (dri DomainRegistrationInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5712,6 +6049,7 @@ func (dri DomainRegistrationInput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for DomainRegistrationInput struct.
 func (dri *DomainRegistrationInput) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5790,6 +6128,7 @@ func (dri *DomainRegistrationInput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DomainRegistrationInputProperties ...
 type DomainRegistrationInputProperties struct {
 	// Name - Name of the domain
@@ -5828,12 +6167,14 @@ type DomainRegistrationInputProperties struct {
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // EnabledConfig enabled configuration
 type EnabledConfig struct {
 	// Enabled - Enabled
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ExpandedParentAPIEntity expanded parent object for expansion
 type ExpandedParentAPIEntity struct {
 	*ExpandedParentAPIEntityProperties `json:"properties,omitempty"`
@@ -5851,6 +6192,7 @@ type ExpandedParentAPIEntity struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ExpandedParentAPIEntity.
 func (epAe ExpandedParentAPIEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -5878,6 +6220,7 @@ func (epAe ExpandedParentAPIEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ExpandedParentAPIEntity struct.
 func (epAe *ExpandedParentAPIEntity) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5956,6 +6299,7 @@ func (epAe *ExpandedParentAPIEntity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ExpandedParentAPIEntityProperties ...
 type ExpandedParentAPIEntityProperties struct {
 	// ID - Id of connection provider
@@ -5964,18 +6308,21 @@ type ExpandedParentAPIEntityProperties struct {
 	Entity *ResponseMessageEnvelopeAPIEntity `json:"entity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Experiments class containing Routing in production experiments
 type Experiments struct {
 	// RampUpRules - List of {Microsoft.Web.Hosting.Administration.RampUpRule} objects.
 	RampUpRules *[]RampUpRule `json:"rampUpRules,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // FileSystemApplicationLogsConfig application logs to file system configuration
 type FileSystemApplicationLogsConfig struct {
 	// Level - Log level. Possible values include: 'LogLevelOff', 'LogLevelVerbose', 'LogLevelInformation', 'LogLevelWarning', 'LogLevelError'
 	Level LogLevel `json:"level,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // FileSystemHTTPLogsConfig http logs to file system configuration
 type FileSystemHTTPLogsConfig struct {
 	// RetentionInMb - Maximum size in megabytes that http log files can use.
@@ -5990,6 +6337,7 @@ type FileSystemHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeneralAPIInformation general API information
 type GeneralAPIInformation struct {
 	*GeneralAPIInformationProperties `json:"properties,omitempty"`
@@ -6007,6 +6355,7 @@ type GeneralAPIInformation struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for GeneralAPIInformation.
 func (gai GeneralAPIInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6034,6 +6383,7 @@ func (gai GeneralAPIInformation) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for GeneralAPIInformation struct.
 func (gai *GeneralAPIInformation) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6112,6 +6462,7 @@ func (gai *GeneralAPIInformation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeneralAPIInformationProperties ...
 type GeneralAPIInformationProperties struct {
 	// IconURL - Icon Url
@@ -6128,6 +6479,7 @@ type GeneralAPIInformationProperties struct {
 	ConnectionPortalURL interface{} `json:"connectionPortalUrl,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeoRegion geographical region
 type GeoRegion struct {
 	*GeoRegionProperties `json:"properties,omitempty"`
@@ -6145,6 +6497,7 @@ type GeoRegion struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for GeoRegion.
 func (gr GeoRegion) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6172,6 +6525,7 @@ func (gr GeoRegion) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for GeoRegion struct.
 func (gr *GeoRegion) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6250,6 +6604,7 @@ func (gr *GeoRegion) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeoRegionCollection collection of geo regions
 type GeoRegionCollection struct {
 	autorest.Response `json:"-"`
@@ -6259,12 +6614,14 @@ type GeoRegionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeoRegionCollectionIterator provides access to a complete listing of GeoRegion values.
 type GeoRegionCollectionIterator struct {
 	i    int
 	page GeoRegionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *GeoRegionCollectionIterator) Next() error {
@@ -6281,16 +6638,19 @@ func (iter *GeoRegionCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter GeoRegionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter GeoRegionCollectionIterator) Response() GeoRegionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter GeoRegionCollectionIterator) Value() GeoRegion {
@@ -6300,6 +6660,7 @@ func (iter GeoRegionCollectionIterator) Value() GeoRegion {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (grc GeoRegionCollection) IsEmpty() bool {
 	return grc.Value == nil || len(*grc.Value) == 0
@@ -6317,12 +6678,14 @@ func (grc GeoRegionCollection) geoRegionCollectionPreparer() (*http.Request, err
 		autorest.WithBaseURL(to.String(grc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeoRegionCollectionPage contains a page of GeoRegion values.
 type GeoRegionCollectionPage struct {
 	fn  func(GeoRegionCollection) (GeoRegionCollection, error)
 	grc GeoRegionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *GeoRegionCollectionPage) Next() error {
@@ -6334,16 +6697,19 @@ func (page *GeoRegionCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page GeoRegionCollectionPage) NotDone() bool {
 	return !page.grc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page GeoRegionCollectionPage) Response() GeoRegionCollection {
 	return page.grc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page GeoRegionCollectionPage) Values() []GeoRegion {
 	if page.grc.IsEmpty() {
@@ -6352,6 +6718,7 @@ func (page GeoRegionCollectionPage) Values() []GeoRegion {
 	return *page.grc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GeoRegionProperties ...
 type GeoRegionProperties struct {
 	// Name - Region name
@@ -6362,6 +6729,7 @@ type GeoRegionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with certain
 // extension.
 // For example it is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
@@ -6374,6 +6742,7 @@ type HandlerMapping struct {
 	Arguments *string `json:"arguments,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironment description of an hostingEnvironment (App Service Environment)
 type HostingEnvironment struct {
 	autorest.Response             `json:"-"`
@@ -6392,6 +6761,7 @@ type HostingEnvironment struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for HostingEnvironment.
 func (he HostingEnvironment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -6419,6 +6789,7 @@ func (he HostingEnvironment) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for HostingEnvironment struct.
 func (he *HostingEnvironment) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -6497,6 +6868,7 @@ func (he *HostingEnvironment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentCollection collection of hosting environments (App Service Environments)
 type HostingEnvironmentCollection struct {
 	autorest.Response `json:"-"`
@@ -6506,12 +6878,14 @@ type HostingEnvironmentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentCollectionIterator provides access to a complete listing of HostingEnvironment values.
 type HostingEnvironmentCollectionIterator struct {
 	i    int
 	page HostingEnvironmentCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *HostingEnvironmentCollectionIterator) Next() error {
@@ -6528,16 +6902,19 @@ func (iter *HostingEnvironmentCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter HostingEnvironmentCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter HostingEnvironmentCollectionIterator) Response() HostingEnvironmentCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter HostingEnvironmentCollectionIterator) Value() HostingEnvironment {
@@ -6547,6 +6924,7 @@ func (iter HostingEnvironmentCollectionIterator) Value() HostingEnvironment {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (hec HostingEnvironmentCollection) IsEmpty() bool {
 	return hec.Value == nil || len(*hec.Value) == 0
@@ -6564,12 +6942,14 @@ func (hec HostingEnvironmentCollection) hostingEnvironmentCollectionPreparer() (
 		autorest.WithBaseURL(to.String(hec.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentCollectionPage contains a page of HostingEnvironment values.
 type HostingEnvironmentCollectionPage struct {
 	fn  func(HostingEnvironmentCollection) (HostingEnvironmentCollection, error)
 	hec HostingEnvironmentCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *HostingEnvironmentCollectionPage) Next() error {
@@ -6581,16 +6961,19 @@ func (page *HostingEnvironmentCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page HostingEnvironmentCollectionPage) NotDone() bool {
 	return !page.hec.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page HostingEnvironmentCollectionPage) Response() HostingEnvironmentCollection {
 	return page.hec
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page HostingEnvironmentCollectionPage) Values() []HostingEnvironment {
 	if page.hec.IsEmpty() {
@@ -6599,6 +6982,7 @@ func (page HostingEnvironmentCollectionPage) Values() []HostingEnvironment {
 	return *page.hec.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentDiagnostics diagnostics for a hosting environment (App Service Environment)
 type HostingEnvironmentDiagnostics struct {
 	autorest.Response `json:"-"`
@@ -6608,6 +6992,7 @@ type HostingEnvironmentDiagnostics struct {
 	DiagnosicsOutput *string `json:"diagnosicsOutput,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentProfile specification for a hostingEnvironment (App Service Environment) to use for this
 // resource
 type HostingEnvironmentProfile struct {
@@ -6619,6 +7004,7 @@ type HostingEnvironmentProfile struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentProperties ...
 type HostingEnvironmentProperties struct {
 	// Name - Name of the hostingEnvironment (App Service Environment)
@@ -6688,6 +7074,7 @@ type HostingEnvironmentProperties struct {
 	ClusterSettings *[]NameValuePair `json:"clusterSettings,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture struct {
@@ -6695,6 +7082,7 @@ type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (he HostingEnvironment, err error) {
@@ -6737,6 +7125,7 @@ func (future HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture) Result(c
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture struct {
@@ -6744,6 +7133,7 @@ type HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
@@ -6786,6 +7176,7 @@ func (future HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(client
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsCreateOrUpdateWorkerPoolFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
@@ -6793,6 +7184,7 @@ type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client HostingEnvironmentsClient) (wp WorkerPool, err error) {
@@ -6835,6 +7227,7 @@ func (future HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client Ho
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
@@ -6842,6 +7235,7 @@ type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsDeleteHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (so SetObject, err error) {
@@ -6884,6 +7278,7 @@ func (future HostingEnvironmentsDeleteHostingEnvironmentFuture) Result(client Ho
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentServiceDescriptions back end service per ASE
 type HostingEnvironmentServiceDescriptions struct {
 	// HostingEnvironmentID - Hosting environment Id
@@ -6899,6 +7294,7 @@ type HostingEnvironmentServiceDescriptions struct {
 	UseInternalRouting *bool `json:"useInternalRouting,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsResumeHostingEnvironmentAllFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type HostingEnvironmentsResumeHostingEnvironmentAllFuture struct {
@@ -6906,6 +7302,7 @@ type HostingEnvironmentsResumeHostingEnvironmentAllFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsResumeHostingEnvironmentAllFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
@@ -6948,6 +7345,7 @@ func (future HostingEnvironmentsResumeHostingEnvironmentAllFuture) Result(client
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsResumeHostingEnvironmentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HostingEnvironmentsResumeHostingEnvironmentFuture struct {
@@ -6955,6 +7353,7 @@ type HostingEnvironmentsResumeHostingEnvironmentFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsResumeHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
@@ -6997,6 +7396,7 @@ func (future HostingEnvironmentsResumeHostingEnvironmentFuture) Result(client Ho
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsSuspendHostingEnvironmentAllFuture an abstraction for monitoring and retrieving the results
 // of a long-running operation.
 type HostingEnvironmentsSuspendHostingEnvironmentAllFuture struct {
@@ -7004,6 +7404,7 @@ type HostingEnvironmentsSuspendHostingEnvironmentAllFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsSuspendHostingEnvironmentAllFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
@@ -7046,6 +7447,7 @@ func (future HostingEnvironmentsSuspendHostingEnvironmentAllFuture) Result(clien
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostingEnvironmentsSuspendHostingEnvironmentFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HostingEnvironmentsSuspendHostingEnvironmentFuture struct {
@@ -7053,6 +7455,7 @@ type HostingEnvironmentsSuspendHostingEnvironmentFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future HostingEnvironmentsSuspendHostingEnvironmentFuture) Result(client HostingEnvironmentsClient) (scp SiteCollectionPage, err error) {
@@ -7095,6 +7498,7 @@ func (future HostingEnvironmentsSuspendHostingEnvironmentFuture) Result(client H
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostName details of a hostname derived from a domain
 type HostName struct {
 	// Name - Name of the hostname
@@ -7111,6 +7515,7 @@ type HostName struct {
 	HostNameType HostNameType `json:"hostNameType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameBinding a host name binding object
 type HostNameBinding struct {
 	autorest.Response          `json:"-"`
@@ -7129,6 +7534,7 @@ type HostNameBinding struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for HostNameBinding.
 func (hnb HostNameBinding) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7156,6 +7562,7 @@ func (hnb HostNameBinding) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for HostNameBinding struct.
 func (hnb *HostNameBinding) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7234,6 +7641,7 @@ func (hnb *HostNameBinding) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameBindingCollection collection of host name bindings
 type HostNameBindingCollection struct {
 	autorest.Response `json:"-"`
@@ -7243,12 +7651,14 @@ type HostNameBindingCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameBindingCollectionIterator provides access to a complete listing of HostNameBinding values.
 type HostNameBindingCollectionIterator struct {
 	i    int
 	page HostNameBindingCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *HostNameBindingCollectionIterator) Next() error {
@@ -7265,16 +7675,19 @@ func (iter *HostNameBindingCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter HostNameBindingCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter HostNameBindingCollectionIterator) Response() HostNameBindingCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter HostNameBindingCollectionIterator) Value() HostNameBinding {
@@ -7284,6 +7697,7 @@ func (iter HostNameBindingCollectionIterator) Value() HostNameBinding {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (hnbc HostNameBindingCollection) IsEmpty() bool {
 	return hnbc.Value == nil || len(*hnbc.Value) == 0
@@ -7301,12 +7715,14 @@ func (hnbc HostNameBindingCollection) hostNameBindingCollectionPreparer() (*http
 		autorest.WithBaseURL(to.String(hnbc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameBindingCollectionPage contains a page of HostNameBinding values.
 type HostNameBindingCollectionPage struct {
 	fn   func(HostNameBindingCollection) (HostNameBindingCollection, error)
 	hnbc HostNameBindingCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *HostNameBindingCollectionPage) Next() error {
@@ -7318,16 +7734,19 @@ func (page *HostNameBindingCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page HostNameBindingCollectionPage) NotDone() bool {
 	return !page.hnbc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page HostNameBindingCollectionPage) Response() HostNameBindingCollection {
 	return page.hnbc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page HostNameBindingCollectionPage) Values() []HostNameBinding {
 	if page.hnbc.IsEmpty() {
@@ -7336,6 +7755,7 @@ func (page HostNameBindingCollectionPage) Values() []HostNameBinding {
 	return *page.hnbc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameBindingProperties ...
 type HostNameBindingProperties struct {
 	// Name - Hostname
@@ -7354,6 +7774,7 @@ type HostNameBindingProperties struct {
 	HostNameType HostNameType `json:"hostNameType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HostNameSslState object that represents a SSL-enabled host name.
 type HostNameSslState struct {
 	// Name - Host name
@@ -7368,6 +7789,7 @@ type HostNameSslState struct {
 	ToUpdate *bool `json:"toUpdate,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // HTTPLogsConfig http logs configuration
 type HTTPLogsConfig struct {
 	// FileSystem - Http logs to file system configuration
@@ -7376,6 +7798,7 @@ type HTTPLogsConfig struct {
 	AzureBlobStorage *AzureBlobStorageHTTPLogsConfig `json:"azureBlobStorage,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IPSecurityRestriction represents an ip security restriction on a web app.
 type IPSecurityRestriction struct {
 	// IPAddress - IP address the security restriction is valid for
@@ -7384,24 +7807,28 @@ type IPSecurityRestriction struct {
 	SubnetMask *string `json:"subnetMask,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // KeyValuePairStringString ...
 type KeyValuePairStringString struct {
 	Key   *string `json:"key,omitempty"`
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListCertificateEmail ...
 type ListCertificateEmail struct {
 	autorest.Response `json:"-"`
 	Value             *[]CertificateEmail `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListCertificateOrderAction ...
 type ListCertificateOrderAction struct {
 	autorest.Response `json:"-"`
 	Value             *[]CertificateOrderAction `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeysInput list Connection Keys Input payload
 type ListConnectionKeysInput struct {
 	*ListConnectionKeysInputProperties `json:"properties,omitempty"`
@@ -7419,6 +7846,7 @@ type ListConnectionKeysInput struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ListConnectionKeysInput.
 func (lcki ListConnectionKeysInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7446,6 +7874,7 @@ func (lcki ListConnectionKeysInput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ListConnectionKeysInput struct.
 func (lcki *ListConnectionKeysInput) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7524,42 +7953,49 @@ func (lcki *ListConnectionKeysInput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeysInputProperties ...
 type ListConnectionKeysInputProperties struct {
 	// ValidityTimeSpan - time span for how long the keys will be valid
 	ValidityTimeSpan *string `json:"validityTimeSpan,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListCsr ...
 type ListCsr struct {
 	autorest.Response `json:"-"`
 	Value             *[]Csr `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListHostingEnvironmentDiagnostics ...
 type ListHostingEnvironmentDiagnostics struct {
 	autorest.Response `json:"-"`
 	Value             *[]HostingEnvironmentDiagnostics `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListRecommendation ...
 type ListRecommendation struct {
 	autorest.Response `json:"-"`
 	Value             *[]Recommendation `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListVnetInfo ...
 type ListVnetInfo struct {
 	autorest.Response `json:"-"`
 	Value             *[]VnetInfo `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListVnetRoute ...
 type ListVnetRoute struct {
 	autorest.Response `json:"-"`
 	Value             *[]VnetRoute `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // LocalizableString localizableString object containing the name and a localized value.
 type LocalizableString struct {
 	// Value - Non localized name
@@ -7568,6 +8004,7 @@ type LocalizableString struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironment description of a managed hosting environment
 type ManagedHostingEnvironment struct {
 	autorest.Response                    `json:"-"`
@@ -7586,6 +8023,7 @@ type ManagedHostingEnvironment struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ManagedHostingEnvironment.
 func (mhe ManagedHostingEnvironment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7613,6 +8051,7 @@ func (mhe ManagedHostingEnvironment) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ManagedHostingEnvironment struct.
 func (mhe *ManagedHostingEnvironment) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -7691,6 +8130,7 @@ func (mhe *ManagedHostingEnvironment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentCollection collection of managed hosting environments
 type ManagedHostingEnvironmentCollection struct {
 	autorest.Response `json:"-"`
@@ -7700,6 +8140,7 @@ type ManagedHostingEnvironmentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentCollectionIterator provides access to a complete listing of ManagedHostingEnvironment
 // values.
 type ManagedHostingEnvironmentCollectionIterator struct {
@@ -7707,6 +8148,7 @@ type ManagedHostingEnvironmentCollectionIterator struct {
 	page ManagedHostingEnvironmentCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ManagedHostingEnvironmentCollectionIterator) Next() error {
@@ -7723,16 +8165,19 @@ func (iter *ManagedHostingEnvironmentCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ManagedHostingEnvironmentCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ManagedHostingEnvironmentCollectionIterator) Response() ManagedHostingEnvironmentCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ManagedHostingEnvironmentCollectionIterator) Value() ManagedHostingEnvironment {
@@ -7742,6 +8187,7 @@ func (iter ManagedHostingEnvironmentCollectionIterator) Value() ManagedHostingEn
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (mhec ManagedHostingEnvironmentCollection) IsEmpty() bool {
 	return mhec.Value == nil || len(*mhec.Value) == 0
@@ -7759,12 +8205,14 @@ func (mhec ManagedHostingEnvironmentCollection) managedHostingEnvironmentCollect
 		autorest.WithBaseURL(to.String(mhec.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentCollectionPage contains a page of ManagedHostingEnvironment values.
 type ManagedHostingEnvironmentCollectionPage struct {
 	fn   func(ManagedHostingEnvironmentCollection) (ManagedHostingEnvironmentCollection, error)
 	mhec ManagedHostingEnvironmentCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ManagedHostingEnvironmentCollectionPage) Next() error {
@@ -7776,16 +8224,19 @@ func (page *ManagedHostingEnvironmentCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ManagedHostingEnvironmentCollectionPage) NotDone() bool {
 	return !page.mhec.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ManagedHostingEnvironmentCollectionPage) Response() ManagedHostingEnvironmentCollection {
 	return page.mhec
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ManagedHostingEnvironmentCollectionPage) Values() []ManagedHostingEnvironment {
 	if page.mhec.IsEmpty() {
@@ -7794,6 +8245,7 @@ func (page ManagedHostingEnvironmentCollectionPage) Values() []ManagedHostingEnv
 	return *page.mhec.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentProperties ...
 type ManagedHostingEnvironmentProperties struct {
 	// Name - Name of the managed hosting environment
@@ -7823,6 +8275,7 @@ type ManagedHostingEnvironmentProperties struct {
 	APIManagementAccount *string `json:"apiManagementAccount,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture an abstraction for monitoring and
 // retrieving the results of a long-running operation.
 type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture struct {
@@ -7830,6 +8283,7 @@ type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture str
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture) Result(client ManagedHostingEnvironmentsClient) (he HostingEnvironment, err error) {
@@ -7872,6 +8326,7 @@ func (future ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFu
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
@@ -7879,6 +8334,7 @@ type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) Result(client ManagedHostingEnvironmentsClient) (so SetObject, err error) {
@@ -7921,6 +8377,7 @@ func (future ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) Re
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricAvailabilily class repesenting metrics availability and retention
 type MetricAvailabilily struct {
 	// TimeGrain - Time grain
@@ -7929,6 +8386,7 @@ type MetricAvailabilily struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricDefinition class repesenting metadata for the metrics
 type MetricDefinition struct {
 	autorest.Response           `json:"-"`
@@ -7947,6 +8405,7 @@ type MetricDefinition struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for MetricDefinition.
 func (md MetricDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -7974,6 +8433,7 @@ func (md MetricDefinition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for MetricDefinition struct.
 func (md *MetricDefinition) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8052,6 +8512,7 @@ func (md *MetricDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricDefinitionCollection collection of metric defintions
 type MetricDefinitionCollection struct {
 	autorest.Response `json:"-"`
@@ -8061,12 +8522,14 @@ type MetricDefinitionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricDefinitionCollectionIterator provides access to a complete listing of MetricDefinition values.
 type MetricDefinitionCollectionIterator struct {
 	i    int
 	page MetricDefinitionCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *MetricDefinitionCollectionIterator) Next() error {
@@ -8083,16 +8546,19 @@ func (iter *MetricDefinitionCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter MetricDefinitionCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter MetricDefinitionCollectionIterator) Response() MetricDefinitionCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter MetricDefinitionCollectionIterator) Value() MetricDefinition {
@@ -8102,6 +8568,7 @@ func (iter MetricDefinitionCollectionIterator) Value() MetricDefinition {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (mdc MetricDefinitionCollection) IsEmpty() bool {
 	return mdc.Value == nil || len(*mdc.Value) == 0
@@ -8119,12 +8586,14 @@ func (mdc MetricDefinitionCollection) metricDefinitionCollectionPreparer() (*htt
 		autorest.WithBaseURL(to.String(mdc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricDefinitionCollectionPage contains a page of MetricDefinition values.
 type MetricDefinitionCollectionPage struct {
 	fn  func(MetricDefinitionCollection) (MetricDefinitionCollection, error)
 	mdc MetricDefinitionCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *MetricDefinitionCollectionPage) Next() error {
@@ -8136,16 +8605,19 @@ func (page *MetricDefinitionCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page MetricDefinitionCollectionPage) NotDone() bool {
 	return !page.mdc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page MetricDefinitionCollectionPage) Response() MetricDefinitionCollection {
 	return page.mdc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page MetricDefinitionCollectionPage) Values() []MetricDefinition {
 	if page.mdc.IsEmpty() {
@@ -8154,6 +8626,7 @@ func (page MetricDefinitionCollectionPage) Values() []MetricDefinition {
 	return *page.mdc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MetricDefinitionProperties ...
 type MetricDefinitionProperties struct {
 	// Name - Name of the metric
@@ -8168,12 +8641,14 @@ type MetricDefinitionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NameIdentifier identifies an object
 type NameIdentifier struct {
 	// Name - Name of the object
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NameIdentifierCollection collection of domain name identifiers
 type NameIdentifierCollection struct {
 	autorest.Response `json:"-"`
@@ -8183,12 +8658,14 @@ type NameIdentifierCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NameIdentifierCollectionIterator provides access to a complete listing of NameIdentifier values.
 type NameIdentifierCollectionIterator struct {
 	i    int
 	page NameIdentifierCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *NameIdentifierCollectionIterator) Next() error {
@@ -8205,16 +8682,19 @@ func (iter *NameIdentifierCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter NameIdentifierCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter NameIdentifierCollectionIterator) Response() NameIdentifierCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter NameIdentifierCollectionIterator) Value() NameIdentifier {
@@ -8224,6 +8704,7 @@ func (iter NameIdentifierCollectionIterator) Value() NameIdentifier {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (nic NameIdentifierCollection) IsEmpty() bool {
 	return nic.Value == nil || len(*nic.Value) == 0
@@ -8241,12 +8722,14 @@ func (nic NameIdentifierCollection) nameIdentifierCollectionPreparer() (*http.Re
 		autorest.WithBaseURL(to.String(nic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NameIdentifierCollectionPage contains a page of NameIdentifier values.
 type NameIdentifierCollectionPage struct {
 	fn  func(NameIdentifierCollection) (NameIdentifierCollection, error)
 	nic NameIdentifierCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *NameIdentifierCollectionPage) Next() error {
@@ -8258,16 +8741,19 @@ func (page *NameIdentifierCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page NameIdentifierCollectionPage) NotDone() bool {
 	return !page.nic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page NameIdentifierCollectionPage) Response() NameIdentifierCollection {
 	return page.nic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page NameIdentifierCollectionPage) Values() []NameIdentifier {
 	if page.nic.IsEmpty() {
@@ -8276,6 +8762,7 @@ func (page NameIdentifierCollectionPage) Values() []NameIdentifier {
 	return *page.nic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NameValuePair name value pair
 type NameValuePair struct {
 	// Name - Pair name
@@ -8284,6 +8771,7 @@ type NameValuePair struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NetworkAccessControlEntry ...
 type NetworkAccessControlEntry struct {
 	// Action - Possible values include: 'Permit', 'Deny'
@@ -8293,6 +8781,7 @@ type NetworkAccessControlEntry struct {
 	RemoteSubnet *string                  `json:"remoteSubnet,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NetworkFeatures this is an object used to store a full view of network features (presently VNET integration and
 // Hybrid Connections)
 // for a web app.
@@ -8313,6 +8802,7 @@ type NetworkFeatures struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for NetworkFeatures.
 func (nf NetworkFeatures) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8340,6 +8830,7 @@ func (nf NetworkFeatures) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for NetworkFeatures struct.
 func (nf *NetworkFeatures) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8418,6 +8909,7 @@ func (nf *NetworkFeatures) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NetworkFeaturesProperties ...
 type NetworkFeaturesProperties struct {
 	// VirtualNetworkName - The Vnet Name
@@ -8428,6 +8920,7 @@ type NetworkFeaturesProperties struct {
 	HybridConnections *[]RelayServiceConnectionEntity `json:"hybridConnections,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ParameterCustomLoginSettingValues custom logging setting values
 type ParameterCustomLoginSettingValues struct {
 	*ParameterCustomLoginSettingValuesProperties `json:"properties,omitempty"`
@@ -8445,6 +8938,7 @@ type ParameterCustomLoginSettingValues struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ParameterCustomLoginSettingValues.
 func (pclsv ParameterCustomLoginSettingValues) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8472,6 +8966,7 @@ func (pclsv ParameterCustomLoginSettingValues) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ParameterCustomLoginSettingValues struct.
 func (pclsv *ParameterCustomLoginSettingValues) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8550,12 +9045,14 @@ func (pclsv *ParameterCustomLoginSettingValues) UnmarshalJSON(body []byte) error
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ParameterCustomLoginSettingValuesProperties ...
 type ParameterCustomLoginSettingValuesProperties struct {
 	// CustomParameters - Custom parameters.
 	CustomParameters map[string]*CustomLoginSettingValue `json:"customParameters"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ParameterCustomLoginSettingValuesProperties.
 func (pclsv ParameterCustomLoginSettingValuesProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8565,6 +9062,7 @@ func (pclsv ParameterCustomLoginSettingValuesProperties) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // PremierAddOnRequest ...
 type PremierAddOnRequest struct {
 	// Location - Geo region resource belongs to e.g. SouthCentralUS, SouthEastAsia
@@ -8579,6 +9077,7 @@ type PremierAddOnRequest struct {
 	Sku *SkuDescription `json:"sku,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for PremierAddOnRequest.
 func (paor PremierAddOnRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8598,6 +9097,7 @@ func (paor PremierAddOnRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to
 // gradually change routing % based on performance
 type RampUpRule struct {
@@ -8622,12 +9122,14 @@ type RampUpRule struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReadCloser ...
 type ReadCloser struct {
 	autorest.Response `json:"-"`
 	Value             *io.ReadCloser `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Recommendation represents a recommendation result generated by the recommendation engine
 type Recommendation struct {
 	// CreationTime - Timestamp when this instance was created.
@@ -8668,6 +9170,7 @@ type Recommendation struct {
 	Score *float64 `json:"score,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RecommendationRule represents a recommendation rule that the recommendation engine can perform
 type RecommendationRule struct {
 	autorest.Response `json:"-"`
@@ -8694,6 +9197,7 @@ type RecommendationRule struct {
 	Tags *[]string `json:"tags,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrderRequest class representing certificate reissue request
 type ReissueCertificateOrderRequest struct {
 	*ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
@@ -8711,6 +9215,7 @@ type ReissueCertificateOrderRequest struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ReissueCertificateOrderRequest.
 func (rcor ReissueCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8738,6 +9243,7 @@ func (rcor ReissueCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ReissueCertificateOrderRequest struct.
 func (rcor *ReissueCertificateOrderRequest) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8816,6 +9322,7 @@ func (rcor *ReissueCertificateOrderRequest) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrderRequestProperties ...
 type ReissueCertificateOrderRequestProperties struct {
 	// KeySize - Certificate Key Size
@@ -8824,6 +9331,7 @@ type ReissueCertificateOrderRequestProperties struct {
 	DelayExistingRevokeInHours *int32 `json:"delayExistingRevokeInHours,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RelayServiceConnectionEntity class that represents a Biztalk Hybrid Connection
 type RelayServiceConnectionEntity struct {
 	autorest.Response                       `json:"-"`
@@ -8842,6 +9350,7 @@ type RelayServiceConnectionEntity struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for RelayServiceConnectionEntity.
 func (rsce RelayServiceConnectionEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -8869,6 +9378,7 @@ func (rsce RelayServiceConnectionEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for RelayServiceConnectionEntity struct.
 func (rsce *RelayServiceConnectionEntity) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -8947,6 +9457,7 @@ func (rsce *RelayServiceConnectionEntity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RelayServiceConnectionEntityProperties ...
 type RelayServiceConnectionEntityProperties struct {
 	EntityName               *string `json:"entityName,omitempty"`
@@ -8958,6 +9469,7 @@ type RelayServiceConnectionEntityProperties struct {
 	BiztalkURI               *string `json:"biztalkUri,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrderRequest class representing certificate renew request
 type RenewCertificateOrderRequest struct {
 	*RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
@@ -8975,6 +9487,7 @@ type RenewCertificateOrderRequest struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for RenewCertificateOrderRequest.
 func (rcor RenewCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9002,6 +9515,7 @@ func (rcor RenewCertificateOrderRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for RenewCertificateOrderRequest struct.
 func (rcor *RenewCertificateOrderRequest) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9080,12 +9594,14 @@ func (rcor *RenewCertificateOrderRequest) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrderRequestProperties ...
 type RenewCertificateOrderRequestProperties struct {
 	// KeySize - Certificate Key Size
 	KeySize *int32 `json:"keySize,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RequestsBasedTrigger requestsBasedTrigger
 type RequestsBasedTrigger struct {
 	// Count - Count
@@ -9094,6 +9610,7 @@ type RequestsBasedTrigger struct {
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Resource ...
 type Resource struct {
 	// ID - Resource Id
@@ -9110,6 +9627,7 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9134,6 +9652,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetric object representing a metric for any resource
 type ResourceMetric struct {
 	// Name - Name of metric
@@ -9154,6 +9673,7 @@ type ResourceMetric struct {
 	Properties *[]KeyValuePairStringString `json:"properties,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetricCollection collection of metric responses
 type ResourceMetricCollection struct {
 	autorest.Response `json:"-"`
@@ -9163,12 +9683,14 @@ type ResourceMetricCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetricCollectionIterator provides access to a complete listing of ResourceMetric values.
 type ResourceMetricCollectionIterator struct {
 	i    int
 	page ResourceMetricCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ResourceMetricCollectionIterator) Next() error {
@@ -9185,16 +9707,19 @@ func (iter *ResourceMetricCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ResourceMetricCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ResourceMetricCollectionIterator) Response() ResourceMetricCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ResourceMetricCollectionIterator) Value() ResourceMetric {
@@ -9204,6 +9729,7 @@ func (iter ResourceMetricCollectionIterator) Value() ResourceMetric {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (rmc ResourceMetricCollection) IsEmpty() bool {
 	return rmc.Value == nil || len(*rmc.Value) == 0
@@ -9221,12 +9747,14 @@ func (rmc ResourceMetricCollection) resourceMetricCollectionPreparer() (*http.Re
 		autorest.WithBaseURL(to.String(rmc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetricCollectionPage contains a page of ResourceMetric values.
 type ResourceMetricCollectionPage struct {
 	fn  func(ResourceMetricCollection) (ResourceMetricCollection, error)
 	rmc ResourceMetricCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ResourceMetricCollectionPage) Next() error {
@@ -9238,16 +9766,19 @@ func (page *ResourceMetricCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ResourceMetricCollectionPage) NotDone() bool {
 	return !page.rmc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ResourceMetricCollectionPage) Response() ResourceMetricCollection {
 	return page.rmc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ResourceMetricCollectionPage) Values() []ResourceMetric {
 	if page.rmc.IsEmpty() {
@@ -9256,6 +9787,7 @@ func (page ResourceMetricCollectionPage) Values() []ResourceMetric {
 	return *page.rmc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetricName name of a metric for any resource
 type ResourceMetricName struct {
 	// Value - metric name value
@@ -9264,6 +9796,7 @@ type ResourceMetricName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceMetricValue value of resource metric
 type ResourceMetricValue struct {
 	// TimeStamp - Value timestamp
@@ -9280,6 +9813,7 @@ type ResourceMetricValue struct {
 	Count *float64 `json:"count,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceNameAvailability describes if a resource name is available
 type ResourceNameAvailability struct {
 	autorest.Response `json:"-"`
@@ -9290,6 +9824,7 @@ type ResourceNameAvailability struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResourceNameAvailabilityRequest resource name availability request content
 type ResourceNameAvailabilityRequest struct {
 	// Name - Resource name to verify
@@ -9300,6 +9835,7 @@ type ResourceNameAvailabilityRequest struct {
 	IsFqdn *bool `json:"isFqdn,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResponseMessageEnvelopeAPIEntity message envelope that contains the common Azure resource manager properties and
 // the resource provider specific content
 type ResponseMessageEnvelopeAPIEntity struct {
@@ -9323,6 +9859,7 @@ type ResponseMessageEnvelopeAPIEntity struct {
 	Sku *SkuDescription `json:"sku,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ResponseMessageEnvelopeAPIEntity.
 func (rmeAe ResponseMessageEnvelopeAPIEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9353,6 +9890,7 @@ func (rmeAe ResponseMessageEnvelopeAPIEntity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RestoreRequest description of a restore request
 type RestoreRequest struct {
 	autorest.Response         `json:"-"`
@@ -9371,6 +9909,7 @@ type RestoreRequest struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for RestoreRequest.
 func (rr RestoreRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9398,6 +9937,7 @@ func (rr RestoreRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for RestoreRequest struct.
 func (rr *RestoreRequest) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9476,6 +10016,7 @@ func (rr *RestoreRequest) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RestoreRequestProperties ...
 type RestoreRequestProperties struct {
 	// StorageAccountURL - SAS URL to the container
@@ -9499,6 +10040,7 @@ type RestoreRequestProperties struct {
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RestoreResponse response for a restore site request
 type RestoreResponse struct {
 	autorest.Response          `json:"-"`
@@ -9517,6 +10059,7 @@ type RestoreResponse struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for RestoreResponse.
 func (rr RestoreResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9544,6 +10087,7 @@ func (rr RestoreResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for RestoreResponse struct.
 func (rr *RestoreResponse) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9622,18 +10166,21 @@ func (rr *RestoreResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RestoreResponseProperties ...
 type RestoreResponseProperties struct {
 	// OperationID - When server starts the restore process, it will return an OperationId identifying that particular restore operation
 	OperationID *string `json:"operationId,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RoutingRule routing rules for TiP
 type RoutingRule struct {
 	// Name - Name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in the experiment.
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmCollection collection of serverfarms
 type ServerFarmCollection struct {
 	autorest.Response `json:"-"`
@@ -9643,12 +10190,14 @@ type ServerFarmCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmCollectionIterator provides access to a complete listing of ServerFarmWithRichSku values.
 type ServerFarmCollectionIterator struct {
 	i    int
 	page ServerFarmCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *ServerFarmCollectionIterator) Next() error {
@@ -9665,16 +10214,19 @@ func (iter *ServerFarmCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter ServerFarmCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter ServerFarmCollectionIterator) Response() ServerFarmCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter ServerFarmCollectionIterator) Value() ServerFarmWithRichSku {
@@ -9684,6 +10236,7 @@ func (iter ServerFarmCollectionIterator) Value() ServerFarmWithRichSku {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sfc ServerFarmCollection) IsEmpty() bool {
 	return sfc.Value == nil || len(*sfc.Value) == 0
@@ -9701,12 +10254,14 @@ func (sfc ServerFarmCollection) serverFarmCollectionPreparer() (*http.Request, e
 		autorest.WithBaseURL(to.String(sfc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmCollectionPage contains a page of ServerFarmWithRichSku values.
 type ServerFarmCollectionPage struct {
 	fn  func(ServerFarmCollection) (ServerFarmCollection, error)
 	sfc ServerFarmCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *ServerFarmCollectionPage) Next() error {
@@ -9718,16 +10273,19 @@ func (page *ServerFarmCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page ServerFarmCollectionPage) NotDone() bool {
 	return !page.sfc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page ServerFarmCollectionPage) Response() ServerFarmCollection {
 	return page.sfc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page ServerFarmCollectionPage) Values() []ServerFarmWithRichSku {
 	if page.sfc.IsEmpty() {
@@ -9736,6 +10294,7 @@ func (page ServerFarmCollectionPage) Values() []ServerFarmWithRichSku {
 	return *page.sfc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmsCreateOrUpdateServerFarmFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ServerFarmsCreateOrUpdateServerFarmFuture struct {
@@ -9743,6 +10302,7 @@ type ServerFarmsCreateOrUpdateServerFarmFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future ServerFarmsCreateOrUpdateServerFarmFuture) Result(client ServerFarmsClient) (sfwrs ServerFarmWithRichSku, err error) {
@@ -9785,6 +10345,7 @@ func (future ServerFarmsCreateOrUpdateServerFarmFuture) Result(client ServerFarm
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmWithRichSku app Service Plan Model
 type ServerFarmWithRichSku struct {
 	autorest.Response                `json:"-"`
@@ -9804,6 +10365,7 @@ type ServerFarmWithRichSku struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for ServerFarmWithRichSku.
 func (sfwrs ServerFarmWithRichSku) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -9834,6 +10396,7 @@ func (sfwrs ServerFarmWithRichSku) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for ServerFarmWithRichSku struct.
 func (sfwrs *ServerFarmWithRichSku) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -9921,6 +10484,7 @@ func (sfwrs *ServerFarmWithRichSku) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ServerFarmWithRichSkuProperties ...
 type ServerFarmWithRichSkuProperties struct {
 	// Name - Name for the App Service Plan
@@ -9950,12 +10514,14 @@ type ServerFarmWithRichSkuProperties struct {
 	Reserved *bool `json:"reserved,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SetObject ...
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Site represents a web app
 type Site struct {
 	autorest.Response `json:"-"`
@@ -9974,6 +10540,7 @@ type Site struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Site.
 func (s Site) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10001,6 +10568,7 @@ func (s Site) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Site struct.
 func (s *Site) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10079,6 +10647,7 @@ func (s *Site) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
 	autorest.Response `json:"-"`
@@ -10174,6 +10743,7 @@ type SiteAuthSettings struct {
 	MicrosoftAccountOAuthScopes *[]string `json:"microsoftAccountOAuthScopes,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteCloneability represents whether or not a web app is cloneable
 type SiteCloneability struct {
 	autorest.Response `json:"-"`
@@ -10188,6 +10758,7 @@ type SiteCloneability struct {
 	BlockingCharacteristics *[]SiteCloneabilityCriterion `json:"blockingCharacteristics,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteCloneabilityCriterion represents a site cloneability criterion
 type SiteCloneabilityCriterion struct {
 	// Name - Name of criterion
@@ -10196,6 +10767,7 @@ type SiteCloneabilityCriterion struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteCollection collection of sites
 type SiteCollection struct {
 	autorest.Response `json:"-"`
@@ -10205,12 +10777,14 @@ type SiteCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteCollectionIterator provides access to a complete listing of Site values.
 type SiteCollectionIterator struct {
 	i    int
 	page SiteCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SiteCollectionIterator) Next() error {
@@ -10227,16 +10801,19 @@ func (iter *SiteCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SiteCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter SiteCollectionIterator) Response() SiteCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SiteCollectionIterator) Value() Site {
@@ -10246,6 +10823,7 @@ func (iter SiteCollectionIterator) Value() Site {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sc SiteCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
@@ -10263,12 +10841,14 @@ func (sc SiteCollection) siteCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(sc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteCollectionPage contains a page of Site values.
 type SiteCollectionPage struct {
 	fn func(SiteCollection) (SiteCollection, error)
 	sc SiteCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SiteCollectionPage) Next() error {
@@ -10280,16 +10860,19 @@ func (page *SiteCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SiteCollectionPage) NotDone() bool {
 	return !page.sc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page SiteCollectionPage) Response() SiteCollection {
 	return page.sc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SiteCollectionPage) Values() []Site {
 	if page.sc.IsEmpty() {
@@ -10298,6 +10881,7 @@ func (page SiteCollectionPage) Values() []Site {
 	return *page.sc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteConfig configuration of Azure web site
 type SiteConfig struct {
 	autorest.Response     `json:"-"`
@@ -10316,6 +10900,7 @@ type SiteConfig struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SiteConfig.
 func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10343,6 +10928,7 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SiteConfig struct.
 func (sc *SiteConfig) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10421,6 +11007,7 @@ func (sc *SiteConfig) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteConfigProperties ...
 type SiteConfigProperties struct {
 	// NumberOfWorkers - Number of workers
@@ -10509,6 +11096,7 @@ type SiteConfigProperties struct {
 	IPSecurityRestrictions *[]IPSecurityRestriction `json:"ipSecurityRestrictions,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteInstance instance of a web app
 type SiteInstance struct {
 	*SiteInstanceProperties `json:"properties,omitempty"`
@@ -10526,6 +11114,7 @@ type SiteInstance struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SiteInstance.
 func (si SiteInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10553,6 +11142,7 @@ func (si SiteInstance) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SiteInstance struct.
 func (si *SiteInstance) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10631,6 +11221,7 @@ func (si *SiteInstance) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteInstanceCollection collection of site instances
 type SiteInstanceCollection struct {
 	autorest.Response `json:"-"`
@@ -10640,12 +11231,14 @@ type SiteInstanceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteInstanceCollectionIterator provides access to a complete listing of SiteInstance values.
 type SiteInstanceCollectionIterator struct {
 	i    int
 	page SiteInstanceCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SiteInstanceCollectionIterator) Next() error {
@@ -10662,16 +11255,19 @@ func (iter *SiteInstanceCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SiteInstanceCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter SiteInstanceCollectionIterator) Response() SiteInstanceCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SiteInstanceCollectionIterator) Value() SiteInstance {
@@ -10681,6 +11277,7 @@ func (iter SiteInstanceCollectionIterator) Value() SiteInstance {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sic SiteInstanceCollection) IsEmpty() bool {
 	return sic.Value == nil || len(*sic.Value) == 0
@@ -10698,12 +11295,14 @@ func (sic SiteInstanceCollection) siteInstanceCollectionPreparer() (*http.Reques
 		autorest.WithBaseURL(to.String(sic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteInstanceCollectionPage contains a page of SiteInstance values.
 type SiteInstanceCollectionPage struct {
 	fn  func(SiteInstanceCollection) (SiteInstanceCollection, error)
 	sic SiteInstanceCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SiteInstanceCollectionPage) Next() error {
@@ -10715,16 +11314,19 @@ func (page *SiteInstanceCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SiteInstanceCollectionPage) NotDone() bool {
 	return !page.sic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page SiteInstanceCollectionPage) Response() SiteInstanceCollection {
 	return page.sic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SiteInstanceCollectionPage) Values() []SiteInstance {
 	if page.sic.IsEmpty() {
@@ -10733,12 +11335,14 @@ func (page SiteInstanceCollectionPage) Values() []SiteInstance {
 	return *page.sic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteInstanceProperties ...
 type SiteInstanceProperties struct {
 	// Name - Name of instance
 	Name *string `json:"name,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteLimits represents metric limits set on a web app.
 type SiteLimits struct {
 	// MaxPercentageCPU - Maximum allowed CPU usage percentage
@@ -10749,6 +11353,7 @@ type SiteLimits struct {
 	MaxDiskSizeInMb *int64 `json:"maxDiskSizeInMb,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteLogsConfig configuration of Azure web site
 type SiteLogsConfig struct {
 	autorest.Response         `json:"-"`
@@ -10767,6 +11372,7 @@ type SiteLogsConfig struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SiteLogsConfig.
 func (slc SiteLogsConfig) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -10794,6 +11400,7 @@ func (slc SiteLogsConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SiteLogsConfig struct.
 func (slc *SiteLogsConfig) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -10872,6 +11479,7 @@ func (slc *SiteLogsConfig) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteLogsConfigProperties ...
 type SiteLogsConfigProperties struct {
 	// ApplicationLogs - Application logs configuration
@@ -10884,6 +11492,7 @@ type SiteLogsConfigProperties struct {
 	DetailedErrorMessages *EnabledConfig `json:"detailedErrorMessages,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteProperties ...
 type SiteProperties struct {
 	// Name - Name of web app
@@ -10950,6 +11559,7 @@ type SiteProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitePropertiesModel ...
 type SitePropertiesModel struct {
 	Metadata    *[]NameValuePair `json:"metadata,omitempty"`
@@ -10957,6 +11567,7 @@ type SitePropertiesModel struct {
 	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesCreateOrUpdateSiteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SitesCreateOrUpdateSiteFuture struct {
@@ -10964,6 +11575,7 @@ type SitesCreateOrUpdateSiteFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesCreateOrUpdateSiteFuture) Result(client SitesClient) (s Site, err error) {
@@ -11006,6 +11618,7 @@ func (future SitesCreateOrUpdateSiteFuture) Result(client SitesClient) (s Site, 
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesCreateOrUpdateSiteSlotFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SitesCreateOrUpdateSiteSlotFuture struct {
@@ -11013,6 +11626,7 @@ type SitesCreateOrUpdateSiteSlotFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesCreateOrUpdateSiteSlotFuture) Result(client SitesClient) (s Site, err error) {
@@ -11055,6 +11669,7 @@ func (future SitesCreateOrUpdateSiteSlotFuture) Result(client SitesClient) (s Si
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesListSitePublishingCredentialsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SitesListSitePublishingCredentialsFuture struct {
@@ -11062,6 +11677,7 @@ type SitesListSitePublishingCredentialsFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesListSitePublishingCredentialsFuture) Result(client SitesClient) (u User, err error) {
@@ -11104,6 +11720,7 @@ func (future SitesListSitePublishingCredentialsFuture) Result(client SitesClient
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesListSitePublishingCredentialsSlotFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SitesListSitePublishingCredentialsSlotFuture struct {
@@ -11111,6 +11728,7 @@ type SitesListSitePublishingCredentialsSlotFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesListSitePublishingCredentialsSlotFuture) Result(client SitesClient) (u User, err error) {
@@ -11153,6 +11771,7 @@ func (future SitesListSitePublishingCredentialsSlotFuture) Result(client SitesCl
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteSourceControl describes the source control configuration for web app
 type SiteSourceControl struct {
 	autorest.Response            `json:"-"`
@@ -11171,6 +11790,7 @@ type SiteSourceControl struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SiteSourceControl.
 func (ssc SiteSourceControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -11198,6 +11818,7 @@ func (ssc SiteSourceControl) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SiteSourceControl struct.
 func (ssc *SiteSourceControl) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -11276,6 +11897,7 @@ func (ssc *SiteSourceControl) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SiteSourceControlProperties ...
 type SiteSourceControlProperties struct {
 	// RepoURL - Repository or source control url
@@ -11290,12 +11912,14 @@ type SiteSourceControlProperties struct {
 	IsMercurial *bool `json:"isMercurial,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesRecoverSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRecoverSiteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesRecoverSiteFuture) Result(client SitesClient) (s Site, err error) {
@@ -11338,12 +11962,14 @@ func (future SitesRecoverSiteFuture) Result(client SitesClient) (s Site, err err
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesRecoverSiteSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRecoverSiteSlotFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesRecoverSiteSlotFuture) Result(client SitesClient) (s Site, err error) {
@@ -11386,12 +12012,14 @@ func (future SitesRecoverSiteSlotFuture) Result(client SitesClient) (s Site, err
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesRestoreSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRestoreSiteFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesRestoreSiteFuture) Result(client SitesClient) (rr RestoreResponse, err error) {
@@ -11434,12 +12062,14 @@ func (future SitesRestoreSiteFuture) Result(client SitesClient) (rr RestoreRespo
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesRestoreSiteSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRestoreSiteSlotFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesRestoreSiteSlotFuture) Result(client SitesClient) (rr RestoreResponse, err error) {
@@ -11482,12 +12112,14 @@ func (future SitesRestoreSiteSlotFuture) Result(client SitesClient) (rr RestoreR
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesSwapSlotsSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesSwapSlotsSlotFuture struct {
 	azure.Future
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesSwapSlotsSlotFuture) Result(client SitesClient) (so SetObject, err error) {
@@ -11530,6 +12162,7 @@ func (future SitesSwapSlotsSlotFuture) Result(client SitesClient) (so SetObject,
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SitesSwapSlotWithProductionFuture struct {
@@ -11537,6 +12170,7 @@ type SitesSwapSlotWithProductionFuture struct {
 	req *http.Request
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
 func (future SitesSwapSlotWithProductionFuture) Result(client SitesClient) (so SetObject, err error) {
@@ -11579,6 +12213,7 @@ func (future SitesSwapSlotWithProductionFuture) Result(client SitesClient) (so S
 	return
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuCapacity description of the App Service Plan scale options
 type SkuCapacity struct {
 	// Minimum - Minimum number of Workers for this App Service Plan SKU
@@ -11591,6 +12226,7 @@ type SkuCapacity struct {
 	ScaleType *string `json:"scaleType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuDescription describes a sku for a scalable resource
 type SkuDescription struct {
 	// Name - Name of the resource sku
@@ -11605,6 +12241,7 @@ type SkuDescription struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuInfo sku discovery information
 type SkuInfo struct {
 	// ResourceType - Resource type that this sku applies to
@@ -11615,6 +12252,7 @@ type SkuInfo struct {
 	Capacity *SkuCapacity `json:"capacity,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuInfoCollection collection of SkuInfos
 type SkuInfoCollection struct {
 	autorest.Response `json:"-"`
@@ -11624,12 +12262,14 @@ type SkuInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuInfoCollectionIterator provides access to a complete listing of SkuInfo values.
 type SkuInfoCollectionIterator struct {
 	i    int
 	page SkuInfoCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SkuInfoCollectionIterator) Next() error {
@@ -11646,16 +12286,19 @@ func (iter *SkuInfoCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SkuInfoCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter SkuInfoCollectionIterator) Response() SkuInfoCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SkuInfoCollectionIterator) Value() SkuInfo {
@@ -11665,6 +12308,7 @@ func (iter SkuInfoCollectionIterator) Value() SkuInfo {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sic SkuInfoCollection) IsEmpty() bool {
 	return sic.Value == nil || len(*sic.Value) == 0
@@ -11682,12 +12326,14 @@ func (sic SkuInfoCollection) skuInfoCollectionPreparer() (*http.Request, error) 
 		autorest.WithBaseURL(to.String(sic.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SkuInfoCollectionPage contains a page of SkuInfo values.
 type SkuInfoCollectionPage struct {
 	fn  func(SkuInfoCollection) (SkuInfoCollection, error)
 	sic SkuInfoCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SkuInfoCollectionPage) Next() error {
@@ -11699,16 +12345,19 @@ func (page *SkuInfoCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SkuInfoCollectionPage) NotDone() bool {
 	return !page.sic.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page SkuInfoCollectionPage) Response() SkuInfoCollection {
 	return page.sic
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SkuInfoCollectionPage) Values() []SkuInfo {
 	if page.sic.IsEmpty() {
@@ -11717,6 +12366,7 @@ func (page SkuInfoCollectionPage) Values() []SkuInfo {
 	return *page.sic.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotConfigNames class containing names for connection strings and application settings to be marked as sticky to
 // the slot
 // and not moved during swap operation
@@ -11728,6 +12378,7 @@ type SlotConfigNames struct {
 	AppSettingNames *[]string `json:"appSettingNames,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotConfigNamesResource slot Config names azure resource
 type SlotConfigNamesResource struct {
 	autorest.Response                  `json:"-"`
@@ -11746,6 +12397,7 @@ type SlotConfigNamesResource struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SlotConfigNamesResource.
 func (scnr SlotConfigNamesResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -11773,6 +12425,7 @@ func (scnr SlotConfigNamesResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SlotConfigNamesResource struct.
 func (scnr *SlotConfigNamesResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -11851,6 +12504,7 @@ func (scnr *SlotConfigNamesResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotConfigNamesResourceProperties ...
 type SlotConfigNamesResourceProperties struct {
 	// ConnectionStringNames - List of connection string names
@@ -11859,6 +12513,7 @@ type SlotConfigNamesResourceProperties struct {
 	AppSettingNames *[]string `json:"appSettingNames,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotDifference an object describing the difference in setting values between two web app slots
 type SlotDifference struct {
 	*SlotDifferenceProperties `json:"properties,omitempty"`
@@ -11876,6 +12531,7 @@ type SlotDifference struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SlotDifference.
 func (sd SlotDifference) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -11903,6 +12559,7 @@ func (sd SlotDifference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SlotDifference struct.
 func (sd *SlotDifference) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -11981,6 +12638,7 @@ func (sd *SlotDifference) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotDifferenceCollection collection of Slot Differences
 type SlotDifferenceCollection struct {
 	autorest.Response `json:"-"`
@@ -11990,12 +12648,14 @@ type SlotDifferenceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotDifferenceCollectionIterator provides access to a complete listing of SlotDifference values.
 type SlotDifferenceCollectionIterator struct {
 	i    int
 	page SlotDifferenceCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SlotDifferenceCollectionIterator) Next() error {
@@ -12012,16 +12672,19 @@ func (iter *SlotDifferenceCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SlotDifferenceCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter SlotDifferenceCollectionIterator) Response() SlotDifferenceCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SlotDifferenceCollectionIterator) Value() SlotDifference {
@@ -12031,6 +12694,7 @@ func (iter SlotDifferenceCollectionIterator) Value() SlotDifference {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (sdc SlotDifferenceCollection) IsEmpty() bool {
 	return sdc.Value == nil || len(*sdc.Value) == 0
@@ -12048,12 +12712,14 @@ func (sdc SlotDifferenceCollection) slotDifferenceCollectionPreparer() (*http.Re
 		autorest.WithBaseURL(to.String(sdc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotDifferenceCollectionPage contains a page of SlotDifference values.
 type SlotDifferenceCollectionPage struct {
 	fn  func(SlotDifferenceCollection) (SlotDifferenceCollection, error)
 	sdc SlotDifferenceCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SlotDifferenceCollectionPage) Next() error {
@@ -12065,16 +12731,19 @@ func (page *SlotDifferenceCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SlotDifferenceCollectionPage) NotDone() bool {
 	return !page.sdc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page SlotDifferenceCollectionPage) Response() SlotDifferenceCollection {
 	return page.sdc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SlotDifferenceCollectionPage) Values() []SlotDifference {
 	if page.sdc.IsEmpty() {
@@ -12083,6 +12752,7 @@ func (page SlotDifferenceCollectionPage) Values() []SlotDifference {
 	return *page.sdc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlotDifferenceProperties ...
 type SlotDifferenceProperties struct {
 	// Type - Indicates the type of the difference: Information, Warning or Error.
@@ -12101,6 +12771,7 @@ type SlotDifferenceProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SlowRequestsBasedTrigger slowRequestsBasedTrigger
 type SlowRequestsBasedTrigger struct {
 	// TimeTaken - TimeTaken
@@ -12111,6 +12782,7 @@ type SlowRequestsBasedTrigger struct {
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SourceControl describes the Source Control OAuth Token
 type SourceControl struct {
 	autorest.Response        `json:"-"`
@@ -12129,6 +12801,7 @@ type SourceControl struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for SourceControl.
 func (sc SourceControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -12156,6 +12829,7 @@ func (sc SourceControl) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for SourceControl struct.
 func (sc *SourceControl) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -12234,6 +12908,7 @@ func (sc *SourceControl) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SourceControlCollection collection of soure controls
 type SourceControlCollection struct {
 	autorest.Response `json:"-"`
@@ -12243,12 +12918,14 @@ type SourceControlCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SourceControlCollectionIterator provides access to a complete listing of SourceControl values.
 type SourceControlCollectionIterator struct {
 	i    int
 	page SourceControlCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *SourceControlCollectionIterator) Next() error {
@@ -12265,16 +12942,19 @@ func (iter *SourceControlCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter SourceControlCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter SourceControlCollectionIterator) Response() SourceControlCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter SourceControlCollectionIterator) Value() SourceControl {
@@ -12284,6 +12964,7 @@ func (iter SourceControlCollectionIterator) Value() SourceControl {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (scc SourceControlCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
@@ -12301,12 +12982,14 @@ func (scc SourceControlCollection) sourceControlCollectionPreparer() (*http.Requ
 		autorest.WithBaseURL(to.String(scc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SourceControlCollectionPage contains a page of SourceControl values.
 type SourceControlCollectionPage struct {
 	fn  func(SourceControlCollection) (SourceControlCollection, error)
 	scc SourceControlCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *SourceControlCollectionPage) Next() error {
@@ -12318,16 +13001,19 @@ func (page *SourceControlCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page SourceControlCollectionPage) NotDone() bool {
 	return !page.scc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page SourceControlCollectionPage) Response() SourceControlCollection {
 	return page.scc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page SourceControlCollectionPage) Values() []SourceControl {
 	if page.scc.IsEmpty() {
@@ -12336,6 +13022,7 @@ func (page SourceControlCollectionPage) Values() []SourceControl {
 	return *page.scc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // SourceControlProperties ...
 type SourceControlProperties struct {
 	// Name - Name or Source Control Type
@@ -12350,6 +13037,7 @@ type SourceControlProperties struct {
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StampCapacity class containing stamp capacity information
 type StampCapacity struct {
 	// Name - Name of the stamp
@@ -12378,6 +13066,7 @@ type StampCapacity struct {
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StampCapacityCollection collection of stamp capacities
 type StampCapacityCollection struct {
 	autorest.Response `json:"-"`
@@ -12387,12 +13076,14 @@ type StampCapacityCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StampCapacityCollectionIterator provides access to a complete listing of StampCapacity values.
 type StampCapacityCollectionIterator struct {
 	i    int
 	page StampCapacityCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *StampCapacityCollectionIterator) Next() error {
@@ -12409,16 +13100,19 @@ func (iter *StampCapacityCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter StampCapacityCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter StampCapacityCollectionIterator) Response() StampCapacityCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter StampCapacityCollectionIterator) Value() StampCapacity {
@@ -12428,6 +13122,7 @@ func (iter StampCapacityCollectionIterator) Value() StampCapacity {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (scc StampCapacityCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
@@ -12445,12 +13140,14 @@ func (scc StampCapacityCollection) stampCapacityCollectionPreparer() (*http.Requ
 		autorest.WithBaseURL(to.String(scc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StampCapacityCollectionPage contains a page of StampCapacity values.
 type StampCapacityCollectionPage struct {
 	fn  func(StampCapacityCollection) (StampCapacityCollection, error)
 	scc StampCapacityCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *StampCapacityCollectionPage) Next() error {
@@ -12462,16 +13159,19 @@ func (page *StampCapacityCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page StampCapacityCollectionPage) NotDone() bool {
 	return !page.scc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page StampCapacityCollectionPage) Response() StampCapacityCollection {
 	return page.scc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page StampCapacityCollectionPage) Values() []StampCapacity {
 	if page.scc.IsEmpty() {
@@ -12480,6 +13180,7 @@ func (page StampCapacityCollectionPage) Values() []StampCapacity {
 	return *page.scc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StatusCodesBasedTrigger statusCodeBasedTrigger
 type StatusCodesBasedTrigger struct {
 	// Status - HTTP status code
@@ -12494,6 +13195,7 @@ type StatusCodesBasedTrigger struct {
 	TimeInterval *string `json:"timeInterval,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // StringDictionary string dictionary resource
 type StringDictionary struct {
 	autorest.Response `json:"-"`
@@ -12513,6 +13215,7 @@ type StringDictionary struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for StringDictionary.
 func (sd StringDictionary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -12540,6 +13243,7 @@ func (sd StringDictionary) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TldLegalAgreement represents a legal agreement for top level domain
 type TldLegalAgreement struct {
 	// AgreementKey - Unique identifier for the agreement
@@ -12552,6 +13256,7 @@ type TldLegalAgreement struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TldLegalAgreementCollection collection of Tld Legal Agreements
 type TldLegalAgreementCollection struct {
 	autorest.Response `json:"-"`
@@ -12561,12 +13266,14 @@ type TldLegalAgreementCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TldLegalAgreementCollectionIterator provides access to a complete listing of TldLegalAgreement values.
 type TldLegalAgreementCollectionIterator struct {
 	i    int
 	page TldLegalAgreementCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *TldLegalAgreementCollectionIterator) Next() error {
@@ -12583,16 +13290,19 @@ func (iter *TldLegalAgreementCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter TldLegalAgreementCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter TldLegalAgreementCollectionIterator) Response() TldLegalAgreementCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter TldLegalAgreementCollectionIterator) Value() TldLegalAgreement {
@@ -12602,6 +13312,7 @@ func (iter TldLegalAgreementCollectionIterator) Value() TldLegalAgreement {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (tlac TldLegalAgreementCollection) IsEmpty() bool {
 	return tlac.Value == nil || len(*tlac.Value) == 0
@@ -12619,12 +13330,14 @@ func (tlac TldLegalAgreementCollection) tldLegalAgreementCollectionPreparer() (*
 		autorest.WithBaseURL(to.String(tlac.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TldLegalAgreementCollectionPage contains a page of TldLegalAgreement values.
 type TldLegalAgreementCollectionPage struct {
 	fn   func(TldLegalAgreementCollection) (TldLegalAgreementCollection, error)
 	tlac TldLegalAgreementCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *TldLegalAgreementCollectionPage) Next() error {
@@ -12636,16 +13349,19 @@ func (page *TldLegalAgreementCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page TldLegalAgreementCollectionPage) NotDone() bool {
 	return !page.tlac.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page TldLegalAgreementCollectionPage) Response() TldLegalAgreementCollection {
 	return page.tlac
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page TldLegalAgreementCollectionPage) Values() []TldLegalAgreement {
 	if page.tlac.IsEmpty() {
@@ -12654,6 +13370,7 @@ func (page TldLegalAgreementCollectionPage) Values() []TldLegalAgreement {
 	return *page.tlac.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomain a top level domain object
 type TopLevelDomain struct {
 	autorest.Response         `json:"-"`
@@ -12672,6 +13389,7 @@ type TopLevelDomain struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for TopLevelDomain.
 func (tld TopLevelDomain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -12699,6 +13417,7 @@ func (tld TopLevelDomain) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for TopLevelDomain struct.
 func (tld *TopLevelDomain) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -12777,12 +13496,14 @@ func (tld *TopLevelDomain) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomainAgreementOption options for retrieving the list of top level domain legal agreements
 type TopLevelDomainAgreementOption struct {
 	// IncludePrivacy - If true then the list of agreements will inclue agreements for domain privacy as well.
 	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomainCollection collection of Top Level Domains
 type TopLevelDomainCollection struct {
 	autorest.Response `json:"-"`
@@ -12792,12 +13513,14 @@ type TopLevelDomainCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomainCollectionIterator provides access to a complete listing of TopLevelDomain values.
 type TopLevelDomainCollectionIterator struct {
 	i    int
 	page TopLevelDomainCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *TopLevelDomainCollectionIterator) Next() error {
@@ -12814,16 +13537,19 @@ func (iter *TopLevelDomainCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter TopLevelDomainCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter TopLevelDomainCollectionIterator) Response() TopLevelDomainCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter TopLevelDomainCollectionIterator) Value() TopLevelDomain {
@@ -12833,6 +13559,7 @@ func (iter TopLevelDomainCollectionIterator) Value() TopLevelDomain {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (tldc TopLevelDomainCollection) IsEmpty() bool {
 	return tldc.Value == nil || len(*tldc.Value) == 0
@@ -12850,12 +13577,14 @@ func (tldc TopLevelDomainCollection) topLevelDomainCollectionPreparer() (*http.R
 		autorest.WithBaseURL(to.String(tldc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomainCollectionPage contains a page of TopLevelDomain values.
 type TopLevelDomainCollectionPage struct {
 	fn   func(TopLevelDomainCollection) (TopLevelDomainCollection, error)
 	tldc TopLevelDomainCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *TopLevelDomainCollectionPage) Next() error {
@@ -12867,16 +13596,19 @@ func (page *TopLevelDomainCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page TopLevelDomainCollectionPage) NotDone() bool {
 	return !page.tldc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page TopLevelDomainCollectionPage) Response() TopLevelDomainCollection {
 	return page.tldc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page TopLevelDomainCollectionPage) Values() []TopLevelDomain {
 	if page.tldc.IsEmpty() {
@@ -12885,6 +13617,7 @@ func (page TopLevelDomainCollectionPage) Values() []TopLevelDomain {
 	return *page.tldc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // TopLevelDomainProperties ...
 type TopLevelDomainProperties struct {
 	// Name - Name of the top level domain
@@ -12893,6 +13626,7 @@ type TopLevelDomainProperties struct {
 	Privacy *bool `json:"privacy,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Usage class that represents usage of the quota resource.
 type Usage struct {
 	*UsageProperties `json:"properties,omitempty"`
@@ -12910,6 +13644,7 @@ type Usage struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for Usage.
 func (u Usage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -12937,6 +13672,7 @@ func (u Usage) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for Usage struct.
 func (u *Usage) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13015,6 +13751,7 @@ func (u *Usage) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UsageCollection collection of usages
 type UsageCollection struct {
 	autorest.Response `json:"-"`
@@ -13024,12 +13761,14 @@ type UsageCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UsageCollectionIterator provides access to a complete listing of Usage values.
 type UsageCollectionIterator struct {
 	i    int
 	page UsageCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *UsageCollectionIterator) Next() error {
@@ -13046,16 +13785,19 @@ func (iter *UsageCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter UsageCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter UsageCollectionIterator) Response() UsageCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter UsageCollectionIterator) Value() Usage {
@@ -13065,6 +13807,7 @@ func (iter UsageCollectionIterator) Value() Usage {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (uc UsageCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
@@ -13082,12 +13825,14 @@ func (uc UsageCollection) usageCollectionPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(uc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UsageCollectionPage contains a page of Usage values.
 type UsageCollectionPage struct {
 	fn func(UsageCollection) (UsageCollection, error)
 	uc UsageCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *UsageCollectionPage) Next() error {
@@ -13099,16 +13844,19 @@ func (page *UsageCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page UsageCollectionPage) NotDone() bool {
 	return !page.uc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page UsageCollectionPage) Response() UsageCollection {
 	return page.uc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page UsageCollectionPage) Values() []Usage {
 	if page.uc.IsEmpty() {
@@ -13117,6 +13865,7 @@ func (page UsageCollectionPage) Values() []Usage {
 	return *page.uc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UsageProperties ...
 type UsageProperties struct {
 	// DisplayName - Friendly name shown in the UI
@@ -13139,6 +13888,7 @@ type UsageProperties struct {
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // User represents user crendentials used for publishing activity
 type User struct {
 	autorest.Response `json:"-"`
@@ -13157,6 +13907,7 @@ type User struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for User.
 func (u User) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -13184,6 +13935,7 @@ func (u User) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for User struct.
 func (u *User) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13262,6 +14014,7 @@ func (u *User) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UserProperties ...
 type UserProperties struct {
 	// Name - Username (internal)
@@ -13274,6 +14027,7 @@ type UserProperties struct {
 	ScmURI *string `json:"scmUri,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VirtualApplication ...
 type VirtualApplication struct {
 	VirtualPath        *string             `json:"virtualPath,omitempty"`
@@ -13282,12 +14036,14 @@ type VirtualApplication struct {
 	VirtualDirectories *[]VirtualDirectory `json:"virtualDirectories,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VirtualDirectory ...
 type VirtualDirectory struct {
 	VirtualPath  *string `json:"virtualPath,omitempty"`
 	PhysicalPath *string `json:"physicalPath,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VirtualIPMapping class that represents a VIP mapping
 type VirtualIPMapping struct {
 	// VirtualIP - Virtual IP address
@@ -13300,6 +14056,7 @@ type VirtualIPMapping struct {
 	InUse *bool `json:"inUse,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VirtualNetworkProfile specification for using a virtual network
 type VirtualNetworkProfile struct {
 	// ID - Resource id of the virtual network
@@ -13312,6 +14069,7 @@ type VirtualNetworkProfile struct {
 	Subnet *string `json:"subnet,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetGateway the VnetGateway contract. This is used to give the vnet gateway access to the VPN package.
 type VnetGateway struct {
 	autorest.Response      `json:"-"`
@@ -13330,6 +14088,7 @@ type VnetGateway struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for VnetGateway.
 func (vg VnetGateway) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -13357,6 +14116,7 @@ func (vg VnetGateway) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for VnetGateway struct.
 func (vg *VnetGateway) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13435,6 +14195,7 @@ func (vg *VnetGateway) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetGatewayProperties ...
 type VnetGatewayProperties struct {
 	// VnetName - The VNET name.
@@ -13443,6 +14204,7 @@ type VnetGatewayProperties struct {
 	VpnPackageURI *string `json:"vpnPackageUri,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetInfo vNETInfo contract. This contract is public and is a stripped down version of VNETInfoInternal
 type VnetInfo struct {
 	autorest.Response   `json:"-"`
@@ -13461,6 +14223,7 @@ type VnetInfo struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for VnetInfo.
 func (vi VnetInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -13488,6 +14251,7 @@ func (vi VnetInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for VnetInfo struct.
 func (vi *VnetInfo) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13566,6 +14330,7 @@ func (vi *VnetInfo) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetInfoProperties ...
 type VnetInfoProperties struct {
 	// VnetResourceID - The vnet resource id
@@ -13583,6 +14348,7 @@ type VnetInfoProperties struct {
 	DNSServers *string `json:"dnsServers,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetRoute vnetRoute contract used to pass routing information for a vnet.
 type VnetRoute struct {
 	autorest.Response    `json:"-"`
@@ -13601,6 +14367,7 @@ type VnetRoute struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for VnetRoute.
 func (vr VnetRoute) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -13628,6 +14395,7 @@ func (vr VnetRoute) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for VnetRoute struct.
 func (vr *VnetRoute) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13706,6 +14474,7 @@ func (vr *VnetRoute) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VnetRouteProperties ...
 type VnetRouteProperties struct {
 	// Name - The name of this route. This is only returned by the server and does not need to be set by the client.
@@ -13724,6 +14493,7 @@ type VnetRouteProperties struct {
 	RouteType *string `json:"routeType,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerPool worker pool of a hostingEnvironment (App Service Environment)
 type WorkerPool struct {
 	autorest.Response     `json:"-"`
@@ -13743,6 +14513,7 @@ type WorkerPool struct {
 	Tags map[string]*string `json:"tags"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // MarshalJSON is the custom marshaler for WorkerPool.
 func (wp WorkerPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -13773,6 +14544,7 @@ func (wp WorkerPool) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UnmarshalJSON is the custom unmarshaler for WorkerPool struct.
 func (wp *WorkerPool) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -13860,6 +14632,7 @@ func (wp *WorkerPool) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerPoolCollection collection of worker pools
 type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
@@ -13869,12 +14642,14 @@ type WorkerPoolCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerPoolCollectionIterator provides access to a complete listing of WorkerPool values.
 type WorkerPoolCollectionIterator struct {
 	i    int
 	page WorkerPoolCollectionPage
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 func (iter *WorkerPoolCollectionIterator) Next() error {
@@ -13891,16 +14666,19 @@ func (iter *WorkerPoolCollectionIterator) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the enumeration should be started or is not yet complete.
 func (iter WorkerPoolCollectionIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (iter WorkerPoolCollectionIterator) Response() WorkerPoolCollection {
 	return iter.page.Response()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
 func (iter WorkerPoolCollectionIterator) Value() WorkerPool {
@@ -13910,6 +14688,7 @@ func (iter WorkerPoolCollectionIterator) Value() WorkerPool {
 	return iter.page.Values()[iter.i]
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // IsEmpty returns true if the ListResult contains no values.
 func (wpc WorkerPoolCollection) IsEmpty() bool {
 	return wpc.Value == nil || len(*wpc.Value) == 0
@@ -13927,12 +14706,14 @@ func (wpc WorkerPoolCollection) workerPoolCollectionPreparer() (*http.Request, e
 		autorest.WithBaseURL(to.String(wpc.NextLink)))
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerPoolCollectionPage contains a page of WorkerPool values.
 type WorkerPoolCollectionPage struct {
 	fn  func(WorkerPoolCollection) (WorkerPoolCollection, error)
 	wpc WorkerPoolCollection
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 func (page *WorkerPoolCollectionPage) Next() error {
@@ -13944,16 +14725,19 @@ func (page *WorkerPoolCollectionPage) Next() error {
 	return nil
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NotDone returns true if the page enumeration should be started or is not yet complete.
 func (page WorkerPoolCollectionPage) NotDone() bool {
 	return !page.wpc.IsEmpty()
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Response returns the raw server response from the last page request.
 func (page WorkerPoolCollectionPage) Response() WorkerPoolCollection {
 	return page.wpc
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Values returns the slice of values for the current page or nil if there are no values.
 func (page WorkerPoolCollectionPage) Values() []WorkerPool {
 	if page.wpc.IsEmpty() {
@@ -13962,6 +14746,7 @@ func (page WorkerPoolCollectionPage) Values() []WorkerPool {
 	return *page.wpc.Value
 }
 
+// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // WorkerPoolProperties ...
 type WorkerPoolProperties struct {
 	// WorkerSizeID - Worker size id for referencing this worker pool

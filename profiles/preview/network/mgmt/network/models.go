@@ -19,7 +19,7 @@
 
 package network
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-02-01/network"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-04-01/network"
 
 type ApplicationGatewaysClient = original.ApplicationGatewaysClient
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
@@ -224,6 +224,14 @@ const (
 	Disconnected CircuitConnectionStatus = original.Disconnected
 )
 
+type ConnectionMonitorSourceStatus = original.ConnectionMonitorSourceStatus
+
+const (
+	Active   ConnectionMonitorSourceStatus = original.Active
+	Inactive ConnectionMonitorSourceStatus = original.Inactive
+	Uknown   ConnectionMonitorSourceStatus = original.Uknown
+)
+
 type ConnectionState = original.ConnectionState
 
 const (
@@ -273,8 +281,8 @@ const (
 type EffectiveRouteState = original.EffectiveRouteState
 
 const (
-	Active  EffectiveRouteState = original.Active
-	Invalid EffectiveRouteState = original.Invalid
+	EffectiveRouteStateActive  EffectiveRouteState = original.EffectiveRouteStateActive
+	EffectiveRouteStateInvalid EffectiveRouteState = original.EffectiveRouteStateInvalid
 )
 
 type EffectiveSecurityRuleProtocol = original.EffectiveSecurityRuleProtocol
@@ -338,6 +346,12 @@ const (
 	MicrosoftPeering    ExpressRoutePeeringType = original.MicrosoftPeering
 )
 
+type HTTPMethod = original.HTTPMethod
+
+const (
+	Get HTTPMethod = original.Get
+)
+
 type IkeEncryption = original.IkeEncryption
 
 const (
@@ -366,6 +380,13 @@ type IPAllocationMethod = original.IPAllocationMethod
 const (
 	Dynamic IPAllocationMethod = original.Dynamic
 	Static  IPAllocationMethod = original.Static
+)
+
+type IPFlowProtocol = original.IPFlowProtocol
+
+const (
+	IPFlowProtocolTCP IPFlowProtocol = original.IPFlowProtocolTCP
+	IPFlowProtocolUDP IPFlowProtocol = original.IPFlowProtocolUDP
 )
 
 type IpsecEncryption = original.IpsecEncryption
@@ -515,8 +536,10 @@ const (
 type Protocol = original.Protocol
 
 const (
-	ProtocolTCP Protocol = original.ProtocolTCP
-	ProtocolUDP Protocol = original.ProtocolUDP
+	ProtocolHTTP  Protocol = original.ProtocolHTTP
+	ProtocolHTTPS Protocol = original.ProtocolHTTPS
+	ProtocolIcmp  Protocol = original.ProtocolIcmp
+	ProtocolTCP   Protocol = original.ProtocolTCP
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -869,6 +892,8 @@ type FrontendIPConfiguration = original.FrontendIPConfiguration
 type FrontendIPConfigurationPropertiesFormat = original.FrontendIPConfigurationPropertiesFormat
 type GatewayRoute = original.GatewayRoute
 type GatewayRouteListResult = original.GatewayRouteListResult
+type HTTPConfiguration = original.HTTPConfiguration
+type HTTPHeader = original.HTTPHeader
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
 type InboundNatRule = original.InboundNatRule
@@ -964,6 +989,7 @@ type PatchRouteFilter = original.PatchRouteFilter
 type PatchRouteFilterRule = original.PatchRouteFilterRule
 type Probe = original.Probe
 type ProbePropertiesFormat = original.ProbePropertiesFormat
+type ProtocolConfiguration = original.ProtocolConfiguration
 type PublicIPAddress = original.PublicIPAddress
 type PublicIPAddressDNSSettings = original.PublicIPAddressDNSSettings
 type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture
@@ -1366,6 +1392,9 @@ func PossibleBgpPeerStateValues() []BgpPeerState {
 func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
 	return original.PossibleCircuitConnectionStatusValues()
 }
+func PossibleConnectionMonitorSourceStatusValues() []ConnectionMonitorSourceStatus {
+	return original.PossibleConnectionMonitorSourceStatusValues()
+}
 func PossibleConnectionStateValues() []ConnectionState {
 	return original.PossibleConnectionStateValues()
 }
@@ -1408,6 +1437,9 @@ func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
 func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
 	return original.PossibleExpressRoutePeeringTypeValues()
 }
+func PossibleHTTPMethodValues() []HTTPMethod {
+	return original.PossibleHTTPMethodValues()
+}
 func PossibleIkeEncryptionValues() []IkeEncryption {
 	return original.PossibleIkeEncryptionValues()
 }
@@ -1416,6 +1448,9 @@ func PossibleIkeIntegrityValues() []IkeIntegrity {
 }
 func PossibleIPAllocationMethodValues() []IPAllocationMethod {
 	return original.PossibleIPAllocationMethodValues()
+}
+func PossibleIPFlowProtocolValues() []IPFlowProtocol {
+	return original.PossibleIPFlowProtocolValues()
 }
 func PossibleIpsecEncryptionValues() []IpsecEncryption {
 	return original.PossibleIpsecEncryptionValues()

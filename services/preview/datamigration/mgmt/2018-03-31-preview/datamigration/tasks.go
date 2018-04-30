@@ -41,9 +41,11 @@ func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClien
 
 // Cancel the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. This
 // method cancels a task if it's currently queued or running.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
-// taskName is name of the Task
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskName - name of the Task
 func (client TasksClient) Cancel(ctx context.Context, groupName string, serviceName string, projectName string, taskName string) (result ProjectTask, err error) {
 	req, err := client.CancelPreparer(ctx, groupName, serviceName, projectName, taskName)
 	if err != nil {
@@ -112,9 +114,12 @@ func (client TasksClient) CancelResponder(resp *http.Response) (result ProjectTa
 // CreateOrUpdate the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance.
 // The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom
 // properties, there is little reason to update an exising one.
-//
-// parameters is information about the task groupName is name of the resource group serviceName is name of the
-// service projectName is name of the project taskName is name of the Task
+// Parameters:
+// parameters - information about the task
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskName - name of the Task
 func (client TasksClient) CreateOrUpdate(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result ProjectTask, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, parameters, groupName, serviceName, projectName, taskName)
 	if err != nil {
@@ -184,9 +189,12 @@ func (client TasksClient) CreateOrUpdateResponder(resp *http.Response) (result P
 
 // Delete the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The DELETE
 // method deletes a task, canceling it first if it's running.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
-// taskName is name of the Task deleteRunningTasks is delete the resource even if it contains running tasks
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskName - name of the Task
+// deleteRunningTasks - delete the resource even if it contains running tasks
 func (client TasksClient) Delete(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, deleteRunningTasks *bool) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, groupName, serviceName, projectName, taskName, deleteRunningTasks)
 	if err != nil {
@@ -256,9 +264,12 @@ func (client TasksClient) DeleteResponder(resp *http.Response) (result autorest.
 
 // Get the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The GET
 // method retrieves information about a task.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
-// taskName is name of the Task expand is expand the response
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskName - name of the Task
+// expand - expand the response
 func (client TasksClient) Get(ctx context.Context, groupName string, serviceName string, projectName string, taskName string, expand string) (result ProjectTask, err error) {
 	req, err := client.GetPreparer(ctx, groupName, serviceName, projectName, taskName, expand)
 	if err != nil {
@@ -330,9 +341,11 @@ func (client TasksClient) GetResponder(resp *http.Response) (result ProjectTask,
 // List the services resource is the top-level resource that represents the Data Migration Service. This method returns
 // a list of tasks owned by a service resource. Some tasks may have a status of Unknown, which indicates that an error
 // occurred while querying the status of that task.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
-// taskType is filter tasks by task type
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskType - filter tasks by task type
 func (client TasksClient) List(ctx context.Context, groupName string, serviceName string, projectName string, taskType string) (result TaskListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, groupName, serviceName, projectName, taskType)
@@ -430,9 +443,12 @@ func (client TasksClient) ListComplete(ctx context.Context, groupName string, se
 
 // Update the tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PATCH
 // method updates an existing task, but since tasks have no mutable custom properties, there is little reason to do so.
-//
-// parameters is information about the task groupName is name of the resource group serviceName is name of the
-// service projectName is name of the project taskName is name of the Task
+// Parameters:
+// parameters - information about the task
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// taskName - name of the Task
 func (client TasksClient) Update(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, projectName string, taskName string) (result ProjectTask, err error) {
 	req, err := client.UpdatePreparer(ctx, parameters, groupName, serviceName, projectName, taskName)
 	if err != nil {

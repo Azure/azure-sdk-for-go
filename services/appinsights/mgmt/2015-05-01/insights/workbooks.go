@@ -40,13 +40,14 @@ func NewWorkbooksClientWithBaseURI(baseURI string, subscriptionID string) Workbo
 }
 
 // ListByResourceGroup get all Workbooks defined within a specified resource group and category.
-//
-// resourceGroupName is the name of the resource group. location is the name of location where workbook is stored.
-// category is category of workbook to return. tags is tags presents on each workbook returned. canFetchContent is
-// flag indicating whether or not to return the full content for each applicable workbook. If false, only return
-// summary content for workbooks.
-func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, location string, category CategoryType, tags []string, canFetchContent *bool) (result Workbooks, err error) {
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, location, category, tags, canFetchContent)
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// category - category of workbook to return.
+// tags - tags presents on each workbook returned.
+// canFetchContent - flag indicating whether or not to return the full content for each applicable workbook. If
+// false, only return summary content for workbooks.
+func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, category CategoryType, tags []string, canFetchContent *bool) (result Workbooks, err error) {
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, category, tags, canFetchContent)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -68,7 +69,7 @@ func (client WorkbooksClient) ListByResourceGroup(ctx context.Context, resourceG
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, location string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
+func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, category CategoryType, tags []string, canFetchContent *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -78,7 +79,6 @@ func (client WorkbooksClient) ListByResourceGroupPreparer(ctx context.Context, r
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"category":    autorest.Encode("query", category),
-		"location":    autorest.Encode("query", location),
 	}
 	if tags != nil && len(tags) > 0 {
 		queryParameters["tags"] = autorest.Encode("query", tags, ",")

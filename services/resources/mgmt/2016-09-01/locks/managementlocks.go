@@ -45,11 +45,10 @@ func NewManagementLocksClientWithBaseURI(baseURI string, subscriptionID string) 
 // lock. To create management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// Parameters:
-// resourceGroupName - the name of the resource group to lock.
-// lockName - the lock name. The lock name can be a maximum of 260 characters. It cannot contain <, > %, &, :,
-// \, ?, /, or any control characters.
-// parameters - the management lock parameters.
+//
+// resourceGroupName is the name of the resource group to lock. lockName is the lock name. The lock name can be a
+// maximum of 260 characters. It cannot contain <, > %, &, :, \, ?, /, or any control characters. parameters is the
+// management lock parameters.
 func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -128,15 +127,12 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceGroupLevelResponder(
 // CreateOrUpdateAtResourceLevel when you apply a lock at a parent scope, all child resources inherit the same lock. To
 // create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
 // actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the resource to lock.
-// resourceProviderNamespace - the resource provider namespace of the resource to lock.
-// parentResourcePath - the parent resource identity.
-// resourceType - the resource type of the resource to lock.
-// resourceName - the name of the resource to lock.
-// lockName - the name of lock. The lock name can be a maximum of 260 characters. It cannot contain <, > %, &,
-// :, \, ?, /, or any control characters.
-// parameters - parameters for creating or updating a  management lock.
+//
+// resourceGroupName is the name of the resource group containing the resource to lock. resourceProviderNamespace
+// is the resource provider namespace of the resource to lock. parentResourcePath is the parent resource identity.
+// resourceType is the resource type of the resource to lock. resourceName is the name of the resource to lock.
+// lockName is the name of lock. The lock name can be a maximum of 260 characters. It cannot contain <, > %, &, :,
+// \, ?, /, or any control characters. parameters is parameters for creating or updating a  management lock.
 func (client ManagementLocksClient) CreateOrUpdateAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -220,10 +216,9 @@ func (client ManagementLocksClient) CreateOrUpdateAtResourceLevelResponder(resp 
 // lock. To create management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// Parameters:
-// lockName - the name of lock. The lock name can be a maximum of 260 characters. It cannot contain <, > %, &,
-// :, \, ?, /, or any control characters.
-// parameters - the management lock parameters.
+//
+// lockName is the name of lock. The lock name can be a maximum of 260 characters. It cannot contain <, > %, &, :,
+// \, ?, /, or any control characters. parameters is the management lock parameters.
 func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevel(ctx context.Context, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -295,14 +290,12 @@ func (client ManagementLocksClient) CreateOrUpdateAtSubscriptionLevelResponder(r
 }
 
 // CreateOrUpdateByScope create or update a management lock by scope.
-// Parameters:
-// scope - the scope for the lock. When providing a scope for the assignment, use
+//
+// scope is the scope for the lock. When providing a scope for the assignment, use
 // '/subscriptions/{subscriptionId}' for subscriptions,
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-// for resources.
-// lockName - the name of lock.
-// parameters - create or update management lock parameters.
+// for resources. lockName is the name of lock. parameters is create or update management lock parameters.
 func (client ManagementLocksClient) CreateOrUpdateByScope(ctx context.Context, scope string, lockName string, parameters ManagementLockObject) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -376,9 +369,8 @@ func (client ManagementLocksClient) CreateOrUpdateByScopeResponder(resp *http.Re
 // DeleteAtResourceGroupLevel to delete management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the lock.
-// lockName - the name of lock to delete.
+//
+// resourceGroupName is the name of the resource group containing the lock. lockName is the name of lock to delete.
 func (client ManagementLocksClient) DeleteAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -452,13 +444,12 @@ func (client ManagementLocksClient) DeleteAtResourceGroupLevelResponder(resp *ht
 // DeleteAtResourceLevel to delete management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the resource with the lock to delete.
-// resourceProviderNamespace - the resource provider namespace of the resource with the lock to delete.
-// parentResourcePath - the parent resource identity.
-// resourceType - the resource type of the resource with the lock to delete.
-// resourceName - the name of the resource with the lock to delete.
-// lockName - the name of the lock to delete.
+//
+// resourceGroupName is the name of the resource group containing the resource with the lock to delete.
+// resourceProviderNamespace is the resource provider namespace of the resource with the lock to delete.
+// parentResourcePath is the parent resource identity. resourceType is the resource type of the resource with the
+// lock to delete. resourceName is the name of the resource with the lock to delete. lockName is the name of the
+// lock to delete.
 func (client ManagementLocksClient) DeleteAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -536,8 +527,8 @@ func (client ManagementLocksClient) DeleteAtResourceLevelResponder(resp *http.Re
 // DeleteAtSubscriptionLevel to delete management locks, you must have access to Microsoft.Authorization/* or
 // Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted
 // those actions.
-// Parameters:
-// lockName - the name of lock to delete.
+//
+// lockName is the name of lock to delete.
 func (client ManagementLocksClient) DeleteAtSubscriptionLevel(ctx context.Context, lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtSubscriptionLevelPreparer(ctx, lockName)
 	if err != nil {
@@ -600,9 +591,8 @@ func (client ManagementLocksClient) DeleteAtSubscriptionLevelResponder(resp *htt
 }
 
 // DeleteByScope delete a management lock by scope.
-// Parameters:
-// scope - the scope for the lock.
-// lockName - the name of lock.
+//
+// scope is the scope for the lock. lockName is the name of lock.
 func (client ManagementLocksClient) DeleteByScope(ctx context.Context, scope string, lockName string) (result autorest.Response, err error) {
 	req, err := client.DeleteByScopePreparer(ctx, scope, lockName)
 	if err != nil {
@@ -665,9 +655,8 @@ func (client ManagementLocksClient) DeleteByScopeResponder(resp *http.Response) 
 }
 
 // GetAtResourceGroupLevel gets a management lock at the resource group level.
-// Parameters:
-// resourceGroupName - the name of the locked resource group.
-// lockName - the name of the lock to get.
+//
+// resourceGroupName is the name of the locked resource group. lockName is the name of the lock to get.
 func (client ManagementLocksClient) GetAtResourceGroupLevel(ctx context.Context, resourceGroupName string, lockName string) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -740,13 +729,11 @@ func (client ManagementLocksClient) GetAtResourceGroupLevelResponder(resp *http.
 }
 
 // GetAtResourceLevel get the management lock of a resource or any level below resource.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// resourceProviderNamespace - the namespace of the resource provider.
-// parentResourcePath - an extra path parameter needed in some services, like SQL Databases.
-// resourceType - the type of the resource.
-// resourceName - the name of the resource.
-// lockName - the name of lock.
+//
+// resourceGroupName is the name of the resource group. resourceProviderNamespace is the namespace of the resource
+// provider. parentResourcePath is an extra path parameter needed in some services, like SQL Databases.
+// resourceType is the type of the resource. resourceName is the name of the resource. lockName is the name of
+// lock.
 func (client ManagementLocksClient) GetAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, lockName string) (result ManagementLockObject, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -823,8 +810,8 @@ func (client ManagementLocksClient) GetAtResourceLevelResponder(resp *http.Respo
 }
 
 // GetAtSubscriptionLevel gets a management lock at the subscription level.
-// Parameters:
-// lockName - the name of the lock to get.
+//
+// lockName is the name of the lock to get.
 func (client ManagementLocksClient) GetAtSubscriptionLevel(ctx context.Context, lockName string) (result ManagementLockObject, err error) {
 	req, err := client.GetAtSubscriptionLevelPreparer(ctx, lockName)
 	if err != nil {
@@ -888,9 +875,8 @@ func (client ManagementLocksClient) GetAtSubscriptionLevelResponder(resp *http.R
 }
 
 // GetByScope get a management lock by scope.
-// Parameters:
-// scope - the scope for the lock.
-// lockName - the name of lock.
+//
+// scope is the scope for the lock. lockName is the name of lock.
 func (client ManagementLocksClient) GetByScope(ctx context.Context, scope string, lockName string) (result ManagementLockObject, err error) {
 	req, err := client.GetByScopePreparer(ctx, scope, lockName)
 	if err != nil {
@@ -954,9 +940,9 @@ func (client ManagementLocksClient) GetByScopeResponder(resp *http.Response) (re
 }
 
 // ListAtResourceGroupLevel gets all the management locks for a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the locks to get.
-// filter - the filter to apply on the operation.
+//
+// resourceGroupName is the name of the resource group containing the locks to get. filter is the filter to apply
+// on the operation.
 func (client ManagementLocksClient) ListAtResourceGroupLevel(ctx context.Context, resourceGroupName string, filter string) (result ManagementLockListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1059,14 +1045,11 @@ func (client ManagementLocksClient) ListAtResourceGroupLevelComplete(ctx context
 }
 
 // ListAtResourceLevel gets all the management locks for a resource or any level below resource.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the locked resource. The name is case
-// insensitive.
-// resourceProviderNamespace - the namespace of the resource provider.
-// parentResourcePath - the parent resource identity.
-// resourceType - the resource type of the locked resource.
-// resourceName - the name of the locked resource.
-// filter - the filter to apply on the operation.
+//
+// resourceGroupName is the name of the resource group containing the locked resource. The name is case
+// insensitive. resourceProviderNamespace is the namespace of the resource provider. parentResourcePath is the
+// parent resource identity. resourceType is the resource type of the locked resource. resourceName is the name of
+// the locked resource. filter is the filter to apply on the operation.
 func (client ManagementLocksClient) ListAtResourceLevel(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ManagementLockListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1173,8 +1156,8 @@ func (client ManagementLocksClient) ListAtResourceLevelComplete(ctx context.Cont
 }
 
 // ListAtSubscriptionLevel gets all the management locks for a subscription.
-// Parameters:
-// filter - the filter to apply on the operation.
+//
+// filter is the filter to apply on the operation.
 func (client ManagementLocksClient) ListAtSubscriptionLevel(ctx context.Context, filter string) (result ManagementLockListResultPage, err error) {
 	result.fn = client.listAtSubscriptionLevelNextResults
 	req, err := client.ListAtSubscriptionLevelPreparer(ctx, filter)

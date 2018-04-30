@@ -40,9 +40,8 @@ func NewPolicyDefinitionsClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // CreateOrUpdate create or update policy definition.
-// Parameters:
-// policyDefinitionName - the policy definition name.
-// parameters - the policy definition properties
+//
+// policyDefinitionName is the policy definition name. parameters is the policy definition properties
 func (client PolicyDefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefinitionName string, parameters PolicyDefinition) (result PolicyDefinition, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, policyDefinitionName, parameters)
 	if err != nil {
@@ -108,8 +107,8 @@ func (client PolicyDefinitionsClient) CreateOrUpdateResponder(resp *http.Respons
 }
 
 // Delete deletes policy definition.
-// Parameters:
-// policyDefinitionName - the policy definition name.
+//
+// policyDefinitionName is the policy definition name.
 func (client PolicyDefinitionsClient) Delete(ctx context.Context, policyDefinitionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, policyDefinitionName)
 	if err != nil {
@@ -172,8 +171,8 @@ func (client PolicyDefinitionsClient) DeleteResponder(resp *http.Response) (resu
 }
 
 // Get gets policy definition.
-// Parameters:
-// policyDefinitionName - the policy definition name.
+//
+// policyDefinitionName is the policy definition name.
 func (client PolicyDefinitionsClient) Get(ctx context.Context, policyDefinitionName string) (result PolicyDefinition, err error) {
 	req, err := client.GetPreparer(ctx, policyDefinitionName)
 	if err != nil {

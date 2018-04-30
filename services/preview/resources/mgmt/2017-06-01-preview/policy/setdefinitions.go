@@ -42,9 +42,9 @@ func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) S
 }
 
 // CreateOrUpdate creates or updates a policy set definition.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to create.
-// parameters - the policy set definition properties.
+//
+// policySetDefinitionName is the name of the policy set definition to create. parameters is the policy set
+// definition properties.
 func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition) (result SetDefinition, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -117,10 +117,9 @@ func (client SetDefinitionsClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // CreateOrUpdateAtManagementGroup creates or updates a policy set definition at management group level.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to create.
-// parameters - the policy set definition properties.
-// managementGroupID - the ID of the management group.
+//
+// policySetDefinitionName is the name of the policy set definition to create. parameters is the policy set
+// definition properties. managementGroupID is the ID of the management group.
 func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, managementGroupID string) (result SetDefinition, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -193,8 +192,8 @@ func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroupResponder(resp
 }
 
 // Delete deletes a policy set definition.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to delete.
+//
+// policySetDefinitionName is the name of the policy set definition to delete.
 func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, policySetDefinitionName)
 	if err != nil {
@@ -257,9 +256,9 @@ func (client SetDefinitionsClient) DeleteResponder(resp *http.Response) (result 
 }
 
 // DeleteAtManagementGroup deletes a policy set definition at management group level.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to delete.
-// managementGroupID - the ID of the management group.
+//
+// policySetDefinitionName is the name of the policy set definition to delete. managementGroupID is the ID of the
+// management group.
 func (client SetDefinitionsClient) DeleteAtManagementGroup(ctx context.Context, policySetDefinitionName string, managementGroupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtManagementGroupPreparer(ctx, policySetDefinitionName, managementGroupID)
 	if err != nil {
@@ -322,8 +321,8 @@ func (client SetDefinitionsClient) DeleteAtManagementGroupResponder(resp *http.R
 }
 
 // Get gets the policy set definition.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to get.
+//
+// policySetDefinitionName is the name of the policy set definition to get.
 func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string) (result SetDefinition, err error) {
 	req, err := client.GetPreparer(ctx, policySetDefinitionName)
 	if err != nil {
@@ -387,9 +386,9 @@ func (client SetDefinitionsClient) GetResponder(resp *http.Response) (result Set
 }
 
 // GetAtManagementGroup gets the policy set definition at management group level.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to get.
-// managementGroupID - the ID of the management group.
+//
+// policySetDefinitionName is the name of the policy set definition to get. managementGroupID is the ID of the
+// management group.
 func (client SetDefinitionsClient) GetAtManagementGroup(ctx context.Context, policySetDefinitionName string, managementGroupID string) (result SetDefinition, err error) {
 	req, err := client.GetAtManagementGroupPreparer(ctx, policySetDefinitionName, managementGroupID)
 	if err != nil {
@@ -453,8 +452,8 @@ func (client SetDefinitionsClient) GetAtManagementGroupResponder(resp *http.Resp
 }
 
 // GetBuiltIn gets the built in policy set definition.
-// Parameters:
-// policySetDefinitionName - the name of the policy set definition to get.
+//
+// policySetDefinitionName is the name of the policy set definition to get.
 func (client SetDefinitionsClient) GetBuiltIn(ctx context.Context, policySetDefinitionName string) (result SetDefinition, err error) {
 	req, err := client.GetBuiltInPreparer(ctx, policySetDefinitionName)
 	if err != nil {
@@ -693,8 +692,8 @@ func (client SetDefinitionsClient) ListBuiltInComplete(ctx context.Context) (res
 }
 
 // ListByManagementGroup gets all the policy set definitions for a subscription at management group.
-// Parameters:
-// managementGroupID - the ID of the management group.
+//
+// managementGroupID is the ID of the management group.
 func (client SetDefinitionsClient) ListByManagementGroup(ctx context.Context, managementGroupID string) (result SetDefinitionListResultPage, err error) {
 	result.fn = client.listByManagementGroupNextResults
 	req, err := client.ListByManagementGroupPreparer(ctx, managementGroupID)

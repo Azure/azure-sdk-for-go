@@ -43,10 +43,9 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 
 // Create policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
 // that policy is assigned to all resources in the group.
-// Parameters:
-// scope - the scope of the policy assignment.
-// policyAssignmentName - the name of the policy assignment.
-// parameters - parameters for the policy assignment.
+//
+// scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment.
+// parameters is parameters for the policy assignment.
 func (client AssignmentsClient) Create(ctx context.Context, scope string, policyAssignmentName string, parameters Assignment) (result Assignment, err error) {
 	req, err := client.CreatePreparer(ctx, scope, policyAssignmentName, parameters)
 	if err != nil {
@@ -117,10 +116,10 @@ func (client AssignmentsClient) CreateResponder(resp *http.Response) (result Ass
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to create. Use the format
-// '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-// parameters - parameters for policy assignment.
+//
+// policyAssignmentID is the ID of the policy assignment to create. Use the format
+// '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'. parameters is
+// parameters for policy assignment.
 func (client AssignmentsClient) CreateByID(ctx context.Context, policyAssignmentID string, parameters Assignment) (result Assignment, err error) {
 	req, err := client.CreateByIDPreparer(ctx, policyAssignmentID, parameters)
 	if err != nil {
@@ -185,9 +184,9 @@ func (client AssignmentsClient) CreateByIDResponder(resp *http.Response) (result
 }
 
 // Delete deletes a policy assignment.
-// Parameters:
-// scope - the scope of the policy assignment.
-// policyAssignmentName - the name of the policy assignment to delete.
+//
+// scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment to
+// delete.
 func (client AssignmentsClient) Delete(ctx context.Context, scope string, policyAssignmentName string) (result Assignment, err error) {
 	req, err := client.DeletePreparer(ctx, scope, policyAssignmentName)
 	if err != nil {
@@ -254,8 +253,8 @@ func (client AssignmentsClient) DeleteResponder(resp *http.Response) (result Ass
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to delete. Use the format
+//
+// policyAssignmentID is the ID of the policy assignment to delete. Use the format
 // '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
 func (client AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string) (result Assignment, err error) {
 	req, err := client.DeleteByIDPreparer(ctx, policyAssignmentID)
@@ -319,9 +318,8 @@ func (client AssignmentsClient) DeleteByIDResponder(resp *http.Response) (result
 }
 
 // Get gets a policy assignment.
-// Parameters:
-// scope - the scope of the policy assignment.
-// policyAssignmentName - the name of the policy assignment to get.
+//
+// scope is the scope of the policy assignment. policyAssignmentName is the name of the policy assignment to get.
 func (client AssignmentsClient) Get(ctx context.Context, scope string, policyAssignmentName string) (result Assignment, err error) {
 	req, err := client.GetPreparer(ctx, scope, policyAssignmentName)
 	if err != nil {
@@ -388,8 +386,8 @@ func (client AssignmentsClient) GetResponder(resp *http.Response) (result Assign
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
 // for resources.
-// Parameters:
-// policyAssignmentID - the ID of the policy assignment to get. Use the format
+//
+// policyAssignmentID is the ID of the policy assignment to get. Use the format
 // '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
 func (client AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string) (result Assignment, err error) {
 	req, err := client.GetByIDPreparer(ctx, policyAssignmentID)
@@ -453,8 +451,8 @@ func (client AssignmentsClient) GetByIDResponder(resp *http.Response) (result As
 }
 
 // List gets all the policy assignments for a subscription.
-// Parameters:
-// filter - the filter to apply on the operation.
+//
+// filter is the filter to apply on the operation.
 func (client AssignmentsClient) List(ctx context.Context, filter string) (result AssignmentListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter)
@@ -548,13 +546,11 @@ func (client AssignmentsClient) ListComplete(ctx context.Context, filter string)
 }
 
 // ListForResource gets policy assignments for a resource.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the resource. The name is case insensitive.
-// resourceProviderNamespace - the namespace of the resource provider.
-// parentResourcePath - the parent resource path.
-// resourceType - the resource type.
-// resourceName - the name of the resource with policy assignments.
-// filter - the filter to apply on the operation.
+//
+// resourceGroupName is the name of the resource group containing the resource. The name is case insensitive.
+// resourceProviderNamespace is the namespace of the resource provider. parentResourcePath is the parent resource
+// path. resourceType is the resource type. resourceName is the name of the resource with policy assignments.
+// filter is the filter to apply on the operation.
 func (client AssignmentsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result AssignmentListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -661,9 +657,9 @@ func (client AssignmentsClient) ListForResourceComplete(ctx context.Context, res
 }
 
 // ListForResourceGroup gets policy assignments for the resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group that contains policy assignments.
-// filter - the filter to apply on the operation.
+//
+// resourceGroupName is the name of the resource group that contains policy assignments. filter is the filter to
+// apply on the operation.
 func (client AssignmentsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result AssignmentListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

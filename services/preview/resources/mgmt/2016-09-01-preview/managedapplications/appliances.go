@@ -41,10 +41,9 @@ func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) Appli
 }
 
 // CreateOrUpdate creates a new appliance.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceName - the name of the appliance.
-// parameters - parameters supplied to the create or update an appliance.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceName is the name of
+// the appliance. parameters is parameters supplied to the create or update an appliance.
 func (client AppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applianceName string, parameters Appliance) (result AppliancesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -135,11 +134,11 @@ func (client AppliancesClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // CreateOrUpdateByID creates a new appliance.
-// Parameters:
-// applianceID - the fully qualified ID of the appliance, including the appliance name and the appliance
-// resource type. Use the format,
+//
+// applianceID is the fully qualified ID of the appliance, including the appliance name and the appliance resource
+// type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
-// parameters - parameters supplied to the create or update an appliance.
+// parameters is parameters supplied to the create or update an appliance.
 func (client AppliancesClient) CreateOrUpdateByID(ctx context.Context, applianceID string, parameters Appliance) (result AppliancesCreateOrUpdateByIDFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -221,9 +220,9 @@ func (client AppliancesClient) CreateOrUpdateByIDResponder(resp *http.Response) 
 }
 
 // Delete deletes the appliance.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceName - the name of the appliance.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceName is the name of
+// the appliance.
 func (client AppliancesClient) Delete(ctx context.Context, resourceGroupName string, applianceName string) (result AppliancesDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -300,9 +299,9 @@ func (client AppliancesClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // DeleteByID deletes the appliance.
-// Parameters:
-// applianceID - the fully qualified ID of the appliance, including the appliance name and the appliance
-// resource type. Use the format,
+//
+// applianceID is the fully qualified ID of the appliance, including the appliance name and the appliance resource
+// type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
 func (client AppliancesClient) DeleteByID(ctx context.Context, applianceID string) (result AppliancesDeleteByIDFuture, err error) {
 	req, err := client.DeleteByIDPreparer(ctx, applianceID)
@@ -367,9 +366,9 @@ func (client AppliancesClient) DeleteByIDResponder(resp *http.Response) (result 
 }
 
 // Get gets the appliance.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceName - the name of the appliance.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceName is the name of
+// the appliance.
 func (client AppliancesClient) Get(ctx context.Context, resourceGroupName string, applianceName string) (result Appliance, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -445,9 +444,9 @@ func (client AppliancesClient) GetResponder(resp *http.Response) (result Applian
 }
 
 // GetByID gets the appliance.
-// Parameters:
-// applianceID - the fully qualified ID of the appliance, including the appliance name and the appliance
-// resource type. Use the format,
+//
+// applianceID is the fully qualified ID of the appliance, including the appliance name and the appliance resource
+// type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
 func (client AppliancesClient) GetByID(ctx context.Context, applianceID string) (result Appliance, err error) {
 	req, err := client.GetByIDPreparer(ctx, applianceID)
@@ -511,8 +510,8 @@ func (client AppliancesClient) GetByIDResponder(resp *http.Response) (result App
 }
 
 // ListByResourceGroup gets all the appliances within a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive.
 func (client AppliancesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ApplianceListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -702,10 +701,9 @@ func (client AppliancesClient) ListBySubscriptionComplete(ctx context.Context) (
 }
 
 // Update updates an existing appliance. The only value that can be updated via PATCH currently is the tags.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceName - the name of the appliance.
-// parameters - parameters supplied to update an existing appliance.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceName is the name of
+// the appliance. parameters is parameters supplied to update an existing appliance.
 func (client AppliancesClient) Update(ctx context.Context, resourceGroupName string, applianceName string, parameters *Appliance) (result Appliance, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -786,11 +784,11 @@ func (client AppliancesClient) UpdateResponder(resp *http.Response) (result Appl
 }
 
 // UpdateByID updates an existing appliance. The only value that can be updated via PATCH currently is the tags.
-// Parameters:
-// applianceID - the fully qualified ID of the appliance, including the appliance name and the appliance
-// resource type. Use the format,
+//
+// applianceID is the fully qualified ID of the appliance, including the appliance name and the appliance resource
+// type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/appliances/{appliance-name}
-// parameters - parameters supplied to update an existing appliance.
+// parameters is parameters supplied to update an existing appliance.
 func (client AppliancesClient) UpdateByID(ctx context.Context, applianceID string, parameters *Appliance) (result Appliance, err error) {
 	req, err := client.UpdateByIDPreparer(ctx, applianceID, parameters)
 	if err != nil {

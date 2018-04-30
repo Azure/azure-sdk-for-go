@@ -41,8 +41,8 @@ func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsCli
 }
 
 // CheckExistence checks whether resource group exists.
-// Parameters:
-// resourceGroupName - the name of the resource group to check. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group to check. The name is case insensitive.
 func (client GroupsClient) CheckExistence(ctx context.Context, resourceGroupName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -113,9 +113,9 @@ func (client GroupsClient) CheckExistenceResponder(resp *http.Response) (result 
 }
 
 // CreateOrUpdate create a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group to be created or updated.
-// parameters - parameters supplied to the create or update resource group service operation.
+//
+// resourceGroupName is the name of the resource group to be created or updated. parameters is parameters supplied
+// to the create or update resource group service operation.
 func (client GroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters Group) (result Group, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -192,8 +192,8 @@ func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 
 // Delete begin deleting resource group.To determine whether the operation has finished processing the request, call
 // GetLongRunningOperationStatus.
-// Parameters:
-// resourceGroupName - the name of the resource group to be deleted. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group to be deleted. The name is case insensitive.
 func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string) (result GroupsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -266,8 +266,8 @@ func (client GroupsClient) DeleteResponder(resp *http.Response) (result autorest
 }
 
 // Get get a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group to get. The name is case insensitive.
 func (client GroupsClient) Get(ctx context.Context, resourceGroupName string) (result Group, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -339,9 +339,9 @@ func (client GroupsClient) GetResponder(resp *http.Response) (result Group, err 
 }
 
 // List gets a collection of resource groups.
-// Parameters:
-// filter - the filter to apply on the operation.
-// top - query parameters. If null is passed returns all resource groups.
+//
+// filter is the filter to apply on the operation. top is query parameters. If null is passed returns all resource
+// groups.
 func (client GroupsClient) List(ctx context.Context, filter string, top *int32) (result GroupListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, top)
@@ -438,10 +438,9 @@ func (client GroupsClient) ListComplete(ctx context.Context, filter string, top 
 }
 
 // ListResources get all of the resources under a subscription.
-// Parameters:
-// resourceGroupName - query parameters. If null is passed returns all resource groups.
-// filter - the filter to apply on the operation.
-// top - query parameters. If null is passed returns all resource groups.
+//
+// resourceGroupName is query parameters. If null is passed returns all resource groups. filter is the filter to
+// apply on the operation. top is query parameters. If null is passed returns all resource groups.
 func (client GroupsClient) ListResources(ctx context.Context, resourceGroupName string, filter string, top *int32) (result ListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -549,9 +548,9 @@ func (client GroupsClient) ListResourcesComplete(ctx context.Context, resourceGr
 // Patch resource groups can be updated through a simple PATCH operation to a group address. The format of the request
 // is the same as that for creating a resource groups, though if a field is unspecified current value will be carried
 // over.
-// Parameters:
-// resourceGroupName - the name of the resource group to be created or updated. The name is case insensitive.
-// parameters - parameters supplied to the update state resource group service operation.
+//
+// resourceGroupName is the name of the resource group to be created or updated. The name is case insensitive.
+// parameters is parameters supplied to the update state resource group service operation.
 func (client GroupsClient) Patch(ctx context.Context, resourceGroupName string, parameters Group) (result Group, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

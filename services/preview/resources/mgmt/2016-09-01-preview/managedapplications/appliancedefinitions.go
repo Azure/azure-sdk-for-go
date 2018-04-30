@@ -41,10 +41,10 @@ func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID str
 }
 
 // CreateOrUpdate creates a new appliance definition.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceDefinitionName - the name of the appliance definition.
-// parameters - parameters supplied to the create or update an appliance definition.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceDefinitionName is
+// the name of the appliance definition. parameters is parameters supplied to the create or update an appliance
+// definition.
 func (client ApplianceDefinitionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, applianceDefinitionName string, parameters ApplianceDefinition) (result ApplianceDefinitionsCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -129,11 +129,11 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateResponder(resp *http.Resp
 }
 
 // CreateOrUpdateByID creates a new appliance definition.
-// Parameters:
-// applianceDefinitionID - the fully qualified ID of the appliance definition, including the appliance name and
+//
+// applianceDefinitionID is the fully qualified ID of the appliance definition, including the appliance name and
 // the appliance definition resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applianceDefinitions/{applianceDefinition-name}
-// parameters - parameters supplied to the create or update an appliance definition.
+// parameters is parameters supplied to the create or update an appliance definition.
 func (client ApplianceDefinitionsClient) CreateOrUpdateByID(ctx context.Context, applianceDefinitionID string, parameters ApplianceDefinition) (result ApplianceDefinitionsCreateOrUpdateByIDFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -209,9 +209,9 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateByIDResponder(resp *http.
 }
 
 // Delete deletes the appliance definition.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceDefinitionName - the name of the appliance definition to delete.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceDefinitionName is
+// the name of the appliance definition to delete.
 func (client ApplianceDefinitionsClient) Delete(ctx context.Context, resourceGroupName string, applianceDefinitionName string) (result ApplianceDefinitionsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -288,8 +288,8 @@ func (client ApplianceDefinitionsClient) DeleteResponder(resp *http.Response) (r
 }
 
 // DeleteByID deletes the appliance definition.
-// Parameters:
-// applianceDefinitionID - the fully qualified ID of the appliance definition, including the appliance name and
+//
+// applianceDefinitionID is the fully qualified ID of the appliance definition, including the appliance name and
 // the appliance definition resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applianceDefinitions/{applianceDefinition-name}
 func (client ApplianceDefinitionsClient) DeleteByID(ctx context.Context, applianceDefinitionID string) (result ApplianceDefinitionsDeleteByIDFuture, err error) {
@@ -355,9 +355,9 @@ func (client ApplianceDefinitionsClient) DeleteByIDResponder(resp *http.Response
 }
 
 // Get gets the appliance definition.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// applianceDefinitionName - the name of the appliance definition.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. applianceDefinitionName is
+// the name of the appliance definition.
 func (client ApplianceDefinitionsClient) Get(ctx context.Context, resourceGroupName string, applianceDefinitionName string) (result ApplianceDefinition, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -433,8 +433,8 @@ func (client ApplianceDefinitionsClient) GetResponder(resp *http.Response) (resu
 }
 
 // GetByID gets the appliance definition.
-// Parameters:
-// applianceDefinitionID - the fully qualified ID of the appliance definition, including the appliance name and
+//
+// applianceDefinitionID is the fully qualified ID of the appliance definition, including the appliance name and
 // the appliance definition resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applianceDefinitions/{applianceDefinition-name}
 func (client ApplianceDefinitionsClient) GetByID(ctx context.Context, applianceDefinitionID string) (result ApplianceDefinition, err error) {
@@ -499,8 +499,8 @@ func (client ApplianceDefinitionsClient) GetByIDResponder(resp *http.Response) (
 }
 
 // ListByResourceGroup lists the appliance definitions in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive.
 func (client ApplianceDefinitionsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ApplianceDefinitionListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

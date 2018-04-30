@@ -40,8 +40,8 @@ func NewProviderOperationDetailsClientWithBaseURI(baseURI string, subscriptionID
 }
 
 // List gets a list of resource providers.
-// Parameters:
-// resourceProviderNamespace - resource identity.
+//
+// resourceProviderNamespace is resource identity.
 func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceProviderNamespace string) (result ProviderOperationDetailListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceProviderNamespace)

@@ -41,12 +41,10 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 }
 
 // CheckExistence checks whether resource exists.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - resource identity.
-// parentResourcePath - resource identity.
-// resourceType - resource identity.
-// resourceName - resource identity.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. resourceProviderNamespace is
+// resource identity. parentResourcePath is resource identity. resourceType is resource identity. resourceName is
+// resource identity.
 func (client Client) CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -121,13 +119,10 @@ func (client Client) CheckExistenceResponder(resp *http.Response) (result autore
 }
 
 // CreateOrUpdate create a resource.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - resource identity.
-// parentResourcePath - resource identity.
-// resourceType - resource identity.
-// resourceName - resource identity.
-// parameters - create or update resource parameters.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. resourceProviderNamespace is
+// resource identity. parentResourcePath is resource identity. resourceType is resource identity. resourceName is
+// resource identity. parameters is create or update resource parameters.
 func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, parameters GenericResource) (result GenericResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -205,12 +200,10 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Generi
 }
 
 // Delete delete resource and all of its resources.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - resource identity.
-// parentResourcePath - resource identity.
-// resourceType - resource identity.
-// resourceName - resource identity.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. resourceProviderNamespace is
+// resource identity. parentResourcePath is resource identity. resourceType is resource identity. resourceName is
+// resource identity.
 func (client Client) Delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -285,12 +278,10 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 }
 
 // Get returns a resource belonging to a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - resource identity.
-// parentResourcePath - resource identity.
-// resourceType - resource identity.
-// resourceName - resource identity.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. resourceProviderNamespace is
+// resource identity. parentResourcePath is resource identity. resourceType is resource identity. resourceName is
+// resource identity.
 func (client Client) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string) (result GenericResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -366,10 +357,9 @@ func (client Client) GetResponder(resp *http.Response) (result GenericResource, 
 }
 
 // List get all of the resources under a subscription.
-// Parameters:
-// filter - the filter to apply on the operation.
-// expand - the $expand query parameter.
-// top - query parameters. If null is passed returns all resource groups.
+//
+// filter is the filter to apply on the operation. expand is the $expand query parameter. top is query parameters.
+// If null is passed returns all resource groups.
 func (client Client) List(ctx context.Context, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter, expand, top)
@@ -470,9 +460,8 @@ func (client Client) ListComplete(ctx context.Context, filter string, expand str
 
 // MoveResources move resources from one resource group to another. The resources being moved should all be in the same
 // resource group.
-// Parameters:
-// sourceResourceGroupName - source resource group name.
-// parameters - move resources' parameters.
+//
+// sourceResourceGroupName is source resource group name. parameters is move resources' parameters.
 func (client Client) MoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo) (result MoveResourcesFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: sourceResourceGroupName,
@@ -547,13 +536,11 @@ func (client Client) MoveResourcesResponder(resp *http.Response) (result autores
 }
 
 // Update updates a resource.
-// Parameters:
-// resourceGroupName - the name of the resource group for the resource. The name is case insensitive.
-// resourceProviderNamespace - the namespace of the resource provider.
-// parentResourcePath - the parent resource identity.
-// resourceType - the resource type of the resource to update.
-// resourceName - the name of the resource to update.
-// parameters - parameters for updating the resource.
+//
+// resourceGroupName is the name of the resource group for the resource. The name is case insensitive.
+// resourceProviderNamespace is the namespace of the resource provider. parentResourcePath is the parent resource
+// identity. resourceType is the resource type of the resource to update. resourceName is the name of the resource
+// to update. parameters is parameters for updating the resource.
 func (client Client) Update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, parameters GenericResource) (result UpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

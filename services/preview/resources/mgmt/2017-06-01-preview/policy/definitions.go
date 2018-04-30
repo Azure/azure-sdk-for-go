@@ -41,9 +41,9 @@ func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) Defi
 }
 
 // CreateOrUpdate creates or updates a policy definition.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to create.
-// parameters - the policy definition properties.
+//
+// policyDefinitionName is the name of the policy definition to create. parameters is the policy definition
+// properties.
 func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefinitionName string, parameters Definition) (result Definition, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, policyDefinitionName, parameters)
 	if err != nil {
@@ -109,10 +109,9 @@ func (client DefinitionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 }
 
 // CreateOrUpdateAtManagementGroup creates or updates a policy definition at management group level.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to create.
-// parameters - the policy definition properties.
-// managementGroupID - the ID of the management group.
+//
+// policyDefinitionName is the name of the policy definition to create. parameters is the policy definition
+// properties. managementGroupID is the ID of the management group.
 func (client DefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, policyDefinitionName string, parameters Definition, managementGroupID string) (result Definition, err error) {
 	req, err := client.CreateOrUpdateAtManagementGroupPreparer(ctx, policyDefinitionName, parameters, managementGroupID)
 	if err != nil {
@@ -178,8 +177,8 @@ func (client DefinitionsClient) CreateOrUpdateAtManagementGroupResponder(resp *h
 }
 
 // Delete deletes a policy definition.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to delete.
+//
+// policyDefinitionName is the name of the policy definition to delete.
 func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, policyDefinitionName)
 	if err != nil {
@@ -242,9 +241,9 @@ func (client DefinitionsClient) DeleteResponder(resp *http.Response) (result aut
 }
 
 // DeleteAtManagementGroup deletes a policy definition at management group level.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to delete.
-// managementGroupID - the ID of the management group.
+//
+// policyDefinitionName is the name of the policy definition to delete. managementGroupID is the ID of the
+// management group.
 func (client DefinitionsClient) DeleteAtManagementGroup(ctx context.Context, policyDefinitionName string, managementGroupID string) (result autorest.Response, err error) {
 	req, err := client.DeleteAtManagementGroupPreparer(ctx, policyDefinitionName, managementGroupID)
 	if err != nil {
@@ -307,8 +306,8 @@ func (client DefinitionsClient) DeleteAtManagementGroupResponder(resp *http.Resp
 }
 
 // Get gets the policy definition.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to get.
+//
+// policyDefinitionName is the name of the policy definition to get.
 func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName string) (result Definition, err error) {
 	req, err := client.GetPreparer(ctx, policyDefinitionName)
 	if err != nil {
@@ -372,9 +371,9 @@ func (client DefinitionsClient) GetResponder(resp *http.Response) (result Defini
 }
 
 // GetAtManagementGroup gets the policy definition at management group level.
-// Parameters:
-// policyDefinitionName - the name of the policy definition to get.
-// managementGroupID - the ID of the management group.
+//
+// policyDefinitionName is the name of the policy definition to get. managementGroupID is the ID of the management
+// group.
 func (client DefinitionsClient) GetAtManagementGroup(ctx context.Context, policyDefinitionName string, managementGroupID string) (result Definition, err error) {
 	req, err := client.GetAtManagementGroupPreparer(ctx, policyDefinitionName, managementGroupID)
 	if err != nil {
@@ -438,8 +437,8 @@ func (client DefinitionsClient) GetAtManagementGroupResponder(resp *http.Respons
 }
 
 // GetBuiltIn gets the built in policy definition.
-// Parameters:
-// policyDefinitionName - the name of the built in policy definition to get.
+//
+// policyDefinitionName is the name of the built in policy definition to get.
 func (client DefinitionsClient) GetBuiltIn(ctx context.Context, policyDefinitionName string) (result Definition, err error) {
 	req, err := client.GetBuiltInPreparer(ctx, policyDefinitionName)
 	if err != nil {
@@ -678,8 +677,8 @@ func (client DefinitionsClient) ListBuiltInComplete(ctx context.Context) (result
 }
 
 // ListByManagementGroup gets all the policy definitions for a subscription at management group level.
-// Parameters:
-// managementGroupID - the ID of the management group.
+//
+// managementGroupID is the ID of the management group.
 func (client DefinitionsClient) ListByManagementGroup(ctx context.Context, managementGroupID string) (result DefinitionListResultPage, err error) {
 	result.fn = client.listByManagementGroupNextResults
 	req, err := client.ListByManagementGroupPreparer(ctx, managementGroupID)

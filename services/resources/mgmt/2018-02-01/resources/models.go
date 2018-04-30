@@ -313,6 +313,8 @@ type Dependency struct {
 
 // Deployment deployment operation parameters.
 type Deployment struct {
+	// Location - The location to store the deployment data.
+	Location *string `json:"location,omitempty"`
 	// Properties - The deployment properties.
 	Properties *DeploymentProperties `json:"properties,omitempty"`
 }
@@ -624,6 +626,55 @@ type DeploymentPropertiesExtended struct {
 	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty"`
 }
 
+// DeploymentsCreateOrUpdate1Future an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DeploymentsCreateOrUpdate1Future struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DeploymentsCreateOrUpdate1Future) Result(client DeploymentsClient) (de DeploymentExtended, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return de, azure.NewAsyncOpIncompleteError("resources.DeploymentsCreateOrUpdate1Future")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		de, err = client.CreateOrUpdate1Responder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", resp, "Failure sending request")
+		return
+	}
+	de, err = client.CreateOrUpdate1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DeploymentsCreateOrUpdateFuture struct {
@@ -669,6 +720,54 @@ func (future DeploymentsCreateOrUpdateFuture) Result(client DeploymentsClient) (
 	de, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DeploymentsDelete1Future an abstraction for monitoring and retrieving the results of a long-running operation.
+type DeploymentsDelete1Future struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DeploymentsDelete1Future) Result(client DeploymentsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("resources.DeploymentsDelete1Future")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.Delete1Responder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.Delete1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", resp, "Failure responding to request")
 	}
 	return
 }

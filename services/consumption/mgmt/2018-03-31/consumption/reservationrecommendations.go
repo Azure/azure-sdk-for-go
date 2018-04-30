@@ -41,8 +41,8 @@ func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscription
 }
 
 // List list of recomendations for purchasing reserved instances.
-// Parameters:
-// filter - may be used to filter reservationRecommendations by properties/scope and properties/lookBackPeriod.
+//
+// filter is may be used to filter reservationRecommendations by properties/scope and properties/lookBackPeriod.
 func (client ReservationRecommendationsClient) List(ctx context.Context, filter string) (result ReservationRecommendationsListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, filter)

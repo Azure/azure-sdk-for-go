@@ -44,8 +44,8 @@ func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string, name str
 // CreateOrUpdate the operation to create or update a budget. Update operation requires latest eTag to be set in the
 // request mandatorily. You may obtain the latest eTag by performing a get operation. Create operation does not require
 // eTag.
-// Parameters:
-// parameters - parameters supplied to the Create Budget operation.
+//
+// parameters is parameters supplied to the Create Budget operation.
 func (client BudgetsClient) CreateOrUpdate(ctx context.Context, parameters Budget) (result Budget, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

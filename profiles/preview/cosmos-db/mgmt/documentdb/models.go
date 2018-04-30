@@ -132,6 +132,7 @@ type PartitionUsagesResult = original.PartitionUsagesResult
 type PercentileMetric = original.PercentileMetric
 type PercentileMetricListResult = original.PercentileMetricListResult
 type PercentileMetricValue = original.PercentileMetricValue
+type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult

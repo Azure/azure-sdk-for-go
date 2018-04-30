@@ -1056,9 +1056,8 @@ func (client DatabaseAccountsClient) ListUsagesResponder(resp *http.Response) (r
 
 // OfflineRegion offline the specified region for the specified Azure Cosmos DB database account.
 //
-// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
-// cosmos DB region, with spaces between words and each word capitalized.
-func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resourceGroupName string, accountName string, region string) (result DatabaseAccountsOfflineRegionFuture, err error) {
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline) (result DatabaseAccountsOfflineRegionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1070,7 +1069,7 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "OfflineRegion", err.Error())
 	}
 
-	req, err := client.OfflineRegionPreparer(ctx, resourceGroupName, accountName, region)
+	req, err := client.OfflineRegionPreparer(ctx, resourceGroupName, accountName, regionParameterForOffline)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OfflineRegion", nil, "Failure preparing request")
 		return
@@ -1086,7 +1085,7 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 }
 
 // OfflineRegionPreparer prepares the OfflineRegion request.
-func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
+func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1096,13 +1095,14 @@ func (client DatabaseAccountsClient) OfflineRegionPreparer(ctx context.Context, 
 	const APIVersion = "2015-04-08"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"region":      autorest.Encode("query", region),
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/offlineRegion", pathParameters),
+		autorest.WithJSON(regionParameterForOffline),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1136,9 +1136,8 @@ func (client DatabaseAccountsClient) OfflineRegionResponder(resp *http.Response)
 
 // OnlineRegion online the specified region for the specified Azure Cosmos DB database account.
 //
-// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name. region is
-// cosmos DB region, with spaces between words and each word capitalized.
-func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceGroupName string, accountName string, region string) (result DatabaseAccountsOnlineRegionFuture, err error) {
+// resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline) (result DatabaseAccountsOnlineRegionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1150,7 +1149,7 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "OnlineRegion", err.Error())
 	}
 
-	req, err := client.OnlineRegionPreparer(ctx, resourceGroupName, accountName, region)
+	req, err := client.OnlineRegionPreparer(ctx, resourceGroupName, accountName, regionParameterForOnline)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "OnlineRegion", nil, "Failure preparing request")
 		return
@@ -1166,7 +1165,7 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 }
 
 // OnlineRegionPreparer prepares the OnlineRegion request.
-func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, region string) (*http.Request, error) {
+func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1176,13 +1175,14 @@ func (client DatabaseAccountsClient) OnlineRegionPreparer(ctx context.Context, r
 	const APIVersion = "2015-04-08"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"region":      autorest.Encode("query", region),
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/onlineRegion", pathParameters),
+		autorest.WithJSON(regionParameterForOnline),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

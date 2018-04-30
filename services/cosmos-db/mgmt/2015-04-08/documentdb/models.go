@@ -1287,6 +1287,12 @@ type PercentileMetricValue struct {
 	Total *float64 `json:"total,omitempty"`
 }
 
+// RegionForOnlineOffline cosmos DB region to online or offline.
+type RegionForOnlineOffline struct {
+	// Region - Cosmos DB region, with spaces between words and each word capitalized.
+	Region *string `json:"region,omitempty"`
+}
+
 // Resource a database account resource.
 type Resource struct {
 	// ID - The unique resource identifier of the database account.

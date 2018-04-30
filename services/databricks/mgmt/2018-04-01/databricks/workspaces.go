@@ -41,10 +41,9 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 }
 
 // CreateOrUpdate creates a new workspace.
-// Parameters:
-// parameters - parameters supplied to the create or update a workspace.
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace.
+//
+// parameters is parameters supplied to the create or update a workspace. resourceGroupName is the name of the
+// resource group. The name is case insensitive. workspaceName is the name of the workspace.
 func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, parameters Workspace, resourceGroupName string, workspaceName string) (result WorkspacesCreateOrUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -129,9 +128,9 @@ func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes the workspace.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. workspaceName is the name of
+// the workspace.
 func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspacesDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -208,9 +207,9 @@ func (client WorkspacesClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // Get gets the workspace.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive. workspaceName is the name of
+// the workspace.
 func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result Workspace, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -286,8 +285,8 @@ func (client WorkspacesClient) GetResponder(resp *http.Response) (result Workspa
 }
 
 // ListByResourceGroup gets all the workspaces within a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
+//
+// resourceGroupName is the name of the resource group. The name is case insensitive.
 func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result WorkspaceListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -477,10 +476,9 @@ func (client WorkspacesClient) ListBySubscriptionComplete(ctx context.Context) (
 }
 
 // Update updates a workspace.
-// Parameters:
-// parameters - the update to the workspace.
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace.
+//
+// parameters is the update to the workspace. resourceGroupName is the name of the resource group. The name is case
+// insensitive. workspaceName is the name of the workspace.
 func (client WorkspacesClient) Update(ctx context.Context, parameters WorkspaceUpdate, resourceGroupName string, workspaceName string) (result WorkspacesUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

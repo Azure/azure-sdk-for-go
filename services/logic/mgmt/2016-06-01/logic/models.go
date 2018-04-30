@@ -3136,7 +3136,7 @@ type KeyVaultKey struct {
 // KeyVaultKeyAttributes the key attributes.
 type KeyVaultKeyAttributes struct {
 	// Enabled - Whether the key is enabled or not.
-	Enabled *string `json:"enabled,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// Created - When the key was created.
 	Created *int64 `json:"created,omitempty"`
 	// Updated - When the key was updated.

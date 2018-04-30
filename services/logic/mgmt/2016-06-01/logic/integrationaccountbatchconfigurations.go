@@ -259,7 +259,8 @@ func (client IntegrationAccountBatchConfigurationsClient) GetResponder(resp *htt
 // List list the batch configurations for an integration account.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
-func (client IntegrationAccountBatchConfigurationsClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string) (result BatchConfigurationCollection, err error) {
+func (client IntegrationAccountBatchConfigurationsClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string) (result BatchConfigurationCollectionPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, integrationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "List", nil, "Failure preparing request")
@@ -268,12 +269,12 @@ func (client IntegrationAccountBatchConfigurationsClient) List(ctx context.Conte
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.bcc.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.bcc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "List", resp, "Failure responding to request")
 	}
@@ -319,5 +320,32 @@ func (client IntegrationAccountBatchConfigurationsClient) ListResponder(resp *ht
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client IntegrationAccountBatchConfigurationsClient) listNextResults(lastResults BatchConfigurationCollection) (result BatchConfigurationCollection, err error) {
+	req, err := lastResults.batchConfigurationCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client IntegrationAccountBatchConfigurationsClient) ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string) (result BatchConfigurationCollectionIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, integrationAccountName)
 	return
 }

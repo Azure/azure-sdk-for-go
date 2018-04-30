@@ -965,6 +965,99 @@ type AssemblyCollection struct {
 	Value             *[]AssemblyDefinition `json:"value,omitempty"`
 }
 
+// AssemblyCollectionIterator provides access to a complete listing of AssemblyDefinition values.
+type AssemblyCollectionIterator struct {
+	i    int
+	page AssemblyCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssemblyCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssemblyCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssemblyCollectionIterator) Response() AssemblyCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssemblyCollectionIterator) Value() AssemblyDefinition {
+	if !iter.page.NotDone() {
+		return AssemblyDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ac AssemblyCollection) IsEmpty() bool {
+	return ac.Value == nil || len(*ac.Value) == 0
+}
+
+// assemblyCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ac AssemblyCollection) assemblyCollectionPreparer() (*http.Request, error) {
+	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ac.NextLink)))
+}
+
+// AssemblyCollectionPage contains a page of AssemblyDefinition values.
+type AssemblyCollectionPage struct {
+	fn func(AssemblyCollection) (AssemblyCollection, error)
+	ac AssemblyCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssemblyCollectionPage) Next() error {
+	next, err := page.fn(page.ac)
+	if err != nil {
+		return err
+	}
+	page.ac = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssemblyCollectionPage) NotDone() bool {
+	return !page.ac.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssemblyCollectionPage) Response() AssemblyCollection {
+	return page.ac
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssemblyCollectionPage) Values() []AssemblyDefinition {
+	if page.ac.IsEmpty() {
+		return nil
+	}
+	return *page.ac.Value
+}
+
 // AssemblyDefinition the assembly definition.
 type AssemblyDefinition struct {
 	autorest.Response `json:"-"`
@@ -1089,6 +1182,99 @@ func (bc BatchConfiguration) MarshalJSON() ([]byte, error) {
 type BatchConfigurationCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]BatchConfiguration `json:"value,omitempty"`
+}
+
+// BatchConfigurationCollectionIterator provides access to a complete listing of BatchConfiguration values.
+type BatchConfigurationCollectionIterator struct {
+	i    int
+	page BatchConfigurationCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *BatchConfigurationCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter BatchConfigurationCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter BatchConfigurationCollectionIterator) Response() BatchConfigurationCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter BatchConfigurationCollectionIterator) Value() BatchConfiguration {
+	if !iter.page.NotDone() {
+		return BatchConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (bcc BatchConfigurationCollection) IsEmpty() bool {
+	return bcc.Value == nil || len(*bcc.Value) == 0
+}
+
+// batchConfigurationCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (bcc BatchConfigurationCollection) batchConfigurationCollectionPreparer() (*http.Request, error) {
+	if bcc.NextLink == nil || len(to.String(bcc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(bcc.NextLink)))
+}
+
+// BatchConfigurationCollectionPage contains a page of BatchConfiguration values.
+type BatchConfigurationCollectionPage struct {
+	fn  func(BatchConfigurationCollection) (BatchConfigurationCollection, error)
+	bcc BatchConfigurationCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *BatchConfigurationCollectionPage) Next() error {
+	next, err := page.fn(page.bcc)
+	if err != nil {
+		return err
+	}
+	page.bcc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page BatchConfigurationCollectionPage) NotDone() bool {
+	return !page.bcc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page BatchConfigurationCollectionPage) Response() BatchConfigurationCollection {
+	return page.bcc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page BatchConfigurationCollectionPage) Values() []BatchConfiguration {
+	if page.bcc.IsEmpty() {
+		return nil
+	}
+	return *page.bcc.Value
 }
 
 // BatchConfigurationProperties the batch configuration properties definition.
@@ -1531,6 +1717,99 @@ type ExpressionRoot struct {
 type ExpressionTraces struct {
 	autorest.Response `json:"-"`
 	Inputs            *[]ExpressionRoot `json:"inputs,omitempty"`
+}
+
+// ExpressionTracesIterator provides access to a complete listing of ExpressionRoot values.
+type ExpressionTracesIterator struct {
+	i    int
+	page ExpressionTracesPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExpressionTracesIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExpressionTracesIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExpressionTracesIterator) Response() ExpressionTraces {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExpressionTracesIterator) Value() ExpressionRoot {
+	if !iter.page.NotDone() {
+		return ExpressionRoot{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (et ExpressionTraces) IsEmpty() bool {
+	return et.Value == nil || len(*et.Value) == 0
+}
+
+// expressionTracesPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (et ExpressionTraces) expressionTracesPreparer() (*http.Request, error) {
+	if et.NextLink == nil || len(to.String(et.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(et.NextLink)))
+}
+
+// ExpressionTracesPage contains a page of ExpressionRoot values.
+type ExpressionTracesPage struct {
+	fn func(ExpressionTraces) (ExpressionTraces, error)
+	et ExpressionTraces
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExpressionTracesPage) Next() error {
+	next, err := page.fn(page.et)
+	if err != nil {
+		return err
+	}
+	page.et = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExpressionTracesPage) NotDone() bool {
+	return !page.et.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExpressionTracesPage) Response() ExpressionTraces {
+	return page.et
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExpressionTracesPage) Values() []ExpressionRoot {
+	if page.et.IsEmpty() {
+		return nil
+	}
+	return *page.et.Value
 }
 
 // GenerateUpgradedDefinitionParameters the parameters to generate upgraded definition.
@@ -3152,6 +3431,99 @@ type KeyVaultKeyCollection struct {
 	SkipToken *string `json:"skipToken,omitempty"`
 }
 
+// KeyVaultKeyCollectionIterator provides access to a complete listing of KeyVaultKey values.
+type KeyVaultKeyCollectionIterator struct {
+	i    int
+	page KeyVaultKeyCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *KeyVaultKeyCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter KeyVaultKeyCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter KeyVaultKeyCollectionIterator) Response() KeyVaultKeyCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter KeyVaultKeyCollectionIterator) Value() KeyVaultKey {
+	if !iter.page.NotDone() {
+		return KeyVaultKey{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (kvkc KeyVaultKeyCollection) IsEmpty() bool {
+	return kvkc.Value == nil || len(*kvkc.Value) == 0
+}
+
+// keyVaultKeyCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (kvkc KeyVaultKeyCollection) keyVaultKeyCollectionPreparer() (*http.Request, error) {
+	if kvkc.NextLink == nil || len(to.String(kvkc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(kvkc.NextLink)))
+}
+
+// KeyVaultKeyCollectionPage contains a page of KeyVaultKey values.
+type KeyVaultKeyCollectionPage struct {
+	fn   func(KeyVaultKeyCollection) (KeyVaultKeyCollection, error)
+	kvkc KeyVaultKeyCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *KeyVaultKeyCollectionPage) Next() error {
+	next, err := page.fn(page.kvkc)
+	if err != nil {
+		return err
+	}
+	page.kvkc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page KeyVaultKeyCollectionPage) NotDone() bool {
+	return !page.kvkc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page KeyVaultKeyCollectionPage) Response() KeyVaultKeyCollection {
+	return page.kvkc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page KeyVaultKeyCollectionPage) Values() []KeyVaultKey {
+	if page.kvkc.IsEmpty() {
+		return nil
+	}
+	return *page.kvkc.Value
+}
+
 // KeyVaultKeyReference the reference to the key vault key.
 type KeyVaultKeyReference struct {
 	// KeyVault - The key vault reference.
@@ -4240,6 +4612,101 @@ func (wrard *WorkflowRunActionRepetitionDefinition) UnmarshalJSON(body []byte) e
 type WorkflowRunActionRepetitionDefinitionCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
+}
+
+// WorkflowRunActionRepetitionDefinitionCollectionIterator provides access to a complete listing of
+// WorkflowRunActionRepetitionDefinition values.
+type WorkflowRunActionRepetitionDefinitionCollectionIterator struct {
+	i    int
+	page WorkflowRunActionRepetitionDefinitionCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WorkflowRunActionRepetitionDefinitionCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) Response() WorkflowRunActionRepetitionDefinitionCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) Value() WorkflowRunActionRepetitionDefinition {
+	if !iter.page.NotDone() {
+		return WorkflowRunActionRepetitionDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wrardc WorkflowRunActionRepetitionDefinitionCollection) IsEmpty() bool {
+	return wrardc.Value == nil || len(*wrardc.Value) == 0
+}
+
+// workflowRunActionRepetitionDefinitionCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wrardc WorkflowRunActionRepetitionDefinitionCollection) workflowRunActionRepetitionDefinitionCollectionPreparer() (*http.Request, error) {
+	if wrardc.NextLink == nil || len(to.String(wrardc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wrardc.NextLink)))
+}
+
+// WorkflowRunActionRepetitionDefinitionCollectionPage contains a page of WorkflowRunActionRepetitionDefinition
+// values.
+type WorkflowRunActionRepetitionDefinitionCollectionPage struct {
+	fn     func(WorkflowRunActionRepetitionDefinitionCollection) (WorkflowRunActionRepetitionDefinitionCollection, error)
+	wrardc WorkflowRunActionRepetitionDefinitionCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WorkflowRunActionRepetitionDefinitionCollectionPage) Next() error {
+	next, err := page.fn(page.wrardc)
+	if err != nil {
+		return err
+	}
+	page.wrardc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WorkflowRunActionRepetitionDefinitionCollectionPage) NotDone() bool {
+	return !page.wrardc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WorkflowRunActionRepetitionDefinitionCollectionPage) Response() WorkflowRunActionRepetitionDefinitionCollection {
+	return page.wrardc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WorkflowRunActionRepetitionDefinitionCollectionPage) Values() []WorkflowRunActionRepetitionDefinition {
+	if page.wrardc.IsEmpty() {
+		return nil
+	}
+	return *page.wrardc.Value
 }
 
 // WorkflowRunActionRepetitionProperties the workflow run action repetition properties definition.

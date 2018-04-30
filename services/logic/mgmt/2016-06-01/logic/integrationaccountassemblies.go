@@ -256,7 +256,8 @@ func (client IntegrationAccountAssembliesClient) GetResponder(resp *http.Respons
 // List list the assemblies for an integration account.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
-func (client IntegrationAccountAssembliesClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string) (result AssemblyCollection, err error) {
+func (client IntegrationAccountAssembliesClient) List(ctx context.Context, resourceGroupName string, integrationAccountName string) (result AssemblyCollectionPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, integrationAccountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "List", nil, "Failure preparing request")
@@ -265,12 +266,12 @@ func (client IntegrationAccountAssembliesClient) List(ctx context.Context, resou
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.ac.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.ac, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "List", resp, "Failure responding to request")
 	}
@@ -319,7 +320,34 @@ func (client IntegrationAccountAssembliesClient) ListResponder(resp *http.Respon
 	return
 }
 
-// ListContentCallbackURL list the content callback url for an integration account assembly.
+// listNextResults retrieves the next set of results, if any.
+func (client IntegrationAccountAssembliesClient) listNextResults(lastResults AssemblyCollection) (result AssemblyCollection, err error) {
+	req, err := lastResults.assemblyCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountAssembliesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client IntegrationAccountAssembliesClient) ListComplete(ctx context.Context, resourceGroupName string, integrationAccountName string) (result AssemblyCollectionIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, integrationAccountName)
+	return
+}
+
+// ListContentCallbackURL get the content callback url for an integration account assembly.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 // assemblyArtifactName is the assembly artifact name.

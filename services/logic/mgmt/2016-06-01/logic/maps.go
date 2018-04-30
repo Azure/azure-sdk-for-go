@@ -352,7 +352,7 @@ func (client MapsClient) ListByIntegrationAccountsComplete(ctx context.Context, 
 	return
 }
 
-// ListContentCallbackURL list content callback url.
+// ListContentCallbackURL get the content callback url.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name. mapName is
 // the integration account map name.

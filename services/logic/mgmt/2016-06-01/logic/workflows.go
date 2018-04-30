@@ -635,7 +635,7 @@ func (client WorkflowsClient) ListBySubscriptionComplete(ctx context.Context, to
 	return
 }
 
-// ListCallbackURL lists workflow callback Url.
+// ListCallbackURL get the workflow callback Url.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. listCallbackURL is which
 // callback url to list.
@@ -772,8 +772,7 @@ func (client WorkflowsClient) ListSwaggerResponder(resp *http.Response) (result 
 
 // Move moves an existing workflow.
 //
-// resourceGroupName is the resource group name. workflowName is the workflow name. move is the workflow id to
-// move.
+// resourceGroupName is the resource group name. workflowName is the workflow name. move is the workflow to move.
 func (client WorkflowsClient) Move(ctx context.Context, resourceGroupName string, workflowName string, move Workflow) (result autorest.Response, err error) {
 	req, err := client.MovePreparer(ctx, resourceGroupName, workflowName, move)
 	if err != nil {

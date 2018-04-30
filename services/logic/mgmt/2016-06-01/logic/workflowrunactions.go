@@ -214,7 +214,8 @@ func (client WorkflowRunActionsClient) ListComplete(ctx context.Context, resourc
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name.
-func (client WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result ExpressionTraces, err error) {
+func (client WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result ExpressionTracesPage, err error) {
+	result.fn = client.listExpressionTracesNextResults
 	req, err := client.ListExpressionTracesPreparer(ctx, resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "ListExpressionTraces", nil, "Failure preparing request")
@@ -223,12 +224,12 @@ func (client WorkflowRunActionsClient) ListExpressionTraces(ctx context.Context,
 
 	resp, err := client.ListExpressionTracesSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.et.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "ListExpressionTraces", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListExpressionTracesResponder(resp)
+	result.et, err = client.ListExpressionTracesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "ListExpressionTraces", resp, "Failure responding to request")
 	}
@@ -276,5 +277,32 @@ func (client WorkflowRunActionsClient) ListExpressionTracesResponder(resp *http.
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listExpressionTracesNextResults retrieves the next set of results, if any.
+func (client WorkflowRunActionsClient) listExpressionTracesNextResults(lastResults ExpressionTraces) (result ExpressionTraces, err error) {
+	req, err := lastResults.expressionTracesPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "listExpressionTracesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListExpressionTracesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "listExpressionTracesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListExpressionTracesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionsClient", "listExpressionTracesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListExpressionTracesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkflowRunActionsClient) ListExpressionTracesComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result ExpressionTracesIterator, err error) {
+	result.page, err = client.ListExpressionTraces(ctx, resourceGroupName, workflowName, runName, actionName)
 	return
 }

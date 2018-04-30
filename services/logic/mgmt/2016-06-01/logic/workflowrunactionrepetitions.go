@@ -114,7 +114,8 @@ func (client WorkflowRunActionRepetitionsClient) GetResponder(resp *http.Respons
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name.
-func (client WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
+func (client WorkflowRunActionRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollectionPage, err error) {
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "List", nil, "Failure preparing request")
@@ -123,12 +124,12 @@ func (client WorkflowRunActionRepetitionsClient) List(ctx context.Context, resou
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.wrardc.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.wrardc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "List", resp, "Failure responding to request")
 	}
@@ -179,11 +180,39 @@ func (client WorkflowRunActionRepetitionsClient) ListResponder(resp *http.Respon
 	return
 }
 
+// listNextResults retrieves the next set of results, if any.
+func (client WorkflowRunActionRepetitionsClient) listNextResults(lastResults WorkflowRunActionRepetitionDefinitionCollection) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
+	req, err := lastResults.workflowRunActionRepetitionDefinitionCollectionPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkflowRunActionRepetitionsClient) ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollectionIterator, err error) {
+	result.page, err = client.List(ctx, resourceGroupName, workflowName, runName, actionName)
+	return
+}
+
 // ListExpressionTraces lists a workflow run expression trace.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. actionName is the workflow action name. repetitionName is the workflow repetition.
-func (client WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result ExpressionTraces, err error) {
+func (client WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result ExpressionTracesPage, err error) {
+	result.fn = client.listExpressionTracesNextResults
 	req, err := client.ListExpressionTracesPreparer(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "ListExpressionTraces", nil, "Failure preparing request")
@@ -192,12 +221,12 @@ func (client WorkflowRunActionRepetitionsClient) ListExpressionTraces(ctx contex
 
 	resp, err := client.ListExpressionTracesSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.et.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "ListExpressionTraces", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListExpressionTracesResponder(resp)
+	result.et, err = client.ListExpressionTracesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "ListExpressionTraces", resp, "Failure responding to request")
 	}
@@ -246,5 +275,32 @@ func (client WorkflowRunActionRepetitionsClient) ListExpressionTracesResponder(r
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listExpressionTracesNextResults retrieves the next set of results, if any.
+func (client WorkflowRunActionRepetitionsClient) listExpressionTracesNextResults(lastResults ExpressionTraces) (result ExpressionTraces, err error) {
+	req, err := lastResults.expressionTracesPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listExpressionTracesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListExpressionTracesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listExpressionTracesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListExpressionTracesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionRepetitionsClient", "listExpressionTracesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListExpressionTracesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkflowRunActionRepetitionsClient) ListExpressionTracesComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result ExpressionTracesIterator, err error) {
+	result.page, err = client.ListExpressionTraces(ctx, resourceGroupName, workflowName, runName, actionName, repetitionName)
 	return
 }

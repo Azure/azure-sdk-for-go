@@ -781,7 +781,7 @@ func (client AgreementsClient) ListByIntegrationAccountsComplete(ctx context.Con
 	return
 }
 
-// ListContentCallbackURL list content callback url.
+// ListContentCallbackURL get the content callback url.
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 // agreementName is the integration account agreement name.

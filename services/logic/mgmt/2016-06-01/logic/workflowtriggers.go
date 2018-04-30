@@ -277,7 +277,7 @@ func (client WorkflowTriggersClient) ListComplete(ctx context.Context, resourceG
 	return
 }
 
-// ListCallbackURL gets the callback URL for a workflow trigger.
+// ListCallbackURL get the callback URL for a workflow trigger.
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. triggerName is the workflow
 // trigger name.

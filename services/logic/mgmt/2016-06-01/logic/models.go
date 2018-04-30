@@ -4240,6 +4240,12 @@ func (wrard *WorkflowRunActionRepetitionDefinition) UnmarshalJSON(body []byte) e
 	return nil
 }
 
+// WorkflowRunActionRepetitionDefinitionCollection a collection of workflow run action repetitions.
+type WorkflowRunActionRepetitionDefinitionCollection struct {
+	autorest.Response `json:"-"`
+	Value             *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
+}
+
 // WorkflowRunActionRepetitionProperties the workflow run action repetition properties definition.
 type WorkflowRunActionRepetitionProperties struct {
 	// RepetitionIndexes - The repetition indexes.
@@ -4382,7 +4388,6 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 
 // WorkflowRunProperties the workflow run properties.
 type WorkflowRunProperties struct {
-	autorest.Response `json:"-"`
 	// StartTime - Gets the start time.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - Gets the end time.

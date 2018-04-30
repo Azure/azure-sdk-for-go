@@ -529,6 +529,7 @@ type WorkflowRunActionListResultIterator = original.WorkflowRunActionListResultI
 type WorkflowRunActionListResultPage = original.WorkflowRunActionListResultPage
 type WorkflowRunActionProperties = original.WorkflowRunActionProperties
 type WorkflowRunActionRepetitionDefinition = original.WorkflowRunActionRepetitionDefinition
+type WorkflowRunActionRepetitionDefinitionCollection = original.WorkflowRunActionRepetitionDefinitionCollection
 type WorkflowRunActionRepetitionProperties = original.WorkflowRunActionRepetitionProperties
 type WorkflowRunFilter = original.WorkflowRunFilter
 type WorkflowRunListResult = original.WorkflowRunListResult

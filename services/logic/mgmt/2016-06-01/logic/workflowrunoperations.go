@@ -43,7 +43,7 @@ func NewWorkflowRunOperationsClientWithBaseURI(baseURI string, subscriptionID st
 //
 // resourceGroupName is the resource group name. workflowName is the workflow name. runName is the workflow run
 // name. operationID is the workflow operation id.
-func (client WorkflowRunOperationsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string) (result WorkflowRunProperties, err error) {
+func (client WorkflowRunOperationsClient) Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, operationID string) (result WorkflowRun, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, workflowName, runName, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunOperationsClient", "Get", nil, "Failure preparing request")
@@ -97,7 +97,7 @@ func (client WorkflowRunOperationsClient) GetSender(req *http.Request) (*http.Re
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkflowRunOperationsClient) GetResponder(resp *http.Response) (result WorkflowRunProperties, err error) {
+func (client WorkflowRunOperationsClient) GetResponder(resp *http.Response) (result WorkflowRun, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

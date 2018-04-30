@@ -502,16 +502,16 @@ func (client IntegrationAccountsClient) ListCallbackURLResponder(resp *http.Resp
 
 // ListKeyVaultKeys gets the integration account's Key Vault keys.
 //
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. parameters
-// is the callback URL parameters.
-func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters ListKeyVaultKeysDefinition) (result KeyVaultKeyCollection, err error) {
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name.
+// listKeyVaultKeys is the key vault parameters. skipToken is the skip token.
+func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition, skipToken string) (result KeyVaultKeyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.KeyVault", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		{TargetValue: listKeyVaultKeys,
+			Constraints: []validation.Constraint{{Target: "listKeyVaultKeys.KeyVault", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("logic.IntegrationAccountsClient", "ListKeyVaultKeys", err.Error())
 	}
 
-	req, err := client.ListKeyVaultKeysPreparer(ctx, resourceGroupName, integrationAccountName, parameters)
+	req, err := client.ListKeyVaultKeysPreparer(ctx, resourceGroupName, integrationAccountName, listKeyVaultKeys, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListKeyVaultKeys", nil, "Failure preparing request")
 		return
@@ -533,7 +533,7 @@ func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, re
 }
 
 // ListKeyVaultKeysPreparer prepares the ListKeyVaultKeys request.
-func (client IntegrationAccountsClient) ListKeyVaultKeysPreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters ListKeyVaultKeysDefinition) (*http.Request, error) {
+func (client IntegrationAccountsClient) ListKeyVaultKeysPreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"integrationAccountName": autorest.Encode("path", integrationAccountName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -544,13 +544,16 @@ func (client IntegrationAccountsClient) ListKeyVaultKeysPreparer(ctx context.Con
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
+	if len(skipToken) > 0 {
+		queryParameters["skipToken"] = autorest.Encode("query", skipToken)
+	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/listKeyVaultKeys", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithJSON(listKeyVaultKeys),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

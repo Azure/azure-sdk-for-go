@@ -1,5 +1,52 @@
 # CHANGELOG
 
+## `v16.0.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|batchai | 2018-05-01 |
+|botservices | 2017-12-01 |
+|containerinstance | 2018-04-01 |
+|containerregistry | 2018-02-01 |
+|keyvault | v7.0 |
+|managedapplications | 2017-09-01 |
+|network | 2018-04-01 |
+|policyinsights | 2018-04-04 |
+|signalr | 2018-03-01-preview |
+|storage | 2018-02-0 |
+|visualsearch | v1.0 |
+|web | 2018-02-01 |
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|apimanagement | 2018-01-01 |
+|automation | 2015-10-31<br/>2017-05-15-preview |
+|billing | 2018-03-01-preview |
+|botservices | 2017-12-01 |
+|catalog | 2016-11-01-preview |
+|cognitiveservices | 2017-04-18 |
+|commerce | 2015-06-01-preview |
+|compute | 2018-04-01 |
+|consumption | 2018-03-31 |
+|contentmoderator | v1.0 |
+|datafactory | 2017-09-01-preview |
+|datamigration | 2017-11-15-preview|
+|eventhub | 2017-04-01 |
+|insights | 2015-05-0 |
+|iothub | 2017-11-15 |
+|network | 2018-02-01 |
+|operationalinsights | 2015-03-20<br/>2015-11-01-preview |
+|servicebus | 2017-04-01 |
+|siterecovery | 2018-01-10 |
+|sql | 2017-03-01-preview<br/>2017-10-01-preview<br/>2015-05-01-preview |
+|timeseriesinsights | 2017-11-15 |
+|luis/runtime | v2.0 |
+|web | 2016-09-01 |
+
 ## `v15.3.0`
 
 ### New Services

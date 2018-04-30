@@ -36,19 +36,20 @@ func NewUserSubscriptionClient() UserSubscriptionClient {
 }
 
 // List lists the collection of subscriptions of the specified user.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance. filter is | Field        | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// filter - | Field        | Supported operators    | Supported functions                         |
 // |--------------|------------------------|---------------------------------------------|
 // | id           | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name         | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | stateComment | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | userId       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | productId    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | state        | eq                     |                                             | top is number of records
-// to return. skip is number of records to skip.
+// | state        | eq                     |                                             |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client UserSubscriptionClient) List(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (result SubscriptionCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,

@@ -36,10 +36,11 @@ func NewBackendClient() BackendClient {
 }
 
 // CreateOrUpdate creates or Updates a backend.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. backendid is identifier of the Backend entity. Must be unique in
-// the current API Management service instance. parameters is create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - create parameters.
 func (client BackendClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, backendid string, parameters BackendContract) (result BackendContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: backendid,
@@ -116,11 +117,12 @@ func (client BackendClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // Delete deletes the specified backend.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. backendid is identifier of the Backend entity. Must be unique in
-// the current API Management service instance. ifMatch is the entity state (Etag) version of the backend to
-// delete. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client BackendClient) Delete(ctx context.Context, apimBaseURL string, backendid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: backendid,
@@ -195,10 +197,10 @@ func (client BackendClient) DeleteResponder(resp *http.Response) (result autores
 }
 
 // Get gets the details of the backend specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. backendid is identifier of the Backend entity. Must be unique in
-// the current API Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
 func (client BackendClient) Get(ctx context.Context, apimBaseURL string, backendid string) (result BackendContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: backendid,
@@ -273,14 +275,15 @@ func (client BackendClient) GetResponder(resp *http.Response) (result BackendCon
 }
 
 // List lists a collection of backends in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client BackendClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result BackendCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -390,12 +393,13 @@ func (client BackendClient) ListComplete(ctx context.Context, apimBaseURL string
 }
 
 // Update updates an existing backend.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. backendid is identifier of the Backend entity. Must be unique in
-// the current API Management service instance. parameters is update parameters. ifMatch is the entity state (Etag)
-// version of the backend to update. A value of "*" can be used for If-Match to unconditionally apply the
-// operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// backendid - identifier of the Backend entity. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the backend to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client BackendClient) Update(ctx context.Context, apimBaseURL string, backendid string, parameters BackendUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: backendid,

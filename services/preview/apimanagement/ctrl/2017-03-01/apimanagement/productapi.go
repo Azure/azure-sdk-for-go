@@ -36,11 +36,11 @@ func NewProductAPIClient() ProductAPIClient {
 }
 
 // CreateOrUpdate adds an API to the specified product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. apiid is API identifier. Must be unique in the current API Management service
-// instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client ProductAPIClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, productID string, apiid string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -120,11 +120,11 @@ func (client ProductAPIClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes the specified API from the specified product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. apiid is API identifier. Must be unique in the current API Management service
-// instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client ProductAPIClient) Delete(ctx context.Context, apimBaseURL string, productID string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -203,18 +203,19 @@ func (client ProductAPIClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // ListByProduct lists a collection of the APIs associated with a product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. filter is | Field       | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// filter - | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records
-// to return. skip is number of records to skip.
+// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ProductAPIClient) ListByProduct(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,

@@ -41,9 +41,11 @@ func NewStreamingLocatorsClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // Create create a Streaming Locator in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingLocatorName is the Streaming Locator name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingLocatorName - the Streaming Locator name.
+// parameters - the request parameters
 func (client StreamingLocatorsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator) (result StreamingLocator, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -120,9 +122,10 @@ func (client StreamingLocatorsClient) CreateResponder(resp *http.Response) (resu
 }
 
 // Delete deletes a Streaming Locator in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingLocatorName is the Streaming Locator name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingLocatorName - the Streaming Locator name.
 func (client StreamingLocatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, streamingLocatorName)
 	if err != nil {
@@ -187,9 +190,10 @@ func (client StreamingLocatorsClient) DeleteResponder(resp *http.Response) (resu
 }
 
 // Get get the details of a Streaming Locator in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingLocatorName is the Streaming Locator name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingLocatorName - the Streaming Locator name.
 func (client StreamingLocatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result StreamingLocator, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, streamingLocatorName)
 	if err != nil {
@@ -255,12 +259,13 @@ func (client StreamingLocatorsClient) GetResponder(resp *http.Response) (result 
 }
 
 // List lists the Streaming Locators in the account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. filter is restricts the set of items returned. top is specifies a non-negative integer n
-// that limits the number of items returned from a collection. The service returns the number of available items up
-// to but not greater than the specified value n. orderby is specifies the the key by which the result collection
-// should be ordered.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// orderby - specifies the the key by which the result collection should be ordered.
 func (client StreamingLocatorsClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result StreamingLocatorCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, orderby)
@@ -362,9 +367,10 @@ func (client StreamingLocatorsClient) ListComplete(ctx context.Context, resource
 }
 
 // ListContentKeys list Content Keys used by this Streaming Locator
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingLocatorName is the Streaming Locator name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingLocatorName - the Streaming Locator name.
 func (client StreamingLocatorsClient) ListContentKeys(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result ListContentKeysResponse, err error) {
 	req, err := client.ListContentKeysPreparer(ctx, resourceGroupName, accountName, streamingLocatorName)
 	if err != nil {
@@ -430,9 +436,10 @@ func (client StreamingLocatorsClient) ListContentKeysResponder(resp *http.Respon
 }
 
 // ListPaths list Paths supported by this Streaming Locator
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingLocatorName is the Streaming Locator name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingLocatorName - the Streaming Locator name.
 func (client StreamingLocatorsClient) ListPaths(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string) (result ListPathsResponse, err error) {
 	req, err := client.ListPathsPreparer(ctx, resourceGroupName, accountName, streamingLocatorName)
 	if err != nil {

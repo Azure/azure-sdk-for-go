@@ -41,9 +41,11 @@ func NewTransformsClientWithBaseURI(baseURI string, subscriptionID string) Trans
 }
 
 // CreateOrUpdate creates or updates a new Transform.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// parameters - the request parameters
 func (client TransformsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform) (result Transform, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -118,9 +120,10 @@ func (client TransformsClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes a Transform.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
 func (client TransformsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, transformName)
 	if err != nil {
@@ -185,9 +188,10 @@ func (client TransformsClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // Get gets a Transform.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
 func (client TransformsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string) (result Transform, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, transformName)
 	if err != nil {
@@ -253,12 +257,14 @@ func (client TransformsClient) GetResponder(resp *http.Response) (result Transfo
 }
 
 // List lists the Transforms in the account.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. filter is restricts the set of items returned. top is specifies a non-negative integer n
-// that limits the number of items returned from a collection. The service returns the number of available items up
-// to but not greater than the specified value n. skip is specifies a non-negative integer n that excludes the
-// first n items of the queried collection from the result. The service returns items starting at position n+1.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// skip - specifies a non-negative integer n that excludes the first n items of the queried collection from the
+// result. The service returns items starting at position n+1.
 func (client TransformsClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, skip *int32) (result TransformCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, skip)
@@ -360,9 +366,11 @@ func (client TransformsClient) ListComplete(ctx context.Context, resourceGroupNa
 }
 
 // Update updates a Transform.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// parameters - the request parameters
 func (client TransformsClient) Update(ctx context.Context, resourceGroupName string, accountName string, transformName string, parameters Transform) (result Transform, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, transformName, parameters)
 	if err != nil {

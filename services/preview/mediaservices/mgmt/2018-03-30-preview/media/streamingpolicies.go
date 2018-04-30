@@ -41,9 +41,11 @@ func NewStreamingPoliciesClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // Create create a Streaming Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingPolicyName is the Streaming Policy name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingPolicyName - the Streaming Policy name.
+// parameters - the request parameters
 func (client StreamingPoliciesClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string, parameters StreamingPolicy) (result StreamingPolicy, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -154,9 +156,10 @@ func (client StreamingPoliciesClient) CreateResponder(resp *http.Response) (resu
 }
 
 // Delete deletes a Streaming Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingPolicyName is the Streaming Policy name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingPolicyName - the Streaming Policy name.
 func (client StreamingPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, streamingPolicyName)
 	if err != nil {
@@ -221,9 +224,10 @@ func (client StreamingPoliciesClient) DeleteResponder(resp *http.Response) (resu
 }
 
 // Get get the details of a Streaming Policy in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingPolicyName is the Streaming Policy name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingPolicyName - the Streaming Policy name.
 func (client StreamingPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingPolicyName string) (result StreamingPolicy, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, streamingPolicyName)
 	if err != nil {
@@ -289,12 +293,13 @@ func (client StreamingPoliciesClient) GetResponder(resp *http.Response) (result 
 }
 
 // List lists the Streaming Policies in the account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. filter is restricts the set of items returned. top is specifies a non-negative integer n
-// that limits the number of items returned from a collection. The service returns the number of available items up
-// to but not greater than the specified value n. orderby is specifies the the key by which the result collection
-// should be ordered.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// orderby - specifies the the key by which the result collection should be ordered.
 func (client StreamingPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result StreamingPolicyCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, orderby)

@@ -36,12 +36,13 @@ func NewAPIClient() APIClient {
 }
 
 // CreateOrUpdate creates new or updates existing specified API of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. parameters is create or update parameters. ifMatch is eTag of the Api Entity. For
-// Create Api Etag should not be specified. For Update Etag should match the existing Entity or it can be * for
-// unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// parameters - create or update parameters.
+// ifMatch - eTag of the Api Entity. For Create Api Etag should not be specified. For Update Etag should match
+// the existing Entity or it can be * for unconditional update.
 func (client APIClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, apiid string, parameters APICreateOrUpdateParameter, ifMatch string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -122,11 +123,12 @@ func (client APIClient) CreateOrUpdateResponder(resp *http.Response) (result API
 }
 
 // Delete deletes the specified API of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. ifMatch is eTag of the API Entity. ETag should match the current entity state from
-// the header response of the GET request or it should be * for unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// ifMatch - eTag of the API Entity. ETag should match the current entity state from the header response of the
+// GET request or it should be * for unconditional update.
 func (client APIClient) Delete(ctx context.Context, apimBaseURL string, apiid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -201,10 +203,10 @@ func (client APIClient) DeleteResponder(resp *http.Response) (result autorest.Re
 }
 
 // Get gets the details of the API specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client APIClient) Get(ctx context.Context, apimBaseURL string, apiid string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -279,17 +281,18 @@ func (client APIClient) GetResponder(resp *http.Response) (result APIContract, e
 }
 
 // List lists all APIs of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field       | Supported operators    | Supported
-// functions               |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to return.
-// skip is number of records to skip.
+// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client APIClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -399,12 +402,13 @@ func (client APIClient) ListComplete(ctx context.Context, apimBaseURL string, fi
 }
 
 // Update updates the specified API of the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. parameters is API Update Contract parameters. ifMatch is eTag of the API entity.
-// ETag should match the current entity state in the header response of the GET request or it should be * for
-// unconditional update.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// parameters - API Update Contract parameters.
+// ifMatch - eTag of the API entity. ETag should match the current entity state in the header response of the
+// GET request or it should be * for unconditional update.
 func (client APIClient) Update(ctx context.Context, apimBaseURL string, apiid string, parameters APIUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

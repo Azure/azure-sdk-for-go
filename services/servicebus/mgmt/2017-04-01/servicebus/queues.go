@@ -661,19 +661,33 @@ func (client QueuesClient) ListAuthorizationRulesComplete(ctx context.Context, r
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // namespaceName - the namespace name
-func (client QueuesClient) ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string) (result SBQueueListResultPage, err error) {
+// skip - skip is only used if a previous operation returned a partial result. If a previous response contains
+// a nextLink element, the value of the nextLink element will include a skip parameter that specifies a
+// starting point to use for subsequent calls.
+// top - may be used to limit the number of results to the most recent N usageDetails.
+func (client QueuesClient) ListByNamespace(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result SBQueueListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: namespaceName,
 			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+				}}}},
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("servicebus.QueuesClient", "ListByNamespace", err.Error())
 	}
 
 	result.fn = client.listByNamespaceNextResults
-	req, err := client.ListByNamespacePreparer(ctx, resourceGroupName, namespaceName)
+	req, err := client.ListByNamespacePreparer(ctx, resourceGroupName, namespaceName, skip, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.QueuesClient", "ListByNamespace", nil, "Failure preparing request")
 		return
@@ -695,7 +709,7 @@ func (client QueuesClient) ListByNamespace(ctx context.Context, resourceGroupNam
 }
 
 // ListByNamespacePreparer prepares the ListByNamespace request.
-func (client QueuesClient) ListByNamespacePreparer(ctx context.Context, resourceGroupName string, namespaceName string) (*http.Request, error) {
+func (client QueuesClient) ListByNamespacePreparer(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":     autorest.Encode("path", namespaceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -705,6 +719,12 @@ func (client QueuesClient) ListByNamespacePreparer(ctx context.Context, resource
 	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -757,8 +777,8 @@ func (client QueuesClient) listByNamespaceNextResults(lastResults SBQueueListRes
 }
 
 // ListByNamespaceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client QueuesClient) ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result SBQueueListResultIterator, err error) {
-	result.page, err = client.ListByNamespace(ctx, resourceGroupName, namespaceName)
+func (client QueuesClient) ListByNamespaceComplete(ctx context.Context, resourceGroupName string, namespaceName string, skip *int32, top *int32) (result SBQueueListResultIterator, err error) {
+	result.page, err = client.ListByNamespace(ctx, resourceGroupName, namespaceName, skip, top)
 	return
 }
 

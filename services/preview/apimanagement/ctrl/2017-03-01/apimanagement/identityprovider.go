@@ -35,10 +35,11 @@ func NewIdentityProviderClient() IdentityProviderClient {
 }
 
 // CreateOrUpdate creates or Updates the IdentityProvider configuration.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. identityProviderName is identity Provider Type identifier.
-// parameters is create parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// identityProviderName - identity Provider Type identifier.
+// parameters - create parameters.
 func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderContract) (result IdentityProviderContract, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters)
 	if err != nil {
@@ -107,11 +108,12 @@ func (client IdentityProviderClient) CreateOrUpdateResponder(resp *http.Response
 }
 
 // Delete deletes the specified identity provider configuration.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. identityProviderName is identity Provider Type identifier.
-// ifMatch is the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match to
-// unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// identityProviderName - identity Provider Type identifier.
+// ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client IdentityProviderClient) Delete(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, apimBaseURL, identityProviderName, ifMatch)
 	if err != nil {
@@ -178,9 +180,10 @@ func (client IdentityProviderClient) DeleteResponder(resp *http.Response) (resul
 }
 
 // Get gets the configuration details of the identity Provider configured in specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. identityProviderName is identity Provider Type identifier.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// identityProviderName - identity Provider Type identifier.
 func (client IdentityProviderClient) Get(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType) (result IdentityProviderContract, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL, identityProviderName)
 	if err != nil {
@@ -247,8 +250,8 @@ func (client IdentityProviderClient) GetResponder(resp *http.Response) (result I
 }
 
 // List lists a collection of Identity Provider configured in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client IdentityProviderClient) List(ctx context.Context, apimBaseURL string) (result IdentityProviderList, err error) {
 	req, err := client.ListPreparer(ctx, apimBaseURL)
@@ -312,11 +315,13 @@ func (client IdentityProviderClient) ListResponder(resp *http.Response) (result 
 }
 
 // Update updates an existing IdentityProvider configuration.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. identityProviderName is identity Provider Type identifier.
-// parameters is update parameters. ifMatch is the entity state (Etag) version of the identity provider
-// configuration to update. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// identityProviderName - identity Provider Type identifier.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the identity provider configuration to update. A value of "*"
+// can be used for If-Match to unconditionally apply the operation.
 func (client IdentityProviderClient) Update(ctx context.Context, apimBaseURL string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, identityProviderName, parameters, ifMatch)
 	if err != nil {

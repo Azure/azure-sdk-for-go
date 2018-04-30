@@ -41,10 +41,12 @@ func NewStreamingEndpointsClientWithBaseURI(baseURI string, subscriptionID strin
 }
 
 // Create creates a StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint. parameters is
-// streamingEndpoint properties needed for creation. autoStart is the flag indicates if auto start the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
+// parameters - streamingEndpoint properties needed for creation.
+// autoStart - the flag indicates if auto start the Live Event.
 func (client StreamingEndpointsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint, autoStart *bool) (result StreamingEndpointsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -125,9 +127,10 @@ func (client StreamingEndpointsClient) CreateResponder(resp *http.Response) (res
 }
 
 // Delete deletes a StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -202,9 +205,10 @@ func (client StreamingEndpointsClient) DeleteResponder(resp *http.Response) (res
 }
 
 // Get gets a StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpoint, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -278,9 +282,9 @@ func (client StreamingEndpointsClient) GetResponder(resp *http.Response) (result
 }
 
 // List lists the StreamingEndpoints in the account.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
 func (client StreamingEndpointsClient) List(ctx context.Context, resourceGroupName string, accountName string) (result StreamingEndpointListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
@@ -373,10 +377,11 @@ func (client StreamingEndpointsClient) ListComplete(ctx context.Context, resourc
 }
 
 // Scale scales an existing StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint. parameters is
-// streamingEndpoint scale parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
+// parameters - streamingEndpoint scale parameters
 func (client StreamingEndpointsClient) Scale(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEntityScaleUnit) (result StreamingEndpointsScaleFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -453,9 +458,10 @@ func (client StreamingEndpointsClient) ScaleResponder(resp *http.Response) (resu
 }
 
 // Start starts an existing StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Start(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsStartFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -530,9 +536,10 @@ func (client StreamingEndpointsClient) StartResponder(resp *http.Response) (resu
 }
 
 // Stop stops an existing StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
 func (client StreamingEndpointsClient) Stop(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string) (result StreamingEndpointsStopFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,
@@ -607,10 +614,11 @@ func (client StreamingEndpointsClient) StopResponder(resp *http.Response) (resul
 }
 
 // Update updates a existing StreamingEndpoint.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. streamingEndpointName is the name of the StreamingEndpoint. parameters is
-// streamingEndpoint properties needed for creation.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// streamingEndpointName - the name of the StreamingEndpoint.
+// parameters - streamingEndpoint properties needed for creation.
 func (client StreamingEndpointsClient) Update(ctx context.Context, resourceGroupName string, accountName string, streamingEndpointName string, parameters StreamingEndpoint) (result StreamingEndpointsUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: streamingEndpointName,

@@ -35,9 +35,10 @@ func NewDelegationSettingsClient() DelegationSettingsClient {
 }
 
 // CreateOrUpdate create or Update Delegation settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is create or update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - create or update parameters.
 func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, parameters PortalDelegationSettings) (result PortalDelegationSettings, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, apimBaseURL, parameters)
 	if err != nil {
@@ -102,8 +103,8 @@ func (client DelegationSettingsClient) CreateOrUpdateResponder(resp *http.Respon
 }
 
 // Get get Delegation settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client DelegationSettingsClient) Get(ctx context.Context, apimBaseURL string) (result PortalDelegationSettings, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL)
@@ -167,11 +168,12 @@ func (client DelegationSettingsClient) GetResponder(resp *http.Response) (result
 }
 
 // Update update Delegation settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is update Delegation settings. ifMatch is the entity
-// state (Etag) version of the property to update. A value of "*" can be used for If-Match to unconditionally apply
-// the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - update Delegation settings.
+// ifMatch - the entity state (Etag) version of the property to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client DelegationSettingsClient) Update(ctx context.Context, apimBaseURL string, parameters PortalDelegationSettings, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, parameters, ifMatch)
 	if err != nil {

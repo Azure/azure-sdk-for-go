@@ -40,9 +40,11 @@ func NewAssetsClientWithBaseURI(baseURI string, subscriptionID string) AssetsCli
 }
 
 // CreateOrUpdate creates or updates an Asset in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
+// parameters - the request parameters
 func (client AssetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset) (result Asset, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, assetName, parameters)
 	if err != nil {
@@ -110,9 +112,10 @@ func (client AssetsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // Delete deletes an Asset in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
 func (client AssetsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, assetName)
 	if err != nil {
@@ -177,9 +180,10 @@ func (client AssetsClient) DeleteResponder(resp *http.Response) (result autorest
 }
 
 // Get get the details of an Asset in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
 func (client AssetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result Asset, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, assetName)
 	if err != nil {
@@ -246,9 +250,10 @@ func (client AssetsClient) GetResponder(resp *http.Response) (result Asset, err 
 
 // GetEncryptionKey gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media
 // Services API
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
 func (client AssetsClient) GetEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, assetName string) (result AssetStorageEncryptionKey, err error) {
 	req, err := client.GetEncryptionKeyPreparer(ctx, resourceGroupName, accountName, assetName)
 	if err != nil {
@@ -314,12 +319,13 @@ func (client AssetsClient) GetEncryptionKeyResponder(resp *http.Response) (resul
 }
 
 // List list Assets in the Media Services account with optional filtering and ordering
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. filter is restricts the set of items returned. top is specifies a non-negative integer n
-// that limits the number of items returned from a collection. The service returns the number of available items up
-// to but not greater than the specified value n. orderby is specifies the the key by which the result collection
-// should be ordered.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// orderby - specifies the the key by which the result collection should be ordered.
 func (client AssetsClient) List(ctx context.Context, resourceGroupName string, accountName string, filter string, top *int32, orderby string) (result AssetCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, filter, top, orderby)
@@ -422,9 +428,11 @@ func (client AssetsClient) ListComplete(ctx context.Context, resourceGroupName s
 
 // ListContainerSas lists storage container URLs with shared access signatures (SAS) for uploading and downloading
 // Asset content. The signatures are derived from the storage account keys.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
+// parameters - the request parameters
 func (client AssetsClient) ListContainerSas(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters ListContainerSasInput) (result AssetContainerSas, err error) {
 	req, err := client.ListContainerSasPreparer(ctx, resourceGroupName, accountName, assetName, parameters)
 	if err != nil {
@@ -492,9 +500,11 @@ func (client AssetsClient) ListContainerSasResponder(resp *http.Response) (resul
 }
 
 // Update updates an existing Asset in the Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. assetName is the Asset name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// assetName - the Asset name.
+// parameters - the request parameters
 func (client AssetsClient) Update(ctx context.Context, resourceGroupName string, accountName string, assetName string, parameters Asset) (result Asset, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, assetName, parameters)
 	if err != nil {

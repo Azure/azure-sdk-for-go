@@ -41,10 +41,12 @@ func NewLiveOutputsClientWithBaseURI(baseURI string, subscriptionID string) Live
 }
 
 // Create creates a Live Output.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. liveOutputName is the name of the Live
-// Output. parameters is live Output properties needed for creation.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// liveOutputName - the name of the Live Output.
+// parameters - live Output properties needed for creation.
 func (client LiveOutputsClient) Create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput) (result LiveOutputsCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -132,10 +134,11 @@ func (client LiveOutputsClient) CreateResponder(resp *http.Response) (result Liv
 }
 
 // Delete deletes a Live Output.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. liveOutputName is the name of the Live
-// Output.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// liveOutputName - the name of the Live Output.
 func (client LiveOutputsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string) (result LiveOutputsDeleteFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -215,10 +218,11 @@ func (client LiveOutputsClient) DeleteResponder(resp *http.Response) (result aut
 }
 
 // Get gets a Live Output.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event. liveOutputName is the name of the Live
-// Output.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
+// liveOutputName - the name of the Live Output.
 func (client LiveOutputsClient) Get(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string) (result LiveOutput, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,
@@ -297,9 +301,10 @@ func (client LiveOutputsClient) GetResponder(resp *http.Response) (result LiveOu
 }
 
 // List lists the Live Outputs in the Live Event.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. liveEventName is the name of the Live Event.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// liveEventName - the name of the Live Event.
 func (client LiveOutputsClient) List(ctx context.Context, resourceGroupName string, accountName string, liveEventName string) (result LiveOutputListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: liveEventName,

@@ -41,13 +41,15 @@ func NewAPIIssueCommentClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 
 // CreateOrUpdate creates a new Comment for the Issue in an API or updates an existing one.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. commentID is comment identifier
-// within an Issue. Must be unique in the current Issue. parameters is create parameters. ifMatch is eTag of the
-// Issue Entity. ETag should match the current entity state from the header response of the GET request or it
-// should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// commentID - comment identifier within an Issue. Must be unique in the current Issue.
+// parameters - create parameters.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueCommentClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string, parameters IssueCommentContract, ifMatch string) (result IssueCommentContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -146,12 +148,14 @@ func (client APIIssueCommentClient) CreateOrUpdateResponder(resp *http.Response)
 }
 
 // Delete deletes the specified comment from an Issue.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. commentID is comment identifier
-// within an Issue. Must be unique in the current Issue. ifMatch is eTag of the Issue Entity. ETag should match the
-// current entity state from the header response of the GET request or it should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// commentID - comment identifier within an Issue. Must be unique in the current Issue.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueCommentClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -239,11 +243,12 @@ func (client APIIssueCommentClient) DeleteResponder(resp *http.Response) (result
 }
 
 // Get gets the details of the issue Comment for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. commentID is comment identifier
-// within an Issue. Must be unique in the current Issue.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// commentID - comment identifier within an Issue. Must be unique in the current Issue.
 func (client APIIssueCommentClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result IssueCommentContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -331,11 +336,12 @@ func (client APIIssueCommentClient) GetResponder(resp *http.Response) (result Is
 }
 
 // GetEntityTag gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. commentID is comment identifier
-// within an Issue. Must be unique in the current Issue.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// commentID - comment identifier within an Issue. Must be unique in the current Issue.
 func (client APIIssueCommentClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, commentID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -422,15 +428,17 @@ func (client APIIssueCommentClient) GetEntityTagResponder(resp *http.Response) (
 }
 
 // ListByService lists all comments for the Issue assosiated with the specified API.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. filter is | Field       | Supported
-// operators    | Supported functions               |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client APIIssueCommentClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, filter string, top *int32, skip *int32) (result IssueCommentCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

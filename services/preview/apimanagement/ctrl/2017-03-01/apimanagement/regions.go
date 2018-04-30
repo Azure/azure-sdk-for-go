@@ -35,8 +35,8 @@ func NewRegionsClient() RegionsClient {
 }
 
 // List lists all azure regions in which the service exists.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client RegionsClient) List(ctx context.Context, apimBaseURL string) (result RegionListResult, err error) {
 	req, err := client.ListPreparer(ctx, apimBaseURL)

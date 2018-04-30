@@ -35,9 +35,10 @@ func NewSignUpSettingsClient() SignUpSettingsClient {
 }
 
 // CreateOrUpdate create or Update Sign-Up settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is create or update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - create or update parameters.
 func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, parameters PortalSignupSettings) (result PortalSignupSettings, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, apimBaseURL, parameters)
 	if err != nil {
@@ -102,8 +103,8 @@ func (client SignUpSettingsClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Get get Sign-Up settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client SignUpSettingsClient) Get(ctx context.Context, apimBaseURL string) (result PortalSignupSettings, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL)
@@ -167,11 +168,12 @@ func (client SignUpSettingsClient) GetResponder(resp *http.Response) (result Por
 }
 
 // Update update Sign-Up settings.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is update Sign-Up settings. ifMatch is the entity
-// state (Etag) version of the property to update. A value of "*" can be used for If-Match to unconditionally apply
-// the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - update Sign-Up settings.
+// ifMatch - the entity state (Etag) version of the property to update. A value of "*" can be used for If-Match
+// to unconditionally apply the operation.
 func (client SignUpSettingsClient) Update(ctx context.Context, apimBaseURL string, parameters PortalSignupSettings, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, parameters, ifMatch)
 	if err != nil {

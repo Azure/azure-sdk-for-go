@@ -41,12 +41,14 @@ func NewAPIIssueClientWithBaseURI(baseURI string, subscriptionID string) APIIssu
 }
 
 // CreateOrUpdate creates a new Issue for an API or updates an existing one.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. parameters is create parameters.
-// ifMatch is eTag of the Issue Entity. ETag should match the current entity state from the header response of the
-// GET request or it should be * for unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// parameters - create parameters.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, parameters IssueContract, ifMatch string) (result IssueContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -141,12 +143,13 @@ func (client APIIssueClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete deletes the specified Issue from an API.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance. ifMatch is eTag of the Issue Entity.
-// ETag should match the current entity state from the header response of the GET request or it should be * for
-// unconditional update.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
+// ifMatch - eTag of the Issue Entity. ETag should match the current entity state from the header response of
+// the GET request or it should be * for unconditional update.
 func (client APIIssueClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -229,10 +232,11 @@ func (client APIIssueClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get gets the details of the Issue for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
 func (client APIIssueClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result IssueContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -315,10 +319,11 @@ func (client APIIssueClient) GetResponder(resp *http.Response) (result IssueCont
 }
 
 // GetEntityTag gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
-// identifier. Must be unique in the current API Management service instance.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// issueID - issue identifier. Must be unique in the current API Management service instance.
 func (client APIIssueClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -400,15 +405,17 @@ func (client APIIssueClient) GetEntityTagResponder(resp *http.Response) (result 
 }
 
 // ListByService lists all issues assosiated with the specified API.
-//
-// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
-// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
-// | Supported operators    | Supported functions               |
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the API Management service.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// filter - | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | state        | eq                     |                                   |
-// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to
-// return. skip is number of records to skip.
+// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client APIIssueClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result IssueCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

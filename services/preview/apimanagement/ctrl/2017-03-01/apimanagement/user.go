@@ -36,10 +36,11 @@ func NewUserClient() UserClient {
 }
 
 // CreateOrUpdate creates or Updates a user.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance. parameters is create or update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - create or update parameters.
 func (client UserClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, UID string, parameters UserCreateParameters) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,
@@ -129,12 +130,14 @@ func (client UserClient) CreateOrUpdateResponder(resp *http.Response) (result Us
 }
 
 // Delete deletes specific user.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance. ifMatch is the entity state (Etag) version of the user to delete. A value of "*"
-// can be used for If-Match to unconditionally apply the operation. deleteSubscriptions is whether to delete user's
-// subscription or not. notify is send an Account Closed Email notification to the User.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the user to delete. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
+// deleteSubscriptions - whether to delete user's subscription or not.
+// notify - send an Account Closed Email notification to the User.
 func (client UserClient) Delete(ctx context.Context, apimBaseURL string, UID string, ifMatch string, deleteSubscriptions string, notify string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,
@@ -220,10 +223,10 @@ func (client UserClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // GenerateSsoURL retrieves a redirection URL containing an authentication token for signing a given user into the
 // developer portal.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserClient) GenerateSsoURL(ctx context.Context, apimBaseURL string, UID string) (result GenerateSsoURLResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,
@@ -298,10 +301,10 @@ func (client UserClient) GenerateSsoURLResponder(resp *http.Response) (result Ge
 }
 
 // Get gets the details of the user specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserClient) Get(ctx context.Context, apimBaseURL string, UID string) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,
@@ -376,10 +379,11 @@ func (client UserClient) GetResponder(resp *http.Response) (result UserContract,
 }
 
 // GetSharedAccessToken gets the Shared Access Authorization Token for the User.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance. parameters is create Authorization Token parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - create Authorization Token parameters.
 func (client UserClient) GetSharedAccessToken(ctx context.Context, apimBaseURL string, UID string, parameters UserTokenParameters) (result UserTokenResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,
@@ -458,10 +462,10 @@ func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (res
 }
 
 // List lists a collection of registered users in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field            | Supported operators    |
-// Supported functions               |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field            | Supported operators    | Supported functions               |
 // |------------------|------------------------|-----------------------------------|
 // | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
@@ -469,8 +473,9 @@ func (client UserClient) GetSharedAccessTokenResponder(resp *http.Response) (res
 // | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | state            | eq                     | N/A                               |
 // | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
-// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of
-// records to return. skip is number of records to skip.
+// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client UserClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result UserCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -580,11 +585,13 @@ func (client UserClient) ListComplete(ctx context.Context, apimBaseURL string, f
 }
 
 // Update updates the details of the user specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance. parameters is update parameters. ifMatch is the entity state (Etag) version of the
-// user to update. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
+// parameters - update parameters.
+// ifMatch - the entity state (Etag) version of the user to update. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client UserClient) Update(ctx context.Context, apimBaseURL string, UID string, parameters UserUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,

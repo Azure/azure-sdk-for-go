@@ -79,7 +79,7 @@ func (client IotDpsResourceClient) CheckProvisioningServiceNameAvailabilityPrepa
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -152,7 +152,7 @@ func (client IotDpsResourceClient) CreateOrUpdatePreparer(ctx context.Context, r
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -223,7 +223,7 @@ func (client IotDpsResourceClient) DeletePreparer(ctx context.Context, provision
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -297,7 +297,7 @@ func (client IotDpsResourceClient) GetPreparer(ctx context.Context, provisioning
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -369,7 +369,7 @@ func (client IotDpsResourceClient) GetOperationResultPreparer(ctx context.Contex
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"asyncinfo":   autorest.Encode("query", asyncinfo),
@@ -436,7 +436,7 @@ func (client IotDpsResourceClient) ListByResourceGroupPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -526,7 +526,7 @@ func (client IotDpsResourceClient) ListBySubscriptionPreparer(ctx context.Contex
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -621,7 +621,7 @@ func (client IotDpsResourceClient) ListKeysPreparer(ctx context.Context, provisi
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -717,7 +717,7 @@ func (client IotDpsResourceClient) ListKeysForKeyNamePreparer(ctx context.Contex
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -785,7 +785,7 @@ func (client IotDpsResourceClient) ListValidSkusPreparer(ctx context.Context, pr
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -874,7 +874,7 @@ func (client IotDpsResourceClient) UpdatePreparer(ctx context.Context, resourceG
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-11-15"
+	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

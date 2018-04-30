@@ -2826,6 +2826,146 @@ func (client Client) ListSchemasComplete(ctx context.Context, accountName string
 	return
 }
 
+// ListTableFragments retrieves the list of table fragments from the Data Lake Analytics catalog.
+// Parameters:
+// accountName - the Azure Data Lake Analytics account upon which to execute catalog operations.
+// databaseName - the name of the database containing the table fragments.
+// schemaName - the name of the schema containing the table fragments.
+// tableName - the name of the table containing the table fragments.
+// filter - oData filter. Optional.
+// top - the number of items to return. Optional.
+// skip - the number of items to skip over before returning elements. Optional.
+// selectParameter - oData Select statement. Limits the properties on each entry to just those requested, e.g.
+// Categories?$select=CategoryName,Description. Optional.
+// orderby - orderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
+// "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
+// Optional.
+// count - the Boolean value of true or false to request a count of the matching resources included with the
+// resources in the response, e.g. Categories?$count=true. Optional.
+func (client Client) ListTableFragments(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableFragmentListPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+		{TargetValue: skip,
+			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("catalog.Client", "ListTableFragments", err.Error())
+	}
+
+	result.fn = client.listTableFragmentsNextResults
+	req, err := client.ListTableFragmentsPreparer(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableFragments", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListTableFragmentsSender(req)
+	if err != nil {
+		result.utfl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableFragments", resp, "Failure sending request")
+		return
+	}
+
+	result.utfl, err = client.ListTableFragmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.Client", "ListTableFragments", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListTableFragmentsPreparer prepares the ListTableFragments request.
+func (client Client) ListTableFragmentsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"accountName":          accountName,
+		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
+	}
+
+	pathParameters := map[string]interface{}{
+		"databaseName": autorest.Encode("path", databaseName),
+		"schemaName":   autorest.Encode("path", schemaName),
+		"tableName":    autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2016-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
+	}
+	if len(selectParameter) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
+	}
+	if len(orderby) > 0 {
+		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+	}
+	if count != nil {
+		queryParameters["$count"] = autorest.Encode("query", *count)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("https://{accountName}.{adlaCatalogDnsSuffix}", urlParameters),
+		autorest.WithPathParameters("/catalog/usql/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/tablefragments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListTableFragmentsSender sends the ListTableFragments request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListTableFragmentsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListTableFragmentsResponder handles the response to the ListTableFragments request. The method always
+// closes the http.Response Body.
+func (client Client) ListTableFragmentsResponder(resp *http.Response) (result USQLTableFragmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listTableFragmentsNextResults retrieves the next set of results, if any.
+func (client Client) listTableFragmentsNextResults(lastResults USQLTableFragmentList) (result USQLTableFragmentList, err error) {
+	req, err := lastResults.uSQLTableFragmentListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableFragmentsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListTableFragmentsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "catalog.Client", "listTableFragmentsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListTableFragmentsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "catalog.Client", "listTableFragmentsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListTableFragmentsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListTableFragmentsComplete(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result USQLTableFragmentListIterator, err error) {
+	result.page, err = client.ListTableFragments(ctx, accountName, databaseName, schemaName, tableName, filter, top, skip, selectParameter, orderby, count)
+	return
+}
+
 // ListTablePartitions retrieves the list of table partitions from the Data Lake Analytics catalog.
 // Parameters:
 // accountName - the Azure Data Lake Analytics account upon which to execute catalog operations.

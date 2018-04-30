@@ -41,9 +41,11 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 }
 
 // CancelJob cancel a Job.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. jobName is the Job name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// jobName - the Job name.
 func (client JobsClient) CancelJob(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.CancelJobPreparer(ctx, resourceGroupName, accountName, transformName, jobName)
 	if err != nil {
@@ -109,10 +111,12 @@ func (client JobsClient) CancelJobResponder(resp *http.Response) (result autores
 }
 
 // Create creates a Job.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. jobName is the Job name. parameters is the request
-// parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// jobName - the Job name.
+// parameters - the request parameters
 func (client JobsClient) Create(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string, parameters Job) (result Job, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -190,9 +194,11 @@ func (client JobsClient) CreateResponder(resp *http.Response) (result Job, err e
 }
 
 // Delete deletes a Job.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. jobName is the Job name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// jobName - the Job name.
 func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, transformName, jobName)
 	if err != nil {
@@ -258,9 +264,11 @@ func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.R
 }
 
 // Get gets a Job.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. jobName is the Job name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// jobName - the Job name.
 func (client JobsClient) Get(ctx context.Context, resourceGroupName string, accountName string, transformName string, jobName string) (result Job, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, transformName, jobName)
 	if err != nil {
@@ -327,13 +335,15 @@ func (client JobsClient) GetResponder(resp *http.Response) (result Job, err erro
 }
 
 // List lists all of the Jobs for the Transform.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. transformName is the Transform name. filter is restricts the set of items returned. top
-// is specifies a non-negative integer n that limits the number of items returned from a collection. The service
-// returns the number of available items up to but not greater than the specified value n. skip is specifies a
-// non-negative integer n that excludes the first n items of the queried collection from the result. The service
-// returns items starting at position n+1.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// transformName - the Transform name.
+// filter - restricts the set of items returned.
+// top - specifies a non-negative integer n that limits the number of items returned from a collection. The
+// service returns the number of available items up to but not greater than the specified value n.
+// skip - specifies a non-negative integer n that excludes the first n items of the queried collection from the
+// result. The service returns items starting at position n+1.
 func (client JobsClient) List(ctx context.Context, resourceGroupName string, accountName string, transformName string, filter string, top *int32, skip *int32) (result JobCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, transformName, filter, top, skip)

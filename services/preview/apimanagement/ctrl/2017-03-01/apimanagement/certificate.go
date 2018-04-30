@@ -36,12 +36,14 @@ func NewCertificateClient() CertificateClient {
 }
 
 // CreateOrUpdate creates or updates the certificate being used for authentication with the backend.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. certificateID is identifier of the certificate entity. Must be
-// unique in the current API Management service instance. parameters is create or Update parameters. ifMatch is the
-// entity state (Etag) version of the certificate to update. A value of "*" can be used for If-Match to
-// unconditionally apply the operation..
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// certificateID - identifier of the certificate entity. Must be unique in the current API Management service
+// instance.
+// parameters - create or Update parameters.
+// ifMatch - the entity state (Etag) version of the certificate to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation..
 func (client CertificateClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, certificateID string, parameters CertificateCreateOrUpdateParameters, ifMatch string) (result CertificateContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: certificateID,
@@ -125,11 +127,13 @@ func (client CertificateClient) CreateOrUpdateResponder(resp *http.Response) (re
 }
 
 // Delete deletes specific certificate.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. certificateID is identifier of the certificate entity. Must be
-// unique in the current API Management service instance. ifMatch is the entity state (Etag) version of the
-// certificate to delete. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// certificateID - identifier of the certificate entity. Must be unique in the current API Management service
+// instance.
+// ifMatch - the entity state (Etag) version of the certificate to delete. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client CertificateClient) Delete(ctx context.Context, apimBaseURL string, certificateID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: certificateID,
@@ -204,10 +208,11 @@ func (client CertificateClient) DeleteResponder(resp *http.Response) (result aut
 }
 
 // Get gets the details of the certificate specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. certificateID is identifier of the certificate entity. Must be
-// unique in the current API Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// certificateID - identifier of the certificate entity. Must be unique in the current API Management service
+// instance.
 func (client CertificateClient) Get(ctx context.Context, apimBaseURL string, certificateID string) (result CertificateContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: certificateID,
@@ -282,16 +287,17 @@ func (client CertificateClient) GetResponder(resp *http.Response) (result Certif
 }
 
 // List lists a collection of all certificates in the specified service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field          | Supported operators    | Supported
-// functions                         |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field          | Supported operators    | Supported functions                         |
 // |----------------|------------------------|---------------------------------------------|
 // | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | subject        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | thumbprint     | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | expirationDate | ge, le, eq, ne, gt, lt | N/A                                         | top is number of
-// records to return. skip is number of records to skip.
+// | expirationDate | ge, le, eq, ne, gt, lt | N/A                                         |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client CertificateClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result CertificateCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,

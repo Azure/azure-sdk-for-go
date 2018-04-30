@@ -37,9 +37,10 @@ func NewTenantConfigurationClient() TenantConfigurationClient {
 
 // Deploy this operation applies changes from the specified Git branch to the configuration database. This is a long
 // running operation and could take several minutes to complete.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is deploy Configuration parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - deploy Configuration parameters.
 func (client TenantConfigurationClient) Deploy(ctx context.Context, apimBaseURL string, parameters DeployConfigurationParameters) (result TenantConfigurationDeployFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -117,8 +118,8 @@ func (client TenantConfigurationClient) DeployResponder(resp *http.Response) (re
 
 // GetSyncState gets the status of the most recent synchronization between the configuration database and the Git
 // repository.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client TenantConfigurationClient) GetSyncState(ctx context.Context, apimBaseURL string) (result TenantConfigurationSyncStateContract, err error) {
 	req, err := client.GetSyncStatePreparer(ctx, apimBaseURL)
@@ -187,9 +188,10 @@ func (client TenantConfigurationClient) GetSyncStateResponder(resp *http.Respons
 
 // Save this operation creates a commit with the current configuration snapshot to the specified branch in the
 // repository. This is a long running operation and could take several minutes to complete.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is save Configuration parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - save Configuration parameters.
 func (client TenantConfigurationClient) Save(ctx context.Context, apimBaseURL string, parameters SaveConfigurationParameter) (result TenantConfigurationSaveFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -267,9 +269,10 @@ func (client TenantConfigurationClient) SaveResponder(resp *http.Response) (resu
 
 // Validate this operation validates the changes in the specified Git branch. This is a long running operation and
 // could take several minutes to complete.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is validate Configuration parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - validate Configuration parameters.
 func (client TenantConfigurationClient) Validate(ctx context.Context, apimBaseURL string, parameters DeployConfigurationParameters) (result TenantConfigurationValidateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,

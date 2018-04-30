@@ -41,9 +41,11 @@ func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string) Project
 
 // CreateOrUpdate the project resource is a nested resource representing a stored migration project. The PUT method
 // creates a new project or updates an existing one.
-//
-// parameters is information about the project groupName is name of the resource group serviceName is name of the
-// service projectName is name of the project
+// Parameters:
+// parameters - information about the project
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
 func (client ProjectsClient) CreateOrUpdate(ctx context.Context, parameters Project, groupName string, serviceName string, projectName string) (result Project, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, parameters, groupName, serviceName, projectName)
 	if err != nil {
@@ -112,9 +114,11 @@ func (client ProjectsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete the project resource is a nested resource representing a stored migration project. The DELETE method deletes
 // a project.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
-// deleteRunningTasks is delete the resource even if it contains running tasks
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
+// deleteRunningTasks - delete the resource even if it contains running tasks
 func (client ProjectsClient) Delete(ctx context.Context, groupName string, serviceName string, projectName string, deleteRunningTasks *bool) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, groupName, serviceName, projectName, deleteRunningTasks)
 	if err != nil {
@@ -183,8 +187,10 @@ func (client ProjectsClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get the project resource is a nested resource representing a stored migration project. The GET method retrieves
 // information about a project.
-//
-// groupName is name of the resource group serviceName is name of the service projectName is name of the project
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
 func (client ProjectsClient) Get(ctx context.Context, groupName string, serviceName string, projectName string) (result Project, err error) {
 	req, err := client.GetPreparer(ctx, groupName, serviceName, projectName)
 	if err != nil {
@@ -251,8 +257,9 @@ func (client ProjectsClient) GetResponder(resp *http.Response) (result Project, 
 
 // List the project resource is a nested resource representing a stored migration project. This method returns a list
 // of projects owned by a service resource.
-//
-// groupName is name of the resource group serviceName is name of the service
+// Parameters:
+// groupName - name of the resource group
+// serviceName - name of the service
 func (client ProjectsClient) List(ctx context.Context, groupName string, serviceName string) (result ProjectListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, groupName, serviceName)
@@ -346,9 +353,11 @@ func (client ProjectsClient) ListComplete(ctx context.Context, groupName string,
 
 // Update the project resource is a nested resource representing a stored migration project. The PATCH method updates
 // an existing project.
-//
-// parameters is information about the project groupName is name of the resource group serviceName is name of the
-// service projectName is name of the project
+// Parameters:
+// parameters - information about the project
+// groupName - name of the resource group
+// serviceName - name of the service
+// projectName - name of the project
 func (client ProjectsClient) Update(ctx context.Context, parameters Project, groupName string, serviceName string, projectName string) (result Project, err error) {
 	req, err := client.UpdatePreparer(ctx, parameters, groupName, serviceName, projectName)
 	if err != nil {

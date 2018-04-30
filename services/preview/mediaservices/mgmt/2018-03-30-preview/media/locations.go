@@ -40,8 +40,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 }
 
 // CheckNameAvailability checks whether the Media Service resource name is available.
-//
-// parameters is the request parameters
+// Parameters:
+// parameters - the request parameters
 func (client LocationsClient) CheckNameAvailability(ctx context.Context, locationName string, parameters CheckNameAvailabilityInput) (result EntityNameAvailabilityCheckOutput, err error) {
 	req, err := client.CheckNameAvailabilityPreparer(ctx, locationName, parameters)
 	if err != nil {

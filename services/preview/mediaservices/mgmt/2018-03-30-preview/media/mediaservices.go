@@ -40,9 +40,10 @@ func NewMediaservicesClientWithBaseURI(baseURI string, subscriptionID string) Me
 }
 
 // CreateOrUpdate creates or updates a Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// parameters - the request parameters
 func (client MediaservicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters Service) (result Service, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
@@ -109,9 +110,9 @@ func (client MediaservicesClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes a Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
 func (client MediaservicesClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -175,9 +176,9 @@ func (client MediaservicesClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get get the details of a Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
 func (client MediaservicesClient) Get(ctx context.Context, resourceGroupName string, accountName string) (result Service, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
@@ -242,8 +243,8 @@ func (client MediaservicesClient) GetResponder(resp *http.Response) (result Serv
 }
 
 // GetBySubscription get the details of a Media Services account
-//
-// accountName is the Media Services account name.
+// Parameters:
+// accountName - the Media Services account name.
 func (client MediaservicesClient) GetBySubscription(ctx context.Context, accountName string) (result SubscriptionMediaService, err error) {
 	req, err := client.GetBySubscriptionPreparer(ctx, accountName)
 	if err != nil {
@@ -307,8 +308,8 @@ func (client MediaservicesClient) GetBySubscriptionResponder(resp *http.Response
 }
 
 // List list Media Services accounts in the resource group
-//
-// resourceGroupName is the name of the resource group within the Azure subscription.
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
 func (client MediaservicesClient) List(ctx context.Context, resourceGroupName string) (result ServiceCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
@@ -490,9 +491,10 @@ func (client MediaservicesClient) ListBySubscriptionComplete(ctx context.Context
 }
 
 // SyncStorageKeys synchronizes storage account keys for a storage account associated with the Media Service account.
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// parameters - the request parameters
 func (client MediaservicesClient) SyncStorageKeys(ctx context.Context, resourceGroupName string, accountName string, parameters SyncStorageKeysInput) (result autorest.Response, err error) {
 	req, err := client.SyncStorageKeysPreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
@@ -558,9 +560,10 @@ func (client MediaservicesClient) SyncStorageKeysResponder(resp *http.Response) 
 }
 
 // Update updates an existing Media Services account
-//
-// resourceGroupName is the name of the resource group within the Azure subscription. accountName is the Media
-// Services account name. parameters is the request parameters
+// Parameters:
+// resourceGroupName - the name of the resource group within the Azure subscription.
+// accountName - the Media Services account name.
+// parameters - the request parameters
 func (client MediaservicesClient) Update(ctx context.Context, resourceGroupName string, accountName string, parameters Service) (result Service, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {

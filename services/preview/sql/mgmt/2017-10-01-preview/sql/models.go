@@ -23,8 +23,200 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
+
+// CapabilityGroup enumerates the values for capability group.
+type CapabilityGroup string
+
+const (
+	// SupportedEditions ...
+	SupportedEditions CapabilityGroup = "supportedEditions"
+	// SupportedElasticPoolEditions ...
+	SupportedElasticPoolEditions CapabilityGroup = "supportedElasticPoolEditions"
+	// SupportedManagedInstanceVersions ...
+	SupportedManagedInstanceVersions CapabilityGroup = "supportedManagedInstanceVersions"
+)
+
+// PossibleCapabilityGroupValues returns an array of possible values for the CapabilityGroup const type.
+func PossibleCapabilityGroupValues() []CapabilityGroup {
+	return []CapabilityGroup{SupportedEditions, SupportedElasticPoolEditions, SupportedManagedInstanceVersions}
+}
+
+// CapabilityStatus enumerates the values for capability status.
+type CapabilityStatus string
+
+const (
+	// Available ...
+	Available CapabilityStatus = "Available"
+	// Default ...
+	Default CapabilityStatus = "Default"
+	// Disabled ...
+	Disabled CapabilityStatus = "Disabled"
+	// Visible ...
+	Visible CapabilityStatus = "Visible"
+)
+
+// PossibleCapabilityStatusValues returns an array of possible values for the CapabilityStatus const type.
+func PossibleCapabilityStatusValues() []CapabilityStatus {
+	return []CapabilityStatus{Available, Default, Disabled, Visible}
+}
+
+// CatalogCollationType enumerates the values for catalog collation type.
+type CatalogCollationType string
+
+const (
+	// DATABASEDEFAULT ...
+	DATABASEDEFAULT CatalogCollationType = "DATABASE_DEFAULT"
+	// SQLLatin1GeneralCP1CIAS ...
+	SQLLatin1GeneralCP1CIAS CatalogCollationType = "SQL_Latin1_General_CP1_CI_AS"
+)
+
+// PossibleCatalogCollationTypeValues returns an array of possible values for the CatalogCollationType const type.
+func PossibleCatalogCollationTypeValues() []CatalogCollationType {
+	return []CatalogCollationType{DATABASEDEFAULT, SQLLatin1GeneralCP1CIAS}
+}
+
+// CreateMode enumerates the values for create mode.
+type CreateMode string
+
+const (
+	// CreateModeCopy ...
+	CreateModeCopy CreateMode = "Copy"
+	// CreateModeDefault ...
+	CreateModeDefault CreateMode = "Default"
+	// CreateModeOnlineSecondary ...
+	CreateModeOnlineSecondary CreateMode = "OnlineSecondary"
+	// CreateModePointInTimeRestore ...
+	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
+	// CreateModeRecovery ...
+	CreateModeRecovery CreateMode = "Recovery"
+	// CreateModeRestore ...
+	CreateModeRestore CreateMode = "Restore"
+	// CreateModeRestoreExternalBackup ...
+	CreateModeRestoreExternalBackup CreateMode = "RestoreExternalBackup"
+	// CreateModeRestoreExternalBackupSecondary ...
+	CreateModeRestoreExternalBackupSecondary CreateMode = "RestoreExternalBackupSecondary"
+	// CreateModeRestoreLongTermRetentionBackup ...
+	CreateModeRestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
+	// CreateModeSecondary ...
+	CreateModeSecondary CreateMode = "Secondary"
+)
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{CreateModeCopy, CreateModeDefault, CreateModeOnlineSecondary, CreateModePointInTimeRestore, CreateModeRecovery, CreateModeRestore, CreateModeRestoreExternalBackup, CreateModeRestoreExternalBackupSecondary, CreateModeRestoreLongTermRetentionBackup, CreateModeSecondary}
+}
+
+// DatabaseLicenseType enumerates the values for database license type.
+type DatabaseLicenseType string
+
+const (
+	// BasePrice ...
+	BasePrice DatabaseLicenseType = "BasePrice"
+	// LicenseIncluded ...
+	LicenseIncluded DatabaseLicenseType = "LicenseIncluded"
+)
+
+// PossibleDatabaseLicenseTypeValues returns an array of possible values for the DatabaseLicenseType const type.
+func PossibleDatabaseLicenseTypeValues() []DatabaseLicenseType {
+	return []DatabaseLicenseType{BasePrice, LicenseIncluded}
+}
+
+// DatabaseReadScale enumerates the values for database read scale.
+type DatabaseReadScale string
+
+const (
+	// DatabaseReadScaleDisabled ...
+	DatabaseReadScaleDisabled DatabaseReadScale = "Disabled"
+	// DatabaseReadScaleEnabled ...
+	DatabaseReadScaleEnabled DatabaseReadScale = "Enabled"
+)
+
+// PossibleDatabaseReadScaleValues returns an array of possible values for the DatabaseReadScale const type.
+func PossibleDatabaseReadScaleValues() []DatabaseReadScale {
+	return []DatabaseReadScale{DatabaseReadScaleDisabled, DatabaseReadScaleEnabled}
+}
+
+// DatabaseStatus enumerates the values for database status.
+type DatabaseStatus string
+
+const (
+	// AutoClosed ...
+	AutoClosed DatabaseStatus = "AutoClosed"
+	// Copying ...
+	Copying DatabaseStatus = "Copying"
+	// Creating ...
+	Creating DatabaseStatus = "Creating"
+	// EmergencyMode ...
+	EmergencyMode DatabaseStatus = "EmergencyMode"
+	// Inaccessible ...
+	Inaccessible DatabaseStatus = "Inaccessible"
+	// Offline ...
+	Offline DatabaseStatus = "Offline"
+	// OfflineSecondary ...
+	OfflineSecondary DatabaseStatus = "OfflineSecondary"
+	// Online ...
+	Online DatabaseStatus = "Online"
+	// Paused ...
+	Paused DatabaseStatus = "Paused"
+	// Pausing ...
+	Pausing DatabaseStatus = "Pausing"
+	// Recovering ...
+	Recovering DatabaseStatus = "Recovering"
+	// RecoveryPending ...
+	RecoveryPending DatabaseStatus = "RecoveryPending"
+	// Restoring ...
+	Restoring DatabaseStatus = "Restoring"
+	// Resuming ...
+	Resuming DatabaseStatus = "Resuming"
+	// Scaling ...
+	Scaling DatabaseStatus = "Scaling"
+	// Shutdown ...
+	Shutdown DatabaseStatus = "Shutdown"
+	// Standby ...
+	Standby DatabaseStatus = "Standby"
+	// Suspect ...
+	Suspect DatabaseStatus = "Suspect"
+)
+
+// PossibleDatabaseStatusValues returns an array of possible values for the DatabaseStatus const type.
+func PossibleDatabaseStatusValues() []DatabaseStatus {
+	return []DatabaseStatus{AutoClosed, Copying, Creating, EmergencyMode, Inaccessible, Offline, OfflineSecondary, Online, Paused, Pausing, Recovering, RecoveryPending, Restoring, Resuming, Scaling, Shutdown, Standby, Suspect}
+}
+
+// ElasticPoolLicenseType enumerates the values for elastic pool license type.
+type ElasticPoolLicenseType string
+
+const (
+	// ElasticPoolLicenseTypeBasePrice ...
+	ElasticPoolLicenseTypeBasePrice ElasticPoolLicenseType = "BasePrice"
+	// ElasticPoolLicenseTypeLicenseIncluded ...
+	ElasticPoolLicenseTypeLicenseIncluded ElasticPoolLicenseType = "LicenseIncluded"
+)
+
+// PossibleElasticPoolLicenseTypeValues returns an array of possible values for the ElasticPoolLicenseType const type.
+func PossibleElasticPoolLicenseTypeValues() []ElasticPoolLicenseType {
+	return []ElasticPoolLicenseType{ElasticPoolLicenseTypeBasePrice, ElasticPoolLicenseTypeLicenseIncluded}
+}
+
+// ElasticPoolState enumerates the values for elastic pool state.
+type ElasticPoolState string
+
+const (
+	// ElasticPoolStateCreating ...
+	ElasticPoolStateCreating ElasticPoolState = "Creating"
+	// ElasticPoolStateDisabled ...
+	ElasticPoolStateDisabled ElasticPoolState = "Disabled"
+	// ElasticPoolStateReady ...
+	ElasticPoolStateReady ElasticPoolState = "Ready"
+)
+
+// PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
+func PossibleElasticPoolStateValues() []ElasticPoolState {
+	return []ElasticPoolState{ElasticPoolStateCreating, ElasticPoolStateDisabled, ElasticPoolStateReady}
+}
 
 // InstanceFailoverGroupReplicationRole enumerates the values for instance failover group replication role.
 type InstanceFailoverGroupReplicationRole string
@@ -39,6 +231,27 @@ const (
 // PossibleInstanceFailoverGroupReplicationRoleValues returns an array of possible values for the InstanceFailoverGroupReplicationRole const type.
 func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
 	return []InstanceFailoverGroupReplicationRole{Primary, Secondary}
+}
+
+// LogSizeUnit enumerates the values for log size unit.
+type LogSizeUnit string
+
+const (
+	// Gigabytes ...
+	Gigabytes LogSizeUnit = "Gigabytes"
+	// Megabytes ...
+	Megabytes LogSizeUnit = "Megabytes"
+	// Percent ...
+	Percent LogSizeUnit = "Percent"
+	// Petabytes ...
+	Petabytes LogSizeUnit = "Petabytes"
+	// Terabytes ...
+	Terabytes LogSizeUnit = "Terabytes"
+)
+
+// PossibleLogSizeUnitValues returns an array of possible values for the LogSizeUnit const type.
+func PossibleLogSizeUnitValues() []LogSizeUnit {
+	return []LogSizeUnit{Gigabytes, Megabytes, Percent, Petabytes, Terabytes}
 }
 
 // ManagementOperationState enumerates the values for management operation state.
@@ -64,19 +277,53 @@ func PossibleManagementOperationStateValues() []ManagementOperationState {
 	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
 }
 
+// MaxSizeUnit enumerates the values for max size unit.
+type MaxSizeUnit string
+
+const (
+	// MaxSizeUnitGigabytes ...
+	MaxSizeUnitGigabytes MaxSizeUnit = "Gigabytes"
+	// MaxSizeUnitMegabytes ...
+	MaxSizeUnitMegabytes MaxSizeUnit = "Megabytes"
+	// MaxSizeUnitPetabytes ...
+	MaxSizeUnitPetabytes MaxSizeUnit = "Petabytes"
+	// MaxSizeUnitTerabytes ...
+	MaxSizeUnitTerabytes MaxSizeUnit = "Terabytes"
+)
+
+// PossibleMaxSizeUnitValues returns an array of possible values for the MaxSizeUnit const type.
+func PossibleMaxSizeUnitValues() []MaxSizeUnit {
+	return []MaxSizeUnit{MaxSizeUnitGigabytes, MaxSizeUnitMegabytes, MaxSizeUnitPetabytes, MaxSizeUnitTerabytes}
+}
+
+// PerformanceLevelUnit enumerates the values for performance level unit.
+type PerformanceLevelUnit string
+
+const (
+	// DTU ...
+	DTU PerformanceLevelUnit = "DTU"
+	// VCores ...
+	VCores PerformanceLevelUnit = "VCores"
+)
+
+// PossiblePerformanceLevelUnitValues returns an array of possible values for the PerformanceLevelUnit const type.
+func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
+	return []PerformanceLevelUnit{DTU, VCores}
+}
+
 // ReadOnlyEndpointFailoverPolicy enumerates the values for read only endpoint failover policy.
 type ReadOnlyEndpointFailoverPolicy string
 
 const (
-	// Disabled ...
-	Disabled ReadOnlyEndpointFailoverPolicy = "Disabled"
-	// Enabled ...
-	Enabled ReadOnlyEndpointFailoverPolicy = "Enabled"
+	// ReadOnlyEndpointFailoverPolicyDisabled ...
+	ReadOnlyEndpointFailoverPolicyDisabled ReadOnlyEndpointFailoverPolicy = "Disabled"
+	// ReadOnlyEndpointFailoverPolicyEnabled ...
+	ReadOnlyEndpointFailoverPolicyEnabled ReadOnlyEndpointFailoverPolicy = "Enabled"
 )
 
 // PossibleReadOnlyEndpointFailoverPolicyValues returns an array of possible values for the ReadOnlyEndpointFailoverPolicy const type.
 func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
-	return []ReadOnlyEndpointFailoverPolicy{Disabled, Enabled}
+	return []ReadOnlyEndpointFailoverPolicy{ReadOnlyEndpointFailoverPolicyDisabled, ReadOnlyEndpointFailoverPolicyEnabled}
 }
 
 // ReadWriteEndpointFailoverPolicy enumerates the values for read write endpoint failover policy.
@@ -92,6 +339,277 @@ const (
 // PossibleReadWriteEndpointFailoverPolicyValues returns an array of possible values for the ReadWriteEndpointFailoverPolicy const type.
 func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
 	return []ReadWriteEndpointFailoverPolicy{Automatic, Manual}
+}
+
+// SampleName enumerates the values for sample name.
+type SampleName string
+
+const (
+	// AdventureWorksLT ...
+	AdventureWorksLT SampleName = "AdventureWorksLT"
+	// WideWorldImportersFull ...
+	WideWorldImportersFull SampleName = "WideWorldImportersFull"
+	// WideWorldImportersStd ...
+	WideWorldImportersStd SampleName = "WideWorldImportersStd"
+)
+
+// PossibleSampleNameValues returns an array of possible values for the SampleName const type.
+func PossibleSampleNameValues() []SampleName {
+	return []SampleName{AdventureWorksLT, WideWorldImportersFull, WideWorldImportersStd}
+}
+
+// Database a database resource.
+type Database struct {
+	autorest.Response `json:"-"`
+	// Sku - The name and tier of the SKU.
+	Sku *Sku `json:"sku,omitempty"`
+	// Kind - Kind of database. This is metadata used for the Azure portal experience.
+	Kind *string `json:"kind,omitempty"`
+	// ManagedBy - Resource that manages the database.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// DatabaseProperties - Resource properties.
+	*DatabaseProperties `json:"properties,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Database.
+func (d Database) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.Sku != nil {
+		objectMap["sku"] = d.Sku
+	}
+	if d.Kind != nil {
+		objectMap["kind"] = d.Kind
+	}
+	if d.ManagedBy != nil {
+		objectMap["managedBy"] = d.ManagedBy
+	}
+	if d.DatabaseProperties != nil {
+		objectMap["properties"] = d.DatabaseProperties
+	}
+	if d.Location != nil {
+		objectMap["location"] = d.Location
+	}
+	if d.Tags != nil {
+		objectMap["tags"] = d.Tags
+	}
+	if d.ID != nil {
+		objectMap["id"] = d.ID
+	}
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	if d.Type != nil {
+		objectMap["type"] = d.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Database struct.
+func (d *Database) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				d.Sku = &sku
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				d.Kind = &kind
+			}
+		case "managedBy":
+			if v != nil {
+				var managedBy string
+				err = json.Unmarshal(*v, &managedBy)
+				if err != nil {
+					return err
+				}
+				d.ManagedBy = &managedBy
+			}
+		case "properties":
+			if v != nil {
+				var databaseProperties DatabaseProperties
+				err = json.Unmarshal(*v, &databaseProperties)
+				if err != nil {
+					return err
+				}
+				d.DatabaseProperties = &databaseProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				d.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				d.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				d.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				d.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatabaseListResult a list of databases.
+type DatabaseListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]Database `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DatabaseListResultIterator provides access to a complete listing of Database values.
+type DatabaseListResultIterator struct {
+	i    int
+	page DatabaseListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatabaseListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatabaseListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatabaseListResultIterator) Response() DatabaseListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatabaseListResultIterator) Value() Database {
+	if !iter.page.NotDone() {
+		return Database{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dlr DatabaseListResult) IsEmpty() bool {
+	return dlr.Value == nil || len(*dlr.Value) == 0
+}
+
+// databaseListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dlr DatabaseListResult) databaseListResultPreparer() (*http.Request, error) {
+	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dlr.NextLink)))
+}
+
+// DatabaseListResultPage contains a page of Database values.
+type DatabaseListResultPage struct {
+	fn  func(DatabaseListResult) (DatabaseListResult, error)
+	dlr DatabaseListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatabaseListResultPage) Next() error {
+	next, err := page.fn(page.dlr)
+	if err != nil {
+		return err
+	}
+	page.dlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatabaseListResultPage) NotDone() bool {
+	return !page.dlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatabaseListResultPage) Response() DatabaseListResult {
+	return page.dlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatabaseListResultPage) Values() []Database {
+	if page.dlr.IsEmpty() {
+		return nil
+	}
+	return *page.dlr.Value
 }
 
 // DatabaseOperation a database operation.
@@ -309,6 +827,702 @@ type DatabaseOperationProperties struct {
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
+// DatabaseProperties the database's properties.
+type DatabaseProperties struct {
+	// CreateMode - Specifies the mode of database creation.
+	//
+	// Default: regular database creation.
+	//
+	// Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+	//
+	// Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+	//
+	// PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+	//
+	// Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+	//
+	// Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+	//
+	// RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+	//
+	// Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'CreateModeDefault', 'CreateModeCopy', 'CreateModeSecondary', 'CreateModePointInTimeRestore', 'CreateModeRestore', 'CreateModeRecovery', 'CreateModeRestoreExternalBackup', 'CreateModeRestoreExternalBackupSecondary', 'CreateModeRestoreLongTermRetentionBackup', 'CreateModeOnlineSecondary'
+	CreateMode CreateMode `json:"createMode,omitempty"`
+	// Collation - The collation of the database.
+	Collation *string `json:"collation,omitempty"`
+	// MaxSizeBytes - The max size of the database expressed in bytes.
+	MaxSizeBytes *int64 `json:"maxSizeBytes,omitempty"`
+	// SampleName - The name of the sample schema to apply when creating this database. Possible values include: 'AdventureWorksLT', 'WideWorldImportersStd', 'WideWorldImportersFull'
+	SampleName SampleName `json:"sampleName,omitempty"`
+	// ElasticPoolID - The resource identifier of the elastic pool containing this database.
+	ElasticPoolID *string `json:"elasticPoolId,omitempty"`
+	// SourceDatabaseID - The resource identifier of the source database associated with create operation of this database.
+	SourceDatabaseID *string `json:"sourceDatabaseId,omitempty"`
+	// Status - The status of the database. Possible values include: 'Online', 'Restoring', 'RecoveryPending', 'Recovering', 'Suspect', 'Offline', 'Standby', 'Shutdown', 'EmergencyMode', 'AutoClosed', 'Copying', 'Creating', 'Inaccessible', 'OfflineSecondary', 'Pausing', 'Paused', 'Resuming', 'Scaling'
+	Status DatabaseStatus `json:"status,omitempty"`
+	// DatabaseID - The ID of the database.
+	DatabaseID *uuid.UUID `json:"databaseId,omitempty"`
+	// CreationDate - The creation date of the database (ISO8601 format).
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// CurrentServiceObjectiveName - The current service level objective name of the database.
+	CurrentServiceObjectiveName *string `json:"currentServiceObjectiveName,omitempty"`
+	// RequestedServiceObjectiveName - The requested service level objective name of the database.
+	RequestedServiceObjectiveName *string `json:"requestedServiceObjectiveName,omitempty"`
+	// DefaultSecondaryLocation - The default secondary region for this database.
+	DefaultSecondaryLocation *string `json:"defaultSecondaryLocation,omitempty"`
+	// FailoverGroupID - Failover Group resource identifier that this database belongs to.
+	FailoverGroupID *string `json:"failoverGroupId,omitempty"`
+	// RestorePointInTime - Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.
+	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
+	// SourceDatabaseDeletionDate - Specifies the time that the database was deleted.
+	SourceDatabaseDeletionDate *date.Time `json:"sourceDatabaseDeletionDate,omitempty"`
+	// RecoveryServicesRecoveryPointID - The resource identifier of the recovery point associated with create operation of this database.
+	RecoveryServicesRecoveryPointID *string `json:"recoveryServicesRecoveryPointId,omitempty"`
+	// LongTermRetentionBackupResourceID - The resource identifier of the long term retention backup associated with create operation of this database.
+	LongTermRetentionBackupResourceID *string `json:"longTermRetentionBackupResourceId,omitempty"`
+	// RecoverableDatabaseID - The resource identifier of the recoverable database associated with create operation of this database.
+	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
+	// RestorableDroppedDatabaseID - The resource identifier of the restorable dropped database associated with create operation of this database.
+	RestorableDroppedDatabaseID *string `json:"restorableDroppedDatabaseId,omitempty"`
+	// CatalogCollation - Collation of the metadata catalog. Possible values include: 'DATABASEDEFAULT', 'SQLLatin1GeneralCP1CIAS'
+	CatalogCollation CatalogCollationType `json:"catalogCollation,omitempty"`
+	// ZoneRedundant - Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// LicenseType - The license type to apply for this database. Possible values include: 'LicenseIncluded', 'BasePrice'
+	LicenseType DatabaseLicenseType `json:"licenseType,omitempty"`
+	// MaxLogSizeBytes - The max log size for this database.
+	MaxLogSizeBytes *int64 `json:"maxLogSizeBytes,omitempty"`
+	// EarliestRestoreDate - This records the earliest start date and time that restore is available for this database (ISO8601 format).
+	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+	// ReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'
+	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
+	// CurrentSku - The name and tier of the SKU.
+	CurrentSku *Sku `json:"currentSku,omitempty"`
+}
+
+// DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		d, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	d, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesDeleteFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesPauseFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesPauseFuture) Result(client DatabasesClient) (d Database, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesPauseFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		d, err = client.PauseResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	d, err = client.PauseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesPauseFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesResumeFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesResumeFuture) Result(client DatabasesClient) (d Database, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesResumeFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		d, err = client.ResumeResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	d, err = client.ResumeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesResumeFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type DatabasesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesUpdateFuture) Result(client DatabasesClient) (d Database, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return d, azure.NewAsyncOpIncompleteError("sql.DatabasesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		d, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	d, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabasesUpgradeDataWarehouseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatabasesUpgradeDataWarehouseFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabasesUpgradeDataWarehouseFuture) Result(client DatabasesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabasesUpgradeDataWarehouseFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.UpgradeDataWarehouseResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.UpgradeDataWarehouseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabasesUpgradeDataWarehouseFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// DatabaseUpdate a database resource.
+type DatabaseUpdate struct {
+	// Sku - The name and tier of the SKU.
+	Sku *Sku `json:"sku,omitempty"`
+	// DatabaseProperties - Resource properties.
+	*DatabaseProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseUpdate.
+func (du DatabaseUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if du.Sku != nil {
+		objectMap["sku"] = du.Sku
+	}
+	if du.DatabaseProperties != nil {
+		objectMap["properties"] = du.DatabaseProperties
+	}
+	if du.Tags != nil {
+		objectMap["tags"] = du.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseUpdate struct.
+func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				du.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var databaseProperties DatabaseProperties
+				err = json.Unmarshal(*v, &databaseProperties)
+				if err != nil {
+					return err
+				}
+				du.DatabaseProperties = &databaseProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				du.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// EditionCapability the edition capability.
+type EditionCapability struct {
+	// Name - The database edition name.
+	Name *string `json:"name,omitempty"`
+	// SupportedServiceLevelObjectives - The list of supported service objectives for the edition.
+	SupportedServiceLevelObjectives *[]ServiceObjectiveCapability `json:"supportedServiceLevelObjectives,omitempty"`
+	// ZoneRedundant - Whether or not zone redundancy is supported for the edition.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ElasticPool an elastic pool.
+type ElasticPool struct {
+	autorest.Response `json:"-"`
+	Sku               *Sku `json:"sku,omitempty"`
+	// Kind - Kind of elastic pool. This is metadata used for the Azure portal experience.
+	Kind *string `json:"kind,omitempty"`
+	// ElasticPoolProperties - Resource properties.
+	*ElasticPoolProperties `json:"properties,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPool.
+func (ep ElasticPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ep.Sku != nil {
+		objectMap["sku"] = ep.Sku
+	}
+	if ep.Kind != nil {
+		objectMap["kind"] = ep.Kind
+	}
+	if ep.ElasticPoolProperties != nil {
+		objectMap["properties"] = ep.ElasticPoolProperties
+	}
+	if ep.Location != nil {
+		objectMap["location"] = ep.Location
+	}
+	if ep.Tags != nil {
+		objectMap["tags"] = ep.Tags
+	}
+	if ep.ID != nil {
+		objectMap["id"] = ep.ID
+	}
+	if ep.Name != nil {
+		objectMap["name"] = ep.Name
+	}
+	if ep.Type != nil {
+		objectMap["type"] = ep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ElasticPool struct.
+func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				ep.Sku = &sku
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ep.Kind = &kind
+			}
+		case "properties":
+			if v != nil {
+				var elasticPoolProperties ElasticPoolProperties
+				err = json.Unmarshal(*v, &elasticPoolProperties)
+				if err != nil {
+					return err
+				}
+				ep.ElasticPoolProperties = &elasticPoolProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ep.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ep.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ep.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ep.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ep.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ElasticPoolEditionCapability the elastic pool edition capability.
+type ElasticPoolEditionCapability struct {
+	// Name - The elastic pool edition name.
+	Name *string `json:"name,omitempty"`
+	// SupportedElasticPoolPerformanceLevels - The list of supported elastic pool DTU levels for the edition.
+	SupportedElasticPoolPerformanceLevels *[]ElasticPoolPerformanceLevelCapability `json:"supportedElasticPoolPerformanceLevels,omitempty"`
+	// ZoneRedundant - Whether or not zone redundancy is supported for the edition.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ElasticPoolListResult the result of an elastic pool list request.
+type ElasticPoolListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]ElasticPool `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ElasticPoolListResultIterator provides access to a complete listing of ElasticPool values.
+type ElasticPoolListResultIterator struct {
+	i    int
+	page ElasticPoolListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ElasticPoolListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ElasticPoolListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ElasticPoolListResultIterator) Response() ElasticPoolListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ElasticPoolListResultIterator) Value() ElasticPool {
+	if !iter.page.NotDone() {
+		return ElasticPool{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (eplr ElasticPoolListResult) IsEmpty() bool {
+	return eplr.Value == nil || len(*eplr.Value) == 0
+}
+
+// elasticPoolListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (eplr ElasticPoolListResult) elasticPoolListResultPreparer() (*http.Request, error) {
+	if eplr.NextLink == nil || len(to.String(eplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(eplr.NextLink)))
+}
+
+// ElasticPoolListResultPage contains a page of ElasticPool values.
+type ElasticPoolListResultPage struct {
+	fn   func(ElasticPoolListResult) (ElasticPoolListResult, error)
+	eplr ElasticPoolListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ElasticPoolListResultPage) Next() error {
+	next, err := page.fn(page.eplr)
+	if err != nil {
+		return err
+	}
+	page.eplr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ElasticPoolListResultPage) NotDone() bool {
+	return !page.eplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ElasticPoolListResultPage) Response() ElasticPoolListResult {
+	return page.eplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ElasticPoolListResultPage) Values() []ElasticPool {
+	if page.eplr.IsEmpty() {
+		return nil
+	}
+	return *page.eplr.Value
+}
+
 // ElasticPoolOperation a elastic pool operation.
 type ElasticPoolOperation struct {
 	// ElasticPoolOperationProperties - Resource properties.
@@ -524,6 +1738,303 @@ type ElasticPoolOperationProperties struct {
 	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
+// ElasticPoolPerDatabaseMaxPerformanceLevelCapability the max per-database performance level capability.
+type ElasticPoolPerDatabaseMaxPerformanceLevelCapability struct {
+	// Limit - The maximum performance level per database.
+	Limit *float64 `json:"limit,omitempty"`
+	// Unit - Unit type used to measure performance level. Possible values include: 'DTU', 'VCores'
+	Unit PerformanceLevelUnit `json:"unit,omitempty"`
+	// SupportedPerDatabaseMinPerformanceLevels - The list of supported min database performance levels.
+	SupportedPerDatabaseMinPerformanceLevels *[]ElasticPoolPerDatabaseMinPerformanceLevelCapability `json:"supportedPerDatabaseMinPerformanceLevels,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ElasticPoolPerDatabaseMinPerformanceLevelCapability the minimum per-database performance level capability.
+type ElasticPoolPerDatabaseMinPerformanceLevelCapability struct {
+	// Limit - The minimum performance level per database.
+	Limit *float64 `json:"limit,omitempty"`
+	// Unit - Unit type used to measure performance level. Possible values include: 'DTU', 'VCores'
+	Unit PerformanceLevelUnit `json:"unit,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ElasticPoolPerDatabaseSettings per database settings of an elastic pool.
+type ElasticPoolPerDatabaseSettings struct {
+	// MinCapacity - The minimum capacity all databases are guaranteed.
+	MinCapacity *float64 `json:"minCapacity,omitempty"`
+	// MaxCapacity - The maximum capacity any one database can consume.
+	MaxCapacity *float64 `json:"maxCapacity,omitempty"`
+}
+
+// ElasticPoolPerformanceLevelCapability the Elastic Pool performance level capability.
+type ElasticPoolPerformanceLevelCapability struct {
+	// PerformanceLevel - The performance level for the pool.
+	PerformanceLevel *PerformanceLevelCapability `json:"performanceLevel,omitempty"`
+	// Sku - The sku.
+	Sku *Sku `json:"sku,omitempty"`
+	// SupportedLicenseTypes - List of supported license types.
+	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
+	// MaxDatabaseCount - The maximum number of databases supported.
+	MaxDatabaseCount *int32 `json:"maxDatabaseCount,omitempty"`
+	// IncludedMaxSize - The included (free) max size for this performance level.
+	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	// SupportedMaxSizes - The list of supported max sizes.
+	SupportedMaxSizes *[]MaxSizeRangeCapability `json:"supportedMaxSizes,omitempty"`
+	// SupportedPerDatabaseMaxSizes - The list of supported per database max sizes.
+	SupportedPerDatabaseMaxSizes *[]MaxSizeRangeCapability `json:"supportedPerDatabaseMaxSizes,omitempty"`
+	// SupportedPerDatabaseMaxPerformanceLevels - The list of supported per database max performance levels.
+	SupportedPerDatabaseMaxPerformanceLevels *[]ElasticPoolPerDatabaseMaxPerformanceLevelCapability `json:"supportedPerDatabaseMaxPerformanceLevels,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ElasticPoolProperties properties of an elastic pool
+type ElasticPoolProperties struct {
+	// State - The state of the elastic pool. Possible values include: 'ElasticPoolStateCreating', 'ElasticPoolStateReady', 'ElasticPoolStateDisabled'
+	State ElasticPoolState `json:"state,omitempty"`
+	// CreationDate - The creation date of the elastic pool (ISO8601 format).
+	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// MaxSizeBytes - The storage limit for the database elastic pool in bytes.
+	MaxSizeBytes *int64 `json:"maxSizeBytes,omitempty"`
+	// PerDatabaseSettings - The per database settings for the elastic pool.
+	PerDatabaseSettings *ElasticPoolPerDatabaseSettings `json:"perDatabaseSettings,omitempty"`
+	// ZoneRedundant - Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// LicenseType - The license type to apply for this elastic pool. Possible values include: 'ElasticPoolLicenseTypeLicenseIncluded', 'ElasticPoolLicenseTypeBasePrice'
+	LicenseType ElasticPoolLicenseType `json:"licenseType,omitempty"`
+}
+
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ElasticPoolsCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ElasticPoolsCreateOrUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ep, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ep, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ElasticPoolsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ElasticPoolsDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ElasticPoolsDeleteFuture) Result(client ElasticPoolsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ElasticPoolsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ElasticPoolsUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ElasticPoolsUpdateFuture) Result(client ElasticPoolsClient) (ep ElasticPool, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ep, azure.NewAsyncOpIncompleteError("sql.ElasticPoolsUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ep, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ep, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ElasticPoolsUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ElasticPoolUpdate an elastic pool update.
+type ElasticPoolUpdate struct {
+	Sku *Sku `json:"sku,omitempty"`
+	// ElasticPoolUpdateProperties - Resource properties.
+	*ElasticPoolUpdateProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolUpdate.
+func (epu ElasticPoolUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epu.Sku != nil {
+		objectMap["sku"] = epu.Sku
+	}
+	if epu.ElasticPoolUpdateProperties != nil {
+		objectMap["properties"] = epu.ElasticPoolUpdateProperties
+	}
+	if epu.Tags != nil {
+		objectMap["tags"] = epu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ElasticPoolUpdate struct.
+func (epu *ElasticPoolUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				epu.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var elasticPoolUpdateProperties ElasticPoolUpdateProperties
+				err = json.Unmarshal(*v, &elasticPoolUpdateProperties)
+				if err != nil {
+					return err
+				}
+				epu.ElasticPoolUpdateProperties = &elasticPoolUpdateProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				epu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// ElasticPoolUpdateProperties properties of an elastic pool
+type ElasticPoolUpdateProperties struct {
+	// MaxSizeBytes - The storage limit for the database elastic pool in bytes.
+	MaxSizeBytes *int64 `json:"maxSizeBytes,omitempty"`
+	// PerDatabaseSettings - The per database settings for the elastic pool.
+	PerDatabaseSettings *ElasticPoolPerDatabaseSettings `json:"perDatabaseSettings,omitempty"`
+	// ZoneRedundant - Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// LicenseType - The license type to apply for this elastic pool. Possible values include: 'ElasticPoolLicenseTypeLicenseIncluded', 'ElasticPoolLicenseTypeBasePrice'
+	LicenseType ElasticPoolLicenseType `json:"licenseType,omitempty"`
+}
+
 // InstanceFailoverGroup an instance failover group.
 type InstanceFailoverGroup struct {
 	autorest.Response `json:"-"`
@@ -726,7 +2237,7 @@ type InstanceFailoverGroupProperties struct {
 
 // InstanceFailoverGroupReadOnlyEndpoint read-only endpoint of the failover group instance.
 type InstanceFailoverGroupReadOnlyEndpoint struct {
-	// FailoverPolicy - Failover policy of the read-only endpoint for the failover group. Possible values include: 'Disabled', 'Enabled'
+	// FailoverPolicy - Failover policy of the read-only endpoint for the failover group. Possible values include: 'ReadOnlyEndpointFailoverPolicyDisabled', 'ReadOnlyEndpointFailoverPolicyEnabled'
 	FailoverPolicy ReadOnlyEndpointFailoverPolicy `json:"failoverPolicy,omitempty"`
 }
 
@@ -934,6 +2445,71 @@ func (future InstanceFailoverGroupsForceFailoverAllowDataLossFuture) Result(clie
 	return
 }
 
+// LicenseTypeCapability the license type capability
+type LicenseTypeCapability struct {
+	// Name - License type identifier.
+	Name *string `json:"name,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// LocationCapabilities the location capability.
+type LocationCapabilities struct {
+	autorest.Response `json:"-"`
+	// Name - The location name.
+	Name *string `json:"name,omitempty"`
+	// SupportedServerVersions - The list of supported server versions.
+	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+	// SupportedManagedInstanceVersions - The list of supported managed instance versions.
+	SupportedManagedInstanceVersions *[]ManagedInstanceVersionCapability `json:"supportedManagedInstanceVersions,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// LogSizeCapability the log size capability.
+type LogSizeCapability struct {
+	// Limit - The log size limit (see 'unit' for the units).
+	Limit *int32 `json:"limit,omitempty"`
+	// Unit - The units that the limit is expressed in. Possible values include: 'Megabytes', 'Gigabytes', 'Terabytes', 'Petabytes', 'Percent'
+	Unit LogSizeUnit `json:"unit,omitempty"`
+}
+
+// ManagedInstanceEditionCapability the managed server capability
+type ManagedInstanceEditionCapability struct {
+	// Name - The managed server version name.
+	Name *string `json:"name,omitempty"`
+	// SupportedFamilies - The supported families.
+	SupportedFamilies *[]ManagedInstanceFamilyCapability `json:"supportedFamilies,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ManagedInstanceFamilyCapability the managed server family capability.
+type ManagedInstanceFamilyCapability struct {
+	// Name - Family name.
+	Name *string `json:"name,omitempty"`
+	// Sku - SKU name.
+	Sku *string `json:"sku,omitempty"`
+	// SupportedLicenseTypes - List of supported license types.
+	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
+	// SupportedVcoresValues - List of supported virtual cores values.
+	SupportedVcoresValues *[]ManagedInstanceVcoresCapability `json:"supportedVcoresValues,omitempty"`
+	// IncludedMaxSize - Included size.
+	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	// SupportedStorageSizes - Storage size ranges.
+	SupportedStorageSizes *[]MaxSizeRangeCapability `json:"supportedStorageSizes,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
 // ManagedInstancePairInfo pairs of Managed Instances in the failover group.
 type ManagedInstancePairInfo struct {
 	// PrimaryManagedInstanceID - Id of Primary Managed Instance in pair.
@@ -942,12 +2518,68 @@ type ManagedInstancePairInfo struct {
 	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
 }
 
+// ManagedInstanceVcoresCapability the managed instance virtual cores capability.
+type ManagedInstanceVcoresCapability struct {
+	// Name - The virtual cores identifier.
+	Name *string `json:"name,omitempty"`
+	// Value - The virtual cores value.
+	Value *int32 `json:"value,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ManagedInstanceVersionCapability the managed instance capability
+type ManagedInstanceVersionCapability struct {
+	// Name - The server version name.
+	Name *string `json:"name,omitempty"`
+	// SupportedEditions - The list of supported managed instance editions.
+	SupportedEditions *[]ManagedInstanceEditionCapability `json:"supportedEditions,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// MaxSizeCapability the maximum size capability.
+type MaxSizeCapability struct {
+	// Limit - The maximum size limit (see 'unit' for the units).
+	Limit *int32 `json:"limit,omitempty"`
+	// Unit - The units that the limit is expressed in. Possible values include: 'MaxSizeUnitMegabytes', 'MaxSizeUnitGigabytes', 'MaxSizeUnitTerabytes', 'MaxSizeUnitPetabytes'
+	Unit MaxSizeUnit `json:"unit,omitempty"`
+}
+
+// MaxSizeRangeCapability the maximum size range capability.
+type MaxSizeRangeCapability struct {
+	// MinValue - Minimum value.
+	MinValue *MaxSizeCapability `json:"minValue,omitempty"`
+	// MaxValue - Maximum value.
+	MaxValue *MaxSizeCapability `json:"maxValue,omitempty"`
+	// ScaleSize - Scale/step size for discrete values between the minimum value and the maximum value.
+	ScaleSize *MaxSizeCapability `json:"scaleSize,omitempty"`
+	// LogSize - Size of transaction log.
+	LogSize *LogSizeCapability `json:"logSize,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
 // PartnerRegionInfo partner region information for the failover group.
 type PartnerRegionInfo struct {
 	// Location - Geo location of the partner managed instances.
 	Location *string `json:"location,omitempty"`
 	// ReplicationRole - Replication role of the partner managed instances. Possible values include: 'Primary', 'Secondary'
 	ReplicationRole InstanceFailoverGroupReplicationRole `json:"replicationRole,omitempty"`
+}
+
+// PerformanceLevelCapability the performance level capability.
+type PerformanceLevelCapability struct {
+	// Value - Performance level value.
+	Value *float64 `json:"value,omitempty"`
+	// Unit - Unit type used to measure performance level. Possible values include: 'DTU', 'VCores'
+	Unit PerformanceLevelUnit `json:"unit,omitempty"`
 }
 
 // ProxyResource ARM proxy resource.
@@ -968,4 +2600,281 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// ResourceMoveDefinition contains the information necessary to perform a resource move (rename).
+type ResourceMoveDefinition struct {
+	// ID - The target ID for the resource
+	ID *string `json:"id,omitempty"`
+}
+
+// ServerVersionCapability the server capability
+type ServerVersionCapability struct {
+	// Name - The server version name.
+	Name *string `json:"name,omitempty"`
+	// SupportedEditions - The list of supported database editions.
+	SupportedEditions *[]EditionCapability `json:"supportedEditions,omitempty"`
+	// SupportedElasticPoolEditions - The list of supported elastic pool editions.
+	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ServiceObjectiveCapability the service objectives capability.
+type ServiceObjectiveCapability struct {
+	// ID - The unique ID of the service objective.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Name - The service objective name.
+	Name *string `json:"name,omitempty"`
+	// SupportedMaxSizes - The list of supported maximum database sizes.
+	SupportedMaxSizes *[]MaxSizeRangeCapability `json:"supportedMaxSizes,omitempty"`
+	// PerformanceLevel - The performance level.
+	PerformanceLevel *PerformanceLevelCapability `json:"performanceLevel,omitempty"`
+	// Sku - The sku.
+	Sku *Sku `json:"sku,omitempty"`
+	// SupportedLicenseTypes - List of supported license types.
+	SupportedLicenseTypes *[]LicenseTypeCapability `json:"supportedLicenseTypes,omitempty"`
+	// IncludedMaxSize - The included (free) max size.
+	IncludedMaxSize *MaxSizeCapability `json:"includedMaxSize,omitempty"`
+	// Status - The status of the capability. Possible values include: 'Visible', 'Available', 'Default', 'Disabled'
+	Status CapabilityStatus `json:"status,omitempty"`
+	// Reason - The reason for the capability not being available.
+	Reason *string `json:"reason,omitempty"`
+}
+
+// ShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ShortTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		strp, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	strp, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ShortTermRetentionPoliciesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ShortTermRetentionPoliciesUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		strp, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	strp, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ShortTermRetentionPolicy a short term retention policy resource.
+type ShortTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// ShortTermRetentionPolicyProperties - Resource properties.
+	*ShortTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShortTermRetentionPolicy.
+func (strp ShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if strp.ShortTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = strp.ShortTermRetentionPolicyProperties
+	}
+	if strp.ID != nil {
+		objectMap["id"] = strp.ID
+	}
+	if strp.Name != nil {
+		objectMap["name"] = strp.Name
+	}
+	if strp.Type != nil {
+		objectMap["type"] = strp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ShortTermRetentionPolicy struct.
+func (strp *ShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var shortTermRetentionPolicyProperties ShortTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &shortTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				strp.ShortTermRetentionPolicyProperties = &shortTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				strp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				strp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				strp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ShortTermRetentionPolicyProperties properties of a short term retention policy
+type ShortTermRetentionPolicyProperties struct {
+	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
+// Sku an ARM Resource SKU.
+type Sku struct {
+	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	Name *string `json:"name,omitempty"`
+	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	Tier *string `json:"tier,omitempty"`
+	// Size - Size of the particular SKU
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - Capacity of the particular SKU.
+	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// TrackedResource ARM tracked top level resource.
+type TrackedResource struct {
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.ID != nil {
+		objectMap["id"] = tr.ID
+	}
+	if tr.Name != nil {
+		objectMap["name"] = tr.Name
+	}
+	if tr.Type != nil {
+		objectMap["type"] = tr.Type
+	}
+	return json.Marshal(objectMap)
 }

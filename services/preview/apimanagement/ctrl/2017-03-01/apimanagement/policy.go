@@ -36,9 +36,10 @@ func NewPolicyClient() PolicyClient {
 }
 
 // CreateOrUpdate creates or updates the global policy configuration of the Api Management service.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. parameters is the policy contents to apply.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// parameters - the policy contents to apply.
 func (client PolicyClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, parameters PolicyContract) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -113,10 +114,11 @@ func (client PolicyClient) CreateOrUpdateResponder(resp *http.Response) (result 
 }
 
 // Delete deletes the global policy configuration of the Api Management Service.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. ifMatch is the entity state (Etag) version of the policy to be
-// deleted. A value of "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// ifMatch - the entity state (Etag) version of the policy to be deleted. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client PolicyClient) Delete(ctx context.Context, apimBaseURL string, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, apimBaseURL, ifMatch)
 	if err != nil {
@@ -183,8 +185,8 @@ func (client PolicyClient) DeleteResponder(resp *http.Response) (result autorest
 }
 
 // Get get the Global policy definition of the Api Management service.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
 // https://myapimservice.management.azure-api.net.
 func (client PolicyClient) Get(ctx context.Context, apimBaseURL string) (result PolicyContract, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL)
@@ -252,9 +254,10 @@ func (client PolicyClient) GetResponder(resp *http.Response) (result PolicyContr
 }
 
 // List lists all the Global Policy definitions of the Api Management service.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. scope is policy scope.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// scope - policy scope.
 func (client PolicyClient) List(ctx context.Context, apimBaseURL string, scope PolicyScopeContract) (result PolicyCollection, err error) {
 	req, err := client.ListPreparer(ctx, apimBaseURL, scope)
 	if err != nil {

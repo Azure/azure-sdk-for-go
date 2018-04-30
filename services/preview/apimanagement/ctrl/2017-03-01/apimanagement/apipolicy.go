@@ -36,12 +36,13 @@ func NewAPIPolicyClient() APIPolicyClient {
 }
 
 // CreateOrUpdate creates or updates policy configuration for the API.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. parameters is the policy contents to apply. ifMatch is the entity state (Etag)
-// version of the Api Policy to update. A value of "*" can be used for If-Match to unconditionally apply the
-// operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// parameters - the policy contents to apply.
+// ifMatch - the entity state (Etag) version of the Api Policy to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client APIPolicyClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, apiid string, parameters PolicyContract, ifMatch string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -122,11 +123,12 @@ func (client APIPolicyClient) CreateOrUpdateResponder(resp *http.Response) (resu
 }
 
 // Delete deletes the policy configuration at the Api.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance. ifMatch is the entity state (Etag) version of the Api policy to update. A value of
-// "*" can be used for If-Match to unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
+// ifMatch - the entity state (Etag) version of the Api policy to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client APIPolicyClient) Delete(ctx context.Context, apimBaseURL string, apiid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -202,10 +204,10 @@ func (client APIPolicyClient) DeleteResponder(resp *http.Response) (result autor
 }
 
 // Get get the policy configuration at the API level.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client APIPolicyClient) Get(ctx context.Context, apimBaseURL string, apiid string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,
@@ -281,10 +283,10 @@ func (client APIPolicyClient) GetResponder(resp *http.Response) (result PolicyCo
 }
 
 // ListByAPI get the policy configuration at the API level.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client APIPolicyClient) ListByAPI(ctx context.Context, apimBaseURL string, apiid string) (result PolicyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

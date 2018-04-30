@@ -40,8 +40,8 @@ func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 }
 
 // Get gets details about a specified subscription.
-//
-// subscriptionID is the ID of the target subscription.
+// Parameters:
+// subscriptionID - the ID of the target subscription.
 func (client SubscriptionsClient) Get(ctx context.Context, subscriptionID string) (result Model, err error) {
 	req, err := client.GetPreparer(ctx, subscriptionID)
 	if err != nil {
@@ -191,8 +191,8 @@ func (client SubscriptionsClient) ListComplete(ctx context.Context) (result List
 
 // ListLocations this operation provides all the locations that are available for resource providers; however, each
 // resource provider may support a subset of this list.
-//
-// subscriptionID is the ID of the target subscription.
+// Parameters:
+// subscriptionID - the ID of the target subscription.
 func (client SubscriptionsClient) ListLocations(ctx context.Context, subscriptionID string) (result LocationListResult, err error) {
 	req, err := client.ListLocationsPreparer(ctx, subscriptionID)
 	if err != nil {

@@ -36,10 +36,11 @@ func NewEmailTemplateClient() EmailTemplateClient {
 }
 
 // CreateOrUpdate updates an Email Template.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. templateName is email Template Name Identifier. parameters is
-// email Template update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// templateName - email Template Name Identifier.
+// parameters - email Template update parameters.
 func (client EmailTemplateClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, templateName TemplateName, parameters EmailTemplateUpdateParameters) (result EmailTemplateContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -119,11 +120,12 @@ func (client EmailTemplateClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete reset the Email Template to default template provided by the API Management service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. templateName is email Template Name Identifier. ifMatch is the
-// entity state (Etag) version of the Email Template to delete. A value of "*" can be used for If-Match to
-// unconditionally apply the operation.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// templateName - email Template Name Identifier.
+// ifMatch - the entity state (Etag) version of the Email Template to delete. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client EmailTemplateClient) Delete(ctx context.Context, apimBaseURL string, templateName TemplateName, ifMatch string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, apimBaseURL, templateName, ifMatch)
 	if err != nil {
@@ -190,9 +192,10 @@ func (client EmailTemplateClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get gets the details of the email template specified by its identifier.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. templateName is email Template Name Identifier.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// templateName - email Template Name Identifier.
 func (client EmailTemplateClient) Get(ctx context.Context, apimBaseURL string, templateName TemplateName) (result EmailTemplateContract, err error) {
 	req, err := client.GetPreparer(ctx, apimBaseURL, templateName)
 	if err != nil {
@@ -259,13 +262,14 @@ func (client EmailTemplateClient) GetResponder(resp *http.Response) (result Emai
 }
 
 // List lists a collection of properties defined within a service instance.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. filter is | Field          | Supported operators    | Supported
-// functions                         |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// filter - | Field          | Supported operators    | Supported functions                         |
 // |----------------|------------------------|---------------------------------------------|
-// | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of
-// records to return. skip is number of records to skip.
+// | id             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client EmailTemplateClient) List(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (result EmailTemplateCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
@@ -375,10 +379,11 @@ func (client EmailTemplateClient) ListComplete(ctx context.Context, apimBaseURL 
 }
 
 // Update updates the specific Email Template.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. templateName is email Template Name Identifier. parameters is
-// update parameters.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// templateName - email Template Name Identifier.
+// parameters - update parameters.
 func (client EmailTemplateClient) Update(ctx context.Context, apimBaseURL string, templateName TemplateName, parameters EmailTemplateUpdateParameters) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, templateName, parameters)
 	if err != nil {

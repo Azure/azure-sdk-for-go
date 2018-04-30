@@ -35,9 +35,10 @@ func NewPolicySnippetsClient() PolicySnippetsClient {
 }
 
 // List lists all policy snippets.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. scope is policy scope.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// scope - policy scope.
 func (client PolicySnippetsClient) List(ctx context.Context, apimBaseURL string, scope PolicyScopeContract) (result PolicySnippetsCollection, err error) {
 	req, err := client.ListPreparer(ctx, apimBaseURL, scope)
 	if err != nil {

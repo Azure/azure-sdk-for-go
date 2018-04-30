@@ -199,13 +199,13 @@ type CertificateResponse struct {
 
 // DefinitionDescription description of the IoT hub.
 type DefinitionDescription struct {
-	// ApplyAllocationPolicy - Flag for applying allocationPolicy or not for a given IoT hub.
+	// ApplyAllocationPolicy - flag for applying allocationPolicy or not for a given iot hub.
 	ApplyAllocationPolicy *bool `json:"applyAllocationPolicy,omitempty"`
-	// AllocationWeight - Weight to apply for a given IoT hub.
+	// AllocationWeight - weight to apply for a given iot h.
 	AllocationWeight *int32 `json:"allocationWeight,omitempty"`
 	// Name - Host name of the IoT hub.
 	Name *string `json:"name,omitempty"`
-	// ConnectionString - Connection string of the IoT hub.
+	// ConnectionString - Connection string og the IoT hub.
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// Location - ARM region of the IoT hub.
 	Location *string `json:"location,omitempty"`
@@ -214,13 +214,13 @@ type DefinitionDescription struct {
 // ErrorDetails error details.
 type ErrorDetails struct {
 	// Code - The error code.
-	Code *string `json:"Code,omitempty"`
+	Code *string `json:"code,omitempty"`
 	// HTTPStatusCode - The HTTP status code.
-	HTTPStatusCode *string `json:"HttpStatusCode,omitempty"`
+	HTTPStatusCode *string `json:"httpStatusCode,omitempty"`
 	// Message - The error message.
-	Message *string `json:"Message,omitempty"`
+	Message *string `json:"message,omitempty"`
 	// Details - The error details.
-	Details *string `json:"Details,omitempty"`
+	Details *string `json:"details,omitempty"`
 }
 
 // ErrorMesssage error response containing message and code.
@@ -399,9 +399,9 @@ func (future IotDpsResourceUpdateFuture) Result(client IotDpsResourceClient) (ps
 	return
 }
 
-// IotDpsSkuDefinition available SKU's of tier and units.
+// IotDpsSkuDefinition available Sku's of tier and units.
 type IotDpsSkuDefinition struct {
-	// Name - SKU name. Possible values include: 'S1'
+	// Name - Sku name. Possible values include: 'S1'
 	Name IotDpsSku `json:"name,omitempty"`
 }
 
@@ -662,7 +662,7 @@ type ProvisioningServiceDescription struct {
 	Etag *string `json:"etag,omitempty"`
 	// Properties - Service specific properties for a provisioning service
 	Properties *IotDpsPropertiesDescription `json:"properties,omitempty"`
-	// Sku - SKU info for a provisioning service.
+	// Sku - Sku info for a provisioning Service.
 	Sku *IotDpsSkuInfo `json:"sku,omitempty"`
 	// ID - The resource identifier.
 	ID *string `json:"id,omitempty"`

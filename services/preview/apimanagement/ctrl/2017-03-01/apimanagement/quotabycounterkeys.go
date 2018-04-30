@@ -36,12 +36,13 @@ func NewQuotaByCounterKeysClient() QuotaByCounterKeysClient {
 
 // List lists a collection of current quota counter periods associated with the counter-key configured in the policy on
 // the specified service instance. The api does not support paging yet.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. quotaCounterKey is quota counter key identifier.This is the
-// result of expression defined in counter-key attribute of the quota-by-key policy.For Example, if you specify
-// counter-key="boo" in the policy, then it’s accessible by "boo" counter key. But if it’s defined as
-// counter-key="@("b"+"a")" then it will be accessible by "ba" key
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// quotaCounterKey - quota counter key identifier.This is the result of expression defined in counter-key
+// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
+// by "ba" key
 func (client QuotaByCounterKeysClient) List(ctx context.Context, apimBaseURL string, quotaCounterKey string) (result QuotaCounterCollection, err error) {
 	req, err := client.ListPreparer(ctx, apimBaseURL, quotaCounterKey)
 	if err != nil {
@@ -109,13 +110,14 @@ func (client QuotaByCounterKeysClient) ListResponder(resp *http.Response) (resul
 
 // Update updates all the quota counter values specified with the existing quota counter key to a value in the
 // specified service instance. This should be used for reset of the quota counter values.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. quotaCounterKey is quota counter key identifier.This is the
-// result of expression defined in counter-key attribute of the quota-by-key policy.For Example, if you specify
-// counter-key="boo" in the policy, then it’s accessible by "boo" counter key. But if it’s defined as
-// counter-key="@("b"+"a")" then it will be accessible by "ba" key parameters is the value of the quota counter to
-// be applied to all quota counter periods.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// quotaCounterKey - quota counter key identifier.This is the result of expression defined in counter-key
+// attribute of the quota-by-key policy.For Example, if you specify counter-key="boo" in the policy, then it’s
+// accessible by "boo" counter key. But if it’s defined as counter-key="@("b"+"a")" then it will be accessible
+// by "ba" key
+// parameters - the value of the quota counter to be applied to all quota counter periods.
 func (client QuotaByCounterKeysClient) Update(ctx context.Context, apimBaseURL string, quotaCounterKey string, parameters QuotaCounterValueContractProperties) (result autorest.Response, err error) {
 	req, err := client.UpdatePreparer(ctx, apimBaseURL, quotaCounterKey, parameters)
 	if err != nil {

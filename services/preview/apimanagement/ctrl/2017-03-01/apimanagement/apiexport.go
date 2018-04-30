@@ -37,10 +37,10 @@ func NewAPIExportClient() APIExportClient {
 
 // Get gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key
 // valid for 5 minutes.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. apiid is API identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// apiid - API identifier. Must be unique in the current API Management service instance.
 func (client APIExportClient) Get(ctx context.Context, apimBaseURL string, apiid string) (result APIExportResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: apiid,

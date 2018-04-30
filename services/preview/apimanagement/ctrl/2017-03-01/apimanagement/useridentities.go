@@ -36,10 +36,10 @@ func NewUserIdentitiesClient() UserIdentitiesClient {
 }
 
 // List lists all user identities.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. UID is user identifier. Must be unique in the current API
-// Management service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// UID - user identifier. Must be unique in the current API Management service instance.
 func (client UserIdentitiesClient) List(ctx context.Context, apimBaseURL string, UID string) (result UserIdentityCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: UID,

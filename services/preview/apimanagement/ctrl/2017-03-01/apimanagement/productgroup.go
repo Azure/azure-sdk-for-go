@@ -36,11 +36,11 @@ func NewProductGroupClient() ProductGroupClient {
 }
 
 // CreateOrUpdate adds the association between the specified developer group with the specified product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. groupID is group identifier. Must be unique in the current API Management
-// service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// groupID - group identifier. Must be unique in the current API Management service instance.
 func (client ProductGroupClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, productID string, groupID string) (result GroupContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -120,11 +120,11 @@ func (client ProductGroupClient) CreateOrUpdateResponder(resp *http.Response) (r
 }
 
 // Delete deletes the association between the specified group and product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. groupID is group identifier. Must be unique in the current API Management
-// service instance.
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// groupID - group identifier. Must be unique in the current API Management service instance.
 func (client ProductGroupClient) Delete(ctx context.Context, apimBaseURL string, productID string, groupID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,
@@ -203,17 +203,18 @@ func (client ProductGroupClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // ListByProduct lists the collection of developer groups associated with the specified product.
-//
-// apimBaseURL is the management endpoint of the API Management service, for example
-// https://myapimservice.management.azure-api.net. productID is product identifier. Must be unique in the current
-// API Management service instance. filter is | Field       | Supported operators    | Supported functions
-// |
+// Parameters:
+// apimBaseURL - the management endpoint of the API Management service, for example
+// https://myapimservice.management.azure-api.net.
+// productID - product identifier. Must be unique in the current API Management service instance.
+// filter - | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | type        | eq, ne                 | N/A                                         | top is number of records
-// to return. skip is number of records to skip.
+// | type        | eq, ne                 | N/A                                         |
+// top - number of records to return.
+// skip - number of records to skip.
 func (client ProductGroupClient) ListByProduct(ctx context.Context, apimBaseURL string, productID string, filter string, top *int32, skip *int32) (result GroupCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: productID,

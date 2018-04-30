@@ -40,75 +40,6 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckChildrenNameAvailability this method checks whether a proposed nested resource name is valid and available.
-//
-// groupName is name of the resource group serviceName is name of the service parameters is requested name to
-// validate
-func (client ServicesClient) CheckChildrenNameAvailability(ctx context.Context, groupName string, serviceName string, parameters NameAvailabilityRequest) (result NameAvailabilityResponse, err error) {
-	req, err := client.CheckChildrenNameAvailabilityPreparer(ctx, groupName, serviceName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckChildrenNameAvailability", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CheckChildrenNameAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckChildrenNameAvailability", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CheckChildrenNameAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "CheckChildrenNameAvailability", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CheckChildrenNameAvailabilityPreparer prepares the CheckChildrenNameAvailability request.
-func (client ServicesClient) CheckChildrenNameAvailabilityPreparer(ctx context.Context, groupName string, serviceName string, parameters NameAvailabilityRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":      autorest.Encode("path", groupName),
-		"serviceName":    autorest.Encode("path", serviceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-11-15-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/checkNameAvailability", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CheckChildrenNameAvailabilitySender sends the CheckChildrenNameAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServicesClient) CheckChildrenNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CheckChildrenNameAvailabilityResponder handles the response to the CheckChildrenNameAvailability request. The method always
-// closes the http.Response Body.
-func (client ServicesClient) CheckChildrenNameAvailabilityResponder(resp *http.Response) (result NameAvailabilityResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // CheckNameAvailability this method checks whether a proposed top-level resource name is valid and available.
 //
 // location is the Azure region of the operation parameters is requested name to validate
@@ -743,6 +674,75 @@ func (client ServicesClient) listSkusNextResults(lastResults ServiceSkuList) (re
 // ListSkusComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServicesClient) ListSkusComplete(ctx context.Context, groupName string, serviceName string) (result ServiceSkuListIterator, err error) {
 	result.page, err = client.ListSkus(ctx, groupName, serviceName)
+	return
+}
+
+// NestedCheckNameAvailability this method checks whether a proposed nested resource name is valid and available.
+//
+// groupName is name of the resource group serviceName is name of the service parameters is requested name to
+// validate
+func (client ServicesClient) NestedCheckNameAvailability(ctx context.Context, groupName string, serviceName string, parameters NameAvailabilityRequest) (result NameAvailabilityResponse, err error) {
+	req, err := client.NestedCheckNameAvailabilityPreparer(ctx, groupName, serviceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "NestedCheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.NestedCheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "NestedCheckNameAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.NestedCheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServicesClient", "NestedCheckNameAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// NestedCheckNameAvailabilityPreparer prepares the NestedCheckNameAvailability request.
+func (client ServicesClient) NestedCheckNameAvailabilityPreparer(ctx context.Context, groupName string, serviceName string, parameters NameAvailabilityRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupName":      autorest.Encode("path", groupName),
+		"serviceName":    autorest.Encode("path", serviceName),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-11-15-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/checkNameAvailability", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// NestedCheckNameAvailabilitySender sends the NestedCheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicesClient) NestedCheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// NestedCheckNameAvailabilityResponder handles the response to the NestedCheckNameAvailability request. The method always
+// closes the http.Response Body.
+func (client ServicesClient) NestedCheckNameAvailabilityResponder(resp *http.Response) (result NameAvailabilityResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

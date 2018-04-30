@@ -1320,7 +1320,7 @@ type DataItemMigrationSummaryResult struct {
 type Error struct {
 	// Message - Error description
 	Message *string `json:"message,omitempty"`
-	// Type - Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
+	// Type - Type of error. Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
 	Type ErrorType `json:"type,omitempty"`
 }
 
@@ -1619,7 +1619,7 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicMigrateSQLServerSQLDbTaskO
 	return &msssdto, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputDatabaseLevel ...
+// MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	// DatabaseName - Name of the item
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -1740,7 +1740,7 @@ func (msssdtodl MigrateSQLServerSQLDbTaskOutputDatabaseLevel) AsBasicMigrateSQLS
 	return &msssdtodl, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputError ...
+// MigrateSQLServerSQLDbTaskOutputError task errors for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputError struct {
 	// Error - Migration error
 	Error *ReportableException `json:"error,omitempty"`
@@ -1796,7 +1796,7 @@ func (msssdtoe MigrateSQLServerSQLDbTaskOutputError) AsBasicMigrateSQLServerSQLD
 	return &msssdtoe, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputMigrationLevel ...
+// MigrateSQLServerSQLDbTaskOutputMigrationLevel migration level result for Sql server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputMigrationLevel struct {
 	// StartedOn - Migration start time
 	StartedOn *date.Time `json:"startedOn,omitempty"`
@@ -1917,7 +1917,7 @@ func (msssdtoml MigrateSQLServerSQLDbTaskOutputMigrationLevel) AsBasicMigrateSQL
 	return &msssdtoml, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputTableLevel ...
+// MigrateSQLServerSQLDbTaskOutputTableLevel table level result for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputTableLevel struct {
 	// ObjectName - Name of the item
 	ObjectName *string `json:"objectName,omitempty"`

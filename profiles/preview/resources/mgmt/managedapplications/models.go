@@ -19,29 +19,29 @@
 
 package managedapplications
 
-import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01-preview/managedapplications"
+import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-09-01/managedapplications"
 
-type ApplianceDefinitionsClient = original.ApplianceDefinitionsClient
-type AppliancesClient = original.AppliancesClient
+type ApplicationDefinitionsClient = original.ApplicationDefinitionsClient
+type ApplicationsClient = original.ApplicationsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ApplianceArtifactType = original.ApplianceArtifactType
+type ApplicationArtifactType = original.ApplicationArtifactType
 
 const (
-	Custom   ApplianceArtifactType = original.Custom
-	Template ApplianceArtifactType = original.Template
+	Custom   ApplicationArtifactType = original.Custom
+	Template ApplicationArtifactType = original.Template
 )
 
-type ApplianceLockLevel = original.ApplianceLockLevel
+type ApplicationLockLevel = original.ApplicationLockLevel
 
 const (
-	CanNotDelete ApplianceLockLevel = original.CanNotDelete
-	None         ApplianceLockLevel = original.None
-	ReadOnly     ApplianceLockLevel = original.ReadOnly
+	CanNotDelete ApplicationLockLevel = original.CanNotDelete
+	None         ApplicationLockLevel = original.None
+	ReadOnly     ApplicationLockLevel = original.ReadOnly
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -66,28 +66,28 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
-type Appliance = original.Appliance
-type ApplianceArtifact = original.ApplianceArtifact
-type ApplianceDefinition = original.ApplianceDefinition
-type ApplianceDefinitionListResult = original.ApplianceDefinitionListResult
-type ApplianceDefinitionListResultIterator = original.ApplianceDefinitionListResultIterator
-type ApplianceDefinitionListResultPage = original.ApplianceDefinitionListResultPage
-type ApplianceDefinitionProperties = original.ApplianceDefinitionProperties
-type ApplianceDefinitionsCreateOrUpdateByIDFuture = original.ApplianceDefinitionsCreateOrUpdateByIDFuture
-type ApplianceDefinitionsCreateOrUpdateFuture = original.ApplianceDefinitionsCreateOrUpdateFuture
-type ApplianceDefinitionsDeleteByIDFuture = original.ApplianceDefinitionsDeleteByIDFuture
-type ApplianceDefinitionsDeleteFuture = original.ApplianceDefinitionsDeleteFuture
-type ApplianceListResult = original.ApplianceListResult
-type ApplianceListResultIterator = original.ApplianceListResultIterator
-type ApplianceListResultPage = original.ApplianceListResultPage
-type AppliancePatchable = original.AppliancePatchable
-type ApplianceProperties = original.ApplianceProperties
-type AppliancePropertiesPatchable = original.AppliancePropertiesPatchable
-type ApplianceProviderAuthorization = original.ApplianceProviderAuthorization
-type AppliancesCreateOrUpdateByIDFuture = original.AppliancesCreateOrUpdateByIDFuture
-type AppliancesCreateOrUpdateFuture = original.AppliancesCreateOrUpdateFuture
-type AppliancesDeleteByIDFuture = original.AppliancesDeleteByIDFuture
-type AppliancesDeleteFuture = original.AppliancesDeleteFuture
+type Application = original.Application
+type ApplicationArtifact = original.ApplicationArtifact
+type ApplicationDefinition = original.ApplicationDefinition
+type ApplicationDefinitionListResult = original.ApplicationDefinitionListResult
+type ApplicationDefinitionListResultIterator = original.ApplicationDefinitionListResultIterator
+type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListResultPage
+type ApplicationDefinitionProperties = original.ApplicationDefinitionProperties
+type ApplicationDefinitionsCreateOrUpdateByIDFuture = original.ApplicationDefinitionsCreateOrUpdateByIDFuture
+type ApplicationDefinitionsCreateOrUpdateFuture = original.ApplicationDefinitionsCreateOrUpdateFuture
+type ApplicationDefinitionsDeleteByIDFuture = original.ApplicationDefinitionsDeleteByIDFuture
+type ApplicationDefinitionsDeleteFuture = original.ApplicationDefinitionsDeleteFuture
+type ApplicationListResult = original.ApplicationListResult
+type ApplicationListResultIterator = original.ApplicationListResultIterator
+type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationPatchable = original.ApplicationPatchable
+type ApplicationProperties = original.ApplicationProperties
+type ApplicationPropertiesPatchable = original.ApplicationPropertiesPatchable
+type ApplicationProviderAuthorization = original.ApplicationProviderAuthorization
+type ApplicationsCreateOrUpdateByIDFuture = original.ApplicationsCreateOrUpdateByIDFuture
+type ApplicationsCreateOrUpdateFuture = original.ApplicationsCreateOrUpdateFuture
+type ApplicationsDeleteByIDFuture = original.ApplicationsDeleteByIDFuture
+type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type ErrorResponse = original.ErrorResponse
 type GenericResource = original.GenericResource
 type Identity = original.Identity
@@ -96,17 +96,17 @@ type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
 
-func NewApplianceDefinitionsClient(subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClient(subscriptionID)
+func NewApplicationDefinitionsClient(subscriptionID string) ApplicationDefinitionsClient {
+	return original.NewApplicationDefinitionsClient(subscriptionID)
 }
-func NewApplianceDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplianceDefinitionsClient {
-	return original.NewApplianceDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationDefinitionsClient {
+	return original.NewApplicationDefinitionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAppliancesClient(subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClient(subscriptionID)
+func NewApplicationsClient(subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClient(subscriptionID)
 }
-func NewAppliancesClientWithBaseURI(baseURI string, subscriptionID string) AppliancesClient {
-	return original.NewAppliancesClientWithBaseURI(baseURI, subscriptionID)
+func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -114,11 +114,11 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
-	return original.PossibleApplianceArtifactTypeValues()
+func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
+	return original.PossibleApplicationArtifactTypeValues()
 }
-func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
-	return original.PossibleApplianceLockLevelValues()
+func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
+	return original.PossibleApplicationLockLevelValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

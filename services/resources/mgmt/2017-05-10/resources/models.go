@@ -601,29 +601,29 @@ type DeploymentPropertiesExtended struct {
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
 }
 
-// DeploymentsCreateOrUpdate1Future an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type DeploymentsCreateOrUpdate1Future struct {
+// DeploymentsCreateOrUpdateAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DeploymentsCreateOrUpdate1Future) Result(client DeploymentsClient) (de DeploymentExtended, err error) {
+func (future DeploymentsCreateOrUpdateAtSubscriptionScopeFuture) Result(client DeploymentsClient) (de DeploymentExtended, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return de, azure.NewAsyncOpIncompleteError("resources.DeploymentsCreateOrUpdate1Future")
+		return de, azure.NewAsyncOpIncompleteError("resources.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		de, err = client.CreateOrUpdate1Responder(future.Response())
+		de, err = client.CreateOrUpdateAtSubscriptionScopeResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -640,12 +640,12 @@ func (future DeploymentsCreateOrUpdate1Future) Result(client DeploymentsClient) 
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	de, err = client.CreateOrUpdate1Responder(resp)
+	de, err = client.CreateOrUpdateAtSubscriptionScopeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdate1Future", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -699,28 +699,29 @@ func (future DeploymentsCreateOrUpdateFuture) Result(client DeploymentsClient) (
 	return
 }
 
-// DeploymentsDelete1Future an abstraction for monitoring and retrieving the results of a long-running operation.
-type DeploymentsDelete1Future struct {
+// DeploymentsDeleteAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DeploymentsDeleteAtSubscriptionScopeFuture struct {
 	azure.Future
 	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DeploymentsDelete1Future) Result(client DeploymentsClient) (ar autorest.Response, err error) {
+func (future DeploymentsDeleteAtSubscriptionScopeFuture) Result(client DeploymentsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDeleteAtSubscriptionScopeFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("resources.DeploymentsDelete1Future")
+		return ar, azure.NewAsyncOpIncompleteError("resources.DeploymentsDeleteAtSubscriptionScopeFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.Delete1Responder(future.Response())
+		ar, err = client.DeleteAtSubscriptionScopeResponder(future.Response())
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", future.Response(), "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resources.DeploymentsDeleteAtSubscriptionScopeFuture", "Result", future.Response(), "Failure responding to request")
 		}
 		return
 	}
@@ -737,12 +738,12 @@ func (future DeploymentsDelete1Future) Result(client DeploymentsClient) (ar auto
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDeleteAtSubscriptionScopeFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	ar, err = client.Delete1Responder(resp)
+	ar, err = client.DeleteAtSubscriptionScopeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsDelete1Future", "Result", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsDeleteAtSubscriptionScopeFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

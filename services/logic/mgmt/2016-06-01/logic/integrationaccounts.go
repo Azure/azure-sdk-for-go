@@ -504,14 +504,13 @@ func (client IntegrationAccountsClient) ListCallbackURLResponder(resp *http.Resp
 //
 // resourceGroupName is the resource group name. integrationAccountName is the integration account name.
 // listKeyVaultKeys is the key vault parameters.
-func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition) (result KeyVaultKeyCollectionPage, err error) {
+func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition) (result KeyVaultKeyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: listKeyVaultKeys,
 			Constraints: []validation.Constraint{{Target: "listKeyVaultKeys.KeyVault", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("logic.IntegrationAccountsClient", "ListKeyVaultKeys", err.Error())
 	}
 
-	result.fn = client.listKeyVaultKeysNextResults
 	req, err := client.ListKeyVaultKeysPreparer(ctx, resourceGroupName, integrationAccountName, listKeyVaultKeys)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListKeyVaultKeys", nil, "Failure preparing request")
@@ -520,12 +519,12 @@ func (client IntegrationAccountsClient) ListKeyVaultKeys(ctx context.Context, re
 
 	resp, err := client.ListKeyVaultKeysSender(req)
 	if err != nil {
-		result.kvkc.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListKeyVaultKeys", resp, "Failure sending request")
 		return
 	}
 
-	result.kvkc, err = client.ListKeyVaultKeysResponder(resp)
+	result, err = client.ListKeyVaultKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListKeyVaultKeys", resp, "Failure responding to request")
 	}
@@ -573,33 +572,6 @@ func (client IntegrationAccountsClient) ListKeyVaultKeysResponder(resp *http.Res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listKeyVaultKeysNextResults retrieves the next set of results, if any.
-func (client IntegrationAccountsClient) listKeyVaultKeysNextResults(lastResults KeyVaultKeyCollection) (result KeyVaultKeyCollection, err error) {
-	req, err := lastResults.keyVaultKeyCollectionPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "listKeyVaultKeysNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListKeyVaultKeysSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "listKeyVaultKeysNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListKeyVaultKeysResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "listKeyVaultKeysNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListKeyVaultKeysComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IntegrationAccountsClient) ListKeyVaultKeysComplete(ctx context.Context, resourceGroupName string, integrationAccountName string, listKeyVaultKeys ListKeyVaultKeysDefinition) (result KeyVaultKeyCollectionIterator, err error) {
-	result.page, err = client.ListKeyVaultKeys(ctx, resourceGroupName, integrationAccountName, listKeyVaultKeys)
 	return
 }
 

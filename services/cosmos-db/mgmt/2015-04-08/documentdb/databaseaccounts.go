@@ -1057,6 +1057,7 @@ func (client DatabaseAccountsClient) ListUsagesResponder(resp *http.Response) (r
 // OfflineRegion offline the specified region for the specified Azure Cosmos DB database account.
 //
 // resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// regionParameterForOffline is cosmos DB region to offline for the database account.
 func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline) (result DatabaseAccountsOfflineRegionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
@@ -1137,6 +1138,7 @@ func (client DatabaseAccountsClient) OfflineRegionResponder(resp *http.Response)
 // OnlineRegion online the specified region for the specified Azure Cosmos DB database account.
 //
 // resourceGroupName is name of an Azure resource group. accountName is cosmos DB database account name.
+// regionParameterForOnline is cosmos DB region to online for the database account.
 func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline) (result DatabaseAccountsOnlineRegionFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,

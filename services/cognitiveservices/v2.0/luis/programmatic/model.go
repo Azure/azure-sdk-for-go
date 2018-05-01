@@ -1239,6 +1239,72 @@ func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Respo
 	return
 }
 
+// CreatePatternAnyEntityModel sends the create pattern any entity model request.
+//
+// appID is the application ID. versionID is the version ID. extractorCreateObject is a model object containing the
+// name and explicit list for the new Pattern.Any entity extractor.
+func (client ModelClient) CreatePatternAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result UUID, err error) {
+	req, err := client.CreatePatternAnyEntityModelPreparer(ctx, appID, versionID, extractorCreateObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatternAnyEntityModel", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreatePatternAnyEntityModelSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatternAnyEntityModel", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreatePatternAnyEntityModelResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatternAnyEntityModel", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreatePatternAnyEntityModelPreparer prepares the CreatePatternAnyEntityModel request.
+func (client ModelClient) CreatePatternAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"AzureRegion": client.AzureRegion,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
+		autorest.WithJSON(extractorCreateObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreatePatternAnyEntityModelSender sends the CreatePatternAnyEntityModel request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) CreatePatternAnyEntityModelSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// CreatePatternAnyEntityModelResponder handles the response to the CreatePatternAnyEntityModel request. The method always
+// closes the http.Response Body.
+func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Response) (result UUID, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreatePatternAnyEntityRole sends the create pattern any entity role request.
 //
 // appID is the application ID. versionID is the version ID. entityID is the entity model ID.
@@ -1296,72 +1362,6 @@ func (client ModelClient) CreatePatternAnyEntityRoleSender(req *http.Request) (*
 // CreatePatternAnyEntityRoleResponder handles the response to the CreatePatternAnyEntityRole request. The method always
 // closes the http.Response Body.
 func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Response) (result UUID, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// CreatePatteryAnyEntityModel sends the create pattery any entity model request.
-//
-// appID is the application ID. versionID is the version ID. extractorCreateObject is a model object containing the
-// name and explicit list for the new Pattern.Any entity extractor.
-func (client ModelClient) CreatePatteryAnyEntityModel(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (result UUID, err error) {
-	req, err := client.CreatePatteryAnyEntityModelPreparer(ctx, appID, versionID, extractorCreateObject)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatteryAnyEntityModel", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CreatePatteryAnyEntityModelSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatteryAnyEntityModel", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreatePatteryAnyEntityModelResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "programmatic.ModelClient", "CreatePatteryAnyEntityModel", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CreatePatteryAnyEntityModelPreparer prepares the CreatePatteryAnyEntityModel request.
-func (client ModelClient) CreatePatteryAnyEntityModelPreparer(ctx context.Context, appID uuid.UUID, versionID string, extractorCreateObject PatternAnyModelCreateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"AzureRegion": client.AzureRegion,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/luis/api/v2.0", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patternanyentities", pathParameters),
-		autorest.WithJSON(extractorCreateObject))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreatePatteryAnyEntityModelSender sends the CreatePatteryAnyEntityModel request. The method will close the
-// http.Response Body if it receives an error.
-func (client ModelClient) CreatePatteryAnyEntityModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// CreatePatteryAnyEntityModelResponder handles the response to the CreatePatteryAnyEntityModel request. The method always
-// closes the http.Response Body.
-func (client ModelClient) CreatePatteryAnyEntityModelResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -24,28 +24,26 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConnectionsClient is the webSite Management Client
 type ConnectionsClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewConnectionsClient creates an instance of the ConnectionsClient client.
 func NewConnectionsClient(subscriptionID string) ConnectionsClient {
 	return NewConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewConnectionsClientWithBaseURI creates an instance of the ConnectionsClient client.
 func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionsClient {
 	return ConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCode confirms consent code of a connection.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name. content is the content.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
+// content - the content.
 func (client ConnectionsClient) ConfirmConsentCode(ctx context.Context, resourceGroupName string, connectionName string, content ConfirmConsentCodeInput) (result Connection, err error) {
 	req, err := client.ConfirmConsentCodePreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
@@ -68,7 +66,6 @@ func (client ConnectionsClient) ConfirmConsentCode(ctx context.Context, resource
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCodePreparer prepares the ConfirmConsentCode request.
 func (client ConnectionsClient) ConfirmConsentCodePreparer(ctx context.Context, resourceGroupName string, connectionName string, content ConfirmConsentCodeInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -92,7 +89,6 @@ func (client ConnectionsClient) ConfirmConsentCodePreparer(ctx context.Context, 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCodeSender sends the ConfirmConsentCode request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ConfirmConsentCodeSender(req *http.Request) (*http.Response, error) {
@@ -100,7 +96,6 @@ func (client ConnectionsClient) ConfirmConsentCodeSender(req *http.Request) (*ht
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ConfirmConsentCodeResponder handles the response to the ConfirmConsentCode request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) ConfirmConsentCodeResponder(resp *http.Response) (result Connection, err error) {
@@ -114,11 +109,11 @@ func (client ConnectionsClient) ConfirmConsentCodeResponder(resp *http.Response)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdate creates or updates a connection.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name. connection is the
-// connection.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
+// connection - the connection.
 func (client ConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, connectionName string, connection Connection) (result Connection, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, connectionName, connection)
 	if err != nil {
@@ -141,7 +136,6 @@ func (client ConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client ConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, connectionName string, connection Connection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -165,7 +159,6 @@ func (client ConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
@@ -173,7 +166,6 @@ func (client ConnectionsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (result Connection, err error) {
@@ -187,10 +179,10 @@ func (client ConnectionsClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Delete deletes a connection.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
 func (client ConnectionsClient) Delete(ctx context.Context, resourceGroupName string, connectionName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, connectionName)
 	if err != nil {
@@ -213,7 +205,6 @@ func (client ConnectionsClient) Delete(ctx context.Context, resourceGroupName st
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeletePreparer prepares the Delete request.
 func (client ConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -235,7 +226,6 @@ func (client ConnectionsClient) DeletePreparer(ctx context.Context, resourceGrou
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
@@ -243,7 +233,6 @@ func (client ConnectionsClient) DeleteSender(req *http.Request) (*http.Response,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
@@ -256,10 +245,10 @@ func (client ConnectionsClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // Get gets a connection.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
 func (client ConnectionsClient) Get(ctx context.Context, resourceGroupName string, connectionName string) (result Connection, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, connectionName)
 	if err != nil {
@@ -282,7 +271,6 @@ func (client ConnectionsClient) Get(ctx context.Context, resourceGroupName strin
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetPreparer prepares the Get request.
 func (client ConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -304,7 +292,6 @@ func (client ConnectionsClient) GetPreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) GetSender(req *http.Request) (*http.Response, error) {
@@ -312,7 +299,6 @@ func (client ConnectionsClient) GetSender(req *http.Request) (*http.Response, er
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) GetResponder(resp *http.Response) (result Connection, err error) {
@@ -326,11 +312,11 @@ func (client ConnectionsClient) GetResponder(resp *http.Response) (result Connec
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // List gets a list of connections.
-//
-// resourceGroupName is resource Group Name top is the number of items to be included in the result. filter is the
-// filter to apply on the operation.
+// Parameters:
+// resourceGroupName - resource Group Name
+// top - the number of items to be included in the result.
+// filter - the filter to apply on the operation.
 func (client ConnectionsClient) List(ctx context.Context, resourceGroupName string, top *int32, filter string) (result ConnectionCollectionPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, top, filter)
@@ -354,7 +340,6 @@ func (client ConnectionsClient) List(ctx context.Context, resourceGroupName stri
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListPreparer prepares the List request.
 func (client ConnectionsClient) ListPreparer(ctx context.Context, resourceGroupName string, top *int32, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -381,7 +366,6 @@ func (client ConnectionsClient) ListPreparer(ctx context.Context, resourceGroupN
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -389,7 +373,6 @@ func (client ConnectionsClient) ListSender(req *http.Request) (*http.Response, e
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) ListResponder(resp *http.Response) (result ConnectionCollection, err error) {
@@ -424,17 +407,17 @@ func (client ConnectionsClient) listNextResults(lastResults ConnectionCollection
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ConnectionsClient) ListComplete(ctx context.Context, resourceGroupName string, top *int32, filter string) (result ConnectionCollectionIterator, err error) {
 	result.page, err = client.List(ctx, resourceGroupName, top, filter)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeys lists connection keys.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name. content is the content.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
+// content - the content.
 func (client ConnectionsClient) ListConnectionKeys(ctx context.Context, resourceGroupName string, connectionName string, content ListConnectionKeysInput) (result ConnectionSecrets, err error) {
 	req, err := client.ListConnectionKeysPreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
@@ -457,7 +440,6 @@ func (client ConnectionsClient) ListConnectionKeys(ctx context.Context, resource
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeysPreparer prepares the ListConnectionKeys request.
 func (client ConnectionsClient) ListConnectionKeysPreparer(ctx context.Context, resourceGroupName string, connectionName string, content ListConnectionKeysInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -481,7 +463,6 @@ func (client ConnectionsClient) ListConnectionKeysPreparer(ctx context.Context, 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeysSender sends the ListConnectionKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConnectionKeysSender(req *http.Request) (*http.Response, error) {
@@ -489,7 +470,6 @@ func (client ConnectionsClient) ListConnectionKeysSender(req *http.Request) (*ht
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConnectionKeysResponder handles the response to the ListConnectionKeys request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) ListConnectionKeysResponder(resp *http.Response) (result ConnectionSecrets, err error) {
@@ -503,10 +483,11 @@ func (client ConnectionsClient) ListConnectionKeysResponder(resp *http.Response)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConsentLinks lists consent links of a connection.
-//
-// resourceGroupName is the resource group name. connectionName is the connection name. content is the content.
+// Parameters:
+// resourceGroupName - the resource group name.
+// connectionName - the connection name.
+// content - the content.
 func (client ConnectionsClient) ListConsentLinks(ctx context.Context, resourceGroupName string, connectionName string, content ConsentLinkInput) (result ConsentLinkPayload, err error) {
 	req, err := client.ListConsentLinksPreparer(ctx, resourceGroupName, connectionName, content)
 	if err != nil {
@@ -529,7 +510,6 @@ func (client ConnectionsClient) ListConsentLinks(ctx context.Context, resourceGr
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConsentLinksPreparer prepares the ListConsentLinks request.
 func (client ConnectionsClient) ListConsentLinksPreparer(ctx context.Context, resourceGroupName string, connectionName string, content ConsentLinkInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -553,7 +533,6 @@ func (client ConnectionsClient) ListConsentLinksPreparer(ctx context.Context, re
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConsentLinksSender sends the ListConsentLinks request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConnectionsClient) ListConsentLinksSender(req *http.Request) (*http.Response, error) {
@@ -561,7 +540,6 @@ func (client ConnectionsClient) ListConsentLinksSender(req *http.Request) (*http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ListConsentLinksResponder handles the response to the ListConsentLinks request. The method always
 // closes the http.Response Body.
 func (client ConnectionsClient) ListConsentLinksResponder(resp *http.Response) (result ConsentLinkPayload, err error) {

@@ -24,29 +24,27 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CertificateOrdersClient is the webSite Management Client
 type CertificateOrdersClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewCertificateOrdersClient creates an instance of the CertificateOrdersClient client.
 func NewCertificateOrdersClient(subscriptionID string) CertificateOrdersClient {
 	return NewCertificateOrdersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewCertificateOrdersClientWithBaseURI creates an instance of the CertificateOrdersClient client.
 func NewCertificateOrdersClientWithBaseURI(baseURI string, subscriptionID string) CertificateOrdersClient {
 	return CertificateOrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificate sends the create or update certificate request.
-//
-// resourceGroupName is azure resource group name certificateOrderName is certificate name name is certificate name
-// keyVaultCertificate is key Vault secret csm Id
+// Parameters:
+// resourceGroupName - azure resource group name
+// certificateOrderName - certificate name
+// name - certificate name
+// keyVaultCertificate - key Vault secret csm Id
 func (client CertificateOrdersClient) CreateOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (result CertificateOrderCertificate, err error) {
 	req, err := client.CreateOrUpdateCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate)
 	if err != nil {
@@ -69,7 +67,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificate(ctx context.Cont
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificatePreparer prepares the CreateOrUpdateCertificate request.
 func (client CertificateOrdersClient) CreateOrUpdateCertificatePreparer(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -94,7 +91,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificatePreparer(ctx cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateSender sends the CreateOrUpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateSender(req *http.Request) (*http.Response, error) {
@@ -102,7 +98,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateSender(req *http.
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateResponder handles the response to the CreateOrUpdateCertificate request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateResponder(resp *http.Response) (result CertificateOrderCertificate, err error) {
@@ -116,11 +111,11 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateResponder(resp *h
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateOrder sends the create or update certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name certificateDistinguishedName is
-// distinguished name to be used for purchasing certificate
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
+// certificateDistinguishedName - distinguished name to be used for purchasing certificate
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrder(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (result CertificateOrder, err error) {
 	req, err := client.CreateOrUpdateCertificateOrderPreparer(ctx, resourceGroupName, name, certificateDistinguishedName)
 	if err != nil {
@@ -143,7 +138,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrder(ctx context
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateOrderPreparer prepares the CreateOrUpdateCertificateOrder request.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -167,7 +161,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderPreparer(ctx
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateOrderSender sends the CreateOrUpdateCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -175,7 +168,6 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderSender(req *
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateCertificateOrderResponder handles the response to the CreateOrUpdateCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderResponder(resp *http.Response) (result CertificateOrder, err error) {
@@ -189,10 +181,11 @@ func (client CertificateOrdersClient) CreateOrUpdateCertificateOrderResponder(re
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificate sends the delete certificate request.
-//
-// resourceGroupName is azure resource group name certificateOrderName is certificate name name is certificate name
+// Parameters:
+// resourceGroupName - azure resource group name
+// certificateOrderName - certificate name
+// name - certificate name
 func (client CertificateOrdersClient) DeleteCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name)
 	if err != nil {
@@ -215,7 +208,6 @@ func (client CertificateOrdersClient) DeleteCertificate(ctx context.Context, res
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificatePreparer prepares the DeleteCertificate request.
 func (client CertificateOrdersClient) DeleteCertificatePreparer(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -238,7 +230,6 @@ func (client CertificateOrdersClient) DeleteCertificatePreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateSender sends the DeleteCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) DeleteCertificateSender(req *http.Request) (*http.Response, error) {
@@ -246,7 +237,6 @@ func (client CertificateOrdersClient) DeleteCertificateSender(req *http.Request)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateResponder handles the response to the DeleteCertificate request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) DeleteCertificateResponder(resp *http.Response) (result SetObject, err error) {
@@ -260,10 +250,10 @@ func (client CertificateOrdersClient) DeleteCertificateResponder(resp *http.Resp
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateOrder sends the delete certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
 func (client CertificateOrdersClient) DeleteCertificateOrder(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.DeleteCertificateOrderPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -286,7 +276,6 @@ func (client CertificateOrdersClient) DeleteCertificateOrder(ctx context.Context
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateOrderPreparer prepares the DeleteCertificateOrder request.
 func (client CertificateOrdersClient) DeleteCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -308,7 +297,6 @@ func (client CertificateOrdersClient) DeleteCertificateOrderPreparer(ctx context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateOrderSender sends the DeleteCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) DeleteCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -316,7 +304,6 @@ func (client CertificateOrdersClient) DeleteCertificateOrderSender(req *http.Req
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteCertificateOrderResponder handles the response to the DeleteCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) DeleteCertificateOrderResponder(resp *http.Response) (result SetObject, err error) {
@@ -330,10 +317,11 @@ func (client CertificateOrdersClient) DeleteCertificateOrderResponder(resp *http
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificate sends the get certificate request.
-//
-// resourceGroupName is azure resource group name certificateOrderName is certificate name name is certificate name
+// Parameters:
+// resourceGroupName - azure resource group name
+// certificateOrderName - certificate name
+// name - certificate name
 func (client CertificateOrdersClient) GetCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (result CertificateOrderCertificate, err error) {
 	req, err := client.GetCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name)
 	if err != nil {
@@ -356,7 +344,6 @@ func (client CertificateOrdersClient) GetCertificate(ctx context.Context, resour
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificatePreparer prepares the GetCertificate request.
 func (client CertificateOrdersClient) GetCertificatePreparer(ctx context.Context, resourceGroupName string, certificateOrderName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -379,7 +366,6 @@ func (client CertificateOrdersClient) GetCertificatePreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateSender sends the GetCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateSender(req *http.Request) (*http.Response, error) {
@@ -387,7 +373,6 @@ func (client CertificateOrdersClient) GetCertificateSender(req *http.Request) (*
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateResponder handles the response to the GetCertificate request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) GetCertificateResponder(resp *http.Response) (result CertificateOrderCertificate, err error) {
@@ -401,10 +386,10 @@ func (client CertificateOrdersClient) GetCertificateResponder(resp *http.Respons
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrder sends the get certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
 func (client CertificateOrdersClient) GetCertificateOrder(ctx context.Context, resourceGroupName string, name string) (result CertificateOrder, err error) {
 	req, err := client.GetCertificateOrderPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -427,7 +412,6 @@ func (client CertificateOrdersClient) GetCertificateOrder(ctx context.Context, r
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrderPreparer prepares the GetCertificateOrder request.
 func (client CertificateOrdersClient) GetCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -449,7 +433,6 @@ func (client CertificateOrdersClient) GetCertificateOrderPreparer(ctx context.Co
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrderSender sends the GetCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -457,7 +440,6 @@ func (client CertificateOrdersClient) GetCertificateOrderSender(req *http.Reques
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrderResponder handles the response to the GetCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) GetCertificateOrderResponder(resp *http.Response) (result CertificateOrder, err error) {
@@ -471,10 +453,9 @@ func (client CertificateOrdersClient) GetCertificateOrderResponder(resp *http.Re
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrders sends the get certificate orders request.
-//
-// resourceGroupName is azure resource group name
+// Parameters:
+// resourceGroupName - azure resource group name
 func (client CertificateOrdersClient) GetCertificateOrders(ctx context.Context, resourceGroupName string) (result CertificateOrderCollectionPage, err error) {
 	result.fn = client.getCertificateOrdersNextResults
 	req, err := client.GetCertificateOrdersPreparer(ctx, resourceGroupName)
@@ -498,7 +479,6 @@ func (client CertificateOrdersClient) GetCertificateOrders(ctx context.Context, 
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrdersPreparer prepares the GetCertificateOrders request.
 func (client CertificateOrdersClient) GetCertificateOrdersPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -519,7 +499,6 @@ func (client CertificateOrdersClient) GetCertificateOrdersPreparer(ctx context.C
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrdersSender sends the GetCertificateOrders request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificateOrdersSender(req *http.Request) (*http.Response, error) {
@@ -527,7 +506,6 @@ func (client CertificateOrdersClient) GetCertificateOrdersSender(req *http.Reque
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrdersResponder handles the response to the GetCertificateOrders request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) GetCertificateOrdersResponder(resp *http.Response) (result CertificateOrderCollection, err error) {
@@ -562,17 +540,16 @@ func (client CertificateOrdersClient) getCertificateOrdersNextResults(lastResult
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificateOrdersComplete enumerates all values, automatically crossing page boundaries as required.
 func (client CertificateOrdersClient) GetCertificateOrdersComplete(ctx context.Context, resourceGroupName string) (result CertificateOrderCollectionIterator, err error) {
 	result.page, err = client.GetCertificateOrders(ctx, resourceGroupName)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificates sends the get certificates request.
-//
-// resourceGroupName is azure resource group name certificateOrderName is certificate name
+// Parameters:
+// resourceGroupName - azure resource group name
+// certificateOrderName - certificate name
 func (client CertificateOrdersClient) GetCertificates(ctx context.Context, resourceGroupName string, certificateOrderName string) (result CertificateOrderCertificateCollectionPage, err error) {
 	result.fn = client.getCertificatesNextResults
 	req, err := client.GetCertificatesPreparer(ctx, resourceGroupName, certificateOrderName)
@@ -596,7 +573,6 @@ func (client CertificateOrdersClient) GetCertificates(ctx context.Context, resou
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificatesPreparer prepares the GetCertificates request.
 func (client CertificateOrdersClient) GetCertificatesPreparer(ctx context.Context, resourceGroupName string, certificateOrderName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -618,7 +594,6 @@ func (client CertificateOrdersClient) GetCertificatesPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificatesSender sends the GetCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) GetCertificatesSender(req *http.Request) (*http.Response, error) {
@@ -626,7 +601,6 @@ func (client CertificateOrdersClient) GetCertificatesSender(req *http.Request) (
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificatesResponder handles the response to the GetCertificates request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) GetCertificatesResponder(resp *http.Response) (result CertificateOrderCertificateCollection, err error) {
@@ -661,18 +635,17 @@ func (client CertificateOrdersClient) getCertificatesNextResults(lastResults Cer
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetCertificatesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client CertificateOrdersClient) GetCertificatesComplete(ctx context.Context, resourceGroupName string, certificateOrderName string) (result CertificateOrderCertificateCollectionIterator, err error) {
 	result.page, err = client.GetCertificates(ctx, resourceGroupName, certificateOrderName)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrder sends the reissue certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name reissueCertificateOrderRequest is
-// reissue parameters
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
+// reissueCertificateOrderRequest - reissue parameters
 func (client CertificateOrdersClient) ReissueCertificateOrder(ctx context.Context, resourceGroupName string, name string, reissueCertificateOrderRequest ReissueCertificateOrderRequest) (result SetObject, err error) {
 	req, err := client.ReissueCertificateOrderPreparer(ctx, resourceGroupName, name, reissueCertificateOrderRequest)
 	if err != nil {
@@ -695,7 +668,6 @@ func (client CertificateOrdersClient) ReissueCertificateOrder(ctx context.Contex
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrderPreparer prepares the ReissueCertificateOrder request.
 func (client CertificateOrdersClient) ReissueCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string, reissueCertificateOrderRequest ReissueCertificateOrderRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -719,7 +691,6 @@ func (client CertificateOrdersClient) ReissueCertificateOrderPreparer(ctx contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrderSender sends the ReissueCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) ReissueCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -727,7 +698,6 @@ func (client CertificateOrdersClient) ReissueCertificateOrderSender(req *http.Re
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ReissueCertificateOrderResponder handles the response to the ReissueCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) ReissueCertificateOrderResponder(resp *http.Response) (result SetObject, err error) {
@@ -741,11 +711,11 @@ func (client CertificateOrdersClient) ReissueCertificateOrderResponder(resp *htt
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrder sends the renew certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name renewCertificateOrderRequest is renew
-// parameters
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
+// renewCertificateOrderRequest - renew parameters
 func (client CertificateOrdersClient) RenewCertificateOrder(ctx context.Context, resourceGroupName string, name string, renewCertificateOrderRequest RenewCertificateOrderRequest) (result SetObject, err error) {
 	req, err := client.RenewCertificateOrderPreparer(ctx, resourceGroupName, name, renewCertificateOrderRequest)
 	if err != nil {
@@ -768,7 +738,6 @@ func (client CertificateOrdersClient) RenewCertificateOrder(ctx context.Context,
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrderPreparer prepares the RenewCertificateOrder request.
 func (client CertificateOrdersClient) RenewCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string, renewCertificateOrderRequest RenewCertificateOrderRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -792,7 +761,6 @@ func (client CertificateOrdersClient) RenewCertificateOrderPreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrderSender sends the RenewCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RenewCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -800,7 +768,6 @@ func (client CertificateOrdersClient) RenewCertificateOrderSender(req *http.Requ
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RenewCertificateOrderResponder handles the response to the RenewCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) RenewCertificateOrderResponder(resp *http.Response) (result SetObject, err error) {
@@ -814,10 +781,10 @@ func (client CertificateOrdersClient) RenewCertificateOrderResponder(resp *http.
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResendCertificateEmail sends the resend certificate email request.
-//
-// resourceGroupName is azure resource group name name is certificate order name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate order name
 func (client CertificateOrdersClient) ResendCertificateEmail(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.ResendCertificateEmailPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -840,7 +807,6 @@ func (client CertificateOrdersClient) ResendCertificateEmail(ctx context.Context
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResendCertificateEmailPreparer prepares the ResendCertificateEmail request.
 func (client CertificateOrdersClient) ResendCertificateEmailPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -862,7 +828,6 @@ func (client CertificateOrdersClient) ResendCertificateEmailPreparer(ctx context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResendCertificateEmailSender sends the ResendCertificateEmail request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) ResendCertificateEmailSender(req *http.Request) (*http.Response, error) {
@@ -870,7 +835,6 @@ func (client CertificateOrdersClient) ResendCertificateEmailSender(req *http.Req
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ResendCertificateEmailResponder handles the response to the ResendCertificateEmail request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) ResendCertificateEmailResponder(resp *http.Response) (result SetObject, err error) {
@@ -884,10 +848,10 @@ func (client CertificateOrdersClient) ResendCertificateEmailResponder(resp *http
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateActions sends the retrieve certificate actions request.
-//
-// resourceGroupName is azure resource group name name is certificate order name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate order name
 func (client CertificateOrdersClient) RetrieveCertificateActions(ctx context.Context, resourceGroupName string, name string) (result ListCertificateOrderAction, err error) {
 	req, err := client.RetrieveCertificateActionsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -910,7 +874,6 @@ func (client CertificateOrdersClient) RetrieveCertificateActions(ctx context.Con
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateActionsPreparer prepares the RetrieveCertificateActions request.
 func (client CertificateOrdersClient) RetrieveCertificateActionsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -932,7 +895,6 @@ func (client CertificateOrdersClient) RetrieveCertificateActionsPreparer(ctx con
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateActionsSender sends the RetrieveCertificateActions request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RetrieveCertificateActionsSender(req *http.Request) (*http.Response, error) {
@@ -940,7 +902,6 @@ func (client CertificateOrdersClient) RetrieveCertificateActionsSender(req *http
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateActionsResponder handles the response to the RetrieveCertificateActions request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) RetrieveCertificateActionsResponder(resp *http.Response) (result ListCertificateOrderAction, err error) {
@@ -954,10 +915,10 @@ func (client CertificateOrdersClient) RetrieveCertificateActionsResponder(resp *
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateEmailHistory sends the retrieve certificate email history request.
-//
-// resourceGroupName is azure resource group name name is certificate order name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate order name
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistory(ctx context.Context, resourceGroupName string, name string) (result ListCertificateEmail, err error) {
 	req, err := client.RetrieveCertificateEmailHistoryPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -980,7 +941,6 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistory(ctx contex
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateEmailHistoryPreparer prepares the RetrieveCertificateEmailHistory request.
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -1002,7 +962,6 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryPreparer(ct
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateEmailHistorySender sends the RetrieveCertificateEmailHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistorySender(req *http.Request) (*http.Response, error) {
@@ -1010,7 +969,6 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistorySender(req 
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // RetrieveCertificateEmailHistoryResponder handles the response to the RetrieveCertificateEmailHistory request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryResponder(resp *http.Response) (result ListCertificateEmail, err error) {
@@ -1024,11 +982,12 @@ func (client CertificateOrdersClient) RetrieveCertificateEmailHistoryResponder(r
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificate sends the update certificate request.
-//
-// resourceGroupName is azure resource group name certificateOrderName is certificate name name is certificate name
-// keyVaultCertificate is key Vault secret csm Id
+// Parameters:
+// resourceGroupName - azure resource group name
+// certificateOrderName - certificate name
+// name - certificate name
+// keyVaultCertificate - key Vault secret csm Id
 func (client CertificateOrdersClient) UpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (result CertificateOrderCertificate, err error) {
 	req, err := client.UpdateCertificatePreparer(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate)
 	if err != nil {
@@ -1051,7 +1010,6 @@ func (client CertificateOrdersClient) UpdateCertificate(ctx context.Context, res
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificatePreparer prepares the UpdateCertificate request.
 func (client CertificateOrdersClient) UpdateCertificatePreparer(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateOrderCertificate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -1076,7 +1034,6 @@ func (client CertificateOrdersClient) UpdateCertificatePreparer(ctx context.Cont
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateSender sends the UpdateCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) UpdateCertificateSender(req *http.Request) (*http.Response, error) {
@@ -1084,7 +1041,6 @@ func (client CertificateOrdersClient) UpdateCertificateSender(req *http.Request)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateResponder handles the response to the UpdateCertificate request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) UpdateCertificateResponder(resp *http.Response) (result CertificateOrderCertificate, err error) {
@@ -1098,11 +1054,11 @@ func (client CertificateOrdersClient) UpdateCertificateResponder(resp *http.Resp
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateOrder sends the update certificate order request.
-//
-// resourceGroupName is azure resource group name name is certificate name certificateDistinguishedName is
-// distinguished name to be used for purchasing certificate
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate name
+// certificateDistinguishedName - distinguished name to be used for purchasing certificate
 func (client CertificateOrdersClient) UpdateCertificateOrder(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (result CertificateOrder, err error) {
 	req, err := client.UpdateCertificateOrderPreparer(ctx, resourceGroupName, name, certificateDistinguishedName)
 	if err != nil {
@@ -1125,7 +1081,6 @@ func (client CertificateOrdersClient) UpdateCertificateOrder(ctx context.Context
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateOrderPreparer prepares the UpdateCertificateOrder request.
 func (client CertificateOrdersClient) UpdateCertificateOrderPreparer(ctx context.Context, resourceGroupName string, name string, certificateDistinguishedName CertificateOrder) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -1149,7 +1104,6 @@ func (client CertificateOrdersClient) UpdateCertificateOrderPreparer(ctx context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateOrderSender sends the UpdateCertificateOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) UpdateCertificateOrderSender(req *http.Request) (*http.Response, error) {
@@ -1157,7 +1111,6 @@ func (client CertificateOrdersClient) UpdateCertificateOrderSender(req *http.Req
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // UpdateCertificateOrderResponder handles the response to the UpdateCertificateOrder request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) UpdateCertificateOrderResponder(resp *http.Response) (result CertificateOrder, err error) {
@@ -1171,10 +1124,10 @@ func (client CertificateOrdersClient) UpdateCertificateOrderResponder(resp *http
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VerifyDomainOwnership sends the verify domain ownership request.
-//
-// resourceGroupName is azure resource group name name is certificate order name
+// Parameters:
+// resourceGroupName - azure resource group name
+// name - certificate order name
 func (client CertificateOrdersClient) VerifyDomainOwnership(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
 	req, err := client.VerifyDomainOwnershipPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -1197,7 +1150,6 @@ func (client CertificateOrdersClient) VerifyDomainOwnership(ctx context.Context,
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VerifyDomainOwnershipPreparer prepares the VerifyDomainOwnership request.
 func (client CertificateOrdersClient) VerifyDomainOwnershipPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -1219,7 +1171,6 @@ func (client CertificateOrdersClient) VerifyDomainOwnershipPreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VerifyDomainOwnershipSender sends the VerifyDomainOwnership request. The method will close the
 // http.Response Body if it receives an error.
 func (client CertificateOrdersClient) VerifyDomainOwnershipSender(req *http.Request) (*http.Response, error) {
@@ -1227,7 +1178,6 @@ func (client CertificateOrdersClient) VerifyDomainOwnershipSender(req *http.Requ
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // VerifyDomainOwnershipResponder handles the response to the VerifyDomainOwnership request. The method always
 // closes the http.Response Body.
 func (client CertificateOrdersClient) VerifyDomainOwnershipResponder(resp *http.Response) (result SetObject, err error) {

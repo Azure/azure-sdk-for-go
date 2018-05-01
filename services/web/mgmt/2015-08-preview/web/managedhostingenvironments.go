@@ -24,29 +24,26 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ManagedHostingEnvironmentsClient is the webSite Management Client
 type ManagedHostingEnvironmentsClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewManagedHostingEnvironmentsClient creates an instance of the ManagedHostingEnvironmentsClient client.
 func NewManagedHostingEnvironmentsClient(subscriptionID string) ManagedHostingEnvironmentsClient {
 	return NewManagedHostingEnvironmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewManagedHostingEnvironmentsClientWithBaseURI creates an instance of the ManagedHostingEnvironmentsClient client.
 func NewManagedHostingEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedHostingEnvironmentsClient {
 	return ManagedHostingEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateManagedHostingEnvironment sends the create or update managed hosting environment request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment
-// managedHostingEnvironmentEnvelope is properties of managed hosting environment
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
+// managedHostingEnvironmentEnvelope - properties of managed hosting environment
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironment(ctx context.Context, resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (result ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture, err error) {
 	req, err := client.CreateOrUpdateManagedHostingEnvironmentPreparer(ctx, resourceGroupName, name, managedHostingEnvironmentEnvelope)
 	if err != nil {
@@ -63,7 +60,6 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateManagedHostingEnvironmentPreparer prepares the CreateOrUpdateManagedHostingEnvironment request.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentPreparer(ctx context.Context, resourceGroupName string, name string, managedHostingEnvironmentEnvelope HostingEnvironment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -87,7 +83,6 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateManagedHostingEnvironmentSender sends the CreateOrUpdateManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture, err error) {
@@ -103,7 +98,6 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // CreateOrUpdateManagedHostingEnvironmentResponder handles the response to the CreateOrUpdateManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentResponder(resp *http.Response) (result HostingEnvironment, err error) {
@@ -117,11 +111,11 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteManagedHostingEnvironment sends the delete managed hosting environment request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment forceDelete is delete
-// even if the managed hosting environment contains resources
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
+// forceDelete - delete even if the managed hosting environment contains resources
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(ctx context.Context, resourceGroupName string, name string, forceDelete *bool) (result ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture, err error) {
 	req, err := client.DeleteManagedHostingEnvironmentPreparer(ctx, resourceGroupName, name, forceDelete)
 	if err != nil {
@@ -138,7 +132,6 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(c
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteManagedHostingEnvironmentPreparer prepares the DeleteManagedHostingEnvironment request.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPreparer(ctx context.Context, resourceGroupName string, name string, forceDelete *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -163,7 +156,6 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteManagedHostingEnvironmentSender sends the DeleteManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture, err error) {
@@ -179,7 +171,6 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSe
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // DeleteManagedHostingEnvironmentResponder handles the response to the DeleteManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentResponder(resp *http.Response) (result SetObject, err error) {
@@ -193,10 +184,10 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentRe
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironment sends the get managed hosting environment request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironment(ctx context.Context, resourceGroupName string, name string) (result ManagedHostingEnvironment, err error) {
 	req, err := client.GetManagedHostingEnvironmentPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -219,7 +210,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironment(ctx 
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentPreparer prepares the GetManagedHostingEnvironment request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -241,7 +231,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentPrepa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSender sends the GetManagedHostingEnvironment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSender(req *http.Request) (*http.Response, error) {
@@ -249,7 +238,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSende
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentResponder handles the response to the GetManagedHostingEnvironment request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentResponder(resp *http.Response) (result ManagedHostingEnvironment, err error) {
@@ -263,11 +251,11 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentRespo
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentOperation sends the get managed hosting environment operation request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment operationID is operation
-// identifier GUID
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
+// operationID - operation identifier GUID
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperation(ctx context.Context, resourceGroupName string, name string, operationID string) (result SetObject, err error) {
 	req, err := client.GetManagedHostingEnvironmentOperationPreparer(ctx, resourceGroupName, name, operationID)
 	if err != nil {
@@ -290,7 +278,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentOperationPreparer prepares the GetManagedHostingEnvironmentOperation request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationPreparer(ctx context.Context, resourceGroupName string, name string, operationID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -313,7 +300,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentOperationSender sends the GetManagedHostingEnvironmentOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationSender(req *http.Request) (*http.Response, error) {
@@ -321,7 +307,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentOperationResponder handles the response to the GetManagedHostingEnvironmentOperation request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOperationResponder(resp *http.Response) (result SetObject, err error) {
@@ -335,10 +320,9 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentOpera
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironments sends the get managed hosting environments request.
-//
-// resourceGroupName is name of resource group
+// Parameters:
+// resourceGroupName - name of resource group
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironments(ctx context.Context, resourceGroupName string) (result HostingEnvironmentCollectionPage, err error) {
 	result.fn = client.getManagedHostingEnvironmentsNextResults
 	req, err := client.GetManagedHostingEnvironmentsPreparer(ctx, resourceGroupName)
@@ -362,7 +346,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironments(ctx
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentsPreparer prepares the GetManagedHostingEnvironments request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -383,7 +366,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsPrep
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentsSender sends the GetManagedHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
@@ -391,7 +373,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsSend
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentsResponder handles the response to the GetManagedHostingEnvironments request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsResponder(resp *http.Response) (result HostingEnvironmentCollection, err error) {
@@ -426,17 +407,16 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentsNext
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentsComplete(ctx context.Context, resourceGroupName string) (result HostingEnvironmentCollectionIterator, err error) {
 	result.page, err = client.GetManagedHostingEnvironments(ctx, resourceGroupName)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentServerFarms sends the get managed hosting environment server farms request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarms(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionPage, err error) {
 	result.fn = client.getManagedHostingEnvironmentServerFarmsNextResults
 	req, err := client.GetManagedHostingEnvironmentServerFarmsPreparer(ctx, resourceGroupName, name)
@@ -460,7 +440,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentServerFarmsPreparer prepares the GetManagedHostingEnvironmentServerFarms request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -482,7 +461,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentServerFarmsSender sends the GetManagedHostingEnvironmentServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsSender(req *http.Request) (*http.Response, error) {
@@ -490,7 +468,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServe
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentServerFarmsResponder handles the response to the GetManagedHostingEnvironmentServerFarms request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsResponder(resp *http.Response) (result ServerFarmCollection, err error) {
@@ -525,18 +502,17 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentServe
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentServerFarmsComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentServerFarmsComplete(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionIterator, err error) {
 	result.page, err = client.GetManagedHostingEnvironmentServerFarms(ctx, resourceGroupName, name)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSites sends the get managed hosting environment sites request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment propertiesToInclude is
-// comma separated list of site properties to include
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
+// propertiesToInclude - comma separated list of site properties to include
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionPage, err error) {
 	result.fn = client.getManagedHostingEnvironmentSitesNextResults
 	req, err := client.GetManagedHostingEnvironmentSitesPreparer(ctx, resourceGroupName, name, propertiesToInclude)
@@ -560,7 +536,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSitesPreparer prepares the GetManagedHostingEnvironmentSites request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesPreparer(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -585,7 +560,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSitesSender sends the GetManagedHostingEnvironmentSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesSender(req *http.Request) (*http.Response, error) {
@@ -593,7 +567,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSites
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSitesResponder handles the response to the GetManagedHostingEnvironmentSites request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesResponder(resp *http.Response) (result SiteCollection, err error) {
@@ -628,17 +601,16 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentSites
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentSitesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentSitesComplete(ctx context.Context, resourceGroupName string, name string, propertiesToInclude string) (result SiteCollectionIterator, err error) {
 	result.page, err = client.GetManagedHostingEnvironmentSites(ctx, resourceGroupName, name, propertiesToInclude)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentVips sends the get managed hosting environment vips request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVips(ctx context.Context, resourceGroupName string, name string) (result AddressResponse, err error) {
 	req, err := client.GetManagedHostingEnvironmentVipsPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -661,7 +633,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVips(
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentVipsPreparer prepares the GetManagedHostingEnvironmentVips request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -683,7 +654,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsP
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentVipsSender sends the GetManagedHostingEnvironmentVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsSender(req *http.Request) (*http.Response, error) {
@@ -691,7 +661,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsS
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentVipsResponder handles the response to the GetManagedHostingEnvironmentVips request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsResponder(resp *http.Response) (result AddressResponse, err error) {
@@ -705,10 +674,10 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentVipsR
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentWebHostingPlans sends the get managed hosting environment web hosting plans request.
-//
-// resourceGroupName is name of resource group name is name of managed hosting environment
+// Parameters:
+// resourceGroupName - name of resource group
+// name - name of managed hosting environment
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlans(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionPage, err error) {
 	result.fn = client.getManagedHostingEnvironmentWebHostingPlansNextResults
 	req, err := client.GetManagedHostingEnvironmentWebHostingPlansPreparer(ctx, resourceGroupName, name)
@@ -732,7 +701,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentWebHostingPlansPreparer prepares the GetManagedHostingEnvironmentWebHostingPlans request.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -754,7 +722,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentWebHostingPlansSender sends the GetManagedHostingEnvironmentWebHostingPlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansSender(req *http.Request) (*http.Response, error) {
@@ -762,7 +729,6 @@ func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHo
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentWebHostingPlansResponder handles the response to the GetManagedHostingEnvironmentWebHostingPlans request. The method always
 // closes the http.Response Body.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansResponder(resp *http.Response) (result ServerFarmCollection, err error) {
@@ -797,7 +763,6 @@ func (client ManagedHostingEnvironmentsClient) getManagedHostingEnvironmentWebHo
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetManagedHostingEnvironmentWebHostingPlansComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ManagedHostingEnvironmentsClient) GetManagedHostingEnvironmentWebHostingPlansComplete(ctx context.Context, resourceGroupName string, name string) (result ServerFarmCollectionIterator, err error) {
 	result.page, err = client.GetManagedHostingEnvironmentWebHostingPlans(ctx, resourceGroupName, name)

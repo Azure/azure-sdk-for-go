@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v16.1.0`
+
+- Added a `NewAuthorizerFromEnvironment()` function for the keyvault service.
+
 ## `v16.0.0`
 
 ### New Services

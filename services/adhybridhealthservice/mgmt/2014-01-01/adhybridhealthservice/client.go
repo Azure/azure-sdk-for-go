@@ -21,10 +21,7 @@ package adhybridhealthservice
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"net/http"
 )
 
 const (
@@ -49,72 +46,4 @@ func NewWithBaseURI(baseURI string) BaseClient {
 		Client:  autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI: baseURI,
 	}
-}
-
-// ServicesGetBadPwdUserReport gets the bad password login attempt report for an user
-// Parameters:
-// serviceName - the name of the service.
-// dataSource - the source of data, if its test data or customer data.
-func (client BaseClient) ServicesGetBadPwdUserReport(ctx context.Context, serviceName string, dataSource string) (result ErrorReportUsersEntries, err error) {
-	req, err := client.ServicesGetBadPwdUserReportPreparer(ctx, serviceName, dataSource)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.BaseClient", "ServicesGetBadPwdUserReport", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ServicesGetBadPwdUserReportSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.BaseClient", "ServicesGetBadPwdUserReport", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ServicesGetBadPwdUserReportResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.BaseClient", "ServicesGetBadPwdUserReport", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ServicesGetBadPwdUserReportPreparer prepares the ServicesGetBadPwdUserReport request.
-func (client BaseClient) ServicesGetBadPwdUserReportPreparer(ctx context.Context, serviceName string, dataSource string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(dataSource) > 0 {
-		queryParameters["dataSource"] = autorest.Encode("query", dataSource)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/badpassword/details/user", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ServicesGetBadPwdUserReportSender sends the ServicesGetBadPwdUserReport request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) ServicesGetBadPwdUserReportSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ServicesGetBadPwdUserReportResponder handles the response to the ServicesGetBadPwdUserReport request. The method always
-// closes the http.Response Body.
-func (client BaseClient) ServicesGetBadPwdUserReportResponder(resp *http.Response) (result ErrorReportUsersEntries, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

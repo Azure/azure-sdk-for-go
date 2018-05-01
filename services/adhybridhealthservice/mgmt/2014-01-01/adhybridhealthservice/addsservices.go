@@ -21,6 +21,8 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -39,37 +41,98 @@ func NewAddsservicesClientWithBaseURI(baseURI string) AddsservicesClient {
 	return AddsservicesClient{NewWithBaseURI(baseURI)}
 }
 
-// DeleteService deletes an Active Directory Domain Service which is onboarded to Azure Active Directory Connect
-// Health.
+// Add onboards a service for a given tenant in Azure Active Directory Connect Health.
 // Parameters:
-// serviceName - the name of the service which needs to be deleted.
-// confirm - indicates if the service will be permanently deleted or disabled. True indicates that the service
-// will be permanently deleted and False indicates that the service will be marked disabled and then deleted
-// after 30 days, if it is not re-registered.
-func (client AddsservicesClient) DeleteService(ctx context.Context, serviceName string, confirm *bool) (result autorest.Response, err error) {
-	req, err := client.DeleteServicePreparer(ctx, serviceName, confirm)
+// service - the service object.
+func (client AddsservicesClient) Add(ctx context.Context, service Service) (result Service, err error) {
+	req, err := client.AddPreparer(ctx, service)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "DeleteService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteServiceSender(req)
+	resp, err := client.AddSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "DeleteService", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Add", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.DeleteServiceResponder(resp)
+	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "DeleteService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// DeleteServicePreparer prepares the DeleteService request.
-func (client AddsservicesClient) DeleteServicePreparer(ctx context.Context, serviceName string, confirm *bool) (*http.Request, error) {
+// AddPreparer prepares the Add request.
+func (client AddsservicesClient) AddPreparer(ctx context.Context, service Service) (*http.Request, error) {
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.ADHybridHealthService/addsservices"),
+		autorest.WithJSON(service),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddSender sends the Add request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) AddSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddResponder handles the response to the Add request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) AddResponder(resp *http.Response) (result Service, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete deletes an Active Directory Domain Service which is onboarded to Azure Active Directory Connect Health.
+// Parameters:
+// serviceName - the name of the service which needs to be deleted.
+// confirm - indicates if the service will be permanently deleted or disabled. True indicates that the service
+// will be permanently deleted and False indicates that the service will be marked disabled and then deleted
+// after 30 days, if it is not re-registered.
+func (client AddsservicesClient) Delete(ctx context.Context, serviceName string, confirm *bool) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx, serviceName, confirm)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client AddsservicesClient) DeletePreparer(ctx context.Context, serviceName string, confirm *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -90,16 +153,16 @@ func (client AddsservicesClient) DeleteServicePreparer(ctx context.Context, serv
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteServiceSender sends the DeleteService request. The method will close the
+// DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) DeleteServiceSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// DeleteServiceResponder handles the response to the DeleteService request. The method always
+// DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) DeleteServiceResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AddsservicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -109,233 +172,34 @@ func (client AddsservicesClient) DeleteServiceResponder(resp *http.Response) (re
 	return
 }
 
-// GetAddsServiceMetricsSum gets the sum of the metric values for a given metric and group combination.
+// Get gets the details of an Active Directory Domain Service for a tenant having Azure AD Premium license and is
+// onboarded to Azure Active Directory Connect Health.
 // Parameters:
 // serviceName - the name of the service.
-// metricName - the metric name
-// groupName - the group name
-func (client AddsservicesClient) GetAddsServiceMetricsSum(ctx context.Context, serviceName string, metricName string, groupName string) (result Items, err error) {
-	req, err := client.GetAddsServiceMetricsSumPreparer(ctx, serviceName, metricName, groupName)
+func (client AddsservicesClient) Get(ctx context.Context, serviceName string) (result Service, err error) {
+	req, err := client.GetPreparer(ctx, serviceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetAddsServiceMetricsSum", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAddsServiceMetricsSumSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetAddsServiceMetricsSum", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAddsServiceMetricsSumResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetAddsServiceMetricsSum", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAddsServiceMetricsSumPreparer prepares the GetAddsServiceMetricsSum request.
-func (client AddsservicesClient) GetAddsServiceMetricsSumPreparer(ctx context.Context, serviceName string, metricName string, groupName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":   autorest.Encode("path", groupName),
-		"metricName":  autorest.Encode("path", metricName),
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metrics/{metricName}/groups/{groupName}/sum", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAddsServiceMetricsSumSender sends the GetAddsServiceMetricsSum request. The method will close the
-// http.Response Body if it receives an error.
-func (client AddsservicesClient) GetAddsServiceMetricsSumSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetAddsServiceMetricsSumResponder handles the response to the GetAddsServiceMetricsSum request. The method always
-// closes the http.Response Body.
-func (client AddsservicesClient) GetAddsServiceMetricsSumResponder(resp *http.Response) (result Items, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetConfiguration gets the service configurations.
-// Parameters:
-// serviceName - the name of the service.
-// grouping - the grouping for configurations.
-func (client AddsservicesClient) GetConfiguration(ctx context.Context, serviceName string, grouping string) (result Tenant, err error) {
-	req, err := client.GetConfigurationPreparer(ctx, serviceName, grouping)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetConfiguration", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetConfigurationSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetConfiguration", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetConfigurationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetConfiguration", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetConfigurationPreparer prepares the GetConfiguration request.
-func (client AddsservicesClient) GetConfigurationPreparer(ctx context.Context, serviceName string, grouping string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(grouping) > 0 {
-		queryParameters["grouping"] = autorest.Encode("query", grouping)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/configuration", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetConfigurationSender sends the GetConfiguration request. The method will close the
-// http.Response Body if it receives an error.
-func (client AddsservicesClient) GetConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetConfigurationResponder handles the response to the GetConfiguration request. The method always
-// closes the http.Response Body.
-func (client AddsservicesClient) GetConfigurationResponder(resp *http.Response) (result Tenant, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetDimensions gets the dimensions for a given dimension type in a server.
-// Parameters:
-// serviceName - the name of the service.
-// dimension - the dimension type.
-func (client AddsservicesClient) GetDimensions(ctx context.Context, serviceName string, dimension string) (result ListString, err error) {
-	req, err := client.GetDimensionsPreparer(ctx, serviceName, dimension)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetDimensions", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetDimensionsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetDimensions", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetDimensionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetDimensions", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetDimensionsPreparer prepares the GetDimensions request.
-func (client AddsservicesClient) GetDimensionsPreparer(ctx context.Context, serviceName string, dimension string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"dimension":   autorest.Encode("path", dimension),
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/dimensions/{dimension}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetDimensionsSender sends the GetDimensions request. The method will close the
-// http.Response Body if it receives an error.
-func (client AddsservicesClient) GetDimensionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetDimensionsResponder handles the response to the GetDimensions request. The method always
-// closes the http.Response Body.
-func (client AddsservicesClient) GetDimensionsResponder(resp *http.Response) (result ListString, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetService gets the details of an Active Directory Domain Service for a tenant having Azure AD Premium license and
-// is onboarded to Azure Active Directory Connect Health.
-// Parameters:
-// serviceName - the name of the service.
-func (client AddsservicesClient) GetService(ctx context.Context, serviceName string) (result Service, err error) {
-	req, err := client.GetServicePreparer(ctx, serviceName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetService", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetServiceSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetService", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetServiceResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetService", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetServicePreparer prepares the GetService request.
-func (client AddsservicesClient) GetServicePreparer(ctx context.Context, serviceName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client AddsservicesClient) GetPreparer(ctx context.Context, serviceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -353,16 +217,16 @@ func (client AddsservicesClient) GetServicePreparer(ctx context.Context, service
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServiceSender sends the GetService request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) GetServiceSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetServiceResponder handles the response to the GetService request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) GetServiceResponder(resp *http.Response) (result Service, err error) {
+func (client AddsservicesClient) GetResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -373,8 +237,287 @@ func (client AddsservicesClient) GetServiceResponder(resp *http.Response) (resul
 	return
 }
 
-// GetServices gets the details of Active Directory Domain Service, for a tenant, that are onboarded to Azure Active
-// Directory Connect Health.
+// GetforestSummary gets the forest summary for a given Active Directory Domain Service, that is onboarded to Azure
+// Active Directory Connect Health.
+// Parameters:
+// serviceName - the name of the service.
+func (client AddsservicesClient) GetforestSummary(ctx context.Context, serviceName string) (result ForestSummary, err error) {
+	req, err := client.GetforestSummaryPreparer(ctx, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetforestSummary", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetforestSummarySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetforestSummary", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetforestSummaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetforestSummary", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetforestSummaryPreparer prepares the GetforestSummary request.
+func (client AddsservicesClient) GetforestSummaryPreparer(ctx context.Context, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/forestsummary", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetforestSummarySender sends the GetforestSummary request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) GetforestSummarySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetforestSummaryResponder handles the response to the GetforestSummary request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) GetforestSummaryResponder(resp *http.Response) (result ForestSummary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetMetricMetadata gets the service related metric information.
+// Parameters:
+// serviceName - the name of the service.
+// metricName - the metric name
+func (client AddsservicesClient) GetMetricMetadata(ctx context.Context, serviceName string, metricName string) (result MetricMetadata, err error) {
+	req, err := client.GetMetricMetadataPreparer(ctx, serviceName, metricName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetMetricMetadata", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetMetricMetadataSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetMetricMetadata", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetMetricMetadataResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetMetricMetadata", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMetricMetadataPreparer prepares the GetMetricMetadata request.
+func (client AddsservicesClient) GetMetricMetadataPreparer(ctx context.Context, serviceName string, metricName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"metricName":  autorest.Encode("path", metricName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metricmetadata/{metricName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetMetricMetadataSender sends the GetMetricMetadata request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) GetMetricMetadataSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetMetricMetadataResponder handles the response to the GetMetricMetadata request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) GetMetricMetadataResponder(resp *http.Response) (result MetricMetadata, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetReplicationStatus gets Replication status for a given Active Directory Domain Service, that is onboarded to Azure
+// Active Directory Connect Health.
+// Parameters:
+// serviceName - the name of the service.
+func (client AddsservicesClient) GetReplicationStatus(ctx context.Context, serviceName string) (result ReplicationStatus, err error) {
+	req, err := client.GetReplicationStatusPreparer(ctx, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetReplicationStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetReplicationStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetReplicationStatusPreparer prepares the GetReplicationStatus request.
+func (client AddsservicesClient) GetReplicationStatusPreparer(ctx context.Context, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/replicationstatus", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetReplicationStatusSender sends the GetReplicationStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) GetReplicationStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetReplicationStatusResponder handles the response to the GetReplicationStatus request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) GetReplicationStatusResponder(resp *http.Response) (result ReplicationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetReplicationSummary gets complete domain controller list along with replication details for a given Active
+// Directory Domain Service, that is onboarded to Azure Active Directory Connect Health.
+// Parameters:
+// serviceName - the name of the service.
+// isGroupbySite - indicates if the result should be grouped by site or not.
+// query - the custom query.
+// nextPartitionKey - the next partition key to query for.
+// filter - the server property filter to apply.
+// nextRowKey - the next row key to query for.
+// takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
+func (client AddsservicesClient) GetReplicationSummary(ctx context.Context, serviceName string, isGroupbySite bool, query string, nextPartitionKey string, filter string, nextRowKey string, takeCount *int32) (result ReplicationSummary, err error) {
+	req, err := client.GetReplicationSummaryPreparer(ctx, serviceName, isGroupbySite, query, nextPartitionKey, filter, nextRowKey, takeCount)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationSummary", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetReplicationSummarySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationSummary", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetReplicationSummaryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetReplicationSummary", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetReplicationSummaryPreparer prepares the GetReplicationSummary request.
+func (client AddsservicesClient) GetReplicationSummaryPreparer(ctx context.Context, serviceName string, isGroupbySite bool, query string, nextPartitionKey string, filter string, nextRowKey string, takeCount *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version":      APIVersion,
+		"isGroupbySite":    autorest.Encode("query", isGroupbySite),
+		"nextPartitionKey": autorest.Encode("query", nextPartitionKey),
+		"query":            autorest.Encode("query", query),
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(nextRowKey) > 0 {
+		queryParameters["nextRowKey"] = autorest.Encode("query", nextRowKey)
+	}
+	if takeCount != nil {
+		queryParameters["takeCount"] = autorest.Encode("query", *takeCount)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/replicationsummary", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetReplicationSummarySender sends the GetReplicationSummary request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) GetReplicationSummarySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetReplicationSummaryResponder handles the response to the GetReplicationSummary request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) GetReplicationSummaryResponder(resp *http.Response) (result ReplicationSummary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List gets the details of Active Directory Domain Service, for a tenant, that are onboarded to Azure Active Directory
+// Connect Health.
 // Parameters:
 // filter - the service property filter to apply.
 // serviceType - the service type for the services onboarded to Azure Active Directory Connect Health.
@@ -383,30 +526,31 @@ func (client AddsservicesClient) GetServiceResponder(resp *http.Response) (resul
 // skipCount - the skip count, which specifies the number of elements that can be bypassed from a sequence and
 // then return the remaining elements.
 // takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
-func (client AddsservicesClient) GetServices(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result Services, err error) {
-	req, err := client.GetServicesPreparer(ctx, filter, serviceType, skipCount, takeCount)
+func (client AddsservicesClient) List(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result ServicesPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, filter, serviceType, skipCount, takeCount)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServices", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetServicesSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServices", resp, "Failure sending request")
+		result.s.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetServicesResponder(resp)
+	result.s, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServices", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetServicesPreparer prepares the GetServices request.
-func (client AddsservicesClient) GetServicesPreparer(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client AddsservicesClient) ListPreparer(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (*http.Request, error) {
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -432,16 +576,16 @@ func (client AddsservicesClient) GetServicesPreparer(ctx context.Context, filter
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServicesSender sends the GetServices request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) GetServicesSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetServicesResponder handles the response to the GetServices request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) GetServicesResponder(resp *http.Response) (result Services, err error) {
+func (client AddsservicesClient) ListResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -452,7 +596,406 @@ func (client AddsservicesClient) GetServicesResponder(resp *http.Response) (resu
 	return
 }
 
-// GetServicesPremiumCheck gets the details of Active Directory Domain Services for a tenant having Azure AD Premium
+// listNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listNextResults(lastResults Services) (result Services, err error) {
+	req, err := lastResults.servicesPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result ServicesIterator, err error) {
+	result.page, err = client.List(ctx, filter, serviceType, skipCount, takeCount)
+	return
+}
+
+// ListMetricMetadata gets the service related metrics information.
+// Parameters:
+// serviceName - the name of the service.
+// filter - the metric metadata property filter to apply.
+// perfCounter - indicates if only performance counter metrics are requested.
+func (client AddsservicesClient) ListMetricMetadata(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result MetricMetadataListPage, err error) {
+	result.fn = client.listMetricMetadataNextResults
+	req, err := client.ListMetricMetadataPreparer(ctx, serviceName, filter, perfCounter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadata", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMetricMetadataSender(req)
+	if err != nil {
+		result.mml.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadata", resp, "Failure sending request")
+		return
+	}
+
+	result.mml, err = client.ListMetricMetadataResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadata", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMetricMetadataPreparer prepares the ListMetricMetadata request.
+func (client AddsservicesClient) ListMetricMetadataPreparer(ctx context.Context, serviceName string, filter string, perfCounter *bool) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if perfCounter != nil {
+		queryParameters["perfCounter"] = autorest.Encode("query", *perfCounter)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metricmetadata", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMetricMetadataSender sends the ListMetricMetadata request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) ListMetricMetadataSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListMetricMetadataResponder handles the response to the ListMetricMetadata request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) ListMetricMetadataResponder(resp *http.Response) (result MetricMetadataList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listMetricMetadataNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listMetricMetadataNextResults(lastResults MetricMetadataList) (result MetricMetadataList, err error) {
+	req, err := lastResults.metricMetadataListPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricMetadataNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListMetricMetadataSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricMetadataNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListMetricMetadataResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricMetadataNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListMetricMetadataComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListMetricMetadataComplete(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result MetricMetadataListIterator, err error) {
+	result.page, err = client.ListMetricMetadata(ctx, serviceName, filter, perfCounter)
+	return
+}
+
+// ListMetricMetadataForGroup gets the service related metrics for a given metric and group combination.
+// Parameters:
+// serviceName - the name of the service.
+// metricName - the metric name
+// groupName - the group name
+// groupKey - the group key
+// fromDate - the start date.
+// toDate - the end date.
+func (client AddsservicesClient) ListMetricMetadataForGroup(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
+	req, err := client.ListMetricMetadataForGroupPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadataForGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMetricMetadataForGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadataForGroup", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListMetricMetadataForGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricMetadataForGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMetricMetadataForGroupPreparer prepares the ListMetricMetadataForGroup request.
+func (client AddsservicesClient) ListMetricMetadataForGroupPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupName":   autorest.Encode("path", groupName),
+		"metricName":  autorest.Encode("path", metricName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(groupKey) > 0 {
+		queryParameters["groupKey"] = autorest.Encode("query", groupKey)
+	}
+	if fromDate != nil {
+		queryParameters["fromDate"] = autorest.Encode("query", *fromDate)
+	}
+	if toDate != nil {
+		queryParameters["toDate"] = autorest.Encode("query", *toDate)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metricmetadata/{metricName}/groups/{groupName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMetricMetadataForGroupSender sends the ListMetricMetadataForGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) ListMetricMetadataForGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListMetricMetadataForGroupResponder handles the response to the ListMetricMetadataForGroup request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) ListMetricMetadataForGroupResponder(resp *http.Response) (result MetricSets, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListMetricsAverage gets the average of the metric values for a given metric and group combination.
+// Parameters:
+// serviceName - the name of the service.
+// metricName - the metric name
+// groupName - the group name
+func (client AddsservicesClient) ListMetricsAverage(ctx context.Context, serviceName string, metricName string, groupName string) (result MetricsPage, err error) {
+	result.fn = client.listMetricsAverageNextResults
+	req, err := client.ListMetricsAveragePreparer(ctx, serviceName, metricName, groupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsAverage", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMetricsAverageSender(req)
+	if err != nil {
+		result.mVar.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsAverage", resp, "Failure sending request")
+		return
+	}
+
+	result.mVar, err = client.ListMetricsAverageResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsAverage", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMetricsAveragePreparer prepares the ListMetricsAverage request.
+func (client AddsservicesClient) ListMetricsAveragePreparer(ctx context.Context, serviceName string, metricName string, groupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupName":   autorest.Encode("path", groupName),
+		"metricName":  autorest.Encode("path", metricName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metrics/{metricName}/groups/{groupName}/average", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMetricsAverageSender sends the ListMetricsAverage request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) ListMetricsAverageSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListMetricsAverageResponder handles the response to the ListMetricsAverage request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) ListMetricsAverageResponder(resp *http.Response) (result Metrics, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listMetricsAverageNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listMetricsAverageNextResults(lastResults Metrics) (result Metrics, err error) {
+	req, err := lastResults.metricsPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsAverageNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListMetricsAverageSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsAverageNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListMetricsAverageResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsAverageNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListMetricsAverageComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListMetricsAverageComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result MetricsIterator, err error) {
+	result.page, err = client.ListMetricsAverage(ctx, serviceName, metricName, groupName)
+	return
+}
+
+// ListMetricsSum gets the sum of the metric values for a given metric and group combination.
+// Parameters:
+// serviceName - the name of the service.
+// metricName - the metric name
+// groupName - the group name
+func (client AddsservicesClient) ListMetricsSum(ctx context.Context, serviceName string, metricName string, groupName string) (result MetricsPage, err error) {
+	result.fn = client.listMetricsSumNextResults
+	req, err := client.ListMetricsSumPreparer(ctx, serviceName, metricName, groupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsSum", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMetricsSumSender(req)
+	if err != nil {
+		result.mVar.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsSum", resp, "Failure sending request")
+		return
+	}
+
+	result.mVar, err = client.ListMetricsSumResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListMetricsSum", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMetricsSumPreparer prepares the ListMetricsSum request.
+func (client AddsservicesClient) ListMetricsSumPreparer(ctx context.Context, serviceName string, metricName string, groupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupName":   autorest.Encode("path", groupName),
+		"metricName":  autorest.Encode("path", metricName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/metrics/{metricName}/groups/{groupName}/sum", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMetricsSumSender sends the ListMetricsSum request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsservicesClient) ListMetricsSumSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListMetricsSumResponder handles the response to the ListMetricsSum request. The method always
+// closes the http.Response Body.
+func (client AddsservicesClient) ListMetricsSumResponder(resp *http.Response) (result Metrics, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listMetricsSumNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listMetricsSumNextResults(lastResults Metrics) (result Metrics, err error) {
+	req, err := lastResults.metricsPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsSumNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListMetricsSumSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsSumNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListMetricsSumResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listMetricsSumNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListMetricsSumComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListMetricsSumComplete(ctx context.Context, serviceName string, metricName string, groupName string) (result MetricsIterator, err error) {
+	result.page, err = client.ListMetricsSum(ctx, serviceName, metricName, groupName)
+	return
+}
+
+// ListPremiumServices gets the details of Active Directory Domain Services for a tenant having Azure AD Premium
 // license and is onboarded to Azure Active Directory Connect Health.
 // Parameters:
 // filter - the service property filter to apply.
@@ -462,30 +1005,31 @@ func (client AddsservicesClient) GetServicesResponder(resp *http.Response) (resu
 // skipCount - the skip count, which specifies the number of elements that can be bypassed from a sequence and
 // then return the remaining elements.
 // takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
-func (client AddsservicesClient) GetServicesPremiumCheck(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result Services, err error) {
-	req, err := client.GetServicesPremiumCheckPreparer(ctx, filter, serviceType, skipCount, takeCount)
+func (client AddsservicesClient) ListPremiumServices(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result ServicesPage, err error) {
+	result.fn = client.listPremiumServicesNextResults
+	req, err := client.ListPremiumServicesPreparer(ctx, filter, serviceType, skipCount, takeCount)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServicesPremiumCheck", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListPremiumServices", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetServicesPremiumCheckSender(req)
+	resp, err := client.ListPremiumServicesSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServicesPremiumCheck", resp, "Failure sending request")
+		result.s.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListPremiumServices", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetServicesPremiumCheckResponder(resp)
+	result.s, err = client.ListPremiumServicesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "GetServicesPremiumCheck", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListPremiumServices", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetServicesPremiumCheckPreparer prepares the GetServicesPremiumCheck request.
-func (client AddsservicesClient) GetServicesPremiumCheckPreparer(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (*http.Request, error) {
+// ListPremiumServicesPreparer prepares the ListPremiumServices request.
+func (client AddsservicesClient) ListPremiumServicesPreparer(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (*http.Request, error) {
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -511,16 +1055,16 @@ func (client AddsservicesClient) GetServicesPremiumCheckPreparer(ctx context.Con
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServicesPremiumCheckSender sends the GetServicesPremiumCheck request. The method will close the
+// ListPremiumServicesSender sends the ListPremiumServices request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) GetServicesPremiumCheckSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) ListPremiumServicesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetServicesPremiumCheckResponder handles the response to the GetServicesPremiumCheck request. The method always
+// ListPremiumServicesResponder handles the response to the ListPremiumServices request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) GetServicesPremiumCheckResponder(resp *http.Response) (result Services, err error) {
+func (client AddsservicesClient) ListPremiumServicesResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -531,58 +1075,107 @@ func (client AddsservicesClient) GetServicesPremiumCheckResponder(resp *http.Res
 	return
 }
 
-// Postaddsservices onboards a service for a given tenant in Azure Active Directory Connect Health.
-// Parameters:
-// service - the service object.
-func (client AddsservicesClient) Postaddsservices(ctx context.Context, service Service) (result Service, err error) {
-	req, err := client.PostaddsservicesPreparer(ctx, service)
+// listPremiumServicesNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listPremiumServicesNextResults(lastResults Services) (result Services, err error) {
+	req, err := lastResults.servicesPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Postaddsservices", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listPremiumServicesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
 		return
 	}
-
-	resp, err := client.PostaddsservicesSender(req)
+	resp, err := client.ListPremiumServicesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Postaddsservices", resp, "Failure sending request")
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listPremiumServicesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListPremiumServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listPremiumServicesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListPremiumServicesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListPremiumServicesComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result ServicesIterator, err error) {
+	result.page, err = client.ListPremiumServices(ctx, filter, serviceType, skipCount, takeCount)
+	return
+}
+
+// ListServerAlerts gets the details of an alert for a given Active Directory Domain Controller service and server
+// combination.
+// Parameters:
+// serviceMemberID - the server Id for which the laert details needs to be queried.
+// serviceName - the name of the service.
+// filter - the alert property filter to apply.
+// state - the alert state to query for.
+// from - the start date to query for.
+// toParameter - the end date till when to query for.
+func (client AddsservicesClient) ListServerAlerts(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result AlertsPage, err error) {
+	result.fn = client.listServerAlertsNextResults
+	req, err := client.ListServerAlertsPreparer(ctx, serviceMemberID, serviceName, filter, state, from, toParameter)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListServerAlerts", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.PostaddsservicesResponder(resp)
+	resp, err := client.ListServerAlertsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Postaddsservices", resp, "Failure responding to request")
+		result.a.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListServerAlerts", resp, "Failure sending request")
+		return
+	}
+
+	result.a, err = client.ListServerAlertsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "ListServerAlerts", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PostaddsservicesPreparer prepares the Postaddsservices request.
-func (client AddsservicesClient) PostaddsservicesPreparer(ctx context.Context, service Service) (*http.Request, error) {
+// ListServerAlertsPreparer prepares the ListServerAlerts request.
+func (client AddsservicesClient) ListServerAlertsPreparer(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceMemberId": autorest.Encode("path", serviceMemberID),
+		"serviceName":     autorest.Encode("path", serviceName),
+	}
+
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(state) > 0 {
+		queryParameters["state"] = autorest.Encode("query", state)
+	}
+	if from != nil {
+		queryParameters["from"] = autorest.Encode("query", *from)
+	}
+	if toParameter != nil {
+		queryParameters["to"] = autorest.Encode("query", *toParameter)
+	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.ADHybridHealthService/addsservices"),
-		autorest.WithJSON(service),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/servicemembers/{serviceMemberId}/alerts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PostaddsservicesSender sends the Postaddsservices request. The method will close the
+// ListServerAlertsSender sends the ListServerAlerts request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) PostaddsservicesSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) ListServerAlertsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// PostaddsservicesResponder handles the response to the Postaddsservices request. The method always
+// ListServerAlertsResponder handles the response to the ListServerAlerts request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) PostaddsservicesResponder(resp *http.Response) (result Service, err error) {
+func (client AddsservicesClient) ListServerAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -593,34 +1186,61 @@ func (client AddsservicesClient) PostaddsservicesResponder(resp *http.Response) 
 	return
 }
 
-// UpdateService updates an Active Directory Domain Service properties of an onboarded service.
+// listServerAlertsNextResults retrieves the next set of results, if any.
+func (client AddsservicesClient) listServerAlertsNextResults(lastResults Alerts) (result Alerts, err error) {
+	req, err := lastResults.alertsPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listServerAlertsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListServerAlertsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listServerAlertsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListServerAlertsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "listServerAlertsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListServerAlertsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicesClient) ListServerAlertsComplete(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result AlertsIterator, err error) {
+	result.page, err = client.ListServerAlerts(ctx, serviceMemberID, serviceName, filter, state, from, toParameter)
+	return
+}
+
+// Update updates an Active Directory Domain Service properties of an onboarded service.
 // Parameters:
 // serviceName - the name of the service which needs to be deleted.
 // service - the service object.
-func (client AddsservicesClient) UpdateService(ctx context.Context, serviceName string, service Service) (result Service, err error) {
-	req, err := client.UpdateServicePreparer(ctx, serviceName, service)
+func (client AddsservicesClient) Update(ctx context.Context, serviceName string, service Service) (result Service, err error) {
+	req, err := client.UpdatePreparer(ctx, serviceName, service)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "UpdateService", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateServiceSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "UpdateService", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Update", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateServiceResponder(resp)
+	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "UpdateService", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateServicePreparer prepares the UpdateService request.
-func (client AddsservicesClient) UpdateServicePreparer(ctx context.Context, serviceName string, service Service) (*http.Request, error) {
+// UpdatePreparer prepares the Update request.
+func (client AddsservicesClient) UpdatePreparer(ctx context.Context, serviceName string, service Service) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -640,16 +1260,16 @@ func (client AddsservicesClient) UpdateServicePreparer(ctx context.Context, serv
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateServiceSender sends the UpdateService request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicesClient) UpdateServiceSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicesClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// UpdateServiceResponder handles the response to the UpdateService request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client AddsservicesClient) UpdateServiceResponder(resp *http.Response) (result Service, err error) {
+func (client AddsservicesClient) UpdateResponder(resp *http.Response) (result Service, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

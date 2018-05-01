@@ -21,7 +21,9 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/satori/go.uuid"
+	"net/http"
 )
 
 // AlgorithmStepType enumerates the values for algorithm step type.
@@ -338,6 +340,108 @@ type AdditionalInformation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// AddsConfiguration the list of key value properties.
+type AddsConfiguration struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Item `json:"value,omitempty"`
+}
+
+// AddsConfigurationIterator provides access to a complete listing of Item values.
+type AddsConfigurationIterator struct {
+	i    int
+	page AddsConfigurationPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AddsConfigurationIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AddsConfigurationIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AddsConfigurationIterator) Response() AddsConfiguration {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AddsConfigurationIterator) Value() Item {
+	if !iter.page.NotDone() {
+		return Item{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ac AddsConfiguration) IsEmpty() bool {
+	return ac.Value == nil || len(*ac.Value) == 0
+}
+
+// addsConfigurationPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ac AddsConfiguration) addsConfigurationPreparer() (*http.Request, error) {
+	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ac.NextLink)))
+}
+
+// AddsConfigurationPage contains a page of Item values.
+type AddsConfigurationPage struct {
+	fn func(AddsConfiguration) (AddsConfiguration, error)
+	ac AddsConfiguration
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AddsConfigurationPage) Next() error {
+	next, err := page.fn(page.ac)
+	if err != nil {
+		return err
+	}
+	page.ac = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AddsConfigurationPage) NotDone() bool {
+	return !page.ac.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AddsConfigurationPage) Response() AddsConfiguration {
+	return page.ac
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AddsConfigurationPage) Values() []Item {
+	if page.ac.IsEmpty() {
+		return nil
+	}
+	return *page.ac.Value
+}
+
 // AddsServiceMember the server details for ADDS service.
 type AddsServiceMember struct {
 	// DomainName - The domain name.
@@ -359,7 +463,103 @@ type AddsServiceMember struct {
 // AddsServiceMembers the list of  ADDS service members.
 type AddsServiceMembers struct {
 	autorest.Response `json:"-"`
-	Value             *[]AddsServiceMember `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]AddsServiceMember `json:"value,omitempty"`
+}
+
+// AddsServiceMembersIterator provides access to a complete listing of AddsServiceMember values.
+type AddsServiceMembersIterator struct {
+	i    int
+	page AddsServiceMembersPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AddsServiceMembersIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AddsServiceMembersIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AddsServiceMembersIterator) Response() AddsServiceMembers {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AddsServiceMembersIterator) Value() AddsServiceMember {
+	if !iter.page.NotDone() {
+		return AddsServiceMember{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (asm AddsServiceMembers) IsEmpty() bool {
+	return asm.Value == nil || len(*asm.Value) == 0
+}
+
+// addsServiceMembersPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (asm AddsServiceMembers) addsServiceMembersPreparer() (*http.Request, error) {
+	if asm.NextLink == nil || len(to.String(asm.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(asm.NextLink)))
+}
+
+// AddsServiceMembersPage contains a page of AddsServiceMember values.
+type AddsServiceMembersPage struct {
+	fn  func(AddsServiceMembers) (AddsServiceMembers, error)
+	asm AddsServiceMembers
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AddsServiceMembersPage) Next() error {
+	next, err := page.fn(page.asm)
+	if err != nil {
+		return err
+	}
+	page.asm = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AddsServiceMembersPage) NotDone() bool {
+	return !page.asm.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AddsServiceMembersPage) Response() AddsServiceMembers {
+	return page.asm
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AddsServiceMembersPage) Values() []AddsServiceMember {
+	if page.asm.IsEmpty() {
+		return nil
+	}
+	return *page.asm.Value
 }
 
 // Agent the agent details.
@@ -446,13 +646,110 @@ type AlertFeedback struct {
 // AlertFeedbacks the list of alert feedback.
 type AlertFeedbacks struct {
 	autorest.Response `json:"-"`
-	Value             *[]AlertFeedback `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]AlertFeedback `json:"value,omitempty"`
 }
 
 // Alerts the list of alerts for a service.
 type Alerts struct {
 	autorest.Response `json:"-"`
-	Value             *[]Alert `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Alert `json:"value,omitempty"`
+}
+
+// AlertsIterator provides access to a complete listing of Alert values.
+type AlertsIterator struct {
+	i    int
+	page AlertsPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertsIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertsIterator) Response() Alerts {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertsIterator) Value() Alert {
+	if !iter.page.NotDone() {
+		return Alert{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (a Alerts) IsEmpty() bool {
+	return a.Value == nil || len(*a.Value) == 0
+}
+
+// alertsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (a Alerts) alertsPreparer() (*http.Request, error) {
+	if a.NextLink == nil || len(to.String(a.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(a.NextLink)))
+}
+
+// AlertsPage contains a page of Alert values.
+type AlertsPage struct {
+	fn func(Alerts) (Alerts, error)
+	a  Alerts
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertsPage) Next() error {
+	next, err := page.fn(page.a)
+	if err != nil {
+		return err
+	}
+	page.a = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertsPage) NotDone() bool {
+	return !page.a.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertsPage) Response() Alerts {
+	return page.a
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertsPage) Values() []Alert {
+	if page.a.IsEmpty() {
+		return nil
+	}
+	return *page.a.Value
 }
 
 // AssociatedObject object that hold sync object details.
@@ -619,6 +916,7 @@ type ConnectorConnectionError struct {
 
 // ConnectorConnectionErrors the list of connector connection errors.
 type ConnectorConnectionErrors struct {
+	// Value - The value returned by the operation.
 	Value *[]ConnectorConnectionError `json:"value,omitempty"`
 }
 
@@ -656,13 +954,15 @@ type ConnectorObjectError struct {
 
 // ConnectorObjectErrors the list of connector object errors.
 type ConnectorObjectErrors struct {
+	// Value - The value returned by the operation.
 	Value *[]ConnectorObjectError `json:"value,omitempty"`
 }
 
 // Connectors the list of connects for a service.
 type Connectors struct {
 	autorest.Response `json:"-"`
-	Value             *[]Connector `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Connector `json:"value,omitempty"`
 }
 
 // Credential the credential for a given server.
@@ -683,6 +983,130 @@ type DataFreshnessDetail struct {
 	ServiceID *string `json:"serviceId,omitempty"`
 	// LastDataUploadTime - The date time , in UTC, when data was last uploaded by the server.
 	LastDataUploadTime *date.Time `json:"lastDataUploadTime,omitempty"`
+}
+
+// Dimension the connector object error.
+type Dimension struct {
+	// Status - The health status for the domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
+	Status HealthStatus `json:"status,omitempty"`
+	// SimpleProperties - List of service specific configuration properties.
+	SimpleProperties interface{} `json:"simpleProperties,omitempty"`
+	// ActiveAlerts - The count of alerts that are currently active for the service.
+	ActiveAlerts *int32 `json:"activeAlerts,omitempty"`
+	// AdditionalInformation - The additional information related to the service.
+	AdditionalInformation *string `json:"additionalInformation,omitempty"`
+	// LastUpdated - The date or time , in UTC, when the service properties were last updated.
+	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
+	// DisplayName - The display name of the service.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ResolvedAlerts - The total count of alerts that has been resolved for the service.
+	ResolvedAlerts *int32 `json:"resolvedAlerts,omitempty"`
+	// Signature - The signature of the service.
+	Signature *string `json:"signature,omitempty"`
+	// Type - The service type for the services onboarded to Azure Active Directory Connect Health. Depending on whether the service is monitoring, ADFS, Sync or ADDS roles, the service type can either be AdFederationService or AadSyncService or AdDomainService.
+	Type *string `json:"type,omitempty"`
+}
+
+// Dimensions the list of dimensions.
+type Dimensions struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Dimension `json:"value,omitempty"`
+}
+
+// DimensionsIterator provides access to a complete listing of Dimension values.
+type DimensionsIterator struct {
+	i    int
+	page DimensionsPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DimensionsIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DimensionsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DimensionsIterator) Response() Dimensions {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DimensionsIterator) Value() Dimension {
+	if !iter.page.NotDone() {
+		return Dimension{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (d Dimensions) IsEmpty() bool {
+	return d.Value == nil || len(*d.Value) == 0
+}
+
+// dimensionsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (d Dimensions) dimensionsPreparer() (*http.Request, error) {
+	if d.NextLink == nil || len(to.String(d.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(d.NextLink)))
+}
+
+// DimensionsPage contains a page of Dimension values.
+type DimensionsPage struct {
+	fn func(Dimensions) (Dimensions, error)
+	d  Dimensions
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DimensionsPage) Next() error {
+	next, err := page.fn(page.d)
+	if err != nil {
+		return err
+	}
+	page.d = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DimensionsPage) NotDone() bool {
+	return !page.d.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DimensionsPage) Response() Dimensions {
+	return page.d
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DimensionsPage) Values() []Dimension {
+	if page.d.IsEmpty() {
+		return nil
+	}
+	return *page.d.Value
 }
 
 // Display displays the details related to operations supported by Azure Active Directory Connect Health.
@@ -708,7 +1132,8 @@ type ErrorCount struct {
 // ErrorCounts the list of error counts.
 type ErrorCounts struct {
 	autorest.Response `json:"-"`
-	Value             *[]ErrorCount `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]ErrorCount `json:"value,omitempty"`
 }
 
 // ErrorDetail the error details.
@@ -728,7 +1153,8 @@ type ErrorDetail struct {
 // ErrorReportUsersEntries the list of bad password log in attempt entries.
 type ErrorReportUsersEntries struct {
 	autorest.Response `json:"-"`
-	Value             *[]ErrorReportUsersEntry `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]ErrorReportUsersEntry `json:"value,omitempty"`
 }
 
 // ErrorReportUsersEntry the bad password login attempt details.
@@ -825,6 +1251,7 @@ type ExportError struct {
 
 // ExportErrors the list of export errors.
 type ExportErrors struct {
+	// Value - The value returned by the operation.
 	Value *[]ExportError `json:"value,omitempty"`
 }
 
@@ -843,7 +1270,103 @@ type ExportStatus struct {
 // ExportStatuses the list of export statuses.
 type ExportStatuses struct {
 	autorest.Response `json:"-"`
-	Value             *[]ExportStatus `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]ExportStatus `json:"value,omitempty"`
+}
+
+// ExportStatusesIterator provides access to a complete listing of ExportStatus values.
+type ExportStatusesIterator struct {
+	i    int
+	page ExportStatusesPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExportStatusesIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExportStatusesIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExportStatusesIterator) Response() ExportStatuses {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExportStatusesIterator) Value() ExportStatus {
+	if !iter.page.NotDone() {
+		return ExportStatus{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (es ExportStatuses) IsEmpty() bool {
+	return es.Value == nil || len(*es.Value) == 0
+}
+
+// exportStatusesPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (es ExportStatuses) exportStatusesPreparer() (*http.Request, error) {
+	if es.NextLink == nil || len(to.String(es.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(es.NextLink)))
+}
+
+// ExportStatusesPage contains a page of ExportStatus values.
+type ExportStatusesPage struct {
+	fn func(ExportStatuses) (ExportStatuses, error)
+	es ExportStatuses
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExportStatusesPage) Next() error {
+	next, err := page.fn(page.es)
+	if err != nil {
+		return err
+	}
+	page.es = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExportStatusesPage) NotDone() bool {
+	return !page.es.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExportStatusesPage) Response() ExportStatuses {
+	return page.es
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExportStatusesPage) Values() []ExportStatus {
+	if page.es.IsEmpty() {
+		return nil
+	}
+	return *page.es.Value
 }
 
 // ExtensionErrorInfo the extension error details.
@@ -910,6 +1433,7 @@ type Hotfix struct {
 
 // Hotfixes the list of hotfixes installed in the server.
 type Hotfixes struct {
+	// Value - The value returned by the operation.
 	Value *[]Hotfix `json:"value,omitempty"`
 }
 
@@ -945,6 +1469,7 @@ type ImportError struct {
 
 // ImportErrors the list of import errors.
 type ImportErrors struct {
+	// Value - The value returned by the operation.
 	Value *[]ImportError `json:"value,omitempty"`
 }
 
@@ -994,13 +1519,8 @@ type Item struct {
 // Items the list of key value properties.
 type Items struct {
 	autorest.Response `json:"-"`
-	Value             *[]Item `json:"value,omitempty"`
-}
-
-// ListString ...
-type ListString struct {
-	autorest.Response `json:"-"`
-	Value             *[]string `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Item `json:"value,omitempty"`
 }
 
 // MergedExportError the merged export error.
@@ -1050,7 +1570,8 @@ type MergedExportError struct {
 // MergedExportErrors the list of export errors.
 type MergedExportErrors struct {
 	autorest.Response `json:"-"`
-	Value             *[]ExportError `json:"value,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]ExportError `json:"value,omitempty"`
 }
 
 // MetricGroup the metric group details.
@@ -1093,7 +1614,112 @@ type MetricMetadata struct {
 // MetricMetadataList the list of metric metadata.
 type MetricMetadataList struct {
 	autorest.Response `json:"-"`
-	Value             *[]MetricMetadata `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]MetricMetadata `json:"value,omitempty"`
+}
+
+// MetricMetadataListIterator provides access to a complete listing of MetricMetadata values.
+type MetricMetadataListIterator struct {
+	i    int
+	page MetricMetadataListPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MetricMetadataListIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MetricMetadataListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MetricMetadataListIterator) Response() MetricMetadataList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MetricMetadataListIterator) Value() MetricMetadata {
+	if !iter.page.NotDone() {
+		return MetricMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mml MetricMetadataList) IsEmpty() bool {
+	return mml.Value == nil || len(*mml.Value) == 0
+}
+
+// metricMetadataListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mml MetricMetadataList) metricMetadataListPreparer() (*http.Request, error) {
+	if mml.NextLink == nil || len(to.String(mml.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mml.NextLink)))
+}
+
+// MetricMetadataListPage contains a page of MetricMetadata values.
+type MetricMetadataListPage struct {
+	fn  func(MetricMetadataList) (MetricMetadataList, error)
+	mml MetricMetadataList
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MetricMetadataListPage) Next() error {
+	next, err := page.fn(page.mml)
+	if err != nil {
+		return err
+	}
+	page.mml = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MetricMetadataListPage) NotDone() bool {
+	return !page.mml.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MetricMetadataListPage) Response() MetricMetadataList {
+	return page.mml
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MetricMetadataListPage) Values() []MetricMetadata {
+	if page.mml.IsEmpty() {
+		return nil
+	}
+	return *page.mml.Value
+}
+
+// Metrics the list of metric items.
+type Metrics struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Item `json:"value,omitempty"`
 }
 
 // MetricSet the set of metric values. Example of a MetricSet are Values of token requests for a Server1 or
@@ -1112,6 +1738,99 @@ type MetricSets struct {
 	Sets *[]MetricSet `json:"sets,omitempty"`
 	// TimeStamps - The list of timestamps for each metric in the metric set.
 	TimeStamps *[]date.Time `json:"timeStamps,omitempty"`
+}
+
+// MetricsIterator provides access to a complete listing of Item values.
+type MetricsIterator struct {
+	i    int
+	page MetricsPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MetricsIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MetricsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MetricsIterator) Response() Metrics {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MetricsIterator) Value() Item {
+	if !iter.page.NotDone() {
+		return Item{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mVar Metrics) IsEmpty() bool {
+	return mVar.Value == nil || len(*mVar.Value) == 0
+}
+
+// metricsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mVar Metrics) metricsPreparer() (*http.Request, error) {
+	if mVar.NextLink == nil || len(to.String(mVar.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mVar.NextLink)))
+}
+
+// MetricsPage contains a page of Item values.
+type MetricsPage struct {
+	fn   func(Metrics) (Metrics, error)
+	mVar Metrics
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MetricsPage) Next() error {
+	next, err := page.fn(page.mVar)
+	if err != nil {
+		return err
+	}
+	page.mVar = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MetricsPage) NotDone() bool {
+	return !page.mVar.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MetricsPage) Response() Metrics {
+	return page.mVar
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MetricsPage) Values() []Item {
+	if page.mVar.IsEmpty() {
+		return nil
+	}
+	return *page.mVar.Value
 }
 
 // ModuleConfiguration the module configuration as required by the Agent service.
@@ -1141,6 +1860,7 @@ func (mc ModuleConfiguration) MarshalJSON() ([]byte, error) {
 
 // ModuleConfigurations the list of module configurations.
 type ModuleConfigurations struct {
+	// Value - The value returned by the operation.
 	Value *[]ModuleConfiguration `json:"value,omitempty"`
 }
 
@@ -1301,6 +2021,7 @@ type ReplicationSummary struct {
 
 // ReplicationSummaryList the list of replication summary details.
 type ReplicationSummaryList struct {
+	// Value - The value returned by the operation.
 	Value *[]ReplicationSummary `json:"value,omitempty"`
 }
 
@@ -1330,6 +2051,7 @@ type RunProfile struct {
 
 // RunProfiles the list of run profiles.
 type RunProfiles struct {
+	// Value - The value returned by the operation.
 	Value *[]RunProfile `json:"value,omitempty"`
 }
 
@@ -1457,7 +2179,103 @@ type ServiceMemberProperties struct {
 // ServiceMembers the list of servers that are onboarded for a given service.
 type ServiceMembers struct {
 	autorest.Response `json:"-"`
-	Value             *[]ServiceMember `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]ServiceMember `json:"value,omitempty"`
+}
+
+// ServiceMembersIterator provides access to a complete listing of ServiceMember values.
+type ServiceMembersIterator struct {
+	i    int
+	page ServiceMembersPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ServiceMembersIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ServiceMembersIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ServiceMembersIterator) Response() ServiceMembers {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ServiceMembersIterator) Value() ServiceMember {
+	if !iter.page.NotDone() {
+		return ServiceMember{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sm ServiceMembers) IsEmpty() bool {
+	return sm.Value == nil || len(*sm.Value) == 0
+}
+
+// serviceMembersPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sm ServiceMembers) serviceMembersPreparer() (*http.Request, error) {
+	if sm.NextLink == nil || len(to.String(sm.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sm.NextLink)))
+}
+
+// ServiceMembersPage contains a page of ServiceMember values.
+type ServiceMembersPage struct {
+	fn func(ServiceMembers) (ServiceMembers, error)
+	sm ServiceMembers
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ServiceMembersPage) Next() error {
+	next, err := page.fn(page.sm)
+	if err != nil {
+		return err
+	}
+	page.sm = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ServiceMembersPage) NotDone() bool {
+	return !page.sm.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ServiceMembersPage) Response() ServiceMembers {
+	return page.sm
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ServiceMembersPage) Values() []ServiceMember {
+	if page.sm.IsEmpty() {
+		return nil
+	}
+	return *page.sm.Value
 }
 
 // ServiceProperties the service properties for a given service.
@@ -1513,7 +2331,103 @@ type ServiceProperties struct {
 // Services the list of services for a given onboarded tenant.
 type Services struct {
 	autorest.Response `json:"-"`
-	Value             *[]Service `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]Service `json:"value,omitempty"`
+}
+
+// ServicesIterator provides access to a complete listing of Service values.
+type ServicesIterator struct {
+	i    int
+	page ServicesPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ServicesIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ServicesIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ServicesIterator) Response() Services {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ServicesIterator) Value() Service {
+	if !iter.page.NotDone() {
+		return Service{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (s Services) IsEmpty() bool {
+	return s.Value == nil || len(*s.Value) == 0
+}
+
+// servicesPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (s Services) servicesPreparer() (*http.Request, error) {
+	if s.NextLink == nil || len(to.String(s.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(s.NextLink)))
+}
+
+// ServicesPage contains a page of Service values.
+type ServicesPage struct {
+	fn func(Services) (Services, error)
+	s  Services
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ServicesPage) Next() error {
+	next, err := page.fn(page.s)
+	if err != nil {
+		return err
+	}
+	page.s = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ServicesPage) NotDone() bool {
+	return !page.s.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ServicesPage) Response() Services {
+	return page.s
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ServicesPage) Values() []Service {
+	if page.s.IsEmpty() {
+		return nil
+	}
+	return *page.s.Value
 }
 
 // TabularExportError the details for export error.

@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -41,120 +40,38 @@ func NewAlertsClientWithBaseURI(baseURI string) AlertsClient {
 	return AlertsClient{NewWithBaseURI(baseURI)}
 }
 
-// GetAddsServiceMemberAlerts gets the details of an alert for a given Active Directory Domain Controller service and
-// server combination.
-// Parameters:
-// serviceMemberID - the server Id for which the laert details needs to be queried.
-// serviceName - the name of the service.
-// filter - the alert property filter to apply.
-// state - the alert state to query for.
-// from - the start date to query for.
-// toParameter - the end date till when to query for.
-func (client AlertsClient) GetAddsServiceMemberAlerts(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result Alerts, err error) {
-	req, err := client.GetAddsServiceMemberAlertsPreparer(ctx, serviceMemberID, serviceName, filter, state, from, toParameter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServiceMemberAlerts", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAddsServiceMemberAlertsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServiceMemberAlerts", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAddsServiceMemberAlertsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServiceMemberAlerts", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAddsServiceMemberAlertsPreparer prepares the GetAddsServiceMemberAlerts request.
-func (client AlertsClient) GetAddsServiceMemberAlertsPreparer(ctx context.Context, serviceMemberID uuid.UUID, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"serviceMemberId": autorest.Encode("path", serviceMemberID),
-		"serviceName":     autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if len(state) > 0 {
-		queryParameters["state"] = autorest.Encode("query", state)
-	}
-	if from != nil {
-		queryParameters["from"] = autorest.Encode("query", *from)
-	}
-	if toParameter != nil {
-		queryParameters["to"] = autorest.Encode("query", *toParameter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/servicemembers/{serviceMemberId}/alerts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAddsServiceMemberAlertsSender sends the GetAddsServiceMemberAlerts request. The method will close the
-// http.Response Body if it receives an error.
-func (client AlertsClient) GetAddsServiceMemberAlertsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetAddsServiceMemberAlertsResponder handles the response to the GetAddsServiceMemberAlerts request. The method always
-// closes the http.Response Body.
-func (client AlertsClient) GetAddsServiceMemberAlertsResponder(resp *http.Response) (result Alerts, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAddsServicesAlerts gets the alerts for a given Active Directory Domain Service.
+// ListAddsAlerts gets the alerts for a given Active Directory Domain Service.
 // Parameters:
 // serviceName - the name of the service.
 // filter - the alert property filter to apply.
 // state - the alert state to query for.
 // from - the start date to query for.
 // toParameter - the end date till when to query for.
-func (client AlertsClient) GetAddsServicesAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result Alerts, err error) {
-	req, err := client.GetAddsServicesAlertsPreparer(ctx, serviceName, filter, state, from, toParameter)
+func (client AlertsClient) ListAddsAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result AlertsPage, err error) {
+	result.fn = client.listAddsAlertsNextResults
+	req, err := client.ListAddsAlertsPreparer(ctx, serviceName, filter, state, from, toParameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServicesAlerts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "ListAddsAlerts", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAddsServicesAlertsSender(req)
+	resp, err := client.ListAddsAlertsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServicesAlerts", resp, "Failure sending request")
+		result.a.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "ListAddsAlerts", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAddsServicesAlertsResponder(resp)
+	result.a, err = client.ListAddsAlertsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAddsServicesAlerts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "ListAddsAlerts", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAddsServicesAlertsPreparer prepares the GetAddsServicesAlerts request.
-func (client AlertsClient) GetAddsServicesAlertsPreparer(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (*http.Request, error) {
+// ListAddsAlertsPreparer prepares the ListAddsAlerts request.
+func (client AlertsClient) ListAddsAlertsPreparer(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -184,16 +101,16 @@ func (client AlertsClient) GetAddsServicesAlertsPreparer(ctx context.Context, se
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetAddsServicesAlertsSender sends the GetAddsServicesAlerts request. The method will close the
+// ListAddsAlertsSender sends the ListAddsAlerts request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertsClient) GetAddsServicesAlertsSender(req *http.Request) (*http.Response, error) {
+func (client AlertsClient) ListAddsAlertsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetAddsServicesAlertsResponder handles the response to the GetAddsServicesAlerts request. The method always
+// ListAddsAlertsResponder handles the response to the ListAddsAlerts request. The method always
 // closes the http.Response Body.
-func (client AlertsClient) GetAddsServicesAlertsResponder(resp *http.Response) (result Alerts, err error) {
+func (client AlertsClient) ListAddsAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -204,82 +121,29 @@ func (client AlertsClient) GetAddsServicesAlertsResponder(resp *http.Response) (
 	return
 }
 
-// GetAlerts gets the alerts for a given service.
-// Parameters:
-// serviceName - the name of the service.
-// filter - the alert property filter to apply.
-// state - the alert state to query for.
-// from - the start date to query for.
-// toParameter - the end date till when to query for.
-func (client AlertsClient) GetAlerts(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result Alerts, err error) {
-	req, err := client.GetAlertsPreparer(ctx, serviceName, filter, state, from, toParameter)
+// listAddsAlertsNextResults retrieves the next set of results, if any.
+func (client AlertsClient) listAddsAlertsNextResults(lastResults Alerts) (result Alerts, err error) {
+	req, err := lastResults.alertsPreparer()
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAlerts", nil, "Failure preparing request")
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "listAddsAlertsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
 		return
 	}
-
-	resp, err := client.GetAlertsSender(req)
+	resp, err := client.ListAddsAlertsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAlerts", resp, "Failure sending request")
-		return
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "listAddsAlertsNextResults", resp, "Failure sending next results request")
 	}
-
-	result, err = client.GetAlertsResponder(resp)
+	result, err = client.ListAddsAlertsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "GetAlerts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "listAddsAlertsNextResults", resp, "Failure responding to next results request")
 	}
-
 	return
 }
 
-// GetAlertsPreparer prepares the GetAlerts request.
-func (client AlertsClient) GetAlertsPreparer(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if len(state) > 0 {
-		queryParameters["state"] = autorest.Encode("query", state)
-	}
-	if from != nil {
-		queryParameters["from"] = autorest.Encode("query", *from)
-	}
-	if toParameter != nil {
-		queryParameters["to"] = autorest.Encode("query", *toParameter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/alerts", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAlertsSender sends the GetAlerts request. The method will close the
-// http.Response Body if it receives an error.
-func (client AlertsClient) GetAlertsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetAlertsResponder handles the response to the GetAlerts request. The method always
-// closes the http.Response Body.
-func (client AlertsClient) GetAlertsResponder(resp *http.Response) (result Alerts, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+// ListAddsAlertsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AlertsClient) ListAddsAlertsComplete(ctx context.Context, serviceName string, filter string, state string, from *date.Time, toParameter *date.Time) (result AlertsIterator, err error) {
+	result.page, err = client.ListAddsAlerts(ctx, serviceName, filter, state, from, toParameter)
 	return
 }

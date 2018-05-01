@@ -39,35 +39,36 @@ func NewAddsservicemembersClientWithBaseURI(baseURI string) AddsservicemembersCl
 	return AddsservicemembersClient{NewWithBaseURI(baseURI)}
 }
 
-// GetServiceMembers gets the details of the Active Directory Domain servers, for a given Active Directory Domain
-// Service, that are onboarded to Azure Active Directory Connect Health.
+// List gets the details of the Active Directory Domain servers, for a given Active Directory Domain Service, that are
+// onboarded to Azure Active Directory Connect Health.
 // Parameters:
 // serviceName - the name of the service.
 // filter - the server property filter to apply.
-func (client AddsservicemembersClient) GetServiceMembers(ctx context.Context, serviceName string, filter string) (result AddsServiceMembers, err error) {
-	req, err := client.GetServiceMembersPreparer(ctx, serviceName, filter)
+func (client AddsservicemembersClient) List(ctx context.Context, serviceName string, filter string) (result AddsServiceMembersPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, serviceName, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "GetServiceMembers", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetServiceMembersSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "GetServiceMembers", resp, "Failure sending request")
+		result.asm.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetServiceMembersResponder(resp)
+	result.asm, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "GetServiceMembers", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetServiceMembersPreparer prepares the GetServiceMembers request.
-func (client AddsservicemembersClient) GetServiceMembersPreparer(ctx context.Context, serviceName string, filter string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client AddsservicemembersClient) ListPreparer(ctx context.Context, serviceName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -88,16 +89,16 @@ func (client AddsservicemembersClient) GetServiceMembersPreparer(ctx context.Con
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetServiceMembersSender sends the GetServiceMembers request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsservicemembersClient) GetServiceMembersSender(req *http.Request) (*http.Response, error) {
+func (client AddsservicemembersClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetServiceMembersResponder handles the response to the GetServiceMembers request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AddsservicemembersClient) GetServiceMembersResponder(resp *http.Response) (result AddsServiceMembers, err error) {
+func (client AddsservicemembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -105,5 +106,32 @@ func (client AddsservicemembersClient) GetServiceMembersResponder(resp *http.Res
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client AddsservicemembersClient) listNextResults(lastResults AddsServiceMembers) (result AddsServiceMembers, err error) {
+	req, err := lastResults.addsServiceMembersPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsservicemembersClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AddsservicemembersClient) ListComplete(ctx context.Context, serviceName string, filter string) (result AddsServiceMembersIterator, err error) {
+	result.page, err = client.List(ctx, serviceName, filter)
 	return
 }

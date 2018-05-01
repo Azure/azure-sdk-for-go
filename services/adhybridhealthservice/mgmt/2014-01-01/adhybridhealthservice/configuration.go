@@ -39,31 +39,89 @@ func NewConfigurationClientWithBaseURI(baseURI string) ConfigurationClient {
 	return ConfigurationClient{NewWithBaseURI(baseURI)}
 }
 
-// GetTenant gets the details of a tenant onboarded to Azure Active Directory Connect Health.
-func (client ConfigurationClient) GetTenant(ctx context.Context) (result Tenant, err error) {
-	req, err := client.GetTenantPreparer(ctx)
+// Add onboards a tenant in Azure Active Directory Connect Health.
+func (client ConfigurationClient) Add(ctx context.Context) (result Tenant, err error) {
+	req, err := client.AddPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "GetTenant", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Add", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetTenantSender(req)
+	resp, err := client.AddSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "GetTenant", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Add", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetTenantResponder(resp)
+	result, err = client.AddResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "GetTenant", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Add", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetTenantPreparer prepares the GetTenant request.
-func (client ConfigurationClient) GetTenantPreparer(ctx context.Context) (*http.Request, error) {
+// AddPreparer prepares the Add request.
+func (client ConfigurationClient) AddPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.ADHybridHealthService/configuration"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddSender sends the Add request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationClient) AddSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddResponder handles the response to the Add request. The method always
+// closes the http.Response Body.
+func (client ConfigurationClient) AddResponder(resp *http.Response) (result Tenant, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusForbidden),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Get gets the details of a tenant onboarded to Azure Active Directory Connect Health.
+func (client ConfigurationClient) Get(ctx context.Context) (result Tenant, err error) {
+	req, err := client.GetPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client ConfigurationClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -77,16 +135,16 @@ func (client ConfigurationClient) GetTenantPreparer(ctx context.Context) (*http.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetTenantSender sends the GetTenant request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ConfigurationClient) GetTenantSender(req *http.Request) (*http.Response, error) {
+func (client ConfigurationClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetTenantResponder handles the response to the GetTenant request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ConfigurationClient) GetTenantResponder(resp *http.Response) (result Tenant, err error) {
+func (client ConfigurationClient) GetResponder(resp *http.Response) (result Tenant, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -97,33 +155,126 @@ func (client ConfigurationClient) GetTenantResponder(resp *http.Response) (resul
 	return
 }
 
-// PatchTenant updates tenant properties for tenants onboarded to Azure Active Directory Connect Health.
+// ListAddsConfigurations gets the service configurations.
 // Parameters:
-// tenant - the tenant object with the properties set to the updated value.
-func (client ConfigurationClient) PatchTenant(ctx context.Context, tenant Tenant) (result Tenant, err error) {
-	req, err := client.PatchTenantPreparer(ctx, tenant)
+// serviceName - the name of the service.
+// grouping - the grouping for configurations.
+func (client ConfigurationClient) ListAddsConfigurations(ctx context.Context, serviceName string, grouping string) (result AddsConfigurationPage, err error) {
+	result.fn = client.listAddsConfigurationsNextResults
+	req, err := client.ListAddsConfigurationsPreparer(ctx, serviceName, grouping)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PatchTenant", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "ListAddsConfigurations", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PatchTenantSender(req)
+	resp, err := client.ListAddsConfigurationsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PatchTenant", resp, "Failure sending request")
+		result.ac.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "ListAddsConfigurations", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PatchTenantResponder(resp)
+	result.ac, err = client.ListAddsConfigurationsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PatchTenant", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "ListAddsConfigurations", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PatchTenantPreparer prepares the PatchTenant request.
-func (client ConfigurationClient) PatchTenantPreparer(ctx context.Context, tenant Tenant) (*http.Request, error) {
+// ListAddsConfigurationsPreparer prepares the ListAddsConfigurations request.
+func (client ConfigurationClient) ListAddsConfigurationsPreparer(ctx context.Context, serviceName string, grouping string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(grouping) > 0 {
+		queryParameters["grouping"] = autorest.Encode("query", grouping)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/configuration", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAddsConfigurationsSender sends the ListAddsConfigurations request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationClient) ListAddsConfigurationsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListAddsConfigurationsResponder handles the response to the ListAddsConfigurations request. The method always
+// closes the http.Response Body.
+func (client ConfigurationClient) ListAddsConfigurationsResponder(resp *http.Response) (result AddsConfiguration, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAddsConfigurationsNextResults retrieves the next set of results, if any.
+func (client ConfigurationClient) listAddsConfigurationsNextResults(lastResults AddsConfiguration) (result AddsConfiguration, err error) {
+	req, err := lastResults.addsConfigurationPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "listAddsConfigurationsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAddsConfigurationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "listAddsConfigurationsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAddsConfigurationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "listAddsConfigurationsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAddsConfigurationsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ConfigurationClient) ListAddsConfigurationsComplete(ctx context.Context, serviceName string, grouping string) (result AddsConfigurationIterator, err error) {
+	result.page, err = client.ListAddsConfigurations(ctx, serviceName, grouping)
+	return
+}
+
+// Update updates tenant properties for tenants onboarded to Azure Active Directory Connect Health.
+// Parameters:
+// tenant - the tenant object with the properties set to the updated value.
+func (client ConfigurationClient) Update(ctx context.Context, tenant Tenant) (result Tenant, err error) {
+	req, err := client.UpdatePreparer(ctx, tenant)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client ConfigurationClient) UpdatePreparer(ctx context.Context, tenant Tenant) (*http.Request, error) {
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -139,78 +290,20 @@ func (client ConfigurationClient) PatchTenantPreparer(ctx context.Context, tenan
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PatchTenantSender sends the PatchTenant request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ConfigurationClient) PatchTenantSender(req *http.Request) (*http.Response, error) {
+func (client ConfigurationClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// PatchTenantResponder handles the response to the PatchTenant request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ConfigurationClient) PatchTenantResponder(resp *http.Response) (result Tenant, err error) {
+func (client ConfigurationClient) UpdateResponder(resp *http.Response) (result Tenant, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// PostTenantConfiguration onboards a tenant in Azure Active Directory Connect Health.
-func (client ConfigurationClient) PostTenantConfiguration(ctx context.Context) (result Tenant, err error) {
-	req, err := client.PostTenantConfigurationPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PostTenantConfiguration", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.PostTenantConfigurationSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PostTenantConfiguration", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.PostTenantConfigurationResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "PostTenantConfiguration", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// PostTenantConfigurationPreparer prepares the PostTenantConfiguration request.
-func (client ConfigurationClient) PostTenantConfigurationPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.ADHybridHealthService/configuration"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// PostTenantConfigurationSender sends the PostTenantConfiguration request. The method will close the
-// http.Response Body if it receives an error.
-func (client ConfigurationClient) PostTenantConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// PostTenantConfigurationResponder handles the response to the PostTenantConfiguration request. The method always
-// closes the http.Response Body.
-func (client ConfigurationClient) PostTenantConfigurationResponder(resp *http.Response) (result Tenant, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusForbidden),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

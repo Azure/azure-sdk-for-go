@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
 )
 
@@ -14,15 +15,23 @@ import (
 // 3. Username password
 // 4. MSI
 func NewAuthorizerFromEnvironment() (autorest.Authorizer, error) {
-	settings, err := auth.GetAuthSettings()
-	if err != nil {
-		return nil, err
+	envName := os.Getenv("AZURE_ENVIRONMENT")
+	var env azure.Environment
+	var err error
+
+	if envName == "" {
+		env = azure.PublicCloud
+	} else {
+		env, err = azure.EnvironmentFromName(envName)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	settings.Resource = os.Getenv("AZURE_KEYVAULT_RESOURCE")
-	if settings.Resource == "" {
-		settings.Resource = strings.TrimSuffix(settings.Environment.KeyVaultEndpoint, "/")
+	resource := os.Getenv("AZURE_KEYVAULT_RESOURCE")
+	if resource == "" {
+		resource = strings.TrimSuffix(env.KeyVaultEndpoint, "/")
 	}
 
-	return settings.GetAuth()
+	return auth.NewAuthorizerFromEnvironmentWithResource(resource)
 }

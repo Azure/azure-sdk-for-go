@@ -240,6 +240,75 @@ func (client IntegrationAccountsClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
+// GetCallbackURL gets the integration account callback URL.
+//
+// resourceGroupName is the resource group name. integrationAccountName is the integration account name. parameters
+// is the callback URL parameters.
+func (client IntegrationAccountsClient) GetCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (result CallbackURL, err error) {
+	req, err := client.GetCallbackURLPreparer(ctx, resourceGroupName, integrationAccountName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetCallbackURLSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetCallbackURLResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "GetCallbackURL", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetCallbackURLPreparer prepares the GetCallbackURL request.
+func (client IntegrationAccountsClient) GetCallbackURLPreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"integrationAccountName": autorest.Encode("path", integrationAccountName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/listCallbackUrl", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetCallbackURLSender sends the GetCallbackURL request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationAccountsClient) GetCallbackURLSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetCallbackURLResponder handles the response to the GetCallbackURL request. The method always
+// closes the http.Response Body.
+func (client IntegrationAccountsClient) GetCallbackURLResponder(resp *http.Response) (result CallbackURL, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListByResourceGroup gets a list of integration accounts by resource group.
 //
 // resourceGroupName is the resource group name. top is the number of items to be included in the result.
@@ -428,75 +497,6 @@ func (client IntegrationAccountsClient) listBySubscriptionNextResults(lastResult
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
 func (client IntegrationAccountsClient) ListBySubscriptionComplete(ctx context.Context, top *int32) (result IntegrationAccountListResultIterator, err error) {
 	result.page, err = client.ListBySubscription(ctx, top)
-	return
-}
-
-// ListCallbackURL gets the integration account callback URL.
-//
-// resourceGroupName is the resource group name. integrationAccountName is the integration account name. parameters
-// is the callback URL parameters.
-func (client IntegrationAccountsClient) ListCallbackURL(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (result CallbackURL, err error) {
-	req, err := client.ListCallbackURLPreparer(ctx, resourceGroupName, integrationAccountName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListCallbackURL", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListCallbackURLSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListCallbackURL", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListCallbackURLResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountsClient", "ListCallbackURL", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListCallbackURLPreparer prepares the ListCallbackURL request.
-func (client IntegrationAccountsClient) ListCallbackURLPreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, parameters GetCallbackURLParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"integrationAccountName": autorest.Encode("path", integrationAccountName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2016-06-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/listCallbackUrl", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListCallbackURLSender sends the ListCallbackURL request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationAccountsClient) ListCallbackURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListCallbackURLResponder handles the response to the ListCallbackURL request. The method always
-// closes the http.Response Body.
-func (client IntegrationAccountsClient) ListCallbackURLResponder(resp *http.Response) (result CallbackURL, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 

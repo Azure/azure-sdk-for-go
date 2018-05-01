@@ -41,6 +41,9 @@ const (
 
 type BatchInput = original.BatchInput
 type DetectedLanguage = original.DetectedLanguage
+type EntitiesBatchResult = original.EntitiesBatchResult
+type EntitiesBatchResultItem = original.EntitiesBatchResultItem
+type EntityRecord = original.EntityRecord
 type ErrorRecord = original.ErrorRecord
 type ErrorResponse = original.ErrorResponse
 type Input = original.Input
@@ -49,6 +52,7 @@ type KeyPhraseBatchResult = original.KeyPhraseBatchResult
 type KeyPhraseBatchResultItem = original.KeyPhraseBatchResultItem
 type LanguageBatchResult = original.LanguageBatchResult
 type LanguageBatchResultItem = original.LanguageBatchResultItem
+type MatchRecord = original.MatchRecord
 type MultiLanguageBatchInput = original.MultiLanguageBatchInput
 type MultiLanguageInput = original.MultiLanguageInput
 type SentimentBatchResult = original.SentimentBatchResult

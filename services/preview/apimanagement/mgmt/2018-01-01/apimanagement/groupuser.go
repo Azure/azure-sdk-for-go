@@ -41,11 +41,10 @@ func NewGroupUserClientWithBaseURI(baseURI string, subscriptionID string) GroupU
 }
 
 // CheckEntityExists checks that user entity specified by identifier is associated with the group entity.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-// UID - user identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// groupID is group identifier. Must be unique in the current API Management service instance. UID is user
+// identifier. Must be unique in the current API Management service instance.
 func (client GroupUserClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -127,11 +126,10 @@ func (client GroupUserClient) CheckEntityExistsResponder(resp *http.Response) (r
 }
 
 // Create adds a user to the specified group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-// UID - user identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// groupID is group identifier. Must be unique in the current API Management service instance. UID is user
+// identifier. Must be unique in the current API Management service instance.
 func (client GroupUserClient) Create(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result UserContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -214,11 +212,10 @@ func (client GroupUserClient) CreateResponder(resp *http.Response) (result UserC
 }
 
 // Delete remove existing user from existing group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-// UID - user identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// groupID is group identifier. Must be unique in the current API Management service instance. UID is user
+// identifier. Must be unique in the current API Management service instance.
 func (client GroupUserClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, groupID string, UID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -300,11 +297,10 @@ func (client GroupUserClient) DeleteResponder(resp *http.Response) (result autor
 }
 
 // List lists a collection of the members of the group, specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// groupID - group identifier. Must be unique in the current API Management service instance.
-// filter - | Field            | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// groupID is group identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions               |
 // |------------------|------------------------|-----------------------------------|
 // | id               | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | firstName        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
@@ -312,9 +308,8 @@ func (client GroupUserClient) DeleteResponder(resp *http.Response) (result autor
 // | email            | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | state            | eq                     | N/A                               |
 // | registrationDate | ge, le, eq, ne, gt, lt | N/A                               |
-// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | note             | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of
+// records to return. skip is number of records to skip.
 func (client GroupUserClient) List(ctx context.Context, resourceGroupName string, serviceName string, groupID string, filter string, top *int32, skip *int32) (result UserCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

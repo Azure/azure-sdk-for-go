@@ -41,13 +41,11 @@ func NewAPIPolicyClientWithBaseURI(baseURI string, subscriptionID string) APIPol
 }
 
 // CreateOrUpdate creates or updates policy configuration for the API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// parameters - the policy contents to apply.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. parameters is the policy contents to apply.
+// ifMatch is eTag of the Entity. Not required when creating an entity, but required when updating an entity.
 func (client APIPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters PolicyContract, ifMatch string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -135,13 +133,11 @@ func (client APIPolicyClient) CreateOrUpdateResponder(resp *http.Response) (resu
 }
 
 // Delete deletes the policy configuration at the Api.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. ifMatch is eTag of the Entity. ETag should match
+// the current entity state from the header response of the GET request or it should be * for unconditional update.
 func (client APIPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -220,10 +216,9 @@ func (client APIPolicyClient) DeleteResponder(resp *http.Response) (result autor
 }
 
 // Get get the policy configuration at the API level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
 func (client APIPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -303,10 +298,9 @@ func (client APIPolicyClient) GetResponder(resp *http.Response) (result PolicyCo
 }
 
 // GetEntityTag gets the entity state (Etag) version of the API policy specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
 func (client APIPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -385,10 +379,9 @@ func (client APIPolicyClient) GetEntityTagResponder(resp *http.Response) (result
 }
 
 // ListByAPI get the policy configuration at the API level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
 func (client APIPolicyClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result PolicyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{

@@ -41,11 +41,9 @@ func NewOpenIDConnectProvidersClientWithBaseURI(baseURI string, subscriptionID s
 }
 
 // CreateOrUpdate creates or updates the OpenID Connect Provider.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// opid - identifier of the OpenID Connect Provider.
-// parameters - create parameters.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. opid
+// is identifier of the OpenID Connect Provider. parameters is create parameters.
 func (client OpenIDConnectProvidersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderCreateContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -128,12 +126,10 @@ func (client OpenIDConnectProvidersClient) CreateOrUpdateResponder(resp *http.Re
 }
 
 // Delete deletes specific OpenID Connect Provider of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// opid - identifier of the OpenID Connect Provider.
-// ifMatch - the entity state (Etag) version of the OpenID Connect Provider to delete. A value of "*" can be
-// used for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. opid
+// is identifier of the OpenID Connect Provider. ifMatch is the entity state (Etag) version of the OpenID Connect
+// Provider to delete. A value of "*" can be used for If-Match to unconditionally apply the operation.
 func (client OpenIDConnectProvidersClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, opid string, ifMatch string) (result ErrorBodyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -208,10 +204,9 @@ func (client OpenIDConnectProvidersClient) DeleteResponder(resp *http.Response) 
 }
 
 // Get gets specific OpenID Connect Provider.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// opid - identifier of the OpenID Connect Provider.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. opid
+// is identifier of the OpenID Connect Provider.
 func (client OpenIDConnectProvidersClient) Get(ctx context.Context, resourceGroupName string, serviceName string, opid string) (result OpenidConnectProviderContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -285,15 +280,13 @@ func (client OpenIDConnectProvidersClient) GetResponder(resp *http.Response) (re
 }
 
 // ListByService lists all OpenID Connect Providers.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
 func (client OpenIDConnectProvidersClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result OpenIDConnectProviderCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -409,13 +402,11 @@ func (client OpenIDConnectProvidersClient) ListByServiceComplete(ctx context.Con
 }
 
 // Update updates the specific OpenID Connect Provider.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// opid - identifier of the OpenID Connect Provider.
-// parameters - update parameters.
-// ifMatch - the entity state (Etag) version of the OpenID Connect Provider to update. A value of "*" can be
-// used for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. opid
+// is identifier of the OpenID Connect Provider. parameters is update parameters. ifMatch is the entity state
+// (Etag) version of the OpenID Connect Provider to update. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client OpenIDConnectProvidersClient) Update(ctx context.Context, resourceGroupName string, serviceName string, opid string, parameters OpenidConnectProviderUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

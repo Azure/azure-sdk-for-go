@@ -42,10 +42,9 @@ func NewQuotaByCounterKeysClientWithBaseURI(baseURI string, subscriptionID strin
 
 // ListByService lists a collection of current quota counter periods associated with the counter-key configured in the
 // policy on the specified service instance. The api does not support paging yet.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// quotaCounterKey - quota counter key identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// quotaCounterKey is quota counter key identifier.
 func (client QuotaByCounterKeysClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string) (result QuotaCounterCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -120,11 +119,10 @@ func (client QuotaByCounterKeysClient) ListByServiceResponder(resp *http.Respons
 
 // Update updates all the quota counter values specified with the existing quota counter key to a value in the
 // specified service instance. This should be used for reset of the quota counter values.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// quotaCounterKey - quota counter key identifier.
-// parameters - the value of the quota counter to be applied to all quota counter periods.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// quotaCounterKey is quota counter key identifier. parameters is the value of the quota counter to be applied to
+// all quota counter periods.
 func (client QuotaByCounterKeysClient) Update(ctx context.Context, resourceGroupName string, serviceName string, quotaCounterKey string, parameters QuotaCounterValueContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

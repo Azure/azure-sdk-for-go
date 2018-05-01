@@ -42,9 +42,8 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 
 // ApplyNetworkConfigurationUpdates updates the Microsoft.ApiManagement resource running in the Virtual network to pick
 // the updated network settings.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client ServicesClient) ApplyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string) (result ServicesApplyNetworkConfigurationUpdatesFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -120,10 +119,9 @@ func (client ServicesClient) ApplyNetworkConfigurationUpdatesResponder(resp *htt
 
 // Backup creates a backup of the API Management service to the given Azure Storage Account. This is long running
 // operation and could take several minutes to complete.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the ApiManagementServices_Backup operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the ApiManagementServices_Backup operation.
 func (client ServicesClient) Backup(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters) (result ServicesBackupFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -205,8 +203,8 @@ func (client ServicesClient) BackupResponder(resp *http.Response) (result Servic
 }
 
 // CheckNameAvailability checks availability and correctness of a name for an API Management service.
-// Parameters:
-// parameters - parameters supplied to the CheckNameAvailability operation.
+//
+// parameters is parameters supplied to the CheckNameAvailability operation.
 func (client ServicesClient) CheckNameAvailability(ctx context.Context, parameters ServiceCheckNameAvailabilityParameters) (result ServiceNameAvailabilityResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -278,10 +276,9 @@ func (client ServicesClient) CheckNameAvailabilityResponder(resp *http.Response)
 
 // CreateOrUpdate creates or updates an API Management service. This is long running operation and could take several
 // minutes to complete.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the CreateOrUpdate API Management service operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the CreateOrUpdate API Management service operation.
 func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceResource) (result ServiceResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -367,9 +364,8 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete deletes an existing API Management service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client ServicesClient) Delete(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -441,9 +437,8 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get gets an API Management service resource description.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, serviceName string) (result ServiceResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -516,9 +511,8 @@ func (client ServicesClient) GetResponder(resp *http.Response) (result ServiceRe
 }
 
 // GetSsoToken gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client ServicesClient) GetSsoToken(ctx context.Context, resourceGroupName string, serviceName string) (result ServiceGetSsoTokenResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -681,8 +675,8 @@ func (client ServicesClient) ListComplete(ctx context.Context) (result ServiceLi
 }
 
 // ListByResourceGroup list all API Management services within a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client ServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ServiceListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -776,10 +770,9 @@ func (client ServicesClient) ListByResourceGroupComplete(ctx context.Context, re
 // ManageDeployments manages deployments of an API Management service. This operation can be used to do the following:
 // Change SKU, Change SKU Units, Change Service Tier (Developer/Standard/Premium) and Manage VPN Configuration. This is
 // a long running operation and can take several minutes to complete.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the ManageDeployments operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the ManageDeployments operation.
 func (client ServicesClient) ManageDeployments(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceManageDeploymentsParameters) (result ServicesManageDeploymentsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -863,10 +856,9 @@ func (client ServicesClient) ManageDeploymentsResponder(resp *http.Response) (re
 
 // Restore restores a backup of an API Management service created using the ApiManagementServices_Backup operation on
 // the current service. This is a long running operation and could take several minutes to complete.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the Restore API Management service from backup operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the Restore API Management service from backup operation.
 func (client ServicesClient) Restore(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceBackupRestoreParameters) (result ServicesRestoreFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -948,10 +940,9 @@ func (client ServicesClient) RestoreResponder(resp *http.Response) (result Servi
 }
 
 // Update updates an existing API Management service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the CreateOrUpdate API Management service operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the CreateOrUpdate API Management service operation.
 func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateParameters) (result ServicesUpdateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -1030,10 +1021,9 @@ func (client ServicesClient) UpdateResponder(resp *http.Response) (result Servic
 // UpdateHostname creates, updates, or deletes the custom hostnames for an API Management service. The custom hostname
 // can be applied to the Proxy and Portal endpoint. This is a long running operation and could take several minutes to
 // complete.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the UpdateHostname operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the UpdateHostname operation.
 func (client ServicesClient) UpdateHostname(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUpdateHostnameParameters) (result ServicesUpdateHostnameFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -1110,10 +1100,9 @@ func (client ServicesClient) UpdateHostnameResponder(resp *http.Response) (resul
 }
 
 // UploadCertificate upload Custom Domain SSL certificate for an API Management service.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - parameters supplied to the Upload SSL certificate for an API Management service operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is parameters supplied to the Upload SSL certificate for an API Management service operation.
 func (client ServicesClient) UploadCertificate(ctx context.Context, resourceGroupName string, serviceName string, parameters ServiceUploadCertificateParameters) (result CertificateInformation, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

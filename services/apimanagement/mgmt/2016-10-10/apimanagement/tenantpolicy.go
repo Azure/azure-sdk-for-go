@@ -42,12 +42,11 @@ func NewTenantPolicyClientWithBaseURI(baseURI string, subscriptionID string) Ten
 }
 
 // CreateOrUpdate creates or updates global policy configuration for the tenant.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - the policy content details.
-// ifMatch - the entity state (Etag) version of the tenant policy to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is the policy content details. parameters will be closed upon successful return. Callers should
+// ensure closure when receiving an error.ifMatch is the entity state (Etag) version of the tenant policy to
+// update. A value of "*" can be used for If-Match to unconditionally apply the operation.
 func (client TenantPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters io.ReadCloser, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -122,10 +121,9 @@ func (client TenantPolicyClient) CreateOrUpdateResponder(resp *http.Response) (r
 }
 
 // Delete deletes the global tenant policy configuration.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// ifMatch - the entity state (Etag) version of the tenant policy to update. A value of "*" can be used for
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// ifMatch is the entity state (Etag) version of the tenant policy to update. A value of "*" can be used for
 // If-Match to unconditionally apply the operation.
 func (client TenantPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -199,9 +197,8 @@ func (client TenantPolicyClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // Get get the global policy configuration of the tenant.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client TenantPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

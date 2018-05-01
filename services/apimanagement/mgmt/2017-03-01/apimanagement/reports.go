@@ -41,12 +41,10 @@ func NewReportsClientWithBaseURI(baseURI string, subscriptionID string) ReportsC
 }
 
 // ListByAPI lists report records by API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -160,12 +158,10 @@ func (client ReportsClient) ListByAPIComplete(ctx context.Context, resourceGroup
 }
 
 // ListByGeo lists report records by GeoGraphy.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByGeo(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -281,12 +277,10 @@ func (client ReportsClient) ListByGeoComplete(ctx context.Context, resourceGroup
 }
 
 // ListByOperation lists report records by API Operations.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByOperation(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -400,12 +394,10 @@ func (client ReportsClient) ListByOperationComplete(ctx context.Context, resourc
 }
 
 // ListByProduct lists report records by Product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -519,12 +511,10 @@ func (client ReportsClient) ListByProductComplete(ctx context.Context, resourceG
 }
 
 // ListByRequest lists report records by Request.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByRequest(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result RequestReportCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -610,12 +600,10 @@ func (client ReportsClient) ListByRequestResponder(resp *http.Response) (result 
 }
 
 // ListBySubscription lists report records by subscription.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListBySubscription(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -731,15 +719,12 @@ func (client ReportsClient) ListBySubscriptionComplete(ctx context.Context, reso
 }
 
 // ListByTime lists report records by Time.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// interval - by time interval. Interval must be multiple of 15 minutes and may not be zero. The value should
-// be in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
-// TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, secconds))
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// interval is by time interval. Interval must be multiple of 15 minutes and may not be zero. The value should be
+// in ISO  8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan
+// to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, secconds)) filter is the filter to
+// apply on the operation. top is number of records to return. skip is number of records to skip.
 func (client ReportsClient) ListByTime(ctx context.Context, resourceGroupName string, serviceName string, interval string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -856,12 +841,10 @@ func (client ReportsClient) ListByTimeComplete(ctx context.Context, resourceGrou
 }
 
 // ListByUser lists report records by User.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - the filter to apply on the operation.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is the filter to apply on the operation. top is number of records to return. skip is number of records to
+// skip.
 func (client ReportsClient) ListByUser(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result ReportCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

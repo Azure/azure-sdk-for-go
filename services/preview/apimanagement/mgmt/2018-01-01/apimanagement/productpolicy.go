@@ -41,12 +41,11 @@ func NewProductPolicyClientWithBaseURI(baseURI string, subscriptionID string) Pr
 }
 
 // CreateOrUpdate creates or updates policy configuration for the Product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// parameters - the policy contents to apply.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. parameters is
+// the policy contents to apply. ifMatch is eTag of the Entity. Not required when creating an entity, but required
+// when updating an entity.
 func (client ProductPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters PolicyContract, ifMatch string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -134,12 +133,11 @@ func (client ProductPolicyClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes the policy configuration at the Product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. ifMatch is eTag
+// of the Entity. ETag should match the current entity state from the header response of the GET request or it
+// should be * for unconditional update.
 func (client ProductPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -218,10 +216,9 @@ func (client ProductPolicyClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get get the policy configuration at the Product level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -300,10 +297,9 @@ func (client ProductPolicyClient) GetResponder(resp *http.Response) (result Poli
 }
 
 // GetEntityTag get the ETag of the policy configuration at the Product level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -381,10 +377,9 @@ func (client ProductPolicyClient) GetEntityTagResponder(resp *http.Response) (re
 }
 
 // ListByProduct get the policy configuration at the Product level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductPolicyClient) ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result PolicyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

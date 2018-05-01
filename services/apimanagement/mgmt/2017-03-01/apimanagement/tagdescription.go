@@ -41,14 +41,12 @@ func NewTagDescriptionClientWithBaseURI(baseURI string, subscriptionID string) T
 }
 
 // CreateOrUpdate create/Update tag fescription in scope of the Api.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// tagID - tag identifier. Must be unique in the current API Management service instance.
-// parameters - create parameters.
-// ifMatch - the entity state (Etag) version of the Tag to update. A value of "*" can be used for If-Match to
-// unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. tagID is tag identifier.
+// Must be unique in the current API Management service instance. parameters is create parameters. ifMatch is the
+// entity state (Etag) version of the Tag to update. A value of "*" can be used for If-Match to unconditionally
+// apply the operation.
 func (client TagDescriptionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, parameters TagDescriptionCreateParameters, ifMatch string) (result TagDescriptionContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -142,13 +140,11 @@ func (client TagDescriptionClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Delete delete tag description for the Api.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// tagID - tag identifier. Must be unique in the current API Management service instance.
-// ifMatch - the entity state (Etag) version of the Api schema to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. tagID is tag identifier.
+// Must be unique in the current API Management service instance. ifMatch is the entity state (Etag) version of the
+// Api schema to update. A value of "*" can be used for If-Match to unconditionally apply the operation.
 func (client TagDescriptionClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -231,11 +227,10 @@ func (client TagDescriptionClient) DeleteResponder(resp *http.Response) (result 
 }
 
 // Get get tag associated with the API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// tagID - tag identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. tagID is tag identifier.
+// Must be unique in the current API Management service instance.
 func (client TagDescriptionClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (result TagDescriptionContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -318,11 +313,10 @@ func (client TagDescriptionClient) GetResponder(resp *http.Response) (result Tag
 }
 
 // GetEntityState gets the entity state version of the tag specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// tagID - tag identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. tagID is tag identifier.
+// Must be unique in the current API Management service instance.
 func (client TagDescriptionClient) GetEntityState(ctx context.Context, resourceGroupName string, serviceName string, apiid string, tagID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -405,16 +399,14 @@ func (client TagDescriptionClient) GetEntityStateResponder(resp *http.Response) 
 
 // ListByAPI lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API
 // level but tag may be assigned to the Operations
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records
+// to return. skip is number of records to skip.
 func (client TagDescriptionClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result TagDescriptionCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

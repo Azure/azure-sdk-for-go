@@ -42,13 +42,12 @@ func NewProductPolicyClientWithBaseURI(baseURI string, subscriptionID string) Pr
 }
 
 // CreateOrUpdate creates or updates policy configuration for the Product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// parameters - the policy contents to apply.
-// ifMatch - the entity state (Etag) version of the product policy to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. parameters is
+// the policy contents to apply. parameters will be closed upon successful return. Callers should ensure closure
+// when receiving an error.ifMatch is the entity state (Etag) version of the product policy to update. A value of
+// "*" can be used for If-Match to unconditionally apply the operation.
 func (client ProductPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters io.ReadCloser, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -128,12 +127,11 @@ func (client ProductPolicyClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes the policy configuration at the Product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// ifMatch - the entity state (Etag) version of the product policy to update. A value of "*" can be used for
-// If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. ifMatch is the
+// entity state (Etag) version of the product policy to update. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client ProductPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -211,10 +209,9 @@ func (client ProductPolicyClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get get the policy configuration at the Product level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

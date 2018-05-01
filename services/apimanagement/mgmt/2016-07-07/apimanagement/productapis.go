@@ -41,11 +41,10 @@ func NewProductApisClientWithBaseURI(baseURI string, subscriptionID string) Prod
 }
 
 // Add adds an API to the specified product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. apiid is API
+// identifier. Must be unique in the current API Management service instance.
 func (client ProductApisClient) Add(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -127,19 +126,17 @@ func (client ProductApisClient) AddResponder(resp *http.Response) (result autore
 }
 
 // ListByProduct lists a collection of the APIs associated with a product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. filter is |
+// Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records
+// to return. skip is number of records to skip.
 func (client ProductApisClient) ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -260,11 +257,10 @@ func (client ProductApisClient) ListByProductComplete(ctx context.Context, resou
 }
 
 // Remove deletes the specified API from the specified product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. apiid is API
+// identifier. Must be unique in the current API Management service instance.
 func (client ProductApisClient) Remove(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

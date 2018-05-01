@@ -41,10 +41,9 @@ func NewSignUpSettingsClientWithBaseURI(baseURI string, subscriptionID string) S
 }
 
 // CreateOrUpdate create or Update Sign-Up settings.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - create or update parameters.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is create or update parameters.
 func (client SignUpSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings) (result PortalSignupSettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -119,9 +118,8 @@ func (client SignUpSettingsClient) CreateOrUpdateResponder(resp *http.Response) 
 }
 
 // Get get Sign-Up settings.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client SignUpSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string) (result PortalSignupSettings, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -194,9 +192,8 @@ func (client SignUpSettingsClient) GetResponder(resp *http.Response) (result Por
 }
 
 // Head gets the entity state (Etag) version of the SignUpSettings.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client SignUpSettingsClient) Head(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -268,12 +265,10 @@ func (client SignUpSettingsClient) HeadResponder(resp *http.Response) (result au
 }
 
 // Update update Sign-Up settings.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// parameters - update Sign-Up settings.
-// ifMatch - the entity state (Etag) version of the property to update. A value of "*" can be used for If-Match
-// to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// parameters is update Sign-Up settings. ifMatch is the entity state (Etag) version of the property to update. A
+// value of "*" can be used for If-Match to unconditionally apply the operation.
 func (client SignUpSettingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, parameters PortalSignupSettings, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

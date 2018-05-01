@@ -41,17 +41,15 @@ func NewAPIIssuesClientWithBaseURI(baseURI string, subscriptionID string) APIIss
 }
 
 // ListByService lists all issues assosiated with the specified API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | state        | eq                     |                                   |
-// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | userId          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
 func (client APIIssuesClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result IssueCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

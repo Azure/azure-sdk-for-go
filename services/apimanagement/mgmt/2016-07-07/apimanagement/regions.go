@@ -41,9 +41,8 @@ func NewRegionsClientWithBaseURI(baseURI string, subscriptionID string) RegionsC
 }
 
 // ListByService lists all azure regions in which the service exists.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client RegionsClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result RegionListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

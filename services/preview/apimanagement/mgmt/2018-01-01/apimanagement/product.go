@@ -41,12 +41,11 @@ func NewProductClientWithBaseURI(baseURI string, subscriptionID string) ProductC
 }
 
 // CreateOrUpdate creates or Updates a product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// parameters - create or update parameters.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. parameters is
+// create or update parameters. ifMatch is eTag of the Entity. Not required when creating an entity, but required
+// when updating an entity.
 func (client ProductClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductContract, ifMatch string) (result ProductContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -137,13 +136,12 @@ func (client ProductClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // Delete delete product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
-// deleteSubscriptions - delete existing subscriptions associated with the product or not.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. ifMatch is eTag
+// of the Entity. ETag should match the current entity state from the header response of the GET request or it
+// should be * for unconditional update. deleteSubscriptions is delete existing subscriptions associated with the
+// product or not.
 func (client ProductClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, ifMatch string, deleteSubscriptions *bool) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -224,10 +222,9 @@ func (client ProductClient) DeleteResponder(resp *http.Response) (result autores
 }
 
 // Get gets the details of the product specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductClient) Get(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result ProductContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -305,10 +302,9 @@ func (client ProductClient) GetResponder(resp *http.Response) (result ProductCon
 }
 
 // GetEntityTag gets the entity state (Etag) version of the product specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance.
 func (client ProductClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, productID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -385,20 +381,17 @@ func (client ProductClient) GetEntityTagResponder(resp *http.Response) (result a
 }
 
 // ListByService lists a collection of products in the specified service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field       | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | terms       | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | state       | eq                     |                                             |
-// top - number of records to return.
-// skip - number of records to skip.
-// expandGroups - when set to true, the response contains an array of groups that have visibility to the
-// product. The default is false.
+// | state       | eq                     |                                             | top is number of records
+// to return. skip is number of records to skip. expandGroups is when set to true, the response contains an array
+// of groups that have visibility to the product. The default is false.
 func (client ProductClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandGroups *bool) (result ProductCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -517,13 +510,11 @@ func (client ProductClient) ListByServiceComplete(ctx context.Context, resourceG
 }
 
 // Update update product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// parameters - update parameters.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. parameters is
+// update parameters. ifMatch is eTag of the Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
 func (client ProductClient) Update(ctx context.Context, resourceGroupName string, serviceName string, productID string, parameters ProductUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

@@ -41,11 +41,9 @@ func NewAuthorizationServerClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // CreateOrUpdate creates new authorization server or updates an existing authorization server.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// authsid - identifier of the authorization server.
-// parameters - create or update parameters.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// authsid is identifier of the authorization server. parameters is create or update parameters.
 func (client AuthorizationServerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters AuthorizationServerContract) (result AuthorizationServerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -135,12 +133,10 @@ func (client AuthorizationServerClient) CreateOrUpdateResponder(resp *http.Respo
 }
 
 // Delete deletes specific authorization server instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// authsid - identifier of the authorization server.
-// ifMatch - the entity state (Etag) version of the authentication server to delete. A value of "*" can be used
-// for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// authsid is identifier of the authorization server. ifMatch is the entity state (Etag) version of the
+// authentication server to delete. A value of "*" can be used for If-Match to unconditionally apply the operation.
 func (client AuthorizationServerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -217,10 +213,9 @@ func (client AuthorizationServerClient) DeleteResponder(resp *http.Response) (re
 }
 
 // Get gets the details of the authorization server specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// authsid - identifier of the authorization server.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// authsid is identifier of the authorization server.
 func (client AuthorizationServerClient) Get(ctx context.Context, resourceGroupName string, serviceName string, authsid string) (result AuthorizationServerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -297,10 +292,9 @@ func (client AuthorizationServerClient) GetResponder(resp *http.Response) (resul
 }
 
 // GetEntityTag gets the entity state (Etag) version of the authorizationServer specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// authsid - identifier of the authorization server.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// authsid is identifier of the authorization server.
 func (client AuthorizationServerClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, authsid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -376,15 +370,13 @@ func (client AuthorizationServerClient) GetEntityTagResponder(resp *http.Respons
 }
 
 // ListByService lists a collection of authorization servers defined within a service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | name  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
 func (client AuthorizationServerClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result AuthorizationServerCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -500,13 +492,11 @@ func (client AuthorizationServerClient) ListByServiceComplete(ctx context.Contex
 }
 
 // Update updates the details of the authorization server specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// authsid - identifier of the authorization server.
-// parameters - oAuth2 Server settings Update parameters.
-// ifMatch - the entity state (Etag) version of the authorization server to update. A value of "*" can be used
-// for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// authsid is identifier of the authorization server. parameters is oAuth2 Server settings Update parameters.
+// ifMatch is the entity state (Etag) version of the authorization server to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client AuthorizationServerClient) Update(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters AuthorizationServerUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

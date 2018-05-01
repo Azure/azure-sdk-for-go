@@ -41,14 +41,12 @@ func NewAPIDiagnosticClientWithBaseURI(baseURI string, subscriptionID string) AP
 }
 
 // CreateOrUpdate creates a new Diagnostic for an API or updates an existing one.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// parameters - create parameters.
-// ifMatch - eTag of the Diagnostic Entity. ETag should match the current entity state from the header response
-// of the GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. diagnosticID is
+// diagnostic identifier. Must be unique in the current API Management service instance. parameters is create
+// parameters. ifMatch is eTag of the Diagnostic Entity. ETag should match the current entity state from the header
+// response of the GET request or it should be * for unconditional update.
 func (client APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, diagnosticID string, parameters DiagnosticContract, ifMatch string) (result DiagnosticContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -140,13 +138,12 @@ func (client APIDiagnosticClient) CreateOrUpdateResponder(resp *http.Response) (
 }
 
 // Delete deletes the specified Diagnostic from an API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the Diagnostic Entity. ETag should match the current entity state from the header response
-// of the GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. diagnosticID is
+// diagnostic identifier. Must be unique in the current API Management service instance. ifMatch is eTag of the
+// Diagnostic Entity. ETag should match the current entity state from the header response of the GET request or it
+// should be * for unconditional update.
 func (client APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, diagnosticID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -229,11 +226,10 @@ func (client APIDiagnosticClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // Get gets the details of the Diagnostic for an API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. diagnosticID is
+// diagnostic identifier. Must be unique in the current API Management service instance.
 func (client APIDiagnosticClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, diagnosticID string) (result DiagnosticContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -316,11 +312,10 @@ func (client APIDiagnosticClient) GetResponder(resp *http.Response) (result Diag
 }
 
 // Head gets the entity state (Etag) version of the Diagnostic for an API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. diagnosticID is
+// diagnostic identifier. Must be unique in the current API Management service instance.
 func (client APIDiagnosticClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, diagnosticID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -402,15 +397,13 @@ func (client APIDiagnosticClient) HeadResponder(resp *http.Response) (result aut
 }
 
 // ListByService lists all diagnostics of an API.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. filter is | Field
+// | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
-// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to return.
+// skip is number of records to skip.
 func (client APIDiagnosticClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result DiagnosticCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -531,14 +524,12 @@ func (client APIDiagnosticClient) ListByServiceComplete(ctx context.Context, res
 }
 
 // Update updates the details of the Diagnostic for an API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// parameters - diagnostic Update parameters.
-// ifMatch - eTag of the Diagnostic Entity. ETag should match the current entity state from the header response
-// of the GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. diagnosticID is
+// diagnostic identifier. Must be unique in the current API Management service instance. parameters is diagnostic
+// Update parameters. ifMatch is eTag of the Diagnostic Entity. ETag should match the current entity state from the
+// header response of the GET request or it should be * for unconditional update.
 func (client APIDiagnosticClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, diagnosticID string, parameters DiagnosticContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

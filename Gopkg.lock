@@ -7,18 +7,25 @@
     "autorest",
     "autorest/adal",
     "autorest/azure",
+    "autorest/azure/auth",
     "autorest/date",
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "5cdef8c5dbd65369ef90f1b8d7ea2b7348ffc862"
-  version = "v10.7.0"
+  revision = "8d642cdaee69c1860886533711d7ff25ba2b8e04"
+  version = "v10.8.0"
 
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/dimchansky/utfbom"
+  packages = ["."]
+  revision = "6c6132ff69f0f6c088739067407b5d32c52e1d0f"
 
 [[projects]]
   branch = "master"
@@ -222,6 +229,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0e2d3b4f9b2d64898a839f67fbeceb76217ef2f9df2a88ef7f41c2596d5529db"
+  inputs-digest = "ad58409aacd3839ebb4d08931ddddb4333df3e75757736bdd6037341e812118a"
   solver-name = "gps-cdcl"
   solver-version = 1

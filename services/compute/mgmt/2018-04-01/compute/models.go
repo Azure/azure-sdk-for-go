@@ -1093,6 +1093,12 @@ type APIErrorBase struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// AutoOSUpgradePolicy the configuration parameters used for performing automatic OS upgrade.
+type AutoOSUpgradePolicy struct {
+	// DisableAutoRollback - whether OS image rollback feature should be disabled.
+	DisableAutoRollback *bool `json:"disableAutoRollback,omitempty"`
+}
+
 // AvailabilitySet specifies information about the availability set that the virtual machine should be assigned to.
 // Virtual machines specified in the same availability set are allocated to different nodes to maximize
 // availability. For more information about availability sets, see [Manage the availability of virtual
@@ -4908,6 +4914,8 @@ type UpgradePolicy struct {
 	RollingUpgradePolicy *RollingUpgradePolicy `json:"rollingUpgradePolicy,omitempty"`
 	// AutomaticOSUpgrade - Whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the image becomes available.
 	AutomaticOSUpgrade *bool `json:"automaticOSUpgrade,omitempty"`
+	// AutoOSUpgradePolicy - Configuration parameters used for performing automatic OS Upgrade.
+	AutoOSUpgradePolicy *AutoOSUpgradePolicy `json:"autoOSUpgradePolicy,omitempty"`
 }
 
 // Usage describes Compute Resource Usage.

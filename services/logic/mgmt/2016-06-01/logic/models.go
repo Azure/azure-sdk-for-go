@@ -807,7 +807,7 @@ type ArtifactProperties struct {
 	Metadata    interface{} `json:"metadata,omitempty"`
 }
 
-// AS2AcknowledgementConnectionSettings the AS2 agreement acknowledegment connection settings.
+// AS2AcknowledgementConnectionSettings the AS2 agreement acknowledgement connection settings.
 type AS2AcknowledgementConnectionSettings struct {
 	// IgnoreCertificateNameMismatch - The value indicating whether to ignore mismatch in certificate name.
 	IgnoreCertificateNameMismatch *bool `json:"ignoreCertificateNameMismatch,omitempty"`

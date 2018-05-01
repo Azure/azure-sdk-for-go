@@ -41,11 +41,10 @@ func NewLinkedServerClientWithBaseURI(baseURI string, subscriptionID string) Lin
 }
 
 // Create adds a linked server to the Redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
-// linkedServerName - the name of the linked server that is being added to the Redis cache.
-// parameters - parameters supplied to the Create Linked server operation.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache. linkedServerName is
+// the name of the linked server that is being added to the Redis cache. parameters is parameters supplied to the
+// Create Linked server operation.
 func (client LinkedServerClient) Create(ctx context.Context, resourceGroupName string, name string, linkedServerName string, parameters LinkedServerCreateParameters) (result LinkedServerCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -124,10 +123,9 @@ func (client LinkedServerClient) CreateResponder(resp *http.Response) (result Li
 }
 
 // Delete deletes the linked server from a redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the redis cache.
-// linkedServerName - the name of the linked server that is being added to the Redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the redis cache. linkedServerName is
+// the name of the linked server that is being added to the Redis cache.
 func (client LinkedServerClient) Delete(ctx context.Context, resourceGroupName string, name string, linkedServerName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, name, linkedServerName)
 	if err != nil {
@@ -192,10 +190,9 @@ func (client LinkedServerClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // Get gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the redis cache.
-// linkedServerName - the name of the linked server.
+//
+// resourceGroupName is the name of the resource group. name is the name of the redis cache. linkedServerName is
+// the name of the linked server.
 func (client LinkedServerClient) Get(ctx context.Context, resourceGroupName string, name string, linkedServerName string) (result LinkedServerWithProperties, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, name, linkedServerName)
 	if err != nil {
@@ -261,9 +258,8 @@ func (client LinkedServerClient) GetResponder(resp *http.Response) (result Linke
 }
 
 // List gets the list of linked servers associated with this redis cache (requires Premium SKU).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the redis cache.
 func (client LinkedServerClient) List(ctx context.Context, resourceGroupName string, name string) (result LinkedServerWithPropertiesList, err error) {
 	req, err := client.ListPreparer(ctx, resourceGroupName, name)
 	if err != nil {

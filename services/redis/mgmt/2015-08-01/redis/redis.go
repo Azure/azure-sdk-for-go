@@ -41,10 +41,9 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 }
 
 // CreateOrUpdate create a Redis cache, or replace (overwrite/recreate, with potential downtime) an existing cache.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
-// parameters - parameters supplied to the CreateOrUpdate Redis operation.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is
+// parameters supplied to the CreateOrUpdate Redis operation.
 func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, parameters CreateOrUpdateParameters) (result ResourceWithAccessKey, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -120,9 +119,8 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Resour
 }
 
 // Delete deletes a Redis cache.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache.
 func (client Client) Delete(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -187,10 +185,9 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 
 // ForceReboot reboot specified Redis node(s). This operation requires write permission to the cache resource. There
 // can be potential data loss.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
-// parameters - specifies which Redis node(s) to reboot.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is
+// specifies which Redis node(s) to reboot.
 func (client Client) ForceReboot(ctx context.Context, resourceGroupName string, name string, parameters RebootParameters) (result autorest.Response, err error) {
 	req, err := client.ForceRebootPreparer(ctx, resourceGroupName, name, parameters)
 	if err != nil {
@@ -256,9 +253,8 @@ func (client Client) ForceRebootResponder(resp *http.Response) (result autorest.
 }
 
 // Get gets a Redis cache (resource description).
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache.
 func (client Client) Get(ctx context.Context, resourceGroupName string, name string) (result ResourceType, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -413,8 +409,8 @@ func (client Client) ListComplete(ctx context.Context) (result ListResultIterato
 }
 
 // ListByResourceGroup gets all Redis caches in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
+//
+// resourceGroupName is the name of the resource group.
 func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
@@ -506,9 +502,8 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 }
 
 // ListKeys retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache.
 func (client Client) ListKeys(ctx context.Context, resourceGroupName string, name string) (result ListKeysResult, err error) {
 	req, err := client.ListKeysPreparer(ctx, resourceGroupName, name)
 	if err != nil {
@@ -574,10 +569,9 @@ func (client Client) ListKeysResponder(resp *http.Response) (result ListKeysResu
 
 // RegenerateKey regenerate the access keys for a Redis cache. This operation requires write permission to the cache
 // resource.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// name - the name of the Redis cache.
-// parameters - specifies which key to reset.
+//
+// resourceGroupName is the name of the resource group. name is the name of the Redis cache. parameters is
+// specifies which key to reset.
 func (client Client) RegenerateKey(ctx context.Context, resourceGroupName string, name string, parameters RegenerateKeyParameters) (result ListKeysResult, err error) {
 	req, err := client.RegenerateKeyPreparer(ctx, resourceGroupName, name, parameters)
 	if err != nil {

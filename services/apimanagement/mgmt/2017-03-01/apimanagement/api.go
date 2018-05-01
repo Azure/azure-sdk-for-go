@@ -41,14 +41,12 @@ func NewAPIClientWithBaseURI(baseURI string, subscriptionID string) APIClient {
 }
 
 // CreateOrUpdate creates new or updates existing specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// parameters - create or update parameters.
-// ifMatch - eTag of the Api Entity. For Create Api Etag should not be specified. For Update Etag should match
-// the existing Entity or it can be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. parameters is create or update parameters.
+// ifMatch is eTag of the Api Entity. For Create Api Etag should not be specified. For Update Etag should match the
+// existing Entity or it can be * for unconditional update.
 func (client APIClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters APICreateOrUpdateParameter, ifMatch string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -132,13 +130,12 @@ func (client APIClient) CreateOrUpdateResponder(resp *http.Response) (result API
 }
 
 // Delete deletes the specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// ifMatch - eTag of the API Entity. ETag should match the current entity state from the header response of the
-// GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. ifMatch is eTag of the API Entity. ETag should
+// match the current entity state from the header response of the GET request or it should be * for unconditional
+// update.
 func (client APIClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -216,10 +213,9 @@ func (client APIClient) DeleteResponder(resp *http.Response) (result autorest.Re
 }
 
 // Get gets the details of the API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
 // revision has ;rev=n as a suffix where n is the revision number.
 func (client APIClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -298,10 +294,9 @@ func (client APIClient) GetResponder(resp *http.Response) (result APIContract, e
 }
 
 // GetEntityTag gets the entity state (Etag) version of the API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance.
 func (client APIClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -378,19 +373,16 @@ func (client APIClient) GetEntityTagResponder(resp *http.Response) (result autor
 }
 
 // ListByService lists all APIs of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field       | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
-// expandAPIVersionSet - include full ApiVersionSet resource in response
+// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to return.
+// skip is number of records to skip. expandAPIVersionSet is include full ApiVersionSet resource in response
 func (client APIClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32, expandAPIVersionSet *bool) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -511,10 +503,9 @@ func (client APIClient) ListByServiceComplete(ctx context.Context, resourceGroup
 }
 
 // ListByTags lists a collection of apis associated with tags.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field       | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
@@ -523,9 +514,8 @@ func (client APIClient) ListByServiceComplete(ctx context.Context, resourceGroup
 // | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | isCurrent   | eq                     | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | isCurrent   | eq                     | substringof, contains, startswith, endswith | top is number of records
+// to return. skip is number of records to skip.
 func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result TagResourceCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -641,14 +631,12 @@ func (client APIClient) ListByTagsComplete(ctx context.Context, resourceGroupNam
 }
 
 // Update updates the specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// parameters - API Update Contract parameters.
-// ifMatch - eTag of the API entity. ETag should match the current entity state in the header response of the
-// GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. parameters is API Update Contract parameters.
+// ifMatch is eTag of the API entity. ETag should match the current entity state in the header response of the GET
+// request or it should be * for unconditional update.
 func (client APIClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters APIUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

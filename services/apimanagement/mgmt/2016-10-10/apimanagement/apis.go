@@ -41,13 +41,11 @@ func NewApisClientWithBaseURI(baseURI string, subscriptionID string) ApisClient 
 }
 
 // CreateOrUpdate creates new or updates existing specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// parameters - create or update parameters.
-// ifMatch - eTag of the Api Entity. For Create Api Etag should not be specified. For Update Etag should match
-// the existing Entity or it can be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. parameters is create or
+// update parameters. ifMatch is eTag of the Api Entity. For Create Api Etag should not be specified. For Update
+// Etag should match the existing Entity or it can be * for unconditional update.
 func (client ApisClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters APIContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -144,12 +142,11 @@ func (client ApisClient) CreateOrUpdateResponder(resp *http.Response) (result au
 }
 
 // Delete deletes the specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// ifMatch - eTag of the API Entity. ETag should match the current entity state from the header response of the
-// GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. ifMatch is eTag of the
+// API Entity. ETag should match the current entity state from the header response of the GET request or it should
+// be * for unconditional update.
 func (client ApisClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -227,10 +224,9 @@ func (client ApisClient) DeleteResponder(resp *http.Response) (result autorest.R
 }
 
 // Get gets the details of the API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance.
 func (client ApisClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -308,18 +304,16 @@ func (client ApisClient) GetResponder(resp *http.Response) (result APIContract, 
 }
 
 // ListByService lists all APIs of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field       | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | path        | ge, le, eq, ne, gt, lt | substringof, startswith, endswith | top is number of records to return.
+// skip is number of records to skip.
 func (client ApisClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -435,13 +429,11 @@ func (client ApisClient) ListByServiceComplete(ctx context.Context, resourceGrou
 }
 
 // Update updates the specified API of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// parameters - API Update Contract parameters.
-// ifMatch - eTag of the API entity. ETag should match the current entity state in the header response of the
-// GET request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. parameters is API Update
+// Contract parameters. ifMatch is eTag of the API entity. ETag should match the current entity state in the header
+// response of the GET request or it should be * for unconditional update.
 func (client ApisClient) Update(ctx context.Context, resourceGroupName string, serviceName string, apiid string, parameters APIUpdateContract, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

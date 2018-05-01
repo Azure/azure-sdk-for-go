@@ -41,16 +41,13 @@ func NewAPIOperationPolicyClientWithBaseURI(baseURI string, subscriptionID strin
 }
 
 // CreateOrUpdate creates or updates policy configuration for the API Operation level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// operationID - operation identifier within an API. Must be unique in the current API Management service
-// instance.
-// parameters - the policy contents to apply.
-// ifMatch - the entity state (Etag) version of the Api Operation policy to update. A value of "*" can be used
-// for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. operationID is operation identifier within an
+// API. Must be unique in the current API Management service instance. parameters is the policy contents to apply.
+// ifMatch is the entity state (Etag) version of the Api Operation policy to update. A value of "*" can be used for
+// If-Match to unconditionally apply the operation.
 func (client APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, parameters PolicyContract, ifMatch string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -140,14 +137,12 @@ func (client APIOperationPolicyClient) CreateOrUpdateResponder(resp *http.Respon
 }
 
 // Delete deletes the policy configuration at the Api Operation.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// operationID - operation identifier within an API. Must be unique in the current API Management service
-// instance.
-// ifMatch - the entity state (Etag) version of the Api Operation Policy to delete. A value of "*" can be used
-// for If-Match to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. operationID is operation
+// identifier within an API. Must be unique in the current API Management service instance. ifMatch is the entity
+// state (Etag) version of the Api Operation Policy to delete. A value of "*" can be used for If-Match to
+// unconditionally apply the operation.
 func (client APIOperationPolicyClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -231,13 +226,11 @@ func (client APIOperationPolicyClient) DeleteResponder(resp *http.Response) (res
 }
 
 // Get get the policy configuration at the API Operation level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// operationID - operation identifier within an API. Must be unique in the current API Management service
-// instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. operationID is operation identifier within an
+// API. Must be unique in the current API Management service instance.
 func (client APIOperationPolicyClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result PolicyContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -321,12 +314,10 @@ func (client APIOperationPolicyClient) GetResponder(resp *http.Response) (result
 }
 
 // GetEntityTag gets the entity state (Etag) version of the API operation policy specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// operationID - operation identifier within an API. Must be unique in the current API Management service
-// instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. operationID is operation
+// identifier within an API. Must be unique in the current API Management service instance.
 func (client APIOperationPolicyClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -409,13 +400,11 @@ func (client APIOperationPolicyClient) GetEntityTagResponder(resp *http.Response
 }
 
 // ListByOperation get the list of policy configuration at the API Operation level.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
-// operationID - operation identifier within an API. Must be unique in the current API Management service
-// instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API revision identifier. Must be unique in the current API Management service instance. Non-current
+// revision has ;rev=n as a suffix where n is the revision number. operationID is operation identifier within an
+// API. Must be unique in the current API Management service instance.
 func (client APIOperationPolicyClient) ListByOperation(ctx context.Context, resourceGroupName string, serviceName string, apiid string, operationID string) (result PolicyCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

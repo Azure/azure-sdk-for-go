@@ -41,11 +41,10 @@ func NewDiagnosticLoggerClientWithBaseURI(baseURI string, subscriptionID string)
 }
 
 // CheckEntityExists checks that logger entity specified by identifier is associated with the diagnostics entity.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// diagnosticID is diagnostic identifier. Must be unique in the current API Management service instance. loggerid
+// is logger identifier. Must be unique in the API Management service instance.
 func (client DiagnosticLoggerClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, diagnosticID string, loggerid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -126,11 +125,10 @@ func (client DiagnosticLoggerClient) CheckEntityExistsResponder(resp *http.Respo
 }
 
 // CreateOrUpdate attaches a logger to a dignostic.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// diagnosticID is diagnostic identifier. Must be unique in the current API Management service instance. loggerid
+// is logger identifier. Must be unique in the API Management service instance.
 func (client DiagnosticLoggerClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, diagnosticID string, loggerid string) (result LoggerContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -212,11 +210,10 @@ func (client DiagnosticLoggerClient) CreateOrUpdateResponder(resp *http.Response
 }
 
 // Delete deletes the specified Logger from Diagnostic.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// loggerid - logger identifier. Must be unique in the API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// diagnosticID is diagnostic identifier. Must be unique in the current API Management service instance. loggerid
+// is logger identifier. Must be unique in the API Management service instance.
 func (client DiagnosticLoggerClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, diagnosticID string, loggerid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -297,16 +294,14 @@ func (client DiagnosticLoggerClient) DeleteResponder(resp *http.Response) (resul
 }
 
 // ListByService lists all loggers assosiated with the specified Diagnostic of the API Management service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// diagnosticID - diagnostic identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions               |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// diagnosticID is diagnostic identifier. Must be unique in the current API Management service instance. filter is
+// | Field       | Supported operators    | Supported functions               |
 // |-------------|------------------------|-----------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, startswith, endswith |
-// | type        | eq                     |                                   |
-// top - number of records to return.
-// skip - number of records to skip.
+// | type        | eq                     |                                   | top is number of records to return.
+// skip is number of records to skip.
 func (client DiagnosticLoggerClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, diagnosticID string, filter string, top *int32, skip *int32) (result LoggerCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

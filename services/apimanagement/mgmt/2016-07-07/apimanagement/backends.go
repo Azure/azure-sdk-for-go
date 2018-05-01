@@ -41,11 +41,10 @@ func NewBackendsClientWithBaseURI(baseURI string, subscriptionID string) Backend
 }
 
 // CreateOrUpdate creates or Updates a backend.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// backendid - user identifier. Must be unique in the current API Management service instance.
-// parameters - create parameters.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// backendid is user identifier. Must be unique in the current API Management service instance. parameters is
+// create parameters.
 func (client BackendsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters BackendContract) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -129,12 +128,11 @@ func (client BackendsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete deletes the specified backend.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// backendid - user identifier. Must be unique in the current API Management service instance.
-// ifMatch - the entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match
-// to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// backendid is user identifier. Must be unique in the current API Management service instance. ifMatch is the
+// entity state (Etag) version of the backend to delete. A value of "*" can be used for If-Match to unconditionally
+// apply the operation.
 func (client BackendsClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, backendid string, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -212,10 +210,9 @@ func (client BackendsClient) DeleteResponder(resp *http.Response) (result autore
 }
 
 // Get gets the details of the backend specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// backendid - user identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// backendid is user identifier. Must be unique in the current API Management service instance.
 func (client BackendsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, backendid string) (result BackendResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -293,15 +290,13 @@ func (client BackendsClient) GetResponder(resp *http.Response) (result BackendRe
 }
 
 // ListByService lists a collection of backends in the specified service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// filter - | Field | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// filter is | Field | Supported operators    | Supported functions                         |
 // |-------|------------------------|---------------------------------------------|
 // | id    | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | host  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records to
+// return. skip is number of records to skip.
 func (client BackendsClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result BackendCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -417,13 +412,11 @@ func (client BackendsClient) ListByServiceComplete(ctx context.Context, resource
 }
 
 // Update updates an existing backend.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// backendid - user identifier. Must be unique in the current API Management service instance.
-// parameters - update parameters.
-// ifMatch - the entity state (Etag) version of the backend to update. A value of "*" can be used for If-Match
-// to unconditionally apply the operation.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// backendid is user identifier. Must be unique in the current API Management service instance. parameters is
+// update parameters. ifMatch is the entity state (Etag) version of the backend to update. A value of "*" can be
+// used for If-Match to unconditionally apply the operation.
 func (client BackendsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, backendid string, parameters BackendUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

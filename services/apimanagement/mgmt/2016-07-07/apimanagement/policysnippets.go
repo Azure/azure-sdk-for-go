@@ -41,10 +41,9 @@ func NewPolicySnippetsClientWithBaseURI(baseURI string, subscriptionID string) P
 }
 
 // ListByService lists all policy snippets.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// scope - policy scope.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// scope is policy scope.
 func (client PolicySnippetsClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, scope PolicyScopeContract) (result ListPolicySnippetContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

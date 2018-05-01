@@ -41,11 +41,9 @@ func NewNotificationRecipientEmailClientWithBaseURI(baseURI string, subscription
 }
 
 // CreateOrUpdate adds the Email address to the list of Recipients for the Notification.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
-// email - email identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier. email is email identifier.
 func (client NotificationRecipientEmailClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string) (result RecipientEmailContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -120,11 +118,9 @@ func (client NotificationRecipientEmailClient) CreateOrUpdateResponder(resp *htt
 }
 
 // Delete removes the email from the list of Notification.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
-// email - email identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier. email is email identifier.
 func (client NotificationRecipientEmailClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -198,11 +194,9 @@ func (client NotificationRecipientEmailClient) DeleteResponder(resp *http.Respon
 }
 
 // Get determine if Notification Recipient Email subscribed to the notification.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
-// email - email identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier. email is email identifier.
 func (client NotificationRecipientEmailClient) Get(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, email string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -276,10 +270,9 @@ func (client NotificationRecipientEmailClient) GetResponder(resp *http.Response)
 }
 
 // ListByNotification gets the list of the Notification Recipient Emails subscribed to a notification.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier.
 func (client NotificationRecipientEmailClient) ListByNotification(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName) (result RecipientEmailCollection, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

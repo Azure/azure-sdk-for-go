@@ -41,12 +41,10 @@ func NewIdentityProviderClientWithBaseURI(baseURI string, subscriptionID string)
 }
 
 // CreateOrUpdate creates or Updates the IdentityProvider configuration.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// identityProviderName - identity Provider Type identifier.
-// parameters - create parameters.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// identityProviderName is identity Provider Type identifier. parameters is create parameters. ifMatch is eTag of
+// the Entity. Not required when creating an entity, but required when updating an entity.
 func (client IdentityProviderClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderContract, ifMatch string) (result IdentityProviderContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -133,12 +131,10 @@ func (client IdentityProviderClient) CreateOrUpdateResponder(resp *http.Response
 }
 
 // Delete deletes the specified identity provider configuration.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// identityProviderName - identity Provider Type identifier.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// identityProviderName is identity Provider Type identifier. ifMatch is eTag of the Entity. ETag should match the
+// current entity state from the header response of the GET request or it should be * for unconditional update.
 func (client IdentityProviderClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -212,10 +208,9 @@ func (client IdentityProviderClient) DeleteResponder(resp *http.Response) (resul
 }
 
 // Get gets the configuration details of the identity Provider configured in specified service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// identityProviderName - identity Provider Type identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// identityProviderName is identity Provider Type identifier.
 func (client IdentityProviderClient) Get(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType) (result IdentityProviderContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -289,10 +284,9 @@ func (client IdentityProviderClient) GetResponder(resp *http.Response) (result I
 }
 
 // GetEntityTag gets the entity state (Etag) version of the identityProvider specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// identityProviderName - identity Provider Type identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// identityProviderName is identity Provider Type identifier.
 func (client IdentityProviderClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -365,9 +359,8 @@ func (client IdentityProviderClient) GetEntityTagResponder(resp *http.Response) 
 }
 
 // ListByService lists a collection of Identity Provider configured in the specified service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
 func (client IdentityProviderClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result IdentityProviderListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -468,13 +461,11 @@ func (client IdentityProviderClient) ListByServiceComplete(ctx context.Context, 
 }
 
 // Update updates an existing IdentityProvider configuration.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// identityProviderName - identity Provider Type identifier.
-// parameters - update parameters.
-// ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
-// request or it should be * for unconditional update.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// identityProviderName is identity Provider Type identifier. parameters is update parameters. ifMatch is eTag of
+// the Entity. ETag should match the current entity state from the header response of the GET request or it should
+// be * for unconditional update.
 func (client IdentityProviderClient) Update(ctx context.Context, resourceGroupName string, serviceName string, identityProviderName IdentityProviderType, parameters IdentityProviderUpdateParameters, ifMatch string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

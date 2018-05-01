@@ -41,12 +41,11 @@ func NewAPIIssuAttachmentClientWithBaseURI(baseURI string, subscriptionID string
 }
 
 // Head gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// apiid - API identifier. Must be unique in the current API Management service instance.
-// issueID - issue identifier. Must be unique in the current API Management service instance.
-// attachmentID - attachment identifier within an Issue. Must be unique in the current Issue.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// apiid is API identifier. Must be unique in the current API Management service instance. issueID is issue
+// identifier. Must be unique in the current API Management service instance. attachmentID is attachment identifier
+// within an Issue. Must be unique in the current Issue.
 func (client APIIssuAttachmentClient) Head(ctx context.Context, resourceGroupName string, serviceName string, apiid string, issueID string, attachmentID string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

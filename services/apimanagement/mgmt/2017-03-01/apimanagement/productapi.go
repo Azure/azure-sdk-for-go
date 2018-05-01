@@ -41,11 +41,10 @@ func NewProductAPIClientWithBaseURI(baseURI string, subscriptionID string) Produ
 }
 
 // CheckEntityExists checks that API entity specified by identifier is associated with the Product entity.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. apiid is API
+// identifier. Must be unique in the current API Management service instance.
 func (client ProductAPIClient) CheckEntityExists(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -127,11 +126,10 @@ func (client ProductAPIClient) CheckEntityExistsResponder(resp *http.Response) (
 }
 
 // CreateOrUpdate adds an API to the specified product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. apiid is API
+// identifier. Must be unique in the current API Management service instance.
 func (client ProductAPIClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result APIContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -214,11 +212,10 @@ func (client ProductAPIClient) CreateOrUpdateResponder(resp *http.Response) (res
 }
 
 // Delete deletes the specified API from the specified product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// apiid - API identifier. Must be unique in the current API Management service instance.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. apiid is API
+// identifier. Must be unique in the current API Management service instance.
 func (client ProductAPIClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiid string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -300,19 +297,17 @@ func (client ProductAPIClient) DeleteResponder(resp *http.Response) (result auto
 }
 
 // ListByProduct lists a collection of the APIs associated with a product.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// productID - product identifier. Must be unique in the current API Management service instance.
-// filter - | Field       | Supported operators    | Supported functions                         |
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// productID is product identifier. Must be unique in the current API Management service instance. filter is |
+// Field       | Supported operators    | Supported functions                         |
 // |-------------|------------------------|---------------------------------------------|
 // | id          | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | name        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
 // | serviceUrl  | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
-// top - number of records to return.
-// skip - number of records to skip.
+// | path        | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith | top is number of records
+// to return. skip is number of records to skip.
 func (client ProductAPIClient) ListByProduct(ctx context.Context, resourceGroupName string, serviceName string, productID string, filter string, top *int32, skip *int32) (result APICollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

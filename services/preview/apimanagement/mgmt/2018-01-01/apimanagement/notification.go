@@ -41,11 +41,10 @@ func NewNotificationClientWithBaseURI(baseURI string, subscriptionID string) Not
 }
 
 // CreateOrUpdate updates an Notification.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
-// ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier. ifMatch is eTag of the Entity. Not required when creating an
+// entity, but required when updating an entity.
 func (client NotificationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, ifMatch string) (result NotificationContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -123,10 +122,9 @@ func (client NotificationClient) CreateOrUpdateResponder(resp *http.Response) (r
 }
 
 // Get gets the details of the Notification specified by its identifier.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// notificationName - notification Name Identifier.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service.
+// notificationName is notification Name Identifier.
 func (client NotificationClient) Get(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName) (result NotificationContract, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,
@@ -200,11 +198,9 @@ func (client NotificationClient) GetResponder(resp *http.Response) (result Notif
 }
 
 // ListByService lists a collection of properties defined within a service instance.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// serviceName - the name of the API Management service.
-// top - number of records to return.
-// skip - number of records to skip.
+//
+// resourceGroupName is the name of the resource group. serviceName is the name of the API Management service. top
+// is number of records to return. skip is number of records to skip.
 func (client NotificationClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, top *int32, skip *int32) (result NotificationCollectionPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: serviceName,

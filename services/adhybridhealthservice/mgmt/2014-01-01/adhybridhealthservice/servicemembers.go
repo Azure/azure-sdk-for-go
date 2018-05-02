@@ -526,7 +526,7 @@ func (client ServicemembersClient) ListConnectorsResponder(resp *http.Response) 
 // serviceName - the name of the service.
 // serviceMemberID - the server Id.
 // filter - the property filter to apply.
-func (client ServicemembersClient) ListCredentials(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, filter string) (result Credential, err error) {
+func (client ServicemembersClient) ListCredentials(ctx context.Context, serviceName string, serviceMemberID uuid.UUID, filter string) (result Credentials, err error) {
 	req, err := client.ListCredentialsPreparer(ctx, serviceName, serviceMemberID, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicemembersClient", "ListCredentials", nil, "Failure preparing request")
@@ -580,7 +580,7 @@ func (client ServicemembersClient) ListCredentialsSender(req *http.Request) (*ht
 
 // ListCredentialsResponder handles the response to the ListCredentials request. The method always
 // closes the http.Response Body.
-func (client ServicemembersClient) ListCredentialsResponder(resp *http.Response) (result Credential, err error) {
+func (client ServicemembersClient) ListCredentialsResponder(resp *http.Response) (result Credentials, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -967,13 +967,19 @@ type Connectors struct {
 
 // Credential the credential for a given server.
 type Credential struct {
-	autorest.Response `json:"-"`
 	// Identifier - The credential identifier.
 	Identifier *string `json:"identifier,omitempty"`
 	// Type - The type of credential.
 	Type *string `json:"type,omitempty"`
 	// CredentialData - The credential data.
 	CredentialData *[]string `json:"credentialData,omitempty"`
+}
+
+// Credentials the list of agent credentials.
+type Credentials struct {
+	autorest.Response `json:"-"`
+	// Value - The value returned by the operation.
+	Value *[]Credential `json:"value,omitempty"`
 }
 
 // DataFreshnessDetail the data freshness details for the server.

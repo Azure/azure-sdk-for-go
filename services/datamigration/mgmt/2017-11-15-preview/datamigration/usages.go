@@ -24,28 +24,24 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // UsagesClient is the data Migration Client
 type UsagesClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // NewUsagesClient creates an instance of the UsagesClient client.
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
 func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
 	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // List this method returns region-specific quotas and resource usage information for the Data Migration Service.
-//
-// location is the Azure region of the operation
+// Parameters:
+// location - the Azure region of the operation
 func (client UsagesClient) List(ctx context.Context, location string) (result QuotaListPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, location)
@@ -69,7 +65,6 @@ func (client UsagesClient) List(ctx context.Context, location string) (result Qu
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // ListPreparer prepares the List request.
 func (client UsagesClient) ListPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -90,7 +85,6 @@ func (client UsagesClient) ListPreparer(ctx context.Context, location string) (*
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -98,7 +92,6 @@ func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error)
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client UsagesClient) ListResponder(resp *http.Response) (result QuotaList, err error) {
@@ -133,7 +126,6 @@ func (client UsagesClient) listNextResults(lastResults QuotaList) (result QuotaL
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration instead.
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
 func (client UsagesClient) ListComplete(ctx context.Context, location string) (result QuotaListIterator, err error) {
 	result.page, err = client.List(ctx, location)

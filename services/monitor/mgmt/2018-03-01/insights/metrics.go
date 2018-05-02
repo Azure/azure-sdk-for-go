@@ -24,42 +24,44 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // MetricsClient is the monitor Management Client
 type MetricsClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricsClient creates an instance of the MetricsClient client.
 func NewMetricsClient(subscriptionID string) MetricsClient {
 	return NewMetricsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // NewMetricsClientWithBaseURI creates an instance of the MetricsClient client.
 func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsClient {
 	return MetricsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // List **Lists the metric values for a resource**.
-//
-// resourceURI is the identifier of the resource. timespan is the timespan of the query. It is a string with the
-// following format 'startDateTime_ISO/endDateTime_ISO'. interval is the interval (i.e. timegrain) of the query.
-// metric is the name of the metric to retrieve. aggregation is the list of aggregation types (comma separated) to
-// retrieve. top is the maximum number of records to retrieve.
+// Parameters:
+// resourceURI - the identifier of the resource.
+// timespan - the timespan of the query. It is a string with the following format
+// 'startDateTime_ISO/endDateTime_ISO'.
+// interval - the interval (i.e. timegrain) of the query.
+// metric - the name of the metric to retrieve.
+// aggregation - the list of aggregation types (comma separated) to retrieve.
+// top - the maximum number of records to retrieve.
 // Valid only if $filter is specified.
-// Defaults to 10. orderby is the aggregation to use for sorting results and the direction of the sort.
+// Defaults to 10.
+// orderby - the aggregation to use for sorting results and the direction of the sort.
 // Only one order can be specified.
-// Examples: sum asc. filter is the **$filter** is used to reduce the set of metric data
-// returned.<br>Example:<br>Metric contains metadata A, B and C.<br>- Return all time series of C where A = a1 and
-// B = b1 or b2<br>**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**<br>- Invalid
-// variant:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**<br>This is invalid because the logical
-// or operator cannot separate two different metadata names.<br>- Return all time series where A = a1, B = b1 and C
-// = c1:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**<br>- Return all time series where A =
-// a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**. resultType is reduces the set of data collected. The
-// syntax allowed depends on the operation. See the operation's description for details.
+// Examples: sum asc.
+// filter - the **$filter** is used to reduce the set of metric data returned.<br>Example:<br>Metric contains
+// metadata A, B and C.<br>- Return all time series of C where A = a1 and B = b1 or b2<br>**$filter=A eq ‘a1’
+// and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**<br>- Invalid variant:<br>**$filter=A eq ‘a1’ and B eq ‘b1’ and C
+// eq ‘*’ or B = ‘b2’**<br>This is invalid because the logical or operator cannot separate two different
+// metadata names.<br>- Return all time series where A = a1, B = b1 and C = c1:<br>**$filter=A eq ‘a1’ and B eq
+// ‘b1’ and C eq ‘c1’**<br>- Return all time series where A = a1<br>**$filter=A eq ‘a1’ and B eq ‘*’ and C eq
+// ‘*’**.
+// resultType - reduces the set of data collected. The syntax allowed depends on the operation. See the
+// operation's description for details.
 func (client MetricsClient) List(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType ResultType) (result Response, err error) {
 	req, err := client.ListPreparer(ctx, resourceURI, timespan, interval, metric, aggregation, top, orderby, filter, resultType)
 	if err != nil {
@@ -82,7 +84,6 @@ func (client MetricsClient) List(ctx context.Context, resourceURI string, timesp
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListPreparer prepares the List request.
 func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType ResultType) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -126,7 +127,6 @@ func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error) {
@@ -134,7 +134,6 @@ func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights instead.
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
 func (client MetricsClient) ListResponder(resp *http.Response) (result Response, err error) {

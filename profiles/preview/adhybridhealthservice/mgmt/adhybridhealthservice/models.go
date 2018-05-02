@@ -208,6 +208,7 @@ type ConnectorObjectError = original.ConnectorObjectError
 type ConnectorObjectErrors = original.ConnectorObjectErrors
 type Connectors = original.Connectors
 type Credential = original.Credential
+type DataFreshness = original.DataFreshness
 type DataFreshnessDetail = original.DataFreshnessDetail
 type Dimension = original.Dimension
 type Dimensions = original.Dimensions

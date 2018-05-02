@@ -976,9 +976,17 @@ type Credential struct {
 	CredentialData *[]string `json:"credentialData,omitempty"`
 }
 
+// DataFreshness the list of dimensions.
+type DataFreshness struct {
+	autorest.Response `json:"-"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - The value returned by the operation.
+	Value *[]DataFreshnessDetail `json:"value,omitempty"`
+}
+
 // DataFreshnessDetail the data freshness details for the server.
 type DataFreshnessDetail struct {
-	autorest.Response `json:"-"`
 	// ServiceID - The service Id to whom the server is onboarded to.
 	ServiceID *string `json:"serviceId,omitempty"`
 	// LastDataUploadTime - The date time , in UTC, when data was last uploaded by the server.

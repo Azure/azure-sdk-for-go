@@ -111,8 +111,71 @@ func (client BaseClient) DetectLanguageResponder(resp *http.Response) (result La
 	return
 }
 
-// KeyPhrases we employ techniques from Microsoft Office's sophisticated Natural Language Processing toolkit. See the
-// <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
+// Entities to get even more information on each recognized entity we recommend using the Bing Entity Search API by
+// querying for the recognized entities names. See the <a
+// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages">Supported
+// languages in Text Analytics API</a> for the list of enabled languages.
+// Parameters:
+// input - collection of documents to analyze.
+func (client BaseClient) Entities(ctx context.Context, input MultiLanguageBatchInput) (result EntitiesBatchResult, err error) {
+	req, err := client.EntitiesPreparer(ctx, input)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EntitiesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EntitiesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "textanalytics.BaseClient", "Entities", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EntitiesPreparer prepares the Entities request.
+func (client BaseClient) EntitiesPreparer(ctx context.Context, input MultiLanguageBatchInput) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"AzureRegion": client.AzureRegion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/text/analytics", urlParameters),
+		autorest.WithPath("/v2.0/entities"),
+		autorest.WithJSON(input))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EntitiesSender sends the Entities request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) EntitiesSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// EntitiesResponder handles the response to the Entities request. The method always
+// closes the http.Response Body.
+func (client BaseClient) EntitiesResponder(resp *http.Response) (result EntitiesBatchResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// KeyPhrases see the <a
+// href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
 // Analytics Documentation</a> for details about the languages that are supported by key phrase extraction.
 // Parameters:
 // input - collection of documents to analyze. Documents can now contain a language field to indicate the text
@@ -174,9 +237,8 @@ func (client BaseClient) KeyPhrasesResponder(resp *http.Response) (result KeyPhr
 	return
 }
 
-// Sentiment scores close to 1 indicate positive sentiment, while scores close to 0 indicate negative sentiment.
-// Sentiment score is generated using classification techniques. The input features to the classifier include n-grams,
-// features generated from part-of-speech tags, and word embeddings. See the <a
+// Sentiment scores close to 1 indicate positive sentiment, while scores close to 0 indicate negative sentiment. A
+// score of 0.5 indicates the lack of sentiment (e.g. a factoid statement). See the <a
 // href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages">Text
 // Analytics Documentation</a> for details about the languages that are supported by sentiment analysis.
 // Parameters:

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -42,6 +43,7 @@ func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
 
 // ImageSearch sends the image search request.
 // Parameters:
+// customConfig - the identifier for the custom search configuration
 // query - the user's search query term. The term cannot be empty. The term may contain [Bing Advanced
 // Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
 // domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
@@ -126,7 +128,6 @@ func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
 // location is especially important if the client's IP address does not accurately reflect the user's physical
 // location (for example, if the client uses VPN). For optimal results, you should include this header and the
 // X-MSEdge-ClientIP header, but at a minimum, you should include this header.
-// customConfig - the identifier for the custom search configuration
 // aspect - filter images by the following aspect ratios. All: Do not filter by aspect.Specifying this value is
 // the same as not specifying the aspect parameter. Square: Return images with standard aspect ratio. Wide:
 // Return images with wide screen aspect ratio. Tall: Return images with tall aspect ratio.
@@ -251,8 +252,14 @@ func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
 // links to Bing.com properties in the response objects apply the specified language.
 // width - filter images that have the specified width, in pixels. You may use this filter with the size filter
 // to return small images that have a width of 150 pixels.
-func (client CustomInstanceClient) ImageSearch(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (result Images, err error) {
-	req, err := client.ImageSearchPreparer(ctx, query, acceptLanguage, userAgent, clientID, clientIP, location, customConfig, aspect, colorParameter, countryCode, count, freshness, height, ID, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width)
+func (client CustomInstanceClient) ImageSearch(ctx context.Context, customConfig int64, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (result Images, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: customConfig,
+			Constraints: []validation.Constraint{{Target: "customConfig", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("customimagesearch.CustomInstanceClient", "ImageSearch", err.Error())
+	}
+
+	req, err := client.ImageSearchPreparer(ctx, customConfig, query, acceptLanguage, userAgent, clientID, clientIP, location, aspect, colorParameter, countryCode, count, freshness, height, ID, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", nil, "Failure preparing request")
 		return
@@ -274,12 +281,10 @@ func (client CustomInstanceClient) ImageSearch(ctx context.Context, query string
 }
 
 // ImageSearchPreparer prepares the ImageSearch request.
-func (client CustomInstanceClient) ImageSearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
+func (client CustomInstanceClient) ImageSearchPreparer(ctx context.Context, customConfig int64, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"q": autorest.Encode("query", query),
-	}
-	if customConfig != nil {
-		queryParameters["customConfig"] = autorest.Encode("query", *customConfig)
+		"customConfig": autorest.Encode("query", customConfig),
+		"q":            autorest.Encode("query", query),
 	}
 	if len(string(aspect)) > 0 {
 		queryParameters["aspect"] = autorest.Encode("query", aspect)

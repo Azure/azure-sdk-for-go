@@ -570,6 +570,7 @@ type ClosedList struct {
 	Name *string `json:"name,omitempty"`
 	// SubLists - Sublists for the feature.
 	SubLists *[]SubClosedList `json:"subLists,omitempty"`
+	Roles    *[]string        `json:"roles,omitempty"`
 }
 
 // ClosedListEntityExtractor closed List Entity Extractor.
@@ -904,6 +905,7 @@ type HierarchicalModel struct {
 	Name     *string               `json:"name,omitempty"`
 	Children *[]string             `json:"children,omitempty"`
 	Inherits *PrebuiltDomainObject `json:"inherits,omitempty"`
+	Roles    *[]string             `json:"roles,omitempty"`
 }
 
 // Int32 ...
@@ -1191,16 +1193,22 @@ type LuisApp struct {
 	Intents *[]HierarchicalModel `json:"intents,omitempty"`
 	// Entities - List of entities.
 	Entities *[]HierarchicalModel `json:"entities,omitempty"`
-	// BingEntities - List of prebuilt intents.
-	BingEntities *[]string `json:"bing_entities,omitempty"`
 	// ClosedLists - List of closed lists.
 	ClosedLists *[]ClosedList `json:"closedLists,omitempty"`
 	// Composites - List of composite entities.
 	Composites *[]HierarchicalModel `json:"composites,omitempty"`
+	// PatternAnyEntities - List of Pattern.Any entities.
+	PatternAnyEntities *[]PatternAny `json:"patternAnyEntities,omitempty"`
+	// RegexEntities - List of regular expression entities.
+	RegexEntities *[]RegexEntity `json:"regex_entities,omitempty"`
+	// PrebuiltEntities - List of prebuilt entities.
+	PrebuiltEntities *[]PrebuiltEntity `json:"prebuiltEntities,omitempty"`
 	// RegexFeatures - List of pattern features.
 	RegexFeatures *[]JSONRegexFeature `json:"regex_features,omitempty"`
 	// ModelFeatures - List of model features.
 	ModelFeatures *[]JSONModelFeature `json:"model_features,omitempty"`
+	// Patterns - List of patterns.
+	Patterns *[]Pattern `json:"patterns,omitempty"`
 	// Utterances - List of sample utterances.
 	Utterances *[]JSONUtterance `json:"utterances,omitempty"`
 }
@@ -1226,20 +1234,29 @@ func (la LuisApp) MarshalJSON() ([]byte, error) {
 	if la.Entities != nil {
 		objectMap["entities"] = la.Entities
 	}
-	if la.BingEntities != nil {
-		objectMap["bing_entities"] = la.BingEntities
-	}
 	if la.ClosedLists != nil {
 		objectMap["closedLists"] = la.ClosedLists
 	}
 	if la.Composites != nil {
 		objectMap["composites"] = la.Composites
 	}
+	if la.PatternAnyEntities != nil {
+		objectMap["patternAnyEntities"] = la.PatternAnyEntities
+	}
+	if la.RegexEntities != nil {
+		objectMap["regex_entities"] = la.RegexEntities
+	}
+	if la.PrebuiltEntities != nil {
+		objectMap["prebuiltEntities"] = la.PrebuiltEntities
+	}
 	if la.RegexFeatures != nil {
 		objectMap["regex_features"] = la.RegexFeatures
 	}
 	if la.ModelFeatures != nil {
 		objectMap["model_features"] = la.ModelFeatures
+	}
+	if la.Patterns != nil {
+		objectMap["patterns"] = la.Patterns
 	}
 	if la.Utterances != nil {
 		objectMap["utterances"] = la.Utterances
@@ -1332,6 +1349,21 @@ type OperationStatus struct {
 	Code OperationStatusType `json:"code,omitempty"`
 	// Message - Status details.
 	Message *string `json:"message,omitempty"`
+}
+
+// Pattern pattern
+type Pattern struct {
+	// Pattern - The pattern text.
+	Pattern *string `json:"pattern,omitempty"`
+	// Intent - The intent's name where the pattern belongs to.
+	Intent *string `json:"intent,omitempty"`
+}
+
+// PatternAny pattern.Any Entity Extractor.
+type PatternAny struct {
+	Name         *string   `json:"name,omitempty"`
+	ExplicitList *[]string `json:"explicitList,omitempty"`
+	Roles        *[]string `json:"roles,omitempty"`
 }
 
 // PatternAnyEntityExtractor pattern.Any Entity Extractor.
@@ -1528,6 +1560,12 @@ type PrebuiltDomainObject struct {
 	ModelName  *string `json:"model_name,omitempty"`
 }
 
+// PrebuiltEntity prebuilt Entity Extractor.
+type PrebuiltEntity struct {
+	Name  *string   `json:"name,omitempty"`
+	Roles *[]string `json:"roles,omitempty"`
+}
+
 // PrebuiltEntityExtractor prebuilt Entity Extractor.
 type PrebuiltEntityExtractor struct {
 	autorest.Response `json:"-"`
@@ -1565,6 +1603,13 @@ type ProductionOrStagingEndpointInfo struct {
 type ReadCloser struct {
 	autorest.Response `json:"-"`
 	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
+// RegexEntity regular Expression Entity Extractor.
+type RegexEntity struct {
+	Name         *string   `json:"name,omitempty"`
+	RegexPattern *string   `json:"regexPattern,omitempty"`
+	Roles        *[]string `json:"roles,omitempty"`
 }
 
 // RegexEntityExtractor regex Entity Extractor.

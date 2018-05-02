@@ -19,7 +19,7 @@
 
 package eventgrid
 
-import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-01-01/eventgrid"
+import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-05-01-preview/eventgrid"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -32,18 +32,51 @@ type EndpointType = original.EndpointType
 const (
 	EndpointTypeEventHub                     EndpointType = original.EndpointTypeEventHub
 	EndpointTypeEventSubscriptionDestination EndpointType = original.EndpointTypeEventSubscriptionDestination
+	EndpointTypeHybridConnection             EndpointType = original.EndpointTypeHybridConnection
+	EndpointTypeStorageQueue                 EndpointType = original.EndpointTypeStorageQueue
 	EndpointTypeWebHook                      EndpointType = original.EndpointTypeWebHook
+)
+
+type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestination
+
+const (
+	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeDeadLetterDestination
+	EndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeStorageBlob
+)
+
+type EventDeliverySchema = original.EventDeliverySchema
+
+const (
+	CloudEventV01Schema EventDeliverySchema = original.CloudEventV01Schema
+	EventGridSchema     EventDeliverySchema = original.EventGridSchema
+	InputEventSchema    EventDeliverySchema = original.InputEventSchema
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
 
 const (
-	Canceled  EventSubscriptionProvisioningState = original.Canceled
-	Creating  EventSubscriptionProvisioningState = original.Creating
-	Deleting  EventSubscriptionProvisioningState = original.Deleting
-	Failed    EventSubscriptionProvisioningState = original.Failed
-	Succeeded EventSubscriptionProvisioningState = original.Succeeded
-	Updating  EventSubscriptionProvisioningState = original.Updating
+	AwaitingManualAction EventSubscriptionProvisioningState = original.AwaitingManualAction
+	Canceled             EventSubscriptionProvisioningState = original.Canceled
+	Creating             EventSubscriptionProvisioningState = original.Creating
+	Deleting             EventSubscriptionProvisioningState = original.Deleting
+	Failed               EventSubscriptionProvisioningState = original.Failed
+	Succeeded            EventSubscriptionProvisioningState = original.Succeeded
+	Updating             EventSubscriptionProvisioningState = original.Updating
+)
+
+type InputSchema = original.InputSchema
+
+const (
+	InputSchemaCloudEventV01Schema InputSchema = original.InputSchemaCloudEventV01Schema
+	InputSchemaCustomEventSchema   InputSchema = original.InputSchemaCustomEventSchema
+	InputSchemaEventGridSchema     InputSchema = original.InputSchemaEventGridSchema
+)
+
+type InputSchemaMappingType = original.InputSchemaMappingType
+
+const (
+	InputSchemaMappingTypeInputSchemaMapping InputSchemaMappingType = original.InputSchemaMappingTypeInputSchemaMapping
+	InputSchemaMappingTypeJSON               InputSchemaMappingType = original.InputSchemaMappingTypeJSON
 )
 
 type ResourceRegionType = original.ResourceRegionType
@@ -75,6 +108,8 @@ const (
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
+type BasicDeadLetterDestination = original.BasicDeadLetterDestination
+type DeadLetterDestination = original.DeadLetterDestination
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties
 type EventSubscription = original.EventSubscription
@@ -91,10 +126,23 @@ type EventSubscriptionUpdateParameters = original.EventSubscriptionUpdateParamet
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
+type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
+type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
+type BasicInputSchemaMapping = original.BasicInputSchemaMapping
+type InputSchemaMapping = original.InputSchemaMapping
+type JSONField = original.JSONField
+type JSONFieldWithDefault = original.JSONFieldWithDefault
+type JSONInputSchemaMapping = original.JSONInputSchemaMapping
+type JSONInputSchemaMappingProperties = original.JSONInputSchemaMappingProperties
 type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsListResult = original.OperationsListResult
 type Resource = original.Resource
+type RetryPolicy = original.RetryPolicy
+type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
+type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
+type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
+type StorageQueueEventSubscriptionDestinationProperties = original.StorageQueueEventSubscriptionDestinationProperties
 type Topic = original.Topic
 type TopicProperties = original.TopicProperties
 type TopicRegenerateKeyRequest = original.TopicRegenerateKeyRequest
@@ -129,8 +177,20 @@ func NewEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID strin
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
+func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
+	return original.PossibleEndpointTypeBasicDeadLetterDestinationValues()
+}
+func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
+	return original.PossibleEventDeliverySchemaValues()
+}
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
+}
+func PossibleInputSchemaValues() []InputSchema {
+	return original.PossibleInputSchemaValues()
+}
+func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
+	return original.PossibleInputSchemaMappingTypeValues()
 }
 func PossibleResourceRegionTypeValues() []ResourceRegionType {
 	return original.PossibleResourceRegionTypeValues()

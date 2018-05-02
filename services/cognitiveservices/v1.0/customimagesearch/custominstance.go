@@ -24,23 +24,23 @@ import (
 	"net/http"
 )
 
-// CustomClient is the the Bing Custom Image Search API lets you send an image search query to Bing and get back image
-// search results customized to meet your custom search definition.
-type CustomClient struct {
+// CustomInstanceClient is the the Bing Custom Image Search API lets you send an image search query to Bing and get
+// back image search results customized to meet your custom search definition.
+type CustomInstanceClient struct {
 	BaseClient
 }
 
-// NewCustomClient creates an instance of the CustomClient client.
-func NewCustomClient() CustomClient {
-	return NewCustomClientWithBaseURI(DefaultBaseURI)
+// NewCustomInstanceClient creates an instance of the CustomInstanceClient client.
+func NewCustomInstanceClient() CustomInstanceClient {
+	return NewCustomInstanceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewCustomClientWithBaseURI creates an instance of the CustomClient client.
-func NewCustomClientWithBaseURI(baseURI string) CustomClient {
-	return CustomClient{NewWithBaseURI(baseURI)}
+// NewCustomInstanceClientWithBaseURI creates an instance of the CustomInstanceClient client.
+func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
+	return CustomInstanceClient{NewWithBaseURI(baseURI)}
 }
 
-// Search sends the search request.
+// ImageSearch sends the image search request.
 // Parameters:
 // query - the user's search query term. The term cannot be empty. The term may contain [Bing Advanced
 // Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
@@ -251,30 +251,30 @@ func NewCustomClientWithBaseURI(baseURI string) CustomClient {
 // links to Bing.com properties in the response objects apply the specified language.
 // width - filter images that have the specified width, in pixels. You may use this filter with the size filter
 // to return small images that have a width of 150 pixels.
-func (client CustomClient) Search(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (result Images, err error) {
-	req, err := client.SearchPreparer(ctx, query, acceptLanguage, userAgent, clientID, clientIP, location, customConfig, aspect, colorParameter, countryCode, count, freshness, height, ID, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width)
+func (client CustomInstanceClient) ImageSearch(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (result Images, err error) {
+	req, err := client.ImageSearchPreparer(ctx, query, acceptLanguage, userAgent, clientID, clientIP, location, customConfig, aspect, colorParameter, countryCode, count, freshness, height, ID, imageContent, imageType, license, market, maxFileSize, maxHeight, maxWidth, minFileSize, minHeight, minWidth, offset, safeSearch, size, setLang, width)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customimagesearch.CustomClient", "Search", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.SearchSender(req)
+	resp, err := client.ImageSearchSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "customimagesearch.CustomClient", "Search", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.SearchResponder(resp)
+	result, err = client.ImageSearchResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customimagesearch.CustomClient", "Search", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "customimagesearch.CustomInstanceClient", "ImageSearch", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// SearchPreparer prepares the Search request.
-func (client CustomClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
+// ImageSearchPreparer prepares the ImageSearch request.
+func (client CustomInstanceClient) ImageSearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, customConfig *int32, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -377,16 +377,16 @@ func (client CustomClient) SearchPreparer(ctx context.Context, query string, acc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// SearchSender sends the Search request. The method will close the
+// ImageSearchSender sends the ImageSearch request. The method will close the
 // http.Response Body if it receives an error.
-func (client CustomClient) SearchSender(req *http.Request) (*http.Response, error) {
+func (client CustomInstanceClient) ImageSearchSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// SearchResponder handles the response to the Search request. The method always
+// ImageSearchResponder handles the response to the ImageSearch request. The method always
 // closes the http.Response Body.
-func (client CustomClient) SearchResponder(resp *http.Response) (result Images, err error) {
+func (client CustomInstanceClient) ImageSearchResponder(resp *http.Response) (result Images, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

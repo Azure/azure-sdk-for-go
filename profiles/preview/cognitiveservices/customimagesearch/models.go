@@ -26,7 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type CustomClient = original.CustomClient
+type CustomInstanceClient = original.CustomInstanceClient
 type ErrorCode = original.ErrorCode
 
 const (
@@ -184,11 +184,11 @@ func New() BaseClient {
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
-func NewCustomClient() CustomClient {
-	return original.NewCustomClient()
+func NewCustomInstanceClient() CustomInstanceClient {
+	return original.NewCustomInstanceClient()
 }
-func NewCustomClientWithBaseURI(baseURI string) CustomClient {
-	return original.NewCustomClientWithBaseURI(baseURI)
+func NewCustomInstanceClientWithBaseURI(baseURI string) CustomInstanceClient {
+	return original.NewCustomInstanceClientWithBaseURI(baseURI)
 }
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()

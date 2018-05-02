@@ -1517,6 +1517,7 @@ type InboundReplicationNeighbor struct {
 
 // InboundReplicationNeighbors the list of replication summary for the domain controller inbound neighbor.
 type InboundReplicationNeighbors struct {
+	// Value - The details of inbound replication neighbors.
 	Value *[]InboundReplicationNeighbor `json:"value,omitempty"`
 }
 

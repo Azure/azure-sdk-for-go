@@ -40,8 +40,7 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 }
 
 // List lists the available Azure Data Factory API operations.
-func (client OperationsClient) List(ctx context.Context) (result OperationListResponsePage, err error) {
-	result.fn = client.listNextResults
+func (client OperationsClient) List(ctx context.Context) (result OperationListResponse, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "List", nil, "Failure preparing request")
@@ -50,12 +49,12 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.olr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.olr, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "List", resp, "Failure responding to request")
 	}
@@ -95,32 +94,5 @@ func (client OperationsClient) ListResponder(resp *http.Response) (result Operat
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client OperationsClient) listNextResults(lastResults OperationListResponse) (result OperationListResponse, err error) {
-	req, err := lastResults.operationListResponsePreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsClient) ListComplete(ctx context.Context) (result OperationListResponseIterator, err error) {
-	result.page, err = client.List(ctx)
 	return
 }

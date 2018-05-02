@@ -976,17 +976,9 @@ type Credential struct {
 	CredentialData *[]string `json:"credentialData,omitempty"`
 }
 
-// DataFreshness the list of dimensions.
-type DataFreshness struct {
-	autorest.Response `json:"-"`
-	// NextLink - The link used to get the next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - The value returned by the operation.
-	Value *[]DataFreshnessDetail `json:"value,omitempty"`
-}
-
 // DataFreshnessDetail the data freshness details for the server.
 type DataFreshnessDetail struct {
+	autorest.Response `json:"-"`
 	// ServiceID - The service Id to whom the server is onboarded to.
 	ServiceID *string `json:"serviceId,omitempty"`
 	// LastDataUploadTime - The date time , in UTC, when data was last uploaded by the server.
@@ -1925,99 +1917,6 @@ type OperationListResponse struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// ContinuationToken - The continuation token to get next set of operations.
 	ContinuationToken *string `json:"continuationToken,omitempty"`
-}
-
-// OperationListResponseIterator provides access to a complete listing of Operation values.
-type OperationListResponseIterator struct {
-	i    int
-	page OperationListResponsePage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *OperationListResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter OperationListResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter OperationListResponseIterator) Response() OperationListResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter OperationListResponseIterator) Value() Operation {
-	if !iter.page.NotDone() {
-		return Operation{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (olr OperationListResponse) IsEmpty() bool {
-	return olr.Value == nil || len(*olr.Value) == 0
-}
-
-// operationListResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (olr OperationListResponse) operationListResponsePreparer() (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(olr.NextLink)))
-}
-
-// OperationListResponsePage contains a page of Operation values.
-type OperationListResponsePage struct {
-	fn  func(OperationListResponse) (OperationListResponse, error)
-	olr OperationListResponse
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *OperationListResponsePage) Next() error {
-	next, err := page.fn(page.olr)
-	if err != nil {
-		return err
-	}
-	page.olr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page OperationListResponsePage) NotDone() bool {
-	return !page.olr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page OperationListResponsePage) Response() OperationListResponse {
-	return page.olr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page OperationListResponsePage) Values() []Operation {
-	if page.olr.IsEmpty() {
-		return nil
-	}
-	return *page.olr.Value
 }
 
 // Partition describes the partition in Synchronization service.

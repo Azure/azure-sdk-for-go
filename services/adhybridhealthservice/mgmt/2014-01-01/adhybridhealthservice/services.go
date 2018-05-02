@@ -435,86 +435,6 @@ func (client ServicesClient) GetMetricMetadataResponder(resp *http.Response) (re
 	return
 }
 
-// GetMetricMetadataForGroup gets the service related metrics for a given metric and group combination.
-// Parameters:
-// serviceName - the name of the service.
-// metricName - the metric name
-// groupName - the group name
-// groupKey - the group key
-// fromDate - the start date.
-// toDate - the end date.
-func (client ServicesClient) GetMetricMetadataForGroup(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
-	req, err := client.GetMetricMetadataForGroupPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "GetMetricMetadataForGroup", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetMetricMetadataForGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "GetMetricMetadataForGroup", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetMetricMetadataForGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "GetMetricMetadataForGroup", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetMetricMetadataForGroupPreparer prepares the GetMetricMetadataForGroup request.
-func (client ServicesClient) GetMetricMetadataForGroupPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":   autorest.Encode("path", groupName),
-		"metricName":  autorest.Encode("path", metricName),
-		"serviceName": autorest.Encode("path", serviceName),
-	}
-
-	const APIVersion = "2014-01-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(groupKey) > 0 {
-		queryParameters["groupKey"] = autorest.Encode("query", groupKey)
-	}
-	if fromDate != nil {
-		queryParameters["fromDate"] = autorest.Encode("query", *fromDate)
-	}
-	if toDate != nil {
-		queryParameters["toDate"] = autorest.Encode("query", *toDate)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/metricmetadata/{metricName}/groups/{groupName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetMetricMetadataForGroupSender sends the GetMetricMetadataForGroup request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServicesClient) GetMetricMetadataForGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GetMetricMetadataForGroupResponder handles the response to the GetMetricMetadataForGroup request. The method always
-// closes the http.Response Body.
-func (client ServicesClient) GetMetricMetadataForGroupResponder(resp *http.Response) (result MetricSets, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // GetTenantWhitelisting checks if the tenant, to which a service is registered, is whitelisted to use a feature.
 // Parameters:
 // serviceName - the name of the service.
@@ -1184,6 +1104,86 @@ func (client ServicesClient) listMetricMetadataNextResults(lastResults MetricMet
 // ListMetricMetadataComplete enumerates all values, automatically crossing page boundaries as required.
 func (client ServicesClient) ListMetricMetadataComplete(ctx context.Context, serviceName string, filter string, perfCounter *bool) (result MetricMetadataListIterator, err error) {
 	result.page, err = client.ListMetricMetadata(ctx, serviceName, filter, perfCounter)
+	return
+}
+
+// ListMetricMetadataForGroup gets the service related metrics for a given metric and group combination.
+// Parameters:
+// serviceName - the name of the service.
+// metricName - the metric name
+// groupName - the group name
+// groupKey - the group key
+// fromDate - the start date.
+// toDate - the end date.
+func (client ServicesClient) ListMetricMetadataForGroup(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
+	req, err := client.ListMetricMetadataForGroupPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListMetricMetadataForGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMetricMetadataForGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListMetricMetadataForGroup", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListMetricMetadataForGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListMetricMetadataForGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMetricMetadataForGroupPreparer prepares the ListMetricMetadataForGroup request.
+func (client ServicesClient) ListMetricMetadataForGroupPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"groupName":   autorest.Encode("path", groupName),
+		"metricName":  autorest.Encode("path", metricName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(groupKey) > 0 {
+		queryParameters["groupKey"] = autorest.Encode("query", groupKey)
+	}
+	if fromDate != nil {
+		queryParameters["fromDate"] = autorest.Encode("query", *fromDate)
+	}
+	if toDate != nil {
+		queryParameters["toDate"] = autorest.Encode("query", *toDate)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/services/{serviceName}/metricmetadata/{metricName}/groups/{groupName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMetricMetadataForGroupSender sends the ListMetricMetadataForGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServicesClient) ListMetricMetadataForGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListMetricMetadataForGroupResponder handles the response to the ListMetricMetadataForGroup request. The method always
+// closes the http.Response Body.
+func (client ServicesClient) ListMetricMetadataForGroupResponder(resp *http.Response) (result MetricSets, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

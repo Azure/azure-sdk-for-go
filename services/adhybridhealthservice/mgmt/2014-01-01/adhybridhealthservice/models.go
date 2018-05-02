@@ -976,11 +976,13 @@ type Credential struct {
 	CredentialData *[]string `json:"credentialData,omitempty"`
 }
 
-// DataFreshnessDetails the list of data and their upload timestamp.
-type DataFreshnessDetails struct {
+// DataFreshnessDetail the data freshness details for the server.
+type DataFreshnessDetail struct {
 	autorest.Response `json:"-"`
-	// Value - The value returned by the operation.
-	Value *[]Item `json:"value,omitempty"`
+	// ServiceID - The service Id to whom the server is onboarded to.
+	ServiceID *string `json:"serviceId,omitempty"`
+	// LastDataUploadTime - The date time , in UTC, when data was last uploaded by the server.
+	LastDataUploadTime *date.Time `json:"lastDataUploadTime,omitempty"`
 }
 
 // Dimension the connector object error.

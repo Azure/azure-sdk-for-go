@@ -1406,7 +1406,6 @@ type ForestSummary struct {
 
 // GlobalConfiguration the global configuration settings.
 type GlobalConfiguration struct {
-	autorest.Response `json:"-"`
 	// Version - The version for the global configuration.
 	Version *int32 `json:"version,omitempty"`
 	// SchemaXML - The schema for the configuration.
@@ -1417,6 +1416,13 @@ type GlobalConfiguration struct {
 	NumSavedPwdEvents *int32 `json:"numSavedPwdEvents,omitempty"`
 	// FeatureSet - The list of additional feature sets.
 	FeatureSet interface{} `json:"featureSet,omitempty"`
+}
+
+// GlobalConfigurations the list of global configurations.
+type GlobalConfigurations struct {
+	autorest.Response `json:"-"`
+	// Value - The value returned by the operation.
+	Value *[]GlobalConfiguration `json:"value,omitempty"`
 }
 
 // HelpLink the help link which contains more information related to an alert.

@@ -755,7 +755,7 @@ func (client ServicemembersClient) ListExportStatusComplete(ctx context.Context,
 // Parameters:
 // serviceName - the name of the service.
 // serviceMemberID - the server id.
-func (client ServicemembersClient) ListGlobalConfiguration(ctx context.Context, serviceName string, serviceMemberID string) (result GlobalConfiguration, err error) {
+func (client ServicemembersClient) ListGlobalConfiguration(ctx context.Context, serviceName string, serviceMemberID string) (result GlobalConfigurations, err error) {
 	req, err := client.ListGlobalConfigurationPreparer(ctx, serviceName, serviceMemberID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicemembersClient", "ListGlobalConfiguration", nil, "Failure preparing request")
@@ -806,7 +806,7 @@ func (client ServicemembersClient) ListGlobalConfigurationSender(req *http.Reque
 
 // ListGlobalConfigurationResponder handles the response to the ListGlobalConfiguration request. The method always
 // closes the http.Response Body.
-func (client ServicemembersClient) ListGlobalConfigurationResponder(resp *http.Response) (result GlobalConfiguration, err error) {
+func (client ServicemembersClient) ListGlobalConfigurationResponder(resp *http.Response) (result GlobalConfigurations, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

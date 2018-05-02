@@ -229,6 +229,7 @@ type ExportStatusesPage = original.ExportStatusesPage
 type ExtensionErrorInfo = original.ExtensionErrorInfo
 type ForestSummary = original.ForestSummary
 type GlobalConfiguration = original.GlobalConfiguration
+type GlobalConfigurations = original.GlobalConfigurations
 type HelpLink = original.HelpLink
 type Hotfix = original.Hotfix
 type Hotfixes = original.Hotfixes

@@ -1765,7 +1765,7 @@ type DataItemMigrationSummaryResult struct {
 type Error struct {
 	// Message - Error description
 	Message *string `json:"message,omitempty"`
-	// Type - Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
+	// Type - Type of error. Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
 	Type ErrorType `json:"type,omitempty"`
 }
 
@@ -5287,7 +5287,7 @@ type SQLMigrationTaskInput struct {
 	TargetConnectionInfo *SQLConnectionInfo `json:"targetConnectionInfo,omitempty"`
 }
 
-// StartMigrationScenarioServerRoleResult ...
+// StartMigrationScenarioServerRoleResult server role migration result
 type StartMigrationScenarioServerRoleResult struct {
 	// Name - Name of server role.
 	Name *string `json:"name,omitempty"`

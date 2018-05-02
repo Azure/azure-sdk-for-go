@@ -929,9 +929,8 @@ func (client ServicesClient) ListExportErrorsResponder(resp *http.Response) (res
 // Parameters:
 // serviceName - the name of the service.
 // errorBucket - the error category to query for.
-// nextLink - the next link to get next step of data.
-func (client ServicesClient) ListExportErrorsV2(ctx context.Context, serviceName string, errorBucket string, nextLink string) (result MergedExportErrors, err error) {
-	req, err := client.ListExportErrorsV2Preparer(ctx, serviceName, errorBucket, nextLink)
+func (client ServicesClient) ListExportErrorsV2(ctx context.Context, serviceName string, errorBucket string) (result MergedExportErrors, err error) {
+	req, err := client.ListExportErrorsV2Preparer(ctx, serviceName, errorBucket)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "ListExportErrorsV2", nil, "Failure preparing request")
 		return
@@ -953,7 +952,7 @@ func (client ServicesClient) ListExportErrorsV2(ctx context.Context, serviceName
 }
 
 // ListExportErrorsV2Preparer prepares the ListExportErrorsV2 request.
-func (client ServicesClient) ListExportErrorsV2Preparer(ctx context.Context, serviceName string, errorBucket string, nextLink string) (*http.Request, error) {
+func (client ServicesClient) ListExportErrorsV2Preparer(ctx context.Context, serviceName string, errorBucket string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -962,9 +961,6 @@ func (client ServicesClient) ListExportErrorsV2Preparer(ctx context.Context, ser
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 		"errorBucket": autorest.Encode("query", errorBucket),
-	}
-	if len(nextLink) > 0 {
-		queryParameters["nextLink"] = autorest.Encode("query", nextLink)
 	}
 
 	preparer := autorest.CreatePreparer(

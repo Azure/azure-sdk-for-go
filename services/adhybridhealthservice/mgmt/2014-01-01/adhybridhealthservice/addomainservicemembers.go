@@ -24,19 +24,19 @@ import (
 	"net/http"
 )
 
-// AddomainservicemembersClient is the REST APIs for Azure Active Drectory Connect Health
-type AddomainservicemembersClient struct {
+// AdDomainServiceMembersClient is the REST APIs for Azure Active Drectory Connect Health
+type AdDomainServiceMembersClient struct {
 	BaseClient
 }
 
-// NewAddomainservicemembersClient creates an instance of the AddomainservicemembersClient client.
-func NewAddomainservicemembersClient() AddomainservicemembersClient {
-	return NewAddomainservicemembersClientWithBaseURI(DefaultBaseURI)
+// NewAdDomainServiceMembersClient creates an instance of the AdDomainServiceMembersClient client.
+func NewAdDomainServiceMembersClient() AdDomainServiceMembersClient {
+	return NewAdDomainServiceMembersClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAddomainservicemembersClientWithBaseURI creates an instance of the AddomainservicemembersClient client.
-func NewAddomainservicemembersClientWithBaseURI(baseURI string) AddomainservicemembersClient {
-	return AddomainservicemembersClient{NewWithBaseURI(baseURI)}
+// NewAdDomainServiceMembersClientWithBaseURI creates an instance of the AdDomainServiceMembersClient client.
+func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceMembersClient {
+	return AdDomainServiceMembersClient{NewWithBaseURI(baseURI)}
 }
 
 // List gets the details of the servers, for a given Active Directory Domain Service, that are onboarded to Azure
@@ -49,31 +49,31 @@ func NewAddomainservicemembersClientWithBaseURI(baseURI string) Addomainservicem
 // nextPartitionKey - the next partition key to query for.
 // nextRowKey - the next row key to query for.
 // takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
-func (client AddomainservicemembersClient) List(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersPage, err error) {
+func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, serviceName, isGroupbySite, filter, query, nextPartitionKey, nextRowKey, takeCount)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.asm.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.asm, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client AddomainservicemembersClient) ListPreparer(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (*http.Request, error) {
+func (client AdDomainServiceMembersClient) ListPreparer(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -109,14 +109,14 @@ func (client AddomainservicemembersClient) ListPreparer(ctx context.Context, ser
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddomainservicemembersClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AdDomainServiceMembersClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AddomainservicemembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
+func (client AdDomainServiceMembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,10 +128,10 @@ func (client AddomainservicemembersClient) ListResponder(resp *http.Response) (r
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AddomainservicemembersClient) listNextResults(lastResults AddsServiceMembers) (result AddsServiceMembers, err error) {
+func (client AdDomainServiceMembersClient) listNextResults(lastResults AddsServiceMembers) (result AddsServiceMembers, err error) {
 	req, err := lastResults.addsServiceMembersPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -139,17 +139,17 @@ func (client AddomainservicemembersClient) listNextResults(lastResults AddsServi
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddomainservicemembersClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AddomainservicemembersClient) ListComplete(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersIterator, err error) {
+func (client AdDomainServiceMembersClient) ListComplete(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersIterator, err error) {
 	result.page, err = client.List(ctx, serviceName, isGroupbySite, filter, query, nextPartitionKey, nextRowKey, takeCount)
 	return
 }

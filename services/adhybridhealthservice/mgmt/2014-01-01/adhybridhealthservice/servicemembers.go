@@ -595,7 +595,7 @@ func (client ServicemembersClient) ListCredentialsResponder(resp *http.Response)
 // Parameters:
 // serviceName - the name of the service.
 // serviceMemberID - the server Id.
-func (client ServicemembersClient) ListDataFreshness(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result DataFreshnessDetail, err error) {
+func (client ServicemembersClient) ListDataFreshness(ctx context.Context, serviceName string, serviceMemberID uuid.UUID) (result DataFreshnessDetails, err error) {
 	req, err := client.ListDataFreshnessPreparer(ctx, serviceName, serviceMemberID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicemembersClient", "ListDataFreshness", nil, "Failure preparing request")
@@ -646,7 +646,7 @@ func (client ServicemembersClient) ListDataFreshnessSender(req *http.Request) (*
 
 // ListDataFreshnessResponder handles the response to the ListDataFreshness request. The method always
 // closes the http.Response Body.
-func (client ServicemembersClient) ListDataFreshnessResponder(resp *http.Response) (result DataFreshnessDetail, err error) {
+func (client ServicemembersClient) ListDataFreshnessResponder(resp *http.Response) (result DataFreshnessDetails, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

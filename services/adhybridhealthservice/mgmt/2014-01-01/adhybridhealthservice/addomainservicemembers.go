@@ -46,12 +46,10 @@ func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceM
 // isGroupbySite - indicates if the result should be grouped by site or not.
 // filter - the server property filter to apply.
 // query - the custom query.
-// nextPartitionKey - the next partition key to query for.
-// nextRowKey - the next row key to query for.
 // takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
-func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersPage, err error) {
+func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, takeCount *int32) (result AddsServiceMembersPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, serviceName, isGroupbySite, filter, query, nextPartitionKey, nextRowKey, takeCount)
+	req, err := client.ListPreparer(ctx, serviceName, isGroupbySite, filter, query, takeCount)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", nil, "Failure preparing request")
 		return
@@ -73,27 +71,23 @@ func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName
 }
 
 // ListPreparer prepares the List request.
-func (client AdDomainServiceMembersClient) ListPreparer(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (*http.Request, error) {
+func (client AdDomainServiceMembersClient) ListPreparer(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, takeCount *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
 
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
-		"api-version":   APIVersion,
-		"isGroupbySite": autorest.Encode("query", isGroupbySite),
+		"api-version":      APIVersion,
+		"isGroupbySite":    autorest.Encode("query", isGroupbySite),
+		"nextPartitionKey": autorest.Encode("query", ""),
+		"nextRowKey":       autorest.Encode("query", ""),
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 	if len(query) > 0 {
 		queryParameters["query"] = autorest.Encode("query", query)
-	}
-	if len(nextPartitionKey) > 0 {
-		queryParameters["nextPartitionKey"] = autorest.Encode("query", nextPartitionKey)
-	}
-	if len(nextRowKey) > 0 {
-		queryParameters["nextRowKey"] = autorest.Encode("query", nextRowKey)
 	}
 	if takeCount != nil {
 		queryParameters["takeCount"] = autorest.Encode("query", *takeCount)
@@ -149,7 +143,7 @@ func (client AdDomainServiceMembersClient) listNextResults(lastResults AddsServi
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AdDomainServiceMembersClient) ListComplete(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, nextPartitionKey string, nextRowKey string, takeCount *int32) (result AddsServiceMembersIterator, err error) {
-	result.page, err = client.List(ctx, serviceName, isGroupbySite, filter, query, nextPartitionKey, nextRowKey, takeCount)
+func (client AdDomainServiceMembersClient) ListComplete(ctx context.Context, serviceName string, isGroupbySite bool, filter string, query string, takeCount *int32) (result AddsServiceMembersIterator, err error) {
+	result.page, err = client.List(ctx, serviceName, isGroupbySite, filter, query, takeCount)
 	return
 }

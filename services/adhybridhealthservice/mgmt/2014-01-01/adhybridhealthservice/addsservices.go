@@ -519,12 +519,10 @@ func (client AddsServicesClient) GetReplicationStatusResponder(resp *http.Respon
 // serviceName - the name of the service.
 // isGroupbySite - indicates if the result should be grouped by site or not.
 // query - the custom query.
-// nextPartitionKey - the next partition key to query for.
 // filter - the server property filter to apply.
-// nextRowKey - the next row key to query for.
 // takeCount - the take count , which specifies the number of elements that can be returned from a sequence.
-func (client AddsServicesClient) GetReplicationSummary(ctx context.Context, serviceName string, isGroupbySite bool, query string, nextPartitionKey string, filter string, nextRowKey string, takeCount *int32) (result ReplicationSummary, err error) {
-	req, err := client.GetReplicationSummaryPreparer(ctx, serviceName, isGroupbySite, query, nextPartitionKey, filter, nextRowKey, takeCount)
+func (client AddsServicesClient) GetReplicationSummary(ctx context.Context, serviceName string, isGroupbySite bool, query string, filter string, takeCount *int32) (result ReplicationSummary, err error) {
+	req, err := client.GetReplicationSummaryPreparer(ctx, serviceName, isGroupbySite, query, filter, takeCount)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetReplicationSummary", nil, "Failure preparing request")
 		return
@@ -546,7 +544,7 @@ func (client AddsServicesClient) GetReplicationSummary(ctx context.Context, serv
 }
 
 // GetReplicationSummaryPreparer prepares the GetReplicationSummary request.
-func (client AddsServicesClient) GetReplicationSummaryPreparer(ctx context.Context, serviceName string, isGroupbySite bool, query string, nextPartitionKey string, filter string, nextRowKey string, takeCount *int32) (*http.Request, error) {
+func (client AddsServicesClient) GetReplicationSummaryPreparer(ctx context.Context, serviceName string, isGroupbySite bool, query string, filter string, takeCount *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -555,14 +553,12 @@ func (client AddsServicesClient) GetReplicationSummaryPreparer(ctx context.Conte
 	queryParameters := map[string]interface{}{
 		"api-version":      APIVersion,
 		"isGroupbySite":    autorest.Encode("query", isGroupbySite),
-		"nextPartitionKey": autorest.Encode("query", nextPartitionKey),
+		"nextPartitionKey": autorest.Encode("query", ""),
+		"nextRowKey":       autorest.Encode("query", ""),
 		"query":            autorest.Encode("query", query),
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if len(nextRowKey) > 0 {
-		queryParameters["nextRowKey"] = autorest.Encode("query", nextRowKey)
 	}
 	if takeCount != nil {
 		queryParameters["takeCount"] = autorest.Encode("query", *takeCount)

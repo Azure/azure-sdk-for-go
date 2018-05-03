@@ -22,7 +22,7 @@ package adhybridhealthservice
 import original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 
 type AdDomainServiceMembersClient = original.AdDomainServiceMembersClient
-type AddsServicemembersClient = original.AddsServicemembersClient
+type AddsServiceMembersClient = original.AddsServiceMembersClient
 type AddsServicesClient = original.AddsServicesClient
 type AlertsClient = original.AlertsClient
 
@@ -294,11 +294,11 @@ func NewAdDomainServiceMembersClient() AdDomainServiceMembersClient {
 func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceMembersClient {
 	return original.NewAdDomainServiceMembersClientWithBaseURI(baseURI)
 }
-func NewAddsServicemembersClient() AddsServicemembersClient {
-	return original.NewAddsServicemembersClient()
+func NewAddsServiceMembersClient() AddsServiceMembersClient {
+	return original.NewAddsServiceMembersClient()
 }
-func NewAddsServicemembersClientWithBaseURI(baseURI string) AddsServicemembersClient {
-	return original.NewAddsServicemembersClientWithBaseURI(baseURI)
+func NewAddsServiceMembersClientWithBaseURI(baseURI string) AddsServiceMembersClient {
+	return original.NewAddsServiceMembersClientWithBaseURI(baseURI)
 }
 func NewAddsServicesClient() AddsServicesClient {
 	return original.NewAddsServicesClient()

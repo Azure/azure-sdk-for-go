@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## `v16.2.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|eventgrid | 2018-05-01-preview |
+|trafficmanager | 2018-03-01 |
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|redis | 2017-10-01<br/>2018-03-01 |
+|textanalytics | v2.0 |
+|web | 2016-09-01<br/>2018-02-01 |
+
 ## `v16.1.0`
 
 - Added a `NewAuthorizerFromEnvironment()` function for the keyvault service.

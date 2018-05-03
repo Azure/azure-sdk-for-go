@@ -42,8 +42,9 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 
 // CheckNameAvailability checks that the SignalR name is valid and is not already in use.
 // Parameters:
+// location - the region
 // parameters - parameters supplied to the operation.
-func (client Client) CheckNameAvailability(ctx context.Context, parameters *NameAvailabilityParameters) (result NameAvailability, err error) {
+func (client Client) CheckNameAvailability(ctx context.Context, location string, parameters *NameAvailabilityParameters) (result NameAvailability, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: false,
@@ -53,7 +54,7 @@ func (client Client) CheckNameAvailability(ctx context.Context, parameters *Name
 		return result, validation.NewError("signalr.Client", "CheckNameAvailability", err.Error())
 	}
 
-	req, err := client.CheckNameAvailabilityPreparer(ctx, parameters)
+	req, err := client.CheckNameAvailabilityPreparer(ctx, location, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.Client", "CheckNameAvailability", nil, "Failure preparing request")
 		return
@@ -75,8 +76,9 @@ func (client Client) CheckNameAvailability(ctx context.Context, parameters *Name
 }
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, parameters *NameAvailabilityParameters) (*http.Request, error) {
+func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, location string, parameters *NameAvailabilityParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -89,7 +91,7 @@ func (client Client) CheckNameAvailabilityPreparer(ctx context.Context, paramete
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/checkNameAvailability", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/checkNameAvailability", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if parameters != nil {
 		preparer = autorest.DecoratePreparer(preparer,

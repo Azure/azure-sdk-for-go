@@ -17753,7 +17753,7 @@ func (ats AzureTableSource) AsBasicCopySource() (BasicCopySource, bool) {
 
 // BlobEventsTrigger trigger that runs everytime a Blob event occurs.
 type BlobEventsTrigger struct {
-	// BlobEventsTriggerTypeProperties - Blob Events Trigger properties
+	// BlobEventsTriggerTypeProperties - Blob Events Trigger properties.
 	*BlobEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
 	// Pipelines - Pipelines that need to be started.
 	Pipelines *[]TriggerPipelineReference `json:"pipelines,omitempty"`
@@ -17904,15 +17904,15 @@ func (bet *BlobEventsTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobEventsTriggerTypeProperties blob Events Trigger properties
+// BlobEventsTriggerTypeProperties blob Events Trigger properties.
 type BlobEventsTriggerTypeProperties struct {
-	// BlobPath - path to container, folder, blob, or file extension for which events can trigger the pipeline.
+	// BlobPath - Path to container, folder, blob, or file extension for which events can trigger the pipeline.
 	BlobPath *string `json:"blobPath,omitempty"`
-	// Events - the type of events for which we want to trigger the pipeline.
+	// Events - The type of events that cause this trigger to fire.
 	Events *[]BlobEventTypes `json:"events,omitempty"`
-	// Scope - the resource id of the Storage Account.
+	// Scope - The ARM resource ID of the Storage Account.
 	Scope *string `json:"scope,omitempty"`
-	// MaxConcurrency - the max number of parallel events to handle when it is triggered.
+	// MaxConcurrency - The max number of parallel events to handle when triggered.
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 }
 

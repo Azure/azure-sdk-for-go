@@ -11483,6 +11483,8 @@ type MigrateMySQLStatusProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 	// LocalMySQLEnabled - True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+	// HTTP20Enabled - Is HTTP2 enabled?
+	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 }
 
 // MSDeploy mSDeploy ARM PUT information

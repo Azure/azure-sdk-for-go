@@ -60,8 +60,8 @@ const (
 type BlobEventTypes = original.BlobEventTypes
 
 const (
-	BlobCreated BlobEventTypes = original.BlobCreated
-	BlobDeleted BlobEventTypes = original.BlobDeleted
+	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
+	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
 )
 
 type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels

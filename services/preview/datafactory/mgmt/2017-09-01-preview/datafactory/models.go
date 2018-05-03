@@ -82,15 +82,15 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 type BlobEventTypes string
 
 const (
-	// BlobCreated ...
-	BlobCreated BlobEventTypes = "blobCreated"
-	// BlobDeleted ...
-	BlobDeleted BlobEventTypes = "blobDeleted"
+	// MicrosoftStorageBlobCreated ...
+	MicrosoftStorageBlobCreated BlobEventTypes = "Microsoft.Storage.BlobCreated"
+	// MicrosoftStorageBlobDeleted ...
+	MicrosoftStorageBlobDeleted BlobEventTypes = "Microsoft.Storage.BlobDeleted"
 )
 
 // PossibleBlobEventTypesValues returns an array of possible values for the BlobEventTypes const type.
 func PossibleBlobEventTypesValues() []BlobEventTypes {
-	return []BlobEventTypes{BlobCreated, BlobDeleted}
+	return []BlobEventTypes{MicrosoftStorageBlobCreated, MicrosoftStorageBlobDeleted}
 }
 
 // CassandraSourceReadConsistencyLevels enumerates the values for cassandra source read consistency levels.

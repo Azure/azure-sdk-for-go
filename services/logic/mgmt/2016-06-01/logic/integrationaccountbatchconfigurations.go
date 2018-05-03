@@ -47,18 +47,18 @@ func NewIntegrationAccountBatchConfigurationsClientWithBaseURI(baseURI string, s
 // resourceGroupName - the resource group name.
 // integrationAccountName - the integration account name.
 // batchConfigurationName - the batch configuration name.
-// assemblyArtifact - the assembly artifact.
-func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, assemblyArtifact BatchConfiguration) (result BatchConfiguration, err error) {
+// batchConfiguration - the batch configuration.
+func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, batchConfiguration BatchConfiguration) (result BatchConfiguration, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: assemblyArtifact,
-			Constraints: []validation.Constraint{{Target: "assemblyArtifact.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "assemblyArtifact.Properties.BatchGroupName", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "assemblyArtifact.Properties.ReleaseCriteria", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: batchConfiguration,
+			Constraints: []validation.Constraint{{Target: "batchConfiguration.Properties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "batchConfiguration.Properties.BatchGroupName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "batchConfiguration.Properties.ReleaseCriteria", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("logic.IntegrationAccountBatchConfigurationsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, integrationAccountName, batchConfigurationName, assemblyArtifact)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, integrationAccountName, batchConfigurationName, batchConfiguration)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.IntegrationAccountBatchConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -80,7 +80,7 @@ func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdate(ctx con
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, assemblyArtifact BatchConfiguration) (*http.Request, error) {
+func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, integrationAccountName string, batchConfigurationName string, batchConfiguration BatchConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"batchConfigurationName": autorest.Encode("path", batchConfigurationName),
 		"integrationAccountName": autorest.Encode("path", integrationAccountName),
@@ -98,7 +98,7 @@ func (client IntegrationAccountBatchConfigurationsClient) CreateOrUpdatePreparer
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/integrationAccounts/{integrationAccountName}/batchConfigurations/{batchConfigurationName}", pathParameters),
-		autorest.WithJSON(assemblyArtifact),
+		autorest.WithJSON(batchConfiguration),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

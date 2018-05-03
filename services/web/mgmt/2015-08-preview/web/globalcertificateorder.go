@@ -24,25 +24,21 @@ import (
 	"net/http"
 )
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GlobalCertificateOrderClient is the webSite Management Client
 type GlobalCertificateOrderClient struct {
 	BaseClient
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewGlobalCertificateOrderClient creates an instance of the GlobalCertificateOrderClient client.
 func NewGlobalCertificateOrderClient(subscriptionID string) GlobalCertificateOrderClient {
 	return NewGlobalCertificateOrderClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // NewGlobalCertificateOrderClientWithBaseURI creates an instance of the GlobalCertificateOrderClient client.
 func NewGlobalCertificateOrderClientWithBaseURI(baseURI string, subscriptionID string) GlobalCertificateOrderClient {
 	return GlobalCertificateOrderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetAllCertificateOrders sends the get all certificate orders request.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrders(ctx context.Context) (result CertificateOrderCollectionPage, err error) {
 	result.fn = client.getAllCertificateOrdersNextResults
@@ -67,7 +63,6 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrders(ctx context.C
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetAllCertificateOrdersPreparer prepares the GetAllCertificateOrders request.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -87,7 +82,6 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersPreparer(ctx c
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetAllCertificateOrdersSender sends the GetAllCertificateOrders request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersSender(req *http.Request) (*http.Response, error) {
@@ -95,7 +89,6 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersSender(req *ht
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetAllCertificateOrdersResponder handles the response to the GetAllCertificateOrders request. The method always
 // closes the http.Response Body.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersResponder(resp *http.Response) (result CertificateOrderCollection, err error) {
@@ -130,17 +123,15 @@ func (client GlobalCertificateOrderClient) getAllCertificateOrdersNextResults(la
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // GetAllCertificateOrdersComplete enumerates all values, automatically crossing page boundaries as required.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersComplete(ctx context.Context) (result CertificateOrderCollectionIterator, err error) {
 	result.page, err = client.GetAllCertificateOrders(ctx)
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ValidateCertificatePurchaseInformation sends the validate certificate purchase information request.
-//
-// certificateOrder is certificate order
+// Parameters:
+// certificateOrder - certificate order
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformation(ctx context.Context, certificateOrder CertificateOrder) (result SetObject, err error) {
 	req, err := client.ValidateCertificatePurchaseInformationPreparer(ctx, certificateOrder)
 	if err != nil {
@@ -163,7 +154,6 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 	return
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ValidateCertificatePurchaseInformationPreparer prepares the ValidateCertificatePurchaseInformation request.
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationPreparer(ctx context.Context, certificateOrder CertificateOrder) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
@@ -185,7 +175,6 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ValidateCertificatePurchaseInformationSender sends the ValidateCertificatePurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationSender(req *http.Request) (*http.Response, error) {
@@ -193,7 +182,6 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Deprecated: Please use package github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-preview/web instead.
 // ValidateCertificatePurchaseInformationResponder handles the response to the ValidateCertificatePurchaseInformation request. The method always
 // closes the http.Response Body.
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationResponder(resp *http.Response) (result SetObject, err error) {

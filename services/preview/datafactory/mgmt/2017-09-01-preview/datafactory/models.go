@@ -78,6 +78,21 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 	return []AzureSearchIndexWriteBehaviorType{Merge, Upload}
 }
 
+// BlobEventTypes enumerates the values for blob event types.
+type BlobEventTypes string
+
+const (
+	// BlobCreated ...
+	BlobCreated BlobEventTypes = "blobCreated"
+	// BlobDeleted ...
+	BlobDeleted BlobEventTypes = "blobDeleted"
+)
+
+// PossibleBlobEventTypesValues returns an array of possible values for the BlobEventTypes const type.
+func PossibleBlobEventTypesValues() []BlobEventTypes {
+	return []BlobEventTypes{BlobCreated, BlobDeleted}
+}
+
 // CassandraSourceReadConsistencyLevels enumerates the values for cassandra source read consistency levels.
 type CassandraSourceReadConsistencyLevels string
 
@@ -1649,6 +1664,8 @@ func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
 type TypeBasicTrigger string
 
 const (
+	// TypeBlobEventsTrigger ...
+	TypeBlobEventsTrigger TypeBasicTrigger = "BlobEventsTrigger"
 	// TypeBlobTrigger ...
 	TypeBlobTrigger TypeBasicTrigger = "BlobTrigger"
 	// TypeMultiplePipelineTrigger ...
@@ -1663,7 +1680,7 @@ const (
 
 // PossibleTypeBasicTriggerValues returns an array of possible values for the TypeBasicTrigger const type.
 func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
-	return []TypeBasicTrigger{TypeBlobTrigger, TypeMultiplePipelineTrigger, TypeScheduleTrigger, TypeTrigger, TypeTumblingWindowTrigger}
+	return []TypeBasicTrigger{TypeBlobEventsTrigger, TypeBlobTrigger, TypeMultiplePipelineTrigger, TypeScheduleTrigger, TypeTrigger, TypeTumblingWindowTrigger}
 }
 
 // WebActivityMethod enumerates the values for web activity method.
@@ -17734,6 +17751,171 @@ func (ats AzureTableSource) AsBasicCopySource() (BasicCopySource, bool) {
 	return &ats, true
 }
 
+// BlobEventsTrigger trigger that runs everytime a Blob event occurs.
+type BlobEventsTrigger struct {
+	// BlobEventsTriggerTypeProperties - Blob Events Trigger properties
+	*BlobEventsTriggerTypeProperties `json:"typeProperties,omitempty"`
+	// Pipelines - Pipelines that need to be started.
+	Pipelines *[]TriggerPipelineReference `json:"pipelines,omitempty"`
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// Description - Trigger description.
+	Description *string `json:"description,omitempty"`
+	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
+	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	Type TypeBasicTrigger `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BlobEventsTrigger.
+func (bet BlobEventsTrigger) MarshalJSON() ([]byte, error) {
+	bet.Type = TypeBlobEventsTrigger
+	objectMap := make(map[string]interface{})
+	if bet.BlobEventsTriggerTypeProperties != nil {
+		objectMap["typeProperties"] = bet.BlobEventsTriggerTypeProperties
+	}
+	if bet.Pipelines != nil {
+		objectMap["pipelines"] = bet.Pipelines
+	}
+	if bet.Description != nil {
+		objectMap["description"] = bet.Description
+	}
+	if bet.RuntimeState != "" {
+		objectMap["runtimeState"] = bet.RuntimeState
+	}
+	if bet.Type != "" {
+		objectMap["type"] = bet.Type
+	}
+	for k, v := range bet.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsTumblingWindowTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
+	return nil, false
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
+	return &bet, true
+}
+
+// AsBlobTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsBlobTrigger() (*BlobTrigger, bool) {
+	return nil, false
+}
+
+// AsScheduleTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsScheduleTrigger() (*ScheduleTrigger, bool) {
+	return nil, false
+}
+
+// AsMultiplePipelineTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsMultiplePipelineTrigger() (*MultiplePipelineTrigger, bool) {
+	return nil, false
+}
+
+// AsBasicMultiplePipelineTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsBasicMultiplePipelineTrigger() (BasicMultiplePipelineTrigger, bool) {
+	return &bet, true
+}
+
+// AsTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsTrigger() (*Trigger, bool) {
+	return nil, false
+}
+
+// AsBasicTrigger is the BasicTrigger implementation for BlobEventsTrigger.
+func (bet BlobEventsTrigger) AsBasicTrigger() (BasicTrigger, bool) {
+	return &bet, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for BlobEventsTrigger struct.
+func (bet *BlobEventsTrigger) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "typeProperties":
+			if v != nil {
+				var blobEventsTriggerTypeProperties BlobEventsTriggerTypeProperties
+				err = json.Unmarshal(*v, &blobEventsTriggerTypeProperties)
+				if err != nil {
+					return err
+				}
+				bet.BlobEventsTriggerTypeProperties = &blobEventsTriggerTypeProperties
+			}
+		case "pipelines":
+			if v != nil {
+				var pipelines []TriggerPipelineReference
+				err = json.Unmarshal(*v, &pipelines)
+				if err != nil {
+					return err
+				}
+				bet.Pipelines = &pipelines
+			}
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if bet.AdditionalProperties == nil {
+					bet.AdditionalProperties = make(map[string]interface{})
+				}
+				bet.AdditionalProperties[k] = additionalProperties
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				bet.Description = &description
+			}
+		case "runtimeState":
+			if v != nil {
+				var runtimeState TriggerRuntimeState
+				err = json.Unmarshal(*v, &runtimeState)
+				if err != nil {
+					return err
+				}
+				bet.RuntimeState = runtimeState
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicTrigger
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				bet.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BlobEventsTriggerTypeProperties blob Events Trigger properties
+type BlobEventsTriggerTypeProperties struct {
+	// BlobPath - path to container, folder, blob, or file extension for which events can trigger the pipeline.
+	BlobPath *string `json:"blobPath,omitempty"`
+	// Events - the type of events for which we want to trigger the pipeline.
+	Events *[]BlobEventTypes `json:"events,omitempty"`
+	// Scope - the resource id of the Storage Account.
+	Scope *string `json:"scope,omitempty"`
+	// MaxConcurrency - the max number of parallel events to handle when it is triggered.
+	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
+}
+
 // BlobSink a copy activity Azure Blob sink.
 type BlobSink struct {
 	// BlobWriterOverwriteFiles - Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
@@ -18169,7 +18351,7 @@ type BlobTrigger struct {
 	Description *string `json:"description,omitempty"`
 	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
-	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
 }
 
@@ -18200,6 +18382,11 @@ func (bt BlobTrigger) MarshalJSON() ([]byte, error) {
 
 // AsTumblingWindowTrigger is the BasicTrigger implementation for BlobTrigger.
 func (bt BlobTrigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
+	return nil, false
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for BlobTrigger.
+func (bt BlobTrigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
 	return nil, false
 }
 
@@ -57794,6 +57981,7 @@ func (mds MongoDbSource) AsBasicCopySource() (BasicCopySource, bool) {
 
 // BasicMultiplePipelineTrigger base class for all triggers that support one to many model for trigger to pipeline.
 type BasicMultiplePipelineTrigger interface {
+	AsBlobEventsTrigger() (*BlobEventsTrigger, bool)
 	AsBlobTrigger() (*BlobTrigger, bool)
 	AsScheduleTrigger() (*ScheduleTrigger, bool)
 	AsMultiplePipelineTrigger() (*MultiplePipelineTrigger, bool)
@@ -57809,7 +57997,7 @@ type MultiplePipelineTrigger struct {
 	Description *string `json:"description,omitempty"`
 	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
-	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
 }
 
@@ -57821,6 +58009,10 @@ func unmarshalBasicMultiplePipelineTrigger(body []byte) (BasicMultiplePipelineTr
 	}
 
 	switch m["type"] {
+	case string(TypeBlobEventsTrigger):
+		var bet BlobEventsTrigger
+		err := json.Unmarshal(body, &bet)
+		return bet, err
 	case string(TypeBlobTrigger):
 		var bt BlobTrigger
 		err := json.Unmarshal(body, &bt)
@@ -57878,6 +58070,11 @@ func (mpt MultiplePipelineTrigger) MarshalJSON() ([]byte, error) {
 
 // AsTumblingWindowTrigger is the BasicTrigger implementation for MultiplePipelineTrigger.
 func (mpt MultiplePipelineTrigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
+	return nil, false
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for MultiplePipelineTrigger.
+func (mpt MultiplePipelineTrigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
 	return nil, false
 }
 
@@ -77093,7 +77290,7 @@ type ScheduleTrigger struct {
 	Description *string `json:"description,omitempty"`
 	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
-	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
 }
 
@@ -77124,6 +77321,11 @@ func (st ScheduleTrigger) MarshalJSON() ([]byte, error) {
 
 // AsTumblingWindowTrigger is the BasicTrigger implementation for ScheduleTrigger.
 func (st ScheduleTrigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
+	return nil, false
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for ScheduleTrigger.
+func (st ScheduleTrigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
 	return nil, false
 }
 
@@ -86755,6 +86957,7 @@ func (tf TextFormat) AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, b
 // BasicTrigger azure data factory nested object which contains information about creating pipeline run
 type BasicTrigger interface {
 	AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool)
+	AsBlobEventsTrigger() (*BlobEventsTrigger, bool)
 	AsBlobTrigger() (*BlobTrigger, bool)
 	AsScheduleTrigger() (*ScheduleTrigger, bool)
 	AsMultiplePipelineTrigger() (*MultiplePipelineTrigger, bool)
@@ -86770,7 +86973,7 @@ type Trigger struct {
 	Description *string `json:"description,omitempty"`
 	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
-	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
 }
 
@@ -86786,6 +86989,10 @@ func unmarshalBasicTrigger(body []byte) (BasicTrigger, error) {
 		var twt TumblingWindowTrigger
 		err := json.Unmarshal(body, &twt)
 		return twt, err
+	case string(TypeBlobEventsTrigger):
+		var bet BlobEventsTrigger
+		err := json.Unmarshal(body, &bet)
+		return bet, err
 	case string(TypeBlobTrigger):
 		var bt BlobTrigger
 		err := json.Unmarshal(body, &bt)
@@ -86844,6 +87051,11 @@ func (t Trigger) MarshalJSON() ([]byte, error) {
 
 // AsTumblingWindowTrigger is the BasicTrigger implementation for Trigger.
 func (t Trigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
+	return nil, false
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for Trigger.
+func (t Trigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
 	return nil, false
 }
 
@@ -87339,7 +87551,7 @@ type TumblingWindowTrigger struct {
 	Description *string `json:"description,omitempty"`
 	// RuntimeState - Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger. Possible values include: 'TriggerRuntimeStateStarted', 'TriggerRuntimeStateStopped', 'TriggerRuntimeStateDisabled'
 	RuntimeState TriggerRuntimeState `json:"runtimeState,omitempty"`
-	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
+	// Type - Possible values include: 'TypeTrigger', 'TypeTumblingWindowTrigger', 'TypeBlobEventsTrigger', 'TypeBlobTrigger', 'TypeScheduleTrigger', 'TypeMultiplePipelineTrigger'
 	Type TypeBasicTrigger `json:"type,omitempty"`
 }
 
@@ -87371,6 +87583,11 @@ func (twt TumblingWindowTrigger) MarshalJSON() ([]byte, error) {
 // AsTumblingWindowTrigger is the BasicTrigger implementation for TumblingWindowTrigger.
 func (twt TumblingWindowTrigger) AsTumblingWindowTrigger() (*TumblingWindowTrigger, bool) {
 	return &twt, true
+}
+
+// AsBlobEventsTrigger is the BasicTrigger implementation for TumblingWindowTrigger.
+func (twt TumblingWindowTrigger) AsBlobEventsTrigger() (*BlobEventsTrigger, bool) {
+	return nil, false
 }
 
 // AsBlobTrigger is the BasicTrigger implementation for TumblingWindowTrigger.

@@ -2412,8 +2412,8 @@ type ServiceProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Health - The health of the service.
 	Health *string `json:"health,omitempty"`
-	// LastDisable - The date and time, in UTC, when the service was last disabled.
-	LastDisable *date.Time `json:"lastDisable,omitempty"`
+	// LastDisabled - The date and time, in UTC, when the service was last disabled.
+	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
 	// LastUpdated - The date or time , in UTC, when the service properties were last updated.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// MonitoringConfigurationsComputed - The monitoring configuration of the service which determines what activities are monitored by Azure Active Directory Connect Health.
@@ -2424,6 +2424,8 @@ type ServiceProperties struct {
 	NotificationEmailEnabled *bool `json:"notificationEmailEnabled,omitempty"`
 	// NotificationEmailEnabledForGlobalAdmins - Indicates if email notification is enabled for global administrators of the tenant.
 	NotificationEmailEnabledForGlobalAdmins *bool `json:"notificationEmailEnabledForGlobalAdmins,omitempty"`
+	// NotificationEmailsEnabledForGlobalAdmins - Indicates if email notification is enabled for global administrators of the tenant.
+	NotificationEmailsEnabledForGlobalAdmins *bool `json:"notificationEmailsEnabledForGlobalAdmins,omitempty"`
 	// NotificationEmails - The list of emails to whom service notifications will be sent.
 	NotificationEmails *[]string `json:"notificationEmails,omitempty"`
 	// OriginalDisabledState - Gets the original disable state.

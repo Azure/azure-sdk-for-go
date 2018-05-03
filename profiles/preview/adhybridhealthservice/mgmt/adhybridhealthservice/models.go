@@ -269,7 +269,6 @@ type RuleErrorInfo = original.RuleErrorInfo
 type RunProfile = original.RunProfile
 type RunProfiles = original.RunProfiles
 type RunStep = original.RunStep
-type Service = original.Service
 type ServiceConfiguration = original.ServiceConfiguration
 type ServiceMember = original.ServiceMember
 type ServiceMemberProperties = original.ServiceMemberProperties

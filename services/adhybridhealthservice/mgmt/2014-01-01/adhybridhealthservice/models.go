@@ -347,6 +347,10 @@ type AddsConfiguration struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]Item `json:"value,omitempty"`
+	// TotalCount - The total count of configuration.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // AddsConfigurationIterator provides access to a complete listing of Item values.
@@ -467,6 +471,10 @@ type AddsServiceMembers struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]AddsServiceMember `json:"value,omitempty"`
+	// TotalCount - The total count of service members.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // AddsServiceMembersIterator provides access to a complete listing of AddsServiceMember values.
@@ -608,8 +616,8 @@ type Alert struct {
 	ResolvedDate *date.Time `json:"resolvedDate,omitempty"`
 	// LastUpdated - The date and time, in UTC, when the alert was last updated.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// MonitoringRoleType - The monitoring role type for which the alert was raised.
-	MonitoringRoleType *string `json:"monitoringRoleType,omitempty"`
+	// MonitorRoleType - The monitoring role type for which the alert was raised.
+	MonitorRoleType *string `json:"monitorRoleType,omitempty"`
 	// ActiveAlertProperties - The active alert properties.
 	ActiveAlertProperties interface{} `json:"activeAlertProperties,omitempty"`
 	// ResolvedAlertProperties - The active alert properties.
@@ -653,10 +661,12 @@ type AlertFeedbacks struct {
 // Alerts the list of alerts for a service.
 type Alerts struct {
 	autorest.Response `json:"-"`
-	// NextLink - The link used to get the next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]Alert `json:"value,omitempty"`
+	// TotalCount - The total count of alert elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // AlertsIterator provides access to a complete listing of Alert values.
@@ -1018,6 +1028,10 @@ type Dimensions struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]Dimension `json:"value,omitempty"`
+	// TotalCount - The total count of dimensions.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // DimensionsIterator provides access to a complete listing of Dimension values.
@@ -1392,8 +1406,8 @@ type ForestSummary struct {
 	DomainCount *int32 `json:"domainCount,omitempty"`
 	// SiteCount - The site count.
 	SiteCount *int32 `json:"siteCount,omitempty"`
-	// MoniteredDcCount - The number of domain controllers that are monitored by Azure Active Directory Connect Health.
-	MoniteredDcCount *int32 `json:"moniteredDcCount,omitempty"`
+	// MonitoredDcCount - The number of domain controllers that are monitored by Azure Active Directory Connect Health.
+	MonitoredDcCount *int32 `json:"monitoredDcCount,omitempty"`
 	// TotalDcCount - The total domain controllers.
 	TotalDcCount *int32 `json:"totalDcCount,omitempty"`
 	// Domains - The list of domain controller names.
@@ -1598,8 +1612,8 @@ type MetricGroup struct {
 // MetricMetadata the metric meta data
 type MetricMetadata struct {
 	autorest.Response `json:"-"`
-	// MetricsPRocessorClassName - The name of the class which retrieve and process the metric.
-	MetricsPRocessorClassName *string `json:"metricsPRocessorClassName,omitempty"`
+	// MetricsProcessorClassName - The name of the class which retrieve and process the metric.
+	MetricsProcessorClassName *string `json:"metricsProcessorClassName,omitempty"`
 	// MetricName - The metric name
 	MetricName *string `json:"metricName,omitempty"`
 	// Groupings - The groupings for the metrics.
@@ -1629,6 +1643,10 @@ type MetricMetadataList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]MetricMetadata `json:"value,omitempty"`
+	// TotalCount - The total count of service elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // MetricMetadataListIterator provides access to a complete listing of MetricMetadata values.
@@ -1731,6 +1749,10 @@ type Metrics struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]Item `json:"value,omitempty"`
+	// TotalCount - The total count of metrics.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // MetricSet the set of metric values. Example of a MetricSet are Values of token requests for a Server1 or
@@ -1926,6 +1948,8 @@ type OperationListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of operations supported by the Microsoft.ADHybridhHealthService resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+	// TotalCount - The total count of opertaions.
+	TotalCount *int32 `json:"totalCount,omitempty"`
 	// ContinuationToken - The continuation token to get next set of operations.
 	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
@@ -2102,7 +2126,6 @@ type ReplicationStatus struct {
 
 // ReplicationSummary the replication summary for a domain controller.
 type ReplicationSummary struct {
-	autorest.Response `json:"-"`
 	// TargetServer - The domain controller name.
 	TargetServer *string `json:"targetServer,omitempty"`
 	// Site - The site name for a given domain controller.
@@ -2125,6 +2148,7 @@ type ReplicationSummary struct {
 
 // ReplicationSummaryList the list of replication summary details.
 type ReplicationSummaryList struct {
+	autorest.Response `json:"-"`
 	// Value - The value returned by the operation.
 	Value *[]ReplicationSummary `json:"value,omitempty"`
 }
@@ -2173,19 +2197,6 @@ type RunStep struct {
 	PartitionID *string `json:"partitionId,omitempty"`
 	// RunStepOperationType - The run step operation types. Possible values include: 'RunStepOperationTypeUndefined', 'RunStepOperationTypeFullImport', 'RunStepOperationTypeDeltaImport', 'RunStepOperationTypeFullSynchornization', 'RunStepOperationTypeDeltaSynchronization', 'RunStepOperationTypeApplyRules', 'RunStepOperationTypeExport', 'RunStepOperationTypeFullExport', 'RunStepOperationTypeFullImportReevaluateRules'
 	RunStepOperationType RunStepOperationType `json:"runStepOperationType,omitempty"`
-}
-
-// Service the details of the service for a given onboarded tenant.
-type Service struct {
-	autorest.Response `json:"-"`
-	// ContinuationToken - The page-continuation token to use with a paged version of this API.
-	ContinuationToken *string `json:"continuationToken,omitempty"`
-	// TotalCount - The total number of services onboarded for a given tenant.
-	TotalCount *int32 `json:"totalCount,omitempty"`
-	// NextLink - The link used to get the next page of the operation.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - The service properties.
-	Value *[]ServiceProperties `json:"value,omitempty"`
 }
 
 // ServiceConfiguration the service configuration
@@ -2384,6 +2395,7 @@ func (page ServiceMembersPage) Values() []ServiceMember {
 
 // ServiceProperties the service properties for a given service.
 type ServiceProperties struct {
+	autorest.Response `json:"-"`
 	// ID - The id of the service.
 	ID *string `json:"id,omitempty"`
 	// ActiveAlerts - The count of alerts that are currently active for the service.
@@ -2438,10 +2450,14 @@ type Services struct {
 	// NextLink - The link used to get the next page of operations.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
-	Value *[]Service `json:"value,omitempty"`
+	Value *[]ServiceProperties `json:"value,omitempty"`
+	// TotalCount - The total count of service elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
-// ServicesIterator provides access to a complete listing of Service values.
+// ServicesIterator provides access to a complete listing of ServiceProperties values.
 type ServicesIterator struct {
 	i    int
 	page ServicesPage
@@ -2475,9 +2491,9 @@ func (iter ServicesIterator) Response() Services {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ServicesIterator) Value() Service {
+func (iter ServicesIterator) Value() ServiceProperties {
 	if !iter.page.NotDone() {
-		return Service{}
+		return ServiceProperties{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -2499,7 +2515,7 @@ func (s Services) servicesPreparer() (*http.Request, error) {
 		autorest.WithBaseURL(to.String(s.NextLink)))
 }
 
-// ServicesPage contains a page of Service values.
+// ServicesPage contains a page of ServiceProperties values.
 type ServicesPage struct {
 	fn func(Services) (Services, error)
 	s  Services
@@ -2527,7 +2543,7 @@ func (page ServicesPage) Response() Services {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ServicesPage) Values() []Service {
+func (page ServicesPage) Values() []ServiceProperties {
 	if page.s.IsEmpty() {
 		return nil
 	}
@@ -2558,7 +2574,7 @@ type Tenant struct {
 	// AgentAutoUpdate - Indicates if the tenant is configured to automatically receive updates for Azure Active Directory Connect Health client side features.
 	AgentAutoUpdate *bool `json:"agentAutoUpdate,omitempty"`
 	// AlertSuppressionTimeInMins - The time in minutues after which an alert will be autosupressed.
-	AlertSuppressionTimeInMins *date.Time `json:"alertSuppressionTimeInMins,omitempty"`
+	AlertSuppressionTimeInMins *int32 `json:"alertSuppressionTimeInMins,omitempty"`
 	// ConsentedToMicrosoftDevOps - Indicates if the tenant data can be seen by Microsoft through Azure portal.
 	ConsentedToMicrosoftDevOps *bool `json:"consentedToMicrosoftDevOps,omitempty"`
 	// CountryLetterCode - The country letter code of the tenant.
@@ -2570,7 +2586,7 @@ type Tenant struct {
 	// Disabled - Indicates if the tenant is disabled in Azure Active Directory Connect Health.
 	Disabled *bool `json:"disabled,omitempty"`
 	// DisabledReason - The reason due to which the tenant was disabled in Azure Active Directory Connect Health.
-	DisabledReason *string `json:"disabledReason,omitempty"`
+	DisabledReason *int32 `json:"disabledReason,omitempty"`
 	// GlobalAdminsEmail - The list of golbal administrators for the tenant.
 	GlobalAdminsEmail interface{} `json:"globalAdminsEmail,omitempty"`
 	// InitialDomain - The initial domain of the tenant.
@@ -2579,6 +2595,8 @@ type Tenant struct {
 	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
 	// LastVerified - The date and time, in UTC, when the tenant onboarding status in Azure Active Directory Connect Health was last verified.
 	LastVerified *date.Time `json:"lastVerified,omitempty"`
+	// OnboardingAllowed - Indicates if the tenant is allowed to  onboard to Azure Active Directory Connect Health.
+	OnboardingAllowed *bool `json:"onboardingAllowed,omitempty"`
 	// Onboarded - Indicates if the tenant is already onboarded to Azure Active Directory Connect Health.
 	Onboarded *bool `json:"onboarded,omitempty"`
 	// PksCertificate - The certificate associated with the tenant to onboard data to Azure Active Directory Connect Health.

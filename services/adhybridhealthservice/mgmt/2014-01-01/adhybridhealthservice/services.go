@@ -43,7 +43,7 @@ func NewServicesClientWithBaseURI(baseURI string) ServicesClient {
 // Add onboards a service for a given tenant in Azure Active Directory Connect Health.
 // Parameters:
 // service - the service object.
-func (client ServicesClient) Add(ctx context.Context, service Service) (result Service, err error) {
+func (client ServicesClient) Add(ctx context.Context, service ServiceProperties) (result ServiceProperties, err error) {
 	req, err := client.AddPreparer(ctx, service)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "Add", nil, "Failure preparing request")
@@ -66,7 +66,7 @@ func (client ServicesClient) Add(ctx context.Context, service Service) (result S
 }
 
 // AddPreparer prepares the Add request.
-func (client ServicesClient) AddPreparer(ctx context.Context, service Service) (*http.Request, error) {
+func (client ServicesClient) AddPreparer(ctx context.Context, service ServiceProperties) (*http.Request, error) {
 	const APIVersion = "2014-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -91,7 +91,7 @@ func (client ServicesClient) AddSender(req *http.Request) (*http.Response, error
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) AddResponder(resp *http.Response) (result Service, err error) {
+func (client ServicesClient) AddResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -242,7 +242,7 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 // Directory Connect Health.
 // Parameters:
 // serviceName - the name of the service.
-func (client ServicesClient) Get(ctx context.Context, serviceName string) (result Service, err error) {
+func (client ServicesClient) Get(ctx context.Context, serviceName string) (result ServiceProperties, err error) {
 	req, err := client.GetPreparer(ctx, serviceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "Get", nil, "Failure preparing request")
@@ -292,7 +292,7 @@ func (client ServicesClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) GetResponder(resp *http.Response) (result Service, err error) {
+func (client ServicesClient) GetResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1618,7 +1618,7 @@ func (client ServicesClient) ListUserBadPasswordReportResponder(resp *http.Respo
 // Parameters:
 // serviceName - the name of the service which needs to be deleted.
 // service - the service object.
-func (client ServicesClient) Update(ctx context.Context, serviceName string, service Service) (result Service, err error) {
+func (client ServicesClient) Update(ctx context.Context, serviceName string, service ServiceProperties) (result ServiceProperties, err error) {
 	req, err := client.UpdatePreparer(ctx, serviceName, service)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "Update", nil, "Failure preparing request")
@@ -1641,7 +1641,7 @@ func (client ServicesClient) Update(ctx context.Context, serviceName string, ser
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicesClient) UpdatePreparer(ctx context.Context, serviceName string, service Service) (*http.Request, error) {
+func (client ServicesClient) UpdatePreparer(ctx context.Context, serviceName string, service ServiceProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceName": autorest.Encode("path", serviceName),
 	}
@@ -1670,7 +1670,7 @@ func (client ServicesClient) UpdateSender(req *http.Request) (*http.Response, er
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) UpdateResponder(resp *http.Response) (result Service, err error) {
+func (client ServicesClient) UpdateResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

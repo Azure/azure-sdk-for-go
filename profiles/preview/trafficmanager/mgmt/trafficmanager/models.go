@@ -19,7 +19,7 @@
 
 package trafficmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-03-01/trafficmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -88,12 +88,15 @@ type DeleteOperationResult = original.DeleteOperationResult
 type DNSConfig = original.DNSConfig
 type Endpoint = original.Endpoint
 type EndpointProperties = original.EndpointProperties
+type EndpointPropertiesCustomHeadersItem = original.EndpointPropertiesCustomHeadersItem
 type GeographicHierarchy = original.GeographicHierarchy
 type GeographicHierarchyProperties = original.GeographicHierarchyProperties
 type HeatMapEndpoint = original.HeatMapEndpoint
 type HeatMapModel = original.HeatMapModel
 type HeatMapProperties = original.HeatMapProperties
 type MonitorConfig = original.MonitorConfig
+type MonitorConfigCustomHeadersItem = original.MonitorConfigCustomHeadersItem
+type MonitorConfigExpectedStatusCodeRangesItem = original.MonitorConfigExpectedStatusCodeRangesItem
 type NameAvailability = original.NameAvailability
 type Profile = original.Profile
 type ProfileListResult = original.ProfileListResult
@@ -104,9 +107,7 @@ type Region = original.Region
 type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type TrafficFlow = original.TrafficFlow
-type UserMetricsKeyModel = original.UserMetricsKeyModel
 type ProfilesClient = original.ProfilesClient
-type UserMetricsKeysClient = original.UserMetricsKeysClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -155,12 +156,6 @@ func NewProfilesClient(subscriptionID string) ProfilesClient {
 }
 func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
 	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewUserMetricsKeysClient(subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClient(subscriptionID)
-}
-func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) UserMetricsKeysClient {
-	return original.NewUserMetricsKeysClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

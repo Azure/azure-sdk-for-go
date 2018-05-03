@@ -17912,8 +17912,6 @@ type BlobEventsTriggerTypeProperties struct {
 	Events *[]BlobEventTypes `json:"events,omitempty"`
 	// Scope - The ARM resource ID of the Storage Account.
 	Scope *string `json:"scope,omitempty"`
-	// MaxConcurrency - The max number of parallel events to handle when triggered.
-	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 }
 
 // BlobSink a copy activity Azure Blob sink.

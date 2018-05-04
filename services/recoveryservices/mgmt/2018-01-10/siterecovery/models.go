@@ -10095,9 +10095,9 @@ type JobQueryParameter struct {
 	// FabricID - The Id of the fabric to search jobs under.
 	FabricID *string `json:"fabricId,omitempty"`
 	// AffectedObjectTypes - The type of objects.
-	AffectedObjectTypes *[]string `json:"affectedObjectTypes,omitempty"`
+	AffectedObjectTypes *string `json:"affectedObjectTypes,omitempty"`
 	// JobStatus - The states of the job to be filtered can be in.
-	JobStatus *[]string `json:"jobStatus,omitempty"`
+	JobStatus *string `json:"jobStatus,omitempty"`
 }
 
 // JobStatusEventDetails model class for event details of a job status event.
@@ -11858,6 +11858,12 @@ func (pip *ProtectableItemProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ProtectableItemQueryParameter query parameter to enumerate Protectable items.
+type ProtectableItemQueryParameter struct {
+	// State - State of the Protectable item query filter.
+	State *string `json:"state,omitempty"`
 }
 
 // ProtectedItemsQueryParameter query parameter to enumerate protected items.

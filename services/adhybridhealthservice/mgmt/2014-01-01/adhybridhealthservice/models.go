@@ -2218,8 +2218,8 @@ type ServiceConfiguration struct {
 	SQLEdition *string `json:"sqlEdition,omitempty"`
 	// SQLInstance - The SQL instance details.
 	SQLInstance *string `json:"sqlInstance,omitempty"`
-	// SQLDatabase - The SQL database.
-	SQLDatabase *string `json:"sqlDatabase,omitempty"`
+	// SQLDatabaseName - The SQL database.
+	SQLDatabaseName *string `json:"sqlDatabaseName,omitempty"`
 	// SQLDatabaseSize - The SQL database size.
 	SQLDatabaseSize *int32 `json:"sqlDatabaseSize,omitempty"`
 }

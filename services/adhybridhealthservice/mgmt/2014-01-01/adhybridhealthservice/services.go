@@ -1684,7 +1684,7 @@ func (client ServicesClient) UpdateResponder(resp *http.Response) (result Servic
 // UpdateMonitoringConfiguration updates the service level monitoring configuration.
 // Parameters:
 // serviceName - the name of the service.
-// configurationSetting - the mnitoring configuration to update
+// configurationSetting - the monitoring configuration to update
 func (client ServicesClient) UpdateMonitoringConfiguration(ctx context.Context, serviceName string, configurationSetting Item) (result autorest.Response, err error) {
 	req, err := client.UpdateMonitoringConfigurationPreparer(ctx, serviceName, configurationSetting)
 	if err != nil {

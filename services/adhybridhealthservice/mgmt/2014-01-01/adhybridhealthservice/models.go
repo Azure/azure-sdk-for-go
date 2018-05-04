@@ -477,13 +477,13 @@ type AddsServiceMember struct {
 	// CreatedDate - The date time , in UTC, when the server was onboaraded to Azure Active Directory Connect Health.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 	// Dimensions - The server specific configuration related dimensions.
-	Dimensions interface{} `json:"dimensions,omitempty"`
+	Dimensions *[]Item `json:"dimensions,omitempty"`
 	// Disabled - Indicates if the server is disabled or not.
 	Disabled *bool `json:"disabled,omitempty"`
 	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
 	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
 	// InstalledQfe - The list of installed QFEs for the server.
-	InstalledQfe interface{} `json:"installedQfe,omitempty"`
+	InstalledQfe *[]Hotfix `json:"installedQfe,omitempty"`
 	// LastDisabled - The date and time , in UTC, when the server was last disabled.
 	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
 	// LastReboot - The date and time, in UTC, when the server was last rebooted.
@@ -497,17 +497,17 @@ type AddsServiceMember struct {
 	// MachineName - The name of the server.
 	MachineName *string `json:"machineName,omitempty"`
 	// MonitoringConfigurationsComputed - The monitoring configuration of the server which determines what activities are monitored by Azure Active Directory Connect Health.
-	MonitoringConfigurationsComputed interface{} `json:"monitoringConfigurationsComputed,omitempty"`
+	MonitoringConfigurationsComputed *[]Item `json:"monitoringConfigurationsComputed,omitempty"`
 	// MonitoringConfigurationsCustomized - The customized monitoring configuration of the server which determines what activities are monitored by Azure Active Directory Connect Health.
-	MonitoringConfigurationsCustomized interface{} `json:"monitoringConfigurationsCustomized,omitempty"`
+	MonitoringConfigurationsCustomized *[]Item `json:"monitoringConfigurationsCustomized,omitempty"`
 	// OsName - The name of the operating system installed in the machine.
 	OsName *string `json:"osName,omitempty"`
 	// OsVersion - The version of the operating system installed in the machine.
 	OsVersion *string `json:"osVersion,omitempty"`
 	// Properties - Server specific properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties *[]Item `json:"properties,omitempty"`
 	// RecommendedQfes - The list of recommended hotfixes for the server.
-	RecommendedQfes interface{} `json:"recommendedQfes,omitempty"`
+	RecommendedQfes *[]Hotfix `json:"recommendedQfes,omitempty"`
 	// ResolvedAlerts - The total count of alerts that are resolved for this server.
 	ResolvedAlerts *int32 `json:"resolvedAlerts,omitempty"`
 	// Role - The service role that is being monitored in the server.
@@ -673,9 +673,9 @@ type Alert struct {
 	// MonitorRoleType - The monitoring role type for which the alert was raised.
 	MonitorRoleType *string `json:"monitorRoleType,omitempty"`
 	// ActiveAlertProperties - The active alert properties.
-	ActiveAlertProperties interface{} `json:"activeAlertProperties,omitempty"`
-	// ResolvedAlertProperties - The active alert properties.
-	ResolvedAlertProperties interface{} `json:"resolvedAlertProperties,omitempty"`
+	ActiveAlertProperties *[]Item `json:"activeAlertProperties,omitempty"`
+	// ResolvedAlertProperties - The resolved alert properties.
+	ResolvedAlertProperties *[]Item `json:"resolvedAlertProperties,omitempty"`
 	// TenantID - The tenant Id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 	// ServiceID - The service Id.
@@ -953,7 +953,7 @@ type Connector struct {
 	// Partitions - The partitions of the connector.
 	Partitions *[]Partition `json:"partitions,omitempty"`
 	// RunProfiles - The run profiles of the connector.
-	RunProfiles *[]RunProfiles `json:"runProfiles,omitempty"`
+	RunProfiles *[]RunProfile `json:"runProfiles,omitempty"`
 	// ClassesIncluded - The class inclusion list of the connector.
 	ClassesIncluded *[]string `json:"classesIncluded,omitempty"`
 	// AttributesIncluded - The attribute inclusion list of the connector.
@@ -1239,8 +1239,8 @@ type ErrorReportUsersEntry struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// LastUpdated - The date and time when the last error event was logged.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
-	// UniqueIDAddresses - The list of unique IP addresses.
-	UniqueIDAddresses *string `json:"uniqueIdAddresses,omitempty"`
+	// UniqueIPAddresses - The list of unique IP addresses.
+	UniqueIPAddresses *string `json:"uniqueIpAddresses,omitempty"`
 	// TotalErrorAttempts - The total count of specific error events.
 	TotalErrorAttempts *int32 `json:"totalErrorAttempts,omitempty"`
 }
@@ -1646,6 +1646,12 @@ type MergedExportError struct {
 	ServiceID *uuid.UUID `json:"serviceId,omitempty"`
 	// ServiceMemberID - The server Id.
 	ServiceMemberID *uuid.UUID `json:"serviceMemberId,omitempty"`
+	// MergedEntityID - The merged entity Id.
+	MergedEntityID *uuid.UUID `json:"mergedEntityId,omitempty"`
+	// CreatedDate - The date and time, in UTC, when the error was created.
+	CreatedDate *date.Time `json:"createdDate,omitempty"`
+	// ExportErrorStatus - The export error status.
+	ExportErrorStatus *int32 `json:"exportErrorStatus,omitempty"`
 }
 
 // MergedExportErrors the list of export errors.

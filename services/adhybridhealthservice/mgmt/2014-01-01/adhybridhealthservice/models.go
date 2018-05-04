@@ -202,35 +202,6 @@ func PossiblePasswordOperationTypesValues() []PasswordOperationTypes {
 	return []PasswordOperationTypes{PasswordOperationTypesChange, PasswordOperationTypesSet, PasswordOperationTypesUndefined}
 }
 
-// RunStepOperationType enumerates the values for run step operation type.
-type RunStepOperationType string
-
-const (
-	// RunStepOperationTypeApplyRules ...
-	RunStepOperationTypeApplyRules RunStepOperationType = "ApplyRules"
-	// RunStepOperationTypeDeltaImport ...
-	RunStepOperationTypeDeltaImport RunStepOperationType = "DeltaImport"
-	// RunStepOperationTypeDeltaSynchronization ...
-	RunStepOperationTypeDeltaSynchronization RunStepOperationType = "DeltaSynchronization"
-	// RunStepOperationTypeExport ...
-	RunStepOperationTypeExport RunStepOperationType = "Export"
-	// RunStepOperationTypeFullExport ...
-	RunStepOperationTypeFullExport RunStepOperationType = "FullExport"
-	// RunStepOperationTypeFullImport ...
-	RunStepOperationTypeFullImport RunStepOperationType = "FullImport"
-	// RunStepOperationTypeFullImportReevaluateRules ...
-	RunStepOperationTypeFullImportReevaluateRules RunStepOperationType = "FullImportReevaluateRules"
-	// RunStepOperationTypeFullSynchornization ...
-	RunStepOperationTypeFullSynchornization RunStepOperationType = "FullSynchornization"
-	// RunStepOperationTypeUndefined ...
-	RunStepOperationTypeUndefined RunStepOperationType = "Undefined"
-)
-
-// PossibleRunStepOperationTypeValues returns an array of possible values for the RunStepOperationType const type.
-func PossibleRunStepOperationTypeValues() []RunStepOperationType {
-	return []RunStepOperationType{RunStepOperationTypeApplyRules, RunStepOperationTypeDeltaImport, RunStepOperationTypeDeltaSynchronization, RunStepOperationTypeExport, RunStepOperationTypeFullExport, RunStepOperationTypeFullImport, RunStepOperationTypeFullImportReevaluateRules, RunStepOperationTypeFullSynchornization, RunStepOperationTypeUndefined}
-}
-
 // ServerDisabledReason enumerates the values for server disabled reason.
 type ServerDisabledReason string
 
@@ -338,6 +309,8 @@ type AdditionalInformation struct {
 	TitleValue *string `json:"titleValue,omitempty"`
 	// Properties - The list of properties which are included in the aditional information.
 	Properties interface{} `json:"properties,omitempty"`
+	// HasProperties - Indicates if properties are present or not.
+	HasProperties *bool `json:"hasProperties,omitempty"`
 }
 
 // AddsConfiguration the list of key value properties.
@@ -480,8 +453,8 @@ type AddsServiceMember struct {
 	Dimensions *[]Item `json:"dimensions,omitempty"`
 	// Disabled - Indicates if the server is disabled or not.
 	Disabled *bool `json:"disabled,omitempty"`
-	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
-	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
+	// DisabledReason - The reason for disabling the server.
+	DisabledReason *int32 `json:"disabledReason,omitempty"`
 	// InstalledQfes - The list of installed QFEs for the server.
 	InstalledQfes *[]Hotfix `json:"installedQfes,omitempty"`
 	// LastDisabled - The date and time , in UTC, when the server was last disabled.
@@ -840,8 +813,8 @@ type AssociatedObject struct {
 	SourceAnchor *string `json:"sourceAnchor,omitempty"`
 	// SourceOfAuthority - The source of authority.
 	SourceOfAuthority *string `json:"sourceOfAuthority,omitempty"`
-	// TimeOccured -  The time of the error.
-	TimeOccured *date.Time `json:"timeOccured,omitempty"`
+	// TimeOccurred -  The time of the error.
+	TimeOccurred *date.Time `json:"timeOccurred,omitempty"`
 	// UserPrincipalName -  The UPN.
 	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
 }
@@ -924,6 +897,8 @@ type ChangeNotReimportedEntry struct {
 
 // Connector the connect details.
 type Connector struct {
+	// ConnectorID - The connector Id.
+	ConnectorID *string `json:"connectorId,omitempty"`
 	// ID - The connector Id.
 	ID *string `json:"id,omitempty"`
 	// Name - The connector name.
@@ -2256,8 +2231,8 @@ type RunStep struct {
 	PageSize *int32 `json:"pageSize,omitempty"`
 	// PartitionID - The Id of the partition that a current run setp operation is executing.
 	PartitionID *string `json:"partitionId,omitempty"`
-	// RunStepOperationType - The run step operation types. Possible values include: 'RunStepOperationTypeUndefined', 'RunStepOperationTypeFullImport', 'RunStepOperationTypeDeltaImport', 'RunStepOperationTypeFullSynchornization', 'RunStepOperationTypeDeltaSynchronization', 'RunStepOperationTypeApplyRules', 'RunStepOperationTypeExport', 'RunStepOperationTypeFullExport', 'RunStepOperationTypeFullImportReevaluateRules'
-	RunStepOperationType RunStepOperationType `json:"runStepOperationType,omitempty"`
+	// OperationType - The run step operation types.
+	OperationType *int32 `json:"operationType,omitempty"`
 }
 
 // ServiceConfiguration the service configuration
@@ -2283,21 +2258,9 @@ type ServiceConfiguration struct {
 	SQLDatabaseSize *int32 `json:"sqlDatabaseSize,omitempty"`
 }
 
-// ServiceMember the details of the server for a given onboarded service.
+// ServiceMember the server properties for a given service.
 type ServiceMember struct {
 	autorest.Response `json:"-"`
-	// ContinuationToken - The page-continuation token to use with a paged version of this API.
-	ContinuationToken *string `json:"continuationToken,omitempty"`
-	// TotalCount - The total number of servers onboarded for a given service.
-	TotalCount *int32 `json:"totalCount,omitempty"`
-	// NextLink - The link used to get the next page of the operation.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - The server properties.
-	Value *[]ServiceMemberProperties `json:"value,omitempty"`
-}
-
-// ServiceMemberProperties the server properties for a given service.
-type ServiceMemberProperties struct {
 	// ServiceMemberID - The id of the server.
 	ServiceMemberID *string `json:"serviceMemberId,omitempty"`
 	// ServiceID - The service id to whom this server belongs.

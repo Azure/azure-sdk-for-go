@@ -117,20 +117,6 @@ const (
 	PasswordOperationTypesUndefined PasswordOperationTypes = original.PasswordOperationTypesUndefined
 )
 
-type RunStepOperationType = original.RunStepOperationType
-
-const (
-	RunStepOperationTypeApplyRules                RunStepOperationType = original.RunStepOperationTypeApplyRules
-	RunStepOperationTypeDeltaImport               RunStepOperationType = original.RunStepOperationTypeDeltaImport
-	RunStepOperationTypeDeltaSynchronization      RunStepOperationType = original.RunStepOperationTypeDeltaSynchronization
-	RunStepOperationTypeExport                    RunStepOperationType = original.RunStepOperationTypeExport
-	RunStepOperationTypeFullExport                RunStepOperationType = original.RunStepOperationTypeFullExport
-	RunStepOperationTypeFullImport                RunStepOperationType = original.RunStepOperationTypeFullImport
-	RunStepOperationTypeFullImportReevaluateRules RunStepOperationType = original.RunStepOperationTypeFullImportReevaluateRules
-	RunStepOperationTypeFullSynchornization       RunStepOperationType = original.RunStepOperationTypeFullSynchornization
-	RunStepOperationTypeUndefined                 RunStepOperationType = original.RunStepOperationTypeUndefined
-)
-
 type ServerDisabledReason = original.ServerDisabledReason
 
 const (
@@ -271,7 +257,6 @@ type RunProfiles = original.RunProfiles
 type RunStep = original.RunStep
 type ServiceConfiguration = original.ServiceConfiguration
 type ServiceMember = original.ServiceMember
-type ServiceMemberProperties = original.ServiceMemberProperties
 type ServiceMembers = original.ServiceMembers
 type ServiceMembersIterator = original.ServiceMembersIterator
 type ServiceMembersPage = original.ServiceMembersPage
@@ -352,9 +337,6 @@ func PossibleMonitoringLevelValues() []MonitoringLevel {
 }
 func PossiblePasswordOperationTypesValues() []PasswordOperationTypes {
 	return original.PossiblePasswordOperationTypesValues()
-}
-func PossibleRunStepOperationTypeValues() []RunStepOperationType {
-	return original.PossibleRunStepOperationTypeValues()
 }
 func PossibleServerDisabledReasonValues() []ServerDisabledReason {
 	return original.PossibleServerDisabledReasonValues()

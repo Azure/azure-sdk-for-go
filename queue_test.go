@@ -2,7 +2,6 @@ package servicebus
 
 import (
 	"context"
-
 	"encoding/xml"
 	"fmt"
 	"log"
@@ -12,40 +11,63 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/Azure/azure-service-bus-go/internal/test"
 	"github.com/stretchr/testify/assert"
 )
 
 const (
 	queueDescription1 = `
-		<QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-			<LockDuration>PT30S</LockDuration>
-			<MaxSizeInMegabytes>16384</MaxSizeInMegabytes>
-			<RequiresDuplicateDetection>false</RequiresDuplicateDetection>
-			<RequiresSession>false</RequiresSession>
-			<DefaultMessageTimeToLive>P14D</DefaultMessageTimeToLive>
-			<DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-			<DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
-			<MaxDeliveryCount>10</MaxDeliveryCount>
-			<EnableBatchedOperations>true</EnableBatchedOperations>
-			<SizeInBytes>0</SizeInBytes>
-			<MessageCount>0</MessageCount>
-		</QueueDescription>`
+		<QueueDescription 
+            xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <LockDuration>PT1M</LockDuration>
+            <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+            <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+            <RequiresSession>false</RequiresSession>
+            <DefaultMessageTimeToLive>P14D</DefaultMessageTimeToLive>
+            <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+            <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+            <MaxDeliveryCount>10</MaxDeliveryCount>
+            <EnableBatchedOperations>true</EnableBatchedOperations>
+            <SizeInBytes>0</SizeInBytes>
+            <MessageCount>0</MessageCount>
+            <IsAnonymousAccessible>false</IsAnonymousAccessible>
+            <Status>Active</Status>
+            <CreatedAt>2018-05-04T16:38:27.913Z</CreatedAt>
+            <UpdatedAt>2018-05-04T16:38:41.897Z</UpdatedAt>
+            <SupportOrdering>true</SupportOrdering>
+            <AutoDeleteOnIdle>P14D</AutoDeleteOnIdle>
+            <EnablePartitioning>false</EnablePartitioning>
+            <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+            <EnableExpress>false</EnableExpress>
+        </QueueDescription>`
 
 	queueDescription2 = `
-		<QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-			<LockDuration>PT15S</LockDuration>
-			<MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
-			<RequiresDuplicateDetection>true</RequiresDuplicateDetection>
-			<RequiresSession>true</RequiresSession>
-			<DefaultMessageTimeToLive>P14D</DefaultMessageTimeToLive>
-			<DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
-			<DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
-			<MaxDeliveryCount>100</MaxDeliveryCount>
-			<EnableBatchedOperations>true</EnableBatchedOperations>
-			<SizeInBytes>10</SizeInBytes>
-			<MessageCount>10</MessageCount>
-		</QueueDescription>`
+		<QueueDescription 
+            xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" 
+            xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <LockDuration>PT2M</LockDuration>
+            <MaxSizeInMegabytes>2048</MaxSizeInMegabytes>
+            <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+            <RequiresSession>false</RequiresSession>
+            <DefaultMessageTimeToLive>P14D</DefaultMessageTimeToLive>
+            <DeadLetteringOnMessageExpiration>true</DeadLetteringOnMessageExpiration>
+            <DuplicateDetectionHistoryTimeWindow>PT20M</DuplicateDetectionHistoryTimeWindow>
+            <MaxDeliveryCount>100</MaxDeliveryCount>
+            <EnableBatchedOperations>true</EnableBatchedOperations>
+            <SizeInBytes>256</SizeInBytes>
+            <MessageCount>23</MessageCount>
+            <IsAnonymousAccessible>false</IsAnonymousAccessible>
+            <Status>Active</Status>
+            <CreatedAt>2018-05-04T16:38:27.913Z</CreatedAt>
+            <UpdatedAt>2018-05-04T16:38:41.897Z</UpdatedAt>
+            <SupportOrdering>true</SupportOrdering>
+            <AutoDeleteOnIdle>P14D</AutoDeleteOnIdle>
+            <EnablePartitioning>true</EnablePartitioning>
+            <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+            <EnableExpress>false</EnableExpress>
+        </QueueDescription>`
 
 	queueEntry1 = `
 		<entry xmlns="http://www.w3.org/2005/Atom">
@@ -85,7 +107,7 @@ const (
 )
 
 var (
-	timeout = 20 * time.Second
+	timeout = 60 * time.Second
 )
 
 func (suite *serviceBusSuite) TestQueueEntryUnmarshal() {
@@ -96,7 +118,7 @@ func (suite *serviceBusSuite) TestQueueEntryUnmarshal() {
 	assert.Equal(suite.T(), "foo", entry.Title)
 	assert.Equal(suite.T(), "sbdjtest", *entry.Author.Name)
 	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
-	assert.Equal(suite.T(), "PT30S", *entry.Content.QueueDescription.LockDuration)
+	assert.Equal(suite.T(), "PT1M", *entry.Content.QueueDescription.LockDuration)
 	assert.NotNil(suite.T(), entry.Content)
 }
 
@@ -107,18 +129,20 @@ func (suite *serviceBusSuite) TestQueueUnmarshal() {
 
 	var q QueueDescription
 	err = xml.Unmarshal([]byte(entry.Content.Body), &q)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), "PT30S", *q.LockDuration)
-	assert.Equal(suite.T(), int32(16384), *q.MaxSizeInMegabytes)
-	assert.Equal(suite.T(), false, *q.RequiresDuplicateDetection)
-	assert.Equal(suite.T(), false, *q.RequiresSession)
-	assert.Equal(suite.T(), "P14D", *q.DefaultMessageTimeToLive)
-	assert.Equal(suite.T(), false, *q.DeadLetteringOnMessageExpiration)
-	assert.Equal(suite.T(), "PT10M", *q.DuplicateDetectionHistoryTimeWindow)
-	assert.Equal(suite.T(), int32(10), *q.MaxDeliveryCount)
-	assert.Equal(suite.T(), true, *q.EnableBatchedOperations)
-	assert.Equal(suite.T(), int64(0), *q.SizeInBytes)
-	assert.Equal(suite.T(), int64(0), *q.MessageCount)
+	t := suite.T()
+	assert.Nil(t, err)
+	assert.Equal(t, "PT1M", *q.LockDuration)
+	assert.Equal(t, int32(1024), *q.MaxSizeInMegabytes)
+	assert.Equal(t, false, *q.RequiresDuplicateDetection)
+	assert.Equal(t, false, *q.RequiresSession)
+	assert.Equal(t, "P14D", *q.DefaultMessageTimeToLive)
+	assert.Equal(t, false, *q.DeadLetteringOnMessageExpiration)
+	assert.Equal(t, "PT10M", *q.DuplicateDetectionHistoryTimeWindow)
+	assert.Equal(t, int32(10), *q.MaxDeliveryCount)
+	assert.Equal(t, true, *q.EnableBatchedOperations)
+	assert.Equal(t, int64(0), *q.SizeInBytes)
+	assert.Equal(t, int64(0), *q.MessageCount)
+	assert.EqualValues(t, servicebus.EntityStatusActive, *q.Status)
 }
 
 func (suite *serviceBusSuite) TestQueueManagementWrites() {
@@ -132,12 +156,9 @@ func (suite *serviceBusSuite) TestQueueManagementWrites() {
 		suite.T().Run(name, func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-
 			name := suite.RandomName("gosb", 6)
 			testFunc(ctx, t, qm, name)
-
-			err := qm.Delete(ctx, name)
-			assert.Nil(t, err)
+			defer suite.cleanupQueue(name)
 		})
 	}
 }
@@ -164,7 +185,7 @@ func (suite *serviceBusSuite) TestQueueManagementReads() {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	names := []string{suite.randQueueName(), suite.randQueueName()}
+	names := []string{suite.randEntityName(), suite.randEntityName()}
 	for _, name := range names {
 		if _, err := qm.Put(ctx, name); err != nil {
 			suite.T().Fatal(err)
@@ -180,9 +201,7 @@ func (suite *serviceBusSuite) TestQueueManagementReads() {
 	}
 
 	for _, name := range names {
-		if err := qm.Delete(ctx, name); err != nil {
-			suite.T().Fatal(err)
-		}
+		suite.cleanupQueue(name)
 	}
 }
 
@@ -207,12 +226,12 @@ func testListQueues(ctx context.Context, t *testing.T, qm *QueueManager, names [
 	}
 }
 
-func (suite *serviceBusSuite) randQueueName() string {
+func (suite *serviceBusSuite) randEntityName() string {
 	return suite.RandomName("goq", 6)
 }
 
 func (suite *serviceBusSuite) TestQueueManagement() {
-	tests := map[string]func(*testing.T, *QueueManager, string){
+	tests := map[string]func(context.Context, *testing.T, *QueueManager, string){
 		"TestQueueDefaultSettings":                      testDefaultQueue,
 		"TestQueueWithRequiredSessions":                 testQueueWithRequiredSessions,
 		"TestQueueWithDeadLetteringOnMessageExpiration": testQueueWithDeadLetteringOnMessageExpiration,
@@ -228,22 +247,19 @@ func (suite *serviceBusSuite) TestQueueManagement() {
 	qm := ns.NewQueueManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
-			name := suite.randQueueName()
-			defer func(n string) {
-				err := qm.Delete(context.Background(), n)
-				if err != nil {
-					t.Fatal(err)
-				}
-			}(name)
-			testFunc(t, qm, name)
+			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			defer cancel()
+			name := suite.randEntityName()
+			testFunc(ctx, t, qm, name)
+			defer suite.cleanupQueue(name)
 
 		}
 		suite.T().Run(name, setupTestTeardown)
 	}
 }
 
-func testDefaultQueue(t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(t, qm, name)
+func testDefaultQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	q := buildQueue(ctx, t, qm, name)
 	assert.False(t, *q.EnableExpress, "should not have Express enabled")
 	assert.False(t, *q.EnablePartitioning, "should not have partitioning enabled")
 	assert.False(t, *q.DeadLetteringOnMessageExpiration, "should not have dead lettering on expiration")
@@ -256,53 +272,53 @@ func testDefaultQueue(t *testing.T, qm *QueueManager, name string) {
 	assert.Equal(t, "PT1M", *q.LockDuration, "lock duration")
 }
 
-func testQueueWithAutoDeleteOnIdle(t *testing.T, qm *QueueManager, name string) {
+func testQueueWithAutoDeleteOnIdle(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(20 * time.Minute)
-	q := buildQueue(t, qm, name, QueueWithAutoDeleteOnIdle(&window))
+	q := buildQueue(ctx, t, qm, name, QueueWithAutoDeleteOnIdle(&window))
 	assert.Equal(t, "PT20M", *q.AutoDeleteOnIdle)
 }
 
-func testQueueWithRequiredSessions(t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(t, qm, name, QueueWithRequiredSessions())
+func testQueueWithRequiredSessions(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	q := buildQueue(ctx, t, qm, name, QueueWithRequiredSessions())
 	assert.True(t, *q.RequiresSession)
 }
 
-func testQueueWithDeadLetteringOnMessageExpiration(t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(t, qm, name, QueueWithDeadLetteringOnMessageExpiration())
+func testQueueWithDeadLetteringOnMessageExpiration(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	q := buildQueue(ctx, t, qm, name, QueueWithDeadLetteringOnMessageExpiration())
 	assert.True(t, *q.DeadLetteringOnMessageExpiration)
 }
 
-func testQueueWithPartitioning(t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(t, qm, name, QueueWithPartitioning())
+func testQueueWithPartitioning(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
+	q := buildQueue(ctx, t, qm, name, QueueWithPartitioning())
 	assert.True(t, *q.EnablePartitioning)
 }
 
-func testQueueWithMaxSizeInMegabytes(t *testing.T, qm *QueueManager, name string) {
+func testQueueWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	size := 3 * Megabytes
-	q := buildQueue(t, qm, name, QueueWithMaxSizeInMegabytes(size))
+	q := buildQueue(ctx, t, qm, name, QueueWithMaxSizeInMegabytes(size))
 	assert.Equal(t, int32(size), *q.MaxSizeInMegabytes)
 }
 
-func testQueueWithDuplicateDetection(t *testing.T, qm *QueueManager, name string) {
+func testQueueWithDuplicateDetection(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(20 * time.Minute)
-	q := buildQueue(t, qm, name, QueueWithDuplicateDetection(&window))
+	q := buildQueue(ctx, t, qm, name, QueueWithDuplicateDetection(&window))
 	assert.Equal(t, "PT20M", *q.DuplicateDetectionHistoryTimeWindow)
 }
 
-func testQueueWithMessageTimeToLive(t *testing.T, qm *QueueManager, name string) {
+func testQueueWithMessageTimeToLive(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(10 * 24 * 60 * time.Minute)
-	q := buildQueue(t, qm, name, QueueWithMessageTimeToLive(&window))
+	q := buildQueue(ctx, t, qm, name, QueueWithMessageTimeToLive(&window))
 	assert.Equal(t, "P10D", *q.DefaultMessageTimeToLive)
 }
 
-func testQueueWithLockDuration(t *testing.T, qm *QueueManager, name string) {
+func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(3 * time.Minute)
-	q := buildQueue(t, qm, name, QueueWithLockDuration(&window))
+	q := buildQueue(ctx, t, qm, name, QueueWithLockDuration(&window))
 	assert.Equal(t, "PT3M", *q.LockDuration)
 }
 
-func buildQueue(t *testing.T, qm *QueueManager, name string, opts ...QueueOption) QueueDescription {
-	q, err := qm.Put(context.Background(), name, opts...)
+func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueOption) QueueDescription {
+	q, err := qm.Put(ctx, name, opts...)
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
@@ -320,9 +336,7 @@ func (suite *serviceBusSuite) TestQueue() {
 	qm := ns.NewQueueManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
-			queueName := suite.randQueueName()
-			defer qm.Delete(context.Background(), queueName)
-
+			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			window := 3 * time.Minute
@@ -330,14 +344,17 @@ func (suite *serviceBusSuite) TestQueue() {
 				ctx,
 				queueName,
 				QueueWithPartitioning(),
-				QueueWithDuplicateDetection(nil),
+				QueueWithDuplicateDetection(&window),
 				QueueWithLockDuration(&window))
 			if err != nil {
 				log.Fatalln(err)
 			}
 
 			q := ns.NewQueue(queueName)
-			defer q.Close(ctx)
+			defer func() {
+				q.Close(ctx)
+				suite.cleanupQueue(queueName)
+			}()
 			testFunc(ctx, t, q)
 		}
 
@@ -429,15 +446,14 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 			ns := suite.getNewSasInstance()
 			qm := ns.NewQueueManager()
 
-			queueName := suite.randQueueName()
+			queueName := suite.randEntityName()
 			window := 3 * time.Minute
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			defer cancel()
 			_, err := qm.Put(
 				ctx,
 				queueName,
 				QueueWithPartitioning(),
-				QueueWithDuplicateDetection(nil),
+				QueueWithDuplicateDetection(&window),
 				QueueWithLockDuration(&window),
 				QueueWithRequiredSessions())
 			if err != nil {
@@ -445,9 +461,14 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 			}
 
 			q := ns.NewQueue(queueName)
-			defer q.Close(ctx)
+			defer func() {
+				q.Close(ctx)
+				cancel()
+				suite.cleanupQueue(queueName)
+			}()
 			testFunc(ctx, t, q)
 
+			time.Sleep(5 * time.Second)
 			qd, err := qm.Get(ctx, queueName)
 			if assert.NoError(t, err) {
 				assert.Zero(t, *qd.Content.QueueDescription.MessageCount, "message count for queue should be zero")
@@ -514,4 +535,16 @@ func waitUntil(t *testing.T, wg *sync.WaitGroup, d time.Duration) {
 func fmtDuration(d time.Duration) string {
 	d = d.Round(time.Second) / time.Second
 	return fmt.Sprintf("%d seconds", d)
+}
+
+func (suite *serviceBusSuite) cleanupQueue(name string) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	ns := suite.getNewSasInstance()
+	qm := ns.NewQueueManager()
+	err := qm.Delete(ctx, name)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
 }

@@ -26,15 +26,10 @@ import (
 	"pack.ag/amqp"
 )
 
-const (
-	partitionKeyAnnotationName = "x-opt-partition-key"
-)
-
 type (
 	// Event is an Event Hubs message to be sent or received
 	Event struct {
 		Data          []byte
-		PartitionKey  *string
 		Properties    map[string]interface{}
 		ID            string
 		GroupID       *string
@@ -45,7 +40,6 @@ type (
 	// EventBatch is a batch of Event Hubs messages to be sent
 	EventBatch struct {
 		Events       []*Event
-		PartitionKey *string
 		Properties   map[string]interface{}
 		ID           string
 	}
@@ -99,6 +93,11 @@ func (e *Event) toMsg() *amqp.Message {
 		MessageID: e.ID,
 	}
 
+	if e.GroupID != nil && e.GroupSequence != nil {
+		msg.Properties.GroupID = *e.GroupID
+		msg.Properties.GroupSequence = *e.GroupSequence
+	}
+
 	if len(e.Properties) > 0 {
 		msg.ApplicationProperties = make(map[string]interface{})
 		for key, value := range e.Properties {
@@ -106,10 +105,6 @@ func (e *Event) toMsg() *amqp.Message {
 		}
 	}
 
-	if e.PartitionKey != nil {
-		msg.Annotations = make(amqp.Annotations)
-		msg.Annotations[partitionKeyAnnotationName] = e.PartitionKey
-	}
 	return msg
 }
 
@@ -127,6 +122,8 @@ func newEvent(data []byte, msg *amqp.Message) *Event {
 		if id, ok := msg.Properties.MessageID.(string); ok {
 			event.ID = id
 		}
+		event.GroupID = &msg.Properties.GroupID
+		event.GroupSequence = &msg.Properties.GroupSequence
 	}
 
 	if msg != nil {

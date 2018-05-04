@@ -33,8 +33,8 @@ func (suite *serviceBusSuite) TestEntryUnmarshal() {
 	assert.Equal(suite.T(), "sbdjtest", *entry.Author.Name)
 	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
 	for _, item := range []string{
-		`<QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"`,
-		"<LockDuration>PT30S</LockDuration>",
+		`<QueueDescription`,
+		"<LockDuration>PT1M</LockDuration>",
 		"<MessageCount>0</MessageCount>",
 	} {
 		assert.Contains(suite.T(), entry.Content.Body, item)

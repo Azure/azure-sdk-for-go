@@ -69,11 +69,10 @@ func (s *sender) Send(ctx context.Context, event *Event, opts ...SendOption) err
 	span, ctx := s.startProducerSpanFromContext(ctx, "sb.sender.Send")
 	defer span.Finish()
 
-	for _, opt := range opts {
-		err := opt(event)
-		if err != nil {
-			return err
-		}
+	if event.GroupID == nil {
+		event.GroupID = &s.session.SessionID
+		next := s.session.getNext()
+		event.GroupSequence = &next
 	}
 
 	if event.ID == "" {
@@ -84,10 +83,11 @@ func (s *sender) Send(ctx context.Context, event *Event, opts ...SendOption) err
 		event.ID = id.String()
 	}
 
-	if event.GroupID == nil {
-		event.GroupID = &s.session.SessionID
-		next := s.session.getNext()
-		event.GroupSequence = &next
+	for _, opt := range opts {
+		err := opt(event)
+		if err != nil {
+			return err
+		}
 	}
 
 	return s.trySend(ctx, event)
@@ -219,6 +219,7 @@ func SendWithSession(sessionID string, sequence uint32) SendOption {
 func SendWithoutSessionID() SendOption {
 	return func(event *Event) error {
 		event.GroupID = nil
+		event.GroupSequence = nil
 		return nil
 	}
 }

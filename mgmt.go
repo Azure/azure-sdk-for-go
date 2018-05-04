@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/auth"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
@@ -39,6 +40,21 @@ type (
 		Entries []Entry    `xml:"entry"`
 	}
 
+	// Entry is the Atom wrapper for a management request
+	Entry struct {
+		XMLName                   xml.Name   `xml:"entry"`
+		ID                        string     `xml:"id"`
+		Title                     string     `xml:"title"`
+		Published                 *date.Time `xml:"published,omitempty"`
+		Updated                   *date.Time `xml:"updated,omitempty"`
+		Author                    *Author    `xml:"author,omitempty"`
+		Link                      *Link      `xml:"link,omitempty"`
+		Content                   *Content   `xml:"content"`
+		DataServiceSchema         string     `xml:"xmlns:d,attr"`
+		DataServiceMetadataSchema string     `xml:"xmlns:m,attr"`
+		AtomSchema                string     `xml:"xmlns,attr"`
+	}
+
 	// Author is an Atom author used in an Entry
 	Author struct {
 		XMLName xml.Name `xml:"author"`
@@ -57,6 +73,26 @@ type (
 		XMLName xml.Name `xml:"content"`
 		Type    string   `xml:"type,attr"`
 		Body    string   `xml:",innerxml"`
+	}
+
+	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
+	BaseEntityDescription struct {
+		InstanceMetadataSchema              string                   `xml:"xmlns:i,attr"`
+		ServiceBusSchema                    string                   `xml:"xmlns,attr"`
+		DefaultMessageTimeToLive            *string                  `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		MaxSizeInMegabytes                  *int32                   `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool                    `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		DuplicateDetectionHistoryTimeWindow *string                  `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		EnableBatchedOperations             *bool                    `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64                   `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		IsAnonymousAccessible               *bool                    `xml:"IsAnonymousAccessible,omitempty"`
+		Status                              *servicebus.EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                           *date.Time               `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           *date.Time               `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool                    `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string                  `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool                    `xml:"EnablePartitioning,omitempty"`
+		EnableExpress                       *bool                    `xml:"EnableExpress,omitempty"`
 	}
 )
 

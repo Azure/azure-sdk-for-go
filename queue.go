@@ -7,8 +7,6 @@ import (
 	"io/ioutil"
 	"sync"
 	"time"
-
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 type (
@@ -36,21 +34,6 @@ type (
 		Entries []QueueEntry `xml:"entry"`
 	}
 
-	// Entry is the Atom wrapper for a management request
-	Entry struct {
-		XMLName                   xml.Name   `xml:"entry"`
-		ID                        string     `xml:"id"`
-		Title                     string     `xml:"title"`
-		Published                 *date.Time `xml:"published,omitempty"`
-		Updated                   *date.Time `xml:"updated,omitempty"`
-		Author                    *Author    `xml:"author,omitempty"`
-		Link                      *Link      `xml:"link,omitempty"`
-		Content                   *Content   `xml:"content"`
-		DataServiceSchema         string     `xml:"xmlns:d,attr"`
-		DataServiceMetadataSchema string     `xml:"xmlns:m,attr"`
-		AtomSchema                string     `xml:"xmlns,attr"`
-	}
-
 	// QueueEntry is a specialized Queue Feed Entry
 	QueueEntry struct {
 		*Entry
@@ -66,23 +49,13 @@ type (
 
 	// QueueDescription is the content type for Queue management requests
 	QueueDescription struct {
-		XMLName                             xml.Name `xml:"QueueDescription"`
-		LockDuration                        *string  `xml:"LockDuration,omitempty"`                        // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-		MaxSizeInMegabytes                  *int32   `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
-		RequiresDuplicateDetection          *bool    `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
-		RequiresSession                     *bool    `xml:"RequiresSession,omitempty"`                     // RequiresSession - A value that indicates whether the queue supports the concept of sessions.
-		DefaultMessageTimeToLive            *string  `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
-		DeadLetteringOnMessageExpiration    *bool    `xml:"DeadLetteringOnMessageExpiration,omitempty"`    // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
-		DuplicateDetectionHistoryTimeWindow *string  `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-		MaxDeliveryCount                    *int32   `xml:"MaxDeliveryCount,omitempty"`                    // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-		EnableBatchedOperations             *bool    `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
-		SizeInBytes                         *int64   `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
-		MessageCount                        *int64   `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
-		EnablePartitioning                  *bool    `xml:"EnablePartitioning,omitempty"`
-		AutoDeleteOnIdle                    *string  `xml:"AutoDeleteOnIdle,omitempty"`
-		EnableExpress                       *bool    `xml:"EnableExpress,omitempty"`
-		InstanceMetadataSchema              string   `xml:"xmlns:i,attr"`
-		ServiceBusSchema                    string   `xml:"xmlns,attr"`
+		XMLName                          xml.Name `xml:"QueueDescription"`
+		BaseEntityDescription
+		LockDuration                     *string  `xml:"LockDuration,omitempty"`                     // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		RequiresSession                  *bool    `xml:"RequiresSession,omitempty"`                  // RequiresSession - A value that indicates whether the queue supports the concept of sessions.
+		DeadLetteringOnMessageExpiration *bool    `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		MaxDeliveryCount                 *int32   `xml:"MaxDeliveryCount,omitempty"`                 // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		MessageCount                     *int64   `xml:"MessageCount,omitempty"`                     // MessageCount - The number of messages in the queue.
 	}
 
 	// QueueOption represents named options for assisting queue creation

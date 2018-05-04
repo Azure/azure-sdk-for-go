@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v16.2.1`
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|web | 2016-09-01<br/>2018-02-01 |
+
 ## `v16.2.0`
 
 ### New Services

@@ -17906,7 +17906,7 @@ func (bet *BlobEventsTrigger) UnmarshalJSON(body []byte) error {
 
 // BlobEventsTriggerTypeProperties blob Events Trigger properties.
 type BlobEventsTriggerTypeProperties struct {
-	// BlobPath - Path to container, folder, blob, or file extension for which events can trigger the pipeline.
+	// BlobPath - Expression to determine if trigger should fire. For example, @startswith('/records/blobs/december/') will only fire the trigger for blobs in the december folder under the records container.
 	BlobPath *string `json:"blobPath,omitempty"`
 	// Events - The type of events that cause this trigger to fire.
 	Events *[]BlobEventTypes `json:"events,omitempty"`

@@ -117,23 +117,6 @@ const (
 	PasswordOperationTypesUndefined PasswordOperationTypes = original.PasswordOperationTypesUndefined
 )
 
-type ServerDisabledReason = original.ServerDisabledReason
-
-const (
-	DeletedFromPortal       ServerDisabledReason = original.DeletedFromPortal
-	DisabledDueToInactivity ServerDisabledReason = original.DisabledDueToInactivity
-	GdprStopCollection      ServerDisabledReason = original.GdprStopCollection
-	None                    ServerDisabledReason = original.None
-)
-
-type ServiceType = original.ServiceType
-
-const (
-	ServiceTypeAadConnectSync ServiceType = original.ServiceTypeAadConnectSync
-	ServiceTypeDirSync        ServiceType = original.ServiceTypeDirSync
-	ServiceTypeUndefined      ServiceType = original.ServiceTypeUndefined
-)
-
 type State = original.State
 
 const (
@@ -337,12 +320,6 @@ func PossibleMonitoringLevelValues() []MonitoringLevel {
 }
 func PossiblePasswordOperationTypesValues() []PasswordOperationTypes {
 	return original.PossiblePasswordOperationTypesValues()
-}
-func PossibleServerDisabledReasonValues() []ServerDisabledReason {
-	return original.PossibleServerDisabledReasonValues()
-}
-func PossibleServiceTypeValues() []ServiceType {
-	return original.PossibleServiceTypeValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

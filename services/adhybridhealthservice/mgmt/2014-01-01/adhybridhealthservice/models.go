@@ -202,42 +202,6 @@ func PossiblePasswordOperationTypesValues() []PasswordOperationTypes {
 	return []PasswordOperationTypes{PasswordOperationTypesChange, PasswordOperationTypesSet, PasswordOperationTypesUndefined}
 }
 
-// ServerDisabledReason enumerates the values for server disabled reason.
-type ServerDisabledReason string
-
-const (
-	// DeletedFromPortal ...
-	DeletedFromPortal ServerDisabledReason = "DeletedFromPortal"
-	// DisabledDueToInactivity ...
-	DisabledDueToInactivity ServerDisabledReason = "DisabledDueToInactivity"
-	// GdprStopCollection ...
-	GdprStopCollection ServerDisabledReason = "GdprStopCollection"
-	// None ...
-	None ServerDisabledReason = "None"
-)
-
-// PossibleServerDisabledReasonValues returns an array of possible values for the ServerDisabledReason const type.
-func PossibleServerDisabledReasonValues() []ServerDisabledReason {
-	return []ServerDisabledReason{DeletedFromPortal, DisabledDueToInactivity, GdprStopCollection, None}
-}
-
-// ServiceType enumerates the values for service type.
-type ServiceType string
-
-const (
-	// ServiceTypeAadConnectSync ...
-	ServiceTypeAadConnectSync ServiceType = "AadConnectSync"
-	// ServiceTypeDirSync ...
-	ServiceTypeDirSync ServiceType = "DirSync"
-	// ServiceTypeUndefined ...
-	ServiceTypeUndefined ServiceType = "Undefined"
-)
-
-// PossibleServiceTypeValues returns an array of possible values for the ServiceType const type.
-func PossibleServiceTypeValues() []ServiceType {
-	return []ServiceType{ServiceTypeAadConnectSync, ServiceTypeDirSync, ServiceTypeUndefined}
-}
-
 // State enumerates the values for state.
 type State string
 
@@ -2233,6 +2197,8 @@ type RunStep struct {
 	PartitionID *string `json:"partitionId,omitempty"`
 	// OperationType - The run step operation types.
 	OperationType *int32 `json:"operationType,omitempty"`
+	// Timeout - The operation timeout.
+	Timeout *int32 `json:"timeout,omitempty"`
 }
 
 // ServiceConfiguration the service configuration
@@ -2240,8 +2206,8 @@ type ServiceConfiguration struct {
 	autorest.Response `json:"-"`
 	// Version - The version of the sync service.
 	Version *string `json:"version,omitempty"`
-	// ServiceType - The service type of the server. Possible values include: 'ServiceTypeUndefined', 'ServiceTypeAadConnectSync', 'ServiceTypeDirSync'
-	ServiceType ServiceType `json:"serviceType,omitempty"`
+	// ServiceType - The service type of the server.
+	ServiceType *int32 `json:"serviceType,omitempty"`
 	// ServiceAccount - The service account.
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 	// SQLServer - The SQL server information.
@@ -2277,8 +2243,8 @@ type ServiceMember struct {
 	Dimensions interface{} `json:"dimensions,omitempty"`
 	// Disabled - Indicates if the server is disabled or not.
 	Disabled *bool `json:"disabled,omitempty"`
-	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
-	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
+	// DisabledReason - The reason for disabling the server.
+	DisabledReason *int32 `json:"disabledReason,omitempty"`
 	// InstalledQfes - The list of installed QFEs for the server.
 	InstalledQfes interface{} `json:"installedQfes,omitempty"`
 	// LastDisabled - The date and time , in UTC, when the server was last disabled.

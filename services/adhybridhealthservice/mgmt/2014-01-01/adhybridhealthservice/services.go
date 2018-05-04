@@ -307,7 +307,7 @@ func (client ServicesClient) GetResponder(resp *http.Response) (result ServicePr
 // Parameters:
 // serviceName - the name of the service.
 // featureName - the name of the feature.
-func (client ServicesClient) GetFeatureAvailibility(ctx context.Context, serviceName string, featureName string) (result Bool, err error) {
+func (client ServicesClient) GetFeatureAvailibility(ctx context.Context, serviceName string, featureName string) (result Result, err error) {
 	req, err := client.GetFeatureAvailibilityPreparer(ctx, serviceName, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "GetFeatureAvailibility", nil, "Failure preparing request")
@@ -358,12 +358,12 @@ func (client ServicesClient) GetFeatureAvailibilitySender(req *http.Request) (*h
 
 // GetFeatureAvailibilityResponder handles the response to the GetFeatureAvailibility request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) GetFeatureAvailibilityResponder(resp *http.Response) (result Bool, err error) {
+func (client ServicesClient) GetFeatureAvailibilityResponder(resp *http.Response) (result Result, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -519,7 +519,7 @@ func (client ServicesClient) GetMetricMetadataForGroupResponder(resp *http.Respo
 // Parameters:
 // serviceName - the name of the service.
 // featureName - the name of the feature.
-func (client ServicesClient) GetTenantWhitelisting(ctx context.Context, serviceName string, featureName string) (result Bool, err error) {
+func (client ServicesClient) GetTenantWhitelisting(ctx context.Context, serviceName string, featureName string) (result Result, err error) {
 	req, err := client.GetTenantWhitelistingPreparer(ctx, serviceName, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServicesClient", "GetTenantWhitelisting", nil, "Failure preparing request")
@@ -570,12 +570,12 @@ func (client ServicesClient) GetTenantWhitelistingSender(req *http.Request) (*ht
 
 // GetTenantWhitelistingResponder handles the response to the GetTenantWhitelisting request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) GetTenantWhitelistingResponder(resp *http.Response) (result Bool, err error) {
+func (client ServicesClient) GetTenantWhitelistingResponder(resp *http.Response) (result Result, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

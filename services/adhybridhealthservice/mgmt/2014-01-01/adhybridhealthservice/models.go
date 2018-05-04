@@ -482,8 +482,8 @@ type AddsServiceMember struct {
 	Disabled *bool `json:"disabled,omitempty"`
 	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
 	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
-	// InstalledQfe - The list of installed QFEs for the server.
-	InstalledQfe *[]Hotfix `json:"installedQfe,omitempty"`
+	// InstalledQfes - The list of installed QFEs for the server.
+	InstalledQfes *[]Hotfix `json:"installedQfes,omitempty"`
 	// LastDisabled - The date and time , in UTC, when the server was last disabled.
 	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
 	// LastReboot - The date and time, in UTC, when the server was last rebooted.
@@ -882,12 +882,6 @@ type AttributeMppingSource struct {
 	ScriptContext *string `json:"scriptContext,omitempty"`
 	// ConstantValue - The constant value.
 	ConstantValue *string `json:"constantValue,omitempty"`
-}
-
-// Bool ...
-type Bool struct {
-	autorest.Response `json:"-"`
-	Value             *bool `json:"value,omitempty"`
 }
 
 // ChangeNotReimported the changes which are not re-imported.
@@ -1484,8 +1478,8 @@ type GlobalConfiguration struct {
 	SchemaXML *string `json:"schemaXml,omitempty"`
 	// PasswordSyncEnabled - Indicates if password sync is enabled or not.
 	PasswordSyncEnabled *bool `json:"passwordSyncEnabled,omitempty"`
-	// NumSavedPwdEvents - The number of saved password events.
-	NumSavedPwdEvents *int32 `json:"numSavedPwdEvents,omitempty"`
+	// NumSavedPwdEvent - The number of saved password events.
+	NumSavedPwdEvent *int32 `json:"numSavedPwdEvent,omitempty"`
 	// FeatureSet - The list of additional feature sets.
 	FeatureSet *[]Item `json:"featureSet,omitempty"`
 }
@@ -1610,6 +1604,8 @@ type Items struct {
 
 // MergedExportError the merged export error.
 type MergedExportError struct {
+	// ID - The error Id.
+	ID *string `json:"id,omitempty"`
 	// IncomingObjectDisplayName - The incoming object display name.
 	IncomingObjectDisplayName *string `json:"incomingObjectDisplayName,omitempty"`
 	// IncomingObjectType - The incoming object type.
@@ -2211,6 +2207,13 @@ type ReplicationSummaryList struct {
 	Value *[]ReplicationSummary `json:"value,omitempty"`
 }
 
+// Result the result for an operation.
+type Result struct {
+	autorest.Response `json:"-"`
+	// Value - The value.
+	Value *bool `json:"value,omitempty"`
+}
+
 // RuleErrorInfo the error details in legacy rule processing.
 type RuleErrorInfo struct {
 	// AttributeMapping - The attribute mapping details.
@@ -2313,8 +2316,8 @@ type ServiceMemberProperties struct {
 	Disabled *bool `json:"disabled,omitempty"`
 	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
 	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
-	// InstalledQfe - The list of installed QFEs for the server.
-	InstalledQfe interface{} `json:"installedQfe,omitempty"`
+	// InstalledQfes - The list of installed QFEs for the server.
+	InstalledQfes interface{} `json:"installedQfes,omitempty"`
 	// LastDisabled - The date and time , in UTC, when the server was last disabled.
 	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
 	// LastReboot - The date and time, in UTC, when the server was last rebooted.

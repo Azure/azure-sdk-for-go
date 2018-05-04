@@ -243,3 +243,21 @@ func messageID(msg *amqp.Message) interface{} {
 	}
 	return id
 }
+
+// Close will close the listener
+func (lc *ListenerHandle) Close(ctx context.Context) error {
+	return lc.r.Close(ctx)
+}
+
+// Done will close the channel when the listener has stopped
+func (lc *ListenerHandle) Done() <-chan struct{} {
+	return lc.ctx.Done()
+}
+
+// Err will return the last error encountered
+func (lc *ListenerHandle) Err() error {
+	if lc.r.lastError != nil {
+		return lc.r.lastError
+	}
+	return lc.ctx.Err()
+}

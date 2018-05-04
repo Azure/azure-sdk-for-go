@@ -437,6 +437,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 }
 
 func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
+	suite.T().Skip("Add Required Sessions test back after Service Bus team changes the functionality to be AMQP spec compliant")
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"TestSendAndReceiveSession": testQueueWithRequiredSessionSendAndReceive,
 	}
@@ -499,12 +500,23 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 	// ensure in-order processing of messages from the queue
 	count := 0
 	handler := func(ctx context.Context, event *Event) error {
-		assert.Equal(t, messages[count], string(event.Data))
+		if !assert.Equal(t, messages[count], string(event.Data)) {
+			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
+		}
 		count++
 		wg.Done()
 		return nil
 	}
-	queue.Receive(ctx, handler, ReceiverWithSession(sessionID))
+	listenHandle, err := queue.Receive(ctx, handler, ReceiverWithSession(sessionID))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+		listenHandle.Close(ctx)
+	}()
+
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
 }

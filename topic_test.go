@@ -97,8 +97,18 @@ func (suite *serviceBusSuite) TestTopicManagementWrites() {
 			defer cancel()
 			name := suite.RandomName("gosb", 6)
 			testFunc(ctx, t, tm, name)
-			defer suite.cleanupQueue(name)
+			defer suite.cleanupTopic(name)
 		})
+	}
+}
+
+func testPutTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string) {
+	topic, err := tm.Put(ctx, name)
+	if !assert.Nil(t, err) {
+		t.FailNow()
+	}
+	if assert.NotNil(t, topic) {
+		assert.Equal(t, name, topic.Title)
 	}
 }
 
@@ -152,16 +162,6 @@ func testListTopics(ctx context.Context, t *testing.T, tm *TopicManager, names [
 
 	for _, name := range names {
 		assert.Contains(t, queueNames, name)
-	}
-}
-
-func testPutTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string) {
-	topic, err := tm.Put(ctx, name)
-	if !assert.Nil(t, err) {
-		t.FailNow()
-	}
-	if assert.NotNil(t, topic) {
-		assert.Equal(t, name, topic.Title)
 	}
 }
 

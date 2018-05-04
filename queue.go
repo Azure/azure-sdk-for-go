@@ -49,13 +49,10 @@ type (
 
 	// QueueDescription is the content type for Queue management requests
 	QueueDescription struct {
-		XMLName                          xml.Name `xml:"QueueDescription"`
+		XMLName xml.Name `xml:"QueueDescription"`
+		ReceiveBaseDescription
+		SendBaseDescription
 		BaseEntityDescription
-		LockDuration                     *string  `xml:"LockDuration,omitempty"`                     // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-		RequiresSession                  *bool    `xml:"RequiresSession,omitempty"`                  // RequiresSession - A value that indicates whether the queue supports the concept of sessions.
-		DeadLetteringOnMessageExpiration *bool    `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
-		MaxDeliveryCount                 *int32   `xml:"MaxDeliveryCount,omitempty"`                 // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-		MessageCount                     *int64   `xml:"MessageCount,omitempty"`                     // MessageCount - The number of messages in the queue.
 	}
 
 	// QueueOption represents named options for assisting queue creation
@@ -65,7 +62,7 @@ type (
 /*
 QueueWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
 storage and availability compared to non-partitioned queues with the trade-off of requiring the following to ensure
-FIFO message retreival:
+FIFO message retrieval:
 
 SessionId. If a message has the SessionId property set, then Service Bus uses the SessionId property as the
 partition key. This way, all messages that belong to the same session are assigned to the same fragment and handled
@@ -294,6 +291,10 @@ func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOp
 	}
 
 	receiver, err := q.namespace.newReceiver(ctx, q.Name)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, opt := range opts {
 		if err := opt(receiver); err != nil {
 			return nil, err

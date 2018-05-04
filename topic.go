@@ -51,10 +51,11 @@ type (
 
 	// TopicDescription is the content type for Topic management requests
 	TopicDescription struct {
-		XMLName                           xml.Name `xml:"TopicDescription"`
+		XMLName xml.Name `xml:"TopicDescription"`
+		SendBaseDescription
 		BaseEntityDescription
-		FilteringMessagesBeforePublishing *bool    `xml:"FilteringMessagesBeforePublishing,omitempty"`
-		EnableSubscriptionPartitioning    *bool    `xml:"EnableSubscriptionPartitioning,omitempty"`
+		FilteringMessagesBeforePublishing *bool `xml:"FilteringMessagesBeforePublishing,omitempty"`
+		EnableSubscriptionPartitioning    *bool `xml:"EnableSubscriptionPartitioning,omitempty"`
 	}
 
 	// TopicOption represents named options for assisting Topic creation
@@ -163,33 +164,33 @@ func (ns *Namespace) NewTopic(name string) *Topic {
 }
 
 // Send sends messages to the Topic
-func (q *Topic) Send(ctx context.Context, event *Event, opts ...SendOption) error {
-	err := q.ensureSender(ctx)
+func (t *Topic) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+	err := t.ensureSender(ctx)
 	if err != nil {
 		return err
 	}
-	return q.sender.Send(ctx, event, opts...)
+	return t.sender.Send(ctx, event, opts...)
 }
 
 // Close the underlying connection to Service Bus
-func (q *Topic) Close(ctx context.Context) error {
-	if q.sender != nil {
-		return q.sender.Close(ctx)
+func (t *Topic) Close(ctx context.Context) error {
+	if t.sender != nil {
+		return t.sender.Close(ctx)
 	}
 
 	return nil
 }
 
-func (q *Topic) ensureSender(ctx context.Context) error {
-	q.senderMu.Lock()
-	defer q.senderMu.Unlock()
+func (t *Topic) ensureSender(ctx context.Context) error {
+	t.senderMu.Lock()
+	defer t.senderMu.Unlock()
 
-	if q.sender == nil {
-		s, err := q.namespace.newSender(ctx, q.Name)
+	if t.sender == nil {
+		s, err := t.namespace.newSender(ctx, t.Name)
 		if err != nil {
 			return err
 		}
-		q.sender = s
+		t.sender = s
 	}
 	return nil
 }

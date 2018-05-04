@@ -1,133 +1,281 @@
 package servicebus
 
-//import (
-//	"context"
-//	"errors"
-//	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
-//	"github.com/Azure/go-autorest/autorest"
-//	"time"
-//)
-//
-//type (
-//	// SubscriptionOption represents an option for configuring a topic.
-//	SubscriptionOption func(subscription *mgmt.SBSubscription) error
-//)
-//
-//// SubscriptionWithBatchedOperations configures the subscription to batch server-side operations.
-//func SubscriptionWithBatchedOperations() SubscriptionOption {
-//	return func(t *mgmt.SBSubscription) error {
-//		t.EnableBatchedOperations = ptrBool(true)
-//		return nil
-//	}
-//}
-//
-//// SubscriptionWithLockDuration configures the subscription to have a duration of a peek-lock; that is, the amount of
-//// time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default
-//// value is 1 minute.
-//func SubscriptionWithLockDuration(window *time.Duration) SubscriptionOption {
-//	return func(q *mgmt.SBSubscription) error {
-//		if window == nil {
-//			duration := time.Duration(1 * time.Minute)
-//			window = &duration
-//		}
-//		q.LockDuration = durationTo8601Seconds(window)
-//		return nil
-//	}
-//}
-//
-//// SubscriptionWithRequiredSessions will ensure the subscription requires senders and receivers to have sessionIDs
-//func SubscriptionWithRequiredSessions() SubscriptionOption {
-//	return func(q *mgmt.SBSubscription) error {
-//		q.RequiresSession = ptrBool(true)
-//		return nil
-//	}
-//}
-//
-//// SubscriptionWithDeadLetteringOnMessageExpiration will ensure the Subscription sends expired messages to the dead
-//// letter queue
-//func SubscriptionWithDeadLetteringOnMessageExpiration() SubscriptionOption {
-//	return func(q *mgmt.SBSubscription) error {
-//		q.DeadLetteringOnMessageExpiration = ptrBool(true)
-//		return nil
-//	}
-//}
-//
-//// SubscriptionWithAutoDeleteOnIdle configures the subscription to automatically delete after the specified idle
-//// interval. The minimum duration is 5 minutes.
-//func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionOption {
-//	return func(q *mgmt.SBSubscription) error {
-//		if window != nil {
-//			if window.Minutes() < 5 {
-//				return errors.New("SubscriptionWithAutoDeleteOnIdle: window must be greater than 5 minutes")
-//			}
-//			q.AutoDeleteOnIdle = durationTo8601Seconds(window)
-//		}
-//		return nil
-//	}
-//}
-//
-//// SubscriptionWithMessageTimeToLive configures the subscription to set a time to live on messages. This is the duration
-//// after which the message expires, starting from when the message is sent to Service Bus. This is the default value
-//// used when TimeToLive is not set on a message itself. If nil, defaults to 14 days.
-//func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionOption {
-//	return func(q *mgmt.SBSubscription) error {
-//		if window == nil {
-//			duration := time.Duration(14 * 24 * time.Hour)
-//			window = &duration
-//		}
-//		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
-//		return nil
-//	}
-//}
-//
-//// EnsureSubscription creates a subscription if the subscription does not exist
-//func (sb *serviceBus) EnsureSubscription(ctx context.Context, topicName, name string, opts ...SubscriptionOption) (*mgmt.SBSubscription, error) {
-//	log.Debugf("ensuring subscription %s exists", name)
-//	subClient := sb.getSubscriptionMgmtClient()
-//	subscription, err := subClient.Get(ctx, sb.resourceGroup, sb.namespace, topicName, name)
-//
-//	if err != nil {
-//		newSub := &mgmt.SBSubscription{
-//			Name: &name,
-//			SBSubscriptionProperties: &mgmt.SBSubscriptionProperties{
-//				EnableBatchedOperations: ptrBool(false),
-//			},
-//		}
-//
-//		for _, opt := range opts {
-//			err = opt(newSub)
-//			if err != nil {
-//				return nil, err
-//			}
-//		}
-//
-//		subscription, err = subClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, topicName, name, *newSub)
-//		if err != nil {
-//			return nil, err
-//		}
-//	}
-//	return &subscription, nil
-//}
-//
-//// GetSubscription fetches a topic by name
-//func (sb *serviceBus) GetSubscription(ctx context.Context, topicName, name string) (*mgmt.SBSubscription, error) {
-//	client := sb.getSubscriptionMgmtClient()
-//	subscription, err := client.Get(ctx, sb.resourceGroup, sb.namespace, topicName, name)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return &subscription, nil
-//}
-//
-//// DeleteSubscription deletes an existing subscription
-//func (sb *serviceBus) DeleteSubscription(ctx context.Context, topicName, name string) error {
-//	subscriptionClient := sb.getSubscriptionMgmtClient()
-//	_, err := subscriptionClient.Delete(ctx, sb.resourceGroup, sb.namespace, topicName, name)
-//	return err
-//}
-//
-//func (sb *serviceBus) getSubscriptionMgmtClient() *mgmt.SubscriptionsClient {
-//	client := mgmt.NewSubscriptionsClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-//	client.Authorizer = autorest.NewBearerAuthorizer(sb.armToken)
-//	return &client
-//}
+import (
+	"context"
+	"encoding/xml"
+	"errors"
+	"io/ioutil"
+	"sync"
+	"time"
+
+	"github.com/Azure/go-autorest/autorest/date"
+)
+
+type (
+	// Subscription represents a Service Bus Subscription entity which are used to receive topic messages. A topic
+	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
+	//Messages are received from a subscription identically to the way they are received from a queue.
+	Subscription struct {
+		Name       string
+		Topic      *Topic
+		namespace  *Namespace
+		receiver   *receiver
+		receiverMu sync.Mutex
+	}
+
+	// SubscriptionManager provides CRUD functionality for Service Bus Subscription
+	SubscriptionManager struct {
+		*EntityManager
+		Topic *Topic
+	}
+
+	// SubscriptionFeed is a specialized Feed containing Topic Subscriptions
+	SubscriptionFeed struct {
+		*Feed
+		Entries []TopicEntry `xml:"entry"`
+	}
+	// SubscriptionEntry is a specialized Topic Feed Subscription
+	SubscriptionEntry struct {
+		*Entry
+		Content *SubscriptionContent `xml:"content"`
+	}
+
+	// SubscriptionContent is a specialized Subscription body for an Atom Entry
+	SubscriptionContent struct {
+		XMLName                 xml.Name                `xml:"content"`
+		Type                    string                  `xml:"type,attr"`
+		SubscriptionDescription SubscriptionDescription `xml:"SubscriptionDescription"`
+	}
+
+	//<DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
+	//<AccessedAt>0001-01-01T00:00:00</AccessedAt>
+
+	// SubscriptionDescription is the content type for Subscription management requests
+	SubscriptionDescription struct {
+		XMLName                                   xml.Name  `xml:"SubscriptionDescription"`
+		ReceiveBaseDescription
+		BaseEntityDescription
+		DeadLetteringOnFilterEvaluationExceptions *bool     `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
+		AccessedAt                                date.Time `xml:"AccessedAt,omitempty"`
+	}
+
+	// SubscriptionOption represents named options for assisting Subscription creation
+	SubscriptionOption func(topic *SubscriptionDescription) error
+)
+
+// NewSubscriptionManager creates a new SubscriptionManager for a Service Bus Topic
+func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
+	return &SubscriptionManager{
+		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
+		Topic:         t,
+	}
+}
+
+// NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
+func (ns *Namespace) NewSubscriptionManager(topicName, name string) *SubscriptionManager {
+	t := ns.NewTopic(topicName)
+	return &SubscriptionManager{
+		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
+		Topic:         t,
+	}
+}
+
+// Delete deletes a Service Bus Topic entity by name
+func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
+	_, err := sm.EntityManager.Delete(ctx, sm.getResourceURI(name))
+	return err
+}
+
+// Put creates or updates a Service Bus Topic
+func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionOption) (*SubscriptionEntry, error) {
+	subscriptionDescription := new(SubscriptionDescription)
+
+	for _, opt := range opts {
+		if err := opt(subscriptionDescription); err != nil {
+			return nil, err
+		}
+	}
+
+	subscriptionDescription.InstanceMetadataSchema = instanceMetadataSchema
+	subscriptionDescription.ServiceBusSchema = serviceBusSchema
+
+	qe := &SubscriptionEntry{
+		Entry: &Entry{
+			DataServiceSchema:         dataServiceSchema,
+			DataServiceMetadataSchema: dataServiceMetadataSchema,
+			AtomSchema:                atomSchema,
+		},
+		Content: &SubscriptionContent{
+			Type:                    applicationXML,
+			SubscriptionDescription: *subscriptionDescription,
+		},
+	}
+
+	reqBytes, err := xml.Marshal(qe)
+	if err != nil {
+		return nil, err
+	}
+
+	reqBytes = xmlDoc(reqBytes)
+	res, err := sm.EntityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var entry SubscriptionEntry
+	err = xml.Unmarshal(b, &entry)
+	return &entry, err
+}
+
+// List fetches all of the Topics for a Service Bus Namespace
+func (sm *SubscriptionManager) List(ctx context.Context) (*SubscriptionFeed, error) {
+	res, err := sm.EntityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var feed SubscriptionFeed
+	err = xml.Unmarshal(b, &feed)
+	return &feed, err
+}
+
+// Get fetches a Service Bus Topic entity by name
+func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntry, error) {
+	res, err := sm.EntityManager.Get(ctx, sm.getResourceURI(name))
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var entry SubscriptionEntry
+	err = xml.Unmarshal(b, &entry)
+	return &entry, err
+}
+
+func (sm *SubscriptionManager) getResourceURI(name string) string {
+	return "/" + sm.Topic.Name + "/subscriptions/" + name
+}
+
+// NewSubscription creates a new Topic Subscription client
+func (t *Topic) NewSubscription(name string) *Subscription {
+	return &Subscription{
+		namespace: t.namespace,
+		Name:      name,
+		Topic:     t,
+	}
+}
+
+// Receive subscribes for messages sent to the Subscription
+func (s *Subscription) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+	s.receiverMu.Lock()
+	defer s.receiverMu.Unlock()
+
+	if s.receiver != nil {
+		if err := s.receiver.Close(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name + "/Subscriptions/" + s.Name)
+	for _, opt := range opts {
+		if err := opt(receiver); err != nil {
+			return nil, err
+		}
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	s.receiver = receiver
+	return receiver.Listen(handler), err
+}
+
+// Close the underlying connection to Service Bus
+func (s *Subscription) Close(ctx context.Context) error {
+	if s.receiver != nil {
+		return s.receiver.Close(ctx)
+	}
+	return nil
+}
+
+// SubscriptionWithBatchedOperations configures the subscription to batch server-side operations.
+func SubscriptionWithBatchedOperations() SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		s.EnableBatchedOperations = ptrBool(true)
+		return nil
+	}
+}
+
+// SubscriptionWithLockDuration configures the subscription to have a duration of a peek-lock; that is, the amount of
+// time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default
+// value is 1 minute.
+func SubscriptionWithLockDuration(window *time.Duration) SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		if window == nil {
+			duration := time.Duration(1 * time.Minute)
+			window = &duration
+		}
+		s.LockDuration = durationTo8601Seconds(window)
+		return nil
+	}
+}
+
+// SubscriptionWithRequiredSessions will ensure the subscription requires senders and receivers to have sessionIDs
+func SubscriptionWithRequiredSessions() SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		s.RequiresSession = ptrBool(true)
+		return nil
+	}
+}
+
+// SubscriptionWithDeadLetteringOnMessageExpiration will ensure the Subscription sends expired messages to the dead
+// letter queue
+func SubscriptionWithDeadLetteringOnMessageExpiration() SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		s.DeadLetteringOnMessageExpiration = ptrBool(true)
+		return nil
+	}
+}
+
+// SubscriptionWithAutoDeleteOnIdle configures the subscription to automatically delete after the specified idle
+// interval. The minimum duration is 5 minutes.
+func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		if window != nil {
+			if window.Minutes() < 5 {
+				return errors.New("window must be greater than 5 minutes")
+			}
+			s.AutoDeleteOnIdle = durationTo8601Seconds(window)
+		}
+		return nil
+	}
+}
+
+// SubscriptionWithMessageTimeToLive configures the subscription to set a time to live on messages. This is the duration
+// after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+// used when TimeToLive is not set on a message itself. If nil, defaults to 14 days.
+func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionOption {
+	return func(s *SubscriptionDescription) error {
+		if window == nil {
+			duration := time.Duration(14 * 24 * time.Hour)
+			window = &duration
+		}
+		s.DefaultMessageTimeToLive = durationTo8601Seconds(window)
+		return nil
+	}
+}

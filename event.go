@@ -39,9 +39,9 @@ type (
 
 	// EventBatch is a batch of Event Hubs messages to be sent
 	EventBatch struct {
-		Events       []*Event
-		Properties   map[string]interface{}
-		ID           string
+		Events     []*Event
+		Properties map[string]interface{}
+		ID         string
 	}
 )
 

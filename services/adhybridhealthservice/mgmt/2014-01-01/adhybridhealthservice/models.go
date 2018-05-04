@@ -456,12 +456,66 @@ type AddsServiceMember struct {
 	AddsRoles *[]string `json:"addsRoles,omitempty"`
 	// GcReachable - Indicates if the global catalog for this domain is reachable or not.
 	GcReachable *bool `json:"gcReachable,omitempty"`
+	// IsAdvertising - Indicates if the Dc is advertising or not.
+	IsAdvertising *bool `json:"isAdvertising,omitempty"`
 	// PdcReachable - Indicates if the primary domain controller is reachable or not.
 	PdcReachable *bool `json:"pdcReachable,omitempty"`
 	// SysvolState - Indicates if the SYSVOL state is healthy or not.
 	SysvolState *bool `json:"sysvolState,omitempty"`
 	// DcTypes - The list of domain controller types.
 	DcTypes *[]string `json:"dcTypes,omitempty"`
+	// ServiceMemberID - The id of the server.
+	ServiceMemberID *string `json:"serviceMemberId,omitempty"`
+	// ServiceID - The service id to whom this server belongs.
+	ServiceID *string `json:"serviceId,omitempty"`
+	// TenantID - The tenant id to whom this server belongs.
+	TenantID *string `json:"tenantId,omitempty"`
+	// ActiveAlerts - The total number of alerts that are currently active for the server.
+	ActiveAlerts *int32 `json:"activeAlerts,omitempty"`
+	// AdditionalInformation - The additional information, if any, for the server.
+	AdditionalInformation *string `json:"additionalInformation,omitempty"`
+	// CreatedDate - The date time , in UTC, when the server was onboaraded to Azure Active Directory Connect Health.
+	CreatedDate *date.Time `json:"createdDate,omitempty"`
+	// Dimensions - The server specific configuration related dimensions.
+	Dimensions interface{} `json:"dimensions,omitempty"`
+	// Disabled - Indicates if the server is disabled or not.
+	Disabled *bool `json:"disabled,omitempty"`
+	// DisabledReason - The reason for disabling the server. Possible values include: 'None', 'GdprStopCollection', 'DeletedFromPortal', 'DisabledDueToInactivity'
+	DisabledReason ServerDisabledReason `json:"disabledReason,omitempty"`
+	// InstalledQfe - The list of installed QFEs for the server.
+	InstalledQfe interface{} `json:"installedQfe,omitempty"`
+	// LastDisabled - The date and time , in UTC, when the server was last disabled.
+	LastDisabled *date.Time `json:"lastDisabled,omitempty"`
+	// LastReboot - The date and time, in UTC, when the server was last rebooted.
+	LastReboot *date.Time `json:"lastReboot,omitempty"`
+	// LastServerReportedMonitoringLevelChange - The date and time, in UTC, when the server's data monitoring configuration was last changed.
+	LastServerReportedMonitoringLevelChange *date.Time `json:"lastServerReportedMonitoringLevelChange,omitempty"`
+	// LastUpdated - The date and time, in UTC, when the server proeprties were last updated.
+	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
+	// MachineID - The id of the machine.
+	MachineID *string `json:"machineId,omitempty"`
+	// MachineName - The name of the server.
+	MachineName *string `json:"machineName,omitempty"`
+	// MonitoringConfigurationsComputed - The monitoring configuration of the server which determines what activities are monitored by Azure Active Directory Connect Health.
+	MonitoringConfigurationsComputed interface{} `json:"monitoringConfigurationsComputed,omitempty"`
+	// MonitoringConfigurationsCustomized - The customized monitoring configuration of the server which determines what activities are monitored by Azure Active Directory Connect Health.
+	MonitoringConfigurationsCustomized interface{} `json:"monitoringConfigurationsCustomized,omitempty"`
+	// OsName - The name of the operating system installed in the machine.
+	OsName *string `json:"osName,omitempty"`
+	// OsVersion - The version of the operating system installed in the machine.
+	OsVersion *string `json:"osVersion,omitempty"`
+	// Properties - Server specific properties.
+	Properties interface{} `json:"properties,omitempty"`
+	// RecommendedQfes - The list of recommended hotfixes for the server.
+	RecommendedQfes interface{} `json:"recommendedQfes,omitempty"`
+	// ResolvedAlerts - The total count of alerts that are resolved for this server.
+	ResolvedAlerts *int32 `json:"resolvedAlerts,omitempty"`
+	// Role - The service role that is being monitored in the server.
+	Role *string `json:"role,omitempty"`
+	// ServerReportedMonitoringLevel - The monitoring level reported by the server. Possible values include: 'Partial', 'Full', 'Off'
+	ServerReportedMonitoringLevel MonitoringLevel `json:"serverReportedMonitoringLevel,omitempty"`
+	// Status - The health status of the server.
+	Status *string `json:"status,omitempty"`
 }
 
 // AddsServiceMembers the list of  ADDS service members.
@@ -663,6 +717,8 @@ type Alerts struct {
 	autorest.Response `json:"-"`
 	// Value - The value returned by the operation.
 	Value *[]Alert `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
 	// TotalCount - The total count of alert elements.
 	TotalCount *int32 `json:"totalCount,omitempty"`
 	// ContinuationToken - The continuation token for paginated calls.
@@ -1001,8 +1057,8 @@ type DataFreshnessDetails struct {
 
 // Dimension the connector object error.
 type Dimension struct {
-	// Status - The health status for the domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
-	Status HealthStatus `json:"status,omitempty"`
+	// Health - The health status for the domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
+	Health HealthStatus `json:"health,omitempty"`
 	// SimpleProperties - List of service specific configuration properties.
 	SimpleProperties interface{} `json:"simpleProperties,omitempty"`
 	// ActiveAlerts - The count of alerts that are currently active for the service.
@@ -1143,8 +1199,8 @@ type ErrorCount struct {
 	ErrorBucket *string `json:"errorBucket,omitempty"`
 	// Count - The error count.
 	Count *int32 `json:"count,omitempty"`
-	// Trucated - Indicates if the error count is truncated or not.
-	Trucated *bool `json:"trucated,omitempty"`
+	// Truncated - Indicates if the error count is truncated or not.
+	Truncated *bool `json:"truncated,omitempty"`
 }
 
 // ErrorCounts the list of error counts.
@@ -1203,8 +1259,8 @@ type ExportError struct {
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// Message - The export error message.
 	Message *string `json:"message,omitempty"`
-	// ServverErrorDetail - The server error detail.
-	ServverErrorDetail *string `json:"servverErrorDetail,omitempty"`
+	// ServerErrorDetail - The server error detail.
+	ServerErrorDetail *string `json:"serverErrorDetail,omitempty"`
 	// TimeFirstOccured - The date and time when the export error first occured.
 	TimeFirstOccured *date.Time `json:"timeFirstOccured,omitempty"`
 	// RetryCount - The retry count.
@@ -1292,6 +1348,10 @@ type ExportStatuses struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]ExportStatus `json:"value,omitempty"`
+	// TotalCount - The total count of service elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // ExportStatusesIterator provides access to a complete listing of ExportStatus values.
@@ -1427,7 +1487,7 @@ type GlobalConfiguration struct {
 	// NumSavedPwdEvents - The number of saved password events.
 	NumSavedPwdEvents *int32 `json:"numSavedPwdEvents,omitempty"`
 	// FeatureSet - The list of additional feature sets.
-	FeatureSet interface{} `json:"featureSet,omitempty"`
+	FeatureSet *[]Item `json:"featureSet,omitempty"`
 }
 
 // GlobalConfigurations the list of global configurations.
@@ -1502,11 +1562,11 @@ type InboundReplicationNeighbor struct {
 	// SourceDomainController - The name of the source domain controller.
 	SourceDomainController *string `json:"sourceDomainController,omitempty"`
 	// ConsecutiveFailureCount - The number of consecutive faulire counts.
-	ConsecutiveFailureCount *string `json:"consecutiveFailureCount,omitempty"`
+	ConsecutiveFailureCount *int32 `json:"consecutiveFailureCount,omitempty"`
 	// NamingContext - The naming context.
 	NamingContext *string `json:"namingContext,omitempty"`
-	// Status - The health status for the domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
-	Status HealthStatus `json:"status,omitempty"`
+	// Status - The health status for the domain controller
+	Status *int32 `json:"status,omitempty"`
 	// LastAttemptedSync - The last time a sync was attempted on the domain controller.
 	LastAttemptedSync *date.Time `json:"lastAttemptedSync,omitempty"`
 	// LastSuccessfulSync - The last time when a successful sync happened.
@@ -1550,10 +1610,6 @@ type Items struct {
 
 // MergedExportError the merged export error.
 type MergedExportError struct {
-	// ID - The internal Id for the export error.
-	ID *string `json:"id,omitempty"`
-	// IDSet - Indicates if the Id has been set externally or not.
-	IDSet *bool `json:"idSet,omitempty"`
 	// IncomingObjectDisplayName - The incoming object display name.
 	IncomingObjectDisplayName *string `json:"incomingObjectDisplayName,omitempty"`
 	// IncomingObjectType - The incoming object type.
@@ -1596,7 +1652,7 @@ type MergedExportError struct {
 type MergedExportErrors struct {
 	autorest.Response `json:"-"`
 	// Value - The value returned by the operation.
-	Value *[]ExportError `json:"value,omitempty"`
+	Value *[]MergedExportError `json:"value,omitempty"`
 }
 
 // MetricGroup the metric group details.
@@ -2132,16 +2188,12 @@ type ReplicationSummary struct {
 	Site *string `json:"site,omitempty"`
 	// Domain - The domain name for a given domain controller.
 	Domain *string `json:"domain,omitempty"`
-	// Status - The health status for a domain controller. Possible values include: 'Healthy', 'Warning', 'Error', 'NotMonitored', 'Missing'
-	Status HealthStatus `json:"status,omitempty"`
+	// Status - The health status for a domain controller.
+	Status *int32 `json:"status,omitempty"`
 	// LastAttemptedSync - The last time when a sync was attempted for a given domain controller.
 	LastAttemptedSync *date.Time `json:"lastAttemptedSync,omitempty"`
 	// LastSuccessfulSync - The time when the last successful sync happened for a given domain controller.
 	LastSuccessfulSync *date.Time `json:"lastSuccessfulSync,omitempty"`
-	// ServiceID - The service Id.
-	ServiceID *uuid.UUID `json:"serviceId,omitempty"`
-	// ServiceMemberID - The serviceMemberId.
-	ServiceMemberID *uuid.UUID `json:"serviceMemberId,omitempty"`
 	// InboundNeighborCollection - List of individual domain controller neighbor's inbound replication status.
 	InboundNeighborCollection *[]InboundReplicationNeighbor `json:"inboundNeighborCollection,omitempty"`
 }
@@ -2298,6 +2350,10 @@ type ServiceMembers struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - The value returned by the operation.
 	Value *[]ServiceMember `json:"value,omitempty"`
+	// TotalCount - The total count of service elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // ServiceMembersIterator provides access to a complete listing of ServiceMember values.

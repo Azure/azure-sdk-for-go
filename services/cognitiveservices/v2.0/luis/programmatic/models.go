@@ -1128,10 +1128,10 @@ type ListPatternAnyEntityExtractor struct {
 	Value             *[]PatternAnyEntityExtractor `json:"value,omitempty"`
 }
 
-// ListPatternRule ...
-type ListPatternRule struct {
+// ListPatternRuleInfo ...
+type ListPatternRuleInfo struct {
 	autorest.Response `json:"-"`
-	Value             *[]PatternRule `json:"value,omitempty"`
+	Value             *[]PatternRuleInfo `json:"value,omitempty"`
 }
 
 // ListPhraseListFeatureInfo ...
@@ -1208,7 +1208,7 @@ type LuisApp struct {
 	// ModelFeatures - List of model features.
 	ModelFeatures *[]JSONModelFeature `json:"model_features,omitempty"`
 	// Patterns - List of patterns.
-	Patterns *[]Pattern `json:"patterns,omitempty"`
+	Patterns *[]PatternRule `json:"patterns,omitempty"`
 	// Utterances - List of sample utterances.
 	Utterances *[]JSONUtterance `json:"utterances,omitempty"`
 }
@@ -1351,14 +1351,6 @@ type OperationStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Pattern pattern
-type Pattern struct {
-	// Pattern - The pattern text.
-	Pattern *string `json:"pattern,omitempty"`
-	// Intent - The intent's name where the pattern belongs to.
-	Intent *string `json:"intent,omitempty"`
-}
-
 // PatternAny pattern.Any Entity Extractor.
 type PatternAny struct {
 	Name         *string   `json:"name,omitempty"`
@@ -1417,11 +1409,8 @@ type PatternFeatureInfo struct {
 	IsActive *bool `json:"isActive,omitempty"`
 }
 
-// PatternRule pattern rule
+// PatternRule pattern
 type PatternRule struct {
-	autorest.Response `json:"-"`
-	// ID - The pattern ID.
-	ID *uuid.UUID `json:"id,omitempty"`
 	// Pattern - The pattern text.
 	Pattern *string `json:"pattern,omitempty"`
 	// Intent - The intent's name where the pattern belongs to.
@@ -1433,6 +1422,17 @@ type PatternRuleCreateObject struct {
 	// Pattern - The pattern text.
 	Pattern *string `json:"pattern,omitempty"`
 	// Intent - The intent's name which the pattern belongs to.
+	Intent *string `json:"intent,omitempty"`
+}
+
+// PatternRuleInfo pattern rule
+type PatternRuleInfo struct {
+	autorest.Response `json:"-"`
+	// ID - The pattern ID.
+	ID *uuid.UUID `json:"id,omitempty"`
+	// Pattern - The pattern text.
+	Pattern *string `json:"pattern,omitempty"`
+	// Intent - The intent's name where the pattern belongs to.
 	Intent *string `json:"intent,omitempty"`
 }
 

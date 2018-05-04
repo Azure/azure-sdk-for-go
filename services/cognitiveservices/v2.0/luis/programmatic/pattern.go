@@ -41,7 +41,7 @@ func NewPatternClient(azureRegion AzureRegions) PatternClient {
 // appID - the application ID.
 // versionID - the version ID.
 // pattern - the input pattern.
-func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRule, err error) {
+func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (result PatternRuleInfo, err error) {
 	req, err := client.AddPatternPreparer(ctx, appID, versionID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PatternClient", "AddPattern", nil, "Failure preparing request")
@@ -92,7 +92,7 @@ func (client PatternClient) AddPatternSender(req *http.Request) (*http.Response,
 
 // AddPatternResponder handles the response to the AddPattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) AddPatternResponder(resp *http.Response) (result PatternRule, err error) {
+func (client PatternClient) AddPatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -108,7 +108,7 @@ func (client PatternClient) AddPatternResponder(resp *http.Response) (result Pat
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - a JSON array containing patterns.
-func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRule, err error) {
+func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (result ListPatternRuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: patterns,
 			Constraints: []validation.Constraint{{Target: "patterns", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -165,7 +165,7 @@ func (client PatternClient) BatchAddPatternsSender(req *http.Request) (*http.Res
 
 // BatchAddPatternsResponder handles the response to the BatchAddPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (result ListPatternRule, err error) {
+func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -322,7 +322,7 @@ func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result
 // intentID - the intent classifier ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) GetIntentPatterns(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result ListPatternRule, err error) {
+func (client PatternClient) GetIntentPatterns(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
@@ -397,7 +397,7 @@ func (client PatternClient) GetIntentPatternsSender(req *http.Request) (*http.Re
 
 // GetIntentPatternsResponder handles the response to the GetIntentPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (result ListPatternRule, err error) {
+func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -414,7 +414,7 @@ func (client PatternClient) GetIntentPatternsResponder(resp *http.Response) (res
 // versionID - the version ID.
 // skip - the number of entries to skip. Default value is 0.
 // take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client PatternClient) GetPatterns(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternRule, err error) {
+func (client PatternClient) GetPatterns(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternRuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
@@ -488,7 +488,7 @@ func (client PatternClient) GetPatternsSender(req *http.Request) (*http.Response
 
 // GetPatternsResponder handles the response to the GetPatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) GetPatternsResponder(resp *http.Response) (result ListPatternRule, err error) {
+func (client PatternClient) GetPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -505,7 +505,7 @@ func (client PatternClient) GetPatternsResponder(resp *http.Response) (result Li
 // versionID - the version ID.
 // patternID - the pattern ID.
 // pattern - an object representing a pattern.
-func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRule, err error) {
+func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (result PatternRuleInfo, err error) {
 	req, err := client.UpdatePatternPreparer(ctx, appID, versionID, patternID, pattern)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "programmatic.PatternClient", "UpdatePattern", nil, "Failure preparing request")
@@ -557,7 +557,7 @@ func (client PatternClient) UpdatePatternSender(req *http.Request) (*http.Respon
 
 // UpdatePatternResponder handles the response to the UpdatePattern request. The method always
 // closes the http.Response Body.
-func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result PatternRule, err error) {
+func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -573,7 +573,7 @@ func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result 
 // appID - the application ID.
 // versionID - the version ID.
 // patterns - an array represents the patterns.
-func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRule, err error) {
+func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (result ListPatternRuleInfo, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: patterns,
 			Constraints: []validation.Constraint{{Target: "patterns", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -630,7 +630,7 @@ func (client PatternClient) UpdatePatternsSender(req *http.Request) (*http.Respo
 
 // UpdatePatternsResponder handles the response to the UpdatePatterns request. The method always
 // closes the http.Response Body.
-func (client PatternClient) UpdatePatternsResponder(resp *http.Response) (result ListPatternRule, err error) {
+func (client PatternClient) UpdatePatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v16.2.2`
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|signalr | 2018-03-01-preview |
+
 ## `v16.2.1`
 
 ### Updated Services

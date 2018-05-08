@@ -110,6 +110,7 @@ type DatabaseAccountsOfflineRegionFuture = original.DatabaseAccountsOfflineRegio
 type DatabaseAccountsOnlineRegionFuture = original.DatabaseAccountsOnlineRegionFuture
 type DatabaseAccountsPatchFuture = original.DatabaseAccountsPatchFuture
 type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKeyFuture
+type ErrorResponse = original.ErrorResponse
 type FailoverPolicies = original.FailoverPolicies
 type FailoverPolicy = original.FailoverPolicy
 type Location = original.Location

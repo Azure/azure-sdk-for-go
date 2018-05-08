@@ -954,6 +954,14 @@ func (future DatabaseAccountsRegenerateKeyFuture) Result(client DatabaseAccounts
 	return
 }
 
+// ErrorResponse error Response.
+type ErrorResponse struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+}
+
 // FailoverPolicies the list of new failover policies for the failover priority change.
 type FailoverPolicies struct {
 	// FailoverPolicies - List of failover policies.

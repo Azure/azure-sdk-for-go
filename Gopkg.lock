@@ -2,7 +2,6 @@
 
 
 [[projects]]
-  branch = "sas-refactor"
   name = "github.com/Azure/azure-amqp-common-go"
   packages = [
     ".",
@@ -16,13 +15,14 @@
     "sas",
     "uuid"
   ]
-  revision = "37a2f000ef04319ea7168a0bcdf53837cd1d2187"
-  source = "github.com/devigned/azure-amqp-common-go"
+  revision = "7c6d990e663e3d68d2e7db38a2ede690bb9ad002"
+  version = "v0.4.0"
 
 [[projects]]
   name = "github.com/Azure/azure-sdk-for-go"
   packages = [
     "services/resources/mgmt/2017-05-10/resources",
+    "services/servicebus/mgmt/2015-08-01/servicebus",
     "services/servicebus/mgmt/2017-04-01/servicebus",
     "version"
   ]
@@ -90,7 +90,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "640f4622ab692b87c2f3a94265e6f579fe38263d"
+  revision = "f73e4c9ed3b7ebdd5f699a16a880c2b1994e50dd"
 
 [[projects]]
   branch = "master"
@@ -104,6 +104,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "582fa2064fe97ab1f7437988259f34ad14c395b08c9660d71e0e818edadd289d"
+  inputs-digest = "650c8d9022e6e985cd93762ec02122314aa6daeeb2b083b3b3ba3c45a5c64549"
   solver-name = "gps-cdcl"
   solver-version = 1

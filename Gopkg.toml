@@ -13,5 +13,4 @@
 
 [[constraint]]
     name = "github.com/Azure/azure-amqp-common-go"
-    branch = "sas-refactor"
-    source = "github.com/devigned/azure-amqp-common-go"
+    version = "0.4"

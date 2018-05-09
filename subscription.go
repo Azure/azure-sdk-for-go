@@ -52,7 +52,7 @@ type (
 
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
-		XMLName                                   xml.Name  `xml:"SubscriptionDescription"`
+		XMLName xml.Name `xml:"SubscriptionDescription"`
 		ReceiveBaseDescription
 		BaseEntityDescription
 		DeadLetteringOnFilterEvaluationExceptions *bool     `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
@@ -106,7 +106,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 			AtomSchema:                atomSchema,
 		},
 		Content: &SubscriptionContent{
-			Type:                    applicationXML,
+			Type: applicationXML,
 			SubscriptionDescription: *subscriptionDescription,
 		},
 	}
@@ -190,7 +190,7 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler, opts ...Rec
 		}
 	}
 
-	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name + "/Subscriptions/" + s.Name)
+	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name)
 	for _, opt := range opts {
 		if err := opt(receiver); err != nil {
 			return nil, err

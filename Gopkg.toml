@@ -1,6 +1,7 @@
-[[constraint]]
-    name = "github.com/stretchr/testify"
-    version = "1.2.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true
 
 [[constraint]]
     name = "pack.ag/amqp"
@@ -8,12 +9,8 @@
 
 [[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"
-    version = "12.2.0-beta"
+    version = "15"
 
 [[constraint]]
-  name = "github.com/sirupsen/logrus"
-  version = "1.0.4"
-
-[[constraint]]
-  name = "github.com/satori/go.uuid"
-  version = "1.2.0"
+    name = "github.com/Azure/azure-amqp-common-go"
+    version = "0.4"

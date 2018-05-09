@@ -2,13 +2,32 @@
 
 
 [[projects]]
+  name = "github.com/Azure/azure-amqp-common-go"
+  packages = [
+    ".",
+    "auth",
+    "cbs",
+    "conn",
+    "internal",
+    "internal/tracing",
+    "log",
+    "rpc",
+    "sas",
+    "uuid"
+  ]
+  revision = "7c6d990e663e3d68d2e7db38a2ede690bb9ad002"
+  version = "v0.4.0"
+
+[[projects]]
   name = "github.com/Azure/azure-sdk-for-go"
   packages = [
     "services/resources/mgmt/2017-05-10/resources",
-    "services/servicebus/mgmt/2017-04-01/servicebus"
+    "services/servicebus/mgmt/2015-08-01/servicebus",
+    "services/servicebus/mgmt/2017-04-01/servicebus",
+    "version"
   ]
-  revision = "eae258195456be76b2ec9ad2ee2ab63cdda365d9"
-  version = "v12.2.0-beta"
+  revision = "fad8443a79b0e755c18c3bec29a8d2bedab0b421"
+  version = "v15.3.0"
 
 [[projects]]
   name = "github.com/Azure/go-autorest"
@@ -20,8 +39,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "d4e6b95c12a08b4de2d48b45d5b4d594e5d32fab"
-  version = "v9.9.0"
+  revision = "eaa7994b2278094c904d31993d26f56324db3052"
+  version = "v10.8.1"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -32,8 +51,18 @@
 [[projects]]
   name = "github.com/dgrijalva/jwt-go"
   packages = ["."]
-  revision = "dbeaa9332f19a944acb5736b4456cfcc02140e29"
-  version = "v3.1.0"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
+  name = "github.com/opentracing/opentracing-go"
+  packages = [
+    ".",
+    "ext",
+    "log"
+  ]
+  revision = "1949ddbfd147afd4d964a9f00b24eb291e0e7c38"
+  version = "v1.0.2"
 
 [[projects]]
   name = "github.com/pkg/errors"
@@ -48,18 +77,6 @@
   version = "v1.0.0"
 
 [[projects]]
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
-  version = "v1.2.0"
-
-[[projects]]
-  name = "github.com/sirupsen/logrus"
-  packages = ["."]
-  revision = "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
-  version = "v1.0.4"
-
-[[projects]]
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
@@ -71,18 +88,9 @@
 
 [[projects]]
   branch = "master"
-  name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
-  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
-  revision = "8f27ce8a604014414f8dfffc25cbcde83a3f2216"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "f73e4c9ed3b7ebdd5f699a16a880c2b1994e50dd"
 
 [[projects]]
   branch = "master"
@@ -91,11 +99,11 @@
     ".",
     "internal/testconn"
   ]
-  revision = "156a96cbd71de6a80dd774d60de212f31c7272c7"
+  revision = "1961b4812356984db063a6cb3419b70d4375383b"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "14fc79857167a37f58387ca518cc8fe0392b6fce931ea0c216d4a42eccb3f286"
+  inputs-digest = "650c8d9022e6e985cd93762ec02122314aa6daeeb2b083b3b3ba3c45a5c64549"
   solver-name = "gps-cdcl"
   solver-version = 1

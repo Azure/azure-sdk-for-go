@@ -2,17 +2,61 @@ package servicebus
 
 import (
 	"context"
+	"encoding/xml"
 	"errors"
+	"io/ioutil"
+	"sync"
 	"time"
-
-	mgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
-	"github.com/Azure/go-autorest/autorest"
-	log "github.com/sirupsen/logrus"
 )
 
 type (
+	// Queue represents a Service Bus Queue entity, which offers First In, First Out (FIFO) message delivery to one or
+	// more competing consumers. That is, messages are typically expected to be received and processed by the receivers
+	// in the order in which they were added to the queue, and each message is received and processed by only one
+	// message consumer.
+	Queue struct {
+		Name       string
+		namespace  *Namespace
+		sender     *sender
+		receiver   *receiver
+		receiverMu sync.Mutex
+		senderMu   sync.Mutex
+	}
+
+	// QueueManager provides CRUD functionality for Service Bus Queues
+	QueueManager struct {
+		*EntityManager
+	}
+
+	// QueueFeed is a specialized Feed containing QueueEntries
+	QueueFeed struct {
+		*Feed
+		Entries []QueueEntry `xml:"entry"`
+	}
+
+	// QueueEntry is a specialized Queue Feed Entry
+	QueueEntry struct {
+		*Entry
+		Content *QueueContent `xml:"content"`
+	}
+
+	// QueueContent is a specialized Queue body for an Atom Entry
+	QueueContent struct {
+		XMLName          xml.Name         `xml:"content"`
+		Type             string           `xml:"type,attr"`
+		QueueDescription QueueDescription `xml:"QueueDescription"`
+	}
+
+	// QueueDescription is the content type for Queue management requests
+	QueueDescription struct {
+		XMLName xml.Name `xml:"QueueDescription"`
+		ReceiveBaseDescription
+		SendBaseDescription
+		BaseEntityDescription
+	}
+
 	// QueueOption represents named options for assisting queue creation
-	QueueOption func(queue *mgmt.SBQueue) error
+	QueueOption func(queue *QueueDescription) error
 )
 
 /*
@@ -36,7 +80,7 @@ all copies of the same message are handled by the same message broker and, thus,
 eliminate duplicate messages
 */
 func QueueWithPartitioning() QueueOption {
-	return func(queue *mgmt.SBQueue) error {
+	return func(queue *QueueDescription) error {
 		queue.EnablePartitioning = ptrBool(true)
 		return nil
 	}
@@ -45,12 +89,12 @@ func QueueWithPartitioning() QueueOption {
 // QueueWithMaxSizeInMegabytes configures the maximum size of the queue in megabytes (1 * 1024 - 5 * 1024), which is the size of
 // the memory allocated for the queue. Default is 1 MB (1 * 1024).
 func QueueWithMaxSizeInMegabytes(size int) QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		if size < 1*Megabytes || size > 5*Megabytes {
 			return errors.New("QueueWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
 		}
-		size32 := int32(size)
-		q.MaxSizeInMegabytes = &size32
+		int32Size := int32(size)
+		q.MaxSizeInMegabytes = &int32Size
 		return nil
 	}
 }
@@ -58,7 +102,7 @@ func QueueWithMaxSizeInMegabytes(size int) QueueOption {
 // QueueWithDuplicateDetection configures the queue to detect duplicates for a given time window. If window
 // is not specified, then it uses the default of 10 minutes.
 func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		q.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
 			q.DuplicateDetectionHistoryTimeWindow = durationTo8601Seconds(window)
@@ -69,7 +113,7 @@ func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
 
 // QueueWithRequiredSessions will ensure the queue requires senders and receivers to have sessionIDs
 func QueueWithRequiredSessions() QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		q.RequiresSession = ptrBool(true)
 		return nil
 	}
@@ -77,7 +121,7 @@ func QueueWithRequiredSessions() QueueOption {
 
 // QueueWithDeadLetteringOnMessageExpiration will ensure the queue sends expired messages to the dead letter queue
 func QueueWithDeadLetteringOnMessageExpiration() QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		q.DeadLetteringOnMessageExpiration = ptrBool(true)
 		return nil
 	}
@@ -86,7 +130,7 @@ func QueueWithDeadLetteringOnMessageExpiration() QueueOption {
 // QueueWithAutoDeleteOnIdle configures the queue to automatically delete after the specified idle interval. The
 // minimum duration is 5 minutes.
 func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		if window != nil {
 			if window.Minutes() < 5 {
 				return errors.New("QueueWithAutoDeleteOnIdle: window must be greater than 5 minutes")
@@ -101,9 +145,9 @@ func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
 // the message expires, starting from when the message is sent to Service Bus. This is the default value used when
 // TimeToLive is not set on a message itself. If nil, defaults to 14 days.
 func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		if window == nil {
-			duration := 14 * 24 * time.Hour
+			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
 		q.DefaultMessageTimeToLive = durationTo8601Seconds(window)
@@ -115,9 +159,9 @@ func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 // message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
 // minute.
 func QueueWithLockDuration(window *time.Duration) QueueOption {
-	return func(q *mgmt.SBQueue) error {
+	return func(q *QueueDescription) error {
 		if window == nil {
-			duration := 1 * time.Minute
+			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)
@@ -125,44 +169,172 @@ func QueueWithLockDuration(window *time.Duration) QueueOption {
 	}
 }
 
-// EnsureQueue makes sure a queue exists in the given namespace. If the queue doesn't exist, it will create it with
-// the specified name and properties. If properties are not specified, it will build a default partitioned queue.
-func (sb *serviceBus) EnsureQueue(ctx context.Context, name string, opts ...QueueOption) (*mgmt.SBQueue, error) {
-	log.Debugf("ensuring exists queue %s", name)
-	queueClient := sb.getQueueMgmtClient()
-	queue, err := queueClient.Get(ctx, sb.resourceGroup, sb.namespace, name)
-
-	// TODO: check if the queue properties are the same as the requested. If not, throw error or build new queue??
-	if err != nil {
-		newQueue := &mgmt.SBQueue{
-			Name:              &name,
-			SBQueueProperties: &mgmt.SBQueueProperties{},
-		}
-
-		for _, opt := range opts {
-			err = opt(newQueue)
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		queue, err = queueClient.CreateOrUpdate(ctx, sb.resourceGroup, sb.namespace, name, *newQueue)
-		if err != nil {
-			return nil, err
-		}
+// NewQueueManager creates a new QueueManager for a Service Bus Namespace
+func (ns *Namespace) NewQueueManager() *QueueManager {
+	return &QueueManager{
+		EntityManager: NewEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
 	}
-	return &queue, nil
 }
 
-// DeleteQueue deletes an existing queue
-func (sb *serviceBus) DeleteQueue(ctx context.Context, queueName string) error {
-	queueClient := sb.getQueueMgmtClient()
-	_, err := queueClient.Delete(ctx, sb.resourceGroup, sb.namespace, queueName)
+// Delete deletes a Service Bus Queue entity by name
+func (qm *QueueManager) Delete(ctx context.Context, name string) error {
+	_, err := qm.EntityManager.Delete(ctx, "/"+name)
 	return err
 }
 
-func (sb *serviceBus) getQueueMgmtClient() mgmt.QueuesClient {
-	client := mgmt.NewQueuesClientWithBaseURI(sb.environment.ResourceManagerEndpoint, sb.subscriptionID)
-	client.Authorizer = autorest.NewBearerAuthorizer(sb.armToken)
-	return client
+// Put creates or updates a Service Bus Queue
+func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOption) (*QueueEntry, error) {
+	queueDescription := new(QueueDescription)
+
+	for _, opt := range opts {
+		if err := opt(queueDescription); err != nil {
+			return nil, err
+		}
+	}
+
+	queueDescription.InstanceMetadataSchema = instanceMetadataSchema
+	queueDescription.ServiceBusSchema = serviceBusSchema
+
+	qe := &QueueEntry{
+		Entry: &Entry{
+			DataServiceSchema:         dataServiceSchema,
+			DataServiceMetadataSchema: dataServiceMetadataSchema,
+			AtomSchema:                atomSchema,
+		},
+		Content: &QueueContent{
+			Type:             applicationXML,
+			QueueDescription: *queueDescription,
+		},
+	}
+
+	reqBytes, err := xml.Marshal(qe)
+	if err != nil {
+		return nil, err
+	}
+
+	reqBytes = xmlDoc(reqBytes)
+	res, err := qm.EntityManager.Put(ctx, "/"+name, reqBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var entry QueueEntry
+	err = xml.Unmarshal(b, &entry)
+	return &entry, err
+}
+
+// List fetches all of the queues for a Service Bus Namespace
+func (qm *QueueManager) List(ctx context.Context) (*QueueFeed, error) {
+	res, err := qm.EntityManager.Get(ctx, `/$Resources/Queues`)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var feed QueueFeed
+	err = xml.Unmarshal(b, &feed)
+	return &feed, err
+}
+
+// Get fetches a Service Bus Queue entity by name
+func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntry, error) {
+	res, err := qm.EntityManager.Get(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var entry QueueEntry
+	err = xml.Unmarshal(b, &entry)
+	return &entry, err
+}
+
+// NewQueue creates a new Queue Sender / Receiver
+func (ns *Namespace) NewQueue(name string) *Queue {
+	return &Queue{
+		namespace: ns,
+		Name:      name,
+	}
+}
+
+// Send sends messages to the Queue
+func (q *Queue) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+	err := q.ensureSender(ctx)
+	if err != nil {
+		return err
+	}
+	return q.sender.Send(ctx, event, opts...)
+}
+
+// Receive subscribes for messages sent to the Queue
+func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+	q.receiverMu.Lock()
+	defer q.receiverMu.Unlock()
+
+	if q.receiver != nil {
+		if err := q.receiver.Close(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	receiver, err := q.namespace.newReceiver(ctx, q.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, opt := range opts {
+		if err := opt(receiver); err != nil {
+			return nil, err
+		}
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	q.receiver = receiver
+	return receiver.Listen(handler), err
+}
+
+// Close the underlying connection to Service Bus
+func (q *Queue) Close(ctx context.Context) error {
+	if q.receiver != nil {
+		if err := q.receiver.Close(ctx); err != nil {
+			_ = q.sender.Close(ctx)
+			return err
+		}
+	}
+
+	if q.sender != nil {
+		return q.sender.Close(ctx)
+	}
+
+	return nil
+}
+
+func (q *Queue) ensureSender(ctx context.Context) error {
+	q.senderMu.Lock()
+	defer q.senderMu.Unlock()
+
+	if q.sender == nil {
+		s, err := q.namespace.newSender(ctx, q.Name)
+		if err != nil {
+			return err
+		}
+		q.sender = s
+	}
+	return nil
 }

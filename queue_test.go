@@ -494,7 +494,6 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 	count := 0
 	handler := func(ctx context.Context, event *Event) error {
 		if !assert.Equal(t, messages[count], string(event.Data)) {
-			fmt.Println("didn't match")
 			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
 		}
 		count++

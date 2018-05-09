@@ -437,7 +437,6 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 }
 
 func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
-	suite.T().Skip("Add Required Sessions test back after Service Bus team changes the functionality to be AMQP spec compliant")
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"TestSendAndReceiveSession": testQueueWithRequiredSessionSendAndReceive,
 	}
@@ -468,12 +467,6 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 				suite.cleanupQueue(queueName)
 			}()
 			testFunc(ctx, t, q)
-
-			time.Sleep(5 * time.Second)
-			qd, err := qm.Get(ctx, queueName)
-			if assert.NoError(t, err) {
-				assert.Zero(t, *qd.Content.QueueDescription.MessageCount, "message count for queue should be zero")
-			}
 		}
 
 		suite.T().Run(name, setupTestTeardown)
@@ -501,6 +494,7 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 	count := 0
 	handler := func(ctx context.Context, event *Event) error {
 		if !assert.Equal(t, messages[count], string(event.Data)) {
+			fmt.Println("didn't match")
 			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
 		}
 		count++
@@ -540,7 +534,7 @@ func waitUntil(t *testing.T, wg *sync.WaitGroup, d time.Duration) {
 	case <-done:
 		return
 	case <-time.After(d):
-		t.Error("took longer than " + fmtDuration(d))
+		t.Fatal("took longer than " + fmtDuration(d))
 	}
 }
 

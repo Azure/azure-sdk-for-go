@@ -290,17 +290,7 @@ func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOp
 		}
 	}
 
-	receiver, err := q.namespace.newReceiver(ctx, q.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, opt := range opts {
-		if err := opt(receiver); err != nil {
-			return nil, err
-		}
-	}
-
+	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)
 	if err != nil {
 		return nil, err
 	}

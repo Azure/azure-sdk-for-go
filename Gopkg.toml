@@ -3,9 +3,10 @@
   go-tests = true
   unused-packages = true
 
-[[constraint]]
+[[override]]
     name = "pack.ag/amqp"
-    branch = "master"
+    source = "github.com/devigned/amqp"
+    branch = "feature/session-filter"
 
 [[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"

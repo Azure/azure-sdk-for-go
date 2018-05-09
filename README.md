@@ -1,3 +1,77 @@
+# Microsoft Azure Service Bus Client for Golang
+
+Microsoft Azure Service Bus is a reliable cloud messaging service (MaaS) which simplifies enterprise cloud messaging. It
+enables developers to build scalable cloud solutions and implement complex messaging workflows over an efficient binary
+protocol called AMQP.
+
+This library provides a simple interface for sending, receiving and managing Service Bus entities such as Queues, Topics
+and Subscriptions.
+
+For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/en-us/services/service-bus/).
+
+This library is a pure Golang implementation of Azure Event Hubs over AMQP.
+
+
+## Preview of Service Bus for Golang
+This library is currently a preview. There may be breaking interface changes until it reaches semantic version `v1.0.0`. 
+If you run into an issue, please don't hesitate to log a 
+[new issue](https://github.com/Azure/azure-service-bus-go/issues/new) or open a pull request.
+
+## Installing the library
+To more reliably manage dependencies in your application we recommend [golang/dep](https://github.com/golang/dep).
+
+With dep:
+```
+dep ensure -add github.com/Azure/azure-service-bus-go
+```
+
+With go get:
+```
+go get -u github.com/Azure/azure-service-bus-go/...
+```
+
+If you need to install Go, follow [the official instructions](https://golang.org/dl/)
+
+## Using Service Bus
+In this section we'll cover some basics of the library to help you get started.
+
+This library has two main dependencies, [vcabbage/amqp](https://github.com/vcabbage/amqp) and 
+[Azure AMQP Common](https://github.com/Azure/azure-amqp-common-go). The former provides the AMQP protocol implementation
+and the latter provides some common authentication, persistence and request-response message flows.
+
+### Quick start
+Let's send and receive `"hello, world!"`.
+```go
+// Connect
+connStr := mustGetenv("SERVICEBUS_CONNECTION_STRING")
+ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+handleErr(err)
+
+queueName := "helloworld"
+// Create the queue if it doesn't exist
+qm := ns.NewQueueManager()
+_, err := qm.Put(context.Background(), queueName)
+handleErr(err)
+q := ns.NewQueue(queueName)
+
+// Send message to queue
+err := q.Send(context.Background(), servicebus.NewEventFromString("Hello World!"))
+handleErr(err)
+
+// Receive message from queue
+listenHandle, err := q.Receive(context.Background())
+defer listenHandle.Close(context.Background)
+handleErr(err)
+
+// Wait for a signal to quit:
+signalChan := make(chan os.Signal, 1)
+signal.Notify(signalChan, os.Interrupt, os.Kill)
+<-signalChan
+```
+
+## Examples
+- [HelloWorld: Producer and Consumer](./_examples/helloworld): an example of sending and receiving messages from a 
+Service Bus Queue.
 
 # Contributing
 

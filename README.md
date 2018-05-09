@@ -59,9 +59,13 @@ err := q.Send(context.Background(), servicebus.NewEventFromString("Hello World!"
 handleErr(err)
 
 // Receive message from queue
-listenHandle, err := q.Receive(context.Background())
-defer listenHandle.Close(context.Background)
+listenHandle, err := q.Receive(context.Background(), 
+	func(ctx context.Context, event *servicebus.Event) error {
+		fmt.Println(string(event.Data))
+		return nil
+	})
 handleErr(err)
+defer listenHandle.Close(context.Background)
 
 // Wait for a signal to quit:
 signalChan := make(chan os.Signal, 1)

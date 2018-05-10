@@ -492,6 +492,7 @@ type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
+type AutoOSUpgradePolicy = original.AutoOSUpgradePolicy
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetProperties = original.AvailabilitySetProperties

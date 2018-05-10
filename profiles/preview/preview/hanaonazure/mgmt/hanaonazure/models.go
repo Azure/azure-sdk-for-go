@@ -31,17 +31,24 @@ type HanaHardwareTypeNamesEnum = original.HanaHardwareTypeNamesEnum
 
 const (
 	CiscoUCS HanaHardwareTypeNamesEnum = original.CiscoUCS
+	HPE      HanaHardwareTypeNamesEnum = original.HPE
 )
 
 type HanaInstanceSizeNamesEnum = original.HanaInstanceSizeNamesEnum
 
 const (
-	S144  HanaInstanceSizeNamesEnum = original.S144
-	S144m HanaInstanceSizeNamesEnum = original.S144m
-	S192  HanaInstanceSizeNamesEnum = original.S192
-	S192m HanaInstanceSizeNamesEnum = original.S192m
-	S72   HanaInstanceSizeNamesEnum = original.S72
-	S72m  HanaInstanceSizeNamesEnum = original.S72m
+	S144   HanaInstanceSizeNamesEnum = original.S144
+	S144m  HanaInstanceSizeNamesEnum = original.S144m
+	S192   HanaInstanceSizeNamesEnum = original.S192
+	S192m  HanaInstanceSizeNamesEnum = original.S192m
+	S384   HanaInstanceSizeNamesEnum = original.S384
+	S384m  HanaInstanceSizeNamesEnum = original.S384m
+	S384xm HanaInstanceSizeNamesEnum = original.S384xm
+	S576   HanaInstanceSizeNamesEnum = original.S576
+	S72    HanaInstanceSizeNamesEnum = original.S72
+	S72m   HanaInstanceSizeNamesEnum = original.S72m
+	S768   HanaInstanceSizeNamesEnum = original.S768
+	S960   HanaInstanceSizeNamesEnum = original.S960
 )
 
 type Disk = original.Disk

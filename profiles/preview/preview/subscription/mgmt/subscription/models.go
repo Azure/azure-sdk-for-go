@@ -26,33 +26,13 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type FactoryClient = original.FactoryClient
-
-func NewFactoryClient() FactoryClient {
-	return original.NewFactoryClient()
-}
-func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
-	return original.NewFactoryClientWithBaseURI(baseURI)
-}
-
 type OfferType = original.OfferType
 
 const (
 	MSAZR0017P OfferType = original.MSAZR0017P
 	MSAZR0148P OfferType = original.MSAZR0148P
 )
-
-func PossibleOfferTypeValues() []OfferType {
-	return original.PossibleOfferTypeValues()
-}
 
 type SpendingLimit = original.SpendingLimit
 
@@ -61,10 +41,6 @@ const (
 	Off              SpendingLimit = original.Off
 	On               SpendingLimit = original.On
 )
-
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
 
 type State = original.State
 
@@ -75,10 +51,6 @@ const (
 	PastDue  State = original.PastDue
 	Warned   State = original.Warned
 )
-
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 
 type AdPrincipal = original.AdPrincipal
 type CreationParameters = original.CreationParameters
@@ -102,34 +74,49 @@ type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
 type OperationsClient = original.OperationsClient
+type OperationsGroupClient = original.OperationsGroupClient
+type SubscriptionsClient = original.SubscriptionsClient
+type TenantsClient = original.TenantsClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewFactoryClient() FactoryClient {
+	return original.NewFactoryClient()
+}
+func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
+	return original.NewFactoryClientWithBaseURI(baseURI)
+}
+func PossibleOfferTypeValues() []OfferType {
+	return original.PossibleOfferTypeValues()
+}
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-
-type OperationsGroupClient = original.OperationsGroupClient
-
 func NewOperationsGroupClient() OperationsGroupClient {
 	return original.NewOperationsGroupClient()
 }
 func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
 	return original.NewOperationsGroupClientWithBaseURI(baseURI)
 }
-
-type SubscriptionsClient = original.SubscriptionsClient
-
 func NewSubscriptionsClient() SubscriptionsClient {
 	return original.NewSubscriptionsClient()
 }
 func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 	return original.NewSubscriptionsClientWithBaseURI(baseURI)
 }
-
-type TenantsClient = original.TenantsClient
-
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
 }

@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DomainServiceOperationsClient = original.DomainServiceOperationsClient
-
-func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClient(subscriptionID)
-}
-func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
-	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DomainServicesClient = original.DomainServicesClient
-
-func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClient(subscriptionID)
-}
-func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
-	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ExternalAccess = original.ExternalAccess
 
 const (
@@ -59,20 +35,12 @@ const (
 	Enabled  ExternalAccess = original.Enabled
 )
 
-func PossibleExternalAccessValues() []ExternalAccess {
-	return original.PossibleExternalAccessValues()
-}
-
 type Ldaps = original.Ldaps
 
 const (
 	LdapsDisabled Ldaps = original.LdapsDisabled
 	LdapsEnabled  Ldaps = original.LdapsEnabled
 )
-
-func PossibleLdapsValues() []Ldaps {
-	return original.PossibleLdapsValues()
-}
 
 type DomainService = original.DomainService
 type DomainServiceListResult = original.DomainServiceListResult
@@ -87,6 +55,30 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type Resource = original.Resource
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClient(subscriptionID)
+}
+func NewDomainServiceOperationsClientWithBaseURI(baseURI string, subscriptionID string) DomainServiceOperationsClient {
+	return original.NewDomainServiceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDomainServicesClient(subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClient(subscriptionID)
+}
+func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) DomainServicesClient {
+	return original.NewDomainServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleExternalAccessValues() []ExternalAccess {
+	return original.PossibleExternalAccessValues()
+}
+func PossibleLdapsValues() []Ldaps {
+	return original.PossibleLdapsValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

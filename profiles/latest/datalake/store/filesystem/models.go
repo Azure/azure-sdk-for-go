@@ -26,29 +26,12 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
-}
-
 type Client = original.Client
-
-func NewClient() Client {
-	return original.NewClient()
-}
-
 type AppendModeType = original.AppendModeType
 
 const (
 	Autocreate AppendModeType = original.Autocreate
 )
-
-func PossibleAppendModeTypeValues() []AppendModeType {
-	return original.PossibleAppendModeTypeValues()
-}
 
 type Exception = original.Exception
 
@@ -66,10 +49,6 @@ const (
 	ExceptionUnsupportedOperationException Exception = original.ExceptionUnsupportedOperationException
 )
 
-func PossibleExceptionValues() []Exception {
-	return original.PossibleExceptionValues()
-}
-
 type ExpiryOptionType = original.ExpiryOptionType
 
 const (
@@ -79,20 +58,12 @@ const (
 	RelativeToNow          ExpiryOptionType = original.RelativeToNow
 )
 
-func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
-	return original.PossibleExpiryOptionTypeValues()
-}
-
 type FileType = original.FileType
 
 const (
 	DIRECTORY FileType = original.DIRECTORY
 	FILE      FileType = original.FILE
 )
-
-func PossibleFileTypeValues() []FileType {
-	return original.PossibleFileTypeValues()
-}
 
 type SyncFlag = original.SyncFlag
 
@@ -101,10 +72,6 @@ const (
 	DATA     SyncFlag = original.DATA
 	METADATA SyncFlag = original.METADATA
 )
-
-func PossibleSyncFlagValues() []SyncFlag {
-	return original.PossibleSyncFlagValues()
-}
 
 type ACLStatus = original.ACLStatus
 type ACLStatusResult = original.ACLStatusResult
@@ -130,6 +97,30 @@ type FileStatusProperties = original.FileStatusProperties
 type FileStatusResult = original.FileStatusResult
 type ReadCloser = original.ReadCloser
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlsFileSystemDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlsFileSystemDNSSuffix)
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func PossibleAppendModeTypeValues() []AppendModeType {
+	return original.PossibleAppendModeTypeValues()
+}
+func PossibleExceptionValues() []Exception {
+	return original.PossibleExceptionValues()
+}
+func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
+	return original.PossibleExpiryOptionTypeValues()
+}
+func PossibleFileTypeValues() []FileType {
+	return original.PossibleFileTypeValues()
+}
+func PossibleSyncFlagValues() []SyncFlag {
+	return original.PossibleSyncFlagValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }

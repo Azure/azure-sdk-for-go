@@ -22,120 +22,28 @@ package apimanagement
 import original "github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement"
 
 type APIClient = original.APIClient
-
-func NewAPIClient() APIClient {
-	return original.NewAPIClient()
-}
-
 type APIExportClient = original.APIExportClient
-
-func NewAPIExportClient() APIExportClient {
-	return original.NewAPIExportClient()
-}
-
 type APIOperationClient = original.APIOperationClient
-
-func NewAPIOperationClient() APIOperationClient {
-	return original.NewAPIOperationClient()
-}
-
 type APIOperationPolicyClient = original.APIOperationPolicyClient
-
-func NewAPIOperationPolicyClient() APIOperationPolicyClient {
-	return original.NewAPIOperationPolicyClient()
-}
-
 type APIPolicyClient = original.APIPolicyClient
-
-func NewAPIPolicyClient() APIPolicyClient {
-	return original.NewAPIPolicyClient()
-}
-
 type APIProductClient = original.APIProductClient
-
-func NewAPIProductClient() APIProductClient {
-	return original.NewAPIProductClient()
-}
-
 type APISchemaClient = original.APISchemaClient
-
-func NewAPISchemaClient() APISchemaClient {
-	return original.NewAPISchemaClient()
-}
-
 type AuthorizationServerClient = original.AuthorizationServerClient
-
-func NewAuthorizationServerClient() AuthorizationServerClient {
-	return original.NewAuthorizationServerClient()
-}
-
 type BackendClient = original.BackendClient
-
-func NewBackendClient() BackendClient {
-	return original.NewBackendClient()
-}
-
 type CertificateClient = original.CertificateClient
-
-func NewCertificateClient() CertificateClient {
-	return original.NewCertificateClient()
-}
-
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults() BaseClient {
-	return original.NewWithoutDefaults()
-}
-
 type DelegationSettingsClient = original.DelegationSettingsClient
-
-func NewDelegationSettingsClient() DelegationSettingsClient {
-	return original.NewDelegationSettingsClient()
-}
-
 type EmailTemplateClient = original.EmailTemplateClient
-
-func NewEmailTemplateClient() EmailTemplateClient {
-	return original.NewEmailTemplateClient()
-}
-
 type GroupClient = original.GroupClient
-
-func NewGroupClient() GroupClient {
-	return original.NewGroupClient()
-}
-
 type GroupUserClient = original.GroupUserClient
-
-func NewGroupUserClient() GroupUserClient {
-	return original.NewGroupUserClient()
-}
-
 type IdentityProviderClient = original.IdentityProviderClient
-
-func NewIdentityProviderClient() IdentityProviderClient {
-	return original.NewIdentityProviderClient()
-}
-
 type LoggerClient = original.LoggerClient
-
-func NewLoggerClient() LoggerClient {
-	return original.NewLoggerClient()
-}
-
 type APIType = original.APIType
 
 const (
 	HTTP APIType = original.HTTP
 	Soap APIType = original.Soap
 )
-
-func PossibleAPITypeValues() []APIType {
-	return original.PossibleAPITypeValues()
-}
 
 type AsyncOperationStatus = original.AsyncOperationStatus
 
@@ -145,10 +53,6 @@ const (
 	Started    AsyncOperationStatus = original.Started
 	Succeeded  AsyncOperationStatus = original.Succeeded
 )
-
-func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
-	return original.PossibleAsyncOperationStatusValues()
-}
 
 type AuthorizationMethod = original.AuthorizationMethod
 
@@ -163,20 +67,12 @@ const (
 	TRACE   AuthorizationMethod = original.TRACE
 )
 
-func PossibleAuthorizationMethodValues() []AuthorizationMethod {
-	return original.PossibleAuthorizationMethodValues()
-}
-
 type BackendProtocol = original.BackendProtocol
 
 const (
 	BackendProtocolHTTP BackendProtocol = original.BackendProtocolHTTP
 	BackendProtocolSoap BackendProtocol = original.BackendProtocolSoap
 )
-
-func PossibleBackendProtocolValues() []BackendProtocol {
-	return original.PossibleBackendProtocolValues()
-}
 
 type BearerTokenSendingMethod = original.BearerTokenSendingMethod
 
@@ -185,20 +81,12 @@ const (
 	Query               BearerTokenSendingMethod = original.Query
 )
 
-func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
-	return original.PossibleBearerTokenSendingMethodValues()
-}
-
 type ClientAuthenticationMethod = original.ClientAuthenticationMethod
 
 const (
 	Basic ClientAuthenticationMethod = original.Basic
 	Body  ClientAuthenticationMethod = original.Body
 )
-
-func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
-	return original.PossibleClientAuthenticationMethodValues()
-}
 
 type ContentFormat = original.ContentFormat
 
@@ -211,10 +99,6 @@ const (
 	WsdlLink        ContentFormat = original.WsdlLink
 )
 
-func PossibleContentFormatValues() []ContentFormat {
-	return original.PossibleContentFormatValues()
-}
-
 type GrantType = original.GrantType
 
 const (
@@ -224,10 +108,6 @@ const (
 	ResourceOwnerPassword GrantType = original.ResourceOwnerPassword
 )
 
-func PossibleGrantTypeValues() []GrantType {
-	return original.PossibleGrantTypeValues()
-}
-
 type GroupType = original.GroupType
 
 const (
@@ -235,10 +115,6 @@ const (
 	External GroupType = original.External
 	System   GroupType = original.System
 )
-
-func PossibleGroupTypeValues() []GroupType {
-	return original.PossibleGroupTypeValues()
-}
 
 type IdentityProviderType = original.IdentityProviderType
 
@@ -251,10 +127,6 @@ const (
 	Twitter   IdentityProviderType = original.Twitter
 )
 
-func PossibleIdentityProviderTypeValues() []IdentityProviderType {
-	return original.PossibleIdentityProviderTypeValues()
-}
-
 type KeyType = original.KeyType
 
 const (
@@ -262,19 +134,11 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-
 type LoggerType = original.LoggerType
 
 const (
 	AzureEventHub LoggerType = original.AzureEventHub
 )
-
-func PossibleLoggerTypeValues() []LoggerType {
-	return original.PossibleLoggerTypeValues()
-}
 
 type PolicyScopeContract = original.PolicyScopeContract
 
@@ -286,10 +150,6 @@ const (
 	Tenant    PolicyScopeContract = original.Tenant
 )
 
-func PossiblePolicyScopeContractValues() []PolicyScopeContract {
-	return original.PossiblePolicyScopeContractValues()
-}
-
 type ProductState = original.ProductState
 
 const (
@@ -297,20 +157,12 @@ const (
 	Published    ProductState = original.Published
 )
 
-func PossibleProductStateValues() []ProductState {
-	return original.PossibleProductStateValues()
-}
-
 type Protocol = original.Protocol
 
 const (
 	ProtocolHTTP  Protocol = original.ProtocolHTTP
 	ProtocolHTTPS Protocol = original.ProtocolHTTPS
 )
-
-func PossibleProtocolValues() []Protocol {
-	return original.PossibleProtocolValues()
-}
 
 type SubscriptionState = original.SubscriptionState
 
@@ -322,10 +174,6 @@ const (
 	Submitted SubscriptionState = original.Submitted
 	Suspended SubscriptionState = original.Suspended
 )
-
-func PossibleSubscriptionStateValues() []SubscriptionState {
-	return original.PossibleSubscriptionStateValues()
-}
 
 type TemplateName = original.TemplateName
 
@@ -346,20 +194,12 @@ const (
 	RequestDeveloperNotificationMessage               TemplateName = original.RequestDeveloperNotificationMessage
 )
 
-func PossibleTemplateNameValues() []TemplateName {
-	return original.PossibleTemplateNameValues()
-}
-
 type UserState = original.UserState
 
 const (
 	UserStateActive  UserState = original.UserStateActive
 	UserStateBlocked UserState = original.UserStateBlocked
 )
-
-func PossibleUserStateValues() []UserState {
-	return original.PossibleUserStateValues()
-}
 
 type AccessInformationContract = original.AccessInformationContract
 type AccessInformationUpdateParameters = original.AccessInformationUpdateParameters
@@ -519,139 +359,203 @@ type UserTokenResult = original.UserTokenResult
 type UserUpdateParameters = original.UserUpdateParameters
 type X509CertificateName = original.X509CertificateName
 type OpenIDConnectProviderClient = original.OpenIDConnectProviderClient
+type PolicyClient = original.PolicyClient
+type PolicySnippetsClient = original.PolicySnippetsClient
+type ProductClient = original.ProductClient
+type ProductAPIClient = original.ProductAPIClient
+type ProductGroupClient = original.ProductGroupClient
+type ProductPolicyClient = original.ProductPolicyClient
+type ProductSubscriptionsClient = original.ProductSubscriptionsClient
+type PropertyClient = original.PropertyClient
+type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
+type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
+type RegionsClient = original.RegionsClient
+type ReportsClient = original.ReportsClient
+type SignInSettingsClient = original.SignInSettingsClient
+type SignUpSettingsClient = original.SignUpSettingsClient
+type SubscriptionClient = original.SubscriptionClient
+type TenantAccessClient = original.TenantAccessClient
+type TenantAccessGitClient = original.TenantAccessGitClient
+type TenantConfigurationClient = original.TenantConfigurationClient
+type UserClient = original.UserClient
+type UserGroupClient = original.UserGroupClient
+type UserIdentitiesClient = original.UserIdentitiesClient
+type UserSubscriptionClient = original.UserSubscriptionClient
 
+func NewAPIClient() APIClient {
+	return original.NewAPIClient()
+}
+func NewAPIExportClient() APIExportClient {
+	return original.NewAPIExportClient()
+}
+func NewAPIOperationClient() APIOperationClient {
+	return original.NewAPIOperationClient()
+}
+func NewAPIOperationPolicyClient() APIOperationPolicyClient {
+	return original.NewAPIOperationPolicyClient()
+}
+func NewAPIPolicyClient() APIPolicyClient {
+	return original.NewAPIPolicyClient()
+}
+func NewAPIProductClient() APIProductClient {
+	return original.NewAPIProductClient()
+}
+func NewAPISchemaClient() APISchemaClient {
+	return original.NewAPISchemaClient()
+}
+func NewAuthorizationServerClient() AuthorizationServerClient {
+	return original.NewAuthorizationServerClient()
+}
+func NewBackendClient() BackendClient {
+	return original.NewBackendClient()
+}
+func NewCertificateClient() CertificateClient {
+	return original.NewCertificateClient()
+}
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults() BaseClient {
+	return original.NewWithoutDefaults()
+}
+func NewDelegationSettingsClient() DelegationSettingsClient {
+	return original.NewDelegationSettingsClient()
+}
+func NewEmailTemplateClient() EmailTemplateClient {
+	return original.NewEmailTemplateClient()
+}
+func NewGroupClient() GroupClient {
+	return original.NewGroupClient()
+}
+func NewGroupUserClient() GroupUserClient {
+	return original.NewGroupUserClient()
+}
+func NewIdentityProviderClient() IdentityProviderClient {
+	return original.NewIdentityProviderClient()
+}
+func NewLoggerClient() LoggerClient {
+	return original.NewLoggerClient()
+}
+func PossibleAPITypeValues() []APIType {
+	return original.PossibleAPITypeValues()
+}
+func PossibleAsyncOperationStatusValues() []AsyncOperationStatus {
+	return original.PossibleAsyncOperationStatusValues()
+}
+func PossibleAuthorizationMethodValues() []AuthorizationMethod {
+	return original.PossibleAuthorizationMethodValues()
+}
+func PossibleBackendProtocolValues() []BackendProtocol {
+	return original.PossibleBackendProtocolValues()
+}
+func PossibleBearerTokenSendingMethodValues() []BearerTokenSendingMethod {
+	return original.PossibleBearerTokenSendingMethodValues()
+}
+func PossibleClientAuthenticationMethodValues() []ClientAuthenticationMethod {
+	return original.PossibleClientAuthenticationMethodValues()
+}
+func PossibleContentFormatValues() []ContentFormat {
+	return original.PossibleContentFormatValues()
+}
+func PossibleGrantTypeValues() []GrantType {
+	return original.PossibleGrantTypeValues()
+}
+func PossibleGroupTypeValues() []GroupType {
+	return original.PossibleGroupTypeValues()
+}
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
+	return original.PossibleIdentityProviderTypeValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleLoggerTypeValues() []LoggerType {
+	return original.PossibleLoggerTypeValues()
+}
+func PossiblePolicyScopeContractValues() []PolicyScopeContract {
+	return original.PossiblePolicyScopeContractValues()
+}
+func PossibleProductStateValues() []ProductState {
+	return original.PossibleProductStateValues()
+}
+func PossibleProtocolValues() []Protocol {
+	return original.PossibleProtocolValues()
+}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
+}
+func PossibleTemplateNameValues() []TemplateName {
+	return original.PossibleTemplateNameValues()
+}
+func PossibleUserStateValues() []UserState {
+	return original.PossibleUserStateValues()
+}
 func NewOpenIDConnectProviderClient() OpenIDConnectProviderClient {
 	return original.NewOpenIDConnectProviderClient()
 }
-
-type PolicyClient = original.PolicyClient
-
 func NewPolicyClient() PolicyClient {
 	return original.NewPolicyClient()
 }
-
-type PolicySnippetsClient = original.PolicySnippetsClient
-
 func NewPolicySnippetsClient() PolicySnippetsClient {
 	return original.NewPolicySnippetsClient()
 }
-
-type ProductClient = original.ProductClient
-
 func NewProductClient() ProductClient {
 	return original.NewProductClient()
 }
-
-type ProductAPIClient = original.ProductAPIClient
-
 func NewProductAPIClient() ProductAPIClient {
 	return original.NewProductAPIClient()
 }
-
-type ProductGroupClient = original.ProductGroupClient
-
 func NewProductGroupClient() ProductGroupClient {
 	return original.NewProductGroupClient()
 }
-
-type ProductPolicyClient = original.ProductPolicyClient
-
 func NewProductPolicyClient() ProductPolicyClient {
 	return original.NewProductPolicyClient()
 }
-
-type ProductSubscriptionsClient = original.ProductSubscriptionsClient
-
 func NewProductSubscriptionsClient() ProductSubscriptionsClient {
 	return original.NewProductSubscriptionsClient()
 }
-
-type PropertyClient = original.PropertyClient
-
 func NewPropertyClient() PropertyClient {
 	return original.NewPropertyClient()
 }
-
-type QuotaByCounterKeysClient = original.QuotaByCounterKeysClient
-
 func NewQuotaByCounterKeysClient() QuotaByCounterKeysClient {
 	return original.NewQuotaByCounterKeysClient()
 }
-
-type QuotaByPeriodKeysClient = original.QuotaByPeriodKeysClient
-
 func NewQuotaByPeriodKeysClient() QuotaByPeriodKeysClient {
 	return original.NewQuotaByPeriodKeysClient()
 }
-
-type RegionsClient = original.RegionsClient
-
 func NewRegionsClient() RegionsClient {
 	return original.NewRegionsClient()
 }
-
-type ReportsClient = original.ReportsClient
-
 func NewReportsClient() ReportsClient {
 	return original.NewReportsClient()
 }
-
-type SignInSettingsClient = original.SignInSettingsClient
-
 func NewSignInSettingsClient() SignInSettingsClient {
 	return original.NewSignInSettingsClient()
 }
-
-type SignUpSettingsClient = original.SignUpSettingsClient
-
 func NewSignUpSettingsClient() SignUpSettingsClient {
 	return original.NewSignUpSettingsClient()
 }
-
-type SubscriptionClient = original.SubscriptionClient
-
 func NewSubscriptionClient() SubscriptionClient {
 	return original.NewSubscriptionClient()
 }
-
-type TenantAccessClient = original.TenantAccessClient
-
 func NewTenantAccessClient() TenantAccessClient {
 	return original.NewTenantAccessClient()
 }
-
-type TenantAccessGitClient = original.TenantAccessGitClient
-
 func NewTenantAccessGitClient() TenantAccessGitClient {
 	return original.NewTenantAccessGitClient()
 }
-
-type TenantConfigurationClient = original.TenantConfigurationClient
-
 func NewTenantConfigurationClient() TenantConfigurationClient {
 	return original.NewTenantConfigurationClient()
 }
-
-type UserClient = original.UserClient
-
 func NewUserClient() UserClient {
 	return original.NewUserClient()
 }
-
-type UserGroupClient = original.UserGroupClient
-
 func NewUserGroupClient() UserGroupClient {
 	return original.NewUserGroupClient()
 }
-
-type UserIdentitiesClient = original.UserIdentitiesClient
-
 func NewUserIdentitiesClient() UserIdentitiesClient {
 	return original.NewUserIdentitiesClient()
 }
-
-type UserSubscriptionClient = original.UserSubscriptionClient
-
 func NewUserSubscriptionClient() UserSubscriptionClient {
 	return original.NewUserSubscriptionClient()
 }

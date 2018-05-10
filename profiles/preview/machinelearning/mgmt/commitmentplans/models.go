@@ -26,42 +26,14 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CommitmentAssociationsClient = original.CommitmentAssociationsClient
-
-func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClient(subscriptionID)
-}
-func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
-	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type Client = original.Client
-
-func NewClient(subscriptionID string) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
 	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
 	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
 )
-
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
-}
 
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
@@ -70,10 +42,6 @@ const (
 	Zone     ResourceSkuRestrictionsType = original.Zone
 )
 
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return original.PossibleResourceSkuRestrictionsTypeValues()
-}
-
 type SkuCapacityScaleType = original.SkuCapacityScaleType
 
 const (
@@ -81,10 +49,6 @@ const (
 	Manual    SkuCapacityScaleType = original.Manual
 	None      SkuCapacityScaleType = original.None
 )
-
-func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
-	return original.PossibleSkuCapacityScaleTypeValues()
-}
 
 type CatalogSku = original.CatalogSku
 type CommitmentAssociation = original.CommitmentAssociation
@@ -112,16 +76,41 @@ type SkuCost = original.SkuCost
 type SkuListResult = original.SkuListResult
 type SkuRestrictions = original.SkuRestrictions
 type SkusClient = original.SkusClient
+type UsageHistoryClient = original.UsageHistoryClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommitmentAssociationsClient(subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClient(subscriptionID)
+}
+func NewCommitmentAssociationsClientWithBaseURI(baseURI string, subscriptionID string) CommitmentAssociationsClient {
+	return original.NewCommitmentAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
+func PossibleSkuCapacityScaleTypeValues() []SkuCapacityScaleType {
+	return original.PossibleSkuCapacityScaleTypeValues()
+}
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
 }
 func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
 	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type UsageHistoryClient = original.UsageHistoryClient
-
 func NewUsageHistoryClient(subscriptionID string) UsageHistoryClient {
 	return original.NewUsageHistoryClient(subscriptionID)
 }

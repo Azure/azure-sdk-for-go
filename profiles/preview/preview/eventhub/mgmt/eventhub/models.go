@@ -26,32 +26,8 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ClustersClient = original.ClustersClient
-
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
-}
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type ConfigurationClient = original.ConfigurationClient
-
-func NewConfigurationClient(subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClient(subscriptionID)
-}
-func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
-	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
@@ -70,6 +46,24 @@ type Resource = original.Resource
 type TrackedResource = original.TrackedResource
 type OperationsClient = original.OperationsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
+}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewConfigurationClient(subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClient(subscriptionID)
+}
+func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
+	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }

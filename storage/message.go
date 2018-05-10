@@ -35,6 +35,11 @@ type Message struct {
 	DequeueCount int         `xml:"DequeueCount"`
 }
 
+// QueueMessagesList represents an Azure messages list.
+type QueueMessagesList struct {
+	QueueMessages []*Message `xml:"QueueMessage"`
+}
+
 func (m *Message) buildPath() string {
 	return fmt.Sprintf("%s/%s", m.Queue.buildPathMessages(), m.ID)
 }
@@ -78,14 +83,24 @@ func (m *Message) Put(options *PutMessageOptions) error {
 	if err != nil {
 		return err
 	}
-	defer readAndCloseBody(resp.Body)
+	defer drainRespBody(resp)
 	err = checkRespCode(resp, []int{http.StatusCreated})
 	if err != nil {
 		return err
 	}
-	err = xmlUnmarshal(resp.Body, m)
+	messages := QueueMessagesList{}
+	err = xmlUnmarshal(resp.Body, &messages)
 	if err != nil {
 		return err
+	}
+
+	if len(messages.QueueMessages) != 0 {
+		m.ID = messages.QueueMessages[0].ID
+		m.PopReceipt = messages.QueueMessages[0].PopReceipt
+
+		m.Insertion = messages.QueueMessages[0].Insertion
+		m.Expiration = messages.QueueMessages[0].Expiration
+		m.NextVisible = messages.QueueMessages[0].NextVisible
 	}
 	return nil
 }
@@ -128,7 +143,7 @@ func (m *Message) Update(options *UpdateMessageOptions) error {
 	if err != nil {
 		return err
 	}
-	defer readAndCloseBody(resp.Body)
+	defer drainRespBody(resp)
 
 	m.PopReceipt = resp.Header.Get("x-ms-popreceipt")
 	nextTimeStr := resp.Header.Get("x-ms-time-next-visible")
@@ -160,7 +175,7 @@ func (m *Message) Delete(options *QueueServiceOptions) error {
 	if err != nil {
 		return err
 	}
-	defer readAndCloseBody(resp.Body)
+	defer drainRespBody(resp)
 	return checkRespCode(resp, []int{http.StatusNoContent})
 }
 

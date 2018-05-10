@@ -49,7 +49,7 @@ func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGro
 		{TargetValue: actionGroup,
 			Constraints: []validation.Constraint{{Target: "actionGroup.ActionGroup", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.MaxLength, Rule: 15, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.MaxLength, Rule: 12, Chain: nil}}},
 					{Target: "actionGroup.ActionGroup.Enabled", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "CreateOrUpdate", err.Error())
@@ -185,6 +185,7 @@ func (client ActionGroupsClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // EnableReceiver enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled.
+// This operation is only supported for Email or SMS receivers.
 //
 // resourceGroupName is the name of the resource group. actionGroupName is the name of the action group.
 // enableRequest is the receiver to re-enable.

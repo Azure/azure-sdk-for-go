@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type EntityNameUnavailabilityReason = original.EntityNameUnavailabilityReason
 
 const (
@@ -42,10 +34,6 @@ const (
 	None          EntityNameUnavailabilityReason = original.None
 )
 
-func PossibleEntityNameUnavailabilityReasonValues() []EntityNameUnavailabilityReason {
-	return original.PossibleEntityNameUnavailabilityReasonValues()
-}
-
 type KeyType = original.KeyType
 
 const (
@@ -53,19 +41,11 @@ const (
 	Secondary KeyType = original.Secondary
 )
 
-func PossibleKeyTypeValues() []KeyType {
-	return original.PossibleKeyTypeValues()
-}
-
 type ResourceType = original.ResourceType
 
 const (
 	Mediaservices ResourceType = original.Mediaservices
 )
-
-func PossibleResourceTypeValues() []ResourceType {
-	return original.PossibleResourceTypeValues()
-}
 
 type APIEndpoint = original.APIEndpoint
 type APIError = original.APIError
@@ -84,16 +64,29 @@ type ServiceProperties = original.ServiceProperties
 type StorageAccount = original.StorageAccount
 type SyncStorageKeysInput = original.SyncStorageKeysInput
 type OperationsClient = original.OperationsClient
+type ServiceClient = original.ServiceClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleEntityNameUnavailabilityReasonValues() []EntityNameUnavailabilityReason {
+	return original.PossibleEntityNameUnavailabilityReasonValues()
+}
+func PossibleKeyTypeValues() []KeyType {
+	return original.PossibleKeyTypeValues()
+}
+func PossibleResourceTypeValues() []ResourceType {
+	return original.PossibleResourceTypeValues()
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type ServiceClient = original.ServiceClient
-
 func NewServiceClient(subscriptionID string) ServiceClient {
 	return original.NewServiceClient(subscriptionID)
 }

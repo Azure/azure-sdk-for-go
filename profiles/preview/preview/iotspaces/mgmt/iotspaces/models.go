@@ -21,7 +21,7 @@ package iotspaces
 
 import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -29,33 +29,13 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID uuid.UUID) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type Client = original.Client
-
-func NewClient(subscriptionID uuid.UUID) Client {
-	return original.NewClient(subscriptionID)
-}
-func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
-	return original.NewClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type NameUnavailabilityReason = original.NameUnavailabilityReason
 
 const (
 	AlreadyExists NameUnavailabilityReason = original.AlreadyExists
 	Invalid       NameUnavailabilityReason = original.Invalid
 )
-
-func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
-	return original.PossibleNameUnavailabilityReasonValues()
-}
 
 type ProvisioningState = original.ProvisioningState
 
@@ -67,10 +47,6 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type Sku = original.Sku
 
 const (
@@ -79,10 +55,6 @@ const (
 	S2 Sku = original.S2
 	S3 Sku = original.S3
 )
-
-func PossibleSkuValues() []Sku {
-	return original.PossibleSkuValues()
-}
 
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type DeleteFuture = original.DeleteFuture
@@ -106,6 +78,27 @@ type StorageContainerProperties = original.StorageContainerProperties
 type UpdateFuture = original.UpdateFuture
 type OperationsClient = original.OperationsClient
 
+func New(subscriptionID uuid.UUID) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewClient(subscriptionID uuid.UUID) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
+	return original.PossibleNameUnavailabilityReasonValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleSkuValues() []Sku {
+	return original.PossibleSkuValues()
+}
 func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }

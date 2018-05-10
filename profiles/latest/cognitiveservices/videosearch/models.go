@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type ErrorCode = original.ErrorCode
 
 const (
@@ -44,10 +36,6 @@ const (
 	RateLimitExceeded         ErrorCode = original.RateLimitExceeded
 	ServerError               ErrorCode = original.ServerError
 )
-
-func PossibleErrorCodeValues() []ErrorCode {
-	return original.PossibleErrorCodeValues()
-}
 
 type ErrorSubCode = original.ErrorSubCode
 
@@ -65,10 +53,6 @@ const (
 	UnexpectedError         ErrorSubCode = original.UnexpectedError
 )
 
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return original.PossibleErrorSubCodeValues()
-}
-
 type Freshness = original.Freshness
 
 const (
@@ -76,10 +60,6 @@ const (
 	Month Freshness = original.Month
 	Week  Freshness = original.Week
 )
-
-func PossibleFreshnessValues() []Freshness {
-	return original.PossibleFreshnessValues()
-}
 
 type SafeSearch = original.SafeSearch
 
@@ -89,20 +69,12 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
-func PossibleSafeSearchValues() []SafeSearch {
-	return original.PossibleSafeSearchValues()
-}
-
 type TextFormat = original.TextFormat
 
 const (
 	HTML TextFormat = original.HTML
 	Raw  TextFormat = original.Raw
 )
-
-func PossibleTextFormatValues() []TextFormat {
-	return original.PossibleTextFormatValues()
-}
 
 type Type = original.Type
 
@@ -123,10 +95,6 @@ const (
 	TypeVideos              Type = original.TypeVideos
 )
 
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
-
 type VideoInsightModule = original.VideoInsightModule
 
 const (
@@ -134,10 +102,6 @@ const (
 	RelatedVideos VideoInsightModule = original.RelatedVideos
 	VideoResult   VideoInsightModule = original.VideoResult
 )
-
-func PossibleVideoInsightModuleValues() []VideoInsightModule {
-	return original.PossibleVideoInsightModuleValues()
-}
 
 type VideoLength = original.VideoLength
 
@@ -148,10 +112,6 @@ const (
 	VideoLengthShort  VideoLength = original.VideoLengthShort
 )
 
-func PossibleVideoLengthValues() []VideoLength {
-	return original.PossibleVideoLengthValues()
-}
-
 type VideoPricing = original.VideoPricing
 
 const (
@@ -160,20 +120,12 @@ const (
 	VideoPricingPaid VideoPricing = original.VideoPricingPaid
 )
 
-func PossibleVideoPricingValues() []VideoPricing {
-	return original.PossibleVideoPricingValues()
-}
-
 type VideoQueryScenario = original.VideoQueryScenario
 
 const (
 	List                VideoQueryScenario = original.List
 	SingleDominantVideo VideoQueryScenario = original.SingleDominantVideo
 )
-
-func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
-	return original.PossibleVideoQueryScenarioValues()
-}
 
 type VideoResolution = original.VideoResolution
 
@@ -183,10 +135,6 @@ const (
 	VideoResolutionHD720p  VideoResolution = original.VideoResolutionHD720p
 	VideoResolutionSD480p  VideoResolution = original.VideoResolutionSD480p
 )
-
-func PossibleVideoResolutionValues() []VideoResolution {
-	return original.PossibleVideoResolutionValues()
-}
 
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
@@ -218,16 +166,53 @@ type VideoDetails = original.VideoDetails
 type VideoObject = original.VideoObject
 type Videos = original.Videos
 type VideosModule = original.VideosModule
+type VideosClient = original.VideosClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleErrorCodeValues() []ErrorCode {
+	return original.PossibleErrorCodeValues()
+}
+func PossibleErrorSubCodeValues() []ErrorSubCode {
+	return original.PossibleErrorSubCodeValues()
+}
+func PossibleFreshnessValues() []Freshness {
+	return original.PossibleFreshnessValues()
+}
+func PossibleSafeSearchValues() []SafeSearch {
+	return original.PossibleSafeSearchValues()
+}
+func PossibleTextFormatValues() []TextFormat {
+	return original.PossibleTextFormatValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleVideoInsightModuleValues() []VideoInsightModule {
+	return original.PossibleVideoInsightModuleValues()
+}
+func PossibleVideoLengthValues() []VideoLength {
+	return original.PossibleVideoLengthValues()
+}
+func PossibleVideoPricingValues() []VideoPricing {
+	return original.PossibleVideoPricingValues()
+}
+func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
+	return original.PossibleVideoQueryScenarioValues()
+}
+func PossibleVideoResolutionValues() []VideoResolution {
+	return original.PossibleVideoResolutionValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()
 }
-
-type VideosClient = original.VideosClient
-
 func NewVideosClient() VideosClient {
 	return original.NewVideosClient()
 }

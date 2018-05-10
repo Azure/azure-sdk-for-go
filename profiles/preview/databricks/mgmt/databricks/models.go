@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -49,10 +41,6 @@ const (
 	Succeeded ProvisioningState = original.Succeeded
 	Updating  ProvisioningState = original.Updating
 )
-
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
 
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
@@ -70,16 +58,23 @@ type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
 type WorkspacesUpdateFuture = original.WorkspacesUpdateFuture
 type WorkspaceUpdate = original.WorkspaceUpdate
+type WorkspacesClient = original.WorkspacesClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()
 }
-
-type WorkspacesClient = original.WorkspacesClient
-
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)
 }

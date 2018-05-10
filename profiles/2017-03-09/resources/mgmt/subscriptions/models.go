@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithBaseURI(baseURI string) BaseClient {
-	return original.NewWithBaseURI(baseURI)
-}
-
 type SpendingLimit = original.SpendingLimit
 
 const (
@@ -41,10 +33,6 @@ const (
 	Off              SpendingLimit = original.Off
 	On               SpendingLimit = original.On
 )
-
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return original.PossibleSpendingLimitValues()
-}
 
 type State = original.State
 
@@ -55,10 +43,6 @@ const (
 	PastDue  State = original.PastDue
 	Warned   State = original.Warned
 )
-
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
 
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
@@ -72,16 +56,26 @@ type TenantListResult = original.TenantListResult
 type TenantListResultIterator = original.TenantListResultIterator
 type TenantListResultPage = original.TenantListResultPage
 type Client = original.Client
+type TenantsClient = original.TenantsClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func PossibleSpendingLimitValues() []SpendingLimit {
+	return original.PossibleSpendingLimitValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
 func NewClient() Client {
 	return original.NewClient()
 }
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
 }
-
-type TenantsClient = original.TenantsClient
-
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()
 }

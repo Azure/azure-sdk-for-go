@@ -23,26 +23,11 @@ import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2016-03
 
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 
-func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClient(subscriptionID)
-}
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type CachingTypes = original.CachingTypes
 
 const (
@@ -51,19 +36,11 @@ const (
 	ReadWrite CachingTypes = original.ReadWrite
 )
 
-func PossibleCachingTypesValues() []CachingTypes {
-	return original.PossibleCachingTypesValues()
-}
-
 type ComponentNames = original.ComponentNames
 
 const (
 	MicrosoftWindowsShellSetup ComponentNames = original.MicrosoftWindowsShellSetup
 )
-
-func PossibleComponentNamesValues() []ComponentNames {
-	return original.PossibleComponentNamesValues()
-}
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
 
@@ -73,19 +50,11 @@ const (
 	FromImage DiskCreateOptionTypes = original.FromImage
 )
 
-func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
-	return original.PossibleDiskCreateOptionTypesValues()
-}
-
 type InstanceViewTypes = original.InstanceViewTypes
 
 const (
 	InstanceView InstanceViewTypes = original.InstanceView
 )
-
-func PossibleInstanceViewTypesValues() []InstanceViewTypes {
-	return original.PossibleInstanceViewTypesValues()
-}
 
 type OperatingSystemTypes = original.OperatingSystemTypes
 
@@ -94,19 +63,11 @@ const (
 	Windows OperatingSystemTypes = original.Windows
 )
 
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return original.PossibleOperatingSystemTypesValues()
-}
-
 type PassNames = original.PassNames
 
 const (
 	OobeSystem PassNames = original.OobeSystem
 )
-
-func PossiblePassNamesValues() []PassNames {
-	return original.PossiblePassNamesValues()
-}
 
 type ProtocolTypes = original.ProtocolTypes
 
@@ -115,19 +76,11 @@ const (
 	HTTPS ProtocolTypes = original.HTTPS
 )
 
-func PossibleProtocolTypesValues() []ProtocolTypes {
-	return original.PossibleProtocolTypesValues()
-}
-
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
-
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
 
 type SettingNames = original.SettingNames
 
@@ -135,10 +88,6 @@ const (
 	AutoLogon          SettingNames = original.AutoLogon
 	FirstLogonCommands SettingNames = original.FirstLogonCommands
 )
-
-func PossibleSettingNamesValues() []SettingNames {
-	return original.PossibleSettingNamesValues()
-}
 
 type StatusLevelTypes = original.StatusLevelTypes
 
@@ -148,10 +97,6 @@ const (
 	Warning StatusLevelTypes = original.Warning
 )
 
-func PossibleStatusLevelTypesValues() []StatusLevelTypes {
-	return original.PossibleStatusLevelTypesValues()
-}
-
 type UpgradeMode = original.UpgradeMode
 
 const (
@@ -159,20 +104,12 @@ const (
 	Manual    UpgradeMode = original.Manual
 )
 
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return original.PossibleUpgradeModeValues()
-}
-
 type VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleType
 
 const (
 	VirtualMachineScaleSetSkuScaleTypeAutomatic VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleTypeAutomatic
 	VirtualMachineScaleSetSkuScaleTypeNone      VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleTypeNone
 )
-
-func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSetSkuScaleType {
-	return original.PossibleVirtualMachineScaleSetSkuScaleTypeValues()
-}
 
 type VirtualMachineSizeTypes = original.VirtualMachineSizeTypes
 
@@ -241,10 +178,6 @@ const (
 	StandardGS4    VirtualMachineSizeTypes = original.StandardGS4
 	StandardGS5    VirtualMachineSizeTypes = original.StandardGS5
 )
-
-func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
-	return original.PossibleVirtualMachineSizeTypesValues()
-}
 
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type APIEntityReference = original.APIEntityReference
@@ -388,7 +321,65 @@ type WindowsConfiguration = original.WindowsConfiguration
 type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
 type UsageClient = original.UsageClient
+type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
+type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
+type VirtualMachineImagesClient = original.VirtualMachineImagesClient
+type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
+type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
+type VirtualMachineSizesClient = original.VirtualMachineSizesClient
 
+func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClient(subscriptionID)
+}
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCachingTypesValues() []CachingTypes {
+	return original.PossibleCachingTypesValues()
+}
+func PossibleComponentNamesValues() []ComponentNames {
+	return original.PossibleComponentNamesValues()
+}
+func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
+	return original.PossibleDiskCreateOptionTypesValues()
+}
+func PossibleInstanceViewTypesValues() []InstanceViewTypes {
+	return original.PossibleInstanceViewTypesValues()
+}
+func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
+	return original.PossibleOperatingSystemTypesValues()
+}
+func PossiblePassNamesValues() []PassNames {
+	return original.PossiblePassNamesValues()
+}
+func PossibleProtocolTypesValues() []ProtocolTypes {
+	return original.PossibleProtocolTypesValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleSettingNamesValues() []SettingNames {
+	return original.PossibleSettingNamesValues()
+}
+func PossibleStatusLevelTypesValues() []StatusLevelTypes {
+	return original.PossibleStatusLevelTypesValues()
+}
+func PossibleUpgradeModeValues() []UpgradeMode {
+	return original.PossibleUpgradeModeValues()
+}
+func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSetSkuScaleType {
+	return original.PossibleVirtualMachineScaleSetSkuScaleTypeValues()
+}
+func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
+	return original.PossibleVirtualMachineSizeTypesValues()
+}
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
 }
@@ -401,63 +392,42 @@ func UserAgent() string {
 func Version() string {
 	return original.Version()
 }
-
-type VirtualMachineExtensionImagesClient = original.VirtualMachineExtensionImagesClient
-
 func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
 	return original.NewVirtualMachineExtensionImagesClient(subscriptionID)
 }
 func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
 	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachineExtensionsClient = original.VirtualMachineExtensionsClient
-
 func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
 	return original.NewVirtualMachineExtensionsClient(subscriptionID)
 }
 func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
 	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachineImagesClient = original.VirtualMachineImagesClient
-
 func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
 	return original.NewVirtualMachineImagesClient(subscriptionID)
 }
 func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
 	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachinesClient = original.VirtualMachinesClient
-
 func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
 	return original.NewVirtualMachinesClient(subscriptionID)
 }
 func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
 	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachineScaleSetsClient = original.VirtualMachineScaleSetsClient
-
 func NewVirtualMachineScaleSetsClient(subscriptionID string) VirtualMachineScaleSetsClient {
 	return original.NewVirtualMachineScaleSetsClient(subscriptionID)
 }
 func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetsClient {
 	return original.NewVirtualMachineScaleSetsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
-
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
 	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
 }
 func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMsClient {
 	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type VirtualMachineSizesClient = original.VirtualMachineSizesClient
-
 func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
 	return original.NewVirtualMachineSizesClient(subscriptionID)
 }

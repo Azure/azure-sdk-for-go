@@ -26,14 +26,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return original.New(subscriptionID, resourceGroupName, resourceName)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
-}
-
 type A2ARpRecoveryPointType = original.A2ARpRecoveryPointType
 
 const (
@@ -42,10 +34,6 @@ const (
 	LatestCrashConsistent       A2ARpRecoveryPointType = original.LatestCrashConsistent
 	LatestProcessed             A2ARpRecoveryPointType = original.LatestProcessed
 )
-
-func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
-	return original.PossibleA2ARpRecoveryPointTypeValues()
-}
 
 type AgentVersionStatus = original.AgentVersionStatus
 
@@ -57,20 +45,12 @@ const (
 	UpdateRequired         AgentVersionStatus = original.UpdateRequired
 )
 
-func PossibleAgentVersionStatusValues() []AgentVersionStatus {
-	return original.PossibleAgentVersionStatusValues()
-}
-
 type AlternateLocationRecoveryOption = original.AlternateLocationRecoveryOption
 
 const (
 	CreateVMIfNotFound AlternateLocationRecoveryOption = original.CreateVMIfNotFound
 	NoAction           AlternateLocationRecoveryOption = original.NoAction
 )
-
-func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecoveryOption {
-	return original.PossibleAlternateLocationRecoveryOptionValues()
-}
 
 type DataSyncStatus = original.DataSyncStatus
 
@@ -79,20 +59,12 @@ const (
 	ForSynchronization DataSyncStatus = original.ForSynchronization
 )
 
-func PossibleDataSyncStatusValues() []DataSyncStatus {
-	return original.PossibleDataSyncStatusValues()
-}
-
 type DisableProtectionReason = original.DisableProtectionReason
 
 const (
 	MigrationComplete DisableProtectionReason = original.MigrationComplete
 	NotSpecified      DisableProtectionReason = original.NotSpecified
 )
-
-func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
-	return original.PossibleDisableProtectionReasonValues()
-}
 
 type FailoverDeploymentModel = original.FailoverDeploymentModel
 
@@ -101,10 +73,6 @@ const (
 	NotApplicable   FailoverDeploymentModel = original.NotApplicable
 	ResourceManager FailoverDeploymentModel = original.ResourceManager
 )
-
-func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
-	return original.PossibleFailoverDeploymentModelValues()
-}
 
 type HealthErrorCategory = original.HealthErrorCategory
 
@@ -117,10 +85,6 @@ const (
 	VersionExpiry        HealthErrorCategory = original.VersionExpiry
 )
 
-func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
-	return original.PossibleHealthErrorCategoryValues()
-}
-
 type HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointType
 
 const (
@@ -129,19 +93,11 @@ const (
 	HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed             HyperVReplicaAzureRpRecoveryPointType = original.HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed
 )
 
-func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
-	return original.PossibleHyperVReplicaAzureRpRecoveryPointTypeValues()
-}
-
 type IdentityProviderType = original.IdentityProviderType
 
 const (
 	RecoveryServicesActiveDirectory IdentityProviderType = original.RecoveryServicesActiveDirectory
 )
-
-func PossibleIdentityProviderTypeValues() []IdentityProviderType {
-	return original.PossibleIdentityProviderTypeValues()
-}
 
 type InMageV2RpRecoveryPointType = original.InMageV2RpRecoveryPointType
 
@@ -152,10 +108,6 @@ const (
 	InMageV2RpRecoveryPointTypeLatestProcessed             InMageV2RpRecoveryPointType = original.InMageV2RpRecoveryPointTypeLatestProcessed
 )
 
-func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
-	return original.PossibleInMageV2RpRecoveryPointTypeValues()
-}
-
 type InstanceType = original.InstanceType
 
 const (
@@ -164,10 +116,6 @@ const (
 	InstanceTypeHyperVReplicaAzure                      InstanceType = original.InstanceTypeHyperVReplicaAzure
 	InstanceTypeInMageAzureV2                           InstanceType = original.InstanceTypeInMageAzureV2
 )
-
-func PossibleInstanceTypeValues() []InstanceType {
-	return original.PossibleInstanceTypeValues()
-}
 
 type InstanceTypeBasicConfigurationSettings = original.InstanceTypeBasicConfigurationSettings
 
@@ -179,20 +127,12 @@ const (
 	InstanceTypeVMwareVirtualMachine    InstanceTypeBasicConfigurationSettings = original.InstanceTypeVMwareVirtualMachine
 )
 
-func PossibleInstanceTypeBasicConfigurationSettingsValues() []InstanceTypeBasicConfigurationSettings {
-	return original.PossibleInstanceTypeBasicConfigurationSettingsValues()
-}
-
 type InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeBasicDisableProtectionProviderSpecificInput
 
 const (
 	InstanceTypeDisableProtectionProviderSpecificInput InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeDisableProtectionProviderSpecificInput
 	InstanceTypeInMage                                 InstanceTypeBasicDisableProtectionProviderSpecificInput = original.InstanceTypeInMage
 )
-
-func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
-	return original.PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues()
-}
 
 type InstanceTypeBasicEnableProtectionProviderSpecificInput = original.InstanceTypeBasicEnableProtectionProviderSpecificInput
 
@@ -204,10 +144,6 @@ const (
 	InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2                         InstanceTypeBasicEnableProtectionProviderSpecificInput = original.InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2
 	InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan                                   InstanceTypeBasicEnableProtectionProviderSpecificInput = original.InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan
 )
-
-func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() []InstanceTypeBasicEnableProtectionProviderSpecificInput {
-	return original.PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues()
-}
 
 type InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetails
 
@@ -221,20 +157,12 @@ const (
 	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2                 InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2
 )
 
-func PossibleInstanceTypeBasicEventProviderSpecificDetailsValues() []InstanceTypeBasicEventProviderSpecificDetails {
-	return original.PossibleInstanceTypeBasicEventProviderSpecificDetailsValues()
-}
-
 type InstanceTypeBasicEventSpecificDetails = original.InstanceTypeBasicEventSpecificDetails
 
 const (
 	InstanceTypeEventSpecificDetails InstanceTypeBasicEventSpecificDetails = original.InstanceTypeEventSpecificDetails
 	InstanceTypeJobStatus            InstanceTypeBasicEventSpecificDetails = original.InstanceTypeJobStatus
 )
-
-func PossibleInstanceTypeBasicEventSpecificDetailsValues() []InstanceTypeBasicEventSpecificDetails {
-	return original.PossibleInstanceTypeBasicEventSpecificDetailsValues()
-}
 
 type InstanceTypeBasicFabricSpecificCreateNetworkMappingInput = original.InstanceTypeBasicFabricSpecificCreateNetworkMappingInput
 
@@ -245,10 +173,6 @@ const (
 	InstanceTypeVmmToVmm                                InstanceTypeBasicFabricSpecificCreateNetworkMappingInput = original.InstanceTypeVmmToVmm
 )
 
-func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
-	return original.PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues()
-}
-
 type InstanceTypeBasicFabricSpecificCreationInput = original.InstanceTypeBasicFabricSpecificCreationInput
 
 const (
@@ -256,10 +180,6 @@ const (
 	InstanceTypeFabricSpecificCreationInput InstanceTypeBasicFabricSpecificCreationInput = original.InstanceTypeFabricSpecificCreationInput
 	InstanceTypeVMwareV2                    InstanceTypeBasicFabricSpecificCreationInput = original.InstanceTypeVMwareV2
 )
-
-func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() []InstanceTypeBasicFabricSpecificCreationInput {
-	return original.PossibleInstanceTypeBasicFabricSpecificCreationInputValues()
-}
 
 type InstanceTypeBasicFabricSpecificDetails = original.InstanceTypeBasicFabricSpecificDetails
 
@@ -272,10 +192,6 @@ const (
 	InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2              InstanceTypeBasicFabricSpecificDetails = original.InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2
 )
 
-func PossibleInstanceTypeBasicFabricSpecificDetailsValues() []InstanceTypeBasicFabricSpecificDetails {
-	return original.PossibleInstanceTypeBasicFabricSpecificDetailsValues()
-}
-
 type InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput = original.InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput
 
 const (
@@ -285,10 +201,6 @@ const (
 	InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm                                InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput = original.InstanceTypeBasicFabricSpecificUpdateNetworkMappingInputInstanceTypeVmmToVmm
 )
 
-func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
-	return original.PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues()
-}
-
 type InstanceTypeBasicGroupTaskDetails = original.InstanceTypeBasicGroupTaskDetails
 
 const (
@@ -297,10 +209,6 @@ const (
 	InstanceTypeRecoveryPlanGroupTaskDetails         InstanceTypeBasicGroupTaskDetails = original.InstanceTypeRecoveryPlanGroupTaskDetails
 	InstanceTypeRecoveryPlanShutdownGroupTaskDetails InstanceTypeBasicGroupTaskDetails = original.InstanceTypeRecoveryPlanShutdownGroupTaskDetails
 )
-
-func PossibleInstanceTypeBasicGroupTaskDetailsValues() []InstanceTypeBasicGroupTaskDetails {
-	return original.PossibleInstanceTypeBasicGroupTaskDetailsValues()
-}
 
 type InstanceTypeBasicJobDetails = original.InstanceTypeBasicJobDetails
 
@@ -313,10 +221,6 @@ const (
 	InstanceTypeTestFailoverJobDetails     InstanceTypeBasicJobDetails = original.InstanceTypeTestFailoverJobDetails
 )
 
-func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
-	return original.PossibleInstanceTypeBasicJobDetailsValues()
-}
-
 type InstanceTypeBasicNetworkMappingFabricSpecificSettings = original.InstanceTypeBasicNetworkMappingFabricSpecificSettings
 
 const (
@@ -325,10 +229,6 @@ const (
 	InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure                           InstanceTypeBasicNetworkMappingFabricSpecificSettings = original.InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToAzure
 	InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm                             InstanceTypeBasicNetworkMappingFabricSpecificSettings = original.InstanceTypeBasicNetworkMappingFabricSpecificSettingsInstanceTypeVmmToVmm
 )
-
-func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() []InstanceTypeBasicNetworkMappingFabricSpecificSettings {
-	return original.PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues()
-}
 
 type InstanceTypeBasicPolicyProviderSpecificDetails = original.InstanceTypeBasicPolicyProviderSpecificDetails
 
@@ -346,10 +246,6 @@ const (
 	InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt                      InstanceTypeBasicPolicyProviderSpecificDetails = original.InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt
 )
 
-func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() []InstanceTypeBasicPolicyProviderSpecificDetails {
-	return original.PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues()
-}
-
 type InstanceTypeBasicPolicyProviderSpecificInput = original.InstanceTypeBasicPolicyProviderSpecificInput
 
 const (
@@ -363,10 +259,6 @@ const (
 	InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt                   InstanceTypeBasicPolicyProviderSpecificInput = original.InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt
 )
 
-func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceTypeBasicPolicyProviderSpecificInput {
-	return original.PossibleInstanceTypeBasicPolicyProviderSpecificInputValues()
-}
-
 type InstanceTypeBasicProviderSpecificFailoverInput = original.InstanceTypeBasicProviderSpecificFailoverInput
 
 const (
@@ -378,10 +270,6 @@ const (
 	InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput InstanceTypeBasicProviderSpecificFailoverInput = original.InstanceTypeBasicProviderSpecificFailoverInputInstanceTypeProviderSpecificFailoverInput
 )
 
-func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() []InstanceTypeBasicProviderSpecificFailoverInput {
-	return original.PossibleInstanceTypeBasicProviderSpecificFailoverInputValues()
-}
-
 type InstanceTypeBasicProviderSpecificRecoveryPointDetails = original.InstanceTypeBasicProviderSpecificRecoveryPointDetails
 
 const (
@@ -389,10 +277,6 @@ const (
 	InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2                        InstanceTypeBasicProviderSpecificRecoveryPointDetails = original.InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2
 	InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails InstanceTypeBasicProviderSpecificRecoveryPointDetails = original.InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails
 )
-
-func PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues() []InstanceTypeBasicProviderSpecificRecoveryPointDetails {
-	return original.PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues()
-}
 
 type InstanceTypeBasicRecoveryPlanActionDetails = original.InstanceTypeBasicRecoveryPlanActionDetails
 
@@ -402,10 +286,6 @@ const (
 	InstanceTypeRecoveryPlanActionDetails      InstanceTypeBasicRecoveryPlanActionDetails = original.InstanceTypeRecoveryPlanActionDetails
 	InstanceTypeScriptActionDetails            InstanceTypeBasicRecoveryPlanActionDetails = original.InstanceTypeScriptActionDetails
 )
-
-func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBasicRecoveryPlanActionDetails {
-	return original.PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues()
-}
 
 type InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput
 
@@ -418,20 +298,12 @@ const (
 	InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput
 )
 
-func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
-	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues()
-}
-
 type InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInput
 
 const (
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A                                               InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A
 	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
 )
-
-func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
-	return original.PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues()
-}
 
 type InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettings
 
@@ -446,10 +318,6 @@ const (
 	InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings InstanceTypeBasicReplicationProviderSpecificSettings = original.InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings
 )
 
-func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
-	return original.PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues()
-}
-
 type InstanceTypeBasicReverseReplicationProviderSpecificInput = original.InstanceTypeBasicReverseReplicationProviderSpecificInput
 
 const (
@@ -460,20 +328,12 @@ const (
 	InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput InstanceTypeBasicReverseReplicationProviderSpecificInput = original.InstanceTypeBasicReverseReplicationProviderSpecificInputInstanceTypeReverseReplicationProviderSpecificInput
 )
 
-func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
-	return original.PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues()
-}
-
 type InstanceTypeBasicSwitchProtectionProviderSpecificInput = original.InstanceTypeBasicSwitchProtectionProviderSpecificInput
 
 const (
 	InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeA2A                                   InstanceTypeBasicSwitchProtectionProviderSpecificInput = original.InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeA2A
 	InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput InstanceTypeBasicSwitchProtectionProviderSpecificInput = original.InstanceTypeBasicSwitchProtectionProviderSpecificInputInstanceTypeSwitchProtectionProviderSpecificInput
 )
-
-func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() []InstanceTypeBasicSwitchProtectionProviderSpecificInput {
-	return original.PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues()
-}
 
 type InstanceTypeBasicTaskTypeDetails = original.InstanceTypeBasicTaskTypeDetails
 
@@ -489,10 +349,6 @@ const (
 	InstanceTypeVMNicUpdatesTaskDetails           InstanceTypeBasicTaskTypeDetails = original.InstanceTypeVMNicUpdatesTaskDetails
 )
 
-func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTypeDetails {
-	return original.PossibleInstanceTypeBasicTaskTypeDetailsValues()
-}
-
 type InstanceTypeBasicUpdateReplicationProtectedItemProviderInput = original.InstanceTypeBasicUpdateReplicationProtectedItemProviderInput
 
 const (
@@ -502,10 +358,6 @@ const (
 	InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput InstanceTypeBasicUpdateReplicationProtectedItemProviderInput = original.InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput
 )
 
-func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
-	return original.PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues()
-}
-
 type LicenseType = original.LicenseType
 
 const (
@@ -514,20 +366,12 @@ const (
 	LicenseTypeWindowsServer LicenseType = original.LicenseTypeWindowsServer
 )
 
-func PossibleLicenseTypeValues() []LicenseType {
-	return original.PossibleLicenseTypeValues()
-}
-
 type MultiVMGroupCreateOption = original.MultiVMGroupCreateOption
 
 const (
 	AutoCreated   MultiVMGroupCreateOption = original.AutoCreated
 	UserSpecified MultiVMGroupCreateOption = original.UserSpecified
 )
-
-func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
-	return original.PossibleMultiVMGroupCreateOptionValues()
-}
 
 type MultiVMSyncPointOption = original.MultiVMSyncPointOption
 
@@ -536,20 +380,12 @@ const (
 	UsePerVMRecoveryPoint       MultiVMSyncPointOption = original.UsePerVMRecoveryPoint
 )
 
-func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
-	return original.PossibleMultiVMSyncPointOptionValues()
-}
-
 type MultiVMSyncStatus = original.MultiVMSyncStatus
 
 const (
 	Disabled MultiVMSyncStatus = original.Disabled
 	Enabled  MultiVMSyncStatus = original.Enabled
 )
-
-func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
-	return original.PossibleMultiVMSyncStatusValues()
-}
 
 type PossibleOperationsDirections = original.PossibleOperationsDirections
 
@@ -558,20 +394,12 @@ const (
 	RecoveryToPrimary PossibleOperationsDirections = original.RecoveryToPrimary
 )
 
-func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
-	return original.PossiblePossibleOperationsDirectionsValues()
-}
-
 type RecoveryPlanActionLocation = original.RecoveryPlanActionLocation
 
 const (
 	Primary  RecoveryPlanActionLocation = original.Primary
 	Recovery RecoveryPlanActionLocation = original.Recovery
 )
-
-func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
-	return original.PossibleRecoveryPlanActionLocationValues()
-}
 
 type RecoveryPlanGroupType = original.RecoveryPlanGroupType
 
@@ -581,20 +409,12 @@ const (
 	Shutdown RecoveryPlanGroupType = original.Shutdown
 )
 
-func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
-	return original.PossibleRecoveryPlanGroupTypeValues()
-}
-
 type RecoveryPointSyncType = original.RecoveryPointSyncType
 
 const (
 	MultiVMSyncRecoveryPoint RecoveryPointSyncType = original.MultiVMSyncRecoveryPoint
 	PerVMRecoveryPoint       RecoveryPointSyncType = original.PerVMRecoveryPoint
 )
-
-func PossibleRecoveryPointSyncTypeValues() []RecoveryPointSyncType {
-	return original.PossibleRecoveryPointSyncTypeValues()
-}
 
 type RecoveryPointType = original.RecoveryPointType
 
@@ -603,10 +423,6 @@ const (
 	LatestTag  RecoveryPointType = original.LatestTag
 	LatestTime RecoveryPointType = original.LatestTime
 )
-
-func PossibleRecoveryPointTypeValues() []RecoveryPointType {
-	return original.PossibleRecoveryPointTypeValues()
-}
 
 type ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperation
 
@@ -626,10 +442,6 @@ const (
 	ReplicationProtectedItemOperationUnplannedFailover   ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperationUnplannedFailover
 )
 
-func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
-	return original.PossibleReplicationProtectedItemOperationValues()
-}
-
 type RpInMageRecoveryPointType = original.RpInMageRecoveryPointType
 
 const (
@@ -638,20 +450,12 @@ const (
 	RpInMageRecoveryPointTypeLatestTime RpInMageRecoveryPointType = original.RpInMageRecoveryPointTypeLatestTime
 )
 
-func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
-	return original.PossibleRpInMageRecoveryPointTypeValues()
-}
-
 type SetMultiVMSyncStatus = original.SetMultiVMSyncStatus
 
 const (
 	Disable SetMultiVMSyncStatus = original.Disable
 	Enable  SetMultiVMSyncStatus = original.Enable
 )
-
-func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
-	return original.PossibleSetMultiVMSyncStatusValues()
-}
 
 type Severity = original.Severity
 
@@ -662,20 +466,12 @@ const (
 	Warning Severity = original.Warning
 )
 
-func PossibleSeverityValues() []Severity {
-	return original.PossibleSeverityValues()
-}
-
 type SourceSiteOperations = original.SourceSiteOperations
 
 const (
 	NotRequired SourceSiteOperations = original.NotRequired
 	Required    SourceSiteOperations = original.Required
 )
-
-func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
-	return original.PossibleSourceSiteOperationsValues()
-}
 
 type A2AApplyRecoveryPointInput = original.A2AApplyRecoveryPointInput
 type A2AContainerCreationInput = original.A2AContainerCreationInput
@@ -1109,187 +905,300 @@ type VMwareV2FabricCreationInput = original.VMwareV2FabricCreationInput
 type VMwareV2FabricSpecificDetails = original.VMwareV2FabricSpecificDetails
 type VMwareVirtualMachineDetails = original.VMwareVirtualMachineDetails
 type OperationsClient = original.OperationsClient
+type RecoveryPointsClient = original.RecoveryPointsClient
+type ReplicationAlertSettingsClient = original.ReplicationAlertSettingsClient
+type ReplicationEventsClient = original.ReplicationEventsClient
+type ReplicationFabricsClient = original.ReplicationFabricsClient
+type ReplicationJobsClient = original.ReplicationJobsClient
+type ReplicationLogicalNetworksClient = original.ReplicationLogicalNetworksClient
+type ReplicationNetworkMappingsClient = original.ReplicationNetworkMappingsClient
+type ReplicationNetworksClient = original.ReplicationNetworksClient
+type ReplicationPoliciesClient = original.ReplicationPoliciesClient
+type ReplicationProtectableItemsClient = original.ReplicationProtectableItemsClient
+type ReplicationProtectedItemsClient = original.ReplicationProtectedItemsClient
+type ReplicationProtectionContainerMappingsClient = original.ReplicationProtectionContainerMappingsClient
+type ReplicationProtectionContainersClient = original.ReplicationProtectionContainersClient
+type ReplicationRecoveryPlansClient = original.ReplicationRecoveryPlansClient
+type ReplicationRecoveryServicesProvidersClient = original.ReplicationRecoveryServicesProvidersClient
+type ReplicationStorageClassificationMappingsClient = original.ReplicationStorageClassificationMappingsClient
+type ReplicationStorageClassificationsClient = original.ReplicationStorageClassificationsClient
+type ReplicationVaultHealthClient = original.ReplicationVaultHealthClient
+type ReplicationvCentersClient = original.ReplicationvCentersClient
+type TargetComputeSizesClient = original.TargetComputeSizesClient
 
+func New(subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
+	return original.New(subscriptionID, resourceGroupName, resourceName)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
+}
+func PossibleA2ARpRecoveryPointTypeValues() []A2ARpRecoveryPointType {
+	return original.PossibleA2ARpRecoveryPointTypeValues()
+}
+func PossibleAgentVersionStatusValues() []AgentVersionStatus {
+	return original.PossibleAgentVersionStatusValues()
+}
+func PossibleAlternateLocationRecoveryOptionValues() []AlternateLocationRecoveryOption {
+	return original.PossibleAlternateLocationRecoveryOptionValues()
+}
+func PossibleDataSyncStatusValues() []DataSyncStatus {
+	return original.PossibleDataSyncStatusValues()
+}
+func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
+	return original.PossibleDisableProtectionReasonValues()
+}
+func PossibleFailoverDeploymentModelValues() []FailoverDeploymentModel {
+	return original.PossibleFailoverDeploymentModelValues()
+}
+func PossibleHealthErrorCategoryValues() []HealthErrorCategory {
+	return original.PossibleHealthErrorCategoryValues()
+}
+func PossibleHyperVReplicaAzureRpRecoveryPointTypeValues() []HyperVReplicaAzureRpRecoveryPointType {
+	return original.PossibleHyperVReplicaAzureRpRecoveryPointTypeValues()
+}
+func PossibleIdentityProviderTypeValues() []IdentityProviderType {
+	return original.PossibleIdentityProviderTypeValues()
+}
+func PossibleInMageV2RpRecoveryPointTypeValues() []InMageV2RpRecoveryPointType {
+	return original.PossibleInMageV2RpRecoveryPointTypeValues()
+}
+func PossibleInstanceTypeValues() []InstanceType {
+	return original.PossibleInstanceTypeValues()
+}
+func PossibleInstanceTypeBasicConfigurationSettingsValues() []InstanceTypeBasicConfigurationSettings {
+	return original.PossibleInstanceTypeBasicConfigurationSettingsValues()
+}
+func PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues() []InstanceTypeBasicDisableProtectionProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicDisableProtectionProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues() []InstanceTypeBasicEnableProtectionProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicEnableProtectionProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicEventProviderSpecificDetailsValues() []InstanceTypeBasicEventProviderSpecificDetails {
+	return original.PossibleInstanceTypeBasicEventProviderSpecificDetailsValues()
+}
+func PossibleInstanceTypeBasicEventSpecificDetailsValues() []InstanceTypeBasicEventSpecificDetails {
+	return original.PossibleInstanceTypeBasicEventSpecificDetailsValues()
+}
+func PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificCreateNetworkMappingInput {
+	return original.PossibleInstanceTypeBasicFabricSpecificCreateNetworkMappingInputValues()
+}
+func PossibleInstanceTypeBasicFabricSpecificCreationInputValues() []InstanceTypeBasicFabricSpecificCreationInput {
+	return original.PossibleInstanceTypeBasicFabricSpecificCreationInputValues()
+}
+func PossibleInstanceTypeBasicFabricSpecificDetailsValues() []InstanceTypeBasicFabricSpecificDetails {
+	return original.PossibleInstanceTypeBasicFabricSpecificDetailsValues()
+}
+func PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues() []InstanceTypeBasicFabricSpecificUpdateNetworkMappingInput {
+	return original.PossibleInstanceTypeBasicFabricSpecificUpdateNetworkMappingInputValues()
+}
+func PossibleInstanceTypeBasicGroupTaskDetailsValues() []InstanceTypeBasicGroupTaskDetails {
+	return original.PossibleInstanceTypeBasicGroupTaskDetailsValues()
+}
+func PossibleInstanceTypeBasicJobDetailsValues() []InstanceTypeBasicJobDetails {
+	return original.PossibleInstanceTypeBasicJobDetailsValues()
+}
+func PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues() []InstanceTypeBasicNetworkMappingFabricSpecificSettings {
+	return original.PossibleInstanceTypeBasicNetworkMappingFabricSpecificSettingsValues()
+}
+func PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues() []InstanceTypeBasicPolicyProviderSpecificDetails {
+	return original.PossibleInstanceTypeBasicPolicyProviderSpecificDetailsValues()
+}
+func PossibleInstanceTypeBasicPolicyProviderSpecificInputValues() []InstanceTypeBasicPolicyProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicPolicyProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicProviderSpecificFailoverInputValues() []InstanceTypeBasicProviderSpecificFailoverInput {
+	return original.PossibleInstanceTypeBasicProviderSpecificFailoverInputValues()
+}
+func PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues() []InstanceTypeBasicProviderSpecificRecoveryPointDetails {
+	return original.PossibleInstanceTypeBasicProviderSpecificRecoveryPointDetailsValues()
+}
+func PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues() []InstanceTypeBasicRecoveryPlanActionDetails {
+	return original.PossibleInstanceTypeBasicRecoveryPlanActionDetailsValues()
+}
+func PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues() []InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput {
+	return original.PossibleInstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputValues()
+}
+func PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues() []InstanceTypeBasicReplicationProviderSpecificContainerCreationInput {
+	return original.PossibleInstanceTypeBasicReplicationProviderSpecificContainerCreationInputValues()
+}
+func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []InstanceTypeBasicReplicationProviderSpecificSettings {
+	return original.PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues()
+}
+func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues() []InstanceTypeBasicSwitchProtectionProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicSwitchProtectionProviderSpecificInputValues()
+}
+func PossibleInstanceTypeBasicTaskTypeDetailsValues() []InstanceTypeBasicTaskTypeDetails {
+	return original.PossibleInstanceTypeBasicTaskTypeDetailsValues()
+}
+func PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues() []InstanceTypeBasicUpdateReplicationProtectedItemProviderInput {
+	return original.PossibleInstanceTypeBasicUpdateReplicationProtectedItemProviderInputValues()
+}
+func PossibleLicenseTypeValues() []LicenseType {
+	return original.PossibleLicenseTypeValues()
+}
+func PossibleMultiVMGroupCreateOptionValues() []MultiVMGroupCreateOption {
+	return original.PossibleMultiVMGroupCreateOptionValues()
+}
+func PossibleMultiVMSyncPointOptionValues() []MultiVMSyncPointOption {
+	return original.PossibleMultiVMSyncPointOptionValues()
+}
+func PossibleMultiVMSyncStatusValues() []MultiVMSyncStatus {
+	return original.PossibleMultiVMSyncStatusValues()
+}
+func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections {
+	return original.PossiblePossibleOperationsDirectionsValues()
+}
+func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
+	return original.PossibleRecoveryPlanActionLocationValues()
+}
+func PossibleRecoveryPlanGroupTypeValues() []RecoveryPlanGroupType {
+	return original.PossibleRecoveryPlanGroupTypeValues()
+}
+func PossibleRecoveryPointSyncTypeValues() []RecoveryPointSyncType {
+	return original.PossibleRecoveryPointSyncTypeValues()
+}
+func PossibleRecoveryPointTypeValues() []RecoveryPointType {
+	return original.PossibleRecoveryPointTypeValues()
+}
+func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
+	return original.PossibleReplicationProtectedItemOperationValues()
+}
+func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
+	return original.PossibleRpInMageRecoveryPointTypeValues()
+}
+func PossibleSetMultiVMSyncStatusValues() []SetMultiVMSyncStatus {
+	return original.PossibleSetMultiVMSyncStatusValues()
+}
+func PossibleSeverityValues() []Severity {
+	return original.PossibleSeverityValues()
+}
+func PossibleSourceSiteOperationsValues() []SourceSiteOperations {
+	return original.PossibleSourceSiteOperationsValues()
+}
 func NewOperationsClient(subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type RecoveryPointsClient = original.RecoveryPointsClient
-
 func NewRecoveryPointsClient(subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationAlertSettingsClient = original.ReplicationAlertSettingsClient
-
 func NewReplicationAlertSettingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
 	return original.NewReplicationAlertSettingsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationAlertSettingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationAlertSettingsClient {
 	return original.NewReplicationAlertSettingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationEventsClient = original.ReplicationEventsClient
-
 func NewReplicationEventsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
 	return original.NewReplicationEventsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationEventsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationEventsClient {
 	return original.NewReplicationEventsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationFabricsClient = original.ReplicationFabricsClient
-
 func NewReplicationFabricsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
 	return original.NewReplicationFabricsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationFabricsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationFabricsClient {
 	return original.NewReplicationFabricsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationJobsClient = original.ReplicationJobsClient
-
 func NewReplicationJobsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
 	return original.NewReplicationJobsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationJobsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationJobsClient {
 	return original.NewReplicationJobsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationLogicalNetworksClient = original.ReplicationLogicalNetworksClient
-
 func NewReplicationLogicalNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
 	return original.NewReplicationLogicalNetworksClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationLogicalNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationLogicalNetworksClient {
 	return original.NewReplicationLogicalNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationNetworkMappingsClient = original.ReplicationNetworkMappingsClient
-
 func NewReplicationNetworkMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworkMappingsClient {
 	return original.NewReplicationNetworkMappingsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationNetworkMappingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworkMappingsClient {
 	return original.NewReplicationNetworkMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationNetworksClient = original.ReplicationNetworksClient
-
 func NewReplicationNetworksClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
 	return original.NewReplicationNetworksClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationNetworksClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationNetworksClient {
 	return original.NewReplicationNetworksClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationPoliciesClient = original.ReplicationPoliciesClient
-
 func NewReplicationPoliciesClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
 	return original.NewReplicationPoliciesClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationPoliciesClient {
 	return original.NewReplicationPoliciesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationProtectableItemsClient = original.ReplicationProtectableItemsClient
-
 func NewReplicationProtectableItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
 	return original.NewReplicationProtectableItemsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationProtectableItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectableItemsClient {
 	return original.NewReplicationProtectableItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationProtectedItemsClient = original.ReplicationProtectedItemsClient
-
 func NewReplicationProtectedItemsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
 	return original.NewReplicationProtectedItemsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectedItemsClient {
 	return original.NewReplicationProtectedItemsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationProtectionContainerMappingsClient = original.ReplicationProtectionContainerMappingsClient
-
 func NewReplicationProtectionContainerMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
 	return original.NewReplicationProtectionContainerMappingsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainerMappingsClient {
 	return original.NewReplicationProtectionContainerMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationProtectionContainersClient = original.ReplicationProtectionContainersClient
-
 func NewReplicationProtectionContainersClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainersClient {
 	return original.NewReplicationProtectionContainersClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationProtectionContainersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationProtectionContainersClient {
 	return original.NewReplicationProtectionContainersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationRecoveryPlansClient = original.ReplicationRecoveryPlansClient
-
 func NewReplicationRecoveryPlansClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryPlansClient {
 	return original.NewReplicationRecoveryPlansClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationRecoveryPlansClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryPlansClient {
 	return original.NewReplicationRecoveryPlansClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationRecoveryServicesProvidersClient = original.ReplicationRecoveryServicesProvidersClient
-
 func NewReplicationRecoveryServicesProvidersClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
 	return original.NewReplicationRecoveryServicesProvidersClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationRecoveryServicesProvidersClient {
 	return original.NewReplicationRecoveryServicesProvidersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationStorageClassificationMappingsClient = original.ReplicationStorageClassificationMappingsClient
-
 func NewReplicationStorageClassificationMappingsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationMappingsClient {
 	return original.NewReplicationStorageClassificationMappingsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationMappingsClient {
 	return original.NewReplicationStorageClassificationMappingsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationStorageClassificationsClient = original.ReplicationStorageClassificationsClient
-
 func NewReplicationStorageClassificationsClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
 	return original.NewReplicationStorageClassificationsClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationStorageClassificationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationStorageClassificationsClient {
 	return original.NewReplicationStorageClassificationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationVaultHealthClient = original.ReplicationVaultHealthClient
-
 func NewReplicationVaultHealthClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
 	return original.NewReplicationVaultHealthClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationVaultHealthClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationVaultHealthClient {
 	return original.NewReplicationVaultHealthClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type ReplicationvCentersClient = original.ReplicationvCentersClient
-
 func NewReplicationvCentersClient(subscriptionID string, resourceGroupName string, resourceName string) ReplicationvCentersClient {
 	return original.NewReplicationvCentersClient(subscriptionID, resourceGroupName, resourceName)
 }
 func NewReplicationvCentersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, resourceName string) ReplicationvCentersClient {
 	return original.NewReplicationvCentersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, resourceName)
 }
-
-type TargetComputeSizesClient = original.TargetComputeSizesClient
-
 func NewTargetComputeSizesClient(subscriptionID string, resourceGroupName string, resourceName string) TargetComputeSizesClient {
 	return original.NewTargetComputeSizesClient(subscriptionID, resourceGroupName, resourceName)
 }

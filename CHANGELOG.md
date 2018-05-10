@@ -1,5 +1,50 @@
 # CHANGELOG
 
+## `v15.3.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|databox | 2018-01-01 |
+|devices | 2018-04-01 |
+|media | 2018-03-30-preview |
+|servicefabric | 6.2 |
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|apimanagement | 2018-01-01 |
+|batch | 2018-03-01.6.1 |
+|containerregistry | 2017-10-01 |
+|documentdb | 2015-04-08 |
+|servicebus | 2017-04-01 |
+
+## `v15.2.0`
+
+### New Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|addons | 2017-05-15 |
+|addons | 2018-03-01 |
+
+### Updated Services
+
+| Package Name | API Version |
+|-------------:|:-----------:|
+|apimanagement | 2017-03-01 |
+|apimanagement | 2018-01-01 |
+|insights | 2015-05-01 |
+
+## `v15.1.1`
+
+### Bug Fixes
+
+- Drain the response body when retrying a request.
+- Avoid allocating when draining a response body.
+
 ## `v15.1.0`
 
 ### New Services

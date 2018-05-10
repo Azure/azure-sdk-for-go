@@ -22,46 +22,19 @@ package cognitiveservices
 import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices"
 
 type AccountsClient = original.AccountsClient
-
-func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID, filter)
-}
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
-}
-
 type CheckSkuAvailabilityClient = original.CheckSkuAvailabilityClient
-
-func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
-}
-func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
-	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
-}
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string, filter string) BaseClient {
-	return original.New(subscriptionID, filter)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
-}
-
 type KeyName = original.KeyName
 
 const (
 	Key1 KeyName = original.Key1
 	Key2 KeyName = original.Key2
 )
-
-func PossibleKeyNameValues() []KeyName {
-	return original.PossibleKeyNameValues()
-}
 
 type Kind = original.Kind
 
@@ -87,10 +60,6 @@ const (
 	WebLM                  Kind = original.WebLM
 )
 
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
-}
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -102,10 +71,6 @@ const (
 	Succeeded    ProvisioningState = original.Succeeded
 )
 
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
-}
-
 type QuotaUsageStatus = original.QuotaUsageStatus
 
 const (
@@ -114,10 +79,6 @@ const (
 	InOverage QuotaUsageStatus = original.InOverage
 	Unknown   QuotaUsageStatus = original.Unknown
 )
-
-func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
-	return original.PossibleQuotaUsageStatusValues()
-}
 
 type SkuName = original.SkuName
 
@@ -135,10 +96,6 @@ const (
 	S6 SkuName = original.S6
 )
 
-func PossibleSkuNameValues() []SkuName {
-	return original.PossibleSkuNameValues()
-}
-
 type SkuTier = original.SkuTier
 
 const (
@@ -146,10 +103,6 @@ const (
 	Premium  SkuTier = original.Premium
 	Standard SkuTier = original.Standard
 )
-
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
-}
 
 type UnitType = original.UnitType
 
@@ -162,10 +115,6 @@ const (
 	Percent        UnitType = original.Percent
 	Seconds        UnitType = original.Seconds
 )
-
-func PossibleUnitTypeValues() []UnitType {
-	return original.PossibleUnitTypeValues()
-}
 
 type Account = original.Account
 type AccountCreateParameters = original.AccountCreateParameters
@@ -194,6 +143,45 @@ type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type OperationsClient = original.OperationsClient
 
+func NewAccountsClient(subscriptionID string, filter string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID, filter)
+}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, filter)
+}
+func NewCheckSkuAvailabilityClient(subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClient(subscriptionID, filter)
+}
+func NewCheckSkuAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, filter string) CheckSkuAvailabilityClient {
+	return original.NewCheckSkuAvailabilityClientWithBaseURI(baseURI, subscriptionID, filter)
+}
+func New(subscriptionID string, filter string) BaseClient {
+	return original.New(subscriptionID, filter)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
+}
+func PossibleKeyNameValues() []KeyName {
+	return original.PossibleKeyNameValues()
+}
+func PossibleKindValues() []Kind {
+	return original.PossibleKindValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
+	return original.PossibleQuotaUsageStatusValues()
+}
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func PossibleUnitTypeValues() []UnitType {
+	return original.PossibleUnitTypeValues()
+}
 func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, filter)
 }

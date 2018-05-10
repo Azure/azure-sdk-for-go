@@ -26,20 +26,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New() BaseClient {
-	return original.New()
-}
-func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(adlaJobDNSSuffix)
-}
-
 type Client = original.Client
-
-func NewClient() Client {
-	return original.NewClient()
-}
-
 type CompileMode = original.CompileMode
 
 const (
@@ -47,10 +34,6 @@ const (
 	Semantic  CompileMode = original.Semantic
 	SingleBox CompileMode = original.SingleBox
 )
-
-func PossibleCompileModeValues() []CompileMode {
-	return original.PossibleCompileModeValues()
-}
 
 type ResourceType = original.ResourceType
 
@@ -63,10 +46,6 @@ const (
 	VertexResourceInUserFolder     ResourceType = original.VertexResourceInUserFolder
 )
 
-func PossibleResourceTypeValues() []ResourceType {
-	return original.PossibleResourceTypeValues()
-}
-
 type Result = original.Result
 
 const (
@@ -75,10 +54,6 @@ const (
 	None      Result = original.None
 	Succeeded Result = original.Succeeded
 )
-
-func PossibleResultValues() []Result {
-	return original.PossibleResultValues()
-}
 
 type SeverityTypes = original.SeverityTypes
 
@@ -90,10 +65,6 @@ const (
 	UserWarning   SeverityTypes = original.UserWarning
 	Warning       SeverityTypes = original.Warning
 )
-
-func PossibleSeverityTypesValues() []SeverityTypes {
-	return original.PossibleSeverityTypesValues()
-}
 
 type State = original.State
 
@@ -110,10 +81,6 @@ const (
 	StateWaitingForCapacity State = original.StateWaitingForCapacity
 )
 
-func PossibleStateValues() []State {
-	return original.PossibleStateValues()
-}
-
 type Type = original.Type
 
 const (
@@ -122,10 +89,6 @@ const (
 	TypeUSQL          Type = original.TypeUSQL
 )
 
-func PossibleTypeValues() []Type {
-	return original.PossibleTypeValues()
-}
-
 type TypeBasicCreateJobProperties = original.TypeBasicCreateJobProperties
 
 const (
@@ -133,20 +96,12 @@ const (
 	TypeBasicCreateJobPropertiesTypeUSQL                TypeBasicCreateJobProperties = original.TypeBasicCreateJobPropertiesTypeUSQL
 )
 
-func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties {
-	return original.PossibleTypeBasicCreateJobPropertiesValues()
-}
-
 type TypeEnum = original.TypeEnum
 
 const (
 	Hive TypeEnum = original.Hive
 	USQL TypeEnum = original.USQL
 )
-
-func PossibleTypeEnumValues() []TypeEnum {
-	return original.PossibleTypeEnumValues()
-}
 
 type BaseJobParameters = original.BaseJobParameters
 type BuildJobParameters = original.BuildJobParameters
@@ -182,13 +137,44 @@ type Statistics = original.Statistics
 type StatisticsVertexStage = original.StatisticsVertexStage
 type USQLJobProperties = original.USQLJobProperties
 type PipelineClient = original.PipelineClient
+type RecurrenceClient = original.RecurrenceClient
 
+func New() BaseClient {
+	return original.New()
+}
+func NewWithoutDefaults(adlaJobDNSSuffix string) BaseClient {
+	return original.NewWithoutDefaults(adlaJobDNSSuffix)
+}
+func NewClient() Client {
+	return original.NewClient()
+}
+func PossibleCompileModeValues() []CompileMode {
+	return original.PossibleCompileModeValues()
+}
+func PossibleResourceTypeValues() []ResourceType {
+	return original.PossibleResourceTypeValues()
+}
+func PossibleResultValues() []Result {
+	return original.PossibleResultValues()
+}
+func PossibleSeverityTypesValues() []SeverityTypes {
+	return original.PossibleSeverityTypesValues()
+}
+func PossibleStateValues() []State {
+	return original.PossibleStateValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
+}
+func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties {
+	return original.PossibleTypeBasicCreateJobPropertiesValues()
+}
+func PossibleTypeEnumValues() []TypeEnum {
+	return original.PossibleTypeEnumValues()
+}
 func NewPipelineClient() PipelineClient {
 	return original.NewPipelineClient()
 }
-
-type RecurrenceClient = original.RecurrenceClient
-
 func NewRecurrenceClient() RecurrenceClient {
 	return original.NewRecurrenceClient()
 }

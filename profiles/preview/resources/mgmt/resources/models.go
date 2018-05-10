@@ -26,41 +26,9 @@ const (
 )
 
 type BaseClient = original.BaseClient
-
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-
 type DeploymentOperationsClient = original.DeploymentOperationsClient
-
-func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClient(subscriptionID)
-}
-func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
-	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DeploymentsClient = original.DeploymentsClient
-
-func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClient(subscriptionID)
-}
-func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
-	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type GroupsClient = original.GroupsClient
-
-func NewGroupsClient(subscriptionID string) GroupsClient {
-	return original.NewGroupsClient(subscriptionID)
-}
-func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
-	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-
 type DeploymentMode = original.DeploymentMode
 
 const (
@@ -68,20 +36,12 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return original.PossibleDeploymentModeValues()
-}
-
 type OnErrorDeploymentType = original.OnErrorDeploymentType
 
 const (
 	LastSuccessful     OnErrorDeploymentType = original.LastSuccessful
 	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
 )
-
-func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
-	return original.PossibleOnErrorDeploymentTypeValues()
-}
 
 type ResourceIdentityType = original.ResourceIdentityType
 
@@ -91,10 +51,6 @@ const (
 	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
 	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
-
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return original.PossibleResourceIdentityTypeValues()
-}
 
 type AliasPathType = original.AliasPathType
 type AliasType = original.AliasType
@@ -167,25 +123,54 @@ type UpdateByIDFuture = original.UpdateByIDFuture
 type UpdateFuture = original.UpdateFuture
 type ValidateMoveResourcesFuture = original.ValidateMoveResourcesFuture
 type ProvidersClient = original.ProvidersClient
+type Client = original.Client
+type TagsClient = original.TagsClient
 
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClient(subscriptionID)
+}
+func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClient(subscriptionID)
+}
+func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGroupsClient(subscriptionID string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID)
+}
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return original.PossibleDeploymentModeValues()
+}
+func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
+	return original.PossibleOnErrorDeploymentTypeValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func NewProvidersClient(subscriptionID string) ProvidersClient {
 	return original.NewProvidersClient(subscriptionID)
 }
 func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) ProvidersClient {
 	return original.NewProvidersClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type Client = original.Client
-
 func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
 func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
-
-type TagsClient = original.TagsClient
-
 func NewTagsClient(subscriptionID string) TagsClient {
 	return original.NewTagsClient(subscriptionID)
 }

@@ -63,11 +63,18 @@ type IncrementalCopyOptionsConditions struct {
 }
 
 // Copy starts a blob copy operation and waits for the operation to
-// complete. sourceBlob parameter must be a canonical URL to the blob (can be
-// obtained using the GetURL method.) There is no SLA on blob copy and therefore
-// this helper method works faster on smaller files.
+// complete.
+// sourceBlob can be a canonical url (see GetUrl) to a blob in the
+// same storage account or a blob in another account, in which case
+// the source blob must either be public or must be authenticated via
+// a shared access signature in the url.
+// sourceBlob may also be a file in the Azure File service, in which
+// case the source file must be authenticated using a shared access
+// signature, even if it resides in the same account.
+// There is no SLA on blob copy and therefore this helper method works
+// faster on smaller files.
 //
-// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Copy-Blob
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob
 func (b *Blob) Copy(sourceBlob string, options *CopyOptions) error {
 	copyID, err := b.StartCopy(sourceBlob, options)
 	if err != nil {
@@ -78,10 +85,15 @@ func (b *Blob) Copy(sourceBlob string, options *CopyOptions) error {
 }
 
 // StartCopy starts a blob copy operation.
-// sourceBlob parameter must be a canonical URL to the blob (can be
-// obtained using the GetURL method.)
+// sourceBlob can be a canonical url (see GetUrl) to a blob in the
+// same storage account or a blob in another account, in which case
+// the source blob must either be public or must be authenticated via
+// a shared access signature in the url.
+// sourceBlob may also be a file in the Azure File service, in which
+// case the source file must be authenticated using a shared access
+// signature, even if it resides in the same account.
 //
-// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Copy-Blob
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob
 func (b *Blob) StartCopy(sourceBlob string, options *CopyOptions) (string, error) {
 	params := url.Values{}
 	headers := b.Container.bsc.client.getStandardHeaders()
@@ -133,7 +145,8 @@ type AbortCopyOptions struct {
 // AbortCopy aborts a BlobCopy which has already been triggered by the StartBlobCopy function.
 // copyID is generated from StartBlobCopy function.
 // currentLeaseID is required IF the destination blob has an active lease on it.
-// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/Abort-Copy-Blob
+//
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob
 func (b *Blob) AbortCopy(copyID string, options *AbortCopyOptions) error {
 	params := url.Values{
 		"comp":   {"copy"},
@@ -185,9 +198,9 @@ func (b *Blob) WaitForCopy(copyID string) error {
 
 // IncrementalCopyBlob copies a snapshot of a source blob and copies to referring blob
 // sourceBlob parameter must be a valid snapshot URL of the original blob.
-// THe original blob mut be public, or use a Shared Access Signature.
+// The original blob must be public, or use a Shared Access Signature.
 //
-// See https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/incremental-copy-blob .
+// See https://docs.microsoft.com/en-us/rest/api/storageservices/incremental-copy-blob
 func (b *Blob) IncrementalCopyBlob(sourceBlobURL string, snapshotTime time.Time, options *IncrementalCopyOptions) (string, error) {
 	params := url.Values{"comp": {"incrementalcopy"}}
 

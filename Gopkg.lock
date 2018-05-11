@@ -93,18 +93,17 @@
   revision = "f73e4c9ed3b7ebdd5f699a16a880c2b1994e50dd"
 
 [[projects]]
-  branch = "feature/session-filter"
+  branch = "master"
   name = "pack.ag/amqp"
   packages = [
     ".",
     "internal/testconn"
   ]
-  revision = "d5baf82fcdfed9f364f3e8a1b5ca623f0f9f6518"
-  source = "github.com/devigned/amqp"
+  revision = "3714ffb325b31a3619d1ac2cdf678fa51ec446ef"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5dfcdfb9cf2543020e4be0841733d71967511fea14533ee72bf55444f9d5bc01"
+  inputs-digest = "650c8d9022e6e985cd93762ec02122314aa6daeeb2b083b3b3ba3c45a5c64549"
   solver-name = "gps-cdcl"
   solver-version = 1

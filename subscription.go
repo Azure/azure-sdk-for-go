@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"context"
 	"encoding/xml"
@@ -8,6 +30,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
@@ -16,9 +39,8 @@ type (
 	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
 	//Messages are received from a subscription identically to the way they are received from a queue.
 	Subscription struct {
-		Name       string
+		*entity
 		Topic      *Topic
-		namespace  *Namespace
 		receiver   *receiver
 		receiverMu sync.Mutex
 	}
@@ -82,12 +104,18 @@ func (ns *Namespace) NewSubscriptionManager(topicName, name string) *Subscriptio
 
 // Delete deletes a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
+	defer span.Finish()
+
 	_, err := sm.EntityManager.Delete(ctx, sm.getResourceURI(name))
 	return err
 }
 
 // Put creates or updates a Service Bus Topic
 func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionOption) (*SubscriptionEntry, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
+	defer span.Finish()
+
 	subscriptionDescription := new(SubscriptionDescription)
 
 	for _, opt := range opts {
@@ -134,6 +162,9 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (sm *SubscriptionManager) List(ctx context.Context) (*SubscriptionFeed, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
+	defer span.Finish()
+
 	res, err := sm.EntityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
 	if err != nil {
 		return nil, err
@@ -151,6 +182,9 @@ func (sm *SubscriptionManager) List(ctx context.Context) (*SubscriptionFeed, err
 
 // Get fetches a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntry, error) {
+	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
+	defer span.Finish()
+
 	res, err := sm.EntityManager.Get(ctx, sm.getResourceURI(name))
 	if err != nil {
 		return nil, err
@@ -173,19 +207,25 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 // NewSubscription creates a new Topic Subscription client
 func (t *Topic) NewSubscription(name string) *Subscription {
 	return &Subscription{
-		namespace: t.namespace,
-		Name:      name,
-		Topic:     t,
+		entity: &entity{
+			namespace: t.namespace,
+			Name:      name,
+		},
+		Topic: t,
 	}
 }
 
 // Receive subscribes for messages sent to the Subscription
 func (s *Subscription) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
+	defer span.Finish()
+
 	s.receiverMu.Lock()
 	defer s.receiverMu.Unlock()
 
 	if s.receiver != nil {
 		if err := s.receiver.Close(ctx); err != nil {
+			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -193,11 +233,13 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler, opts ...Rec
 	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name)
 	for _, opt := range opts {
 		if err := opt(receiver); err != nil {
+			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
 
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 

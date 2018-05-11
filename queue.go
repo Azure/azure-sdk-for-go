@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"context"
 	"encoding/xml"
@@ -7,16 +29,22 @@ import (
 	"io/ioutil"
 	"sync"
 	"time"
+
+	"github.com/Azure/azure-amqp-common-go/log"
 )
 
 type (
+	entity struct {
+		Name      string
+		namespace *Namespace
+	}
+
 	// Queue represents a Service Bus Queue entity, which offers First In, First Out (FIFO) message delivery to one or
 	// more competing consumers. That is, messages are typically expected to be received and processed by the receivers
 	// in the order in which they were added to the queue, and each message is received and processed by only one
 	// message consumer.
 	Queue struct {
-		Name       string
-		namespace  *Namespace
+		*entity
 		sender     *sender
 		receiver   *receiver
 		receiverMu sync.Mutex
@@ -178,16 +206,23 @@ func (ns *Namespace) NewQueueManager() *QueueManager {
 
 // Delete deletes a Service Bus Queue entity by name
 func (qm *QueueManager) Delete(ctx context.Context, name string) error {
+	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
+	defer span.Finish()
+
 	_, err := qm.EntityManager.Delete(ctx, "/"+name)
 	return err
 }
 
 // Put creates or updates a Service Bus Queue
 func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOption) (*QueueEntry, error) {
+	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
+	defer span.Finish()
+
 	queueDescription := new(QueueDescription)
 
 	for _, opt := range opts {
 		if err := opt(queueDescription); err != nil {
+			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -209,17 +244,20 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOptio
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := qm.EntityManager.Put(ctx, "/"+name, reqBytes)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -230,13 +268,18 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOptio
 
 // List fetches all of the queues for a Service Bus Namespace
 func (qm *QueueManager) List(ctx context.Context) (*QueueFeed, error) {
+	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
+	defer span.Finish()
+
 	res, err := qm.EntityManager.Get(ctx, `/$Resources/Queues`)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -247,13 +290,18 @@ func (qm *QueueManager) List(ctx context.Context) (*QueueFeed, error) {
 
 // Get fetches a Service Bus Queue entity by name
 func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntry, error) {
+	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
+	defer span.Finish()
+
 	res, err := qm.EntityManager.Get(ctx, name)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -265,15 +313,21 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntry, erro
 // NewQueue creates a new Queue Sender / Receiver
 func (ns *Namespace) NewQueue(name string) *Queue {
 	return &Queue{
-		namespace: ns,
-		Name:      name,
+		entity: &entity{
+			namespace: ns,
+			Name:      name,
+		},
 	}
 }
 
 // Send sends messages to the Queue
 func (q *Queue) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
+	defer span.Finish()
+
 	err := q.ensureSender(ctx)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return err
 	}
 	return q.sender.Send(ctx, event, opts...)
@@ -281,17 +335,22 @@ func (q *Queue) Send(ctx context.Context, event *Event, opts ...SendOption) erro
 
 // Receive subscribes for messages sent to the Queue
 func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
+	defer span.Finish()
+
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
 
 	if q.receiver != nil {
 		if err := q.receiver.Close(ctx); err != nil {
+			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
 
 	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -301,9 +360,13 @@ func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOp
 
 // Close the underlying connection to Service Bus
 func (q *Queue) Close(ctx context.Context) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Close")
+	defer span.Finish()
+
 	if q.receiver != nil {
 		if err := q.receiver.Close(ctx); err != nil {
 			_ = q.sender.Close(ctx)
+			log.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -316,12 +379,16 @@ func (q *Queue) Close(ctx context.Context) error {
 }
 
 func (q *Queue) ensureSender(ctx context.Context) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureSender")
+	defer span.Finish()
+
 	q.senderMu.Lock()
 	defer q.senderMu.Unlock()
 
 	if q.sender == nil {
 		s, err := q.namespace.newSender(ctx, q.Name)
 		if err != nil {
+			log.For(ctx).Error(err)
 			return err
 		}
 		q.sender = s

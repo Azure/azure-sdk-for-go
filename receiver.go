@@ -213,11 +213,10 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 		amqp.LinkCredit(100),
 	}
 
-	// TODO: fix this with after SB team replies with bug fix for session filters
-	//if r.requiredSessionID != nil {
-	//	opts = append(opts, amqp.LinkSourceFilterString("com.microsoft:session-filter", *r.requiredSessionID))
-	//	r.session.SessionID = *r.requiredSessionID
-	//}
+	if r.requiredSessionID != nil {
+		opts = append(opts, amqp.LinkSessionFilter(*r.requiredSessionID))
+		r.session.SessionID = *r.requiredSessionID
+	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
 	if err != nil {

@@ -99,7 +99,7 @@
     ".",
     "internal/testconn"
   ]
-  revision = "1961b4812356984db063a6cb3419b70d4375383b"
+  revision = "3714ffb325b31a3619d1ac2cdf678fa51ec446ef"
 
 [solve-meta]
   analyzer-name = "dep"

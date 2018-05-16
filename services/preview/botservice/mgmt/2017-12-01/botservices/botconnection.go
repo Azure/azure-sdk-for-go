@@ -174,9 +174,9 @@ func (client BotConnectionClient) GetPreparer(ctx context.Context, resourceGroup
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/Connections/{connectionName}/listWithSecrets", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/Connections/{connectionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -201,12 +201,12 @@ func (client BotConnectionClient) GetResponder(resp *http.Response) (result Conn
 	return
 }
 
-// Get1 get a Connection Setting registration for a Bot Service
+// ListWithSecrets get a Connection Setting registration for a Bot Service
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription.
 // resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Connection Setting resource.
-func (client BotConnectionClient) Get1(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
@@ -216,32 +216,32 @@ func (client BotConnectionClient) Get1(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
 				{Target: "connectionName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("botservice.BotConnectionClient", "Get1", err.Error())
+		return result, validation.NewError("botservice.BotConnectionClient", "ListWithSecrets", err.Error())
 	}
 
-	req, err := client.Get1Preparer(ctx, resourceGroupName, resourceName, connectionName)
+	req, err := client.ListWithSecretsPreparer(ctx, resourceGroupName, resourceName, connectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Get1", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListWithSecrets", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.Get1Sender(req)
+	resp, err := client.ListWithSecretsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Get1", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListWithSecrets", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.Get1Responder(resp)
+	result, err = client.ListWithSecretsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Get1", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListWithSecrets", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// Get1Preparer prepares the Get1 request.
-func (client BotConnectionClient) Get1Preparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (*http.Request, error) {
+// ListWithSecretsPreparer prepares the ListWithSecrets request.
+func (client BotConnectionClient) ListWithSecretsPreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -255,23 +255,23 @@ func (client BotConnectionClient) Get1Preparer(ctx context.Context, resourceGrou
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/Connections/{connectionName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/Connections/{connectionName}/listWithSecrets", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Get1Sender sends the Get1 request. The method will close the
+// ListWithSecretsSender sends the ListWithSecrets request. The method will close the
 // http.Response Body if it receives an error.
-func (client BotConnectionClient) Get1Sender(req *http.Request) (*http.Response, error) {
+func (client BotConnectionClient) ListWithSecretsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// Get1Responder handles the response to the Get1 request. The method always
+// ListWithSecretsResponder handles the response to the ListWithSecrets request. The method always
 // closes the http.Response Body.
-func (client BotConnectionClient) Get1Responder(resp *http.Response) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) ListWithSecretsResponder(resp *http.Response) (result ConnectionSetting, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

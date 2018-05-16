@@ -39,7 +39,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all of the available ServiceFabric REST API operations.
+// List get the list of available Service Fabric resource provider API operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
@@ -65,7 +65,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2016-09-01"
+	const APIVersion = ""
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

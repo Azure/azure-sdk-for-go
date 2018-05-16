@@ -40,21 +40,17 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create cluster resource
+// Create create or update a Service Fabric cluster resource with the specified name.
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-// clusterName - the name of the cluster resource
-// parameters - put Request
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the cluster resource.
+// parameters - the cluster resource.
 func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ClusterProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.Certificate", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.Certificate.Thumbprint", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "parameters.ClusterProperties.ReverseProxyCertificate", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.ReverseProxyCertificate.Thumbprint", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "parameters.ClusterProperties.ManagementEndpoint", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.ClusterProperties.NodeTypes", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.ClusterProperties.DiagnosticsStorageAccountConfig", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.DiagnosticsStorageAccountConfig.StorageAccountName", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "parameters.ClusterProperties.DiagnosticsStorageAccountConfig.ProtectedAccountKeyName", Name: validation.Null, Rule: true, Chain: nil},
@@ -62,6 +58,10 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 							{Target: "parameters.ClusterProperties.DiagnosticsStorageAccountConfig.QueueEndpoint", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "parameters.ClusterProperties.DiagnosticsStorageAccountConfig.TableEndpoint", Name: validation.Null, Rule: true, Chain: nil},
 						}},
+					{Target: "parameters.ClusterProperties.ManagementEndpoint", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ClusterProperties.NodeTypes", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ClusterProperties.ReverseProxyCertificate", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.ReverseProxyCertificate.Thumbprint", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "parameters.ClusterProperties.UpgradeDescription", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.UpgradeDescription.UpgradeReplicaSetCheckTimeout", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "parameters.ClusterProperties.UpgradeDescription.HealthCheckWaitDuration", Name: validation.Null, Rule: true, Chain: nil},
@@ -121,7 +121,7 @@ func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -164,10 +164,10 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 	return
 }
 
-// Delete delete cluster resource
+// Delete delete a Service Fabric cluster resource with the specified name.
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-// clusterName - the name of the cluster resource
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the cluster resource.
 func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result autorest.Response, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
@@ -198,7 +198,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -230,10 +230,11 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// Get get cluster resource
+// Get get a Service Fabric cluster resource created or in the process of being created in the specified resource
+// group.
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-// clusterName - the name of the cluster resource
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the cluster resource.
 func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
@@ -264,7 +265,7 @@ func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -297,9 +298,8 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result Cluster, 
 	return
 }
 
-// List list cluster resource
-func (client ClustersClient) List(ctx context.Context) (result ClusterListResultPage, err error) {
-	result.fn = client.listNextResults
+// List gets all Service Fabric cluster resources created or in the process of being created in the subscription.
+func (client ClustersClient) List(ctx context.Context) (result ClusterListResult, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", nil, "Failure preparing request")
@@ -308,12 +308,12 @@ func (client ClustersClient) List(ctx context.Context) (result ClusterListResult
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.clr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.clr, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "List", resp, "Failure responding to request")
 	}
@@ -327,7 +327,7 @@ func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, e
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -360,38 +360,11 @@ func (client ClustersClient) ListResponder(resp *http.Response) (result ClusterL
 	return
 }
 
-// listNextResults retrieves the next set of results, if any.
-func (client ClustersClient) listNextResults(lastResults ClusterListResult) (result ClusterListResult, err error) {
-	req, err := lastResults.clusterListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ClustersClient) ListComplete(ctx context.Context) (result ClusterListResultIterator, err error) {
-	result.page, err = client.List(ctx)
-	return
-}
-
-// ListByResourceGroup list cluster resource by resource group
+// ListByResourceGroup gets all Service Fabric cluster resources created or in the process of being created in the
+// resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResultPage, err error) {
-	result.fn = client.listByResourceGroupNextResults
+// resourceGroupName - the name of the resource group.
+func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResult, err error) {
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -400,12 +373,12 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.clr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.clr, err = client.ListByResourceGroupResponder(resp)
+	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -420,7 +393,7 @@ func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -453,39 +426,12 @@ func (client ClustersClient) ListByResourceGroupResponder(resp *http.Response) (
 	return
 }
 
-// listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ClustersClient) listByResourceGroupNextResults(lastResults ClusterListResult) (result ClusterListResult, err error) {
-	req, err := lastResults.clusterListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListByResourceGroupSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListByResourceGroupResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ClusterListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
-	return
-}
-
-// Update update cluster configuration
+// Update update the configuration of a Service Fabric cluster resource with the specified name.
 // Parameters:
-// resourceGroupName - the name of the resource group to which the resource belongs or get created
-// clusterName - the name of the cluster resource
+// resourceGroupName - the name of the resource group.
+// clusterName - the name of the cluster resource.
 // parameters - the parameters which contains the property value and property name which used to update the
-// cluster configuration
+// cluster configuration.
 func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdateParameters) (result ClustersUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, parameters)
 	if err != nil {
@@ -510,7 +456,7 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

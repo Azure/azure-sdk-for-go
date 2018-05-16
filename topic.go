@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"context"
 	"encoding/xml"
@@ -7,6 +29,8 @@ import (
 	"io/ioutil"
 	"sync"
 	"time"
+
+	"github.com/Azure/azure-amqp-common-go/log"
 )
 
 type (
@@ -20,10 +44,9 @@ type (
 	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
 	// Messages are received from a subscription identically to the way they are received from a queue.
 	Topic struct {
-		Name      string
-		namespace *Namespace
-		sender    *sender
-		senderMu  sync.Mutex
+		*entity
+		sender   *sender
+		senderMu sync.Mutex
 	}
 
 	// TopicManager provides CRUD functionality for Service Bus Topics
@@ -71,16 +94,23 @@ func (ns *Namespace) NewTopicManager() *TopicManager {
 
 // Delete deletes a Service Bus Topic entity by name
 func (tm *TopicManager) Delete(ctx context.Context, name string) error {
+	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
+	defer span.Finish()
+
 	_, err := tm.EntityManager.Delete(ctx, "/"+name)
 	return err
 }
 
 // Put creates or updates a Service Bus Topic
 func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOption) (*TopicEntry, error) {
+	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
+	defer span.Finish()
+
 	topicDescription := new(TopicDescription)
 
 	for _, opt := range opts {
 		if err := opt(topicDescription); err != nil {
+			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -102,17 +132,20 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOptio
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := tm.EntityManager.Put(ctx, "/"+name, reqBytes)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -123,13 +156,18 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOptio
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (tm *TopicManager) List(ctx context.Context) (*TopicFeed, error) {
+	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
+	defer span.Finish()
+
 	res, err := tm.EntityManager.Get(ctx, `/$Resources/Topics`)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -140,13 +178,18 @@ func (tm *TopicManager) List(ctx context.Context) (*TopicFeed, error) {
 
 // Get fetches a Service Bus Topic entity by name
 func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntry, error) {
+	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
+	defer span.Finish()
+
 	res, err := tm.EntityManager.Get(ctx, name)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -158,15 +201,21 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntry, erro
 // NewTopic creates a new Topic Sender
 func (ns *Namespace) NewTopic(name string) *Topic {
 	return &Topic{
-		namespace: ns,
-		Name:      name,
+		entity: &entity{
+			namespace: ns,
+			Name:      name,
+		},
 	}
 }
 
 // Send sends messages to the Topic
 func (t *Topic) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.Send")
+	defer span.Finish()
+
 	err := t.ensureSender(ctx)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return err
 	}
 	return t.sender.Send(ctx, event, opts...)
@@ -174,6 +223,9 @@ func (t *Topic) Send(ctx context.Context, event *Event, opts ...SendOption) erro
 
 // Close the underlying connection to Service Bus
 func (t *Topic) Close(ctx context.Context) error {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.Close")
+	defer span.Finish()
+
 	if t.sender != nil {
 		return t.sender.Close(ctx)
 	}
@@ -182,12 +234,16 @@ func (t *Topic) Close(ctx context.Context) error {
 }
 
 func (t *Topic) ensureSender(ctx context.Context) error {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.ensureSender")
+	defer span.Finish()
+
 	t.senderMu.Lock()
 	defer t.senderMu.Unlock()
 
 	if t.sender == nil {
 		s, err := t.namespace.newSender(ctx, t.Name)
 		if err != nil {
+			log.For(ctx).Error(err)
 			return err
 		}
 		t.sender = s

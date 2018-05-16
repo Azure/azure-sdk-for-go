@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"context"
 	"os"
@@ -31,9 +53,11 @@ func TestServiceBusSuite(t *testing.T) {
 
 // TearDownSuite destroys created resources during the run of the suite
 func (suite *serviceBusSuite) TearDownSuite() {
+	suite.BaseSuite.TearDownSuite()
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 	suite.deleteAllTaggedQueues(ctx)
+	suite.deleteAllTaggedTopics(ctx)
 }
 
 func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
@@ -48,6 +72,25 @@ func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
 	for _, entry := range feed.Entries {
 		if strings.HasSuffix(entry.Title, suite.TagID) {
 			err := qm.Delete(ctx, entry.Title)
+			if err != nil {
+				suite.T().Fatal(err)
+			}
+		}
+	}
+}
+
+func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
+	ns := suite.getNewSasInstance()
+	tm := ns.NewTopicManager()
+
+	feed, err := tm.List(ctx)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+
+	for _, entry := range feed.Entries {
+		if strings.HasSuffix(entry.Title, suite.TagID) {
+			err := tm.Delete(ctx, entry.Title)
 			if err != nil {
 				suite.T().Fatal(err)
 			}

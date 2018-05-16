@@ -5,7 +5,7 @@
 
 [[constraint]]
     name = "pack.ag/amqp"
-    branch = "master"
+    version = "0.5"
 
 [[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"
@@ -13,4 +13,4 @@
 
 [[constraint]]
     name = "github.com/Azure/azure-amqp-common-go"
-    version = "0.4"
+    version = "0.5"

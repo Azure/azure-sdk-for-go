@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"bytes"
 	"context"
@@ -11,6 +33,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/auth"
+	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -119,41 +142,64 @@ func NewEntityManager(host string, tokenProvider auth.TokenProvider) *EntityMana
 
 // Get performs an HTTP Get for a given entity path
 func (em *EntityManager) Get(ctx context.Context, entityPath string) (*http.Response, error) {
+	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
+	defer span.Finish()
+
 	return em.Execute(ctx, http.MethodGet, entityPath, http.NoBody)
 }
 
 // Put performs an HTTP PUT for a given entity path and body
 func (em *EntityManager) Put(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
+	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
+	defer span.Finish()
+
 	return em.Execute(ctx, http.MethodPut, entityPath, bytes.NewReader(body))
 }
 
 // Delete performs an HTTP DELETE for a given entity path
 func (em *EntityManager) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
+	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
+	defer span.Finish()
+
 	return em.Execute(ctx, http.MethodDelete, entityPath, http.NoBody)
 }
 
 // Post performs an HTTP POST for a given entity path and body
 func (em *EntityManager) Post(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
+	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
+	defer span.Finish()
+
 	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body))
 }
 
 // Execute performs an HTTP request given a http method, path and body
 func (em *EntityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader) (*http.Response, error) {
+	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
+	defer span.Finish()
+
 	client := &http.Client{
 		Timeout: 60 * time.Second,
 	}
 	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 	req = addAtomXMLContentType(req)
 	req = addAPIVersion201704(req)
+	applyRequestInfo(span, req)
 	req, err = em.addAuthorization(req)
 	if err != nil {
+		log.For(ctx).Error(err)
 		return nil, err
 	}
 	req = req.WithContext(ctx)
-	return client.Do(req)
+	res, err := client.Do(req)
+	applyResponseInfo(span, res)
+	if err != nil {
+		log.For(ctx).Error(err)
+	}
+	return res, err
 }
 
 func (em *EntityManager) addAuthorization(req *http.Request) (*http.Request, error) {

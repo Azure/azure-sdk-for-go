@@ -1,5 +1,27 @@
 package servicebus
 
+//	MIT License
+//
+//	Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//	Permission is hereby granted, free of charge, to any person obtaining a copy
+//	of this software and associated documentation files (the "Software"), to deal
+//	in the Software without restriction, including without limitation the rights
+//	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//	copies of the Software, and to permit persons to whom the Software is
+//	furnished to do so, subject to the following conditions:
+//
+//	The above copyright notice and this permission notice shall be included in all
+//	copies or substantial portions of the Software.
+//
+//	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//	SOFTWARE
+
 import (
 	"context"
 	"fmt"
@@ -38,7 +60,7 @@ type (
 
 // newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
 func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ...ReceiverOptions) (*receiver, error) {
-	span, ctx := ns.startSpanFromContext(ctx, "servicebus.Hub.newReceiver")
+	span, ctx := ns.startSpanFromContext(ctx, "sb.Hub.newReceiver")
 	defer span.Finish()
 
 	receiver := &receiver{
@@ -76,7 +98,7 @@ func (r *receiver) Listen(handler Handler) *ListenerHandle {
 	ctx, done := context.WithCancel(context.Background())
 	r.done = done
 
-	span, ctx := r.startConsumerSpanFromContext(ctx, "servicebus.receiver.Listen")
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.Listen")
 	defer span.Finish()
 
 	messages := make(chan *amqp.Message)
@@ -90,7 +112,7 @@ func (r *receiver) Listen(handler Handler) *ListenerHandle {
 }
 
 func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Message, handler Handler) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "servicebus.receiver.handleMessages")
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.handleMessages")
 	defer span.Finish()
 	for {
 		select {
@@ -105,11 +127,11 @@ func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
 	event := eventFromMsg(msg)
 	var span opentracing.Span
-	wireContext, err := opentracing.GlobalTracer().Extract(opentracing.TextMap, event)
+	wireContext, err := extractWireContext(event)
 	if err == nil {
-		span, ctx = r.startConsumerSpanFromWire(ctx, "servicebus.receiver.handleMessage", wireContext)
+		span, ctx = r.startConsumerSpanFromWire(ctx, "sb.receiver.handleMessage", wireContext)
 	} else {
-		span, ctx = r.startConsumerSpanFromContext(ctx, "servicebus.receiver.handleMessage")
+		span, ctx = r.startConsumerSpanFromContext(ctx, "sb.receiver.handleMessage")
 	}
 	defer span.Finish()
 
@@ -118,15 +140,19 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 
 	err = handler(ctx, event)
 	if err != nil {
-		msg.Reject()
-		log.For(ctx).Error(fmt.Errorf("message rejected: id: %v", id))
+		msg.Modify(true, false, nil)
+		log.For(ctx).Error(fmt.Errorf("message modify(true, false, nil): id: %v", id))
 		return
 	}
 	msg.Accept()
 }
 
+func extractWireContext(reader opentracing.TextMapReader) (opentracing.SpanContext, error) {
+	return opentracing.GlobalTracer().Extract(opentracing.TextMap, reader)
+}
+
 func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Message) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "servicebus.receiver.listenForMessages")
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.listenForMessages")
 	defer span.Finish()
 
 	for {
@@ -137,7 +163,7 @@ func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 
 		if err != nil {
 			_, retryErr := common.Retry(5, 10*time.Second, func() (interface{}, error) {
-				sp, ctx := r.startConsumerSpanFromContext(ctx, "servicebus.receiver.listenForMessages.tryRecover")
+				sp, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.listenForMessages.tryRecover")
 				defer sp.Finish()
 
 				err := r.Recover(ctx)
@@ -168,7 +194,7 @@ func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 }
 
 func (r *receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "servicebus.receiver.listenForMessage")
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.listenForMessage")
 	defer span.Finish()
 
 	msg, err := r.receiver.Receive(ctx)

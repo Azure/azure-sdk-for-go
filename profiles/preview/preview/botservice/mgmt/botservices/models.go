@@ -21,7 +21,10 @@ package botservice
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2017-12-01/botservices"
 
+type BotConnectionClient = original.BotConnectionClient
+type BotConnectionsClient = original.BotConnectionsClient
 type BotsClient = original.BotsClient
+type BotTokenClient = original.BotTokenClient
 type ChannelsClient = original.ChannelsClient
 
 const (
@@ -29,6 +32,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type ConnectionsClient = original.ConnectionsClient
 type ChannelName = original.ChannelName
 
 const (
@@ -96,6 +100,13 @@ type ChannelResponseListIterator = original.ChannelResponseListIterator
 type ChannelResponseListPage = original.ChannelResponseListPage
 type CheckNameAvailabilityRequestBody = original.CheckNameAvailabilityRequestBody
 type CheckNameAvailabilityResponseBody = original.CheckNameAvailabilityResponseBody
+type ConnectionItemName = original.ConnectionItemName
+type ConnectionSetting = original.ConnectionSetting
+type ConnectionSettingParameter = original.ConnectionSettingParameter
+type ConnectionSettingProperties = original.ConnectionSettingProperties
+type ConnectionSettingResponseList = original.ConnectionSettingResponseList
+type ConnectionSettingResponseListIterator = original.ConnectionSettingResponseListIterator
+type ConnectionSettingResponseListPage = original.ConnectionSettingResponseListPage
 type DirectLineChannel = original.DirectLineChannel
 type DirectLineChannelProperties = original.DirectLineChannelProperties
 type DirectLineSite = original.DirectLineSite
@@ -116,6 +127,10 @@ type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type Resource = original.Resource
+type ServiceProvider = original.ServiceProvider
+type ServiceProviderParameter = original.ServiceProviderParameter
+type ServiceProviderProperties = original.ServiceProviderProperties
+type ServiceProviderResponseList = original.ServiceProviderResponseList
 type Sku = original.Sku
 type SkypeChannel = original.SkypeChannel
 type SkypeChannelProperties = original.SkypeChannelProperties
@@ -130,11 +145,29 @@ type WebChatChannelProperties = original.WebChatChannelProperties
 type WebChatSite = original.WebChatSite
 type OperationsClient = original.OperationsClient
 
+func NewBotConnectionClient(subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClient(subscriptionID)
+}
+func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBotConnectionsClient(subscriptionID string) BotConnectionsClient {
+	return original.NewBotConnectionsClient(subscriptionID)
+}
+func NewBotConnectionsClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionsClient {
+	return original.NewBotConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBotsClient(subscriptionID string) BotsClient {
 	return original.NewBotsClient(subscriptionID)
 }
 func NewBotsClientWithBaseURI(baseURI string, subscriptionID string) BotsClient {
 	return original.NewBotsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBotTokenClient(subscriptionID string) BotTokenClient {
+	return original.NewBotTokenClient(subscriptionID)
+}
+func NewBotTokenClientWithBaseURI(baseURI string, subscriptionID string) BotTokenClient {
+	return original.NewBotTokenClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewChannelsClient(subscriptionID string) ChannelsClient {
 	return original.NewChannelsClient(subscriptionID)
@@ -147,6 +180,12 @@ func New(subscriptionID string) BaseClient {
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewConnectionsClient(subscriptionID string) ConnectionsClient {
+	return original.NewConnectionsClient(subscriptionID)
+}
+func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionsClient {
+	return original.NewConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleChannelNameValues() []ChannelName {
 	return original.PossibleChannelNameValues()

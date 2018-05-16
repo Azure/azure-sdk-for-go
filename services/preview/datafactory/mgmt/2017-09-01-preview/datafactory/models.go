@@ -17906,8 +17906,10 @@ func (bet *BlobEventsTrigger) UnmarshalJSON(body []byte) error {
 
 // BlobEventsTriggerTypeProperties blob Events Trigger properties.
 type BlobEventsTriggerTypeProperties struct {
-	// BlobPath - Expression to determine if trigger should fire. For example, @startswith('/records/blobs/december/') will only fire the trigger for blobs in the december folder under the records container.
-	BlobPath *string `json:"blobPath,omitempty"`
+	// BlobPathBeginsWith - The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+	BlobPathBeginsWith *string `json:"blobPathBeginsWith,omitempty"`
+	// BlobPathEndsWith - The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+	BlobPathEndsWith *string `json:"blobPathEndsWith,omitempty"`
 	// Events - The type of events that cause this trigger to fire.
 	Events *[]BlobEventTypes `json:"events,omitempty"`
 	// Scope - The ARM resource ID of the Storage Account.

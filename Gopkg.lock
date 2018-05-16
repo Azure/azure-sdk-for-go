@@ -15,8 +15,8 @@
     "sas",
     "uuid"
   ]
-  revision = "7c6d990e663e3d68d2e7db38a2ede690bb9ad002"
-  version = "v0.4.0"
+  revision = "8d02d4e77aba80165452199bb9bb24a82eb3b219"
+  version = "v0.5.0"
 
 [[projects]]
   name = "github.com/Azure/azure-sdk-for-go"
@@ -41,6 +41,12 @@
   ]
   revision = "eaa7994b2278094c904d31993d26f56324db3052"
   version = "v10.8.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/codahale/hdrhistogram"
+  packages = ["."]
+  revision = "3a0bb77429bd3a61596f5e8a3172445844342120"
 
 [[projects]]
   name = "github.com/davecgh/go-spew"
@@ -87,23 +93,52 @@
   version = "v1.2.1"
 
 [[projects]]
-  branch = "master"
-  name = "golang.org/x/net"
-  packages = ["context"]
-  revision = "f73e4c9ed3b7ebdd5f699a16a880c2b1994e50dd"
+  name = "github.com/uber/jaeger-client-go"
+  packages = [
+    ".",
+    "config",
+    "internal/baggage",
+    "internal/baggage/remote",
+    "internal/spanlog",
+    "internal/throttler",
+    "internal/throttler/remote",
+    "log",
+    "rpcmetrics",
+    "thrift",
+    "thrift-gen/agent",
+    "thrift-gen/baggage",
+    "thrift-gen/jaeger",
+    "thrift-gen/sampling",
+    "thrift-gen/zipkincore",
+    "utils"
+  ]
+  revision = "b043381d944715b469fd6b37addfd30145ca1758"
+  version = "v2.14.0"
+
+[[projects]]
+  name = "github.com/uber/jaeger-lib"
+  packages = ["metrics"]
+  revision = "ed3a127ec5fef7ae9ea95b01b542c47fbd999ce5"
+  version = "v1.5.0"
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "2491c5de3490fced2f6cff376127c667efeed857"
+
+[[projects]]
   name = "pack.ag/amqp"
   packages = [
     ".",
     "internal/testconn"
   ]
-  revision = "3714ffb325b31a3619d1ac2cdf678fa51ec446ef"
+  revision = "390d7eaeac0368026b93a13f4f7bc30d903c61cd"
+  version = "v0.5.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "650c8d9022e6e985cd93762ec02122314aa6daeeb2b083b3b3ba3c45a5c64549"
+  inputs-digest = "b881f99847eeeaaa110edf7e17a56a5da4bcf7d05c4252cf1521caca57b1c4dc"
   solver-name = "gps-cdcl"
   solver-version = 1

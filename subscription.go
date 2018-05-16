@@ -94,7 +94,7 @@ func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 }
 
 // NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
-func (ns *Namespace) NewSubscriptionManager(topicName, name string) *SubscriptionManager {
+func (ns *Namespace) NewSubscriptionManager(topicName string) *SubscriptionManager {
 	t := ns.NewTopic(topicName)
 	return &SubscriptionManager{
 		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),

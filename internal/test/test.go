@@ -23,17 +23,21 @@ package test
 //	SOFTWARE
 
 import (
+	"context"
+	"io"
 	"math/rand"
 	"os"
 	"time"
 
-	"context"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/stretchr/testify/suite"
+	"github.com/uber/jaeger-client-go"
+	"github.com/uber/jaeger-client-go/config"
+	jaegerlog "github.com/uber/jaeger-client-go/log"
 )
 
 const (
@@ -54,6 +58,7 @@ type (
 		Token          *adal.ServicePrincipalToken
 		Environment    azure.Environment
 		TagID          string
+		closer         io.Closer
 	}
 )
 
@@ -76,6 +81,7 @@ func (suite *BaseSuite) SetupSuite() {
 	suite.Token = suite.servicePrincipalToken()
 	suite.Environment = azure.PublicCloud
 	suite.TagID = RandomString("tag", 10)
+	suite.setupTracing()
 
 	err := suite.ensureProvisioned(sbmgmt.SkuTierStandard)
 	if err != nil {
@@ -85,7 +91,9 @@ func (suite *BaseSuite) SetupSuite() {
 
 // TearDownSuite destroys created resources during the run of the suite
 func (suite *BaseSuite) TearDownSuite() {
-	// tear down queues and subscriptions maybe??
+	if suite.closer != nil {
+		_ = suite.closer.Close()
+	}
 }
 
 func mustGetEnv(key string) string {
@@ -152,6 +160,36 @@ func (suite *BaseSuite) ensureProvisioned(tier sbmgmt.SkuTier) error {
 		return res.WaitForCompletion(context.Background(), nsClient.Client)
 	}
 
+	return nil
+}
+
+func (suite *BaseSuite) setupTracing() error {
+	if os.Getenv("TRACING") == "true" {
+		// Sample configuration for testing. Use constant sampling to sample every trace
+		// and enable LogSpan to log every span via configured Logger.
+		cfg := config.Configuration{
+			Sampler: &config.SamplerConfig{
+				Type:  jaeger.SamplerTypeConst,
+				Param: 1,
+			},
+			Reporter: &config.ReporterConfig{
+				LocalAgentHostPort: "0.0.0.0:6831",
+			},
+		}
+
+		// Example logger and metrics factory. Use github.com/uber/jaeger-client-go/log
+		// and github.com/uber/jaeger-lib/metrics respectively to bind to real logging and metrics
+		// frameworks.
+		jLogger := jaegerlog.StdLogger
+
+		closer, err := cfg.InitGlobalTracer(
+			"ehtests",
+			config.Logger(jLogger),
+		)
+
+		suite.closer = closer
+		return err
+	}
 	return nil
 }
 

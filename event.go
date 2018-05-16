@@ -27,7 +27,7 @@ import (
 )
 
 type (
-	// Event is an Event Hubs message to be sent or received
+	// Event is an Service Bus message to be sent or received
 	Event struct {
 		Data          []byte
 		Properties    map[string]interface{}
@@ -35,13 +35,6 @@ type (
 		GroupID       *string
 		GroupSequence *uint32
 		message       *amqp.Message
-	}
-
-	// EventBatch is a batch of Event Hubs messages to be sent
-	EventBatch struct {
-		Events     []*Event
-		Properties map[string]interface{}
-		ID         string
 	}
 )
 
@@ -57,13 +50,6 @@ func NewEvent(data []byte) *Event {
 	}
 }
 
-// NewEventBatch builds an EventBatch from an array of Events
-func NewEventBatch(events []*Event) *EventBatch {
-	return &EventBatch{
-		Events: events,
-	}
-}
-
 // Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
 func (e *Event) Set(key, value string) {
 	if e.Properties == nil {
@@ -73,9 +59,9 @@ func (e *Event) Set(key, value string) {
 }
 
 // ForeachKey implements the opentracing.TextMapReader and gets properties on the event to be propagated from the message broker
-func (e *Event) ForeachKey(handler func(key string, val interface{}) error) error {
+func (e *Event) ForeachKey(handler func(key, val string) error) error {
 	for key, value := range e.Properties {
-		err := handler(key, value)
+		err := handler(key, value.(string))
 		if err != nil {
 			return err
 		}
@@ -127,7 +113,10 @@ func newEvent(data []byte, msg *amqp.Message) *Event {
 	}
 
 	if msg != nil {
-		event.Properties = msg.ApplicationProperties
+		event.Properties = make(map[string]interface{})
+		for key, value := range msg.ApplicationProperties {
+			event.Properties[key] = value
+		}
 	}
 	return event
 }

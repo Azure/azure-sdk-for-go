@@ -127,7 +127,7 @@ func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
 	event := eventFromMsg(msg)
 	var span opentracing.Span
-	wireContext, err := opentracing.GlobalTracer().Extract(opentracing.TextMap, event)
+	wireContext, err := extractWireContext(event)
 	if err == nil {
 		span, ctx = r.startConsumerSpanFromWire(ctx, "sb.receiver.handleMessage", wireContext)
 	} else {
@@ -140,11 +140,15 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 
 	err = handler(ctx, event)
 	if err != nil {
-		msg.Reject()
-		log.For(ctx).Error(fmt.Errorf("message rejected: id: %v", id))
+		msg.Modify(true, false, nil)
+		log.For(ctx).Error(fmt.Errorf("message modify(true, false, nil): id: %v", id))
 		return
 	}
 	msg.Accept()
+}
+
+func extractWireContext(reader opentracing.TextMapReader) (opentracing.SpanContext, error) {
+	return opentracing.GlobalTracer().Extract(opentracing.TextMap, reader)
 }
 
 func (r *receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Message) {

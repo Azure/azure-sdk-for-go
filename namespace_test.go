@@ -53,9 +53,11 @@ func TestServiceBusSuite(t *testing.T) {
 
 // TearDownSuite destroys created resources during the run of the suite
 func (suite *serviceBusSuite) TearDownSuite() {
+	suite.BaseSuite.TearDownSuite()
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 	suite.deleteAllTaggedQueues(ctx)
+	suite.deleteAllTaggedTopics(ctx)
 }
 
 func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
@@ -70,6 +72,25 @@ func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
 	for _, entry := range feed.Entries {
 		if strings.HasSuffix(entry.Title, suite.TagID) {
 			err := qm.Delete(ctx, entry.Title)
+			if err != nil {
+				suite.T().Fatal(err)
+			}
+		}
+	}
+}
+
+func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
+	ns := suite.getNewSasInstance()
+	tm := ns.NewTopicManager()
+
+	feed, err := tm.List(ctx)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+
+	for _, entry := range feed.Entries {
+		if strings.HasSuffix(entry.Title, suite.TagID) {
+			err := tm.Delete(ctx, entry.Title)
 			if err != nil {
 				suite.T().Fatal(err)
 			}

@@ -278,7 +278,7 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 type EndpointProperties struct {
 	// TargetResourceID - The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// Target - The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses to direct traffic to this endpoint.
+	// Target - The fully-qualified DNS name of the endpoint. Traffic Manager returns this value in DNS responses to direct traffic to this endpoint.
 	Target *string `json:"target,omitempty"`
 	// EndpointStatus - The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the traffic routing method. Possible values include: 'EndpointStatusEnabled', 'EndpointStatusDisabled'
 	EndpointStatus EndpointStatus `json:"endpointStatus,omitempty"`
@@ -294,16 +294,6 @@ type EndpointProperties struct {
 	MinChildEndpoints *int64 `json:"minChildEndpoints,omitempty"`
 	// GeoMapping - The list of countries/regions mapped to this endpoint when using the ‘Geographic’ traffic routing method. Please consult Traffic Manager Geographic documentation for a full list of accepted values.
 	GeoMapping *[]string `json:"geoMapping,omitempty"`
-	// CustomHeaders - List of custom headers.
-	CustomHeaders *[]EndpointPropertiesCustomHeadersItem `json:"customHeaders,omitempty"`
-}
-
-// EndpointPropertiesCustomHeadersItem custom header name and value.
-type EndpointPropertiesCustomHeadersItem struct {
-	// Name - Header name.
-	Name *string `json:"name,omitempty"`
-	// Value - Header value.
-	Value *string `json:"value,omitempty"`
 }
 
 // GeographicHierarchy class representing the Geographic hierarchy used with the Geographic traffic routing method.
@@ -513,26 +503,6 @@ type MonitorConfig struct {
 	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
 	// ToleratedNumberOfFailures - The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in this profile Degraded after the next failed health check.
 	ToleratedNumberOfFailures *int64 `json:"toleratedNumberOfFailures,omitempty"`
-	// CustomHeaders - List of custom headers.
-	CustomHeaders *[]MonitorConfigCustomHeadersItem `json:"customHeaders,omitempty"`
-	// ExpectedStatusCodeRanges - List of expected status code ranges.
-	ExpectedStatusCodeRanges *[]MonitorConfigExpectedStatusCodeRangesItem `json:"expectedStatusCodeRanges,omitempty"`
-}
-
-// MonitorConfigCustomHeadersItem custom header name and value.
-type MonitorConfigCustomHeadersItem struct {
-	// Name - Header name.
-	Name *string `json:"name,omitempty"`
-	// Value - Header value.
-	Value *string `json:"value,omitempty"`
-}
-
-// MonitorConfigExpectedStatusCodeRangesItem min and max value of a status code range.
-type MonitorConfigExpectedStatusCodeRangesItem struct {
-	// Min - Min status code.
-	Min *int32 `json:"min,omitempty"`
-	// Max - Max status code.
-	Max *int32 `json:"max,omitempty"`
 }
 
 // NameAvailability class representing a Traffic Manager Name Availability response.
@@ -769,4 +739,17 @@ type TrafficFlow struct {
 	Longitude *float64 `json:"longitude,omitempty"`
 	// QueryExperiences - The query experiences produced in this HeatMap calculation.
 	QueryExperiences *[]QueryExperience `json:"queryExperiences,omitempty"`
+}
+
+// UserMetricsKeyModel class representing a Traffic Manager Real User Metrics key response.
+type UserMetricsKeyModel struct {
+	autorest.Response `json:"-"`
+	// Key - The key returned by the Real User Metrics operation.
+	Key *string `json:"key,omitempty"`
+	// ID - Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource. Ex- Microsoft.Network/trafficmanagerProfiles.
+	Type *string `json:"type,omitempty"`
 }

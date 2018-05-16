@@ -49,6 +49,9 @@ type ServiceBusActiveMessagesAvailableWithNoListenersEventData = original.Servic
 type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData = original.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData
 type StorageBlobCreatedEventData = original.StorageBlobCreatedEventData
 type StorageBlobDeletedEventData = original.StorageBlobDeletedEventData
+type SubscriptionDeletedEventData = original.SubscriptionDeletedEventData
+type SubscriptionValidationEventData = original.SubscriptionValidationEventData
+type SubscriptionValidationResponse = original.SubscriptionValidationResponse
 
 func New() BaseClient {
 	return original.New()

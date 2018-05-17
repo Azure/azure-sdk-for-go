@@ -121,6 +121,7 @@ type TargetResource = original.TargetResource
 type TemplateLink = original.TemplateLink
 type UpdateByIDFuture = original.UpdateByIDFuture
 type UpdateFuture = original.UpdateFuture
+type UserDefinedIdentity = original.UserDefinedIdentity
 type ValidateMoveResourcesFuture = original.ValidateMoveResourcesFuture
 type ProvidersClient = original.ProvidersClient
 type Client = original.Client

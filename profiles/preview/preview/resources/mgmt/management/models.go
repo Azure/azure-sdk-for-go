@@ -19,7 +19,7 @@
 
 package managementgroups
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/management"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/management"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -28,13 +28,22 @@ const (
 type BaseClient = original.BaseClient
 type EntitiesClient = original.EntitiesClient
 type Client = original.Client
+type InheritedPermissions = original.InheritedPermissions
+
+const (
+	Delete   InheritedPermissions = original.Delete
+	Edit     InheritedPermissions = original.Edit
+	Noaccess InheritedPermissions = original.Noaccess
+	View     InheritedPermissions = original.View
+)
+
 type Permissions = original.Permissions
 
 const (
-	Delete   Permissions = original.Delete
-	Edit     Permissions = original.Edit
-	Noaccess Permissions = original.Noaccess
-	View     Permissions = original.View
+	PermissionsDelete   Permissions = original.PermissionsDelete
+	PermissionsEdit     Permissions = original.PermissionsEdit
+	PermissionsNoaccess Permissions = original.PermissionsNoaccess
+	PermissionsView     Permissions = original.PermissionsView
 )
 
 type Permissions1 = original.Permissions1
@@ -59,17 +68,28 @@ const (
 	Invalid       Reason = original.Invalid
 )
 
+type Status = original.Status
+
+const (
+	Cancelled                Status = original.Cancelled
+	Completed                Status = original.Completed
+	Failed                   Status = original.Failed
+	NotStarted               Status = original.NotStarted
+	NotStartedButGroupsExist Status = original.NotStartedButGroupsExist
+	Started                  Status = original.Started
+)
+
 type Type = original.Type
 
 const (
-	ProvidersMicrosoftManagementmanagementGroups Type = original.ProvidersMicrosoftManagementmanagementGroups
+	ProvidersMicrosoftManagementmanagementGroup Type = original.ProvidersMicrosoftManagementmanagementGroup
 )
 
 type Type1 = original.Type1
 
 const (
-	Type1ProvidersMicrosoftManagementmanagementGroups Type1 = original.Type1ProvidersMicrosoftManagementmanagementGroups
-	Type1Subscriptions                                Type1 = original.Type1Subscriptions
+	ProvidersMicrosoftManagementmanagementGroups Type1 = original.ProvidersMicrosoftManagementmanagementGroups
+	Subscriptions                                Type1 = original.Subscriptions
 )
 
 type Type2 = original.Type2
@@ -90,6 +110,8 @@ type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateParentGroupInfo = original.CreateParentGroupInfo
 type DeleteFuture = original.DeleteFuture
 type Details = original.Details
+type EntitiesListAllFuture = original.EntitiesListAllFuture
+type EntitiesListFuture = original.EntitiesListFuture
 type EntityHierarchyItem = original.EntityHierarchyItem
 type EntityHierarchyItemProperties = original.EntityHierarchyItemProperties
 type EntityInfo = original.EntityInfo
@@ -117,26 +139,30 @@ type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
+type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 type OperationsClient = original.OperationsClient
 type SubscriptionsClient = original.SubscriptionsClient
 
-func New(operationResultID string, skiptoken string) BaseClient {
-	return original.New(operationResultID, skiptoken)
+func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
+	return original.New(operationResultID, skip, top, skiptoken)
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
+	return original.NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
 }
-func NewEntitiesClient(operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skiptoken)
+func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClient(operationResultID, skip, top, skiptoken)
 }
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
 }
-func NewClient(operationResultID string, skiptoken string) Client {
-	return original.NewClient(operationResultID, skiptoken)
+func NewClient(operationResultID string, skip *int32, top *int32, skiptoken string) Client {
+	return original.NewClient(operationResultID, skip, top, skiptoken)
 }
-func NewClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) Client {
+	return original.NewClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+}
+func PossibleInheritedPermissionsValues() []InheritedPermissions {
+	return original.PossibleInheritedPermissionsValues()
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
@@ -150,6 +176,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
+}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
@@ -159,17 +188,17 @@ func PossibleType1Values() []Type1 {
 func PossibleType2Values() []Type2 {
 	return original.PossibleType2Values()
 }
-func NewOperationsClient(operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skiptoken)
+func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
+	return original.NewOperationsClient(operationResultID, skip, top, skiptoken)
 }
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
 }
-func NewSubscriptionsClient(operationResultID string, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(operationResultID, skiptoken)
+func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(operationResultID, skip, top, skiptoken)
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skiptoken)
+func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

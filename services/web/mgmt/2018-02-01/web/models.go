@@ -541,6 +541,23 @@ func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return []FrequencyUnit{Day, Hour}
 }
 
+// FtpsState enumerates the values for ftps state.
+type FtpsState string
+
+const (
+	// AllAllowed ...
+	AllAllowed FtpsState = "AllAllowed"
+	// Disabled ...
+	Disabled FtpsState = "Disabled"
+	// FtpsOnly ...
+	FtpsOnly FtpsState = "FtpsOnly"
+)
+
+// PossibleFtpsStateValues returns an array of possible values for the FtpsState const type.
+func PossibleFtpsStateValues() []FtpsState {
+	return []FtpsState{AllAllowed, Disabled, FtpsOnly}
+}
+
 // HostingEnvironmentStatus enumerates the values for hosting environment status.
 type HostingEnvironmentStatus string
 
@@ -1068,17 +1085,17 @@ func PossibleSolutionTypeValues() []SolutionType {
 type SslState string
 
 const (
-	// Disabled ...
-	Disabled SslState = "Disabled"
-	// IPBasedEnabled ...
-	IPBasedEnabled SslState = "IpBasedEnabled"
-	// SniEnabled ...
-	SniEnabled SslState = "SniEnabled"
+	// SslStateDisabled ...
+	SslStateDisabled SslState = "Disabled"
+	// SslStateIPBasedEnabled ...
+	SslStateIPBasedEnabled SslState = "IpBasedEnabled"
+	// SslStateSniEnabled ...
+	SslStateSniEnabled SslState = "SniEnabled"
 )
 
 // PossibleSslStateValues returns an array of possible values for the SslState const type.
 func PossibleSslStateValues() []SslState {
-	return []SslState{Disabled, IPBasedEnabled, SniEnabled}
+	return []SslState{SslStateDisabled, SslStateIPBasedEnabled, SslStateSniEnabled}
 }
 
 // StatusOptions enumerates the values for status options.
@@ -10055,7 +10072,7 @@ type HostNameBindingProperties struct {
 	CustomHostNameDNSRecordType CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
 	// HostNameType - Hostname type. Possible values include: 'Verified', 'Managed'
 	HostNameType HostNameType `json:"hostNameType,omitempty"`
-	// SslState - SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IPBasedEnabled'
+	// SslState - SSL type. Possible values include: 'SslStateDisabled', 'SslStateSniEnabled', 'SslStateIPBasedEnabled'
 	SslState SslState `json:"sslState,omitempty"`
 	// Thumbprint - SSL certificate thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
@@ -10067,7 +10084,7 @@ type HostNameBindingProperties struct {
 type HostNameSslState struct {
 	// Name - Hostname.
 	Name *string `json:"name,omitempty"`
-	// SslState - SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IPBasedEnabled'
+	// SslState - SSL type. Possible values include: 'SslStateDisabled', 'SslStateSniEnabled', 'SslStateIPBasedEnabled'
 	SslState SslState `json:"sslState,omitempty"`
 	// VirtualIP - Virtual IP address assigned to the hostname if IP based SSL is enabled.
 	VirtualIP *string `json:"virtualIP,omitempty"`
@@ -15675,6 +15692,8 @@ type SiteConfig struct {
 	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 	// MinTLSVersion - MinTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
+	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
+	FtpsState FtpsState `json:"ftpsState,omitempty"`
 }
 
 // SiteConfigResource web app configuration ARM resource.

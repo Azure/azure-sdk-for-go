@@ -282,6 +282,14 @@ const (
 	Hour FrequencyUnit = original.Hour
 )
 
+type FtpsState = original.FtpsState
+
+const (
+	AllAllowed FtpsState = original.AllAllowed
+	Disabled   FtpsState = original.Disabled
+	FtpsOnly   FtpsState = original.FtpsOnly
+)
+
 type HostingEnvironmentStatus = original.HostingEnvironmentStatus
 
 const (
@@ -533,9 +541,9 @@ const (
 type SslState = original.SslState
 
 const (
-	Disabled       SslState = original.Disabled
-	IPBasedEnabled SslState = original.IPBasedEnabled
-	SniEnabled     SslState = original.SniEnabled
+	SslStateDisabled       SslState = original.SslStateDisabled
+	SslStateIPBasedEnabled SslState = original.SslStateIPBasedEnabled
+	SslStateSniEnabled     SslState = original.SslStateSniEnabled
 )
 
 type StatusOptions = original.StatusOptions
@@ -1225,6 +1233,9 @@ func PossibleDomainTypeValues() []DomainType {
 }
 func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return original.PossibleFrequencyUnitValues()
+}
+func PossibleFtpsStateValues() []FtpsState {
+	return original.PossibleFtpsStateValues()
 }
 func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
 	return original.PossibleHostingEnvironmentStatusValues()

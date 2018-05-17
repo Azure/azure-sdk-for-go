@@ -86,7 +86,6 @@ const (
 type TrustPolicyType = original.TrustPolicyType
 
 const (
-	None   TrustPolicyType = original.None
 	Notary TrustPolicyType = original.Notary
 )
 

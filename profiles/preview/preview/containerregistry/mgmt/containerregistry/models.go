@@ -153,8 +153,7 @@ const (
 type TrustPolicyType = original.TrustPolicyType
 
 const (
-	TrustPolicyTypeNone   TrustPolicyType = original.TrustPolicyTypeNone
-	TrustPolicyTypeNotary TrustPolicyType = original.TrustPolicyTypeNotary
+	Notary TrustPolicyType = original.Notary
 )
 
 type Type = original.Type

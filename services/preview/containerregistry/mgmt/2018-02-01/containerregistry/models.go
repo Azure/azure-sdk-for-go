@@ -285,15 +285,13 @@ func PossibleTokenTypeValues() []TokenType {
 type TrustPolicyType string
 
 const (
-	// TrustPolicyTypeNone ...
-	TrustPolicyTypeNone TrustPolicyType = "None"
-	// TrustPolicyTypeNotary ...
-	TrustPolicyTypeNotary TrustPolicyType = "Notary"
+	// Notary ...
+	Notary TrustPolicyType = "Notary"
 )
 
 // PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
 func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return []TrustPolicyType{TrustPolicyTypeNone, TrustPolicyTypeNotary}
+	return []TrustPolicyType{Notary}
 }
 
 // Type enumerates the values for type.
@@ -2540,7 +2538,7 @@ type ProxyResource struct {
 
 // QuarantinePolicy an object that represents quarantine policy for a container registry.
 type QuarantinePolicy struct {
-	// Status - The value that indicates whether the policy is enabled. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
 	Status PolicyStatus `json:"status,omitempty"`
 }
 
@@ -3908,9 +3906,9 @@ type Target struct {
 
 // TrustPolicy an object that represents content trust policy for a container registry.
 type TrustPolicy struct {
-	// Type - The type of trust policy. Possible values include: 'TrustPolicyTypeNone', 'TrustPolicyTypeNotary'
+	// Type - The type of trust policy. Possible values include: 'Notary'
 	Type TrustPolicyType `json:"type,omitempty"`
-	// Status - The value that indicates whether the policy is enabled. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
 	Status PolicyStatus `json:"status,omitempty"`
 }
 

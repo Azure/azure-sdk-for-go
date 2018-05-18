@@ -125,23 +125,17 @@ func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 }
 
 // StartTenantBackfill starts backfilling subscriptions for the Tenant.
-func (client BaseClient) StartTenantBackfill(ctx context.Context) (result TenantBackfillStatusResult, err error) {
+func (client BaseClient) StartTenantBackfill(ctx context.Context) (result StartTenantBackfillFuture, err error) {
 	req, err := client.StartTenantBackfillPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.StartTenantBackfillSender(req)
+	result, err = client.StartTenantBackfillSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.StartTenantBackfillResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", resp, "Failure responding to request")
 	}
 
 	return
@@ -164,9 +158,17 @@ func (client BaseClient) StartTenantBackfillPreparer(ctx context.Context) (*http
 
 // StartTenantBackfillSender sends the StartTenantBackfill request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) StartTenantBackfillSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+func (client BaseClient) StartTenantBackfillSender(req *http.Request) (future StartTenantBackfillFuture, err error) {
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
 }
 
 // StartTenantBackfillResponder handles the response to the StartTenantBackfill request. The method always

@@ -53,8 +53,8 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 // be able to reparent to as determined by the user's permissions.
 // With $search=AllowedChildren the API will return the entity info of all entities that can be added as
 // children of the requested entity.
-// With $search=ChildrenOnly the API will return the first level of children that the user has either direct
-// access to or indirect access via one of their descendants.
+// With $search=ParentAndFirstLevelChildren the API will return the parent and  first level of children that
+// the user has either direct access to or indirect access via one of their descendants.
 // filter - the filter parameter allows you to filter on the the name or display name fields. You can check for
 // equality on the name field (e.g. name eq '{entityName}')  and you can check for substrings on either the
 // name or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,

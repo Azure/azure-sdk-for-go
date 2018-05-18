@@ -139,6 +139,7 @@ type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
+type StartTenantBackfillFuture = original.StartTenantBackfillFuture
 type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 type OperationsClient = original.OperationsClient
 type SubscriptionsClient = original.SubscriptionsClient

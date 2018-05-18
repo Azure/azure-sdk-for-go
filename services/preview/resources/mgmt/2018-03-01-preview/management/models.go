@@ -727,9 +727,9 @@ type EntityInfoProperties struct {
 	// InheritedPermissions - Possible values include: 'Noaccess', 'View', 'Edit', 'Delete'
 	InheritedPermissions InheritedPermissions `json:"inheritedPermissions,omitempty"`
 	NumberOfDescendants  *int32               `json:"numberOfDescendants,omitempty"`
-	// ParentDisplayNameChain - The parent display name chain from immediate parent to the root group
+	// ParentDisplayNameChain - The parent display name chain from the root group to the immediate parent
 	ParentDisplayNameChain *[]string `json:"parentDisplayNameChain,omitempty"`
-	// ParentNameChain - The parent name chain from immediate parent to the root group
+	// ParentNameChain - The parent name chain from the root group to the immediate parent
 	ParentNameChain *[]string `json:"parentNameChain,omitempty"`
 }
 
@@ -1370,6 +1370,54 @@ type Properties struct {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// StartTenantBackfillFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type StartTenantBackfillFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future StartTenantBackfillFuture) Result(client BaseClient) (tbsr TenantBackfillStatusResult, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return tbsr, azure.NewAsyncOpIncompleteError("managementgroups.StartTenantBackfillFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		tbsr, err = client.StartTenantBackfillResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	tbsr, err = client.StartTenantBackfillResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // TenantBackfillStatusResult the tenant backfill status

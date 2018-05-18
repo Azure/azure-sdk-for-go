@@ -93,13 +93,6 @@ const (
 	Password2 PasswordName = original.Password2
 )
 
-type PolicyStatus = original.PolicyStatus
-
-const (
-	PolicyStatusDisabled PolicyStatus = original.PolicyStatusDisabled
-	PolicyStatusEnabled  PolicyStatus = original.PolicyStatusEnabled
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -148,12 +141,6 @@ type TokenType = original.TokenType
 const (
 	OAuth TokenType = original.OAuth
 	PAT   TokenType = original.PAT
-)
-
-type TrustPolicyType = original.TrustPolicyType
-
-const (
-	Notary TrustPolicyType = original.Notary
 )
 
 type Type = original.Type
@@ -249,9 +236,13 @@ type ImageDescriptor = original.ImageDescriptor
 type ImageUpdateTrigger = original.ImageUpdateTrigger
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
+type OperationDefinition = original.OperationDefinition
+type OperationDisplayDefinition = original.OperationDisplayDefinition
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type PlatformProperties = original.PlatformProperties
 type ProxyResource = original.ProxyResource
-type QuarantinePolicy = original.QuarantinePolicy
 type BasicQueueBuildRequest = original.BasicQueueBuildRequest
 type QueueBuildRequest = original.QueueBuildRequest
 type QuickBuildRequest = original.QuickBuildRequest
@@ -261,7 +252,6 @@ type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesQueueBuildFuture = original.RegistriesQueueBuildFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
-type RegistriesUpdatePoliciesFuture = original.RegistriesUpdatePoliciesFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type RegistryListResult = original.RegistryListResult
@@ -270,7 +260,6 @@ type RegistryListResultPage = original.RegistryListResultPage
 type RegistryNameCheckRequest = original.RegistryNameCheckRequest
 type RegistryNameStatus = original.RegistryNameStatus
 type RegistryPassword = original.RegistryPassword
-type RegistryPolicies = original.RegistryPolicies
 type RegistryProperties = original.RegistryProperties
 type RegistryPropertiesUpdateParameters = original.RegistryPropertiesUpdateParameters
 type RegistryUpdateParameters = original.RegistryUpdateParameters
@@ -296,7 +285,6 @@ type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
-type TrustPolicy = original.TrustPolicy
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -309,6 +297,7 @@ type WebhooksCreateFuture = original.WebhooksCreateFuture
 type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
+type OperationsClient = original.OperationsClient
 type RegistriesClient = original.RegistriesClient
 type ReplicationsClient = original.ReplicationsClient
 type WebhooksClient = original.WebhooksClient
@@ -361,9 +350,6 @@ func PossibleOsTypeValues() []OsType {
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return original.PossiblePolicyStatusValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -382,9 +368,6 @@ func PossibleSourceControlTypeValues() []SourceControlType {
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()
 }
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return original.PossibleTrustPolicyTypeValues()
-}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
@@ -399,6 +382,12 @@ func PossibleWebhookActionValues() []WebhookAction {
 }
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClient(subscriptionID)

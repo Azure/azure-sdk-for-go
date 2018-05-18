@@ -40,13 +40,6 @@ const (
 	Password2 PasswordName = original.Password2
 )
 
-type PolicyStatus = original.PolicyStatus
-
-const (
-	Disabled PolicyStatus = original.Disabled
-	Enabled  PolicyStatus = original.Enabled
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -83,12 +76,6 @@ const (
 	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
-type TrustPolicyType = original.TrustPolicyType
-
-const (
-	Notary TrustPolicyType = original.Notary
-)
-
 type WebhookAction = original.WebhookAction
 
 const (
@@ -100,8 +87,8 @@ const (
 type WebhookStatus = original.WebhookStatus
 
 const (
-	WebhookStatusDisabled WebhookStatus = original.WebhookStatusDisabled
-	WebhookStatusEnabled  WebhookStatus = original.WebhookStatusEnabled
+	Disabled WebhookStatus = original.Disabled
+	Enabled  WebhookStatus = original.Enabled
 )
 
 type Actor = original.Actor
@@ -116,13 +103,16 @@ type EventRequestMessage = original.EventRequestMessage
 type EventResponseMessage = original.EventResponseMessage
 type ImportImageParameters = original.ImportImageParameters
 type ImportSource = original.ImportSource
-type QuarantinePolicy = original.QuarantinePolicy
+type OperationDefinition = original.OperationDefinition
+type OperationDisplayDefinition = original.OperationDisplayDefinition
+type OperationListResult = original.OperationListResult
+type OperationListResultIterator = original.OperationListResultIterator
+type OperationListResultPage = original.OperationListResultPage
 type RegenerateCredentialParameters = original.RegenerateCredentialParameters
 type RegistriesCreateFuture = original.RegistriesCreateFuture
 type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
-type RegistriesUpdatePoliciesFuture = original.RegistriesUpdatePoliciesFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type RegistryListResult = original.RegistryListResult
@@ -131,7 +121,6 @@ type RegistryListResultPage = original.RegistryListResultPage
 type RegistryNameCheckRequest = original.RegistryNameCheckRequest
 type RegistryNameStatus = original.RegistryNameStatus
 type RegistryPassword = original.RegistryPassword
-type RegistryPolicies = original.RegistryPolicies
 type RegistryProperties = original.RegistryProperties
 type RegistryPropertiesUpdateParameters = original.RegistryPropertiesUpdateParameters
 type RegistryUpdateParameters = original.RegistryUpdateParameters
@@ -153,7 +142,6 @@ type Source = original.Source
 type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
-type TrustPolicy = original.TrustPolicy
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -166,6 +154,7 @@ type WebhooksCreateFuture = original.WebhooksCreateFuture
 type WebhooksDeleteFuture = original.WebhooksDeleteFuture
 type WebhooksUpdateFuture = original.WebhooksUpdateFuture
 type WebhookUpdateParameters = original.WebhookUpdateParameters
+type OperationsClient = original.OperationsClient
 type RegistriesClient = original.RegistriesClient
 type ReplicationsClient = original.ReplicationsClient
 type WebhooksClient = original.WebhooksClient
@@ -182,9 +171,6 @@ func PossibleImportModeValues() []ImportMode {
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return original.PossiblePolicyStatusValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -197,14 +183,17 @@ func PossibleSkuNameValues() []SkuName {
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return original.PossibleTrustPolicyTypeValues()
-}
 func PossibleWebhookActionValues() []WebhookAction {
 	return original.PossibleWebhookActionValues()
 }
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return original.PossibleWebhookStatusValues()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRegistriesClient(subscriptionID string) RegistriesClient {
 	return original.NewRegistriesClient(subscriptionID)

@@ -45,8 +45,13 @@ type ResourceDeleteSuccessData = original.ResourceDeleteSuccessData
 type ResourceWriteCancelData = original.ResourceWriteCancelData
 type ResourceWriteFailureData = original.ResourceWriteFailureData
 type ResourceWriteSuccessData = original.ResourceWriteSuccessData
+type ServiceBusActiveMessagesAvailableWithNoListenersEventData = original.ServiceBusActiveMessagesAvailableWithNoListenersEventData
+type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData = original.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData
 type StorageBlobCreatedEventData = original.StorageBlobCreatedEventData
 type StorageBlobDeletedEventData = original.StorageBlobDeletedEventData
+type SubscriptionDeletedEventData = original.SubscriptionDeletedEventData
+type SubscriptionValidationEventData = original.SubscriptionValidationEventData
+type SubscriptionValidationResponse = original.SubscriptionValidationResponse
 
 func New() BaseClient {
 	return original.New()

@@ -37,18 +37,23 @@ const (
 type HanaInstanceSizeNamesEnum = original.HanaInstanceSizeNamesEnum
 
 const (
-	S144   HanaInstanceSizeNamesEnum = original.S144
-	S144m  HanaInstanceSizeNamesEnum = original.S144m
-	S192   HanaInstanceSizeNamesEnum = original.S192
-	S192m  HanaInstanceSizeNamesEnum = original.S192m
-	S384   HanaInstanceSizeNamesEnum = original.S384
-	S384m  HanaInstanceSizeNamesEnum = original.S384m
-	S384xm HanaInstanceSizeNamesEnum = original.S384xm
-	S576   HanaInstanceSizeNamesEnum = original.S576
-	S72    HanaInstanceSizeNamesEnum = original.S72
-	S72m   HanaInstanceSizeNamesEnum = original.S72m
-	S768   HanaInstanceSizeNamesEnum = original.S768
-	S960   HanaInstanceSizeNamesEnum = original.S960
+	S144    HanaInstanceSizeNamesEnum = original.S144
+	S144m   HanaInstanceSizeNamesEnum = original.S144m
+	S192    HanaInstanceSizeNamesEnum = original.S192
+	S192m   HanaInstanceSizeNamesEnum = original.S192m
+	S192xm  HanaInstanceSizeNamesEnum = original.S192xm
+	S384    HanaInstanceSizeNamesEnum = original.S384
+	S384m   HanaInstanceSizeNamesEnum = original.S384m
+	S384xm  HanaInstanceSizeNamesEnum = original.S384xm
+	S384xxm HanaInstanceSizeNamesEnum = original.S384xxm
+	S576m   HanaInstanceSizeNamesEnum = original.S576m
+	S576xm  HanaInstanceSizeNamesEnum = original.S576xm
+	S72     HanaInstanceSizeNamesEnum = original.S72
+	S72m    HanaInstanceSizeNamesEnum = original.S72m
+	S768    HanaInstanceSizeNamesEnum = original.S768
+	S768m   HanaInstanceSizeNamesEnum = original.S768m
+	S768xm  HanaInstanceSizeNamesEnum = original.S768xm
+	S960m   HanaInstanceSizeNamesEnum = original.S960m
 )
 
 type Disk = original.Disk

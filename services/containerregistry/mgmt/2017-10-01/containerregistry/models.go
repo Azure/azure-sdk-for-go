@@ -56,21 +56,6 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{Password, Password2}
 }
 
-// PolicyStatus enumerates the values for policy status.
-type PolicyStatus string
-
-const (
-	// Disabled ...
-	Disabled PolicyStatus = "disabled"
-	// Enabled ...
-	Enabled PolicyStatus = "enabled"
-)
-
-// PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return []PolicyStatus{Disabled, Enabled}
-}
-
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -147,19 +132,6 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierClassic, SkuTierPremium, SkuTierStandard}
 }
 
-// TrustPolicyType enumerates the values for trust policy type.
-type TrustPolicyType string
-
-const (
-	// Notary ...
-	Notary TrustPolicyType = "Notary"
-)
-
-// PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return []TrustPolicyType{Notary}
-}
-
 // WebhookAction enumerates the values for webhook action.
 type WebhookAction string
 
@@ -181,15 +153,15 @@ func PossibleWebhookActionValues() []WebhookAction {
 type WebhookStatus string
 
 const (
-	// WebhookStatusDisabled ...
-	WebhookStatusDisabled WebhookStatus = "disabled"
-	// WebhookStatusEnabled ...
-	WebhookStatusEnabled WebhookStatus = "enabled"
+	// Disabled ...
+	Disabled WebhookStatus = "disabled"
+	// Enabled ...
+	Enabled WebhookStatus = "enabled"
 )
 
 // PossibleWebhookStatusValues returns an array of possible values for the WebhookStatus const type.
 func PossibleWebhookStatusValues() []WebhookStatus {
-	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
+	return []WebhookStatus{Disabled, Enabled}
 }
 
 // Actor the agent that initiated the event. For most situations, this could be from the authorization context of
@@ -673,12 +645,6 @@ type OperationServiceSpecificationDefinition struct {
 	MetricSpecifications *[]OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
 }
 
-// QuarantinePolicy an object that represents quarantine policy for a container registry.
-type QuarantinePolicy struct {
-	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
-	Status PolicyStatus `json:"status,omitempty"`
-}
-
 // RegenerateCredentialParameters the parameters used to regenerate the login credential.
 type RegenerateCredentialParameters struct {
 	// Name - Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'Password', 'Password2'
@@ -874,55 +840,6 @@ func (future RegistriesUpdateFuture) Result(client RegistriesClient) (r Registry
 	r, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RegistriesUpdatePoliciesFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future RegistriesUpdatePoliciesFuture) Result(client RegistriesClient) (rp RegistryPolicies, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return rp, azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdatePoliciesFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		rp, err = client.UpdatePoliciesResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	rp, err = client.UpdatePoliciesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1187,15 +1104,6 @@ type RegistryPassword struct {
 	Name PasswordName `json:"name,omitempty"`
 	// Value - The password value.
 	Value *string `json:"value,omitempty"`
-}
-
-// RegistryPolicies an object that represents policies for a container registry.
-type RegistryPolicies struct {
-	autorest.Response `json:"-"`
-	// QuarantinePolicy - An object that represents quarantine policy for a container registry.
-	QuarantinePolicy *QuarantinePolicy `json:"quarantinePolicy,omitempty"`
-	// TrustPolicy - An object that represents content trust policy for a container registry.
-	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
 }
 
 // RegistryProperties the properties of a container registry.
@@ -1788,14 +1696,6 @@ type Target struct {
 	Tag *string `json:"tag,omitempty"`
 }
 
-// TrustPolicy an object that represents content trust policy for a container registry.
-type TrustPolicy struct {
-	// Type - The type of trust policy. Possible values include: 'Notary'
-	Type TrustPolicyType `json:"type,omitempty"`
-	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
-	Status PolicyStatus `json:"status,omitempty"`
-}
-
 // Webhook an object that represents a webhook for a container registry.
 type Webhook struct {
 	autorest.Response `json:"-"`
@@ -2077,7 +1977,7 @@ func (page WebhookListResultPage) Values() []Webhook {
 
 // WebhookProperties the properties of a webhook.
 type WebhookProperties struct {
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`
@@ -2093,7 +1993,7 @@ type WebhookPropertiesCreateParameters struct {
 	ServiceURI *string `json:"serviceUri,omitempty"`
 	// CustomHeaders - Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string `json:"customHeaders"`
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`
@@ -2128,7 +2028,7 @@ type WebhookPropertiesUpdateParameters struct {
 	ServiceURI *string `json:"serviceUri,omitempty"`
 	// CustomHeaders - Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string `json:"customHeaders"`
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`

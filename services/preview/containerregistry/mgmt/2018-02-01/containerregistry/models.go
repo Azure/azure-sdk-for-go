@@ -160,21 +160,6 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{Password, Password2}
 }
 
-// PolicyStatus enumerates the values for policy status.
-type PolicyStatus string
-
-const (
-	// PolicyStatusDisabled ...
-	PolicyStatusDisabled PolicyStatus = "disabled"
-	// PolicyStatusEnabled ...
-	PolicyStatusEnabled PolicyStatus = "enabled"
-)
-
-// PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return []PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
-}
-
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -279,19 +264,6 @@ const (
 // PossibleTokenTypeValues returns an array of possible values for the TokenType const type.
 func PossibleTokenTypeValues() []TokenType {
 	return []TokenType{OAuth, PAT}
-}
-
-// TrustPolicyType enumerates the values for trust policy type.
-type TrustPolicyType string
-
-const (
-	// Notary ...
-	Notary TrustPolicyType = "Notary"
-)
-
-// PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return []TrustPolicyType{Notary}
 }
 
 // Type enumerates the values for type.
@@ -2536,12 +2508,6 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// QuarantinePolicy an object that represents quarantine policy for a container registry.
-type QuarantinePolicy struct {
-	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
-	Status PolicyStatus `json:"status,omitempty"`
-}
-
 // BasicQueueBuildRequest the queue build request parameters.
 type BasicQueueBuildRequest interface {
 	AsBuildTaskBuildRequest() (*BuildTaskBuildRequest, bool)
@@ -2950,55 +2916,6 @@ func (future RegistriesUpdateFuture) Result(client RegistriesClient) (r Registry
 	return
 }
 
-// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RegistriesUpdatePoliciesFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future RegistriesUpdatePoliciesFuture) Result(client RegistriesClient) (rp RegistryPolicies, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return rp, azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdatePoliciesFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		rp, err = client.UpdatePoliciesResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	rp, err = client.UpdatePoliciesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
 // Registry an object that represents a container registry.
 type Registry struct {
 	autorest.Response `json:"-"`
@@ -3259,15 +3176,6 @@ type RegistryPassword struct {
 	Name PasswordName `json:"name,omitempty"`
 	// Value - The password value.
 	Value *string `json:"value,omitempty"`
-}
-
-// RegistryPolicies an object that represents policies for a container registry.
-type RegistryPolicies struct {
-	autorest.Response `json:"-"`
-	// QuarantinePolicy - An object that represents quarantine policy for a container registry.
-	QuarantinePolicy *QuarantinePolicy `json:"quarantinePolicy,omitempty"`
-	// TrustPolicy - An object that represents content trust policy for a container registry.
-	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
 }
 
 // RegistryProperties the properties of a container registry.
@@ -3902,14 +3810,6 @@ type Target struct {
 	URL *string `json:"url,omitempty"`
 	// Tag - The tag name.
 	Tag *string `json:"tag,omitempty"`
-}
-
-// TrustPolicy an object that represents content trust policy for a container registry.
-type TrustPolicy struct {
-	// Type - The type of trust policy. Possible values include: 'Notary'
-	Type TrustPolicyType `json:"type,omitempty"`
-	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
-	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // Webhook an object that represents a webhook for a container registry.

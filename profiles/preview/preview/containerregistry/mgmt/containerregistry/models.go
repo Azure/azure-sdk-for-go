@@ -93,13 +93,6 @@ const (
 	Password2 PasswordName = original.Password2
 )
 
-type PolicyStatus = original.PolicyStatus
-
-const (
-	PolicyStatusDisabled PolicyStatus = original.PolicyStatusDisabled
-	PolicyStatusEnabled  PolicyStatus = original.PolicyStatusEnabled
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -148,12 +141,6 @@ type TokenType = original.TokenType
 const (
 	OAuth TokenType = original.OAuth
 	PAT   TokenType = original.PAT
-)
-
-type TrustPolicyType = original.TrustPolicyType
-
-const (
-	Notary TrustPolicyType = original.Notary
 )
 
 type Type = original.Type
@@ -259,7 +246,6 @@ type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type PlatformProperties = original.PlatformProperties
 type ProxyResource = original.ProxyResource
-type QuarantinePolicy = original.QuarantinePolicy
 type BasicQueueBuildRequest = original.BasicQueueBuildRequest
 type QueueBuildRequest = original.QueueBuildRequest
 type QuickBuildRequest = original.QuickBuildRequest
@@ -269,7 +255,6 @@ type RegistriesDeleteFuture = original.RegistriesDeleteFuture
 type RegistriesImportImageFuture = original.RegistriesImportImageFuture
 type RegistriesQueueBuildFuture = original.RegistriesQueueBuildFuture
 type RegistriesUpdateFuture = original.RegistriesUpdateFuture
-type RegistriesUpdatePoliciesFuture = original.RegistriesUpdatePoliciesFuture
 type Registry = original.Registry
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type RegistryListResult = original.RegistryListResult
@@ -278,7 +263,6 @@ type RegistryListResultPage = original.RegistryListResultPage
 type RegistryNameCheckRequest = original.RegistryNameCheckRequest
 type RegistryNameStatus = original.RegistryNameStatus
 type RegistryPassword = original.RegistryPassword
-type RegistryPolicies = original.RegistryPolicies
 type RegistryProperties = original.RegistryProperties
 type RegistryPropertiesUpdateParameters = original.RegistryPropertiesUpdateParameters
 type RegistryUpdateParameters = original.RegistryUpdateParameters
@@ -304,7 +288,6 @@ type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
-type TrustPolicy = original.TrustPolicy
 type Webhook = original.Webhook
 type WebhookCreateParameters = original.WebhookCreateParameters
 type WebhookListResult = original.WebhookListResult
@@ -370,9 +353,6 @@ func PossibleOsTypeValues() []OsType {
 func PossiblePasswordNameValues() []PasswordName {
 	return original.PossiblePasswordNameValues()
 }
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return original.PossiblePolicyStatusValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -390,9 +370,6 @@ func PossibleSourceControlTypeValues() []SourceControlType {
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()
-}
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return original.PossibleTrustPolicyTypeValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

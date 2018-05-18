@@ -24,37 +24,41 @@ import (
 	"net/http"
 )
 
-// EntitiesClient is the the Azure Management Groups API enables consolidation of multiple
-// subscriptions/resources into an organizational hierarchy and centrally
-// manage access control, policies, alerting and reporting for those resources.
+// EntitiesClient is the the Azure Management Groups API enables consolidation of multiple subscriptions/resources into
+// an organizational hierarchy and centrally manage access control, policies, alerting and reporting for those
+// resources.
 type EntitiesClient struct {
 	BaseClient
 }
 
 // NewEntitiesClient creates an instance of the EntitiesClient client.
-func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return NewEntitiesClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewEntitiesClient() EntitiesClient {
+	return NewEntitiesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewEntitiesClientWithBaseURI creates an instance of the EntitiesClient client.
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return EntitiesClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return EntitiesClient{NewWithBaseURI(baseURI)}
 }
 
 // List list all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
 // Parameters:
+// skiptoken - page continuation token is only used if a previous operation returned a partial result. If a
+// previous response contains a nextLink element, the value of the nextLink element will include a token
+// parameter that specifies a starting point to use for subsequent calls.
+// skip - number of entities to skip over when retrieving results. Passing this in will override $skipToken.
+// top - number of elements to return when retrieving results. Passing this in will override $skipToken.
 // selectParameter - this parameter specifies the fields to include in the response. Can include any
 // combination of Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
 // '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
 // can override select in $skipToken.
 // search - the $search parameter is used in conjunction with the $filter parameter to return three different
-// outputs depending on the parameter passed in.
-// With $search=AllowedParents the API will return the entity info of all groups that the requested entity will
-// be able to reparent to as determined by the user's permissions.
-// With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-// children of the requested entity.
-// With $search=ParentAndFirstLevelChildren the API will return the parent and  first level of children that
-// the user has either direct access to or indirect access via one of their descendants.
+// outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity
+// info of all groups that the requested entity will be able to reparent to as determined by the user's
+// permissions. With $search=AllowedChildren the API will return the entity info of all entities that can be
+// added as children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the
+// parent and  first level of children that the user has either direct access to or indirect access via one of
+// their descendants.
 // filter - the filter parameter allows you to filter on the the name or display name fields. You can check for
 // equality on the name field (e.g. name eq '{entityName}')  and you can check for substrings on either the
 // name or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
@@ -65,36 +69,43 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 // groupName - a filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
 // eq 'groupName'")
 // cacheControl - indicates that the request shouldn't utilize any caches.
-func (client EntitiesClient) List(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntitiesListFuture, err error) {
-	req, err := client.ListPreparer(ctx, selectParameter, search, filter, view, groupName, cacheControl)
+func (client EntitiesClient) List(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultPage, err error) {
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, skiptoken, skip, top, selectParameter, search, filter, view, groupName, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.ListSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", result.Response(), "Failure sending request")
+		result.elr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", resp, "Failure sending request")
 		return
+	}
+
+	result.elr, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client EntitiesClient) ListPreparer(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (*http.Request, error) {
+func (client EntitiesClient) ListPreparer(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (*http.Request, error) {
 	const APIVersion = "2018-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
-	if client.Skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *client.Skip)
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if client.Top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *client.Top)
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -129,28 +140,14 @@ func (client EntitiesClient) ListPreparer(ctx context.Context, selectParameter s
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client EntitiesClient) ListSender(req *http.Request) (future EntitiesListFuture, err error) {
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK))
-	return
+func (client EntitiesClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityListResultPage, err error) {
-	result.elr, err = client.listResponder(resp)
-	result.fn = client.listNextResults
-	return
-}
-
-func (client EntitiesClient) listResponder(resp *http.Response) (result EntityListResult, err error) {
+func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -170,20 +167,20 @@ func (client EntitiesClient) listNextResults(lastResults EntityListResult) (resu
 	if req == nil {
 		return
 	}
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	resp, err := client.ListSender(req)
 	if err != nil {
+		result.Response = autorest.Response{Response: resp}
 		return result, autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "listNextResults", resp, "Failure sending next results request")
 	}
-	return client.listResponder(resp)
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client EntitiesClient) ListComplete(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntitiesListAllFuture, err error) {
-	var future EntitiesListFuture
-	future, err = client.List(ctx, selectParameter, search, filter, view, groupName, cacheControl)
-	result.Future = future.Future
-	result.req = future.req
+func (client EntitiesClient) ListComplete(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultIterator, err error) {
+	result.page, err = client.List(ctx, skiptoken, skip, top, selectParameter, search, filter, view, groupName, cacheControl)
 	return
 }

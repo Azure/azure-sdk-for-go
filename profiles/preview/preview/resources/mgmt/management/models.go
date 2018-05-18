@@ -110,8 +110,6 @@ type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateParentGroupInfo = original.CreateParentGroupInfo
 type DeleteFuture = original.DeleteFuture
 type Details = original.Details
-type EntitiesListAllFuture = original.EntitiesListAllFuture
-type EntitiesListFuture = original.EntitiesListFuture
 type EntityHierarchyItem = original.EntityHierarchyItem
 type EntityHierarchyItemProperties = original.EntityHierarchyItemProperties
 type EntityInfo = original.EntityInfo
@@ -139,28 +137,27 @@ type ParentGroupInfo = original.ParentGroupInfo
 type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type Properties = original.Properties
 type SetObject = original.SetObject
-type StartTenantBackfillFuture = original.StartTenantBackfillFuture
 type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 type OperationsClient = original.OperationsClient
 type SubscriptionsClient = original.SubscriptionsClient
 
-func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.New(operationResultID, skip, top, skiptoken)
+func New() BaseClient {
+	return original.New()
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
-func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skip, top, skiptoken)
+func NewEntitiesClient() EntitiesClient {
+	return original.NewEntitiesClient()
 }
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI)
 }
-func NewClient(operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClient(operationResultID, skip, top, skiptoken)
+func NewClient() Client {
+	return original.NewClient()
 }
-func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }
 func PossibleInheritedPermissionsValues() []InheritedPermissions {
 	return original.PossibleInheritedPermissionsValues()
@@ -189,17 +186,17 @@ func PossibleType1Values() []Type1 {
 func PossibleType2Values() []Type2 {
 	return original.PossibleType2Values()
 }
-func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skip, top, skiptoken)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return original.NewSubscriptionsClient()
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

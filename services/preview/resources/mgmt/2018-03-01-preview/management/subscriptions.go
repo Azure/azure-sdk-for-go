@@ -24,21 +24,21 @@ import (
 	"net/http"
 )
 
-// SubscriptionsClient is the the Azure Management Groups API enables consolidation of multiple
-// subscriptions/resources into an organizational hierarchy and centrally
-// manage access control, policies, alerting and reporting for those resources.
+// SubscriptionsClient is the the Azure Management Groups API enables consolidation of multiple subscriptions/resources
+// into an organizational hierarchy and centrally manage access control, policies, alerting and reporting for those
+// resources.
 type SubscriptionsClient struct {
 	BaseClient
 }
 
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI)}
 }
 
 // Create associates existing subscription with the management group.

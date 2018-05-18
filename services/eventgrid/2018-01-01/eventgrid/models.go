@@ -21,6 +21,33 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
+// JobState enumerates the values for job state.
+type JobState string
+
+const (
+	// Canceled The job was canceled. This is a final state for the job.
+	Canceled JobState = "Canceled"
+	// Canceling The job is in the process of being canceled. This is a transient state for the job.
+	Canceling JobState = "Canceling"
+	// Error The job has encountered an error. This is a final state for the job.
+	Error JobState = "Error"
+	// Finished The job is finished. This is a final state for the job.
+	Finished JobState = "Finished"
+	// Processing The job is processing. This is a transient state for the job.
+	Processing JobState = "Processing"
+	// Queued The job is in a queued state, waiting for resources to become available. This is a transient
+	// state.
+	Queued JobState = "Queued"
+	// Scheduled The job is being scheduled to run on an available resource. This is a transient state, between
+	// queued and processing states.
+	Scheduled JobState = "Scheduled"
+)
+
+// PossibleJobStateValues returns an array of possible values for the JobState const type.
+func PossibleJobStateValues() []JobState {
+	return []JobState{Canceled, Canceling, Error, Finished, Processing, Queued, Scheduled}
+}
+
 // ContainerRegistryEventActor the agent that initiated the event. For most situations, this could be from the
 // authorization context of the request.
 type ContainerRegistryEventActor struct {
@@ -269,6 +296,15 @@ type IotHubDeviceDeletedEventData struct {
 	OperationTimestamp *string `json:"operationTimestamp,omitempty"`
 	// Twin - Information about the device twin, which is the cloud represenation of application device metadata.
 	Twin *DeviceTwinInfo `json:"twin,omitempty"`
+}
+
+// MediaJobStateChangeEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.Media.JobStateChange event.
+type MediaJobStateChangeEventData struct {
+	// PreviousState - The previous state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	PreviousState JobState `json:"previousState,omitempty"`
+	// State - The new state of the Job. Possible values include: 'Canceled', 'Canceling', 'Error', 'Finished', 'Processing', 'Queued', 'Scheduled'
+	State JobState `json:"state,omitempty"`
 }
 
 // ResourceDeleteCancelData schema of the Data property of an EventGridEvent for an

@@ -22,6 +22,18 @@ package eventgrid
 import original "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
 type BaseClient = original.BaseClient
+type JobState = original.JobState
+
+const (
+	Canceled   JobState = original.Canceled
+	Canceling  JobState = original.Canceling
+	Error      JobState = original.Error
+	Finished   JobState = original.Finished
+	Processing JobState = original.Processing
+	Queued     JobState = original.Queued
+	Scheduled  JobState = original.Scheduled
+)
+
 type ContainerRegistryEventActor = original.ContainerRegistryEventActor
 type ContainerRegistryEventData = original.ContainerRegistryEventData
 type ContainerRegistryEventRequest = original.ContainerRegistryEventRequest
@@ -39,6 +51,7 @@ type Event = original.Event
 type EventHubCaptureFileCreatedEventData = original.EventHubCaptureFileCreatedEventData
 type IotHubDeviceCreatedEventData = original.IotHubDeviceCreatedEventData
 type IotHubDeviceDeletedEventData = original.IotHubDeviceDeletedEventData
+type MediaJobStateChangeEventData = original.MediaJobStateChangeEventData
 type ResourceDeleteCancelData = original.ResourceDeleteCancelData
 type ResourceDeleteFailureData = original.ResourceDeleteFailureData
 type ResourceDeleteSuccessData = original.ResourceDeleteSuccessData
@@ -58,6 +71,9 @@ func New() BaseClient {
 }
 func NewWithoutDefaults() BaseClient {
 	return original.NewWithoutDefaults()
+}
+func PossibleJobStateValues() []JobState {
+	return original.PossibleJobStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

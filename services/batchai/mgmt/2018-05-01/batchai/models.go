@@ -1874,7 +1874,7 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 
 // JobBaseProperties the properties of a Batch AI Job.
 type JobBaseProperties struct {
-	// SchedulingPriority - Scheduling priority  associated with the job. Possible values include: 'Low', 'Normal', 'High'
+	// SchedulingPriority - Scheduling priority associated with the job. Possible values include: 'Low', 'Normal', 'High'
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	Cluster            *ResourceID `json:"cluster,omitempty"`
 	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.

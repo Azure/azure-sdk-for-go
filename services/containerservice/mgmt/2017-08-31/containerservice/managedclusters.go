@@ -338,8 +338,7 @@ func (client ManagedClustersClient) GetAccessProfilesResponder(resp *http.Respon
 	return
 }
 
-// GetUpgradeProfile gets the details of the upgrade profile for a managed cluster with a specified resource group and
-// name.
+// GetUpgradeProfile use ManagedClusters_ListCredential instead.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.

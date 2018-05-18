@@ -56,6 +56,21 @@ func PossiblePasswordNameValues() []PasswordName {
 	return []PasswordName{Password, Password2}
 }
 
+// PolicyStatus enumerates the values for policy status.
+type PolicyStatus string
+
+const (
+	// Disabled ...
+	Disabled PolicyStatus = "disabled"
+	// Enabled ...
+	Enabled PolicyStatus = "enabled"
+)
+
+// PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
+func PossiblePolicyStatusValues() []PolicyStatus {
+	return []PolicyStatus{Disabled, Enabled}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -132,6 +147,19 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{SkuTierBasic, SkuTierClassic, SkuTierPremium, SkuTierStandard}
 }
 
+// TrustPolicyType enumerates the values for trust policy type.
+type TrustPolicyType string
+
+const (
+	// Notary ...
+	Notary TrustPolicyType = "Notary"
+)
+
+// PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
+func PossibleTrustPolicyTypeValues() []TrustPolicyType {
+	return []TrustPolicyType{Notary}
+}
+
 // WebhookAction enumerates the values for webhook action.
 type WebhookAction string
 
@@ -153,15 +181,15 @@ func PossibleWebhookActionValues() []WebhookAction {
 type WebhookStatus string
 
 const (
-	// Disabled ...
-	Disabled WebhookStatus = "disabled"
-	// Enabled ...
-	Enabled WebhookStatus = "enabled"
+	// WebhookStatusDisabled ...
+	WebhookStatusDisabled WebhookStatus = "disabled"
+	// WebhookStatusEnabled ...
+	WebhookStatusEnabled WebhookStatus = "enabled"
 )
 
 // PossibleWebhookStatusValues returns an array of possible values for the WebhookStatus const type.
 func PossibleWebhookStatusValues() []WebhookStatus {
-	return []WebhookStatus{Disabled, Enabled}
+	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
 }
 
 // Actor the agent that initiated the event. For most situations, this could be from the authorization context of
@@ -422,227 +450,10 @@ type ImportSource struct {
 	SourceImage *string `json:"sourceImage,omitempty"`
 }
 
-// OperationDefinition the definition of a container registry operation.
-type OperationDefinition struct {
-	// Origin - The origin information of the container registry operation.
-	Origin *string `json:"origin,omitempty"`
-	// Name - Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
-	// Display - The display information for the container registry operation.
-	Display *OperationDisplayDefinition `json:"display,omitempty"`
-	// OperationPropertiesDefinition - The properties information for the container registry operation.
-	*OperationPropertiesDefinition `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationDefinition.
-func (od OperationDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if od.Origin != nil {
-		objectMap["origin"] = od.Origin
-	}
-	if od.Name != nil {
-		objectMap["name"] = od.Name
-	}
-	if od.Display != nil {
-		objectMap["display"] = od.Display
-	}
-	if od.OperationPropertiesDefinition != nil {
-		objectMap["properties"] = od.OperationPropertiesDefinition
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for OperationDefinition struct.
-func (od *OperationDefinition) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "origin":
-			if v != nil {
-				var origin string
-				err = json.Unmarshal(*v, &origin)
-				if err != nil {
-					return err
-				}
-				od.Origin = &origin
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				od.Name = &name
-			}
-		case "display":
-			if v != nil {
-				var display OperationDisplayDefinition
-				err = json.Unmarshal(*v, &display)
-				if err != nil {
-					return err
-				}
-				od.Display = &display
-			}
-		case "properties":
-			if v != nil {
-				var operationPropertiesDefinition OperationPropertiesDefinition
-				err = json.Unmarshal(*v, &operationPropertiesDefinition)
-				if err != nil {
-					return err
-				}
-				od.OperationPropertiesDefinition = &operationPropertiesDefinition
-			}
-		}
-	}
-
-	return nil
-}
-
-// OperationDisplayDefinition the display information for a container registry operation.
-type OperationDisplayDefinition struct {
-	// Provider - The resource provider name: Microsoft.ContainerRegistry.
-	Provider *string `json:"provider,omitempty"`
-	// Resource - The resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
-	// Operation - The operation that users can perform.
-	Operation *string `json:"operation,omitempty"`
-	// Description - The description for the operation.
-	Description *string `json:"description,omitempty"`
-}
-
-// OperationListResult the result of a request to list container registry operations.
-type OperationListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of container registry operations. Since this list may be incomplete, the nextLink field should be used to request the next list of operations.
-	Value *[]OperationDefinition `json:"value,omitempty"`
-	// NextLink - The URI that can be used to request the next list of container registry operations.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// OperationListResultIterator provides access to a complete listing of OperationDefinition values.
-type OperationListResultIterator struct {
-	i    int
-	page OperationListResultPage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter OperationListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter OperationListResultIterator) Response() OperationListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter OperationListResultIterator) Value() OperationDefinition {
-	if !iter.page.NotDone() {
-		return OperationDefinition{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (olr OperationListResult) IsEmpty() bool {
-	return olr.Value == nil || len(*olr.Value) == 0
-}
-
-// operationListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(olr.NextLink)))
-}
-
-// OperationListResultPage contains a page of OperationDefinition values.
-type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
-	olr OperationListResult
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
-	if err != nil {
-		return err
-	}
-	page.olr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page OperationListResultPage) NotDone() bool {
-	return !page.olr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page OperationListResultPage) Response() OperationListResult {
-	return page.olr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page OperationListResultPage) Values() []OperationDefinition {
-	if page.olr.IsEmpty() {
-		return nil
-	}
-	return *page.olr.Value
-}
-
-// OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
-type OperationMetricSpecificationDefinition struct {
-	// Name - Metric name.
-	Name *string `json:"name,omitempty"`
-	// DisplayName - Metric display name.
-	DisplayName *string `json:"displayName,omitempty"`
-	// DisplayDescription - Metric description.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
-	// Unit - Metric unit.
-	Unit *string `json:"unit,omitempty"`
-	// AggregationType - Metric aggregation type.
-	AggregationType *string `json:"aggregationType,omitempty"`
-	// InternalMetricName - Internal metric name.
-	InternalMetricName *string `json:"internalMetricName,omitempty"`
-}
-
-// OperationPropertiesDefinition the definition of Azure Monitoring properties.
-type OperationPropertiesDefinition struct {
-	// ServiceSpecification - The definition of Azure Monitoring service.
-	ServiceSpecification *OperationServiceSpecificationDefinition `json:"serviceSpecification,omitempty"`
-}
-
-// OperationServiceSpecificationDefinition the definition of Azure Monitoring metrics list.
-type OperationServiceSpecificationDefinition struct {
-	// MetricSpecifications - A list of Azure Monitoring metrics definition.
-	MetricSpecifications *[]OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
+// QuarantinePolicy an object that represents quarantine policy for a container registry.
+type QuarantinePolicy struct {
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // RegenerateCredentialParameters the parameters used to regenerate the login credential.
@@ -840,6 +651,55 @@ func (future RegistriesUpdateFuture) Result(client RegistriesClient) (r Registry
 	r, err = client.UpdateResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type RegistriesUpdatePoliciesFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future RegistriesUpdatePoliciesFuture) Result(client RegistriesClient) (rp RegistryPolicies, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return rp, azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdatePoliciesFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		rp, err = client.UpdatePoliciesResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	rp, err = client.UpdatePoliciesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesUpdatePoliciesFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -1104,6 +964,15 @@ type RegistryPassword struct {
 	Name PasswordName `json:"name,omitempty"`
 	// Value - The password value.
 	Value *string `json:"value,omitempty"`
+}
+
+// RegistryPolicies an object that represents policies for a container registry.
+type RegistryPolicies struct {
+	autorest.Response `json:"-"`
+	// QuarantinePolicy - An object that represents quarantine policy for a container registry.
+	QuarantinePolicy *QuarantinePolicy `json:"quarantinePolicy,omitempty"`
+	// TrustPolicy - An object that represents content trust policy for a container registry.
+	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
 }
 
 // RegistryProperties the properties of a container registry.
@@ -1696,6 +1565,14 @@ type Target struct {
 	Tag *string `json:"tag,omitempty"`
 }
 
+// TrustPolicy an object that represents content trust policy for a container registry.
+type TrustPolicy struct {
+	// Type - The type of trust policy. Possible values include: 'Notary'
+	Type TrustPolicyType `json:"type,omitempty"`
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	Status PolicyStatus `json:"status,omitempty"`
+}
+
 // Webhook an object that represents a webhook for a container registry.
 type Webhook struct {
 	autorest.Response `json:"-"`
@@ -1977,7 +1854,7 @@ func (page WebhookListResultPage) Values() []Webhook {
 
 // WebhookProperties the properties of a webhook.
 type WebhookProperties struct {
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`
@@ -1993,7 +1870,7 @@ type WebhookPropertiesCreateParameters struct {
 	ServiceURI *string `json:"serviceUri,omitempty"`
 	// CustomHeaders - Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string `json:"customHeaders"`
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`
@@ -2028,7 +1905,7 @@ type WebhookPropertiesUpdateParameters struct {
 	ServiceURI *string `json:"serviceUri,omitempty"`
 	// CustomHeaders - Custom headers that will be added to the webhook notifications.
 	CustomHeaders map[string]*string `json:"customHeaders"`
-	// Status - The status of the webhook at the time the operation was called. Possible values include: 'Enabled', 'Disabled'
+	// Status - The status of the webhook at the time the operation was called. Possible values include: 'WebhookStatusEnabled', 'WebhookStatusDisabled'
 	Status WebhookStatus `json:"status,omitempty"`
 	// Scope - The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events.
 	Scope *string `json:"scope,omitempty"`

@@ -45,7 +45,7 @@ func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsC
 // timespan - the timespan of the query. It is a string with the following format
 // 'startDateTime_ISO/endDateTime_ISO'.
 // interval - the interval (i.e. timegrain) of the query.
-// metric - the name of the metric to retrieve.
+// metricnames - the names of the metrics (comma separated) to retrieve.
 // aggregation - the list of aggregation types (comma separated) to retrieve.
 // top - the maximum number of records to retrieve.
 // Valid only if $filter is specified.
@@ -62,8 +62,9 @@ func NewMetricsClientWithBaseURI(baseURI string, subscriptionID string) MetricsC
 // ‘*’**.
 // resultType - reduces the set of data collected. The syntax allowed depends on the operation. See the
 // operation's description for details.
-func (client MetricsClient) List(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType ResultType) (result Response, err error) {
-	req, err := client.ListPreparer(ctx, resourceURI, timespan, interval, metric, aggregation, top, orderby, filter, resultType)
+// metricnamespace - metric namespace to query metric definitions for.
+func (client MetricsClient) List(ctx context.Context, resourceURI string, timespan string, interval *string, metricnames string, aggregation string, top *int32, orderby string, filter string, resultType ResultType, metricnamespace string) (result Response, err error) {
+	req, err := client.ListPreparer(ctx, resourceURI, timespan, interval, metricnames, aggregation, top, orderby, filter, resultType, metricnamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricsClient", "List", nil, "Failure preparing request")
 		return
@@ -85,12 +86,12 @@ func (client MetricsClient) List(ctx context.Context, resourceURI string, timesp
 }
 
 // ListPreparer prepares the List request.
-func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string, timespan string, interval *string, metric string, aggregation string, top *float64, orderby string, filter string, resultType ResultType) (*http.Request, error) {
+func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string, timespan string, interval *string, metricnames string, aggregation string, top *int32, orderby string, filter string, resultType ResultType, metricnamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
 
-	const APIVersion = "2017-05-01-preview"
+	const APIVersion = "2018-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -100,23 +101,26 @@ func (client MetricsClient) ListPreparer(ctx context.Context, resourceURI string
 	if interval != nil {
 		queryParameters["interval"] = autorest.Encode("query", *interval)
 	}
-	if len(metric) > 0 {
-		queryParameters["metric"] = autorest.Encode("query", metric)
+	if len(metricnames) > 0 {
+		queryParameters["metricnames"] = autorest.Encode("query", metricnames)
 	}
 	if len(aggregation) > 0 {
 		queryParameters["aggregation"] = autorest.Encode("query", aggregation)
 	}
 	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
+		queryParameters["top"] = autorest.Encode("query", *top)
 	}
 	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
+		queryParameters["orderby"] = autorest.Encode("query", orderby)
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 	if len(string(resultType)) > 0 {
 		queryParameters["resultType"] = autorest.Encode("query", resultType)
+	}
+	if len(metricnamespace) > 0 {
+		queryParameters["metricnamespace"] = autorest.Encode("query", metricnamespace)
 	}
 
 	preparer := autorest.CreatePreparer(

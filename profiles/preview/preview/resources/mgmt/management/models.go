@@ -82,14 +82,14 @@ const (
 type Type = original.Type
 
 const (
-	ProvidersMicrosoftManagementmanagementGroup Type = original.ProvidersMicrosoftManagementmanagementGroup
+	ProvidersMicrosoftManagementmanagementGroups Type = original.ProvidersMicrosoftManagementmanagementGroups
 )
 
 type Type1 = original.Type1
 
 const (
-	ProvidersMicrosoftManagementmanagementGroups Type1 = original.ProvidersMicrosoftManagementmanagementGroups
-	Subscriptions                                Type1 = original.Subscriptions
+	Type1ProvidersMicrosoftManagementmanagementGroups Type1 = original.Type1ProvidersMicrosoftManagementmanagementGroups
+	Type1Subscriptions                                Type1 = original.Type1Subscriptions
 )
 
 type Type2 = original.Type2

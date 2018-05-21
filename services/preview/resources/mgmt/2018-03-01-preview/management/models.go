@@ -138,28 +138,28 @@ func PossibleStatusValues() []Status {
 type Type string
 
 const (
-	// ProvidersMicrosoftManagementmanagementGroup ...
-	ProvidersMicrosoftManagementmanagementGroup Type = "/providers/Microsoft.Management/managementGroup"
+	// ProvidersMicrosoftManagementmanagementGroups ...
+	ProvidersMicrosoftManagementmanagementGroups Type = "/providers/Microsoft.Management/managementGroups"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{ProvidersMicrosoftManagementmanagementGroup}
+	return []Type{ProvidersMicrosoftManagementmanagementGroups}
 }
 
 // Type1 enumerates the values for type 1.
 type Type1 string
 
 const (
-	// ProvidersMicrosoftManagementmanagementGroups ...
-	ProvidersMicrosoftManagementmanagementGroups Type1 = "/providers/Microsoft.Management/managementGroups"
-	// Subscriptions ...
-	Subscriptions Type1 = "/subscriptions"
+	// Type1ProvidersMicrosoftManagementmanagementGroups ...
+	Type1ProvidersMicrosoftManagementmanagementGroups Type1 = "/providers/Microsoft.Management/managementGroups"
+	// Type1Subscriptions ...
+	Type1Subscriptions Type1 = "/subscriptions"
 )
 
 // PossibleType1Values returns an array of possible values for the Type1 const type.
 func PossibleType1Values() []Type1 {
-	return []Type1{ProvidersMicrosoftManagementmanagementGroups, Subscriptions}
+	return []Type1{Type1ProvidersMicrosoftManagementmanagementGroups, Type1Subscriptions}
 }
 
 // Type2 enumerates the values for type 2.
@@ -181,7 +181,7 @@ func PossibleType2Values() []Type2 {
 type CheckNameAvailabilityRequest struct {
 	// Name - the name to check for availability
 	Name *string `json:"name,omitempty"`
-	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'ProvidersMicrosoftManagementmanagementGroup'
+	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'ProvidersMicrosoftManagementmanagementGroups'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -198,7 +198,7 @@ type CheckNameAvailabilityResult struct {
 
 // ChildInfo the child information of a management group.
 type ChildInfo struct {
-	// Type - The fully qualified resource type which includes provider namespace (e.g. /providers/Microsoft.Management/managementGroups). Possible values include: 'ProvidersMicrosoftManagementmanagementGroups', 'Subscriptions'
+	// Type - The fully qualified resource type which includes provider namespace (e.g. /providers/Microsoft.Management/managementGroups). Possible values include: 'Type1ProvidersMicrosoftManagementmanagementGroups', 'Type1Subscriptions'
 	Type Type1 `json:"type,omitempty"`
 	// ID - The fully qualified ID for the child resource (management group or subscription).  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`

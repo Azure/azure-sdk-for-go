@@ -25,25 +25,26 @@ import (
 	"net/http"
 )
 
-// MarketplacesClient is the consumption management client provides access to consumption resources for Azure
-// Enterprise Subscriptions.
-type MarketplacesClient struct {
+// MarketplacesByDepartmentClient is the consumption management client provides access to consumption resources for
+// Azure Enterprise Subscriptions.
+type MarketplacesByDepartmentClient struct {
 	BaseClient
 }
 
-// NewMarketplacesClient creates an instance of the MarketplacesClient client.
-func NewMarketplacesClient(subscriptionID string) MarketplacesClient {
-	return NewMarketplacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewMarketplacesByDepartmentClient creates an instance of the MarketplacesByDepartmentClient client.
+func NewMarketplacesByDepartmentClient(subscriptionID string) MarketplacesByDepartmentClient {
+	return NewMarketplacesByDepartmentClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewMarketplacesClientWithBaseURI creates an instance of the MarketplacesClient client.
-func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesClient {
-	return MarketplacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewMarketplacesByDepartmentClientWithBaseURI creates an instance of the MarketplacesByDepartmentClient client.
+func NewMarketplacesByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) MarketplacesByDepartmentClient {
+	return MarketplacesByDepartmentClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists the marketplaces for a scope by subscriptionId and current billing period. Marketplaces are available via
+// List lists the marketplaces for a scope by departmentId and current billing period. Marketplaces are available via
 // this API only for May 1, 2014 or later.
 // Parameters:
+// departmentID - department ID
 // filter - may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
 // time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',
 // 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'.
@@ -51,42 +52,42 @@ func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) Mar
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
-func (client MarketplacesClient) List(ctx context.Context, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+func (client MarketplacesByDepartmentClient) List(ctx context.Context, departmentID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.MarketplacesClient", "List", err.Error())
+		return result, validation.NewError("consumption.MarketplacesByDepartmentClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter, top, skiptoken)
+	req, err := client.ListPreparer(ctx, departmentID, filter, top, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.mlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.mlr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client MarketplacesClient) ListPreparer(ctx context.Context, filter string, top *int32, skiptoken string) (*http.Request, error) {
+func (client MarketplacesByDepartmentClient) ListPreparer(ctx context.Context, departmentID string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"departmentId": autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -106,21 +107,21 @@ func (client MarketplacesClient) ListPreparer(ctx context.Context, filter string
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Consumption/marketplaces", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Consumption/marketplaces", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client MarketplacesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client MarketplacesByDepartmentClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client MarketplacesClient) ListResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+func (client MarketplacesByDepartmentClient) ListResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -132,10 +133,10 @@ func (client MarketplacesClient) ListResponder(resp *http.Response) (result Mark
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client MarketplacesClient) listNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+func (client MarketplacesByDepartmentClient) listNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
 	req, err := lastResults.marketplacesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -143,24 +144,25 @@ func (client MarketplacesClient) listNextResults(lastResults MarketplacesListRes
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesClient) ListComplete(ctx context.Context, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter, top, skiptoken)
+func (client MarketplacesByDepartmentClient) ListComplete(ctx context.Context, departmentID string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.List(ctx, departmentID, filter, top, skiptoken)
 	return
 }
 
-// ListByBillingPeriod lists the marketplaces for a scope by billing period and subscripotionId. Marketplaces are
+// ListByBillingPeriod lists the marketplaces for a scope by billing period and departmentId. Marketplaces are
 // available via this API only for May 1, 2014 or later.
 // Parameters:
+// departmentID - department ID
 // billingPeriodName - billing Period Name.
 // filter - may be used to filter marketplaces by properties/usageEnd (Utc time), properties/usageStart (Utc
 // time), properties/resourceGroup, properties/instanceName or properties/instanceId. The filter supports 'eq',
@@ -169,43 +171,43 @@ func (client MarketplacesClient) ListComplete(ctx context.Context, filter string
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
-func (client MarketplacesClient) ListByBillingPeriod(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
+func (client MarketplacesByDepartmentClient) ListByBillingPeriod(ctx context.Context, departmentID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultPage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("consumption.MarketplacesClient", "ListByBillingPeriod", err.Error())
+		return result, validation.NewError("consumption.MarketplacesByDepartmentClient", "ListByBillingPeriod", err.Error())
 	}
 
 	result.fn = client.listByBillingPeriodNextResults
-	req, err := client.ListByBillingPeriodPreparer(ctx, billingPeriodName, filter, top, skiptoken)
+	req, err := client.ListByBillingPeriodPreparer(ctx, departmentID, billingPeriodName, filter, top, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByBillingPeriod", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "ListByBillingPeriod", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingPeriodSender(req)
 	if err != nil {
 		result.mlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByBillingPeriod", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "ListByBillingPeriod", resp, "Failure sending request")
 		return
 	}
 
 	result.mlr, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "ListByBillingPeriod", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "ListByBillingPeriod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingPeriodPreparer prepares the ListByBillingPeriod request.
-func (client MarketplacesClient) ListByBillingPeriodPreparer(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
+func (client MarketplacesByDepartmentClient) ListByBillingPeriodPreparer(ctx context.Context, departmentID string, billingPeriodName string, filter string, top *int32, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingPeriodName": autorest.Encode("path", billingPeriodName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"departmentId":      autorest.Encode("path", departmentID),
 	}
 
 	const APIVersion = "2018-03-31"
@@ -225,21 +227,21 @@ func (client MarketplacesClient) ListByBillingPeriodPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/marketplaces", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/marketplaces", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByBillingPeriodSender sends the ListByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
-func (client MarketplacesClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
+func (client MarketplacesByDepartmentClient) ListByBillingPeriodSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingPeriodResponder handles the response to the ListByBillingPeriod request. The method always
 // closes the http.Response Body.
-func (client MarketplacesClient) ListByBillingPeriodResponder(resp *http.Response) (result MarketplacesListResult, err error) {
+func (client MarketplacesByDepartmentClient) ListByBillingPeriodResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -251,10 +253,10 @@ func (client MarketplacesClient) ListByBillingPeriodResponder(resp *http.Respons
 }
 
 // listByBillingPeriodNextResults retrieves the next set of results, if any.
-func (client MarketplacesClient) listByBillingPeriodNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
+func (client MarketplacesByDepartmentClient) listByBillingPeriodNextResults(lastResults MarketplacesListResult) (result MarketplacesListResult, err error) {
 	req, err := lastResults.marketplacesListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByBillingPeriodNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listByBillingPeriodNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -262,17 +264,17 @@ func (client MarketplacesClient) listByBillingPeriodNextResults(lastResults Mark
 	resp, err := client.ListByBillingPeriodSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByBillingPeriodNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listByBillingPeriodNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByBillingPeriodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.MarketplacesClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByDepartmentClient", "listByBillingPeriodNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByBillingPeriodComplete enumerates all values, automatically crossing page boundaries as required.
-func (client MarketplacesClient) ListByBillingPeriodComplete(ctx context.Context, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
-	result.page, err = client.ListByBillingPeriod(ctx, billingPeriodName, filter, top, skiptoken)
+func (client MarketplacesByDepartmentClient) ListByBillingPeriodComplete(ctx context.Context, departmentID string, billingPeriodName string, filter string, top *int32, skiptoken string) (result MarketplacesListResultIterator, err error) {
+	result.page, err = client.ListByBillingPeriod(ctx, departmentID, billingPeriodName, filter, top, skiptoken)
 	return
 }

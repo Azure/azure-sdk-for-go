@@ -30,22 +30,21 @@ type ClusterVersionsClient struct {
 }
 
 // NewClusterVersionsClient creates an instance of the ClusterVersionsClient client.
-func NewClusterVersionsClient() ClusterVersionsClient {
-	return NewClusterVersionsClientWithBaseURI(DefaultBaseURI)
+func NewClusterVersionsClient(subscriptionID string) ClusterVersionsClient {
+	return NewClusterVersionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewClusterVersionsClientWithBaseURI creates an instance of the ClusterVersionsClient client.
-func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
-	return ClusterVersionsClient{NewWithBaseURI(baseURI)}
+func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) ClusterVersionsClient {
+	return ClusterVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get cluster code versions by location
+// Get gets information about an available Service Fabric cluster code version.
 // Parameters:
-// location - the location for the cluster code versions, this is different from cluster location
-// subscriptionID - the customer subscription identifier
-// clusterVersion - the cluster code version
-func (client ClusterVersionsClient) Get(ctx context.Context, location string, subscriptionID string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
-	req, err := client.GetPreparer(ctx, location, subscriptionID, clusterVersion)
+// location - the location for the cluster code versions. This is different from cluster location.
+// clusterVersion - the cluster code version.
+func (client ClusterVersionsClient) Get(ctx context.Context, location string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
+	req, err := client.GetPreparer(ctx, location, clusterVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -67,14 +66,14 @@ func (client ClusterVersionsClient) Get(ctx context.Context, location string, su
 }
 
 // GetPreparer prepares the Get request.
-func (client ClusterVersionsClient) GetPreparer(ctx context.Context, location string, subscriptionID string, clusterVersion string) (*http.Request, error) {
+func (client ClusterVersionsClient) GetPreparer(ctx context.Context, location string, clusterVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterVersion": autorest.Encode("path", clusterVersion),
 		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -107,14 +106,13 @@ func (client ClusterVersionsClient) GetResponder(resp *http.Response) (result Cl
 	return
 }
 
-// GetByEnvironment get cluster code versions by environment
+// GetByEnvironment gets information about an available Service Fabric cluster code version by environment.
 // Parameters:
-// location - the location for the cluster code versions, this is different from cluster location
-// environment - cluster operating system, the default means all
-// subscriptionID - the customer subscription identifier
-// clusterVersion - the cluster code version
-func (client ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment string, subscriptionID string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
-	req, err := client.GetByEnvironmentPreparer(ctx, location, environment, subscriptionID, clusterVersion)
+// location - the location for the cluster code versions. This is different from cluster location.
+// environment - the operating system of the cluster. The default means all.
+// clusterVersion - the cluster code version.
+func (client ClusterVersionsClient) GetByEnvironment(ctx context.Context, location string, environment string, clusterVersion string) (result ClusterCodeVersionsListResult, err error) {
+	req, err := client.GetByEnvironmentPreparer(ctx, location, environment, clusterVersion)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "GetByEnvironment", nil, "Failure preparing request")
 		return
@@ -136,15 +134,15 @@ func (client ClusterVersionsClient) GetByEnvironment(ctx context.Context, locati
 }
 
 // GetByEnvironmentPreparer prepares the GetByEnvironment request.
-func (client ClusterVersionsClient) GetByEnvironmentPreparer(ctx context.Context, location string, environment string, subscriptionID string, clusterVersion string) (*http.Request, error) {
+func (client ClusterVersionsClient) GetByEnvironmentPreparer(ctx context.Context, location string, environment string, clusterVersion string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterVersion": autorest.Encode("path", clusterVersion),
 		"environment":    autorest.Encode("path", environment),
 		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -177,12 +175,11 @@ func (client ClusterVersionsClient) GetByEnvironmentResponder(resp *http.Respons
 	return
 }
 
-// List list cluster code versions by location
+// List gets all available code versions for Service Fabric cluster resources by location.
 // Parameters:
-// location - the location for the cluster code versions, this is different from cluster location
-// subscriptionID - the customer subscription identifier
-func (client ClusterVersionsClient) List(ctx context.Context, location string, subscriptionID string) (result ClusterCodeVersionsListResult, err error) {
-	req, err := client.ListPreparer(ctx, location, subscriptionID)
+// location - the location for the cluster code versions. This is different from cluster location.
+func (client ClusterVersionsClient) List(ctx context.Context, location string) (result ClusterCodeVersionsListResult, err error) {
+	req, err := client.ListPreparer(ctx, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", nil, "Failure preparing request")
 		return
@@ -204,13 +201,13 @@ func (client ClusterVersionsClient) List(ctx context.Context, location string, s
 }
 
 // ListPreparer prepares the List request.
-func (client ClusterVersionsClient) ListPreparer(ctx context.Context, location string, subscriptionID string) (*http.Request, error) {
+func (client ClusterVersionsClient) ListPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -243,13 +240,12 @@ func (client ClusterVersionsClient) ListResponder(resp *http.Response) (result C
 	return
 }
 
-// ListByEnvironment list cluster code versions by environment
+// ListByEnvironment gets all available code versions for Service Fabric cluster resources by environment.
 // Parameters:
-// location - the location for the cluster code versions, this is different from cluster location
-// environment - cluster operating system, the default means all
-// subscriptionID - the customer subscription identifier
-func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment string, subscriptionID string) (result ClusterCodeVersionsListResult, err error) {
-	req, err := client.ListByEnvironmentPreparer(ctx, location, environment, subscriptionID)
+// location - the location for the cluster code versions. This is different from cluster location.
+// environment - the operating system of the cluster. The default means all.
+func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, location string, environment string) (result ClusterCodeVersionsListResult, err error) {
+	req, err := client.ListByEnvironmentPreparer(ctx, location, environment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", nil, "Failure preparing request")
 		return
@@ -271,14 +267,14 @@ func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, locat
 }
 
 // ListByEnvironmentPreparer prepares the ListByEnvironment request.
-func (client ClusterVersionsClient) ListByEnvironmentPreparer(ctx context.Context, location string, environment string, subscriptionID string) (*http.Request, error) {
+func (client ClusterVersionsClient) ListByEnvironmentPreparer(ctx context.Context, location string, environment string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"environment":    autorest.Encode("path", environment),
 		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-07-01-preview"
+	const APIVersion = "2018-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

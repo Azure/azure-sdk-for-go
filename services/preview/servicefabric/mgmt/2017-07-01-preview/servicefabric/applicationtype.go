@@ -24,7 +24,7 @@ import (
 	"net/http"
 )
 
-// ApplicationTypeClient is the azure Service Fabric Resource Provider API Client
+// ApplicationTypeClient is the service Fabric Management Client
 type ApplicationTypeClient struct {
 	BaseClient
 }

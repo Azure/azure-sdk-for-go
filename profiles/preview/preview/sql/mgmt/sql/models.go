@@ -21,6 +21,7 @@ package sql
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql"
 
+type BackupShortTermRetentionPoliciesClient = original.BackupShortTermRetentionPoliciesClient
 type CapabilitiesClient = original.CapabilitiesClient
 
 const (
@@ -207,6 +208,10 @@ const (
 	Recurring VulnerabilityAssessmentScanTriggerType = original.Recurring
 )
 
+type BackupShortTermRetentionPoliciesCreateOrUpdateFuture = original.BackupShortTermRetentionPoliciesCreateOrUpdateFuture
+type BackupShortTermRetentionPoliciesUpdateFuture = original.BackupShortTermRetentionPoliciesUpdateFuture
+type BackupShortTermRetentionPolicy = original.BackupShortTermRetentionPolicy
+type BackupShortTermRetentionPolicyProperties = original.BackupShortTermRetentionPolicyProperties
 type Database = original.Database
 type DatabaseListResult = original.DatabaseListResult
 type DatabaseListResultIterator = original.DatabaseListResultIterator
@@ -278,10 +283,6 @@ type Resource = original.Resource
 type ResourceMoveDefinition = original.ResourceMoveDefinition
 type ServerVersionCapability = original.ServerVersionCapability
 type ServiceObjectiveCapability = original.ServiceObjectiveCapability
-type ShortTermRetentionPoliciesCreateOrUpdateFuture = original.ShortTermRetentionPoliciesCreateOrUpdateFuture
-type ShortTermRetentionPoliciesUpdateFuture = original.ShortTermRetentionPoliciesUpdateFuture
-type ShortTermRetentionPolicy = original.ShortTermRetentionPolicy
-type ShortTermRetentionPolicyProperties = original.ShortTermRetentionPolicyProperties
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAssessmentRecurringScansProperties
@@ -291,8 +292,13 @@ type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessm
 type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
 type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
 type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
-type ShortTermRetentionPoliciesClient = original.ShortTermRetentionPoliciesClient
 
+func NewBackupShortTermRetentionPoliciesClient(subscriptionID string) BackupShortTermRetentionPoliciesClient {
+	return original.NewBackupShortTermRetentionPoliciesClient(subscriptionID)
+}
+func NewBackupShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupShortTermRetentionPoliciesClient {
+	return original.NewBackupShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCapabilitiesClient(subscriptionID string) CapabilitiesClient {
 	return original.NewCapabilitiesClient(subscriptionID)
 }
@@ -397,12 +403,6 @@ func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentS
 }
 func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
 	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
-}
-func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
-	return original.NewShortTermRetentionPoliciesClient(subscriptionID)
-}
-func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
-	return original.NewShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

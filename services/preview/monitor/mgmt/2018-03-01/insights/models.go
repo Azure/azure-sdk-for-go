@@ -3088,7 +3088,7 @@ type MetricAlertProperties struct {
 	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
 	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions *[]BasicAction `json:"actions,omitempty"`
+	Actions *[]MetricAlertAction `json:"actions,omitempty"`
 	// LastUpdatedTime - Last time the rule was updated in ISO8601 format.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 }
@@ -3175,7 +3175,8 @@ func (mapVar *MetricAlertProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "actions":
 			if v != nil {
-				actions, err := unmarshalBasicActionArray(*v)
+				var actions []MetricAlertAction
+				err = json.Unmarshal(*v, &actions)
 				if err != nil {
 					return err
 				}

@@ -1567,59 +1567,10 @@ type DatabaseVulnerabilityAssessmentProperties struct {
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
 }
 
-// DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation’s result.
+// DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation's result.
 type DatabaseVulnerabilityAssessmentScanExportProperties struct {
 	// ExportedReportLocation - Location of the exported report (e.g. https://myStorage.blob.core.windows.net/VaScans/scans/serverName/databaseName/scan_scanId.xlsx).
 	ExportedReportLocation *string `json:"exportedReportLocation,omitempty"`
-}
-
-// DatabaseVulnerabilityAssessmentScansExecuteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DatabaseVulnerabilityAssessmentScansExecuteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future DatabaseVulnerabilityAssessmentScansExecuteFuture) Result(client DatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansExecuteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.ExecuteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.ExecuteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
 }
 
 // DatabaseVulnerabilityAssessmentScansExport a database Vulnerability Assessment scan export resource.
@@ -1702,6 +1653,55 @@ func (dvase *DatabaseVulnerabilityAssessmentScansExport) UnmarshalJSON(body []by
 	}
 
 	return nil
+}
+
+// DatabaseVulnerabilityAssessmentScansInitiateScanFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type DatabaseVulnerabilityAssessmentScansInitiateScanFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabaseVulnerabilityAssessmentScansInitiateScanFuture) Result(client DatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.InitiateScanResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.InitiateScanResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // EditionCapability the edition capability.

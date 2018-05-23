@@ -42,8 +42,9 @@ func NewMetricDefinitionsClientWithBaseURI(baseURI string, subscriptionID string
 // List lists the metric definitions for the resource.
 // Parameters:
 // resourceURI - the identifier of the resource.
-func (client MetricDefinitionsClient) List(ctx context.Context, resourceURI string) (result MetricDefinitionCollection, err error) {
-	req, err := client.ListPreparer(ctx, resourceURI)
+// metricnamespace - metric namespace to query metric definitions for.
+func (client MetricDefinitionsClient) List(ctx context.Context, resourceURI string, metricnamespace string) (result MetricDefinitionCollection, err error) {
+	req, err := client.ListPreparer(ctx, resourceURI, metricnamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricDefinitionsClient", "List", nil, "Failure preparing request")
 		return
@@ -65,14 +66,17 @@ func (client MetricDefinitionsClient) List(ctx context.Context, resourceURI stri
 }
 
 // ListPreparer prepares the List request.
-func (client MetricDefinitionsClient) ListPreparer(ctx context.Context, resourceURI string) (*http.Request, error) {
+func (client MetricDefinitionsClient) ListPreparer(ctx context.Context, resourceURI string, metricnamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceUri": resourceURI,
 	}
 
-	const APIVersion = "2017-05-01-preview"
+	const APIVersion = "2018-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(metricnamespace) > 0 {
+		queryParameters["metricnamespace"] = autorest.Encode("query", metricnamespace)
 	}
 
 	preparer := autorest.CreatePreparer(

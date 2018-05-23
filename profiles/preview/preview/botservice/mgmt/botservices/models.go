@@ -22,9 +22,7 @@ package botservice
 import original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2017-12-01/botservices"
 
 type BotConnectionClient = original.BotConnectionClient
-type BotConnectionsClient = original.BotConnectionsClient
 type BotsClient = original.BotsClient
-type BotTokenClient = original.BotTokenClient
 type ChannelsClient = original.ChannelsClient
 
 const (
@@ -32,7 +30,6 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ConnectionsClient = original.ConnectionsClient
 type ChannelName = original.ChannelName
 
 const (
@@ -145,47 +142,29 @@ type WebChatChannelProperties = original.WebChatChannelProperties
 type WebChatSite = original.WebChatSite
 type OperationsClient = original.OperationsClient
 
-func NewBotConnectionClient(subscriptionID string) BotConnectionClient {
-	return original.NewBotConnectionClient(subscriptionID)
+func NewBotConnectionClient(resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClient(resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionClient {
-	return original.NewBotConnectionClientWithBaseURI(baseURI, subscriptionID)
+func NewBotConnectionClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotConnectionsClient(subscriptionID string) BotConnectionsClient {
-	return original.NewBotConnectionsClient(subscriptionID)
+func NewBotsClient(resourceGroupName string, resourceName string, subscriptionID string) BotsClient {
+	return original.NewBotsClient(resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotConnectionsClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionsClient {
-	return original.NewBotConnectionsClientWithBaseURI(baseURI, subscriptionID)
+func NewBotsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BotsClient {
+	return original.NewBotsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotsClient(subscriptionID string) BotsClient {
-	return original.NewBotsClient(subscriptionID)
+func NewChannelsClient(resourceGroupName string, resourceName string, subscriptionID string) ChannelsClient {
+	return original.NewChannelsClient(resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotsClientWithBaseURI(baseURI string, subscriptionID string) BotsClient {
-	return original.NewBotsClientWithBaseURI(baseURI, subscriptionID)
+func NewChannelsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) ChannelsClient {
+	return original.NewChannelsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotTokenClient(subscriptionID string) BotTokenClient {
-	return original.NewBotTokenClient(subscriptionID)
+func New(resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
+	return original.New(resourceGroupName, resourceName, subscriptionID)
 }
-func NewBotTokenClientWithBaseURI(baseURI string, subscriptionID string) BotTokenClient {
-	return original.NewBotTokenClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewChannelsClient(subscriptionID string) ChannelsClient {
-	return original.NewChannelsClient(subscriptionID)
-}
-func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) ChannelsClient {
-	return original.NewChannelsClientWithBaseURI(baseURI, subscriptionID)
-}
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func NewConnectionsClient(subscriptionID string) ConnectionsClient {
-	return original.NewConnectionsClient(subscriptionID)
-}
-func NewConnectionsClientWithBaseURI(baseURI string, subscriptionID string) ConnectionsClient {
-	return original.NewConnectionsClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
 }
 func PossibleChannelNameValues() []ChannelName {
 	return original.PossibleChannelNameValues()
@@ -202,11 +181,11 @@ func PossibleSkuNameValues() []SkuName {
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(resourceGroupName string, resourceName string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(resourceGroupName, resourceName, subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

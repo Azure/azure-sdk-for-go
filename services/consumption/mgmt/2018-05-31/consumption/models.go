@@ -167,6 +167,99 @@ type ForecastsListResult struct {
 	Value *[]Forecast `json:"value,omitempty"`
 }
 
+// ForecastsListResultIterator provides access to a complete listing of Forecast values.
+type ForecastsListResultIterator struct {
+	i    int
+	page ForecastsListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ForecastsListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ForecastsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ForecastsListResultIterator) Response() ForecastsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ForecastsListResultIterator) Value() Forecast {
+	if !iter.page.NotDone() {
+		return Forecast{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (flr ForecastsListResult) IsEmpty() bool {
+	return flr.Value == nil || len(*flr.Value) == 0
+}
+
+// forecastsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (flr ForecastsListResult) forecastsListResultPreparer() (*http.Request, error) {
+	if flr.Null == nil || len(to.String(flr.Null)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(flr.Null)))
+}
+
+// ForecastsListResultPage contains a page of Forecast values.
+type ForecastsListResultPage struct {
+	fn  func(ForecastsListResult) (ForecastsListResult, error)
+	flr ForecastsListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ForecastsListResultPage) Next() error {
+	next, err := page.fn(page.flr)
+	if err != nil {
+		return err
+	}
+	page.flr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ForecastsListResultPage) NotDone() bool {
+	return !page.flr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ForecastsListResultPage) Response() ForecastsListResult {
+	return page.flr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ForecastsListResultPage) Values() []Forecast {
+	if page.flr.IsEmpty() {
+		return nil
+	}
+	return *page.flr.Value
+}
+
 // Operation a Consumption REST API operation.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}.

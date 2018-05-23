@@ -63,13 +63,13 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 type JSONWebKeyCurveName string
 
 const (
-	// P256 ...
+	// P256 The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
 	P256 JSONWebKeyCurveName = "P-256"
-	// P384 ...
+	// P384 The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
 	P384 JSONWebKeyCurveName = "P-384"
-	// P521 ...
+	// P521 The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
 	P521 JSONWebKeyCurveName = "P-521"
-	// SECP256K1 ...
+	// SECP256K1 The SECG SECP256K1 elliptic curve.
 	SECP256K1 JSONWebKeyCurveName = "SECP256K1"
 )
 
@@ -1529,7 +1529,7 @@ func (kb KeyBundle) MarshalJSON() ([]byte, error) {
 type KeyCreateParameters struct {
 	// Kty - The type of key to create. For valid values, see JsonWebKeyType. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
 	Kty JSONWebKeyType `json:"kty,omitempty"`
-	// KeySize - The key size in bits. For example: 1024, 2048, 3072, or 4096 for RSA.
+	// KeySize - The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize       *int32                 `json:"key_size,omitempty"`
 	KeyOps        *[]JSONWebKeyOperation `json:"key_ops,omitempty"`
 	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
@@ -1746,7 +1746,7 @@ type KeyProperties struct {
 	Exportable *bool `json:"exportable,omitempty"`
 	// KeyType - The key type.
 	KeyType *string `json:"kty,omitempty"`
-	// KeySize - The key size in bits. For example: 1024, 2048, 3072, or 4096 for RSA.
+	// KeySize - The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
 	// ReuseKey - Indicates if the same key pair will be used on certificate renewal.
 	ReuseKey *bool `json:"reuse_key,omitempty"`

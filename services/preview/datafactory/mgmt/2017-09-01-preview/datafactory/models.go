@@ -493,6 +493,8 @@ func PossibleIntegrationRuntimeSsisCatalogPricingTierValues() []IntegrationRunti
 type IntegrationRuntimeState string
 
 const (
+	// AccessDenied ...
+	AccessDenied IntegrationRuntimeState = "AccessDenied"
 	// Initial ...
 	Initial IntegrationRuntimeState = "Initial"
 	// Limited ...
@@ -515,7 +517,7 @@ const (
 
 // PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
 func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
-	return []IntegrationRuntimeState{Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
+	return []IntegrationRuntimeState{AccessDenied, Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
 }
 
 // IntegrationRuntimeType enumerates the values for integration runtime type.
@@ -49603,6 +49605,12 @@ func (irnmd IntegrationRuntimeNodeMonitoringData) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
+// IntegrationRuntimePermissionRequest grant or revoke access to integration runtime request.
+type IntegrationRuntimePermissionRequest struct {
+	// FactoryIdentity - The data factory identity.
+	FactoryIdentity *string `json:"factoryIdentity,omitempty"`
+}
+
 // IntegrationRuntimeReference integration runtime reference type.
 type IntegrationRuntimeReference struct {
 	// Type - Type of integration runtime.
@@ -49909,7 +49917,7 @@ type IntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -51364,9 +51372,9 @@ type LinkedIntegrationRuntime struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 }
 
-// LinkedIntegrationRuntimeKey the base definition of a secret type.
+// LinkedIntegrationRuntimeKey the key authorization type.
 type LinkedIntegrationRuntimeKey struct {
-	// Key - Type of the secret.
+	// Key - The key used for authorization.
 	Key *SecureString `json:"key,omitempty"`
 	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
 	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
@@ -51405,14 +51413,14 @@ func (lirk LinkedIntegrationRuntimeKey) AsBasicLinkedIntegrationRuntimePropertie
 	return &lirk, true
 }
 
-// BasicLinkedIntegrationRuntimeProperties the base definition of a secret type.
+// BasicLinkedIntegrationRuntimeProperties the base definition of a linked integration runtime properties.
 type BasicLinkedIntegrationRuntimeProperties interface {
 	AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool)
 	AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool)
 	AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool)
 }
 
-// LinkedIntegrationRuntimeProperties the base definition of a secret type.
+// LinkedIntegrationRuntimeProperties the base definition of a linked integration runtime properties.
 type LinkedIntegrationRuntimeProperties struct {
 	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
 	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
@@ -51489,9 +51497,9 @@ func (lirp LinkedIntegrationRuntimeProperties) AsBasicLinkedIntegrationRuntimePr
 	return &lirp, true
 }
 
-// LinkedIntegrationRuntimeRbac the base definition of a secret type.
+// LinkedIntegrationRuntimeRbac the role based access control (RBAC) authorization type.
 type LinkedIntegrationRuntimeRbac struct {
-	// ResourceID - The resource ID of the integration runtime to be shared.
+	// ResourceID - The resource identifier of the integration runtime to be shared.
 	ResourceID *string `json:"resourceId,omitempty"`
 	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
 	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
@@ -51528,34 +51536,6 @@ func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeProperties() 
 // AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
 func (lirr LinkedIntegrationRuntimeRbac) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
 	return &lirr, true
-}
-
-// LinkedIntegrationRuntimeTypeProperties the base definition of a secret type.
-type LinkedIntegrationRuntimeTypeProperties struct {
-	LinkedInfo BasicLinkedIntegrationRuntimeProperties `json:"linkedInfo,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for LinkedIntegrationRuntimeTypeProperties struct.
-func (lirtp *LinkedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "linkedInfo":
-			if v != nil {
-				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*v)
-				if err != nil {
-					return err
-				}
-				lirtp.LinkedInfo = linkedInfo
-			}
-		}
-	}
-
-	return nil
 }
 
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be
@@ -54065,7 +54045,7 @@ func (ms MagentoSource) AsBasicCopySource() (BasicCopySource, bool) {
 // ManagedIntegrationRuntime managed integration runtime, including managed elastic and managed dedicated
 // integration runtimes.
 type ManagedIntegrationRuntime struct {
-	// State - Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - Integration runtime state, only valid for managed dedicated integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
@@ -54228,7 +54208,7 @@ type ManagedIntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -68205,6 +68185,10 @@ type QuickBooksLinkedServiceTypeProperties struct {
 	Endpoint interface{} `json:"endpoint,omitempty"`
 	// CompanyID - The company ID of the QuickBooks company to authorize.
 	CompanyID interface{} `json:"companyId,omitempty"`
+	// ConsumerKey - The consumer key for OAuth 1.0 authentication.
+	ConsumerKey interface{} `json:"consumerKey,omitempty"`
+	// ConsumerSecret - The consumer secret for OAuth 1.0 authentication.
+	ConsumerSecret BasicSecretBase `json:"consumerSecret,omitempty"`
 	// AccessToken - The access token for OAuth 1.0 authentication.
 	AccessToken BasicSecretBase `json:"accessToken,omitempty"`
 	// AccessTokenSecret - The access token secret for OAuth 1.0 authentication.
@@ -68241,6 +68225,23 @@ func (qblstp *QuickBooksLinkedServiceTypeProperties) UnmarshalJSON(body []byte) 
 					return err
 				}
 				qblstp.CompanyID = companyID
+			}
+		case "consumerKey":
+			if v != nil {
+				var consumerKey interface{}
+				err = json.Unmarshal(*v, &consumerKey)
+				if err != nil {
+					return err
+				}
+				qblstp.ConsumerKey = consumerKey
+			}
+		case "consumerSecret":
+			if v != nil {
+				consumerSecret, err := unmarshalBasicSecretBase(*v)
+				if err != nil {
+					return err
+				}
+				qblstp.ConsumerSecret = consumerSecret
 			}
 		case "accessToken":
 			if v != nil {
@@ -77610,8 +77611,8 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 
 // SelfHostedIntegrationRuntime self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
-	// LinkedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
-	*LinkedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// SelfHostedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
+	*SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -77624,8 +77625,8 @@ type SelfHostedIntegrationRuntime struct {
 func (shir SelfHostedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	shir.Type = TypeSelfHosted
 	objectMap := make(map[string]interface{})
-	if shir.LinkedIntegrationRuntimeTypeProperties != nil {
-		objectMap["typeProperties"] = shir.LinkedIntegrationRuntimeTypeProperties
+	if shir.SelfHostedIntegrationRuntimeTypeProperties != nil {
+		objectMap["typeProperties"] = shir.SelfHostedIntegrationRuntimeTypeProperties
 	}
 	if shir.Description != nil {
 		objectMap["description"] = shir.Description
@@ -77670,12 +77671,12 @@ func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "typeProperties":
 			if v != nil {
-				var linkedIntegrationRuntimeTypeProperties LinkedIntegrationRuntimeTypeProperties
-				err = json.Unmarshal(*v, &linkedIntegrationRuntimeTypeProperties)
+				var selfHostedIntegrationRuntimeTypeProperties SelfHostedIntegrationRuntimeTypeProperties
+				err = json.Unmarshal(*v, &selfHostedIntegrationRuntimeTypeProperties)
 				if err != nil {
 					return err
 				}
-				shir.LinkedIntegrationRuntimeTypeProperties = &linkedIntegrationRuntimeTypeProperties
+				shir.SelfHostedIntegrationRuntimeTypeProperties = &selfHostedIntegrationRuntimeTypeProperties
 			}
 		default:
 			if v != nil {
@@ -77822,7 +77823,7 @@ type SelfHostedIntegrationRuntimeStatus struct {
 	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline'
+	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// Type - Possible values include: 'TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus', 'TypeBasicIntegrationRuntimeStatusTypeSelfHosted', 'TypeBasicIntegrationRuntimeStatusTypeManaged'
 	Type TypeBasicIntegrationRuntimeStatus `json:"type,omitempty"`
@@ -77961,6 +77962,10 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	VersionStatus *string `json:"versionStatus,omitempty"`
 	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
 	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
+	// PushedVersion - The version that the integration runtime is going to update to.
+	PushedVersion *string `json:"pushedVersion,omitempty"`
+	// LatestVersion - The latest version on download center.
+	LatestVersion *string `json:"latestVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
@@ -78005,7 +78010,41 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	if shirstp.Links != nil {
 		objectMap["links"] = shirstp.Links
 	}
+	if shirstp.PushedVersion != nil {
+		objectMap["pushedVersion"] = shirstp.PushedVersion
+	}
+	if shirstp.LatestVersion != nil {
+		objectMap["latestVersion"] = shirstp.LatestVersion
+	}
 	return json.Marshal(objectMap)
+}
+
+// SelfHostedIntegrationRuntimeTypeProperties the self-hosted integration runtime properties.
+type SelfHostedIntegrationRuntimeTypeProperties struct {
+	LinkedInfo BasicLinkedIntegrationRuntimeProperties `json:"linkedInfo,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeTypeProperties struct.
+func (shirtp *SelfHostedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "linkedInfo":
+			if v != nil {
+				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*v)
+				if err != nil {
+					return err
+				}
+				shirtp.LinkedInfo = linkedInfo
+			}
+		}
+	}
+
+	return nil
 }
 
 // ServiceNowLinkedService serviceNow server linked service.
@@ -78497,7 +78536,7 @@ func (snls *ServiceNowLinkedService) UnmarshalJSON(body []byte) error {
 
 // ServiceNowLinkedServiceTypeProperties serviceNow server linked service properties.
 type ServiceNowLinkedServiceTypeProperties struct {
-	// Endpoint - The endpoint of the ServiceNow server. (i.e. ServiceNowData.com)
+	// Endpoint - The endpoint of the ServiceNow server. (i.e. <instance>.service-now.com)
 	Endpoint interface{} `json:"endpoint,omitempty"`
 	// AuthenticationType - The authentication type to use. Possible values include: 'ServiceNowAuthenticationTypeBasic', 'ServiceNowAuthenticationTypeOAuth2'
 	AuthenticationType ServiceNowAuthenticationType `json:"authenticationType,omitempty"`

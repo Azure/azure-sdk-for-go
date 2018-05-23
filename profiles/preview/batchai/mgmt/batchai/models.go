@@ -242,6 +242,7 @@ type WorkspaceListResultPage = original.WorkspaceListResultPage
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesCreateFuture = original.WorkspacesCreateFuture
 type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
+type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type OperationsClient = original.OperationsClient
 type UsagesClient = original.UsagesClient
 type WorkspacesClient = original.WorkspacesClient

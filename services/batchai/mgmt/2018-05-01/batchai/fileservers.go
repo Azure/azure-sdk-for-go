@@ -62,20 +62,19 @@ func (client FileServersClient) Create(ctx context.Context, resourceGroupName st
 				{Target: "fileServerName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "fileServerName", Name: validation.Pattern, Rule: `^[-\w_]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.FileServerBaseProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.VMSize", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "parameters.FileServerBaseProperties.SSHConfiguration", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.SSHConfiguration.UserAccountSettings", Name: validation.Null, Rule: true,
-								Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.SSHConfiguration.UserAccountSettings.AdminUserName", Name: validation.Null, Rule: true, Chain: nil}}},
-							}},
-						{Target: "parameters.FileServerBaseProperties.DataDisks", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.DataDisks.DiskSizeInGB", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.FileServerBaseProperties.DataDisks.DiskCount", Name: validation.Null, Rule: true, Chain: nil},
-							}},
-						{Target: "parameters.FileServerBaseProperties.Subnet", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.Subnet.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.FileServerBaseProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.VMSize", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.FileServerBaseProperties.SSHConfiguration", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.SSHConfiguration.UserAccountSettings", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.SSHConfiguration.UserAccountSettings.AdminUserName", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+					{Target: "parameters.FileServerBaseProperties.DataDisks", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.DataDisks.DiskSizeInGB", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FileServerBaseProperties.DataDisks.DiskCount", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					{Target: "parameters.FileServerBaseProperties.Subnet", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.FileServerBaseProperties.Subnet.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+				}}}}}); err != nil {
 		return result, validation.NewError("batchai.FileServersClient", "Create", err.Error())
 	}
 

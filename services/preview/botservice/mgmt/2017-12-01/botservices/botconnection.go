@@ -31,29 +31,31 @@ type BotConnectionClient struct {
 }
 
 // NewBotConnectionClient creates an instance of the BotConnectionClient client.
-func NewBotConnectionClient(resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
-	return NewBotConnectionClientWithBaseURI(DefaultBaseURI, resourceGroupName, resourceName, subscriptionID)
+func NewBotConnectionClient(subscriptionID string) BotConnectionClient {
+	return NewBotConnectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewBotConnectionClientWithBaseURI creates an instance of the BotConnectionClient client.
-func NewBotConnectionClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
-	return BotConnectionClient{NewWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)}
+func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionClient {
+	return BotConnectionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create register a new Auth Connection for a Bot Service
 // Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
 // parameters - the parameters to provide for creating the Connection Setting.
-func (client BotConnectionClient) Create(ctx context.Context, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) Create(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: connectionName,
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
@@ -61,7 +63,7 @@ func (client BotConnectionClient) Create(ctx context.Context, connectionName str
 		return result, validation.NewError("botservice.BotConnectionClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, connectionName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, resourceName, connectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Create", nil, "Failure preparing request")
 		return
@@ -83,11 +85,11 @@ func (client BotConnectionClient) Create(ctx context.Context, connectionName str
 }
 
 // CreatePreparer prepares the Create request.
-func (client BotConnectionClient) CreatePreparer(ctx context.Context, connectionName string, parameters ConnectionSetting) (*http.Request, error) {
+func (client BotConnectionClient) CreatePreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -128,17 +130,19 @@ func (client BotConnectionClient) CreateResponder(resp *http.Response) (result C
 
 // Delete deletes a Connection Setting registration for a Bot Service
 // Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
-func (client BotConnectionClient) Delete(ctx context.Context, connectionName string) (result autorest.Response, err error) {
+func (client BotConnectionClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: connectionName,
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
@@ -146,7 +150,7 @@ func (client BotConnectionClient) Delete(ctx context.Context, connectionName str
 		return result, validation.NewError("botservice.BotConnectionClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, connectionName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, connectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Delete", nil, "Failure preparing request")
 		return
@@ -168,11 +172,11 @@ func (client BotConnectionClient) Delete(ctx context.Context, connectionName str
 }
 
 // DeletePreparer prepares the Delete request.
-func (client BotConnectionClient) DeletePreparer(ctx context.Context, connectionName string) (*http.Request, error) {
+func (client BotConnectionClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -210,17 +214,19 @@ func (client BotConnectionClient) DeleteResponder(resp *http.Response) (result a
 
 // Get get a Connection Setting registration for a Bot Service
 // Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
-func (client BotConnectionClient) Get(ctx context.Context, connectionName string) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) Get(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: connectionName,
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
@@ -228,7 +234,7 @@ func (client BotConnectionClient) Get(ctx context.Context, connectionName string
 		return result, validation.NewError("botservice.BotConnectionClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, connectionName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, connectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Get", nil, "Failure preparing request")
 		return
@@ -250,11 +256,11 @@ func (client BotConnectionClient) Get(ctx context.Context, connectionName string
 }
 
 // GetPreparer prepares the Get request.
-func (client BotConnectionClient) GetPreparer(ctx context.Context, connectionName string) (*http.Request, error) {
+func (client BotConnectionClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -292,21 +298,24 @@ func (client BotConnectionClient) GetResponder(resp *http.Response) (result Conn
 }
 
 // ListByBotService returns all the Connection Settings registered to a particular BotService resource
-func (client BotConnectionClient) ListByBotService(ctx context.Context) (result ConnectionSettingResponseListPage, err error) {
+// Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
+func (client BotConnectionClient) ListByBotService(ctx context.Context, resourceGroupName string, resourceName string) (result ConnectionSettingResponseListPage, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("botservice.BotConnectionClient", "ListByBotService", err.Error())
 	}
 
 	result.fn = client.listByBotServiceNextResults
-	req, err := client.ListByBotServicePreparer(ctx)
+	req, err := client.ListByBotServicePreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListByBotService", nil, "Failure preparing request")
 		return
@@ -328,10 +337,10 @@ func (client BotConnectionClient) ListByBotService(ctx context.Context) (result 
 }
 
 // ListByBotServicePreparer prepares the ListByBotService request.
-func (client BotConnectionClient) ListByBotServicePreparer(ctx context.Context) (*http.Request, error) {
+func (client BotConnectionClient) ListByBotServicePreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -390,22 +399,24 @@ func (client BotConnectionClient) listByBotServiceNextResults(lastResults Connec
 }
 
 // ListByBotServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BotConnectionClient) ListByBotServiceComplete(ctx context.Context) (result ConnectionSettingResponseListIterator, err error) {
-	result.page, err = client.ListByBotService(ctx)
+func (client BotConnectionClient) ListByBotServiceComplete(ctx context.Context, resourceGroupName string, resourceName string) (result ConnectionSettingResponseListIterator, err error) {
+	result.page, err = client.ListByBotService(ctx, resourceGroupName, resourceName)
 	return
 }
 
 // ListServiceProviders lists the available Service Providers for creating Connection Settings
-func (client BotConnectionClient) ListServiceProviders(ctx context.Context) (result ServiceProviderResponseList, err error) {
+// Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+func (client BotConnectionClient) ListServiceProviders(ctx context.Context, resourceGroupName string) (result ServiceProviderResponseList, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("botservice.BotConnectionClient", "ListServiceProviders", err.Error())
 	}
 
-	req, err := client.ListServiceProvidersPreparer(ctx)
+	req, err := client.ListServiceProvidersPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListServiceProviders", nil, "Failure preparing request")
 		return
@@ -427,9 +438,9 @@ func (client BotConnectionClient) ListServiceProviders(ctx context.Context) (res
 }
 
 // ListServiceProvidersPreparer prepares the ListServiceProviders request.
-func (client BotConnectionClient) ListServiceProvidersPreparer(ctx context.Context) (*http.Request, error) {
+func (client BotConnectionClient) ListServiceProvidersPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -468,17 +479,19 @@ func (client BotConnectionClient) ListServiceProvidersResponder(resp *http.Respo
 
 // ListWithSecrets get a Connection Setting registration for a Bot Service
 // Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
-func (client BotConnectionClient) ListWithSecrets(ctx context.Context, connectionName string) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (result ConnectionSetting, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: connectionName,
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
@@ -486,7 +499,7 @@ func (client BotConnectionClient) ListWithSecrets(ctx context.Context, connectio
 		return result, validation.NewError("botservice.BotConnectionClient", "ListWithSecrets", err.Error())
 	}
 
-	req, err := client.ListWithSecretsPreparer(ctx, connectionName)
+	req, err := client.ListWithSecretsPreparer(ctx, resourceGroupName, resourceName, connectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "ListWithSecrets", nil, "Failure preparing request")
 		return
@@ -508,11 +521,11 @@ func (client BotConnectionClient) ListWithSecrets(ctx context.Context, connectio
 }
 
 // ListWithSecretsPreparer prepares the ListWithSecrets request.
-func (client BotConnectionClient) ListWithSecretsPreparer(ctx context.Context, connectionName string) (*http.Request, error) {
+func (client BotConnectionClient) ListWithSecretsPreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -551,18 +564,20 @@ func (client BotConnectionClient) ListWithSecretsResponder(resp *http.Response) 
 
 // Update updates a Connection Setting registration for a Bot Service
 // Parameters:
+// resourceGroupName - the name of the Bot resource group in the user subscription.
+// resourceName - the name of the Bot resource.
 // connectionName - the name of the Bot Service Connection Setting resource
 // parameters - the parameters to provide for updating the Connection Setting.
-func (client BotConnectionClient) Update(ctx context.Context, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
+func (client BotConnectionClient) Update(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (result ConnectionSetting, err error) {
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.ResourceGroupName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
-		{TargetValue: client.ResourceName,
-			Constraints: []validation.Constraint{{Target: "client.ResourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
-				{Target: "client.ResourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 2, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9][a-zA-Z0-9_.-]*$`, Chain: nil}}},
 		{TargetValue: connectionName,
 			Constraints: []validation.Constraint{{Target: "connectionName", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "connectionName", Name: validation.MinLength, Rule: 2, Chain: nil},
@@ -570,7 +585,7 @@ func (client BotConnectionClient) Update(ctx context.Context, connectionName str
 		return result, validation.NewError("botservice.BotConnectionClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, connectionName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, resourceName, connectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.BotConnectionClient", "Update", nil, "Failure preparing request")
 		return
@@ -592,11 +607,11 @@ func (client BotConnectionClient) Update(ctx context.Context, connectionName str
 }
 
 // UpdatePreparer prepares the Update request.
-func (client BotConnectionClient) UpdatePreparer(ctx context.Context, connectionName string, parameters ConnectionSetting) (*http.Request, error) {
+func (client BotConnectionClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, parameters ConnectionSetting) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"connectionName":    autorest.Encode("path", connectionName),
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
-		"resourceName":      autorest.Encode("path", client.ResourceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

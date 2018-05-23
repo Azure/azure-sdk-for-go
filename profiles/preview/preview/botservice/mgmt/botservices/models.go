@@ -142,29 +142,29 @@ type WebChatChannelProperties = original.WebChatChannelProperties
 type WebChatSite = original.WebChatSite
 type OperationsClient = original.OperationsClient
 
-func NewBotConnectionClient(resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
-	return original.NewBotConnectionClient(resourceGroupName, resourceName, subscriptionID)
+func NewBotConnectionClient(subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClient(subscriptionID)
 }
-func NewBotConnectionClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BotConnectionClient {
-	return original.NewBotConnectionClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
+func NewBotConnectionClientWithBaseURI(baseURI string, subscriptionID string) BotConnectionClient {
+	return original.NewBotConnectionClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewBotsClient(resourceGroupName string, resourceName string, subscriptionID string) BotsClient {
-	return original.NewBotsClient(resourceGroupName, resourceName, subscriptionID)
+func NewBotsClient(subscriptionID string) BotsClient {
+	return original.NewBotsClient(subscriptionID)
 }
-func NewBotsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BotsClient {
-	return original.NewBotsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
+func NewBotsClientWithBaseURI(baseURI string, subscriptionID string) BotsClient {
+	return original.NewBotsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewChannelsClient(resourceGroupName string, resourceName string, subscriptionID string) ChannelsClient {
-	return original.NewChannelsClient(resourceGroupName, resourceName, subscriptionID)
+func NewChannelsClient(subscriptionID string) ChannelsClient {
+	return original.NewChannelsClient(subscriptionID)
 }
-func NewChannelsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) ChannelsClient {
-	return original.NewChannelsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
+func NewChannelsClientWithBaseURI(baseURI string, subscriptionID string) ChannelsClient {
+	return original.NewChannelsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
-	return original.New(resourceGroupName, resourceName, subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleChannelNameValues() []ChannelName {
 	return original.PossibleChannelNameValues()
@@ -181,11 +181,11 @@ func PossibleSkuNameValues() []SkuName {
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
-func NewOperationsClient(resourceGroupName string, resourceName string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(resourceGroupName, resourceName, subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, resourceGroupName, resourceName, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

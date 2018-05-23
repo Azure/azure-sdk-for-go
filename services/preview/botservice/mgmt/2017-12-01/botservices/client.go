@@ -32,24 +32,20 @@ const (
 // BaseClient is the base client for Botservice.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	ResourceGroupName string
-	ResourceName      string
-	SubscriptionID    string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, resourceGroupName, resourceName, subscriptionID)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, resourceGroupName string, resourceName string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		ResourceGroupName: resourceGroupName,
-		ResourceName:      resourceName,
-		SubscriptionID:    subscriptionID,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

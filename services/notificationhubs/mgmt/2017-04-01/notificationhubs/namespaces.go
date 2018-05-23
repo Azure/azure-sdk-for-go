@@ -820,7 +820,7 @@ func (client NamespacesClient) ListAuthorizationRulesComplete(ctx context.Contex
 // resourceGroupName - the name of the resource group.
 // namespaceName - the namespace name.
 // authorizationRuleName - the connection string of the namespace for the specified authorizationRule.
-func (client NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result ResourceListKeys, err error) {
+func (client NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result SharedAccessAuthorizationRuleListResult, err error) {
 	req, err := client.ListKeysPreparer(ctx, resourceGroupName, namespaceName, authorizationRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.NamespacesClient", "ListKeys", nil, "Failure preparing request")
@@ -873,7 +873,7 @@ func (client NamespacesClient) ListKeysSender(req *http.Request) (*http.Response
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
 // closes the http.Response Body.
-func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result ResourceListKeys, err error) {
+func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result SharedAccessAuthorizationRuleListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -45,8 +45,7 @@ func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) Foreca
 // filter - may be used to filter forecasts by properties/usageDate (Utc time), properties/chargeType or
 // properties/grain. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support
 // 'ne', 'or', or 'not'.
-func (client ForecastsClient) List(ctx context.Context, filter string) (result ForecastsListResultPage, err error) {
-	result.fn = client.listNextResults
+func (client ForecastsClient) List(ctx context.Context, filter string) (result ForecastsListResult, err error) {
 	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", nil, "Failure preparing request")
@@ -55,12 +54,12 @@ func (client ForecastsClient) List(ctx context.Context, filter string) (result F
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.flr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.flr, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "List", resp, "Failure responding to request")
 	}
@@ -107,32 +106,5 @@ func (client ForecastsClient) ListResponder(resp *http.Response) (result Forecas
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client ForecastsClient) listNextResults(lastResults ForecastsListResult) (result ForecastsListResult, err error) {
-	req, err := lastResults.forecastsListResultPreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "consumption.ForecastsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "consumption.ForecastsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "consumption.ForecastsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ForecastsClient) ListComplete(ctx context.Context, filter string) (result ForecastsListResultIterator, err error) {
-	result.page, err = client.List(ctx, filter)
 	return
 }

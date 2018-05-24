@@ -4357,7 +4357,7 @@ type Source struct {
 	AuthorizedResources *[]string `json:"authorizedResources,omitempty"`
 	// DataSourceID - The resource uri over which log search query is to be run.
 	DataSourceID *string `json:"dataSourceId,omitempty"`
-	// QueryType - Set value to ResultCount if query should be returning search result count. Possible values include: 'ResultCount'
+	// QueryType - Set value to 'ResultCount'. Possible values include: 'ResultCount'
 	QueryType QueryType `json:"queryType,omitempty"`
 }
 

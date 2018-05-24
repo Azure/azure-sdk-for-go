@@ -626,7 +626,7 @@ func (client FactoriesClient) ListByResourceGroupComplete(ctx context.Context, r
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
-func (client FactoriesClient) ListSharedFactory(ctx context.Context, resourceGroupName string, factoryName string) (result FactoryListResponse, err error) {
+func (client FactoriesClient) ListSharedFactory(ctx context.Context, resourceGroupName string, factoryName string) (result FactoryListResponsePage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -639,6 +639,7 @@ func (client FactoriesClient) ListSharedFactory(ctx context.Context, resourceGro
 		return result, validation.NewError("datafactory.FactoriesClient", "ListSharedFactory", err.Error())
 	}
 
+	result.fn = client.listSharedFactoryNextResults
 	req, err := client.ListSharedFactoryPreparer(ctx, resourceGroupName, factoryName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactory", nil, "Failure preparing request")
@@ -647,12 +648,12 @@ func (client FactoriesClient) ListSharedFactory(ctx context.Context, resourceGro
 
 	resp, err := client.ListSharedFactorySender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.flr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactory", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListSharedFactoryResponder(resp)
+	result.flr, err = client.ListSharedFactoryResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactory", resp, "Failure responding to request")
 	}
@@ -701,12 +702,39 @@ func (client FactoriesClient) ListSharedFactoryResponder(resp *http.Response) (r
 	return
 }
 
+// listSharedFactoryNextResults retrieves the next set of results, if any.
+func (client FactoriesClient) listSharedFactoryNextResults(lastResults FactoryListResponse) (result FactoryListResponse, err error) {
+	req, err := lastResults.factoryListResponsePreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoryNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSharedFactorySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoryNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSharedFactoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoryNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSharedFactoryComplete enumerates all values, automatically crossing page boundaries as required.
+func (client FactoriesClient) ListSharedFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result FactoryListResponseIterator, err error) {
+	result.page, err = client.ListSharedFactory(ctx, resourceGroupName, factoryName)
+	return
+}
+
 // ListSharedIntegrationRuntime list integration runtimes which the given data factory has access.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // dataFactoryResourceID - the factory resource identifier.
-func (client FactoriesClient) ListSharedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (result IntegrationRuntimeListResponse, err error) {
+func (client FactoriesClient) ListSharedIntegrationRuntime(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (result IntegrationRuntimeListResponsePage, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -719,6 +747,7 @@ func (client FactoriesClient) ListSharedIntegrationRuntime(ctx context.Context, 
 		return result, validation.NewError("datafactory.FactoriesClient", "ListSharedIntegrationRuntime", err.Error())
 	}
 
+	result.fn = client.listSharedIntegrationRuntimeNextResults
 	req, err := client.ListSharedIntegrationRuntimePreparer(ctx, resourceGroupName, factoryName, dataFactoryResourceID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntime", nil, "Failure preparing request")
@@ -727,12 +756,12 @@ func (client FactoriesClient) ListSharedIntegrationRuntime(ctx context.Context, 
 
 	resp, err := client.ListSharedIntegrationRuntimeSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.irlr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntime", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListSharedIntegrationRuntimeResponder(resp)
+	result.irlr, err = client.ListSharedIntegrationRuntimeResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntime", resp, "Failure responding to request")
 	}
@@ -781,6 +810,33 @@ func (client FactoriesClient) ListSharedIntegrationRuntimeResponder(resp *http.R
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSharedIntegrationRuntimeNextResults retrieves the next set of results, if any.
+func (client FactoriesClient) listSharedIntegrationRuntimeNextResults(lastResults IntegrationRuntimeListResponse) (result IntegrationRuntimeListResponse, err error) {
+	req, err := lastResults.integrationRuntimeListResponsePreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimeNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSharedIntegrationRuntimeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimeNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSharedIntegrationRuntimeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimeNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSharedIntegrationRuntimeComplete enumerates all values, automatically crossing page boundaries as required.
+func (client FactoriesClient) ListSharedIntegrationRuntimeComplete(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (result IntegrationRuntimeListResponseIterator, err error) {
+	result.page, err = client.ListSharedIntegrationRuntime(ctx, resourceGroupName, factoryName, dataFactoryResourceID)
 	return
 }
 

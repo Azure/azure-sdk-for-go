@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
 
@@ -74,6 +75,21 @@ const (
 // PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
 func PossibleOperationOriginValues() []OperationOrigin {
 	return []OperationOrigin{NotSpecified, System, User}
+}
+
+// ServerSecurityAlertPolicyState enumerates the values for server security alert policy state.
+type ServerSecurityAlertPolicyState string
+
+const (
+	// ServerSecurityAlertPolicyStateDisabled ...
+	ServerSecurityAlertPolicyStateDisabled ServerSecurityAlertPolicyState = "Disabled"
+	// ServerSecurityAlertPolicyStateEnabled ...
+	ServerSecurityAlertPolicyStateEnabled ServerSecurityAlertPolicyState = "Enabled"
+)
+
+// PossibleServerSecurityAlertPolicyStateValues returns an array of possible values for the ServerSecurityAlertPolicyState const type.
+func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
+	return []ServerSecurityAlertPolicyState{ServerSecurityAlertPolicyStateDisabled, ServerSecurityAlertPolicyStateEnabled}
 }
 
 // ServerState enumerates the values for server state.
@@ -138,6 +154,27 @@ const (
 // PossibleSslEnforcementEnumValues returns an array of possible values for the SslEnforcementEnum const type.
 func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 	return []SslEnforcementEnum{SslEnforcementEnumDisabled, SslEnforcementEnumEnabled}
+}
+
+// VirtualNetworkRuleState enumerates the values for virtual network rule state.
+type VirtualNetworkRuleState string
+
+const (
+	// Deleting ...
+	Deleting VirtualNetworkRuleState = "Deleting"
+	// Initializing ...
+	Initializing VirtualNetworkRuleState = "Initializing"
+	// InProgress ...
+	InProgress VirtualNetworkRuleState = "InProgress"
+	// Ready ...
+	Ready VirtualNetworkRuleState = "Ready"
+	// Unknown ...
+	Unknown VirtualNetworkRuleState = "Unknown"
+)
+
+// PossibleVirtualNetworkRuleStateValues returns an array of possible values for the VirtualNetworkRuleState const type.
+func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
+	return []VirtualNetworkRuleState{Deleting, Initializing, InProgress, Ready, Unknown}
 }
 
 // Configuration represents a Configuration.
@@ -897,6 +934,24 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// SecurityAlertPolicyProperties properties of a security alert policy.
+type SecurityAlertPolicyProperties struct {
+	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'ServerSecurityAlertPolicyStateEnabled', 'ServerSecurityAlertPolicyStateDisabled'
+	State ServerSecurityAlertPolicyState `json:"state,omitempty"`
+	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
+	// EmailAddresses - Specifies an array of e-mail addresses to which the alert is sent.
+	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
+	// EmailAccountAdmins - Specifies that the alert is sent to the account administrators.
+	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
+	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
+	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	// StorageAccountAccessKey - Specifies the identifier key of the Threat Detection audit storage account.
+	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	// RetentionDays - Specifies the number of days to keep in the Threat Detection audit logs.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
 // Server represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
@@ -1523,6 +1578,137 @@ func (future ServersDeleteFuture) Result(client ServersClient) (ar autorest.Resp
 	return
 }
 
+// ServerSecurityAlertPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ServerSecurityAlertPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future ServerSecurityAlertPoliciesCreateOrUpdateFuture) Result(client ServerSecurityAlertPoliciesClient) (ssap ServerSecurityAlertPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ssap, azure.NewAsyncOpIncompleteError("postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ssap, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ssap, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// ServerSecurityAlertPolicy a server security alert policy.
+type ServerSecurityAlertPolicy struct {
+	autorest.Response `json:"-"`
+	// SecurityAlertPolicyProperties - Resource properties.
+	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerSecurityAlertPolicy.
+func (ssap ServerSecurityAlertPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ssap.SecurityAlertPolicyProperties != nil {
+		objectMap["properties"] = ssap.SecurityAlertPolicyProperties
+	}
+	if ssap.ID != nil {
+		objectMap["id"] = ssap.ID
+	}
+	if ssap.Name != nil {
+		objectMap["name"] = ssap.Name
+	}
+	if ssap.Type != nil {
+		objectMap["type"] = ssap.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerSecurityAlertPolicy struct.
+func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var securityAlertPolicyProperties SecurityAlertPolicyProperties
+				err = json.Unmarshal(*v, &securityAlertPolicyProperties)
+				if err != nil {
+					return err
+				}
+				ssap.SecurityAlertPolicyProperties = &securityAlertPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ssap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ssap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ssap.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServersUpdateFuture struct {
 	azure.Future
@@ -1707,4 +1893,296 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = tr.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// VirtualNetworkRule a virtual network rule.
+type VirtualNetworkRule struct {
+	autorest.Response `json:"-"`
+	// VirtualNetworkRuleProperties - Resource properties.
+	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
+	// ID - Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualNetworkRule.
+func (vnr VirtualNetworkRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vnr.VirtualNetworkRuleProperties != nil {
+		objectMap["properties"] = vnr.VirtualNetworkRuleProperties
+	}
+	if vnr.ID != nil {
+		objectMap["id"] = vnr.ID
+	}
+	if vnr.Name != nil {
+		objectMap["name"] = vnr.Name
+	}
+	if vnr.Type != nil {
+		objectMap["type"] = vnr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualNetworkRule struct.
+func (vnr *VirtualNetworkRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var virtualNetworkRuleProperties VirtualNetworkRuleProperties
+				err = json.Unmarshal(*v, &virtualNetworkRuleProperties)
+				if err != nil {
+					return err
+				}
+				vnr.VirtualNetworkRuleProperties = &virtualNetworkRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vnr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vnr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vnr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// VirtualNetworkRuleListResult a list of virtual network rules.
+type VirtualNetworkRuleListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of results.
+	Value *[]VirtualNetworkRule `json:"value,omitempty"`
+	// NextLink - Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// VirtualNetworkRuleListResultIterator provides access to a complete listing of VirtualNetworkRule values.
+type VirtualNetworkRuleListResultIterator struct {
+	i    int
+	page VirtualNetworkRuleListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *VirtualNetworkRuleListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter VirtualNetworkRuleListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter VirtualNetworkRuleListResultIterator) Response() VirtualNetworkRuleListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter VirtualNetworkRuleListResultIterator) Value() VirtualNetworkRule {
+	if !iter.page.NotDone() {
+		return VirtualNetworkRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
+	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
+}
+
+// virtualNetworkRuleListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (vnrlr VirtualNetworkRuleListResult) virtualNetworkRuleListResultPreparer() (*http.Request, error) {
+	if vnrlr.NextLink == nil || len(to.String(vnrlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(vnrlr.NextLink)))
+}
+
+// VirtualNetworkRuleListResultPage contains a page of VirtualNetworkRule values.
+type VirtualNetworkRuleListResultPage struct {
+	fn    func(VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)
+	vnrlr VirtualNetworkRuleListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *VirtualNetworkRuleListResultPage) Next() error {
+	next, err := page.fn(page.vnrlr)
+	if err != nil {
+		return err
+	}
+	page.vnrlr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page VirtualNetworkRuleListResultPage) NotDone() bool {
+	return !page.vnrlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page VirtualNetworkRuleListResultPage) Response() VirtualNetworkRuleListResult {
+	return page.vnrlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
+	if page.vnrlr.IsEmpty() {
+		return nil
+	}
+	return *page.vnrlr.Value
+}
+
+// VirtualNetworkRuleProperties properties of a virtual network rule.
+type VirtualNetworkRuleProperties struct {
+	// VirtualNetworkSubnetID - The ARM resource id of the virtual network subnet.
+	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
+	// IgnoreMissingVnetServiceEndpoint - Create firewall rule before the virtual network has vnet service endpoint enabled.
+	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
+	// State - Virtual Network Rule State. Possible values include: 'Initializing', 'InProgress', 'Ready', 'Deleting', 'Unknown'
+	State VirtualNetworkRuleState `json:"state,omitempty"`
+}
+
+// VirtualNetworkRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualNetworkRulesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetworkRulesClient) (vnr VirtualNetworkRule, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return vnr, azure.NewAsyncOpIncompleteError("postgresql.VirtualNetworkRulesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		vnr, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	vnr, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualNetworkRulesDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future VirtualNetworkRulesDeleteFuture) Result(client VirtualNetworkRulesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("postgresql.VirtualNetworkRulesDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "postgresql.VirtualNetworkRulesDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }

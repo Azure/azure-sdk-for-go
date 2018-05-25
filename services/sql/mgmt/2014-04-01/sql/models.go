@@ -549,10 +549,10 @@ type Database struct {
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseProperties - The properties representing the resource.
 	*DatabaseProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -570,11 +570,11 @@ func (d Database) MarshalJSON() ([]byte, error) {
 	if d.DatabaseProperties != nil {
 		objectMap["properties"] = d.DatabaseProperties
 	}
-	if d.Tags != nil {
-		objectMap["tags"] = d.Tags
-	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
+	}
+	if d.Tags != nil {
+		objectMap["tags"] = d.Tags
 	}
 	if d.ID != nil {
 		objectMap["id"] = d.ID
@@ -615,15 +615,6 @@ func (d *Database) UnmarshalJSON(body []byte) error {
 				}
 				d.DatabaseProperties = &databaseProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				d.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -632,6 +623,15 @@ func (d *Database) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				d.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -1307,10 +1307,10 @@ type ElasticPool struct {
 	*ElasticPoolProperties `json:"properties,omitempty"`
 	// Kind - Kind of elastic pool.  This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1328,11 +1328,11 @@ func (ep ElasticPool) MarshalJSON() ([]byte, error) {
 	if ep.Kind != nil {
 		objectMap["kind"] = ep.Kind
 	}
-	if ep.Tags != nil {
-		objectMap["tags"] = ep.Tags
-	}
 	if ep.Location != nil {
 		objectMap["location"] = ep.Location
+	}
+	if ep.Tags != nil {
+		objectMap["tags"] = ep.Tags
 	}
 	if ep.ID != nil {
 		objectMap["id"] = ep.ID
@@ -1373,15 +1373,6 @@ func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
 				}
 				ep.Kind = &kind
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ep.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1390,6 +1381,15 @@ func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ep.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ep.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -2921,10 +2921,10 @@ type SloUsageMetric struct {
 
 // TrackedResource ARM tracked top level resource.
 type TrackedResource struct {
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -2936,11 +2936,11 @@ type TrackedResource struct {
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.Tags != nil {
-		objectMap["tags"] = tr.Tags
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
 	}
 	if tr.ID != nil {
 		objectMap["id"] = tr.ID

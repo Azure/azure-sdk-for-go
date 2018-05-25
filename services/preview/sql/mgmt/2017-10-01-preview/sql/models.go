@@ -3092,17 +3092,17 @@ type ServiceObjectiveCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-// Sku an ARM Resource SKU.
+// Sku the resource model definition representing SKU
 type Sku struct {
-	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	// Tier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
 	Tier *string `json:"tier,omitempty"`
-	// Size - Size of the particular SKU
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// Capacity - Capacity of the particular SKU.
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

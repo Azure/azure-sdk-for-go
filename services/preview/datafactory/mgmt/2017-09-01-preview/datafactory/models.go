@@ -49272,8 +49272,6 @@ type BasicIntegrationRuntime interface {
 
 // IntegrationRuntime azure Data Factory nested object which serves as a compute resource for activities.
 type IntegrationRuntime struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
 	Description *string `json:"description,omitempty"`
 	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeSelfHosted', 'TypeManaged'
@@ -49330,9 +49328,6 @@ func (ir IntegrationRuntime) MarshalJSON() ([]byte, error) {
 	}
 	if ir.Type != "" {
 		objectMap["type"] = ir.Type
-	}
-	for k, v := range ir.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -49943,8 +49938,6 @@ type BasicIntegrationRuntimeStatus interface {
 
 // IntegrationRuntimeStatus integration runtime status.
 type IntegrationRuntimeStatus struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
 	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
@@ -50006,9 +49999,6 @@ func (irs IntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	}
 	if irs.Type != "" {
 		objectMap["type"] = irs.Type
-	}
-	for k, v := range irs.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -54079,8 +54069,6 @@ type ManagedIntegrationRuntime struct {
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
 	Description *string `json:"description,omitempty"`
 	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeSelfHosted', 'TypeManaged'
@@ -54102,9 +54090,6 @@ func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	}
 	if mir.Type != "" {
 		objectMap["type"] = mir.Type
-	}
-	for k, v := range mir.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -54155,18 +54140,6 @@ func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mir.ManagedIntegrationRuntimeTypeProperties = &managedIntegrationRuntimeTypeProperties
-			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if mir.AdditionalProperties == nil {
-					mir.AdditionalProperties = make(map[string]interface{})
-				}
-				mir.AdditionalProperties[k] = additionalProperties
 			}
 		case "description":
 			if v != nil {
@@ -54234,8 +54207,6 @@ type ManagedIntegrationRuntimeOperationResult struct {
 type ManagedIntegrationRuntimeStatus struct {
 	// ManagedIntegrationRuntimeStatusTypeProperties - Managed integration runtime status type properties.
 	*ManagedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
 	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
@@ -54259,9 +54230,6 @@ func (mirs ManagedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	}
 	if mirs.Type != "" {
 		objectMap["type"] = mirs.Type
-	}
-	for k, v := range mirs.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -54304,18 +54272,6 @@ func (mirs *ManagedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
 				}
 				mirs.ManagedIntegrationRuntimeStatusTypeProperties = &managedIntegrationRuntimeStatusTypeProperties
 			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if mirs.AdditionalProperties == nil {
-					mirs.AdditionalProperties = make(map[string]interface{})
-				}
-				mirs.AdditionalProperties[k] = additionalProperties
-			}
 		case "dataFactoryName":
 			if v != nil {
 				var dataFactoryName string
@@ -54351,6 +54307,8 @@ func (mirs *ManagedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) error {
 
 // ManagedIntegrationRuntimeStatusTypeProperties managed integration runtime status type properties.
 type ManagedIntegrationRuntimeStatusTypeProperties struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
 	// CreateTime - The time at which the integration runtime was created, in ISO8601 format.
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Nodes - The list of nodes for managed integration runtime.
@@ -54359,6 +54317,27 @@ type ManagedIntegrationRuntimeStatusTypeProperties struct {
 	OtherErrors *[]ManagedIntegrationRuntimeError `json:"otherErrors,omitempty"`
 	// LastOperation - The last operation result that occurred on this integration runtime.
 	LastOperation *ManagedIntegrationRuntimeOperationResult `json:"lastOperation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeStatusTypeProperties.
+func (mirstp ManagedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mirstp.CreateTime != nil {
+		objectMap["createTime"] = mirstp.CreateTime
+	}
+	if mirstp.Nodes != nil {
+		objectMap["nodes"] = mirstp.Nodes
+	}
+	if mirstp.OtherErrors != nil {
+		objectMap["otherErrors"] = mirstp.OtherErrors
+	}
+	if mirstp.LastOperation != nil {
+		objectMap["lastOperation"] = mirstp.LastOperation
+	}
+	for k, v := range mirstp.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedIntegrationRuntimeTypeProperties managed integration runtime type properties.
@@ -77643,8 +77622,6 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 type SelfHostedIntegrationRuntime struct {
 	// SelfHostedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
 	*SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
 	Description *string `json:"description,omitempty"`
 	// Type - Possible values include: 'TypeIntegrationRuntime', 'TypeSelfHosted', 'TypeManaged'
@@ -77663,9 +77640,6 @@ func (shir SelfHostedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	}
 	if shir.Type != "" {
 		objectMap["type"] = shir.Type
-	}
-	for k, v := range shir.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -77707,18 +77681,6 @@ func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				shir.SelfHostedIntegrationRuntimeTypeProperties = &selfHostedIntegrationRuntimeTypeProperties
-			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if shir.AdditionalProperties == nil {
-					shir.AdditionalProperties = make(map[string]interface{})
-				}
-				shir.AdditionalProperties[k] = additionalProperties
 			}
 		case "description":
 			if v != nil {
@@ -77849,8 +77811,6 @@ func (shirn SelfHostedIntegrationRuntimeNode) MarshalJSON() ([]byte, error) {
 type SelfHostedIntegrationRuntimeStatus struct {
 	// SelfHostedIntegrationRuntimeStatusTypeProperties - Self-hosted integration runtime status type properties.
 	*SelfHostedIntegrationRuntimeStatusTypeProperties `json:"typeProperties,omitempty"`
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
 	// DataFactoryName - The data factory name which the integration runtime belong to.
 	DataFactoryName *string `json:"dataFactoryName,omitempty"`
 	// State - The state of integration runtime. Possible values include: 'Initial', 'Stopped', 'Started', 'Starting', 'Stopping', 'NeedRegistration', 'Online', 'Limited', 'Offline', 'AccessDenied'
@@ -77874,9 +77834,6 @@ func (shirs SelfHostedIntegrationRuntimeStatus) MarshalJSON() ([]byte, error) {
 	}
 	if shirs.Type != "" {
 		objectMap["type"] = shirs.Type
-	}
-	for k, v := range shirs.AdditionalProperties {
-		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)
 }
@@ -77918,18 +77875,6 @@ func (shirs *SelfHostedIntegrationRuntimeStatus) UnmarshalJSON(body []byte) erro
 					return err
 				}
 				shirs.SelfHostedIntegrationRuntimeStatusTypeProperties = &selfHostedIntegrationRuntimeStatusTypeProperties
-			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if shirs.AdditionalProperties == nil {
-					shirs.AdditionalProperties = make(map[string]interface{})
-				}
-				shirs.AdditionalProperties[k] = additionalProperties
 			}
 		case "dataFactoryName":
 			if v != nil {

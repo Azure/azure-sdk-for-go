@@ -563,6 +563,96 @@ func (client IntegrationRuntimesClient) GetStatusResponder(resp *http.Response) 
 	return
 }
 
+// GrantAccess grant integration runtime access to other data factory.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// integrationRuntimeName - the integration runtime name.
+// integrationRuntimePermissionRequest - the data factory identity which will be granted the access to given
+// integration runtime.
+func (client IntegrationRuntimesClient) GrantAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimeName,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimePermissionRequest,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimePermissionRequest.FactoryIdentity", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "GrantAccess", err.Error())
+	}
+
+	req, err := client.GrantAccessPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GrantAccess", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GrantAccessSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GrantAccess", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GrantAccessResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GrantAccess", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GrantAccessPreparer prepares the GrantAccess request.
+func (client IntegrationRuntimesClient) GrantAccessPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/grantAccess", pathParameters),
+		autorest.WithJSON(integrationRuntimePermissionRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GrantAccessSender sends the GrantAccess request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationRuntimesClient) GrantAccessSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GrantAccessResponder handles the response to the GrantAccess request. The method always
+// closes the http.Response Body.
+func (client IntegrationRuntimesClient) GrantAccessResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // ListAuthKeys retrieves the authentication keys for an integration runtime.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -930,6 +1020,96 @@ func (client IntegrationRuntimesClient) RemoveNodeResponder(resp *http.Response)
 	return
 }
 
+// RevokeAccess revoke the integration runtime access from other data factory.
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// integrationRuntimeName - the integration runtime name.
+// integrationRuntimePermissionRequest - the data factory identity which will be revoked the access to given
+// integration runtime.
+func (client IntegrationRuntimesClient) RevokeAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimeName,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: integrationRuntimePermissionRequest,
+			Constraints: []validation.Constraint{{Target: "integrationRuntimePermissionRequest.FactoryIdentity", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "RevokeAccess", err.Error())
+	}
+
+	req, err := client.RevokeAccessPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RevokeAccess", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RevokeAccessSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RevokeAccess", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RevokeAccessResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RevokeAccess", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RevokeAccessPreparer prepares the RevokeAccess request.
+func (client IntegrationRuntimesClient) RevokeAccessPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":            autorest.Encode("path", factoryName),
+		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
+		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/revokeAccess", pathParameters),
+		autorest.WithJSON(integrationRuntimePermissionRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RevokeAccessSender sends the RevokeAccess request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationRuntimesClient) RevokeAccessSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// RevokeAccessResponder handles the response to the RevokeAccess request. The method always
+// closes the http.Response Body.
+func (client IntegrationRuntimesClient) RevokeAccessResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Start starts a ManagedReserved type integration runtime.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -1196,7 +1376,7 @@ func (client IntegrationRuntimesClient) SyncCredentialsResponder(resp *http.Resp
 // factoryName - the factory name.
 // integrationRuntimeName - the integration runtime name.
 // updateIntegrationRuntimeRequest - the parameters for updating an integration runtime.
-func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest) (result IntegrationRuntimeStatusResponse, err error) {
+func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest) (result IntegrationRuntimeResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1267,7 +1447,7 @@ func (client IntegrationRuntimesClient) UpdateSender(req *http.Request) (*http.R
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimesClient) UpdateResponder(resp *http.Response) (result IntegrationRuntimeStatusResponse, err error) {
+func (client IntegrationRuntimesClient) UpdateResponder(resp *http.Response) (result IntegrationRuntimeResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

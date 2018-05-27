@@ -1381,6 +1381,22 @@ func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	return []VirtualNetworkRuleState{VirtualNetworkRuleStateDeleting, VirtualNetworkRuleStateInitializing, VirtualNetworkRuleStateInProgress, VirtualNetworkRuleStateReady, VirtualNetworkRuleStateUnknown}
 }
 
+// VulnerabilityAssessmentPolicyBaselineName enumerates the values for vulnerability assessment policy baseline
+// name.
+type VulnerabilityAssessmentPolicyBaselineName string
+
+const (
+	// VulnerabilityAssessmentPolicyBaselineNameDefault ...
+	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = "default"
+	// VulnerabilityAssessmentPolicyBaselineNameMaster ...
+	VulnerabilityAssessmentPolicyBaselineNameMaster VulnerabilityAssessmentPolicyBaselineName = "master"
+)
+
+// PossibleVulnerabilityAssessmentPolicyBaselineNameValues returns an array of possible values for the VulnerabilityAssessmentPolicyBaselineName const type.
+func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAssessmentPolicyBaselineName {
+	return []VulnerabilityAssessmentPolicyBaselineName{VulnerabilityAssessmentPolicyBaselineNameDefault, VulnerabilityAssessmentPolicyBaselineNameMaster}
+}
+
 // AutomaticTuningOptions automatic tuning properties for individual advisors.
 type AutomaticTuningOptions struct {
 	// DesiredState - Automatic tuning option desired state. Possible values include: 'AutomaticTuningOptionModeDesiredOff', 'AutomaticTuningOptionModeDesiredOn', 'AutomaticTuningOptionModeDesiredDefault'

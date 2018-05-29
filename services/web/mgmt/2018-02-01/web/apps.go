@@ -22403,6 +22403,166 @@ func (client AppsClient) RestoreFromBackupBlobSlotResponder(resp *http.Response)
 	return
 }
 
+// RestoreFromDeletedApp restores a deleted web app to this web app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of web app.
+// restoreRequest - deleted web app restore information.
+func (client AppsClient) RestoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest) (result AppsRestoreFromDeletedAppFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "RestoreFromDeletedApp", err.Error())
+	}
+
+	req, err := client.RestoreFromDeletedAppPreparer(ctx, resourceGroupName, name, restoreRequest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedApp", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RestoreFromDeletedAppSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedApp", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RestoreFromDeletedAppPreparer prepares the RestoreFromDeletedApp request.
+func (client AppsClient) RestoreFromDeletedAppPreparer(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromDeletedApp", pathParameters),
+		autorest.WithJSON(restoreRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RestoreFromDeletedAppSender sends the RestoreFromDeletedApp request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) RestoreFromDeletedAppSender(req *http.Request) (future AppsRestoreFromDeletedAppFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// RestoreFromDeletedAppResponder handles the response to the RestoreFromDeletedApp request. The method always
+// closes the http.Response Body.
+func (client AppsClient) RestoreFromDeletedAppResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// RestoreFromDeletedAppSlot restores a deleted web app to this web app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of web app.
+// restoreRequest - deleted web app restore information.
+// slot - name of web app slot. If not specified then will default to production slot.
+func (client AppsClient) RestoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, slot string) (result AppsRestoreFromDeletedAppSlotFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "RestoreFromDeletedAppSlot", err.Error())
+	}
+
+	req, err := client.RestoreFromDeletedAppSlotPreparer(ctx, resourceGroupName, name, restoreRequest, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedAppSlot", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RestoreFromDeletedAppSlotSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedAppSlot", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RestoreFromDeletedAppSlotPreparer prepares the RestoreFromDeletedAppSlot request.
+func (client AppsClient) RestoreFromDeletedAppSlotPreparer(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restoreFromDeletedApp", pathParameters),
+		autorest.WithJSON(restoreRequest),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RestoreFromDeletedAppSlotSender sends the RestoreFromDeletedAppSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) RestoreFromDeletedAppSlotSender(req *http.Request) (future AppsRestoreFromDeletedAppSlotFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// RestoreFromDeletedAppSlotResponder handles the response to the RestoreFromDeletedAppSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) RestoreFromDeletedAppSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // RestoreSlot restores a specific backup to another app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.

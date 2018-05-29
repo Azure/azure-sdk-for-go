@@ -541,6 +541,23 @@ func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return []FrequencyUnit{Day, Hour}
 }
 
+// FtpsState enumerates the values for ftps state.
+type FtpsState string
+
+const (
+	// AllAllowed ...
+	AllAllowed FtpsState = "AllAllowed"
+	// Disabled ...
+	Disabled FtpsState = "Disabled"
+	// FtpsOnly ...
+	FtpsOnly FtpsState = "FtpsOnly"
+)
+
+// PossibleFtpsStateValues returns an array of possible values for the FtpsState const type.
+func PossibleFtpsStateValues() []FtpsState {
+	return []FtpsState{AllAllowed, Disabled, FtpsOnly}
+}
+
 // HostingEnvironmentStatus enumerates the values for hosting environment status.
 type HostingEnvironmentStatus string
 
@@ -1068,17 +1085,17 @@ func PossibleSolutionTypeValues() []SolutionType {
 type SslState string
 
 const (
-	// Disabled ...
-	Disabled SslState = "Disabled"
-	// IPBasedEnabled ...
-	IPBasedEnabled SslState = "IpBasedEnabled"
-	// SniEnabled ...
-	SniEnabled SslState = "SniEnabled"
+	// SslStateDisabled ...
+	SslStateDisabled SslState = "Disabled"
+	// SslStateIPBasedEnabled ...
+	SslStateIPBasedEnabled SslState = "IpBasedEnabled"
+	// SslStateSniEnabled ...
+	SslStateSniEnabled SslState = "SniEnabled"
 )
 
 // PossibleSslStateValues returns an array of possible values for the SslState const type.
 func PossibleSslStateValues() []SslState {
-	return []SslState{Disabled, IPBasedEnabled, SniEnabled}
+	return []SslState{SslStateDisabled, SslStateIPBasedEnabled, SslStateSniEnabled}
 }
 
 // StatusOptions enumerates the values for status options.
@@ -4890,6 +4907,104 @@ func (future AppsRestoreFromBackupBlobSlotFuture) Result(client AppsClient) (ar 
 	return
 }
 
+// AppsRestoreFromDeletedAppFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsRestoreFromDeletedAppFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppsRestoreFromDeletedAppFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreFromDeletedAppFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.RestoreFromDeletedAppResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.RestoreFromDeletedAppResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// AppsRestoreFromDeletedAppSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsRestoreFromDeletedAppSlotFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future AppsRestoreFromDeletedAppSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("web.AppsRestoreFromDeletedAppSlotFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.RestoreFromDeletedAppSlotResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppSlotFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppSlotFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.RestoreFromDeletedAppSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsRestoreFromDeletedAppSlotFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
 // AppsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsRestoreFuture struct {
 	azure.Future
@@ -7302,6 +7417,113 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 	// Target - Detailed error description and debugging information.
 	Target *string `json:"target,omitempty"`
+}
+
+// DeletedAppRestoreRequest details about restoring a deleted app.
+type DeletedAppRestoreRequest struct {
+	// DeletedAppRestoreRequestProperties - DeletedAppRestoreRequest resource specific properties
+	*DeletedAppRestoreRequestProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedAppRestoreRequest.
+func (darr DeletedAppRestoreRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if darr.DeletedAppRestoreRequestProperties != nil {
+		objectMap["properties"] = darr.DeletedAppRestoreRequestProperties
+	}
+	if darr.ID != nil {
+		objectMap["id"] = darr.ID
+	}
+	if darr.Name != nil {
+		objectMap["name"] = darr.Name
+	}
+	if darr.Kind != nil {
+		objectMap["kind"] = darr.Kind
+	}
+	if darr.Type != nil {
+		objectMap["type"] = darr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeletedAppRestoreRequest struct.
+func (darr *DeletedAppRestoreRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deletedAppRestoreRequestProperties DeletedAppRestoreRequestProperties
+				err = json.Unmarshal(*v, &deletedAppRestoreRequestProperties)
+				if err != nil {
+					return err
+				}
+				darr.DeletedAppRestoreRequestProperties = &deletedAppRestoreRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				darr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				darr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				darr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				darr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeletedAppRestoreRequestProperties deletedAppRestoreRequest resource specific properties
+type DeletedAppRestoreRequestProperties struct {
+	// DeletedSiteID - ARM resource ID of the deleted app. Example:
+	// /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}
+	DeletedSiteID *string `json:"deletedSiteId,omitempty"`
+	// RecoverConfiguration - If true, deleted site configuration, in addition to content, will be restored.
+	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
+	// SnapshotTime - Point in time to restore the deleted app from, formatted as a DateTime string.
+	// If unspecified, default value is the time that the app was deleted.
+	SnapshotTime *string `json:"snapshotTime,omitempty"`
 }
 
 // DeletedSite a deleted app.
@@ -10055,7 +10277,7 @@ type HostNameBindingProperties struct {
 	CustomHostNameDNSRecordType CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
 	// HostNameType - Hostname type. Possible values include: 'Verified', 'Managed'
 	HostNameType HostNameType `json:"hostNameType,omitempty"`
-	// SslState - SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IPBasedEnabled'
+	// SslState - SSL type. Possible values include: 'SslStateDisabled', 'SslStateSniEnabled', 'SslStateIPBasedEnabled'
 	SslState SslState `json:"sslState,omitempty"`
 	// Thumbprint - SSL certificate thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
@@ -10067,7 +10289,7 @@ type HostNameBindingProperties struct {
 type HostNameSslState struct {
 	// Name - Hostname.
 	Name *string `json:"name,omitempty"`
-	// SslState - SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IPBasedEnabled'
+	// SslState - SSL type. Possible values include: 'SslStateDisabled', 'SslStateSniEnabled', 'SslStateIPBasedEnabled'
 	SslState SslState `json:"sslState,omitempty"`
 	// VirtualIP - Virtual IP address assigned to the hostname if IP based SSL is enabled.
 	VirtualIP *string `json:"virtualIP,omitempty"`
@@ -15675,6 +15897,8 @@ type SiteConfig struct {
 	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 	// MinTLSVersion - MinTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
+	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
+	FtpsState FtpsState `json:"ftpsState,omitempty"`
 }
 
 // SiteConfigResource web app configuration ARM resource.

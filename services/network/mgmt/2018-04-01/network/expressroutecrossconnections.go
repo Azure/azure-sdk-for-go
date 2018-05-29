@@ -69,7 +69,7 @@ func (client ExpressRouteCrossConnectionsClient) CreateOrUpdatePreparer(ctx cont
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -146,7 +146,7 @@ func (client ExpressRouteCrossConnectionsClient) GetPreparer(ctx context.Context
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -209,7 +209,7 @@ func (client ExpressRouteCrossConnectionsClient) ListPreparer(ctx context.Contex
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -302,7 +302,7 @@ func (client ExpressRouteCrossConnectionsClient) ListArpTablePreparer(ctx contex
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -376,7 +376,7 @@ func (client ExpressRouteCrossConnectionsClient) ListByResourceGroupPreparer(ctx
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -469,7 +469,7 @@ func (client ExpressRouteCrossConnectionsClient) ListRoutesTablePreparer(ctx con
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -543,7 +543,7 @@ func (client ExpressRouteCrossConnectionsClient) ListRoutesTableSummaryPreparer(
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -613,7 +613,7 @@ func (client ExpressRouteCrossConnectionsClient) UpdateTagsPreparer(ctx context.
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

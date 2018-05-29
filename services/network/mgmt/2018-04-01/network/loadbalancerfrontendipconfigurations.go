@@ -77,7 +77,7 @@ func (client LoadBalancerFrontendIPConfigurationsClient) GetPreparer(ctx context
 		"subscriptionId":              autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -145,7 +145,7 @@ func (client LoadBalancerFrontendIPConfigurationsClient) ListPreparer(ctx contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

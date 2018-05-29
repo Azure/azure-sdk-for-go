@@ -74,7 +74,7 @@ func (client InterfaceLoadBalancersClient) ListPreparer(ctx context.Context, res
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -78,7 +78,7 @@ func (client WatchersClient) CheckConnectivityPreparer(ctx context.Context, reso
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -156,7 +156,7 @@ func (client WatchersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -219,7 +219,7 @@ func (client WatchersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -293,7 +293,7 @@ func (client WatchersClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -365,7 +365,7 @@ func (client WatchersClient) GetAzureReachabilityReportPreparer(ctx context.Cont
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,11 +408,11 @@ func (client WatchersClient) GetAzureReachabilityReportResponder(resp *http.Resp
 	return
 }
 
-// GetFlowLogStatus queries status of flow log on a specified resource.
+// GetFlowLogStatus queries status of flow log and traffic analytics (optional) on a specified resource.
 // Parameters:
 // resourceGroupName - the name of the network watcher resource group.
 // networkWatcherName - the name of the network watcher resource.
-// parameters - parameters that define a resource to query flow log status.
+// parameters - parameters that define a resource to query flow log and traffic analytics (optional)  status.
 func (client WatchersClient) GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters) (result WatchersGetFlowLogStatusFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -443,7 +443,7 @@ func (client WatchersClient) GetFlowLogStatusPreparer(ctx context.Context, resou
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -523,7 +523,7 @@ func (client WatchersClient) GetNextHopPreparer(ctx context.Context, resourceGro
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -601,7 +601,7 @@ func (client WatchersClient) GetTopologyPreparer(ctx context.Context, resourceGr
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -675,7 +675,7 @@ func (client WatchersClient) GetTroubleshootingPreparer(ctx context.Context, res
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -753,7 +753,7 @@ func (client WatchersClient) GetTroubleshootingResultPreparer(ctx context.Contex
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -831,7 +831,7 @@ func (client WatchersClient) GetVMSecurityRulesPreparer(ctx context.Context, res
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -906,7 +906,7 @@ func (client WatchersClient) ListPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -968,7 +968,7 @@ func (client WatchersClient) ListAllPreparer(ctx context.Context) (*http.Request
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1030,7 +1030,7 @@ func (client WatchersClient) ListAvailableProvidersPreparer(ctx context.Context,
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1073,7 +1073,7 @@ func (client WatchersClient) ListAvailableProvidersResponder(resp *http.Response
 	return
 }
 
-// SetFlowLogConfiguration configures flow log on a specified resource.
+// SetFlowLogConfiguration configures flow log  and traffic analytics (optional) on a specified resource.
 // Parameters:
 // resourceGroupName - the name of the network watcher resource group.
 // networkWatcherName - the name of the network watcher resource.
@@ -1085,6 +1085,14 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 				{Target: "parameters.FlowLogProperties", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.FlowLogProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.FlowLogProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				{Target: "parameters.FlowAnalyticsConfiguration", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceRegion", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceResourceID", Name: validation.Null, Rule: true, Chain: nil},
+						}},
 					}}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "SetFlowLogConfiguration", err.Error())
 	}
@@ -1112,7 +1120,7 @@ func (client WatchersClient) SetFlowLogConfigurationPreparer(ctx context.Context
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1190,7 +1198,7 @@ func (client WatchersClient) UpdateTagsPreparer(ctx context.Context, resourceGro
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1264,7 +1272,7 @@ func (client WatchersClient) VerifyIPFlowPreparer(ctx context.Context, resourceG
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

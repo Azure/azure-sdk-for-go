@@ -81,7 +81,7 @@ func (client ConnectionMonitorsClient) CreateOrUpdatePreparer(ctx context.Contex
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -154,7 +154,7 @@ func (client ConnectionMonitorsClient) DeletePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -230,7 +230,7 @@ func (client ConnectionMonitorsClient) GetPreparer(ctx context.Context, resource
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -297,7 +297,7 @@ func (client ConnectionMonitorsClient) ListPreparer(ctx context.Context, resourc
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -360,7 +360,7 @@ func (client ConnectionMonitorsClient) QueryPreparer(ctx context.Context, resour
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -431,7 +431,7 @@ func (client ConnectionMonitorsClient) StartPreparer(ctx context.Context, resour
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -501,7 +501,7 @@ func (client ConnectionMonitorsClient) StopPreparer(ctx context.Context, resourc
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

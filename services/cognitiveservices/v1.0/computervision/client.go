@@ -157,14 +157,17 @@ func (client BaseClient) AnalyzeImageResponder(resp *http.Response) (result Imag
 // Parameters:
 // model - the domain-specific content to recognize.
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
-func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model DomainModels, imageURL ImageURL) (result DomainModelResults, err error) {
+// language - the desired language for output generation. If this parameter is not specified, the default value
+// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
+// Chinese.
+func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string, imageURL ImageURL, language string) (result DomainModelResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("computervision.BaseClient", "AnalyzeImageByDomain", err.Error())
 	}
 
-	req, err := client.AnalyzeImageByDomainPreparer(ctx, model, imageURL)
+	req, err := client.AnalyzeImageByDomainPreparer(ctx, model, imageURL, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageByDomain", nil, "Failure preparing request")
 		return
@@ -186,7 +189,7 @@ func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model DomainM
 }
 
 // AnalyzeImageByDomainPreparer prepares the AnalyzeImageByDomain request.
-func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model DomainModels, imageURL ImageURL) (*http.Request, error) {
+func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model string, imageURL ImageURL, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -195,12 +198,20 @@ func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model
 		"model": autorest.Encode("path", model),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if len(string(language)) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
+	} else {
+		queryParameters["language"] = autorest.Encode("query", "en")
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
-		autorest.WithJSON(imageURL))
+		autorest.WithJSON(imageURL),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -232,8 +243,11 @@ func (client BaseClient) AnalyzeImageByDomainResponder(resp *http.Response) (res
 // Parameters:
 // model - the domain-specific content to recognize.
 // imageParameter - an image stream.
-func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model string, imageParameter io.ReadCloser) (result DomainModelResults, err error) {
-	req, err := client.AnalyzeImageByDomainInStreamPreparer(ctx, model, imageParameter)
+// language - the desired language for output generation. If this parameter is not specified, the default value
+// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
+// Chinese.
+func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (result DomainModelResults, err error) {
+	req, err := client.AnalyzeImageByDomainInStreamPreparer(ctx, model, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "AnalyzeImageByDomainInStream", nil, "Failure preparing request")
 		return
@@ -255,7 +269,7 @@ func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model
 }
 
 // AnalyzeImageByDomainInStreamPreparer prepares the AnalyzeImageByDomainInStream request.
-func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Context, model string, imageParameter io.ReadCloser) (*http.Request, error) {
+func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
 	}
@@ -264,12 +278,20 @@ func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Contex
 		"model": autorest.Encode("path", model),
 	}
 
+	queryParameters := map[string]interface{}{}
+	if len(string(language)) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
+	} else {
+		queryParameters["language"] = autorest.Encode("query", "en")
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
-		autorest.WithFile(imageParameter))
+		autorest.WithFile(imageParameter),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1247,8 +1269,11 @@ func (client BaseClient) TagImageResponder(resp *http.Response) (result TagResul
 // accompanied by the hint 'musical instrument'. All tags are in English.
 // Parameters:
 // imageParameter - an image stream.
-func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io.ReadCloser) (result TagResult, err error) {
-	req, err := client.TagImageInStreamPreparer(ctx, imageParameter)
+// language - the desired language for output generation. If this parameter is not specified, the default value
+// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
+// Chinese.
+func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io.ReadCloser, language string) (result TagResult, err error) {
+	req, err := client.TagImageInStreamPreparer(ctx, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "TagImageInStream", nil, "Failure preparing request")
 		return
@@ -1270,9 +1295,16 @@ func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io
 }
 
 // TagImageInStreamPreparer prepares the TagImageInStream request.
-func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
+func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"AzureRegion": client.AzureRegion,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(string(language)) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
+	} else {
+		queryParameters["language"] = autorest.Encode("query", "en")
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1280,7 +1312,8 @@ func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imagePara
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("https://{AzureRegion}.api.cognitive.microsoft.com/vision/v1.0", urlParameters),
 		autorest.WithPath("/tag"),
-		autorest.WithFile(imageParameter))
+		autorest.WithFile(imageParameter),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

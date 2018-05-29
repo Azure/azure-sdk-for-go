@@ -156,8 +156,11 @@ const (
 type MapType = original.MapType
 
 const (
+	MapTypeLiquid       MapType = original.MapTypeLiquid
 	MapTypeNotSpecified MapType = original.MapTypeNotSpecified
 	MapTypeXslt         MapType = original.MapTypeXslt
+	MapTypeXslt20       MapType = original.MapTypeXslt20
+	MapTypeXslt30       MapType = original.MapTypeXslt30
 )
 
 type MessageFilterType = original.MessageFilterType

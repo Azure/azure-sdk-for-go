@@ -193,14 +193,13 @@ func (client SnapshotsClient) DeleteSender(req *http.Request) (future SnapshotsD
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result OperationStatusResponse, err error) {
+func (client SnapshotsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -593,14 +592,13 @@ func (client SnapshotsClient) RevokeAccessSender(req *http.Request) (future Snap
 
 // RevokeAccessResponder handles the response to the RevokeAccess request. The method always
 // closes the http.Response Body.
-func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result OperationStatusResponse, err error) {
+func (client SnapshotsClient) RevokeAccessResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

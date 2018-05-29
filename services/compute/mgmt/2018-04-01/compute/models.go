@@ -967,84 +967,6 @@ func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 // AccessURI a disk access SAS uri.
 type AccessURI struct {
 	autorest.Response `json:"-"`
-	// AccessURIOutput - Operation output data (raw JSON)
-	*AccessURIOutput `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessURI.
-func (au AccessURI) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if au.AccessURIOutput != nil {
-		objectMap["properties"] = au.AccessURIOutput
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccessURI struct.
-func (au *AccessURI) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var accessURIOutput AccessURIOutput
-				err = json.Unmarshal(*v, &accessURIOutput)
-				if err != nil {
-					return err
-				}
-				au.AccessURIOutput = &accessURIOutput
-			}
-		}
-	}
-
-	return nil
-}
-
-// AccessURIOutput azure properties, including output.
-type AccessURIOutput struct {
-	// AccessURIRaw - Operation output data (raw JSON)
-	*AccessURIRaw `json:"output,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccessURIOutput.
-func (auo AccessURIOutput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if auo.AccessURIRaw != nil {
-		objectMap["output"] = auo.AccessURIRaw
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccessURIOutput struct.
-func (auo *AccessURIOutput) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "output":
-			if v != nil {
-				var accessURIRaw AccessURIRaw
-				err = json.Unmarshal(*v, &accessURIRaw)
-				if err != nil {
-					return err
-				}
-				auo.AccessURIRaw = &accessURIRaw
-			}
-		}
-	}
-
-	return nil
-}
-
-// AccessURIRaw this object gets 'bubbled up' through flattening.
-type AccessURIRaw struct {
 	// AccessSAS - A SAS uri for accessing a disk.
 	AccessSAS *string `json:"accessSAS,omitempty"`
 }
@@ -1780,7 +1702,7 @@ type DataDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach**  This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
@@ -2144,7 +2066,7 @@ type DisksDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DisksDeleteFuture) Result(client DisksClient) (osr OperationStatusResponse, err error) {
+func (future DisksDeleteFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -2152,10 +2074,10 @@ func (future DisksDeleteFuture) Result(client DisksClient) (osr OperationStatusR
 		return
 	}
 	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.DisksDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("compute.DisksDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
+		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "compute.DisksDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -2177,7 +2099,7 @@ func (future DisksDeleteFuture) Result(client DisksClient) (osr OperationStatusR
 		err = autorest.NewErrorWithError(err, "compute.DisksDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	osr, err = client.DeleteResponder(resp)
+	ar, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksDeleteFuture", "Result", resp, "Failure responding to request")
 	}
@@ -2248,7 +2170,7 @@ type DisksRevokeAccessFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DisksRevokeAccessFuture) Result(client DisksClient) (osr OperationStatusResponse, err error) {
+func (future DisksRevokeAccessFuture) Result(client DisksClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -2256,10 +2178,10 @@ func (future DisksRevokeAccessFuture) Result(client DisksClient) (osr OperationS
 		return
 	}
 	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.DisksRevokeAccessFuture")
+		return ar, azure.NewAsyncOpIncompleteError("compute.DisksRevokeAccessFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RevokeAccessResponder(future.Response())
+		ar, err = client.RevokeAccessResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "compute.DisksRevokeAccessFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -2281,7 +2203,7 @@ func (future DisksRevokeAccessFuture) Result(client DisksClient) (osr OperationS
 		err = autorest.NewErrorWithError(err, "compute.DisksRevokeAccessFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	osr, err = client.RevokeAccessResponder(resp)
+	ar, err = client.RevokeAccessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DisksRevokeAccessFuture", "Result", resp, "Failure responding to request")
 	}
@@ -3457,7 +3379,7 @@ type OSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach**  This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
@@ -4537,7 +4459,7 @@ type SnapshotsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SnapshotsDeleteFuture) Result(client SnapshotsClient) (osr OperationStatusResponse, err error) {
+func (future SnapshotsDeleteFuture) Result(client SnapshotsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4545,10 +4467,10 @@ func (future SnapshotsDeleteFuture) Result(client SnapshotsClient) (osr Operatio
 		return
 	}
 	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.SnapshotsDeleteFuture")
+		return ar, azure.NewAsyncOpIncompleteError("compute.SnapshotsDeleteFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.DeleteResponder(future.Response())
+		ar, err = client.DeleteResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "compute.SnapshotsDeleteFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -4570,7 +4492,7 @@ func (future SnapshotsDeleteFuture) Result(client SnapshotsClient) (osr Operatio
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsDeleteFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	osr, err = client.DeleteResponder(resp)
+	ar, err = client.DeleteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsDeleteFuture", "Result", resp, "Failure responding to request")
 	}
@@ -4642,7 +4564,7 @@ type SnapshotsRevokeAccessFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (osr OperationStatusResponse, err error) {
+func (future SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -4650,10 +4572,10 @@ func (future SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (osr Op
 		return
 	}
 	if !done {
-		return osr, azure.NewAsyncOpIncompleteError("compute.SnapshotsRevokeAccessFuture")
+		return ar, azure.NewAsyncOpIncompleteError("compute.SnapshotsRevokeAccessFuture")
 	}
 	if future.PollingMethod() == azure.PollingLocation {
-		osr, err = client.RevokeAccessResponder(future.Response())
+		ar, err = client.RevokeAccessResponder(future.Response())
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "compute.SnapshotsRevokeAccessFuture", "Result", future.Response(), "Failure responding to request")
 		}
@@ -4675,7 +4597,7 @@ func (future SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (osr Op
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsRevokeAccessFuture", "Result", resp, "Failure sending request")
 		return
 	}
-	osr, err = client.RevokeAccessResponder(resp)
+	ar, err = client.RevokeAccessResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.SnapshotsRevokeAccessFuture", "Result", resp, "Failure responding to request")
 	}
@@ -7129,7 +7051,7 @@ type VirtualMachineScaleSetOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`

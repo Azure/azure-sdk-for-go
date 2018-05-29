@@ -280,15 +280,21 @@ func PossibleKeyTypeValues() []KeyType {
 type MapType string
 
 const (
+	// MapTypeLiquid ...
+	MapTypeLiquid MapType = "Liquid"
 	// MapTypeNotSpecified ...
 	MapTypeNotSpecified MapType = "NotSpecified"
 	// MapTypeXslt ...
 	MapTypeXslt MapType = "Xslt"
+	// MapTypeXslt20 ...
+	MapTypeXslt20 MapType = "Xslt20"
+	// MapTypeXslt30 ...
+	MapTypeXslt30 MapType = "Xslt30"
 )
 
 // PossibleMapTypeValues returns an array of possible values for the MapType const type.
 func PossibleMapTypeValues() []MapType {
-	return []MapType{MapTypeNotSpecified, MapTypeXslt}
+	return []MapType{MapTypeLiquid, MapTypeNotSpecified, MapTypeXslt, MapTypeXslt20, MapTypeXslt30}
 }
 
 // MessageFilterType enumerates the values for message filter type.
@@ -2273,7 +2279,7 @@ func (iam *IntegrationAccountMap) UnmarshalJSON(body []byte) error {
 
 // IntegrationAccountMapFilter the integration account map filter for odata query.
 type IntegrationAccountMapFilter struct {
-	// MapType - The map type of integration account map. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt'
+	// MapType - The map type of integration account map. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt', 'MapTypeXslt20', 'MapTypeXslt30', 'MapTypeLiquid'
 	MapType MapType `json:"mapType,omitempty"`
 }
 
@@ -2381,7 +2387,7 @@ func (page IntegrationAccountMapListResultPage) Values() []IntegrationAccountMap
 
 // IntegrationAccountMapProperties the integration account map.
 type IntegrationAccountMapProperties struct {
-	// MapType - The map type. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt'
+	// MapType - The map type. Possible values include: 'MapTypeNotSpecified', 'MapTypeXslt', 'MapTypeXslt20', 'MapTypeXslt30', 'MapTypeLiquid'
 	MapType MapType `json:"mapType,omitempty"`
 	// ParametersSchema - The parameters schema of integration account map.
 	ParametersSchema *IntegrationAccountMapPropertiesParametersSchema `json:"parametersSchema,omitempty"`

@@ -27,6 +27,19 @@ import (
 	"net/http"
 )
 
+// AlwaysLog enumerates the values for always log.
+type AlwaysLog string
+
+const (
+	// AllErrors Always log all erroneous request regardless of sampling settings.
+	AllErrors AlwaysLog = "allErrors"
+)
+
+// PossibleAlwaysLogValues returns an array of possible values for the AlwaysLog const type.
+func PossibleAlwaysLogValues() []AlwaysLog {
+	return []AlwaysLog{AllErrors}
+}
+
 // APIType enumerates the values for api type.
 type APIType string
 
@@ -434,6 +447,19 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
+}
+
+// SamplingType enumerates the values for sampling type.
+type SamplingType string
+
+const (
+	// Fixed Fixed-rate sampling.
+	Fixed SamplingType = "fixed"
+)
+
+// PossibleSamplingTypeValues returns an array of possible values for the SamplingType const type.
+func PossibleSamplingTypeValues() []SamplingType {
+	return []SamplingType{Fixed}
 }
 
 // SkuType enumerates the values for sku type.
@@ -2563,6 +2589,12 @@ func (bup *BackendUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BodyDiagnosticSettings body logging settings.
+type BodyDiagnosticSettings struct {
+	// Bytes - Number of request body bytes to log.
+	Bytes *int32 `json:"bytes,omitempty"`
+}
+
 // CertificateCollection paged Certificates list representation.
 type CertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -3036,8 +3068,16 @@ func (dc *DiagnosticContract) UnmarshalJSON(body []byte) error {
 
 // DiagnosticContractProperties diagnostic Entity Properties
 type DiagnosticContractProperties struct {
-	// Enabled - Indicates whether a diagnostic should receive data or not.
-	Enabled *bool `json:"enabled,omitempty"`
+	// AlwaysLog - Specifies for what type of messages sampling settings should not apply. Possible values include: 'AllErrors'
+	AlwaysLog AlwaysLog `json:"alwaysLog,omitempty"`
+	// LoggerID - Resource Id of a target logger.
+	LoggerID *string `json:"loggerId,omitempty"`
+	// Sampling - Sampling settings for Diagnostic.
+	Sampling *SamplingSettings `json:"sampling,omitempty"`
+	// Frontend - Diagnostic settings for incoming/outcoming HTTP messages to the Gateway.
+	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
+	// Backend - Diagnostic settings for incoming/outcoming HTTP messages to the Backend
+	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
 }
 
 // EmailTemplateCollection paged email template list representation.
@@ -3697,6 +3737,14 @@ type HostnameConfigurationOld struct {
 	Hostname *string `json:"hostname,omitempty"`
 	// Certificate - Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
+}
+
+// HTTPMessageDiagnostic http message diagnostic settings.
+type HTTPMessageDiagnostic struct {
+	// Headers - Array of HTTP Headers to log.
+	Headers *[]string `json:"headers,omitempty"`
+	// Body - Body logging settings.
+	Body *BodyDiagnosticSettings `json:"body,omitempty"`
 }
 
 // IdentityProviderBaseParameters identity Provider Base Parameter Properties.
@@ -5802,6 +5850,14 @@ type ParameterContract struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
+// PipelineDiagnosticSettings diagnostic settings for incoming/outcoming HTTP messages to the Gateway.
+type PipelineDiagnosticSettings struct {
+	// Request - Diagnostic settings for request.
+	Request *HTTPMessageDiagnostic `json:"request,omitempty"`
+	// Response - Diagnostic settings for response.
+	Response *HTTPMessageDiagnostic `json:"response,omitempty"`
+}
+
 // PolicyCollection the response of the list policy operation.
 type PolicyCollection struct {
 	autorest.Response `json:"-"`
@@ -7392,6 +7448,14 @@ type ResponseContract struct {
 	Representations *[]RepresentationContract `json:"representations,omitempty"`
 	// Headers - Collection of operation response headers.
 	Headers *[]ParameterContract `json:"headers,omitempty"`
+}
+
+// SamplingSettings sampling settings for Diagnostic.
+type SamplingSettings struct {
+	// SamplingType - Sampling type. Possible values include: 'Fixed'
+	SamplingType SamplingType `json:"samplingType,omitempty"`
+	// Percentage - Rate of sampling for fixed-rate sampling.
+	Percentage *float64 `json:"percentage,omitempty"`
 }
 
 // SaveConfigurationParameter parameters supplied to the Save Tenant Configuration operation.

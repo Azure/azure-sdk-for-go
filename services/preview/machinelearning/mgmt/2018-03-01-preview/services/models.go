@@ -20,6 +20,7 @@ package services
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -150,7 +151,7 @@ type AKS struct {
 	// ResourceID - ARM resource id of the compute
 	ResourceID *string `json:"resourceId,omitempty"`
 	// ProvisioningErrors - Errors during provisioning
-	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
+	ProvisioningErrors *[]MachineLearningServiceError `json:"provisioningErrors,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeBatchAI1', 'ComputeTypeVirtualMachine1', 'ComputeTypeDataFactory1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
@@ -296,7 +297,7 @@ type BatchAI struct {
 	// ResourceID - ARM resource id of the compute
 	ResourceID *string `json:"resourceId,omitempty"`
 	// ProvisioningErrors - Errors during provisioning
-	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
+	ProvisioningErrors *[]MachineLearningServiceError `json:"provisioningErrors,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeBatchAI1', 'ComputeTypeVirtualMachine1', 'ComputeTypeDataFactory1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
@@ -394,7 +395,7 @@ type Compute struct {
 	// ResourceID - ARM resource id of the compute
 	ResourceID *string `json:"resourceId,omitempty"`
 	// ProvisioningErrors - Errors during provisioning
-	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
+	ProvisioningErrors *[]MachineLearningServiceError `json:"provisioningErrors,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeBatchAI1', 'ComputeTypeVirtualMachine1', 'ComputeTypeDataFactory1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
@@ -742,7 +743,7 @@ type DataFactory struct {
 	// ResourceID - ARM resource id of the compute
 	ResourceID *string `json:"resourceId,omitempty"`
 	// ProvisioningErrors - Errors during provisioning
-	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
+	ProvisioningErrors *[]MachineLearningServiceError `json:"provisioningErrors,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeBatchAI1', 'ComputeTypeVirtualMachine1', 'ComputeTypeDataFactory1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
@@ -823,12 +824,6 @@ type ErrorResponse struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 }
 
-// ErrorResponseWrapper wrapper for error response to follow ARM guidelines.
-type ErrorResponseWrapper struct {
-	// Error - The error response.
-	Error *ErrorResponse `json:"error,omitempty"`
-}
-
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - The principal ID of resource identity.
@@ -846,6 +841,110 @@ type ListWorkspaceKeysResult struct {
 	UserStorageResourceID         *string                        `json:"userStorageResourceId,omitempty"`
 	AppInsightsInstrumentationKey *string                        `json:"appInsightsInstrumentationKey,omitempty"`
 	ContainerRegistryCredentials  *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
+}
+
+// MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type MachineLearningComputeCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future MachineLearningComputeCreateOrUpdateFuture) Result(client MachineLearningComputeClient) (cr ComputeResource, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return cr, azure.NewAsyncOpIncompleteError("services.MachineLearningComputeCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		cr, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	cr, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// MachineLearningComputeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type MachineLearningComputeDeleteFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future MachineLearningComputeDeleteFuture) Result(client MachineLearningComputeClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("services.MachineLearningComputeDeleteFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.DeleteResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "services.MachineLearningComputeDeleteFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeDeleteFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.MachineLearningComputeDeleteFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// MachineLearningServiceError wrapper for error response to follow ARM guidelines.
+type MachineLearningServiceError struct {
+	// Error - The error response.
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // Operation azure Machine Learning workspace REST API operation
@@ -1085,7 +1184,7 @@ type VirtualMachine struct {
 	// ResourceID - ARM resource id of the compute
 	ResourceID *string `json:"resourceId,omitempty"`
 	// ProvisioningErrors - Errors during provisioning
-	ProvisioningErrors *[]ErrorResponseWrapper `json:"provisioningErrors,omitempty"`
+	ProvisioningErrors *[]MachineLearningServiceError `json:"provisioningErrors,omitempty"`
 	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeBatchAI1', 'ComputeTypeVirtualMachine1', 'ComputeTypeDataFactory1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }

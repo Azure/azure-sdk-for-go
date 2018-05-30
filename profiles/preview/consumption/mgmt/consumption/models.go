@@ -27,6 +27,28 @@ const (
 
 type BaseClient = original.BaseClient
 type ForecastsClient = original.ForecastsClient
+type Bound = original.Bound
+
+const (
+	Lower Bound = original.Lower
+	Upper Bound = original.Upper
+)
+
+type ChargeType = original.ChargeType
+
+const (
+	ChargeTypeActual   ChargeType = original.ChargeTypeActual
+	ChargeTypeForecast ChargeType = original.ChargeTypeForecast
+)
+
+type Grain = original.Grain
+
+const (
+	Daily   Grain = original.Daily
+	Monthly Grain = original.Monthly
+	Yearly  Grain = original.Yearly
+)
+
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Forecast = original.Forecast
@@ -52,6 +74,15 @@ func NewForecastsClient(subscriptionID string) ForecastsClient {
 }
 func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
 	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleBoundValues() []Bound {
+	return original.PossibleBoundValues()
+}
+func PossibleChargeTypeValues() []ChargeType {
+	return original.PossibleChargeTypeValues()
+}
+func PossibleGrainValues() []Grain {
+	return original.PossibleGrainValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

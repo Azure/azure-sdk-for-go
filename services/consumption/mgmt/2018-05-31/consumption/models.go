@@ -25,6 +25,53 @@ import (
 	"net/http"
 )
 
+// Bound enumerates the values for bound.
+type Bound string
+
+const (
+	// Lower ...
+	Lower Bound = "Lower"
+	// Upper ...
+	Upper Bound = "Upper"
+)
+
+// PossibleBoundValues returns an array of possible values for the Bound const type.
+func PossibleBoundValues() []Bound {
+	return []Bound{Lower, Upper}
+}
+
+// ChargeType enumerates the values for charge type.
+type ChargeType string
+
+const (
+	// ChargeTypeActual ...
+	ChargeTypeActual ChargeType = "Actual"
+	// ChargeTypeForecast ...
+	ChargeTypeForecast ChargeType = "Forecast"
+)
+
+// PossibleChargeTypeValues returns an array of possible values for the ChargeType const type.
+func PossibleChargeTypeValues() []ChargeType {
+	return []ChargeType{ChargeTypeActual, ChargeTypeForecast}
+}
+
+// Grain enumerates the values for grain.
+type Grain string
+
+const (
+	// Daily ...
+	Daily Grain = "Daily"
+	// Monthly ...
+	Monthly Grain = "Monthly"
+	// Yearly ...
+	Yearly Grain = "Yearly"
+)
+
+// PossibleGrainValues returns an array of possible values for the Grain const type.
+func PossibleGrainValues() []Grain {
+	return []Grain{Daily, Monthly, Yearly}
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - Error code.
@@ -138,14 +185,14 @@ func (f *Forecast) UnmarshalJSON(body []byte) error {
 type ForecastProperties struct {
 	// UsageDate - The usage date of the forecast.
 	UsageDate *string `json:"usageDate,omitempty"`
-	// Grain - The granularity of forecast. i.e. Daily, Monthly
-	Grain *string `json:"grain,omitempty"`
+	// Grain - The granularity of forecast. Possible values include: 'Daily', 'Monthly', 'Yearly'
+	Grain Grain `json:"grain,omitempty"`
 	// Charge - The amount of charge
 	Charge *decimal.Decimal `json:"charge,omitempty"`
 	// Currency - The ISO currency in which the meter is charged, for example, USD.
 	Currency *string `json:"currency,omitempty"`
-	// ChargeType - The type of the charge. Could be actual or forecast
-	ChargeType *string `json:"chargeType,omitempty"`
+	// ChargeType - The type of the charge. Could be actual or forecast. Possible values include: 'ChargeTypeActual', 'ChargeTypeForecast'
+	ChargeType ChargeType `json:"chargeType,omitempty"`
 	// ConfidenceLevels - The details about the forecast confidence levels. This is populated only when chargeType is Forecast.
 	ConfidenceLevels *[]ForecastPropertiesConfidenceLevelsItem `json:"confidenceLevels,omitempty"`
 }
@@ -154,8 +201,8 @@ type ForecastProperties struct {
 type ForecastPropertiesConfidenceLevelsItem struct {
 	// Percentage - The percentage level of the confidence
 	Percentage *decimal.Decimal `json:"percentage,omitempty"`
-	// Bound - The boundary of the percentage, values could be 'Upper' or 'Lower'
-	Bound *string `json:"bound,omitempty"`
+	// Bound - The boundary of the percentage, values could be 'Upper' or 'Lower'. Possible values include: 'Upper', 'Lower'
+	Bound Bound `json:"bound,omitempty"`
 	// Value - The amount of forecast within the percentage level
 	Value *decimal.Decimal `json:"value,omitempty"`
 }

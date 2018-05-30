@@ -25,57 +25,57 @@ import (
 	"net/http"
 )
 
-// UsageClient is the the Azure Storage Management API.
-type UsageClient struct {
+// UsagesClient is the the Azure Storage Management API.
+type UsagesClient struct {
 	BaseClient
 }
 
-// NewUsageClient creates an instance of the UsageClient client.
-func NewUsageClient(subscriptionID string) UsageClient {
-	return NewUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewUsagesClient creates an instance of the UsagesClient client.
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewUsageClientWithBaseURI creates an instance of the UsageClient client.
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return UsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets the current usage count and the limit for the resources under the subscription.
-func (client UsageClient) List(ctx context.Context) (result UsageListResult, err error) {
+func (client UsagesClient) List(ctx context.Context) (result UsageListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storage.UsageClient", "List", err.Error())
+		return result, validation.NewError("storage.UsagesClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsageClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client UsagesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2018-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -90,14 +90,14 @@ func (client UsageClient) ListPreparer(ctx context.Context) (*http.Request, erro
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsageClient) ListResponder(resp *http.Response) (result UsageListResult, err error) {
+func (client UsagesClient) ListResponder(resp *http.Response) (result UsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -111,42 +111,42 @@ func (client UsageClient) ListResponder(resp *http.Response) (result UsageListRe
 // ListByLocation gets the current usage count and the limit for the resources of the location under the subscription.
 // Parameters:
 // location - the location of the Azure Storage resource.
-func (client UsageClient) ListByLocation(ctx context.Context, location string) (result UsageListResult, err error) {
+func (client UsagesClient) ListByLocation(ctx context.Context, location string) (result UsageListResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storage.UsageClient", "ListByLocation", err.Error())
+		return result, validation.NewError("storage.UsagesClient", "ListByLocation", err.Error())
 	}
 
 	req, err := client.ListByLocationPreparer(ctx, location)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "ListByLocation", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "ListByLocation", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByLocationSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "ListByLocation", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "ListByLocation", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByLocationResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.UsageClient", "ListByLocation", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storage.UsagesClient", "ListByLocation", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByLocationPreparer prepares the ListByLocation request.
-func (client UsageClient) ListByLocationPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client UsagesClient) ListByLocationPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2018-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -161,14 +161,14 @@ func (client UsageClient) ListByLocationPreparer(ctx context.Context, location s
 
 // ListByLocationSender sends the ListByLocation request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsageClient) ListByLocationSender(req *http.Request) (*http.Response, error) {
+func (client UsagesClient) ListByLocationSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByLocationResponder handles the response to the ListByLocation request. The method always
 // closes the http.Response Body.
-func (client UsageClient) ListByLocationResponder(resp *http.Response) (result UsageListResult, err error) {
+func (client UsagesClient) ListByLocationResponder(resp *http.Response) (result UsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

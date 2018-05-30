@@ -1387,9 +1387,9 @@ type VulnerabilityAssessmentPolicyBaselineName string
 
 const (
 	// VulnerabilityAssessmentPolicyBaselineNameDefault ...
-	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = "default"
+	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = "Default"
 	// VulnerabilityAssessmentPolicyBaselineNameMaster ...
-	VulnerabilityAssessmentPolicyBaselineNameMaster VulnerabilityAssessmentPolicyBaselineName = "master"
+	VulnerabilityAssessmentPolicyBaselineNameMaster VulnerabilityAssessmentPolicyBaselineName = "Master"
 )
 
 // PossibleVulnerabilityAssessmentPolicyBaselineNameValues returns an array of possible values for the VulnerabilityAssessmentPolicyBaselineName const type.

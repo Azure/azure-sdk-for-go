@@ -392,6 +392,192 @@ func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAsses
 	return []VulnerabilityAssessmentScanTriggerType{OnDemand, Recurring}
 }
 
+// BackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type BackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future BackupShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client BackupShortTermRetentionPoliciesClient) (bstrp BackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return bstrp, azure.NewAsyncOpIncompleteError("sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		bstrp, err = client.CreateOrUpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	bstrp, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// BackupShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupShortTermRetentionPoliciesUpdateFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future BackupShortTermRetentionPoliciesUpdateFuture) Result(client BackupShortTermRetentionPoliciesClient) (bstrp BackupShortTermRetentionPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return bstrp, azure.NewAsyncOpIncompleteError("sql.BackupShortTermRetentionPoliciesUpdateFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		bstrp, err = client.UpdateResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	bstrp, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure responding to request")
+	}
+	return
+}
+
+// BackupShortTermRetentionPolicy a short term retention policy.
+type BackupShortTermRetentionPolicy struct {
+	autorest.Response `json:"-"`
+	// BackupShortTermRetentionPolicyProperties - Resource properties.
+	*BackupShortTermRetentionPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BackupShortTermRetentionPolicy.
+func (bstrp BackupShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bstrp.BackupShortTermRetentionPolicyProperties != nil {
+		objectMap["properties"] = bstrp.BackupShortTermRetentionPolicyProperties
+	}
+	if bstrp.ID != nil {
+		objectMap["id"] = bstrp.ID
+	}
+	if bstrp.Name != nil {
+		objectMap["name"] = bstrp.Name
+	}
+	if bstrp.Type != nil {
+		objectMap["type"] = bstrp.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BackupShortTermRetentionPolicy struct.
+func (bstrp *BackupShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var backupShortTermRetentionPolicyProperties BackupShortTermRetentionPolicyProperties
+				err = json.Unmarshal(*v, &backupShortTermRetentionPolicyProperties)
+				if err != nil {
+					return err
+				}
+				bstrp.BackupShortTermRetentionPolicyProperties = &backupShortTermRetentionPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				bstrp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				bstrp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				bstrp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BackupShortTermRetentionPolicyProperties properties of a short term retention policy
+type BackupShortTermRetentionPolicyProperties struct {
+	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
 // Database a database resource.
 type Database struct {
 	autorest.Response `json:"-"`
@@ -1381,59 +1567,10 @@ type DatabaseVulnerabilityAssessmentProperties struct {
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
 }
 
-// DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation’s result.
+// DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation's result.
 type DatabaseVulnerabilityAssessmentScanExportProperties struct {
 	// ExportedReportLocation - Location of the exported report (e.g. https://myStorage.blob.core.windows.net/VaScans/scans/serverName/databaseName/scan_scanId.xlsx).
 	ExportedReportLocation *string `json:"exportedReportLocation,omitempty"`
-}
-
-// DatabaseVulnerabilityAssessmentScansExecuteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DatabaseVulnerabilityAssessmentScansExecuteFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future DatabaseVulnerabilityAssessmentScansExecuteFuture) Result(client DatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansExecuteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.ExecuteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.ExecuteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansExecuteFuture", "Result", resp, "Failure responding to request")
-	}
-	return
 }
 
 // DatabaseVulnerabilityAssessmentScansExport a database Vulnerability Assessment scan export resource.
@@ -1516,6 +1653,55 @@ func (dvase *DatabaseVulnerabilityAssessmentScansExport) UnmarshalJSON(body []by
 	}
 
 	return nil
+}
+
+// DatabaseVulnerabilityAssessmentScansInitiateScanFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type DatabaseVulnerabilityAssessmentScansInitiateScanFuture struct {
+	azure.Future
+	req *http.Request
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future DatabaseVulnerabilityAssessmentScansInitiateScanFuture) Result(client DatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		return ar, azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture")
+	}
+	if future.PollingMethod() == azure.PollingLocation {
+		ar, err = client.InitiateScanResponder(future.Response())
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", future.Response(), "Failure responding to request")
+		}
+		return
+	}
+	var req *http.Request
+	var resp *http.Response
+	if future.PollingURL() != "" {
+		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+		if err != nil {
+			return
+		}
+	} else {
+		req = autorest.ChangeToGet(future.req)
+	}
+	resp, err = autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", resp, "Failure sending request")
+		return
+	}
+	ar, err = client.InitiateScanResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", resp, "Failure responding to request")
+	}
+	return
 }
 
 // EditionCapability the edition capability.
@@ -2906,203 +3092,17 @@ type ServiceObjectiveCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-// ShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ShortTermRetentionPoliciesCreateOrUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future ShortTermRetentionPoliciesCreateOrUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesCreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		strp, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	strp, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// ShortTermRetentionPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ShortTermRetentionPoliciesUpdateFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future ShortTermRetentionPoliciesUpdateFuture) Result(client ShortTermRetentionPoliciesClient) (strp ShortTermRetentionPolicy, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return strp, azure.NewAsyncOpIncompleteError("sql.ShortTermRetentionPoliciesUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		strp, err = client.UpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	strp, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesUpdateFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// ShortTermRetentionPolicy a short term retention policy resource.
-type ShortTermRetentionPolicy struct {
-	autorest.Response `json:"-"`
-	// ShortTermRetentionPolicyProperties - Resource properties.
-	*ShortTermRetentionPolicyProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ShortTermRetentionPolicy.
-func (strp ShortTermRetentionPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if strp.ShortTermRetentionPolicyProperties != nil {
-		objectMap["properties"] = strp.ShortTermRetentionPolicyProperties
-	}
-	if strp.ID != nil {
-		objectMap["id"] = strp.ID
-	}
-	if strp.Name != nil {
-		objectMap["name"] = strp.Name
-	}
-	if strp.Type != nil {
-		objectMap["type"] = strp.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ShortTermRetentionPolicy struct.
-func (strp *ShortTermRetentionPolicy) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var shortTermRetentionPolicyProperties ShortTermRetentionPolicyProperties
-				err = json.Unmarshal(*v, &shortTermRetentionPolicyProperties)
-				if err != nil {
-					return err
-				}
-				strp.ShortTermRetentionPolicyProperties = &shortTermRetentionPolicyProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				strp.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				strp.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				strp.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// ShortTermRetentionPolicyProperties properties of a short term retention policy
-type ShortTermRetentionPolicyProperties struct {
-	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
-	RetentionDays *int32 `json:"retentionDays,omitempty"`
-}
-
-// Sku an ARM Resource SKU.
+// Sku the resource model definition representing SKU
 type Sku struct {
-	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	// Tier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
 	Tier *string `json:"tier,omitempty"`
-	// Size - Size of the particular SKU
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// Capacity - Capacity of the particular SKU.
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

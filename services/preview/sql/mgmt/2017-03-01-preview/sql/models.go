@@ -1790,10 +1790,10 @@ type Database struct {
 	Kind *string `json:"kind,omitempty"`
 	// DatabaseProperties - The properties representing the resource.
 	*DatabaseProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1811,11 +1811,11 @@ func (d Database) MarshalJSON() ([]byte, error) {
 	if d.DatabaseProperties != nil {
 		objectMap["properties"] = d.DatabaseProperties
 	}
-	if d.Tags != nil {
-		objectMap["tags"] = d.Tags
-	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
+	}
+	if d.Tags != nil {
+		objectMap["tags"] = d.Tags
 	}
 	if d.ID != nil {
 		objectMap["id"] = d.ID
@@ -1856,15 +1856,6 @@ func (d *Database) UnmarshalJSON(body []byte) error {
 				}
 				d.DatabaseProperties = &databaseProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				d.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1873,6 +1864,15 @@ func (d *Database) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				d.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -3566,10 +3566,10 @@ type ElasticPool struct {
 	*ElasticPoolProperties `json:"properties,omitempty"`
 	// Kind - Kind of elastic pool.  This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -3587,11 +3587,11 @@ func (ep ElasticPool) MarshalJSON() ([]byte, error) {
 	if ep.Kind != nil {
 		objectMap["kind"] = ep.Kind
 	}
-	if ep.Tags != nil {
-		objectMap["tags"] = ep.Tags
-	}
 	if ep.Location != nil {
 		objectMap["location"] = ep.Location
+	}
+	if ep.Tags != nil {
+		objectMap["tags"] = ep.Tags
 	}
 	if ep.ID != nil {
 		objectMap["id"] = ep.ID
@@ -3632,15 +3632,6 @@ func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
 				}
 				ep.Kind = &kind
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ep.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -3649,6 +3640,15 @@ func (ep *ElasticPool) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ep.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ep.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -5623,10 +5623,10 @@ type JobAgent struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// JobAgentProperties - Resource properties.
 	*JobAgentProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -5644,11 +5644,11 @@ func (ja JobAgent) MarshalJSON() ([]byte, error) {
 	if ja.JobAgentProperties != nil {
 		objectMap["properties"] = ja.JobAgentProperties
 	}
-	if ja.Tags != nil {
-		objectMap["tags"] = ja.Tags
-	}
 	if ja.Location != nil {
 		objectMap["location"] = ja.Location
+	}
+	if ja.Tags != nil {
+		objectMap["tags"] = ja.Tags
 	}
 	if ja.ID != nil {
 		objectMap["id"] = ja.ID
@@ -5689,15 +5689,6 @@ func (ja *JobAgent) UnmarshalJSON(body []byte) error {
 				}
 				ja.JobAgentProperties = &jobAgentProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ja.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -5706,6 +5697,15 @@ func (ja *JobAgent) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ja.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ja.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -7231,10 +7231,10 @@ type ManagedDatabase struct {
 	autorest.Response `json:"-"`
 	// ManagedDatabaseProperties - Resource properties.
 	*ManagedDatabaseProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -7249,11 +7249,11 @@ func (md ManagedDatabase) MarshalJSON() ([]byte, error) {
 	if md.ManagedDatabaseProperties != nil {
 		objectMap["properties"] = md.ManagedDatabaseProperties
 	}
-	if md.Tags != nil {
-		objectMap["tags"] = md.Tags
-	}
 	if md.Location != nil {
 		objectMap["location"] = md.Location
+	}
+	if md.Tags != nil {
+		objectMap["tags"] = md.Tags
 	}
 	if md.ID != nil {
 		objectMap["id"] = md.ID
@@ -7285,15 +7285,6 @@ func (md *ManagedDatabase) UnmarshalJSON(body []byte) error {
 				}
 				md.ManagedDatabaseProperties = &managedDatabaseProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				md.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -7302,6 +7293,15 @@ func (md *ManagedDatabase) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				md.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				md.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -7724,10 +7724,10 @@ type ManagedInstance struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// ManagedInstanceProperties - Resource properties.
 	*ManagedInstanceProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -7748,11 +7748,11 @@ func (mi ManagedInstance) MarshalJSON() ([]byte, error) {
 	if mi.ManagedInstanceProperties != nil {
 		objectMap["properties"] = mi.ManagedInstanceProperties
 	}
-	if mi.Tags != nil {
-		objectMap["tags"] = mi.Tags
-	}
 	if mi.Location != nil {
 		objectMap["location"] = mi.Location
+	}
+	if mi.Tags != nil {
+		objectMap["tags"] = mi.Tags
 	}
 	if mi.ID != nil {
 		objectMap["id"] = mi.ID
@@ -7802,15 +7802,6 @@ func (mi *ManagedInstance) UnmarshalJSON(body []byte) error {
 				}
 				mi.ManagedInstanceProperties = &managedInstanceProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				mi.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -7819,6 +7810,15 @@ func (mi *ManagedInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mi.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mi.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -9217,10 +9217,10 @@ type Server struct {
 	Kind *string `json:"kind,omitempty"`
 	// ServerProperties - Resource properties.
 	*ServerProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -9241,11 +9241,11 @@ func (s Server) MarshalJSON() ([]byte, error) {
 	if s.ServerProperties != nil {
 		objectMap["properties"] = s.ServerProperties
 	}
-	if s.Tags != nil {
-		objectMap["tags"] = s.Tags
-	}
 	if s.Location != nil {
 		objectMap["location"] = s.Location
+	}
+	if s.Tags != nil {
+		objectMap["tags"] = s.Tags
 	}
 	if s.ID != nil {
 		objectMap["id"] = s.ID
@@ -9295,15 +9295,6 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 				}
 				s.ServerProperties = &serverProperties
 			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				s.Tags = tags
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -9312,6 +9303,15 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				s.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				s.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -11277,17 +11277,17 @@ type ServiceTierAdvisorProperties struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Sku an ARM Resource SKU.
+// Sku the resource model definition representing SKU
 type Sku struct {
-	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the particular SKU, e.g. Basic, Premium.
+	// Tier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
 	Tier *string `json:"tier,omitempty"`
-	// Size - Size of the particular SKU
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// Capacity - Capacity of the particular SKU.
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
@@ -13198,10 +13198,10 @@ func (future SyncMembersUpdateFuture) Result(client SyncMembersClient) (sm SyncM
 
 // TrackedResource ARM tracked top level resource.
 type TrackedResource struct {
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -13213,11 +13213,11 @@ type TrackedResource struct {
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.Tags != nil {
-		objectMap["tags"] = tr.Tags
-	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
 	}
 	if tr.ID != nil {
 		objectMap["id"] = tr.ID

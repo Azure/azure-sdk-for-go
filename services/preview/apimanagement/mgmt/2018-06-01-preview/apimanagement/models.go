@@ -4820,6 +4820,8 @@ type LoggerContractProperties struct {
 	Credentials map[string]*string `json:"credentials"`
 	// IsBuffered - Whether records are buffered in the logger before publishing. Default is assumed to be true.
 	IsBuffered *bool `json:"isBuffered,omitempty"`
+	// ResourceID - Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application Insights resource).
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LoggerContractProperties.
@@ -4836,6 +4838,9 @@ func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	}
 	if lcp.IsBuffered != nil {
 		objectMap["isBuffered"] = lcp.IsBuffered
+	}
+	if lcp.ResourceID != nil {
+		objectMap["resourceId"] = lcp.ResourceID
 	}
 	return json.Marshal(objectMap)
 }

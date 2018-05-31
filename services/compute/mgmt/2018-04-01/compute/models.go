@@ -3688,25 +3688,6 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 	return *page.rsr.Value
 }
 
-// ResourceUpdate the Resource model definition.
-type ResourceUpdate struct {
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	Sku  *DiskSku           `json:"sku,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceUpdate.
-func (ru ResourceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ru.Tags != nil {
-		objectMap["tags"] = ru.Tags
-	}
-	if ru.Sku != nil {
-		objectMap["sku"] = ru.Sku
-	}
-	return json.Marshal(objectMap)
-}
-
 // RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation
 type RollbackStatusInfo struct {
 	// SuccessfullyRolledbackInstanceCount - The number of instances which have been successfully rolled back.
@@ -4657,7 +4638,7 @@ type SnapshotUpdate struct {
 	*DiskUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	Sku  *DiskSku           `json:"sku,omitempty"`
+	Sku  *SnapshotSku       `json:"sku,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotUpdate.
@@ -4704,7 +4685,7 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 			}
 		case "sku":
 			if v != nil {
-				var sku DiskSku
+				var sku SnapshotSku
 				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err

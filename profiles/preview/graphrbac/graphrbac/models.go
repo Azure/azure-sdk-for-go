@@ -56,6 +56,7 @@ type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationUpdateParameters = original.ApplicationUpdateParameters
+type AppRole = original.AppRole
 type CheckGroupMembershipParameters = original.CheckGroupMembershipParameters
 type CheckGroupMembershipResult = original.CheckGroupMembershipResult
 type BasicDirectoryObject = original.BasicDirectoryObject

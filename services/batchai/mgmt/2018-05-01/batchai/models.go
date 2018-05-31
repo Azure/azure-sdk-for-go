@@ -338,16 +338,12 @@ type Cluster struct {
 	autorest.Response `json:"-"`
 	// ClusterProperties - The properties associated with the Cluster.
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
-	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Cluster.
@@ -364,12 +360,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	}
 	if c.Type != nil {
 		objectMap["type"] = c.Type
-	}
-	if c.Location != nil {
-		objectMap["location"] = c.Location
-	}
-	if c.Tags != nil {
-		objectMap["tags"] = c.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -419,24 +409,6 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 				}
 				c.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				c.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				c.Tags = tags
-			}
 		}
 	}
 
@@ -458,10 +430,6 @@ type ClusterBaseProperties struct {
 
 // ClusterCreateParameters parameters supplied to the Create operation.
 type ClusterCreateParameters struct {
-	// Location - The region in which to create the cluster.
-	Location *string `json:"location,omitempty"`
-	// Tags - The user specified tags associated with the Cluster.
-	Tags map[string]*string `json:"tags"`
 	// ClusterBaseProperties - The properties of the Cluster.
 	*ClusterBaseProperties `json:"properties,omitempty"`
 }
@@ -469,12 +437,6 @@ type ClusterCreateParameters struct {
 // MarshalJSON is the custom marshaler for ClusterCreateParameters.
 func (ccp ClusterCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ccp.Location != nil {
-		objectMap["location"] = ccp.Location
-	}
-	if ccp.Tags != nil {
-		objectMap["tags"] = ccp.Tags
-	}
 	if ccp.ClusterBaseProperties != nil {
 		objectMap["properties"] = ccp.ClusterBaseProperties
 	}
@@ -490,24 +452,6 @@ func (ccp *ClusterCreateParameters) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				ccp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ccp.Tags = tags
-			}
 		case "properties":
 			if v != nil {
 				var clusterBaseProperties ClusterBaseProperties
@@ -747,8 +691,6 @@ func (future ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.Re
 
 // ClusterUpdateParameters parameters supplied to the Update operation.
 type ClusterUpdateParameters struct {
-	// Tags - The user specified tags associated with the Cluster.
-	Tags map[string]*string `json:"tags"`
 	// ClusterUpdateProperties - The properties of the Cluster.
 	*ClusterUpdateProperties `json:"properties,omitempty"`
 }
@@ -756,9 +698,6 @@ type ClusterUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ClusterUpdateParameters.
 func (cup ClusterUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cup.Tags != nil {
-		objectMap["tags"] = cup.Tags
-	}
 	if cup.ClusterUpdateProperties != nil {
 		objectMap["properties"] = cup.ClusterUpdateProperties
 	}
@@ -774,15 +713,6 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				cup.Tags = tags
-			}
 		case "properties":
 			if v != nil {
 				var clusterUpdateProperties ClusterUpdateProperties
@@ -821,9 +751,10 @@ type CNTKsettings struct {
 // ContainerSettings settings for the container to be downloaded.
 type ContainerSettings struct {
 	ImageSourceRegistry *ImageSourceRegistry `json:"imageSourceRegistry,omitempty"`
+	ShmSize             *string              `json:"shmSize,omitempty"`
 }
 
-// CustomMpiSettings specifies the settings for a custom tool kit job.
+// CustomMpiSettings specifies the settings for a custom MPI job.
 type CustomMpiSettings struct {
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ProcessCount - The default value for this property is equal to nodeCount property
@@ -1353,16 +1284,12 @@ type FileServer struct {
 	autorest.Response `json:"-"`
 	// FileServerProperties - The properties associated with the File Server.
 	*FileServerProperties `json:"properties,omitempty"`
-	// ID - The ID of the resource
+	// ID - The ID of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - The name of the resource
+	// Name - The name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the resource
+	// Type - The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource
-	Location *string `json:"location,omitempty"`
-	// Tags - The tags of the resource
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for FileServer.
@@ -1379,12 +1306,6 @@ func (fs FileServer) MarshalJSON() ([]byte, error) {
 	}
 	if fs.Type != nil {
 		objectMap["type"] = fs.Type
-	}
-	if fs.Location != nil {
-		objectMap["location"] = fs.Location
-	}
-	if fs.Tags != nil {
-		objectMap["tags"] = fs.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1434,24 +1355,6 @@ func (fs *FileServer) UnmarshalJSON(body []byte) error {
 				}
 				fs.Type = &typeVar
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				fs.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				fs.Tags = tags
-			}
 		}
 	}
 
@@ -1469,10 +1372,6 @@ type FileServerBaseProperties struct {
 
 // FileServerCreateParameters parameters supplied to the Create operation.
 type FileServerCreateParameters struct {
-	// Location - The region in which to create the File Server.
-	Location *string `json:"location,omitempty"`
-	// Tags - The user specified tags associated with the File Server.
-	Tags map[string]*string `json:"tags"`
 	// FileServerBaseProperties - The properties of the File Server.
 	*FileServerBaseProperties `json:"properties,omitempty"`
 }
@@ -1480,12 +1379,6 @@ type FileServerCreateParameters struct {
 // MarshalJSON is the custom marshaler for FileServerCreateParameters.
 func (fscp FileServerCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fscp.Location != nil {
-		objectMap["location"] = fscp.Location
-	}
-	if fscp.Tags != nil {
-		objectMap["tags"] = fscp.Tags
-	}
 	if fscp.FileServerBaseProperties != nil {
 		objectMap["properties"] = fscp.FileServerBaseProperties
 	}
@@ -1501,24 +1394,6 @@ func (fscp *FileServerCreateParameters) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				fscp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				fscp.Tags = tags
-			}
 		case "properties":
 			if v != nil {
 				var fileServerBaseProperties FileServerBaseProperties
@@ -1757,7 +1632,7 @@ func (future FileServersDeleteFuture) Result(client FileServersClient) (ar autor
 	return
 }
 
-// HorovodSettings specifies the settings for Chainer job.
+// HorovodSettings specifies the settings for Horovod job.
 type HorovodSettings struct {
 	PythonScriptFilePath  *string `json:"pythonScriptFilePath,omitempty"`
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
@@ -2061,9 +1936,9 @@ type JobPreparation struct {
 
 // JobProperties job specific properties.
 type JobProperties struct {
-	// Priority - Priority associated with the job. Possible values include: 'Low', 'Normal', 'High'
-	Priority JobPriority `json:"priority,omitempty"`
-	Cluster  *ResourceID `json:"cluster,omitempty"`
+	// SchedulingPriority - Scheduling priority associated with the job. Possible values include: 'Low', 'Normal', 'High'
+	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
+	Cluster            *ResourceID `json:"cluster,omitempty"`
 	// MountVolumes - These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
 	MountVolumes *MountVolumes `json:"mountVolumes,omitempty"`
 	// JobOutputDirectoryPathSegment - Batch AI creates job's output directories under an unique path to avoid conflicts between jobs. This value contains a path segment generated by Batch AI to make the path unique and can be used to find the output directory on the node or mounted filesystem.
@@ -2078,6 +1953,7 @@ type JobProperties struct {
 	PyTorchSettings       *PyTorchSettings       `json:"pyTorchSettings,omitempty"`
 	TensorFlowSettings    *TensorFlowSettings    `json:"tensorFlowSettings,omitempty"`
 	CaffeSettings         *CaffeSettings         `json:"caffeSettings,omitempty"`
+	Caffe2Settings        *Caffe2Settings        `json:"caffe2Settings,omitempty"`
 	ChainerSettings       *ChainerSettings       `json:"chainerSettings,omitempty"`
 	CustomToolkitSettings *CustomToolkitSettings `json:"customToolkitSettings,omitempty"`
 	CustomMpiSettings     *CustomMpiSettings     `json:"customMpiSettings,omitempty"`
@@ -3160,4 +3036,19 @@ func (future WorkspacesDeleteFuture) Result(client WorkspacesClient) (ar autores
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesDeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
+}
+
+// WorkspaceUpdateParameters parameters supplied to the Update operation.
+type WorkspaceUpdateParameters struct {
+	// Tags - The user specified tags associated with the Workspace.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceUpdateParameters.
+func (wup WorkspaceUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wup.Tags != nil {
+		objectMap["tags"] = wup.Tags
+	}
+	return json.Marshal(objectMap)
 }

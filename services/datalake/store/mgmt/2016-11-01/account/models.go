@@ -231,12 +231,11 @@ func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
 // AccountsCreateFutureType an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsCreateFutureType struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AccountsCreateFutureType) Result(client AccountsClient) (dlsa DataLakeStoreAccount, err error) {
+func (future *AccountsCreateFutureType) Result(client AccountsClient) (dlsa DataLakeStoreAccount, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -244,34 +243,15 @@ func (future AccountsCreateFutureType) Result(client AccountsClient) (dlsa DataL
 		return
 	}
 	if !done {
-		return dlsa, azure.NewAsyncOpIncompleteError("account.AccountsCreateFutureType")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		dlsa, err = client.CreateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("account.AccountsCreateFutureType")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dlsa.Response.Response, err = future.GetResult(sender); err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
+		dlsa, err = client.CreateResponder(dlsa.Response.Response)
 		if err != nil {
-			return
+			err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", dlsa.Response.Response, "Failure responding to request")
 		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", resp, "Failure sending request")
-		return
-	}
-	dlsa, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsCreateFutureType", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -279,12 +259,11 @@ func (future AccountsCreateFutureType) Result(client AccountsClient) (dlsa DataL
 // AccountsDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsDeleteFutureType struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AccountsDeleteFutureType) Result(client AccountsClient) (ar autorest.Response, err error) {
+func (future *AccountsDeleteFutureType) Result(client AccountsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -292,47 +271,21 @@ func (future AccountsDeleteFutureType) Result(client AccountsClient) (ar autores
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("account.AccountsDeleteFutureType")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "account.AccountsDeleteFutureType", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("account.AccountsDeleteFutureType")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsDeleteFutureType", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsDeleteFutureType", "Result", resp, "Failure responding to request")
-	}
+	ar.Response = future.Response()
 	return
 }
 
 // AccountsUpdateFutureType an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsUpdateFutureType struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future AccountsUpdateFutureType) Result(client AccountsClient) (dlsa DataLakeStoreAccount, err error) {
+func (future *AccountsUpdateFutureType) Result(client AccountsClient) (dlsa DataLakeStoreAccount, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -340,34 +293,15 @@ func (future AccountsUpdateFutureType) Result(client AccountsClient) (dlsa DataL
 		return
 	}
 	if !done {
-		return dlsa, azure.NewAsyncOpIncompleteError("account.AccountsUpdateFutureType")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		dlsa, err = client.UpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("account.AccountsUpdateFutureType")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dlsa.Response.Response, err = future.GetResult(sender); err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
+		dlsa, err = client.UpdateResponder(dlsa.Response.Response)
 		if err != nil {
-			return
+			err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", dlsa.Response.Response, "Failure responding to request")
 		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", resp, "Failure sending request")
-		return
-	}
-	dlsa, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "account.AccountsUpdateFutureType", "Result", resp, "Failure responding to request")
 	}
 	return
 }

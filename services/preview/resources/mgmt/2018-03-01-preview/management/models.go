@@ -335,12 +335,11 @@ func (cmgr *CreateManagementGroupRequest) UnmarshalJSON(body []byte) error {
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future CreateOrUpdateFuture) Result(client Client) (so SetObject, err error) {
+func (future *CreateOrUpdateFuture) Result(client Client) (so SetObject, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -348,34 +347,15 @@ func (future CreateOrUpdateFuture) Result(client Client) (so SetObject, err erro
 		return
 	}
 	if !done {
-		return so, azure.NewAsyncOpIncompleteError("managementgroups.CreateOrUpdateFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		so, err = client.CreateOrUpdateResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("managementgroups.CreateOrUpdateFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.CreateOrUpdateResponder(so.Response.Response)
 		if err != nil {
-			return
+			err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
 		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	so, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -393,12 +373,11 @@ type CreateParentGroupInfo struct {
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeleteFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future DeleteFuture) Result(client Client) (or OperationResults, err error) {
+func (future *DeleteFuture) Result(client Client) (or OperationResults, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -406,34 +385,15 @@ func (future DeleteFuture) Result(client Client) (or OperationResults, err error
 		return
 	}
 	if !done {
-		return or, azure.NewAsyncOpIncompleteError("managementgroups.DeleteFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		or, err = client.DeleteResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("managementgroups.DeleteFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+		or, err = client.DeleteResponder(or.Response.Response)
 		if err != nil {
-			return
+			err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", or.Response.Response, "Failure responding to request")
 		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	or, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }

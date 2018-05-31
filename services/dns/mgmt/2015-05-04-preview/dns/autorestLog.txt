@@ -1,0 +1,11 @@
+Executing Command: "autorest C:/vladdb/devdiv/repos/azure/azure-rest-api-specs/specification/dns/resource-manager/readme.md --go --go-sdk-folder='C:/vladdb/devdiv/repos/Go/src/github.com/Azure/azure-sdk-for-go' --verbose --tag=package-2015-05-preview --use=@microsoft.azure/autorest.go@v2.1.62 --use-onever"
+AutoRest code generation utility [version: 2.0.4215]
+(C) 2017 Microsoft Corporation.
+https://aka.ms/autorest
+
+There is a new version of AutoRest available (2.0.4245).
+ > You can install the newer version with with npm install -g autorest@latest
+
+   Loading AutoRest core      'C:\Users\vladdb\.autorest\@microsoft.azure_autorest-core@2.0.4245\node_modules\@microsoft.azure\autorest-core\dist' (2.0.4245)
+   Loading AutoRest extension '@microsoft.azure/autorest.go' (v2.1.62->2.1.62)
+   Loading AutoRest extension '@microsoft.azure/autorest.modeler' (2.3.38->2.3.38)

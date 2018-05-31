@@ -33413,6 +33413,18 @@ type FactoryProperties struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - Version of the factory.
 	Version *string `json:"version,omitempty"`
+	// VstsConfiguration - VSTS repo information of the factory.
+	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
+}
+
+// FactoryRepoUpdate factory's VSTS repo information.
+type FactoryRepoUpdate struct {
+	// FactoryResourceID - The factory resource id.
+	FactoryResourceID *string `json:"factoryResourceId,omitempty"`
+	// ResourceGroupName - The resource group name.
+	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	// VstsConfiguration - VSTS repo information of the factory.
+	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
 }
 
 // FactoryUpdateParameters parameters for updating a factory resource.
@@ -33433,6 +33445,24 @@ func (fup FactoryUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap["identity"] = fup.Identity
 	}
 	return json.Marshal(objectMap)
+}
+
+// FactoryVSTSConfiguration factory's VSTS repo information.
+type FactoryVSTSConfiguration struct {
+	// AccountName - VSTS account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// ProjectName - VSTS project name.
+	ProjectName *string `json:"projectName,omitempty"`
+	// RepositoryName - VSTS repository name.
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// CollaborationBranch - VSTS collaboration branch.
+	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	// RootFolder - VSTS root folder.
+	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - VSTS last commit id.
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// TenantID - VSTS tenant id.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // FileServerLinkedService file system linked service.
@@ -49802,12 +49832,11 @@ func (irsp IntegrationRuntimeSsisProperties) MarshalJSON() ([]byte, error) {
 // operation.
 type IntegrationRuntimesStartFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesClient) (irsr IntegrationRuntimeStatusResponse, err error) {
+func (future *IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesClient) (irsr IntegrationRuntimeStatusResponse, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -49815,34 +49844,15 @@ func (future IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesCl
 		return
 	}
 	if !done {
-		return irsr, azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		irsr, err = client.StartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStartFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if irsr.Response.Response, err = future.GetResult(sender); err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
+		irsr, err = client.StartResponder(irsr.Response.Response)
 		if err != nil {
-			return
+			err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", irsr.Response.Response, "Failure responding to request")
 		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	irsr, err = client.StartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -49851,12 +49861,11 @@ func (future IntegrationRuntimesStartFuture) Result(client IntegrationRuntimesCl
 // operation.
 type IntegrationRuntimesStopFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future IntegrationRuntimesStopFuture) Result(client IntegrationRuntimesClient) (ar autorest.Response, err error) {
+func (future *IntegrationRuntimesStopFuture) Result(client IntegrationRuntimesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -49864,35 +49873,10 @@ func (future IntegrationRuntimesStopFuture) Result(client IntegrationRuntimesCli
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStopFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.StopResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStopFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStopFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStopFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.StopResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStopFuture", "Result", resp, "Failure responding to request")
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -68205,6 +68189,10 @@ type QuickBooksLinkedServiceTypeProperties struct {
 	Endpoint interface{} `json:"endpoint,omitempty"`
 	// CompanyID - The company ID of the QuickBooks company to authorize.
 	CompanyID interface{} `json:"companyId,omitempty"`
+	// ConsumerKey - The consumer key for OAuth 1.0 authentication.
+	ConsumerKey interface{} `json:"consumerKey,omitempty"`
+	// ConsumerSecret - The consumer secret for OAuth 1.0 authentication.
+	ConsumerSecret BasicSecretBase `json:"consumerSecret,omitempty"`
 	// AccessToken - The access token for OAuth 1.0 authentication.
 	AccessToken BasicSecretBase `json:"accessToken,omitempty"`
 	// AccessTokenSecret - The access token secret for OAuth 1.0 authentication.
@@ -68241,6 +68229,23 @@ func (qblstp *QuickBooksLinkedServiceTypeProperties) UnmarshalJSON(body []byte) 
 					return err
 				}
 				qblstp.CompanyID = companyID
+			}
+		case "consumerKey":
+			if v != nil {
+				var consumerKey interface{}
+				err = json.Unmarshal(*v, &consumerKey)
+				if err != nil {
+					return err
+				}
+				qblstp.ConsumerKey = consumerKey
+			}
+		case "consumerSecret":
+			if v != nil {
+				consumerSecret, err := unmarshalBasicSecretBase(*v)
+				if err != nil {
+					return err
+				}
+				qblstp.ConsumerSecret = consumerSecret
 			}
 		case "accessToken":
 			if v != nil {
@@ -78497,7 +78502,7 @@ func (snls *ServiceNowLinkedService) UnmarshalJSON(body []byte) error {
 
 // ServiceNowLinkedServiceTypeProperties serviceNow server linked service properties.
 type ServiceNowLinkedServiceTypeProperties struct {
-	// Endpoint - The endpoint of the ServiceNow server. (i.e. ServiceNowData.com)
+	// Endpoint - The endpoint of the ServiceNow server. (i.e. <instance>.service-now.com)
 	Endpoint interface{} `json:"endpoint,omitempty"`
 	// AuthenticationType - The authentication type to use. Possible values include: 'ServiceNowAuthenticationTypeBasic', 'ServiceNowAuthenticationTypeOAuth2'
 	AuthenticationType ServiceNowAuthenticationType `json:"authenticationType,omitempty"`
@@ -87445,12 +87450,11 @@ func (page TriggerRunListResponsePage) Values() []TriggerRun {
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersStartFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future TriggersStartFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
+func (future *TriggersStartFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -87458,47 +87462,21 @@ func (future TriggersStartFuture) Result(client TriggersClient) (ar autorest.Res
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("datafactory.TriggersStartFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.StartResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStartFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.StartResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStartFuture", "Result", resp, "Failure responding to request")
-	}
+	ar.Response = future.Response()
 	return
 }
 
 // TriggersStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersStopFuture struct {
 	azure.Future
-	req *http.Request
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future TriggersStopFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
+func (future *TriggersStopFuture) Result(client TriggersClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -87506,35 +87484,10 @@ func (future TriggersStopFuture) Result(client TriggersClient) (ar autorest.Resp
 		return
 	}
 	if !done {
-		return ar, azure.NewAsyncOpIncompleteError("datafactory.TriggersStopFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		ar, err = client.StopResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", future.Response(), "Failure responding to request")
-		}
+		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStopFuture")
 		return
 	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	ar, err = client.StopResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.TriggersStopFuture", "Result", resp, "Failure responding to request")
-	}
+	ar.Response = future.Response()
 	return
 }
 

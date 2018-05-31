@@ -754,7 +754,7 @@ type ContainerSettings struct {
 	ShmSize             *string              `json:"shmSize,omitempty"`
 }
 
-// CustomMpiSettings specifies the settings for a custom tool kit job.
+// CustomMpiSettings specifies the settings for a custom MPI job.
 type CustomMpiSettings struct {
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ProcessCount - The default value for this property is equal to nodeCount property
@@ -1632,7 +1632,7 @@ func (future FileServersDeleteFuture) Result(client FileServersClient) (ar autor
 	return
 }
 
-// HorovodSettings specifies the settings for Chainer job.
+// HorovodSettings specifies the settings for Horovod job.
 type HorovodSettings struct {
 	PythonScriptFilePath  *string `json:"pythonScriptFilePath,omitempty"`
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`

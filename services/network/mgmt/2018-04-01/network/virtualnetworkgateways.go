@@ -614,6 +614,77 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutesResponder(resp *http.
 	return
 }
 
+// GetVpnclientIpsecParameters the Get VpnclientIpsecParameters operation retrieves information about the vpnclient
+// ipsec policy for P2S client of virtual network gateway in the specified resource group through Network resource
+// provider.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// virtualNetworkGatewayName - the virtual network gateway name.
+func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture, err error) {
+	req, err := client.GetVpnclientIpsecParametersPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetVpnclientIpsecParameters", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.GetVpnclientIpsecParametersSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetVpnclientIpsecParameters", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// GetVpnclientIpsecParametersPreparer prepares the GetVpnclientIpsecParameters request.
+func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParametersPreparer(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+		"virtualNetworkGatewayName": autorest.Encode("path", virtualNetworkGatewayName),
+	}
+
+	const APIVersion = "2018-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getvpnclientipsecparameters", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetVpnclientIpsecParametersSender sends the GetVpnclientIpsecParameters request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParametersSender(req *http.Request) (future VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	return
+}
+
+// GetVpnclientIpsecParametersResponder handles the response to the GetVpnclientIpsecParameters request. The method always
+// closes the http.Response Body.
+func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParametersResponder(resp *http.Response) (result VpnClientIPsecParameters, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetVpnProfilePackageURL gets pre-generated VPN profile for P2S client of the virtual network gateway in the
 // specified resource group. The profile needs to be generated first using generateVpnProfile.
 // Parameters:
@@ -936,6 +1007,87 @@ func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (futur
 // ResetResponder handles the response to the Reset request. The method always
 // closes the http.Response Body.
 func (client VirtualNetworkGatewaysClient) ResetResponder(resp *http.Response) (result VirtualNetworkGateway, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// SetVpnclientIpsecParameters the Set VpnclientIpsecParameters operation sets the vpnclient ipsec policy for P2S
+// client of virtual network gateway in the specified resource group through Network resource provider.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// virtualNetworkGatewayName - the name of the virtual network gateway.
+// vpnclientIpsecParams - parameters supplied to the Begin Set vpnclient ipsec parameters of Virtual Network
+// Gateway P2S client operation through Network resource provider.
+func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParameters(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIpsecParams VpnClientIPsecParameters) (result VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: vpnclientIpsecParams,
+			Constraints: []validation.Constraint{{Target: "vpnclientIpsecParams.SaLifeTimeSeconds", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "vpnclientIpsecParams.SaDataSizeKilobytes", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "SetVpnclientIpsecParameters", err.Error())
+	}
+
+	req, err := client.SetVpnclientIpsecParametersPreparer(ctx, resourceGroupName, virtualNetworkGatewayName, vpnclientIpsecParams)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "SetVpnclientIpsecParameters", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.SetVpnclientIpsecParametersSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "SetVpnclientIpsecParameters", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// SetVpnclientIpsecParametersPreparer prepares the SetVpnclientIpsecParameters request.
+func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParametersPreparer(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, vpnclientIpsecParams VpnClientIPsecParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+		"virtualNetworkGatewayName": autorest.Encode("path", virtualNetworkGatewayName),
+	}
+
+	const APIVersion = "2018-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/setvpnclientipsecparameters", pathParameters),
+		autorest.WithJSON(vpnclientIpsecParams),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SetVpnclientIpsecParametersSender sends the SetVpnclientIpsecParameters request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParametersSender(req *http.Request) (future VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture, err error) {
+	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
+	future.Future = azure.NewFuture(req)
+	future.req = req
+	_, err = future.Done(sender)
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(future.Response(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	return
+}
+
+// SetVpnclientIpsecParametersResponder handles the response to the SetVpnclientIpsecParameters request. The method always
+// closes the http.Response Body.
+func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParametersResponder(resp *http.Response) (result VpnClientIPsecParameters, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

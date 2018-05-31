@@ -17486,55 +17486,6 @@ func (future VirtualNetworkGatewaysGetLearnedRoutesFuture) Result(client Virtual
 	return
 }
 
-// VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return vcipp, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		vcipp, err = client.GetVpnclientIpsecParametersResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	vcipp, err = client.GetVpnclientIpsecParametersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
 // VirtualNetworkGatewaysGetVpnProfilePackageURLFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture struct {
@@ -17639,55 +17590,6 @@ func (future VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGate
 	vng, err = client.ResetResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", resp, "Failure responding to request")
-	}
-	return
-}
-
-// VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture struct {
-	azure.Future
-	req *http.Request
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		return vcipp, azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture")
-	}
-	if future.PollingMethod() == azure.PollingLocation {
-		vcipp, err = client.SetVpnclientIpsecParametersResponder(future.Response())
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", future.Response(), "Failure responding to request")
-		}
-		return
-	}
-	var req *http.Request
-	var resp *http.Response
-	if future.PollingURL() != "" {
-		req, err = http.NewRequest(http.MethodGet, future.PollingURL(), nil)
-		if err != nil {
-			return
-		}
-	} else {
-		req = autorest.ChangeToGet(future.req)
-	}
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", resp, "Failure sending request")
-		return
-	}
-	vcipp, err = client.SetVpnclientIpsecParametersResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", resp, "Failure responding to request")
 	}
 	return
 }
@@ -18459,7 +18361,6 @@ type VpnClientConfiguration struct {
 
 // VpnClientIPsecParameters an IPSec parameters for a virtual network gateway P2S connection.
 type VpnClientIPsecParameters struct {
-	autorest.Response `json:"-"`
 	// SaLifeTimeSeconds - The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
 	SaLifeTimeSeconds *int32 `json:"saLifeTimeSeconds,omitempty"`
 	// SaDataSizeKilobytes - The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for P2S client..

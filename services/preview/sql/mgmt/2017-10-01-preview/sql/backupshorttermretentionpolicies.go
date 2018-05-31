@@ -24,21 +24,22 @@ import (
 	"net/http"
 )
 
-// ShortTermRetentionPoliciesClient is the the Azure SQL Database management API provides a RESTful set of web services
-// that interact with Azure SQL Database services to manage your databases. The API enables you to create, retrieve,
-// update, and delete databases.
-type ShortTermRetentionPoliciesClient struct {
+// BackupShortTermRetentionPoliciesClient is the the Azure SQL Database management API provides a RESTful set of web
+// services that interact with Azure SQL Database services to manage your databases. The API enables you to create,
+// retrieve, update, and delete databases.
+type BackupShortTermRetentionPoliciesClient struct {
 	BaseClient
 }
 
-// NewShortTermRetentionPoliciesClient creates an instance of the ShortTermRetentionPoliciesClient client.
-func NewShortTermRetentionPoliciesClient(subscriptionID string) ShortTermRetentionPoliciesClient {
-	return NewShortTermRetentionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewBackupShortTermRetentionPoliciesClient creates an instance of the BackupShortTermRetentionPoliciesClient client.
+func NewBackupShortTermRetentionPoliciesClient(subscriptionID string) BackupShortTermRetentionPoliciesClient {
+	return NewBackupShortTermRetentionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewShortTermRetentionPoliciesClientWithBaseURI creates an instance of the ShortTermRetentionPoliciesClient client.
-func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ShortTermRetentionPoliciesClient {
-	return ShortTermRetentionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewBackupShortTermRetentionPoliciesClientWithBaseURI creates an instance of the
+// BackupShortTermRetentionPoliciesClient client.
+func NewBackupShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupShortTermRetentionPoliciesClient {
+	return BackupShortTermRetentionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate updates a database's short term retention policy.
@@ -48,16 +49,16 @@ func NewShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscription
 // serverName - the name of the server.
 // databaseName - the name of the database.
 // parameters - the short term retention policy info.
-func (client ShortTermRetentionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ShortTermRetentionPolicy) (result ShortTermRetentionPoliciesCreateOrUpdateFuture, err error) {
+func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupShortTermRetentionPolicy) (result BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error) {
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, databaseName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -65,7 +66,7 @@ func (client ShortTermRetentionPoliciesClient) CreateOrUpdate(ctx context.Contex
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ShortTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ShortTermRetentionPolicy) (*http.Request, error) {
+func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupShortTermRetentionPolicy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"policyName":        autorest.Encode("path", "default"),
@@ -91,22 +92,24 @@ func (client ShortTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx contex
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ShortTermRetentionPoliciesClient) CreateOrUpdateSender(req *http.Request) (future ShortTermRetentionPoliciesCreateOrUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdateSender(req *http.Request) (future BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ShortTermRetentionPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result ShortTermRetentionPolicy, err error) {
+func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result BackupShortTermRetentionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -123,30 +126,30 @@ func (client ShortTermRetentionPoliciesClient) CreateOrUpdateResponder(resp *htt
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // databaseName - the name of the database.
-func (client ShortTermRetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result ShortTermRetentionPolicy, err error) {
+func (client BackupShortTermRetentionPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result BackupShortTermRetentionPolicy, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ShortTermRetentionPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
+func (client BackupShortTermRetentionPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"policyName":        autorest.Encode("path", "default"),
@@ -170,14 +173,14 @@ func (client ShortTermRetentionPoliciesClient) GetPreparer(ctx context.Context, 
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ShortTermRetentionPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client BackupShortTermRetentionPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ShortTermRetentionPoliciesClient) GetResponder(resp *http.Response) (result ShortTermRetentionPolicy, err error) {
+func (client BackupShortTermRetentionPoliciesClient) GetResponder(resp *http.Response) (result BackupShortTermRetentionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -195,16 +198,16 @@ func (client ShortTermRetentionPoliciesClient) GetResponder(resp *http.Response)
 // serverName - the name of the server.
 // databaseName - the name of the database.
 // parameters - the short term retention policy info.
-func (client ShortTermRetentionPoliciesClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ShortTermRetentionPolicy) (result ShortTermRetentionPoliciesUpdateFuture, err error) {
+func (client BackupShortTermRetentionPoliciesClient) Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupShortTermRetentionPolicy) (result BackupShortTermRetentionPoliciesUpdateFuture, err error) {
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, serverName, databaseName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ShortTermRetentionPoliciesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.BackupShortTermRetentionPoliciesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -212,7 +215,7 @@ func (client ShortTermRetentionPoliciesClient) Update(ctx context.Context, resou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ShortTermRetentionPoliciesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters ShortTermRetentionPolicy) (*http.Request, error) {
+func (client BackupShortTermRetentionPoliciesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters BackupShortTermRetentionPolicy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":      autorest.Encode("path", databaseName),
 		"policyName":        autorest.Encode("path", "default"),
@@ -238,22 +241,24 @@ func (client ShortTermRetentionPoliciesClient) UpdatePreparer(ctx context.Contex
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ShortTermRetentionPoliciesClient) UpdateSender(req *http.Request) (future ShortTermRetentionPoliciesUpdateFuture, err error) {
-	sender := autorest.DecorateSender(client, azure.DoRetryWithRegistration(client.Client))
-	future.Future = azure.NewFuture(req)
-	future.req = req
-	_, err = future.Done(sender)
+func (client BackupShortTermRetentionPoliciesClient) UpdateSender(req *http.Request) (future BackupShortTermRetentionPoliciesUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
 	}
-	err = autorest.Respond(future.Response(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
 	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ShortTermRetentionPoliciesClient) UpdateResponder(resp *http.Response) (result ShortTermRetentionPolicy, err error) {
+func (client BackupShortTermRetentionPoliciesClient) UpdateResponder(resp *http.Response) (result BackupShortTermRetentionPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

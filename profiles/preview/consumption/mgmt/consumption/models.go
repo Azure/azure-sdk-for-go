@@ -21,7 +21,7 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
 
-type BillingAccountClient = original.BillingAccountClient
+type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
 type BillingAccountInsightsClient = original.BillingAccountInsightsClient
 
 const (
@@ -132,16 +132,16 @@ type ReportConfigTimePeriod = original.ReportConfigTimePeriod
 type Resource = original.Resource
 type OperationsClient = original.OperationsClient
 type ReportConfigClient = original.ReportConfigClient
-type ResourceGroupClient = original.ResourceGroupClient
+type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
 type ResourceGroupInsightsClient = original.ResourceGroupInsightsClient
-type SubscriptionClient = original.SubscriptionClient
+type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
 type SubscriptionInsightsClient = original.SubscriptionInsightsClient
 
-func NewBillingAccountClient(subscriptionID string) BillingAccountClient {
-	return original.NewBillingAccountClient(subscriptionID)
+func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
+	return original.NewBillingAccountDimensionsClient(subscriptionID)
 }
-func NewBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountClient {
-	return original.NewBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountDimensionsClient {
+	return original.NewBillingAccountDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewBillingAccountInsightsClient(subscriptionID string) BillingAccountInsightsClient {
 	return original.NewBillingAccountInsightsClient(subscriptionID)
@@ -200,11 +200,11 @@ func NewReportConfigClient(subscriptionID string) ReportConfigClient {
 func NewReportConfigClientWithBaseURI(baseURI string, subscriptionID string) ReportConfigClient {
 	return original.NewReportConfigClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewResourceGroupClient(subscriptionID string) ResourceGroupClient {
-	return original.NewResourceGroupClient(subscriptionID)
+func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClient(subscriptionID)
 }
-func NewResourceGroupClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupClient {
-	return original.NewResourceGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceGroupInsightsClient(subscriptionID string) ResourceGroupInsightsClient {
 	return original.NewResourceGroupInsightsClient(subscriptionID)
@@ -212,11 +212,11 @@ func NewResourceGroupInsightsClient(subscriptionID string) ResourceGroupInsights
 func NewResourceGroupInsightsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupInsightsClient {
 	return original.NewResourceGroupInsightsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionClient(subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClient(subscriptionID)
+func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClient(subscriptionID)
 }
-func NewSubscriptionClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionClient {
-	return original.NewSubscriptionClientWithBaseURI(baseURI, subscriptionID)
+func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSubscriptionInsightsClient(subscriptionID string) SubscriptionInsightsClient {
 	return original.NewSubscriptionInsightsClient(subscriptionID)

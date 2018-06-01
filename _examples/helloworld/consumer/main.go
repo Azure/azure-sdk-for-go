@@ -27,7 +27,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	exit := make(chan struct{})
-	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Event) error {
+	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Message) error {
 		text := string(event.Data)
 		if text == "exit\n" {
 			fmt.Println("Oh snap!! Someone told me to exit!")

@@ -56,20 +56,26 @@ type (
 		*EntityManager
 	}
 
-	// QueueFeed is a specialized Feed containing QueueEntries
-	QueueFeed struct {
+	// QueueEntity is the Azure Service Bus description of a Queue for management activities
+	QueueEntity struct {
+		*QueueDescription
+		Name string
+	}
+
+	// queueFeed is a specialized Feed containing QueueEntries
+	queueFeed struct {
 		*Feed
-		Entries []QueueEntry `xml:"entry"`
+		Entries []queueEntry `xml:"entry"`
 	}
 
-	// QueueEntry is a specialized Queue Feed Entry
-	QueueEntry struct {
+	// queueEntry is a specialized Queue Feed Entry
+	queueEntry struct {
 		*Entry
-		Content *QueueContent `xml:"content"`
+		Content *queueContent `xml:"content"`
 	}
 
-	// QueueContent is a specialized Queue body for an Atom Entry
-	QueueContent struct {
+	// queueContent is a specialized Queue body for an Atom Entry
+	queueContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
 		QueueDescription QueueDescription `xml:"QueueDescription"`
@@ -214,31 +220,30 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Queue
-func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOption) (*QueueEntry, error) {
+func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOption) (*QueueEntity, error) {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
 	defer span.Finish()
 
-	queueDescription := new(QueueDescription)
-
+	qd := new(QueueDescription)
 	for _, opt := range opts {
-		if err := opt(queueDescription); err != nil {
+		if err := opt(qd); err != nil {
 			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
 
-	queueDescription.InstanceMetadataSchema = instanceMetadataSchema
-	queueDescription.ServiceBusSchema = serviceBusSchema
+	qd.InstanceMetadataSchema = instanceMetadataSchema
+	qd.ServiceBusSchema = serviceBusSchema
 
-	qe := &QueueEntry{
+	qe := &queueEntry{
 		Entry: &Entry{
 			DataServiceSchema:         dataServiceSchema,
 			DataServiceMetadataSchema: dataServiceMetadataSchema,
 			AtomSchema:                atomSchema,
 		},
-		Content: &QueueContent{
+		Content: &queueContent{
 			Type:             applicationXML,
-			QueueDescription: *queueDescription,
+			QueueDescription: *qd,
 		},
 	}
 
@@ -261,13 +266,16 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOptio
 		return nil, err
 	}
 
-	var entry QueueEntry
+	var entry queueEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+	return queueEntryToEntity(&entry), nil
 }
 
 // List fetches all of the queues for a Service Bus Namespace
-func (qm *QueueManager) List(ctx context.Context) (*QueueFeed, error) {
+func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
 	defer span.Finish()
 
@@ -283,13 +291,21 @@ func (qm *QueueManager) List(ctx context.Context) (*QueueFeed, error) {
 		return nil, err
 	}
 
-	var feed QueueFeed
+	var feed queueFeed
 	err = xml.Unmarshal(b, &feed)
-	return &feed, err
+	if err != nil {
+		return nil, err
+	}
+
+	qd := make([]*QueueEntity, len(feed.Entries))
+	for idx, entry := range feed.Entries {
+		qd[idx] = queueEntryToEntity(&entry)
+	}
+	return qd, nil
 }
 
 // Get fetches a Service Bus Queue entity by name
-func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntry, error) {
+func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, error) {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
 	defer span.Finish()
 
@@ -305,13 +321,25 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntry, erro
 		return nil, err
 	}
 
-	var entry QueueEntry
+	var entry queueEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+
+	return queueEntryToEntity(&entry), nil
+}
+
+func queueEntryToEntity(entry *queueEntry) *QueueEntity {
+	return &QueueEntity{
+		QueueDescription: &entry.Content.QueueDescription,
+		Name:             entry.Title,
+	}
 }
 
 // NewQueue creates a new Queue Sender / Receiver
-func (ns *Namespace) NewQueue(name string) *Queue {
+func (ns *Namespace) NewQueue(name string, opts ...QueueOption) *Queue {
+
 	return &Queue{
 		entity: &entity{
 			namespace: ns,
@@ -321,7 +349,7 @@ func (ns *Namespace) NewQueue(name string) *Queue {
 }
 
 // Send sends messages to the Queue
-func (q *Queue) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+func (q *Queue) Send(ctx context.Context, event *Message, opts ...SendOption) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
 	defer span.Finish()
 

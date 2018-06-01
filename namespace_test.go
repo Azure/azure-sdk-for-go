@@ -64,14 +64,14 @@ func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
 	ns := suite.getNewSasInstance()
 	qm := ns.NewQueueManager()
 
-	feed, err := qm.List(ctx)
+	qs, err := qm.List(ctx)
 	if err != nil {
 		suite.T().Fatal(err)
 	}
 
-	for _, entry := range feed.Entries {
-		if strings.HasSuffix(entry.Title, suite.TagID) {
-			err := qm.Delete(ctx, entry.Title)
+	for _, q := range qs {
+		if strings.HasSuffix(q.Name, suite.TagID) {
+			err := qm.Delete(ctx, q.Name)
 			if err != nil {
 				suite.T().Fatal(err)
 			}
@@ -83,14 +83,14 @@ func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
 	ns := suite.getNewSasInstance()
 	tm := ns.NewTopicManager()
 
-	feed, err := tm.List(ctx)
+	topics, err := tm.List(ctx)
 	if err != nil {
 		suite.T().Fatal(err)
 	}
 
-	for _, entry := range feed.Entries {
-		if strings.HasSuffix(entry.Title, suite.TagID) {
-			err := tm.Delete(ctx, entry.Title)
+	for _, topic := range topics {
+		if strings.HasSuffix(topic.Name, suite.TagID) {
+			err := tm.Delete(ctx, topic.Name)
 			if err != nil {
 				suite.T().Fatal(err)
 			}

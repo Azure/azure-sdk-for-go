@@ -28,7 +28,7 @@ func main() {
 		fmt.Print("Enter text: ")
 		text, _ := reader.ReadString('\n')
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		q.Send(ctx, servicebus.NewEventFromString(text))
+		q.Send(ctx, servicebus.NewMessageFromString(text))
 		if text == "exit\n" {
 			break
 		}

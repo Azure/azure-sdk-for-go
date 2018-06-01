@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	subscriptionDescription = `
+	subscriptionDescriptionContent = `
 	<SubscriptionDescription
       xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
@@ -56,21 +56,21 @@ const (
       <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
   </SubscriptionDescription>`
 
-	subscriptionEntry = `
+	subscriptionEntryContent = `
 	<entry xmlns="http://www.w3.org/2005/Atom">
 		<id>https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04</id>
 		<title type="text">gosbwg424p-tagz3cfzrp93m</title>
 		<published>2018-05-02T20:54:59Z</published>
 		<updated>2018-05-02T20:54:59Z</updated>
 		<link rel="self" href="https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04"/>
-		<content type="application/xml">` + subscriptionDescription +
+		<content type="application/xml">` + subscriptionDescriptionContent +
 		`</content>
 	</entry>`
 )
 
 func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
-	var entry SubscriptionEntry
-	err := xml.Unmarshal([]byte(subscriptionEntry), &entry)
+	var entry subscriptionEntry
+	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.ID)
 	assert.Equal(suite.T(), "gosbwg424p-tagz3cfzrp93m", entry.Title)
@@ -80,8 +80,8 @@ func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
 }
 
 func (suite *serviceBusSuite) TestSubscriptionUnmarshal() {
-	var entry SubscriptionEntry
-	err := xml.Unmarshal([]byte(subscriptionEntry), &entry)
+	var entry subscriptionEntry
+	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	assert.Nil(suite.T(), err)
 	t := suite.T()
 	s := entry.Content.SubscriptionDescription
@@ -124,12 +124,12 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 }
 
 func testPutSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string) {
-	topic, err := sm.Put(ctx, name)
+	sub, err := sm.Put(ctx, name)
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
-	if assert.NotNil(t, topic) {
-		assert.Equal(t, name, topic.Title)
+	if assert.NotNil(t, sub) {
+		assert.Equal(t, name, sub.Name)
 	}
 }
 
@@ -241,12 +241,12 @@ func testSubscriptionWithLockDuration(ctx context.Context, t *testing.T, sm *Sub
 	assert.Equal(t, "PT3M", *s.LockDuration)
 }
 
-func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionOption) *SubscriptionDescription {
+func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionOption) *SubscriptionEntity {
 	s, err := sm.Put(ctx, name, opts...)
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
-	return &s.Content.SubscriptionDescription
+	return s
 }
 
 func (suite *serviceBusSuite) TestSubscription() {
@@ -288,12 +288,12 @@ func (suite *serviceBusSuite) TestSubscription() {
 }
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
-	err := topic.Send(ctx, NewEventFromString("hello!"))
+	err := topic.Send(ctx, NewMessageFromString("hello!"))
 	assert.Nil(t, err)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Event) error {
+	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Message) error {
 		wg.Done()
 		return nil
 	})

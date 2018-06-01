@@ -51,26 +51,30 @@ type (
 		Topic *Topic
 	}
 
-	// SubscriptionFeed is a specialized Feed containing Topic Subscriptions
-	SubscriptionFeed struct {
-		*Feed
-		Entries []TopicEntry `xml:"entry"`
-	}
-	// SubscriptionEntry is a specialized Topic Feed Subscription
-	SubscriptionEntry struct {
-		*Entry
-		Content *SubscriptionContent `xml:"content"`
+	// SubscriptionEntity is the Azure Service Bus description of a topic Subscription for management activities
+	SubscriptionEntity struct {
+		*SubscriptionDescription
+		Name string
 	}
 
-	// SubscriptionContent is a specialized Subscription body for an Atom Entry
-	SubscriptionContent struct {
+	// subscriptionFeed is a specialized Feed containing Topic Subscriptions
+	subscriptionFeed struct {
+		*Feed
+		Entries []subscriptionEntry `xml:"entry"`
+	}
+
+	// subscriptionEntryContent is a specialized Topic Feed Subscription
+	subscriptionEntry struct {
+		*Entry
+		Content *subscriptionContent `xml:"content"`
+	}
+
+	// subscriptionContent is a specialized Subscription body for an Atom Entry
+	subscriptionContent struct {
 		XMLName                 xml.Name                `xml:"content"`
 		Type                    string                  `xml:"type,attr"`
 		SubscriptionDescription SubscriptionDescription `xml:"SubscriptionDescription"`
 	}
-
-	//<DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions>
-	//<AccessedAt>0001-01-01T00:00:00</AccessedAt>
 
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
@@ -112,30 +116,29 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Topic
-func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionOption) (*SubscriptionEntry, error) {
+func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionOption) (*SubscriptionEntity, error) {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
 	defer span.Finish()
 
-	subscriptionDescription := new(SubscriptionDescription)
-
+	sd := new(SubscriptionDescription)
 	for _, opt := range opts {
-		if err := opt(subscriptionDescription); err != nil {
+		if err := opt(sd); err != nil {
 			return nil, err
 		}
 	}
 
-	subscriptionDescription.InstanceMetadataSchema = instanceMetadataSchema
-	subscriptionDescription.ServiceBusSchema = serviceBusSchema
+	sd.InstanceMetadataSchema = instanceMetadataSchema
+	sd.ServiceBusSchema = serviceBusSchema
 
-	qe := &SubscriptionEntry{
+	qe := &subscriptionEntry{
 		Entry: &Entry{
 			DataServiceSchema:         dataServiceSchema,
 			DataServiceMetadataSchema: dataServiceMetadataSchema,
 			AtomSchema:                atomSchema,
 		},
-		Content: &SubscriptionContent{
-			Type: applicationXML,
-			SubscriptionDescription: *subscriptionDescription,
+		Content: &subscriptionContent{
+			Type:                    applicationXML,
+			SubscriptionDescription: *sd,
 		},
 	}
 
@@ -155,13 +158,16 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 		return nil, err
 	}
 
-	var entry SubscriptionEntry
+	var entry subscriptionEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+	return subscriptionEntryToEntity(&entry), nil
 }
 
 // List fetches all of the Topics for a Service Bus Namespace
-func (sm *SubscriptionManager) List(ctx context.Context) (*SubscriptionFeed, error) {
+func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity, error) {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
 	defer span.Finish()
 
@@ -175,13 +181,21 @@ func (sm *SubscriptionManager) List(ctx context.Context) (*SubscriptionFeed, err
 		return nil, err
 	}
 
-	var feed SubscriptionFeed
+	var feed subscriptionFeed
 	err = xml.Unmarshal(b, &feed)
-	return &feed, err
+	if err != nil {
+		return nil, err
+	}
+
+	subs := make([]*SubscriptionEntity, len(feed.Entries))
+	for idx, entry := range feed.Entries {
+		subs[idx] = subscriptionEntryToEntity(&entry)
+	}
+	return subs, nil
 }
 
 // Get fetches a Service Bus Topic entity by name
-func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntry, error) {
+func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntity, error) {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
 	defer span.Finish()
 
@@ -195,9 +209,19 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 		return nil, err
 	}
 
-	var entry SubscriptionEntry
+	var entry subscriptionEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+	return subscriptionEntryToEntity(&entry), nil
+}
+
+func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
+	return &SubscriptionEntity{
+		SubscriptionDescription: &entry.Content.SubscriptionDescription,
+		Name:                    entry.Title,
+	}
 }
 
 func (sm *SubscriptionManager) getResourceURI(name string) string {

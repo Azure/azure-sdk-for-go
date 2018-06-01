@@ -46,7 +46,7 @@ type (
 	}
 
 	// SendOption provides a way to customize a message on sending
-	SendOption func(event *Event) error
+	SendOption func(event *Message) error
 
 	eventer interface {
 		Set(key, value string)
@@ -88,7 +88,7 @@ func (s *sender) Close(ctx context.Context) error {
 // Send will send a message to the entity path with options
 //
 // This will retry sending the message if the server responds with a busy error.
-func (s *sender) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+func (s *sender) Send(ctx context.Context, event *Message, opts ...SendOption) error {
 	span, ctx := s.startProducerSpanFromContext(ctx, "sb.sender.Send")
 	defer span.Finish()
 
@@ -222,7 +222,7 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 // SendWithMessageID configures the message with a message ID
 func SendWithMessageID(messageID string) SendOption {
-	return func(event *Event) error {
+	return func(event *Message) error {
 		event.ID = messageID
 		return nil
 	}
@@ -231,7 +231,7 @@ func SendWithMessageID(messageID string) SendOption {
 // SendWithSession configures the message to send with a specific session and sequence. By default, a sender has a
 // default session (uuid.NewV4()) and sequence generator.
 func SendWithSession(sessionID string, sequence uint32) SendOption {
-	return func(event *Event) error {
+	return func(event *Message) error {
 		event.GroupID = &sessionID
 		event.GroupSequence = &sequence
 		return nil
@@ -242,7 +242,7 @@ func SendWithSession(sessionID string, sequence uint32) SendOption {
 // the queue distributed the message in a round robin fashion to the next available partition with the effect of not
 // enforcing FIFO ordering of messages, but enabling more efficient distribution of messages across partitions.
 func SendWithoutSessionID() SendOption {
-	return func(event *Event) error {
+	return func(event *Message) error {
 		event.GroupID = nil
 		event.GroupSequence = nil
 		return nil

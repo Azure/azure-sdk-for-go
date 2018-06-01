@@ -54,19 +54,26 @@ type (
 		*EntityManager
 	}
 
-	// TopicFeed is a specialized Feed containing Topic Entries
-	TopicFeed struct {
-		*Feed
-		Entries []TopicEntry `xml:"entry"`
-	}
-	// TopicEntry is a specialized Topic Feed Entry
-	TopicEntry struct {
-		*Entry
-		Content *TopicContent `xml:"content"`
+	// TopicEntity is the Azure Service Bus description of a Topic for management activities
+	TopicEntity struct {
+		*TopicDescription
+		Name string
 	}
 
-	// TopicContent is a specialized Topic body for an Atom Entry
-	TopicContent struct {
+	// topicFeed is a specialized Feed containing Topic Entries
+	topicFeed struct {
+		*Feed
+		Entries []topicEntry `xml:"entry"`
+	}
+
+	// topicEntry is a specialized Topic Feed Entry
+	topicEntry struct {
+		*Entry
+		Content *topicContent `xml:"content"`
+	}
+
+	// topicContent is a specialized Topic body for an Atom Entry
+	topicContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
 		TopicDescription TopicDescription `xml:"TopicDescription"`
@@ -102,31 +109,30 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Topic
-func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOption) (*TopicEntry, error) {
+func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOption) (*TopicEntity, error) {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
 	defer span.Finish()
 
-	topicDescription := new(TopicDescription)
-
+	td := new(TopicDescription)
 	for _, opt := range opts {
-		if err := opt(topicDescription); err != nil {
+		if err := opt(td); err != nil {
 			log.For(ctx).Error(err)
 			return nil, err
 		}
 	}
 
-	topicDescription.InstanceMetadataSchema = instanceMetadataSchema
-	topicDescription.ServiceBusSchema = serviceBusSchema
+	td.InstanceMetadataSchema = instanceMetadataSchema
+	td.ServiceBusSchema = serviceBusSchema
 
-	qe := &TopicEntry{
+	qe := &topicEntry{
 		Entry: &Entry{
 			DataServiceSchema:         dataServiceSchema,
 			DataServiceMetadataSchema: dataServiceMetadataSchema,
 			AtomSchema:                atomSchema,
 		},
-		Content: &TopicContent{
+		Content: &topicContent{
 			Type:             applicationXML,
-			TopicDescription: *topicDescription,
+			TopicDescription: *td,
 		},
 	}
 
@@ -149,13 +155,16 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOptio
 		return nil, err
 	}
 
-	var entry TopicEntry
+	var entry topicEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+	return topicEntryToEntity(&entry), nil
 }
 
 // List fetches all of the Topics for a Service Bus Namespace
-func (tm *TopicManager) List(ctx context.Context) (*TopicFeed, error) {
+func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
 	defer span.Finish()
 
@@ -171,13 +180,21 @@ func (tm *TopicManager) List(ctx context.Context) (*TopicFeed, error) {
 		return nil, err
 	}
 
-	var feed TopicFeed
+	var feed topicFeed
 	err = xml.Unmarshal(b, &feed)
-	return &feed, err
+	if err != nil {
+		return nil, err
+	}
+
+	topics := make([]*TopicEntity, len(feed.Entries))
+	for idx, entry := range feed.Entries {
+		topics[idx] = topicEntryToEntity(&entry)
+	}
+	return topics, nil
 }
 
 // Get fetches a Service Bus Topic entity by name
-func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntry, error) {
+func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, error) {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
 	defer span.Finish()
 
@@ -193,9 +210,19 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntry, erro
 		return nil, err
 	}
 
-	var entry TopicEntry
+	var entry topicEntry
 	err = xml.Unmarshal(b, &entry)
-	return &entry, err
+	if err != nil {
+		return nil, err
+	}
+	return topicEntryToEntity(&entry), nil
+}
+
+func topicEntryToEntity(entry *topicEntry) *TopicEntity {
+	return &TopicEntity{
+		TopicDescription: &entry.Content.TopicDescription,
+		Name:             entry.Title,
+	}
 }
 
 // NewTopic creates a new Topic Sender
@@ -209,7 +236,7 @@ func (ns *Namespace) NewTopic(name string) *Topic {
 }
 
 // Send sends messages to the Topic
-func (t *Topic) Send(ctx context.Context, event *Event, opts ...SendOption) error {
+func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) error {
 	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.Send")
 	defer span.Finish()
 

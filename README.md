@@ -48,11 +48,8 @@ ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(conn
 handleErr(err)
 
 queueName := "helloworld"
-// Create the queue if it doesn't exist
-qm := ns.NewQueueManager()
-_, err := qm.Put(context.Background(), queueName)
+q, err := ns.NewQueue(context.Background(), queueName)
 handleErr(err)
-q := ns.NewQueue(queueName)
 
 // Send message to queue
 err := q.Send(context.Background(), servicebus.NewEventFromString("Hello World!"))

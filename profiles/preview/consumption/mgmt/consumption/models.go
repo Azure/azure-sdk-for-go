@@ -21,6 +21,9 @@ package consumption
 
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
 
+type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
+type BillingAccountInsightsClient = original.BillingAccountInsightsClient
+
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
@@ -41,6 +44,12 @@ const (
 	ChargeTypeForecast ChargeType = original.ChargeTypeForecast
 )
 
+type FormatType = original.FormatType
+
+const (
+	Csv FormatType = original.Csv
+)
+
 type Grain = original.Grain
 
 const (
@@ -49,20 +58,97 @@ const (
 	Yearly  Grain = original.Yearly
 )
 
+type GranularityType = original.GranularityType
+
+const (
+	GranularityTypeDaily GranularityType = original.GranularityTypeDaily
+)
+
+type RecurrenceType = original.RecurrenceType
+
+const (
+	RecurrenceTypeAnnually RecurrenceType = original.RecurrenceTypeAnnually
+	RecurrenceTypeDaily    RecurrenceType = original.RecurrenceTypeDaily
+	RecurrenceTypeMonthly  RecurrenceType = original.RecurrenceTypeMonthly
+	RecurrenceTypeWeekly   RecurrenceType = original.RecurrenceTypeWeekly
+)
+
+type ReportConfigColumnType = original.ReportConfigColumnType
+
+const (
+	ReportConfigColumnTypeDimension ReportConfigColumnType = original.ReportConfigColumnTypeDimension
+	ReportConfigColumnTypeTag       ReportConfigColumnType = original.ReportConfigColumnTypeTag
+)
+
+type StatusType = original.StatusType
+
+const (
+	Active   StatusType = original.Active
+	Inactive StatusType = original.Inactive
+)
+
+type TimeframeType = original.TimeframeType
+
+const (
+	Custom      TimeframeType = original.Custom
+	MonthToDate TimeframeType = original.MonthToDate
+	WeekToDate  TimeframeType = original.WeekToDate
+	YearToDate  TimeframeType = original.YearToDate
+)
+
+type Dimension = original.Dimension
+type DimensionProperties = original.DimensionProperties
+type DimensionsListResult = original.DimensionsListResult
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type Forecast = original.Forecast
 type ForecastProperties = original.ForecastProperties
 type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
 type ForecastsListResult = original.ForecastsListResult
+type Insight = original.Insight
+type InsightColumn = original.InsightColumn
+type InsightProperties = original.InsightProperties
+type InsightsListResult = original.InsightsListResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type ReportConfig = original.ReportConfig
+type ReportConfigAggregation = original.ReportConfigAggregation
+type ReportConfigComparisonExpression = original.ReportConfigComparisonExpression
+type ReportConfigDataset = original.ReportConfigDataset
+type ReportConfigDatasetConfiguration = original.ReportConfigDatasetConfiguration
+type ReportConfigDefinition = original.ReportConfigDefinition
+type ReportConfigDeliveryDestination = original.ReportConfigDeliveryDestination
+type ReportConfigDeliveryInfo = original.ReportConfigDeliveryInfo
+type ReportConfigFilter = original.ReportConfigFilter
+type ReportConfigGrouping = original.ReportConfigGrouping
+type ReportConfigListResult = original.ReportConfigListResult
+type ReportConfigProperties = original.ReportConfigProperties
+type ReportConfigRecurrencePeriod = original.ReportConfigRecurrencePeriod
+type ReportConfigSchedule = original.ReportConfigSchedule
+type ReportConfigTimePeriod = original.ReportConfigTimePeriod
 type Resource = original.Resource
 type OperationsClient = original.OperationsClient
+type ReportConfigClient = original.ReportConfigClient
+type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
+type ResourceGroupInsightsClient = original.ResourceGroupInsightsClient
+type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
+type SubscriptionInsightsClient = original.SubscriptionInsightsClient
 
+func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
+	return original.NewBillingAccountDimensionsClient(subscriptionID)
+}
+func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountDimensionsClient {
+	return original.NewBillingAccountDimensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBillingAccountInsightsClient(subscriptionID string) BillingAccountInsightsClient {
+	return original.NewBillingAccountInsightsClient(subscriptionID)
+}
+func NewBillingAccountInsightsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountInsightsClient {
+	return original.NewBillingAccountInsightsClientWithBaseURI(baseURI, subscriptionID)
+}
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
@@ -81,14 +167,62 @@ func PossibleBoundValues() []Bound {
 func PossibleChargeTypeValues() []ChargeType {
 	return original.PossibleChargeTypeValues()
 }
+func PossibleFormatTypeValues() []FormatType {
+	return original.PossibleFormatTypeValues()
+}
 func PossibleGrainValues() []Grain {
 	return original.PossibleGrainValues()
+}
+func PossibleGranularityTypeValues() []GranularityType {
+	return original.PossibleGranularityTypeValues()
+}
+func PossibleRecurrenceTypeValues() []RecurrenceType {
+	return original.PossibleRecurrenceTypeValues()
+}
+func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
+	return original.PossibleReportConfigColumnTypeValues()
+}
+func PossibleStatusTypeValues() []StatusType {
+	return original.PossibleStatusTypeValues()
+}
+func PossibleTimeframeTypeValues() []TimeframeType {
+	return original.PossibleTimeframeTypeValues()
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReportConfigClient(subscriptionID string) ReportConfigClient {
+	return original.NewReportConfigClient(subscriptionID)
+}
+func NewReportConfigClientWithBaseURI(baseURI string, subscriptionID string) ReportConfigClient {
+	return original.NewReportConfigClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClient(subscriptionID)
+}
+func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
+	return original.NewResourceGroupDimensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceGroupInsightsClient(subscriptionID string) ResourceGroupInsightsClient {
+	return original.NewResourceGroupInsightsClient(subscriptionID)
+}
+func NewResourceGroupInsightsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupInsightsClient {
+	return original.NewResourceGroupInsightsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClient(subscriptionID)
+}
+func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
+	return original.NewSubscriptionDimensionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubscriptionInsightsClient(subscriptionID string) SubscriptionInsightsClient {
+	return original.NewSubscriptionInsightsClient(subscriptionID)
+}
+func NewSubscriptionInsightsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionInsightsClient {
+	return original.NewSubscriptionInsightsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

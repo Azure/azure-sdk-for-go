@@ -19,7 +19,7 @@
 
 package containerservice
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-09-30/containerservice"
+import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2018-03-31/containerservice"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -28,6 +28,19 @@ const (
 type BaseClient = original.BaseClient
 type ContainerServicesClient = original.ContainerServicesClient
 type ManagedClustersClient = original.ManagedClustersClient
+type NetworkPlugin = original.NetworkPlugin
+
+const (
+	Azure   NetworkPlugin = original.Azure
+	Kubenet NetworkPlugin = original.Kubenet
+)
+
+type NetworkPolicy = original.NetworkPolicy
+
+const (
+	Calico NetworkPolicy = original.Calico
+)
+
 type OrchestratorTypes = original.OrchestratorTypes
 
 const (
@@ -233,6 +246,9 @@ const (
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
+type ComputeOperationListResult = original.ComputeOperationListResult
+type ComputeOperationValue = original.ComputeOperationValue
+type ComputeOperationValueDisplay = original.ComputeOperationValueDisplay
 type ContainerService = original.ContainerService
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
 type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType
@@ -244,7 +260,10 @@ type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type ManagedCluster = original.ManagedCluster
+type ManagedClusterAADProfile = original.ManagedClusterAADProfile
 type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
+type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
+type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
@@ -255,6 +274,7 @@ type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
 type MasterProfile = original.MasterProfile
+type NetworkProfile = original.NetworkProfile
 type OrchestratorProfile = original.OrchestratorProfile
 type OrchestratorProfileType = original.OrchestratorProfileType
 type OrchestratorVersionProfile = original.OrchestratorVersionProfile
@@ -267,6 +287,7 @@ type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
+type OperationsClient = original.OperationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -286,6 +307,12 @@ func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClientWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleNetworkPluginValues() []NetworkPlugin {
+	return original.PossibleNetworkPluginValues()
+}
+func PossibleNetworkPolicyValues() []NetworkPolicy {
+	return original.PossibleNetworkPolicyValues()
+}
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
 }
@@ -297,6 +324,12 @@ func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 }
 func PossibleVMSizeTypesValues() []VMSizeTypes {
 	return original.PossibleVMSizeTypesValues()
+}
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

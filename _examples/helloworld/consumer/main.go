@@ -19,14 +19,16 @@ func main() {
 	}
 
 	queueName := "helloworld"
-	// Create the queue if it doesn't exist
-	err = ensureQueue(ns, queueName)
-	q := ns.NewQueue(queueName)
+	q, err := getQueue(ns, queueName)
+	if err != nil {
+		fmt.Printf("failed to build a new queue named %q\n", queueName)
+		os.Exit(1)
+	}
 
-	// Start listening to events on the queue
+	exit := make(chan struct{})
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	exit := make(chan struct{})
+
 	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Message) error {
 		text := string(event.Data)
 		if text == "exit\n" {
@@ -38,6 +40,7 @@ func main() {
 		return nil
 	})
 	defer listenHandle.Close(context.Background())
+
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -56,12 +59,11 @@ func main() {
 	}
 }
 
-func ensureQueue(ns *servicebus.Namespace, queueName string) error {
-	qm := ns.NewQueueManager()
+func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	_, err := qm.Put(ctx, queueName)
-	return err
+	q, err := ns.NewQueue(ctx, queueName)
+	return q, err
 }
 
 func mustGetenv(key string) string {

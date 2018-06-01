@@ -25,7 +25,6 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
-	"log"
 	"testing"
 	"time"
 
@@ -77,33 +76,32 @@ const (
 func (suite *serviceBusSuite) TestTopicEntryUnmarshal() {
 	var entry topicEntry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.ID)
-	assert.Equal(suite.T(), "foo", entry.Title)
-	assert.Equal(suite.T(), "sbdjtest", *entry.Author.Name)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
-	assert.Equal(suite.T(), "P10675199DT2H48M5.4775807S", *entry.Content.TopicDescription.DefaultMessageTimeToLive)
-	assert.NotNil(suite.T(), entry.Content)
+	suite.Nil(err)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.ID)
+	suite.Equal("foo", entry.Title)
+	suite.Equal("sbdjtest", *entry.Author.Name)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
+	suite.Equal("P10675199DT2H48M5.4775807S", *entry.Content.TopicDescription.DefaultMessageTimeToLive)
+	suite.NotNil(entry.Content)
 }
 
 func (suite *serviceBusSuite) TestTopicUnmarshal() {
 	var entry Entry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
-	assert.Nil(suite.T(), err)
+	suite.Nil(err)
 
 	var td TopicDescription
 	err = xml.Unmarshal([]byte(entry.Content.Body), &td)
-	t := suite.T()
-	assert.Nil(t, err)
-	assert.Equal(t, int32(1024), *td.MaxSizeInMegabytes)
-	assert.Equal(t, false, *td.RequiresDuplicateDetection)
-	assert.Equal(t, "P10675199DT2H48M5.4775807S", *td.DefaultMessageTimeToLive)
-	assert.Equal(t, "PT10M", *td.DuplicateDetectionHistoryTimeWindow)
-	assert.Equal(t, true, *td.EnableBatchedOperations)
-	assert.Equal(t, false, *td.FilteringMessagesBeforePublishing)
-	assert.Equal(t, false, *td.EnableExpress)
-	assert.Equal(t, int64(0), *td.SizeInBytes)
-	assert.EqualValues(t, servicebus.EntityStatusActive, *td.Status)
+	suite.Nil(err)
+	suite.Equal(int32(1024), *td.MaxSizeInMegabytes)
+	suite.Equal(false, *td.RequiresDuplicateDetection)
+	suite.Equal("P10675199DT2H48M5.4775807S", *td.DefaultMessageTimeToLive)
+	suite.Equal("PT10M", *td.DuplicateDetectionHistoryTimeWindow)
+	suite.Equal(true, *td.EnableBatchedOperations)
+	suite.Equal(false, *td.FilteringMessagesBeforePublishing)
+	suite.Equal(false, *td.EnableExpress)
+	suite.Equal(int64(0), *td.SizeInBytes)
+	suite.EqualValues(servicebus.EntityStatusActive, *td.Status)
 }
 
 func (suite *serviceBusSuite) TestTopicManagementWrites() {
@@ -286,23 +284,19 @@ func (suite *serviceBusSuite) TestTopic() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			name := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			_, err := tm.Put(ctx, name)
-			if err != nil {
-				log.Fatalln(err)
+			topic, err := ns.NewTopic(ctx, name)
+			if suite.NoError(err) {
+				defer func() {
+					topic.Close(ctx)
+					suite.cleanupTopic(name)
+				}()
+				testFunc(ctx, t, topic)
 			}
-
-			topic := ns.NewTopic(name)
-			defer func() {
-				topic.Close(ctx)
-				suite.cleanupTopic(name)
-			}()
-			testFunc(ctx, t, topic)
 		}
 
 		suite.T().Run(name, setupTestTeardown)

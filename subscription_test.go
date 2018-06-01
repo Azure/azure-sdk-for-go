@@ -26,7 +26,6 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"log"
 	"sync"
 	"testing"
 	"time"
@@ -101,25 +100,21 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
-
-	outerCtx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+	outerCtx, outerCancel := context.WithTimeout(context.Background(), timeout)
+	defer outerCancel()
 	topicName := suite.RandomName("gosb", 6)
-	_, err := tm.Put(outerCtx, topicName)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-	topic := ns.NewTopic(topicName)
-	sm := topic.NewSubscriptionManager()
-	for name, testFunc := range tests {
-		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			defer cancel()
-			name := suite.RandomName("gosb", 6)
-			testFunc(ctx, t, sm, name)
-			defer suite.cleanupSubscription(topicName, name)
-		})
+	topic, err := ns.NewTopic(outerCtx, topicName)
+	if suite.NoError(err) {
+		sm := topic.NewSubscriptionManager()
+		for name, testFunc := range tests {
+			suite.T().Run(name, func(t *testing.T) {
+				ctx, cancel := context.WithTimeout(context.Background(), timeout)
+				defer cancel()
+				name := suite.RandomName("gosb", 6)
+				testFunc(ctx, t, sm, name)
+				defer suite.cleanupSubscription(topic, name)
+			})
+		}
 	}
 }
 
@@ -133,12 +128,9 @@ func testPutSubscription(ctx context.Context, t *testing.T, sm *SubscriptionMana
 	}
 }
 
-func (suite *serviceBusSuite) cleanupSubscription(topicName, subscriptionName string) {
+func (suite *serviceBusSuite) cleanupSubscription(topic *Topic, subscriptionName string) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-
-	ns := suite.getNewSasInstance()
-	topic := ns.NewTopic(topicName)
 	sm := topic.NewSubscriptionManager()
 	err := sm.Delete(ctx, subscriptionName)
 	if err != nil {
@@ -172,27 +164,29 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 			if err != nil {
 				t.Fatal(err)
 			}
-			topic := ns.NewTopic(topicName)
-			sm := topic.NewSubscriptionManager()
-			_, err = sm.Put(ctx, topicName)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			defer func(tName, sName string) {
-				innerCtx, cancel := context.WithTimeout(context.Background(), timeout)
-				defer cancel()
-				err = sm.Delete(innerCtx, sName)
-				err2 := tm.Delete(innerCtx, tName)
+			topic, err := ns.NewTopic(ctx, topicName)
+			if suite.NoError(err) {
+				sm := topic.NewSubscriptionManager()
+				_, err = sm.Put(ctx, topicName)
 				if err != nil {
-					suite.T().Fatal(err)
+					t.Fatal(err)
 				}
-				if err2 != nil {
-					suite.T().Fatal(err2)
-				}
-			}(topicName, subName)
 
-			testFunc(ctx, t, sm, topicName, subName)
+				defer func(tName, sName string) {
+					innerCtx, cancel := context.WithTimeout(context.Background(), timeout)
+					defer cancel()
+					err = sm.Delete(innerCtx, sName)
+					err2 := tm.Delete(innerCtx, tName)
+					if err != nil {
+						suite.T().Fatal(err)
+					}
+					if err2 != nil {
+						suite.T().Fatal(err2)
+					}
+				}(topicName, subName)
+
+				testFunc(ctx, t, sm, topicName, subName)
+			}
 		}
 		suite.T().Run(name, setupTestTeardown)
 	}
@@ -255,32 +249,32 @@ func (suite *serviceBusSuite) TestSubscription() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			topicName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			_, err := tm.Put(ctx, topicName)
-			if err != nil {
-				log.Fatalln(err)
+
+			topic, err := ns.NewTopic(ctx, topicName)
+			if suite.NoError(err) {
+				subName := suite.randEntityName()
+				subscription, err := topic.NewSubscription(ctx, subName)
+				if suite.NoError(err) {
+					defer func() {
+						closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
+						defer closeCancel()
+						subscription.Close(closeCtx)
+						suite.cleanupSubscription(topic, subName)
+					}()
+					testFunc(ctx, t, topic, subscription)
+				}
+				defer func() {
+					closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
+					defer closeCancel()
+					topic.Close(closeCtx)
+					suite.cleanupTopic(topicName)
+				}()
 			}
-
-			topic := ns.NewTopic(topicName)
-			sm := topic.NewSubscriptionManager()
-			subName := suite.randEntityName()
-			sm.Put(ctx, subName)
-			subscription := topic.NewSubscription(subName)
-			defer func() {
-				closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
-				defer closeCancel()
-				topic.Close(closeCtx)
-				suite.cleanupTopic(topicName)
-				subscription.Close(closeCtx)
-				suite.cleanupSubscription(topicName, subName)
-
-			}()
-			testFunc(ctx, t, topic, subscription)
 		}
 
 		suite.T().Run(name, setupTestTeardown)

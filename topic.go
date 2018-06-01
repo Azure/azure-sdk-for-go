@@ -27,6 +27,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -204,6 +205,10 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 		return nil, err
 	}
 
+	if res.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -213,6 +218,9 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	var entry topicEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
+		if isEmptyFeed(b) {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return topicEntryToEntity(&entry), nil
@@ -226,13 +234,26 @@ func topicEntryToEntity(entry *topicEntry) *TopicEntity {
 }
 
 // NewTopic creates a new Topic Sender
-func (ns *Namespace) NewTopic(name string) *Topic {
+func (ns *Namespace) NewTopic(ctx context.Context, name string, opts ...TopicOption) (*Topic, error) {
+	tm := ns.NewTopicManager()
+	qe, err := tm.Get(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	if qe == nil {
+		_, err := tm.Put(ctx, name, opts...)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return &Topic{
 		entity: &entity{
 			namespace: ns,
 			Name:      name,
 		},
-	}
+	}, nil
 }
 
 // Send sends messages to the Topic

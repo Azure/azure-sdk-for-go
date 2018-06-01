@@ -26,7 +26,8 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-	"io/ioutil"
+		"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -98,12 +99,15 @@ func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 }
 
 // NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
-func (ns *Namespace) NewSubscriptionManager(topicName string) *SubscriptionManager {
-	t := ns.NewTopic(topicName)
+func (ns *Namespace) NewSubscriptionManager(ctx context.Context, topicName string) (*SubscriptionManager, error) {
+	t, err := ns.NewTopic(ctx, topicName)
+	if err != nil {
+		return nil, err
+	}
 	return &SubscriptionManager{
 		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
 		Topic:         t,
-	}
+	}, nil
 }
 
 // Delete deletes a Service Bus Topic entity by name
@@ -204,6 +208,10 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 		return nil, err
 	}
 
+	if res.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
@@ -212,6 +220,9 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	var entry subscriptionEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
+		if isEmptyFeed(b) {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return subscriptionEntryToEntity(&entry), nil
@@ -229,14 +240,27 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 }
 
 // NewSubscription creates a new Topic Subscription client
-func (t *Topic) NewSubscription(name string) *Subscription {
+func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...SubscriptionOption) (*Subscription, error) {
+	sm := t.NewSubscriptionManager()
+	qe, err := sm.Get(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	if qe == nil {
+		_, err := sm.Put(ctx, name, opts...)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return &Subscription{
 		entity: &entity{
 			namespace: t.namespace,
 			Name:      name,
 		},
 		Topic: t,
-	}
+	}, nil
 }
 
 // Receive subscribes for messages sent to the Subscription

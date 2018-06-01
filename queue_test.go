@@ -351,24 +351,17 @@ func (suite *serviceBusSuite) TestQueue() {
 	}
 
 	ns := suite.getNewSasInstance()
-	qm := ns.NewQueueManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			window := 3 * time.Minute
-			_, err := qm.Put(
-				ctx,
-				queueName,
+			q, err := ns.NewQueue(ctx, queueName,
 				QueueWithPartitioning(),
 				QueueWithDuplicateDetection(&window),
 				QueueWithLockDuration(&window))
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			q := ns.NewQueue(queueName)
+			suite.NoError(err)
 			defer func() {
 				q.Close(ctx)
 				suite.cleanupQueue(queueName)
@@ -462,29 +455,24 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			ns := suite.getNewSasInstance()
-			qm := ns.NewQueueManager()
-
 			queueName := suite.randEntityName()
 			window := 3 * time.Minute
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			_, err := qm.Put(
-				ctx,
-				queueName,
+			q, err := ns.NewQueue(ctx, queueName,
 				QueueWithPartitioning(),
 				QueueWithDuplicateDetection(&window),
 				QueueWithLockDuration(&window),
 				QueueWithRequiredSessions())
-			if err != nil {
-				t.Fatal(err)
+			if suite.NoError(err) {
+				testFunc(ctx, t, q)
 			}
-
-			q := ns.NewQueue(queueName)
 			defer func() {
-				q.Close(ctx)
+				if q != nil {
+					q.Close(ctx)
+				}
 				cancel()
 				suite.cleanupQueue(queueName)
 			}()
-			testFunc(ctx, t, q)
 		}
 
 		suite.T().Run(name, setupTestTeardown)

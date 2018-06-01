@@ -26,7 +26,8 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-	"io/ioutil"
+		"io/ioutil"
+	"net/http"
 	"sync"
 	"time"
 
@@ -315,6 +316,10 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 		return nil, err
 	}
 
+	if res.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.For(ctx).Error(err)
@@ -324,6 +329,9 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	var entry queueEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
+		if isEmptyFeed(b) {
+			return nil, nil
+		}
 		return nil, err
 	}
 
@@ -338,14 +346,26 @@ func queueEntryToEntity(entry *queueEntry) *QueueEntity {
 }
 
 // NewQueue creates a new Queue Sender / Receiver
-func (ns *Namespace) NewQueue(name string, opts ...QueueOption) *Queue {
+func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOption) (*Queue, error) {
+	qm := ns.NewQueueManager()
+	qe, err := qm.Get(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+
+	if qe == nil {
+		_, err := qm.Put(ctx, name, opts...)
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	return &Queue{
 		entity: &entity{
 			namespace: ns,
 			Name:      name,
 		},
-	}
+	}, nil
 }
 
 // Send sends messages to the Queue

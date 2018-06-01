@@ -25,6 +25,34 @@ import (
 	"net/http"
 )
 
+// NetworkPlugin enumerates the values for network plugin.
+type NetworkPlugin string
+
+const (
+	// Azure ...
+	Azure NetworkPlugin = "azure"
+	// Kubenet ...
+	Kubenet NetworkPlugin = "kubenet"
+)
+
+// PossibleNetworkPluginValues returns an array of possible values for the NetworkPlugin const type.
+func PossibleNetworkPluginValues() []NetworkPlugin {
+	return []NetworkPlugin{Azure, Kubenet}
+}
+
+// NetworkPolicy enumerates the values for network policy.
+type NetworkPolicy string
+
+const (
+	// Calico ...
+	Calico NetworkPolicy = "calico"
+)
+
+// PossibleNetworkPolicyValues returns an array of possible values for the NetworkPolicy const type.
+func PossibleNetworkPolicyValues() []NetworkPolicy {
+	return []NetworkPolicy{Calico}
+}
+
 // OrchestratorTypes enumerates the values for orchestrator types.
 type OrchestratorTypes string
 
@@ -465,6 +493,92 @@ type AgentPoolProfile struct {
 	OsType OSType `json:"osType,omitempty"`
 }
 
+// ComputeOperationListResult the List Compute Operation operation response.
+type ComputeOperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of compute operations
+	Value *[]ComputeOperationValue `json:"value,omitempty"`
+}
+
+// ComputeOperationValue describes the properties of a Compute Operation value.
+type ComputeOperationValue struct {
+	// Origin - The origin of the compute operation.
+	Origin *string `json:"origin,omitempty"`
+	// Name - The name of the compute operation.
+	Name *string `json:"name,omitempty"`
+	// ComputeOperationValueDisplay - Describes the properties of a Compute Operation Value Display.
+	*ComputeOperationValueDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComputeOperationValue.
+func (cov ComputeOperationValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cov.Origin != nil {
+		objectMap["origin"] = cov.Origin
+	}
+	if cov.Name != nil {
+		objectMap["name"] = cov.Name
+	}
+	if cov.ComputeOperationValueDisplay != nil {
+		objectMap["display"] = cov.ComputeOperationValueDisplay
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ComputeOperationValue struct.
+func (cov *ComputeOperationValue) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "origin":
+			if v != nil {
+				var origin string
+				err = json.Unmarshal(*v, &origin)
+				if err != nil {
+					return err
+				}
+				cov.Origin = &origin
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cov.Name = &name
+			}
+		case "display":
+			if v != nil {
+				var computeOperationValueDisplay ComputeOperationValueDisplay
+				err = json.Unmarshal(*v, &computeOperationValueDisplay)
+				if err != nil {
+					return err
+				}
+				cov.ComputeOperationValueDisplay = &computeOperationValueDisplay
+			}
+		}
+	}
+
+	return nil
+}
+
+// ComputeOperationValueDisplay describes the properties of a Compute Operation Value Display.
+type ComputeOperationValueDisplay struct {
+	// Operation - The display name of the compute operation.
+	Operation *string `json:"operation,omitempty"`
+	// Resource - The display name of the resource the operation applies to.
+	Resource *string `json:"resource,omitempty"`
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Provider - The resource provider for the operation.
+	Provider *string `json:"provider,omitempty"`
+}
+
 // ContainerService container service.
 type ContainerService struct {
 	autorest.Response `json:"-"`
@@ -869,6 +983,18 @@ func (mc *ManagedCluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ManagedClusterAADProfile aADProfile specifies attributes for Azure Active Directory integration.
+type ManagedClusterAADProfile struct {
+	// ClientAppID - The client AAD application ID.
+	ClientAppID *string `json:"clientAppID,omitempty"`
+	// ServerAppID - The server AAD application ID.
+	ServerAppID *string `json:"serverAppID,omitempty"`
+	// ServerAppSecret - The server AAD application secret.
+	ServerAppSecret *string `json:"serverAppSecret,omitempty"`
+	// TenantID - The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment subscription.
+	TenantID *string `json:"tenantID,omitempty"`
+}
+
 // ManagedClusterAccessProfile managed cluster Access Profile.
 type ManagedClusterAccessProfile struct {
 	autorest.Response `json:"-"`
@@ -977,6 +1103,52 @@ func (mcap *ManagedClusterAccessProfile) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// ManagedClusterAddonProfile a Kubernetes add-on profile for a managed cluster.
+type ManagedClusterAddonProfile struct {
+	// Enabled - Whether the add-on is enabled or not.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Config - Key-value pairs for configuring an add-on.
+	Config map[string]*string `json:"config"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedClusterAddonProfile.
+func (mcap ManagedClusterAddonProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcap.Enabled != nil {
+		objectMap["enabled"] = mcap.Enabled
+	}
+	if mcap.Config != nil {
+		objectMap["config"] = mcap.Config
+	}
+	return json.Marshal(objectMap)
+}
+
+// ManagedClusterAgentPoolProfile profile for the container service agent pool.
+type ManagedClusterAgentPoolProfile struct {
+	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
+	Name *string `json:"name,omitempty"`
+	// Count - Number of agents (VMs) to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+	Count *int32 `json:"count,omitempty"`
+	// VMSize - Size of agent VMs. Possible values include: 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardB2ms', 'StandardB2s', 'StandardB4ms', 'StandardB8ms', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD32V3', 'StandardD32sV3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD64V3', 'StandardD64sV3', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS132V2', 'StandardDS134V2', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS144V2', 'StandardDS148V2', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE3216sV3', 'StandardE328sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE6416sV3', 'StandardE6432sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF16sV2', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF2sV2', 'StandardF32sV2', 'StandardF4', 'StandardF4s', 'StandardF4sV2', 'StandardF64sV2', 'StandardF72sV2', 'StandardF8', 'StandardF8s', 'StandardF8sV2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS44', 'StandardGS48', 'StandardGS5', 'StandardGS516', 'StandardGS58', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM12832ms', 'StandardM12864ms', 'StandardM128ms', 'StandardM128s', 'StandardM6416ms', 'StandardM6432ms', 'StandardM64ms', 'StandardM64s', 'StandardNC12', 'StandardNC12sV2', 'StandardNC12sV3', 'StandardNC24', 'StandardNC24r', 'StandardNC24rsV2', 'StandardNC24rsV3', 'StandardNC24sV2', 'StandardNC24sV3', 'StandardNC6', 'StandardNC6sV2', 'StandardNC6sV3', 'StandardND12s', 'StandardND24rs', 'StandardND24s', 'StandardND6s', 'StandardNV12', 'StandardNV24', 'StandardNV6'
+	VMSize VMSizeTypes `json:"vmSize,omitempty"`
+	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
+	// DNSPrefix - DNS prefix to be used to create the FQDN for the agent pool.
+	DNSPrefix *string `json:"dnsPrefix,omitempty"`
+	// Fqdn - FDQN for the agent pool.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// Ports - Ports number array used to expose on this agent pool. The default opened ports are different based on your choice of orchestrator.
+	Ports *[]int32 `json:"ports,omitempty"`
+	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
+	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
+	// VnetSubnetID - VNet SubnetID specifies the vnet's subnet identifier.
+	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
+	// MaxPods - Maximum number of pods that can run on a node.
+	MaxPods *int32 `json:"maxPods,omitempty"`
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	OsType OSType `json:"osType,omitempty"`
 }
 
 // ManagedClusterListResult the response from the List Managed Clusters operation.
@@ -1097,18 +1269,65 @@ type ManagedClusterPoolUpgradeProfile struct {
 type ManagedClusterProperties struct {
 	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// KubernetesVersion - Version of Kubernetes specified when creating the managed cluster.
+	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// DNSPrefix - DNS prefix specified when creating the managed cluster.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
 	// Fqdn - FDQN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// KubernetesVersion - Version of Kubernetes specified when creating the managed cluster.
-	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// AgentPoolProfiles - Properties of the agent pool.
-	AgentPoolProfiles *[]AgentPoolProfile `json:"agentPoolProfiles,omitempty"`
+	AgentPoolProfiles *[]ManagedClusterAgentPoolProfile `json:"agentPoolProfiles,omitempty"`
 	// LinuxProfile - Profile for Linux VMs in the container service cluster.
 	LinuxProfile *LinuxProfile `json:"linuxProfile,omitempty"`
 	// ServicePrincipalProfile - Information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified.
 	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
+	// AddonProfiles - Profile of managed cluster add-on.
+	AddonProfiles map[string]*ManagedClusterAddonProfile `json:"addonProfiles"`
+	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
+	EnableRBAC *bool `json:"enableRBAC,omitempty"`
+	// NetworkProfile - Profile of network configuration.
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	// AadProfile - Profile of Azure Active Directory configuration.
+	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedClusterProperties.
+func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mcp.ProvisioningState != nil {
+		objectMap["provisioningState"] = mcp.ProvisioningState
+	}
+	if mcp.KubernetesVersion != nil {
+		objectMap["kubernetesVersion"] = mcp.KubernetesVersion
+	}
+	if mcp.DNSPrefix != nil {
+		objectMap["dnsPrefix"] = mcp.DNSPrefix
+	}
+	if mcp.Fqdn != nil {
+		objectMap["fqdn"] = mcp.Fqdn
+	}
+	if mcp.AgentPoolProfiles != nil {
+		objectMap["agentPoolProfiles"] = mcp.AgentPoolProfiles
+	}
+	if mcp.LinuxProfile != nil {
+		objectMap["linuxProfile"] = mcp.LinuxProfile
+	}
+	if mcp.ServicePrincipalProfile != nil {
+		objectMap["servicePrincipalProfile"] = mcp.ServicePrincipalProfile
+	}
+	if mcp.AddonProfiles != nil {
+		objectMap["addonProfiles"] = mcp.AddonProfiles
+	}
+	if mcp.EnableRBAC != nil {
+		objectMap["enableRBAC"] = mcp.EnableRBAC
+	}
+	if mcp.NetworkProfile != nil {
+		objectMap["networkProfile"] = mcp.NetworkProfile
+	}
+	if mcp.AadProfile != nil {
+		objectMap["aadProfile"] = mcp.AadProfile
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1273,6 +1492,22 @@ type MasterProfile struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
+// NetworkProfile profile of network configuration.
+type NetworkProfile struct {
+	// NetworkPlugin - Network plugin used for building Kubernetes network. Possible values include: 'Azure', 'Kubenet'
+	NetworkPlugin NetworkPlugin `json:"networkPlugin,omitempty"`
+	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'Calico'
+	NetworkPolicy NetworkPolicy `json:"networkPolicy,omitempty"`
+	// PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+	PodCidr *string `json:"podCidr,omitempty"`
+	// ServiceCidr - A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges.
+	ServiceCidr *string `json:"serviceCidr,omitempty"`
+	// DNSServiceIP - An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.
+	DNSServiceIP *string `json:"dnsServiceIP,omitempty"`
+	// DockerBridgeCidr - A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.
+	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+}
+
 // OrchestratorProfile contains information about orchestrator.
 type OrchestratorProfile struct {
 	// OrchestratorType - Orchestrator type.
@@ -1287,6 +1522,106 @@ type OrchestratorProfileType struct {
 	OrchestratorType OrchestratorTypes `json:"orchestratorType,omitempty"`
 	// OrchestratorVersion - The version of the orchestrator to use. You can specify the major.minor.patch part of the actual version.For example, you can specify version as "1.6.11".
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
+}
+
+// OrchestratorVersionProfile the profile of an orchestrator and its available versions.
+type OrchestratorVersionProfile struct {
+	// OrchestratorType - Orchestrator type.
+	OrchestratorType *string `json:"orchestratorType,omitempty"`
+	// OrchestratorVersion - Orchestrator version (major, minor, patch).
+	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
+	// Default - Installed by default if version is not specified.
+	Default *bool `json:"default,omitempty"`
+	// Upgrades - The list of available upgrade versions.
+	Upgrades *[]OrchestratorProfile `json:"upgrades,omitempty"`
+}
+
+// OrchestratorVersionProfileListResult the list of versions for supported orchestrators.
+type OrchestratorVersionProfileListResult struct {
+	autorest.Response `json:"-"`
+	// ID - Id of the orchestrator version profile list result.
+	ID *string `json:"id,omitempty"`
+	// Name - Name of the orchestrator version profile list result.
+	Name *string `json:"name,omitempty"`
+	// Type - Type of the orchestrator version profile list result.
+	Type *string `json:"type,omitempty"`
+	// OrchestratorVersionProfileProperties - The properties of an orchestrator version profile.
+	*OrchestratorVersionProfileProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrchestratorVersionProfileListResult.
+func (ovplr OrchestratorVersionProfileListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ovplr.ID != nil {
+		objectMap["id"] = ovplr.ID
+	}
+	if ovplr.Name != nil {
+		objectMap["name"] = ovplr.Name
+	}
+	if ovplr.Type != nil {
+		objectMap["type"] = ovplr.Type
+	}
+	if ovplr.OrchestratorVersionProfileProperties != nil {
+		objectMap["properties"] = ovplr.OrchestratorVersionProfileProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OrchestratorVersionProfileListResult struct.
+func (ovplr *OrchestratorVersionProfileListResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ovplr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ovplr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ovplr.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var orchestratorVersionProfileProperties OrchestratorVersionProfileProperties
+				err = json.Unmarshal(*v, &orchestratorVersionProfileProperties)
+				if err != nil {
+					return err
+				}
+				ovplr.OrchestratorVersionProfileProperties = &orchestratorVersionProfileProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// OrchestratorVersionProfileProperties the properties of an orchestrator version profile.
+type OrchestratorVersionProfileProperties struct {
+	// Orchestrators - List of orchestrator version profiles.
+	Orchestrators *[]OrchestratorVersionProfile `json:"orchestrators,omitempty"`
 }
 
 // Properties properties of the container service.

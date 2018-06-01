@@ -89,7 +89,7 @@ func (client Client) CheckExistencePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -154,7 +154,7 @@ func (client Client) CheckExistenceByIDPreparer(ctx context.Context, resourceID 
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -232,7 +232,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -312,7 +312,7 @@ func (client Client) CreateOrUpdateByIDPreparer(ctx context.Context, resourceID 
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -400,7 +400,7 @@ func (client Client) DeletePreparer(ctx context.Context, resourceGroupName strin
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -469,7 +469,7 @@ func (client Client) DeleteByIDPreparer(ctx context.Context, resourceID string) 
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -560,7 +560,7 @@ func (client Client) GetPreparer(ctx context.Context, resourceGroupName string, 
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -626,7 +626,7 @@ func (client Client) GetByIDPreparer(ctx context.Context, resourceID string) (*h
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -693,7 +693,7 @@ func (client Client) ListPreparer(ctx context.Context, filter string, expand str
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -762,11 +762,124 @@ func (client Client) ListComplete(ctx context.Context, filter string, expand str
 	return
 }
 
+// ListByResourceGroup get all the resources for a resource group.
+// Parameters:
+// resourceGroupName - the resource group with the resources to get.
+// filter - the filter to apply on the operation.
+// expand - the $expand query parameter
+// top - the number of results to return. If null is passed, returns all resources.
+func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result ListResultPage, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("resources.Client", "ListByResourceGroup", err.Error())
+	}
+
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, expand, top)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.Client", "ListByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.lr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "resources.Client", "ListByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.lr, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.Client", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client Client) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client Client) ListByResourceGroupResponder(resp *http.Response) (result ListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client Client) listByResourceGroupNextResults(lastResults ListResult) (result ListResult, err error) {
+	req, err := lastResults.listResultPreparer()
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "resources.Client", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "resources.Client", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.Client", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result ListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, filter, expand, top)
+	return
+}
+
 // MoveResources the resources to move must be in the same source resource group. The target resource group may be in a
 // different subscription. When moving resources, both the source group and the target group are locked for the
 // duration of the operation. Write and delete operations are blocked on the groups until the move completes.
 // Parameters:
-// sourceResourceGroupName - the name of the resource group containing the rsources to move.
+// sourceResourceGroupName - the name of the resource group containing the resources to move.
 // parameters - parameters for moving resources.
 func (client Client) MoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo) (result MoveResourcesFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
@@ -799,7 +912,7 @@ func (client Client) MoveResourcesPreparer(ctx context.Context, sourceResourceGr
 		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -886,7 +999,7 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -959,7 +1072,7 @@ func (client Client) UpdateByIDPreparer(ctx context.Context, resourceID string, 
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2016-09-01"
+	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1001,5 +1114,88 @@ func (client Client) UpdateByIDResponder(resp *http.Response) (result GenericRes
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ValidateMoveResources this operation checks whether the specified resources can be moved to the target. The
+// resources to move must be in the same source resource group. The target resource group may be in a different
+// subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it
+// returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to
+// check the result of the long-running operation.
+// Parameters:
+// sourceResourceGroupName - the name of the resource group containing the resources to validate for move.
+// parameters - parameters for moving resources.
+func (client Client) ValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo) (result ValidateMoveResourcesFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: sourceResourceGroupName,
+			Constraints: []validation.Constraint{{Target: "sourceResourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "sourceResourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "sourceResourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("resources.Client", "ValidateMoveResources", err.Error())
+	}
+
+	req, err := client.ValidateMoveResourcesPreparer(ctx, sourceResourceGroupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.Client", "ValidateMoveResources", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ValidateMoveResourcesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resources.Client", "ValidateMoveResources", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ValidateMoveResourcesPreparer prepares the ValidateMoveResources request.
+func (client Client) ValidateMoveResourcesPreparer(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"sourceResourceGroupName": autorest.Encode("path", sourceResourceGroupName),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ValidateMoveResourcesSender sends the ValidateMoveResources request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ValidateMoveResourcesSender(req *http.Request) (future ValidateMoveResourcesFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusConflict))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ValidateMoveResourcesResponder handles the response to the ValidateMoveResources request. The method always
+// closes the http.Response Body.
+func (client Client) ValidateMoveResourcesResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusConflict),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }

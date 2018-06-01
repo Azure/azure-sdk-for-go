@@ -19,7 +19,7 @@
 
 package reservations
 
-import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations"
+import original "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2018-06-01/reservations"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -40,12 +40,27 @@ const (
 	AppliedScopeType1Single AppliedScopeType1 = original.AppliedScopeType1Single
 )
 
+type AutoFit = original.AutoFit
+
+const (
+	CapacityPriority       AutoFit = original.CapacityPriority
+	InstanceFlexibilityOff AutoFit = original.InstanceFlexibilityOff
+	InstanceFlexibilityOn  AutoFit = original.InstanceFlexibilityOn
+)
+
+type AutoFit1 = original.AutoFit1
+
+const (
+	AutoFit1CapacityPriority       AutoFit1 = original.AutoFit1CapacityPriority
+	AutoFit1InstanceFlexibilityOff AutoFit1 = original.AutoFit1InstanceFlexibilityOff
+	AutoFit1InstanceFlexibilityOn  AutoFit1 = original.AutoFit1InstanceFlexibilityOn
+)
+
 type Code = original.Code
 
 const (
 	ActivateQuoteFailed                           Code = original.ActivateQuoteFailed
 	AppliedScopesNotAssociatedWithCommerceAccount Code = original.AppliedScopesNotAssociatedWithCommerceAccount
-	AppliedScopesSameAsExisting                   Code = original.AppliedScopesSameAsExisting
 	AuthorizationFailed                           Code = original.AuthorizationFailed
 	BadRequest                                    Code = original.BadRequest
 	BillingCustomerInputError                     Code = original.BillingCustomerInputError
@@ -85,6 +100,7 @@ const (
 	NoValidReservationsToReRate                   Code = original.NoValidReservationsToReRate
 	OperationCannotBePerformedInCurrentState      Code = original.OperationCannotBePerformedInCurrentState
 	OperationFailed                               Code = original.OperationFailed
+	PatchValuesSameAsExisting                     Code = original.PatchValuesSameAsExisting
 	PaymentInstrumentNotFound                     Code = original.PaymentInstrumentNotFound
 	PurchaseError                                 Code = original.PurchaseError
 	ReRateOnlyAllowedForEA                        Code = original.ReRateOnlyAllowedForEA
@@ -100,15 +116,11 @@ const (
 	UnsupportedReservationTerm                    Code = original.UnsupportedReservationTerm
 )
 
-type Kind = original.Kind
-
-const (
-	MicrosoftCompute Kind = original.MicrosoftCompute
-)
-
 type Location = original.Location
 
 const (
+	Australiac         Location = original.Australiac
+	Australiac2        Location = original.Australiac2
 	Australiaeast      Location = original.Australiaeast
 	Australiasoutheast Location = original.Australiasoutheast
 	Brazilsouth        Location = original.Brazilsouth
@@ -119,6 +131,8 @@ const (
 	Eastasia           Location = original.Eastasia
 	Eastus             Location = original.Eastus
 	Eastus2            Location = original.Eastus2
+	Francecentral      Location = original.Francecentral
+	Francesouth        Location = original.Francesouth
 	Japaneast          Location = original.Japaneast
 	Japanwest          Location = original.Japanwest
 	Northcentralus     Location = original.Northcentralus
@@ -169,6 +183,14 @@ const (
 	ProvisioningState1PendingResourceHold   ProvisioningState1 = original.ProvisioningState1PendingResourceHold
 	ProvisioningState1Split                 ProvisioningState1 = original.ProvisioningState1Split
 	ProvisioningState1Succeeded             ProvisioningState1 = original.ProvisioningState1Succeeded
+)
+
+type ReservedResourceType = original.ReservedResourceType
+
+const (
+	SQLDatabases    ReservedResourceType = original.SQLDatabases
+	SuseLinux       ReservedResourceType = original.SuseLinux
+	VirtualMachines ReservedResourceType = original.VirtualMachines
 )
 
 type StatusCode = original.StatusCode
@@ -223,8 +245,8 @@ type Properties = original.Properties
 type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type Response = original.Response
-type SkuCapability = original.SkuCapability
 type SkuName = original.SkuName
+type SkuProperty = original.SkuProperty
 type SkuRestriction = original.SkuRestriction
 type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
@@ -246,11 +268,14 @@ func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
 	return original.PossibleAppliedScopeType1Values()
 }
+func PossibleAutoFitValues() []AutoFit {
+	return original.PossibleAutoFitValues()
+}
+func PossibleAutoFit1Values() []AutoFit1 {
+	return original.PossibleAutoFit1Values()
+}
 func PossibleCodeValues() []Code {
 	return original.PossibleCodeValues()
-}
-func PossibleKindValues() []Kind {
-	return original.PossibleKindValues()
 }
 func PossibleLocationValues() []Location {
 	return original.PossibleLocationValues()
@@ -260,6 +285,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleProvisioningState1Values() []ProvisioningState1 {
 	return original.PossibleProvisioningState1Values()
+}
+func PossibleReservedResourceTypeValues() []ReservedResourceType {
+	return original.PossibleReservedResourceTypeValues()
 }
 func PossibleStatusCodeValues() []StatusCode {
 	return original.PossibleStatusCodeValues()

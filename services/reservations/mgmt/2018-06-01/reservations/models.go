@@ -56,6 +56,40 @@ func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
 	return []AppliedScopeType1{AppliedScopeType1Shared, AppliedScopeType1Single}
 }
 
+// AutoFit enumerates the values for auto fit.
+type AutoFit string
+
+const (
+	// CapacityPriority ...
+	CapacityPriority AutoFit = "CapacityPriority"
+	// InstanceFlexibilityOff ...
+	InstanceFlexibilityOff AutoFit = "InstanceFlexibilityOff"
+	// InstanceFlexibilityOn ...
+	InstanceFlexibilityOn AutoFit = "InstanceFlexibilityOn"
+)
+
+// PossibleAutoFitValues returns an array of possible values for the AutoFit const type.
+func PossibleAutoFitValues() []AutoFit {
+	return []AutoFit{CapacityPriority, InstanceFlexibilityOff, InstanceFlexibilityOn}
+}
+
+// AutoFit1 enumerates the values for auto fit 1.
+type AutoFit1 string
+
+const (
+	// AutoFit1CapacityPriority ...
+	AutoFit1CapacityPriority AutoFit1 = "CapacityPriority"
+	// AutoFit1InstanceFlexibilityOff ...
+	AutoFit1InstanceFlexibilityOff AutoFit1 = "InstanceFlexibilityOff"
+	// AutoFit1InstanceFlexibilityOn ...
+	AutoFit1InstanceFlexibilityOn AutoFit1 = "InstanceFlexibilityOn"
+)
+
+// PossibleAutoFit1Values returns an array of possible values for the AutoFit1 const type.
+func PossibleAutoFit1Values() []AutoFit1 {
+	return []AutoFit1{AutoFit1CapacityPriority, AutoFit1InstanceFlexibilityOff, AutoFit1InstanceFlexibilityOn}
+}
+
 // Code enumerates the values for code.
 type Code string
 
@@ -64,8 +98,6 @@ const (
 	ActivateQuoteFailed Code = "ActivateQuoteFailed"
 	// AppliedScopesNotAssociatedWithCommerceAccount ...
 	AppliedScopesNotAssociatedWithCommerceAccount Code = "AppliedScopesNotAssociatedWithCommerceAccount"
-	// AppliedScopesSameAsExisting ...
-	AppliedScopesSameAsExisting Code = "AppliedScopesSameAsExisting"
 	// AuthorizationFailed ...
 	AuthorizationFailed Code = "AuthorizationFailed"
 	// BadRequest ...
@@ -144,6 +176,8 @@ const (
 	OperationCannotBePerformedInCurrentState Code = "OperationCannotBePerformedInCurrentState"
 	// OperationFailed ...
 	OperationFailed Code = "OperationFailed"
+	// PatchValuesSameAsExisting ...
+	PatchValuesSameAsExisting Code = "PatchValuesSameAsExisting"
 	// PaymentInstrumentNotFound ...
 	PaymentInstrumentNotFound Code = "PaymentInstrumentNotFound"
 	// PurchaseError ...
@@ -174,26 +208,17 @@ const (
 
 // PossibleCodeValues returns an array of possible values for the Code const type.
 func PossibleCodeValues() []Code {
-	return []Code{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AppliedScopesSameAsExisting, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// MicrosoftCompute ...
-	MicrosoftCompute Kind = "Microsoft.Compute"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{MicrosoftCompute}
+	return []Code{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PatchValuesSameAsExisting, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
 }
 
 // Location enumerates the values for location.
 type Location string
 
 const (
+	// Australiac ...
+	Australiac Location = "australiac"
+	// Australiac2 ...
+	Australiac2 Location = "australiac2"
 	// Australiaeast ...
 	Australiaeast Location = "australiaeast"
 	// Australiasoutheast ...
@@ -214,6 +239,10 @@ const (
 	Eastus Location = "eastus"
 	// Eastus2 ...
 	Eastus2 Location = "eastus2"
+	// Francecentral ...
+	Francecentral Location = "francecentral"
+	// Francesouth ...
+	Francesouth Location = "francesouth"
 	// Japaneast ...
 	Japaneast Location = "japaneast"
 	// Japanwest ...
@@ -246,7 +275,7 @@ const (
 
 // PossibleLocationValues returns an array of possible values for the Location const type.
 func PossibleLocationValues() []Location {
-	return []Location{Australiaeast, Australiasoutheast, Brazilsouth, Canadacentral, Canadaeast, Centralindia, Centralus, Eastasia, Eastus, Eastus2, Japaneast, Japanwest, Northcentralus, Northeurope, Southcentralus, Southeastasia, Southindia, Uksouth, Ukwest, Westcentralus, Westeurope, Westindia, Westus, Westus2}
+	return []Location{Australiac, Australiac2, Australiaeast, Australiasoutheast, Brazilsouth, Canadacentral, Canadaeast, Centralindia, Centralus, Eastasia, Eastus, Eastus2, Francecentral, Francesouth, Japaneast, Japanwest, Northcentralus, Northeurope, Southcentralus, Southeastasia, Southindia, Uksouth, Ukwest, Westcentralus, Westeurope, Westindia, Westus, Westus2}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -321,6 +350,23 @@ const (
 // PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
 func PossibleProvisioningState1Values() []ProvisioningState1 {
 	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
+}
+
+// ReservedResourceType enumerates the values for reserved resource type.
+type ReservedResourceType string
+
+const (
+	// SQLDatabases ...
+	SQLDatabases ReservedResourceType = "SqlDatabases"
+	// SuseLinux ...
+	SuseLinux ReservedResourceType = "SuseLinux"
+	// VirtualMachines ...
+	VirtualMachines ReservedResourceType = "VirtualMachines"
+)
+
+// PossibleReservedResourceTypeValues returns an array of possible values for the ReservedResourceType const type.
+func PossibleReservedResourceTypeValues() []ReservedResourceType {
+	return []ReservedResourceType{SQLDatabases, SuseLinux, VirtualMachines}
 }
 
 // StatusCode enumerates the values for status code.
@@ -466,15 +512,11 @@ type Catalog struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Name - The name of SKU
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of this SKU
-	Tier *string `json:"tier,omitempty"`
-	// Size - The size of this SKU
-	Size *string `json:"size,omitempty"`
 	// Terms - Available reservation terms for this resource
-	Terms        *[]string         `json:"terms,omitempty"`
-	Locations    *[]string         `json:"locations,omitempty"`
-	Capabilities *[]SkuCapability  `json:"capabilities,omitempty"`
-	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
+	Terms         *[]string         `json:"terms,omitempty"`
+	Locations     *[]string         `json:"locations,omitempty"`
+	SkuProperties *[]SkuProperty    `json:"skuProperties,omitempty"`
+	Restrictions  *[]SkuRestriction `json:"restrictions,omitempty"`
 }
 
 // Error ...
@@ -484,7 +526,7 @@ type Error struct {
 
 // ExtendedErrorInfo ...
 type ExtendedErrorInfo struct {
-	// Code - Possible values include: 'NotSpecified', 'InternalServerError', 'ServerTimeout', 'AuthorizationFailed', 'BadRequest', 'ClientCertificateThumbprintNotSet', 'InvalidRequestContent', 'OperationFailed', 'HTTPMethodNotSupported', 'InvalidRequestURI', 'MissingTenantID', 'InvalidTenantID', 'InvalidReservationOrderID', 'InvalidReservationID', 'ReservationIDNotInReservationOrder', 'ReservationOrderNotFound', 'InvalidSubscriptionID', 'InvalidAccessToken', 'InvalidLocationID', 'UnauthenticatedRequestsThrottled', 'InvalidHealthCheckType', 'Forbidden', 'BillingScopeIDCannotBeChanged', 'AppliedScopesNotAssociatedWithCommerceAccount', 'AppliedScopesSameAsExisting', 'RoleAssignmentCreationFailed', 'ReservationOrderCreationFailed', 'ReservationOrderNotEnabled', 'CapacityUpdateScopesFailed', 'UnsupportedReservationTerm', 'ReservationOrderIDAlreadyExists', 'RiskCheckFailed', 'CreateQuoteFailed', 'ActivateQuoteFailed', 'NonsupportedAccountID', 'PaymentInstrumentNotFound', 'MissingAppliedScopesForSingle', 'NoValidReservationsToReRate', 'ReRateOnlyAllowedForEA', 'OperationCannotBePerformedInCurrentState', 'InvalidSingleAppliedScopesCount', 'InvalidFulfillmentRequestParameters', 'NotSupportedCountry', 'InvalidRefundQuantity', 'PurchaseError', 'BillingCustomerInputError', 'BillingPaymentInstrumentSoftError', 'BillingPaymentInstrumentHardError', 'BillingTransientError', 'BillingError', 'FulfillmentConfigurationError', 'FulfillmentOutOfStockError', 'FulfillmentTransientError', 'FulfillmentError', 'CalculatePriceFailed'
+	// Code - Possible values include: 'NotSpecified', 'InternalServerError', 'ServerTimeout', 'AuthorizationFailed', 'BadRequest', 'ClientCertificateThumbprintNotSet', 'InvalidRequestContent', 'OperationFailed', 'HTTPMethodNotSupported', 'InvalidRequestURI', 'MissingTenantID', 'InvalidTenantID', 'InvalidReservationOrderID', 'InvalidReservationID', 'ReservationIDNotInReservationOrder', 'ReservationOrderNotFound', 'InvalidSubscriptionID', 'InvalidAccessToken', 'InvalidLocationID', 'UnauthenticatedRequestsThrottled', 'InvalidHealthCheckType', 'Forbidden', 'BillingScopeIDCannotBeChanged', 'AppliedScopesNotAssociatedWithCommerceAccount', 'PatchValuesSameAsExisting', 'RoleAssignmentCreationFailed', 'ReservationOrderCreationFailed', 'ReservationOrderNotEnabled', 'CapacityUpdateScopesFailed', 'UnsupportedReservationTerm', 'ReservationOrderIDAlreadyExists', 'RiskCheckFailed', 'CreateQuoteFailed', 'ActivateQuoteFailed', 'NonsupportedAccountID', 'PaymentInstrumentNotFound', 'MissingAppliedScopesForSingle', 'NoValidReservationsToReRate', 'ReRateOnlyAllowedForEA', 'OperationCannotBePerformedInCurrentState', 'InvalidSingleAppliedScopesCount', 'InvalidFulfillmentRequestParameters', 'NotSupportedCountry', 'InvalidRefundQuantity', 'PurchaseError', 'BillingCustomerInputError', 'BillingPaymentInstrumentSoftError', 'BillingPaymentInstrumentHardError', 'BillingTransientError', 'BillingError', 'FulfillmentConfigurationError', 'FulfillmentOutOfStockError', 'FulfillmentTransientError', 'FulfillmentError', 'CalculatePriceFailed'
 	Code    Code    `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
 }
@@ -1035,10 +1077,16 @@ type PatchProperties struct {
 	// AppliedScopeType - Possible values include: 'AppliedScopeType1Single', 'AppliedScopeType1Shared'
 	AppliedScopeType AppliedScopeType1 `json:"appliedScopeType,omitempty"`
 	AppliedScopes    *[]string         `json:"appliedScopes,omitempty"`
+	// AutoFit - Possible values include: 'AutoFit1InstanceFlexibilityOn', 'AutoFit1CapacityPriority', 'AutoFit1InstanceFlexibilityOff'
+	AutoFit AutoFit1 `json:"autoFit,omitempty"`
 }
 
 // Properties ...
 type Properties struct {
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux'
+	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
+	// AutoFit - Possible values include: 'InstanceFlexibilityOn', 'CapacityPriority', 'InstanceFlexibilityOff'
+	AutoFit AutoFit `json:"autoFit,omitempty"`
 	// DisplayName - Friendly name for user to easily identify the reservation
 	DisplayName   *string   `json:"displayName,omitempty"`
 	AppliedScopes *[]string `json:"appliedScopes,omitempty"`
@@ -1053,7 +1101,9 @@ type Properties struct {
 	// LastUpdatedDateTime - DateTime of the last time the Reservation was updated.
 	LastUpdatedDateTime *date.Time `json:"lastUpdatedDateTime,omitempty"`
 	// ExpiryDate - This is the date when the Reservation will expire.
-	ExpiryDate         *date.Date           `json:"expiryDate,omitempty"`
+	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
+	// SkuDescription - Description of the SKU in english.
+	SkuDescription     *string              `json:"skuDescription,omitempty"`
 	ExtendedStatusInfo *ExtendedStatusInfo  `json:"extendedStatusInfo,omitempty"`
 	SplitProperties    *SplitPropertiesType `json:"splitProperties,omitempty"`
 	MergeProperties    *MergePropertiesType `json:"mergeProperties,omitempty"`
@@ -1118,32 +1168,30 @@ func (future *ReservationUpdateFuture) Result(client Client) (r Response, err er
 // Response ...
 type Response struct {
 	autorest.Response `json:"-"`
-	// Location - Possible values include: 'Westus', 'Eastus', 'Eastus2', 'Northcentralus', 'Westus2', 'Southcentralus', 'Centralus', 'Westeurope', 'Northeurope', 'Eastasia', 'Southeastasia', 'Japaneast', 'Japanwest', 'Brazilsouth', 'Australiaeast', 'Australiasoutheast', 'Southindia', 'Westindia', 'Centralindia', 'Canadacentral', 'Canadaeast', 'Uksouth', 'Westcentralus', 'Ukwest'
+	// Location - Possible values include: 'Westus', 'Eastus', 'Eastus2', 'Northcentralus', 'Westus2', 'Southcentralus', 'Centralus', 'Westeurope', 'Northeurope', 'Eastasia', 'Southeastasia', 'Japaneast', 'Japanwest', 'Brazilsouth', 'Australiaeast', 'Australiasoutheast', 'Southindia', 'Westindia', 'Centralindia', 'Canadacentral', 'Canadaeast', 'Uksouth', 'Westcentralus', 'Ukwest', 'Francecentral', 'Francesouth', 'Australiac', 'Australiac2'
 	Location Location `json:"location,omitempty"`
 	Etag     *int32   `json:"etag,omitempty"`
 	// ID - Identifier of the reservation
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the reservation
-	Name *string `json:"name,omitempty"`
-	// Kind - Resource Provider type to be reserved. Possible values include: 'MicrosoftCompute'
-	Kind       Kind        `json:"kind,omitempty"`
+	Name       *string     `json:"name,omitempty"`
 	Sku        *SkuName    `json:"sku,omitempty"`
 	Properties *Properties `json:"properties,omitempty"`
 	// Type - Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
 	Type *string `json:"type,omitempty"`
 }
 
-// SkuCapability ...
-type SkuCapability struct {
+// SkuName ...
+type SkuName struct {
+	Name *string `json:"name,omitempty"`
+}
+
+// SkuProperty ...
+type SkuProperty struct {
 	// Name - An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
 	// Value - An invariant if the feature is measured by quantity.
 	Value *string `json:"value,omitempty"`
-}
-
-// SkuName ...
-type SkuName struct {
-	Name *string `json:"name,omitempty"`
 }
 
 // SkuRestriction ...

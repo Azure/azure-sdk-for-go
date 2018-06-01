@@ -72,7 +72,7 @@ func (client Client) GetPreparer(ctx context.Context, reservationID string, rese
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -137,7 +137,7 @@ func (client Client) ListPreparer(ctx context.Context, reservationOrderID string
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -231,7 +231,7 @@ func (client Client) ListRevisionsPreparer(ctx context.Context, reservationID st
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -318,7 +318,7 @@ func (client Client) MergePreparer(ctx context.Context, reservationOrderID strin
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -389,7 +389,7 @@ func (client Client) SplitPreparer(ctx context.Context, reservationOrderID strin
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -462,7 +462,7 @@ func (client Client) UpdatePreparer(ctx context.Context, reservationOrderID stri
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
 
-	const APIVersion = "2017-11-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -27,8 +27,8 @@ import (
 )
 
 type (
-	// Event is an Service Bus message to be sent or received
-	Event struct {
+	// Message is an Service Bus message to be sent or received
+	Message struct {
 		Data          []byte
 		Properties    map[string]interface{}
 		ID            string
@@ -38,20 +38,20 @@ type (
 	}
 )
 
-// NewEventFromString builds an Event from a string message
-func NewEventFromString(message string) *Event {
-	return NewEvent([]byte(message))
+// NewMessageFromString builds an Message from a string message
+func NewMessageFromString(message string) *Message {
+	return NewMessage([]byte(message))
 }
 
-// NewEvent builds an Event from a slice of data
-func NewEvent(data []byte) *Event {
-	return &Event{
+// NewMessage builds an Message from a slice of data
+func NewMessage(data []byte) *Message {
+	return &Message{
 		Data: data,
 	}
 }
 
 // Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
-func (e *Event) Set(key, value string) {
+func (e *Message) Set(key, value string) {
 	if e.Properties == nil {
 		e.Properties = make(map[string]interface{})
 	}
@@ -59,7 +59,7 @@ func (e *Event) Set(key, value string) {
 }
 
 // ForeachKey implements the opentracing.TextMapReader and gets properties on the event to be propagated from the message broker
-func (e *Event) ForeachKey(handler func(key, val string) error) error {
+func (e *Message) ForeachKey(handler func(key, val string) error) error {
 	for key, value := range e.Properties {
 		err := handler(key, value.(string))
 		if err != nil {
@@ -69,7 +69,7 @@ func (e *Event) ForeachKey(handler func(key, val string) error) error {
 	return nil
 }
 
-func (e *Event) toMsg() *amqp.Message {
+func (e *Message) toMsg() *amqp.Message {
 	msg := e.message
 	if msg == nil {
 		msg = amqp.NewMessage(e.Data)
@@ -94,29 +94,29 @@ func (e *Event) toMsg() *amqp.Message {
 	return msg
 }
 
-func eventFromMsg(msg *amqp.Message) *Event {
-	return newEvent(msg.Data[0], msg)
+func messageFromAMQPMessage(msg *amqp.Message) *Message {
+	return newMessage(msg.Data[0], msg)
 }
 
-func newEvent(data []byte, msg *amqp.Message) *Event {
-	event := &Event{
+func newMessage(data []byte, msg *amqp.Message) *Message {
+	message := &Message{
 		Data:    data,
 		message: msg,
 	}
 
 	if msg.Properties != nil {
 		if id, ok := msg.Properties.MessageID.(string); ok {
-			event.ID = id
+			message.ID = id
 		}
-		event.GroupID = &msg.Properties.GroupID
-		event.GroupSequence = &msg.Properties.GroupSequence
+		message.GroupID = &msg.Properties.GroupID
+		message.GroupSequence = &msg.Properties.GroupSequence
 	}
 
 	if msg != nil {
-		event.Properties = make(map[string]interface{})
+		message.Properties = make(map[string]interface{})
 		for key, value := range msg.ApplicationProperties {
-			event.Properties[key] = value
+			message.Properties[key] = value
 		}
 	}
-	return event
+	return message
 }

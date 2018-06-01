@@ -26,7 +26,6 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"log"
 	"sync"
 	"testing"
 	"time"
@@ -36,7 +35,7 @@ import (
 )
 
 const (
-	subscriptionDescription = `
+	subscriptionDescriptionContent = `
 	<SubscriptionDescription
       xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
       xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
@@ -56,21 +55,21 @@ const (
       <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
   </SubscriptionDescription>`
 
-	subscriptionEntry = `
+	subscriptionEntryContent = `
 	<entry xmlns="http://www.w3.org/2005/Atom">
 		<id>https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04</id>
 		<title type="text">gosbwg424p-tagz3cfzrp93m</title>
 		<published>2018-05-02T20:54:59Z</published>
 		<updated>2018-05-02T20:54:59Z</updated>
 		<link rel="self" href="https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04"/>
-		<content type="application/xml">` + subscriptionDescription +
+		<content type="application/xml">` + subscriptionDescriptionContent +
 		`</content>
 	</entry>`
 )
 
 func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
-	var entry SubscriptionEntry
-	err := xml.Unmarshal([]byte(subscriptionEntry), &entry)
+	var entry subscriptionEntry
+	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/gosbh6of3g-tagz3cfzrp93m/subscriptions/gosbwg424p-tagz3cfzrp93m?api-version=2017-04", entry.ID)
 	assert.Equal(suite.T(), "gosbwg424p-tagz3cfzrp93m", entry.Title)
@@ -80,8 +79,8 @@ func (suite *serviceBusSuite) TestSubscriptionEntryUnmarshal() {
 }
 
 func (suite *serviceBusSuite) TestSubscriptionUnmarshal() {
-	var entry SubscriptionEntry
-	err := xml.Unmarshal([]byte(subscriptionEntry), &entry)
+	var entry subscriptionEntry
+	err := xml.Unmarshal([]byte(subscriptionEntryContent), &entry)
 	assert.Nil(suite.T(), err)
 	t := suite.T()
 	s := entry.Content.SubscriptionDescription
@@ -101,44 +100,37 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
-
-	outerCtx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+	outerCtx, outerCancel := context.WithTimeout(context.Background(), timeout)
+	defer outerCancel()
 	topicName := suite.RandomName("gosb", 6)
-	_, err := tm.Put(outerCtx, topicName)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-	topic := ns.NewTopic(topicName)
-	sm := topic.NewSubscriptionManager()
-	for name, testFunc := range tests {
-		suite.T().Run(name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			defer cancel()
-			name := suite.RandomName("gosb", 6)
-			testFunc(ctx, t, sm, name)
-			defer suite.cleanupSubscription(topicName, name)
-		})
+	topic, err := ns.NewTopic(outerCtx, topicName)
+	if suite.NoError(err) {
+		sm := topic.NewSubscriptionManager()
+		for name, testFunc := range tests {
+			suite.T().Run(name, func(t *testing.T) {
+				ctx, cancel := context.WithTimeout(context.Background(), timeout)
+				defer cancel()
+				name := suite.RandomName("gosb", 6)
+				testFunc(ctx, t, sm, name)
+				defer suite.cleanupSubscription(topic, name)
+			})
+		}
 	}
 }
 
 func testPutSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string) {
-	topic, err := sm.Put(ctx, name)
+	sub, err := sm.Put(ctx, name)
 	if !assert.Nil(t, err) {
 		t.FailNow()
 	}
-	if assert.NotNil(t, topic) {
-		assert.Equal(t, name, topic.Title)
+	if assert.NotNil(t, sub) {
+		assert.Equal(t, name, sub.Name)
 	}
 }
 
-func (suite *serviceBusSuite) cleanupSubscription(topicName, subscriptionName string) {
+func (suite *serviceBusSuite) cleanupSubscription(topic *Topic, subscriptionName string) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-
-	ns := suite.getNewSasInstance()
-	topic := ns.NewTopic(topicName)
 	sm := topic.NewSubscriptionManager()
 	err := sm.Delete(ctx, subscriptionName)
 	if err != nil {
@@ -172,27 +164,29 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 			if err != nil {
 				t.Fatal(err)
 			}
-			topic := ns.NewTopic(topicName)
-			sm := topic.NewSubscriptionManager()
-			_, err = sm.Put(ctx, topicName)
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			defer func(tName, sName string) {
-				innerCtx, cancel := context.WithTimeout(context.Background(), timeout)
-				defer cancel()
-				err = sm.Delete(innerCtx, sName)
-				err2 := tm.Delete(innerCtx, tName)
+			topic, err := ns.NewTopic(ctx, topicName)
+			if suite.NoError(err) {
+				sm := topic.NewSubscriptionManager()
+				_, err = sm.Put(ctx, topicName)
 				if err != nil {
-					suite.T().Fatal(err)
+					t.Fatal(err)
 				}
-				if err2 != nil {
-					suite.T().Fatal(err2)
-				}
-			}(topicName, subName)
 
-			testFunc(ctx, t, sm, topicName, subName)
+				defer func(tName, sName string) {
+					innerCtx, cancel := context.WithTimeout(context.Background(), timeout)
+					defer cancel()
+					err = sm.Delete(innerCtx, sName)
+					err2 := tm.Delete(innerCtx, tName)
+					if err != nil {
+						suite.T().Fatal(err)
+					}
+					if err2 != nil {
+						suite.T().Fatal(err2)
+					}
+				}(topicName, subName)
+
+				testFunc(ctx, t, sm, topicName, subName)
+			}
 		}
 		suite.T().Run(name, setupTestTeardown)
 	}
@@ -241,12 +235,12 @@ func testSubscriptionWithLockDuration(ctx context.Context, t *testing.T, sm *Sub
 	assert.Equal(t, "PT3M", *s.LockDuration)
 }
 
-func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionOption) *SubscriptionDescription {
+func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionOption) *SubscriptionEntity {
 	s, err := sm.Put(ctx, name, opts...)
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
-	return &s.Content.SubscriptionDescription
+	return s
 }
 
 func (suite *serviceBusSuite) TestSubscription() {
@@ -255,32 +249,32 @@ func (suite *serviceBusSuite) TestSubscription() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			topicName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			_, err := tm.Put(ctx, topicName)
-			if err != nil {
-				log.Fatalln(err)
+
+			topic, err := ns.NewTopic(ctx, topicName)
+			if suite.NoError(err) {
+				subName := suite.randEntityName()
+				subscription, err := topic.NewSubscription(ctx, subName)
+				if suite.NoError(err) {
+					defer func() {
+						closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
+						defer closeCancel()
+						subscription.Close(closeCtx)
+						suite.cleanupSubscription(topic, subName)
+					}()
+					testFunc(ctx, t, topic, subscription)
+				}
+				defer func() {
+					closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
+					defer closeCancel()
+					topic.Close(closeCtx)
+					suite.cleanupTopic(topicName)
+				}()
 			}
-
-			topic := ns.NewTopic(topicName)
-			sm := topic.NewSubscriptionManager()
-			subName := suite.randEntityName()
-			sm.Put(ctx, subName)
-			subscription := topic.NewSubscription(subName)
-			defer func() {
-				closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
-				defer closeCancel()
-				topic.Close(closeCtx)
-				suite.cleanupTopic(topicName)
-				subscription.Close(closeCtx)
-				suite.cleanupSubscription(topicName, subName)
-
-			}()
-			testFunc(ctx, t, topic, subscription)
 		}
 
 		suite.T().Run(name, setupTestTeardown)
@@ -288,12 +282,12 @@ func (suite *serviceBusSuite) TestSubscription() {
 }
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
-	err := topic.Send(ctx, NewEventFromString("hello!"))
+	err := topic.Send(ctx, NewMessageFromString("hello!"))
 	assert.Nil(t, err)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Event) error {
+	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Message) error {
 		wg.Done()
 		return nil
 	})

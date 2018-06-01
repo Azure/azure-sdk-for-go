@@ -125,7 +125,7 @@ func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 }
 
 func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
-	event := eventFromMsg(msg)
+	event := messageFromAMQPMessage(msg)
 	var span opentracing.Span
 	wireContext, err := extractWireContext(event)
 	if err == nil {

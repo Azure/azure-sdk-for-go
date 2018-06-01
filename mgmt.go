@@ -202,6 +202,12 @@ func (em *EntityManager) Execute(ctx context.Context, method string, entityPath 
 	return res, err
 }
 
+func isEmptyFeed(b []byte) bool {
+	var emptyFeed queueFeed
+	feedErr := xml.Unmarshal(b, &emptyFeed)
+	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
+}
+
 func (em *EntityManager) addAuthorization(req *http.Request) (*http.Request, error) {
 	signature, err := em.TokenProvider.GetToken(req.URL.String())
 	if err != nil {

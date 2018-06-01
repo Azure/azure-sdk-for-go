@@ -25,7 +25,6 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
-	"log"
 	"testing"
 	"time"
 
@@ -75,35 +74,34 @@ const (
 )
 
 func (suite *serviceBusSuite) TestTopicEntryUnmarshal() {
-	var entry TopicEntry
+	var entry topicEntry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.ID)
-	assert.Equal(suite.T(), "foo", entry.Title)
-	assert.Equal(suite.T(), "sbdjtest", *entry.Author.Name)
-	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
-	assert.Equal(suite.T(), "P10675199DT2H48M5.4775807S", *entry.Content.TopicDescription.DefaultMessageTimeToLive)
-	assert.NotNil(suite.T(), entry.Content)
+	suite.Nil(err)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.ID)
+	suite.Equal("foo", entry.Title)
+	suite.Equal("sbdjtest", *entry.Author.Name)
+	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
+	suite.Equal("P10675199DT2H48M5.4775807S", *entry.Content.TopicDescription.DefaultMessageTimeToLive)
+	suite.NotNil(entry.Content)
 }
 
 func (suite *serviceBusSuite) TestTopicUnmarshal() {
 	var entry Entry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
-	assert.Nil(suite.T(), err)
+	suite.Nil(err)
 
 	var td TopicDescription
 	err = xml.Unmarshal([]byte(entry.Content.Body), &td)
-	t := suite.T()
-	assert.Nil(t, err)
-	assert.Equal(t, int32(1024), *td.MaxSizeInMegabytes)
-	assert.Equal(t, false, *td.RequiresDuplicateDetection)
-	assert.Equal(t, "P10675199DT2H48M5.4775807S", *td.DefaultMessageTimeToLive)
-	assert.Equal(t, "PT10M", *td.DuplicateDetectionHistoryTimeWindow)
-	assert.Equal(t, true, *td.EnableBatchedOperations)
-	assert.Equal(t, false, *td.FilteringMessagesBeforePublishing)
-	assert.Equal(t, false, *td.EnableExpress)
-	assert.Equal(t, int64(0), *td.SizeInBytes)
-	assert.EqualValues(t, servicebus.EntityStatusActive, *td.Status)
+	suite.Nil(err)
+	suite.Equal(int32(1024), *td.MaxSizeInMegabytes)
+	suite.Equal(false, *td.RequiresDuplicateDetection)
+	suite.Equal("P10675199DT2H48M5.4775807S", *td.DefaultMessageTimeToLive)
+	suite.Equal("PT10M", *td.DuplicateDetectionHistoryTimeWindow)
+	suite.Equal(true, *td.EnableBatchedOperations)
+	suite.Equal(false, *td.FilteringMessagesBeforePublishing)
+	suite.Equal(false, *td.EnableExpress)
+	suite.Equal(int64(0), *td.SizeInBytes)
+	suite.EqualValues(servicebus.EntityStatusActive, *td.Status)
 }
 
 func (suite *serviceBusSuite) TestTopicManagementWrites() {
@@ -130,7 +128,7 @@ func testPutTopic(ctx context.Context, t *testing.T, tm *TopicManager, name stri
 		t.FailNow()
 	}
 	if assert.NotNil(t, topic) {
-		assert.Equal(t, name, topic.Title)
+		assert.Equal(t, name, topic.Name)
 	}
 }
 
@@ -170,16 +168,16 @@ func testGetTopic(ctx context.Context, t *testing.T, tm *TopicManager, names []s
 	topic, err := tm.Get(ctx, names[0])
 	assert.Nil(t, err)
 	assert.NotNil(t, t)
-	assert.Equal(t, topic.Entry.Title, names[0])
+	assert.Equal(t, topic.Name, names[0])
 }
 
 func testListTopics(ctx context.Context, t *testing.T, tm *TopicManager, names []string) {
-	feed, err := tm.List(ctx)
+	topics, err := tm.List(ctx)
 	assert.Nil(t, err)
-	assert.NotNil(t, feed)
-	queueNames := make([]string, len(feed.Entries))
-	for idx, entry := range feed.Entries {
-		queueNames[idx] = entry.Title
+	assert.NotNil(t, topics)
+	queueNames := make([]string, len(topics))
+	for idx, topic := range topics {
+		queueNames[idx] = topic.Name
 	}
 
 	for _, name := range names {
@@ -272,12 +270,12 @@ func testTopicWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, tm *Topi
 	assert.Equal(t, int32(size), *topic.MaxSizeInMegabytes)
 }
 
-func buildTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string, opts ...TopicOption) *TopicDescription {
-	te, err := tm.Put(ctx, name, opts...)
+func buildTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string, opts ...TopicOption) *TopicEntity {
+	topic, err := tm.Put(ctx, name, opts...)
 	if err != nil {
 		t.Fatal(err)
 	}
-	return &te.Content.TopicDescription
+	return topic
 }
 
 func (suite *serviceBusSuite) TestTopic() {
@@ -286,23 +284,19 @@ func (suite *serviceBusSuite) TestTopic() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
 	for name, testFunc := range tests {
 		setupTestTeardown := func(t *testing.T) {
 			name := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			_, err := tm.Put(ctx, name)
-			if err != nil {
-				log.Fatalln(err)
+			topic, err := ns.NewTopic(ctx, name)
+			if suite.NoError(err) {
+				defer func() {
+					topic.Close(ctx)
+					suite.cleanupTopic(name)
+				}()
+				testFunc(ctx, t, topic)
 			}
-
-			topic := ns.NewTopic(name)
-			defer func() {
-				topic.Close(ctx)
-				suite.cleanupTopic(name)
-			}()
-			testFunc(ctx, t, topic)
 		}
 
 		suite.T().Run(name, setupTestTeardown)
@@ -310,7 +304,7 @@ func (suite *serviceBusSuite) TestTopic() {
 }
 
 func testTopicSend(ctx context.Context, t *testing.T, topic *Topic) {
-	err := topic.Send(ctx, NewEventFromString("hello!"))
+	err := topic.Send(ctx, NewMessageFromString("hello!"))
 	assert.Nil(t, err)
 }
 

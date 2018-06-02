@@ -9,7 +9,7 @@ and Subscriptions.
 
 For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/en-us/services/service-bus/).
 
-This library is a pure Golang implementation of Azure Event Hubs over AMQP.
+This library is a pure Golang implementation of Azure Service Bus over AMQP.
 
 
 ## Preview of Service Bus for Golang

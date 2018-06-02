@@ -23,6 +23,8 @@ package servicebus
 //	SOFTWARE
 
 import (
+	"context"
+
 	"pack.ag/amqp"
 )
 
@@ -36,6 +38,28 @@ type (
 		GroupSequence *uint32
 		message       *amqp.Message
 	}
+
+	// DispositionAction represents the action to notify Azure Service Bus of the Message's disposition
+	DispositionAction func(ctx context.Context)
+
+	// MessageErrorCondition represents a well-known collection of AMQP errors
+	MessageErrorCondition string
+)
+
+// Error Conditions
+const (
+	ErrorInternalError         MessageErrorCondition = "amqp:internal-error"
+	ErrorNotFound              MessageErrorCondition = "amqp:not-found"
+	ErrorUnauthorizedAccess    MessageErrorCondition = "amqp:unauthorized-access"
+	ErrorDecodeError           MessageErrorCondition = "amqp:decode-error"
+	ErrorResourceLimitExceeded MessageErrorCondition = "amqp:resource-limit-exceeded"
+	ErrorNotAllowed            MessageErrorCondition = "amqp:not-allowed"
+	ErrorInvalidField          MessageErrorCondition = "amqp:invalid-field"
+	ErrorNotImplemented        MessageErrorCondition = "amqp:not-implemented"
+	ErrorResourceLocked        MessageErrorCondition = "amqp:resource-locked"
+	ErrorPreconditionFailed    MessageErrorCondition = "amqp:precondition-failed"
+	ErrorResourceDeleted       MessageErrorCondition = "amqp:resource-deleted"
+	ErrorIllegalState          MessageErrorCondition = "amqp:illegal-state"
 )
 
 // NewMessageFromString builds an Message from a string message
@@ -50,17 +74,95 @@ func NewMessage(data []byte) *Message {
 	}
 }
 
-// Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
-func (e *Message) Set(key, value string) {
-	if e.Properties == nil {
-		e.Properties = make(map[string]interface{})
+// Accept will notify Azure Service Bus that the message was successfully handled and should be deleted from the queue
+func (m *Message) Accept() DispositionAction {
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.Accept")
+		defer span.Finish()
+
+		m.message.Accept()
 	}
-	e.Properties[key] = value
+}
+
+// FailButRetry will notify Azure Service Bus the message failed but should be re-queued for delivery.
+func (m *Message) FailButRetry() DispositionAction {
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.FailButRetry")
+		defer span.Finish()
+
+		m.message.Modify(true, false, nil)
+	}
+}
+
+// FailButRetryElsewhere will notify Azure Service Bus the message failed but should be re-queued for deliver to any
+// other link but this one.
+func (m *Message) FailButRetryElsewhere() DispositionAction {
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.FailButRetryElsewhere")
+		defer span.Finish()
+
+		m.message.Modify(true, true, nil)
+	}
+}
+
+// Release will notify Azure Service Bus the message should be re-queued without failure.
+func (m *Message) Release() DispositionAction {
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.Release")
+		defer span.Finish()
+
+		m.message.Release()
+	}
+}
+
+// Reject will notify Azure Service Bus the message failed and should not re-queued
+func (m *Message) Reject(err error) DispositionAction {
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.Reject")
+		defer span.Finish()
+
+		amqpErr := amqp.Error{
+			Condition:   amqp.ErrorCondition(ErrorInternalError),
+			Description: err.Error(),
+		}
+		m.message.Reject(&amqpErr)
+	}
+}
+
+// RejectWithInfo will notify Azure Service Bus the message failed and should not be re-queued with additional context
+func (m *Message) RejectWithInfo(err error, condition MessageErrorCondition, additionalData map[string]string) DispositionAction {
+	var info map[string]interface{}
+	if additionalData != nil {
+		info = make(map[string]interface{}, len(additionalData))
+		for key, val := range additionalData {
+			info[key] = val
+		}
+	}
+
+	return func(ctx context.Context) {
+		span, _ := m.startSpanFromContext(ctx, "sb.Message.RejectWithInfo")
+		defer span.Finish()
+
+		amqpErr := amqp.Error{
+			Condition:   amqp.ErrorCondition(condition),
+			Description: err.Error(),
+			Info:        info,
+		}
+		m.message.Reject(&amqpErr)
+	}
+}
+
+// Set implements opentracing.TextMapWriter and sets properties on the event to be propagated to the message broker
+func (m *Message) Set(key, value string) {
+	if m.Properties == nil {
+		m.Properties = make(map[string]interface{})
+	}
+	m.Properties[key] = value
 }
 
 // ForeachKey implements the opentracing.TextMapReader and gets properties on the event to be propagated from the message broker
-func (e *Message) ForeachKey(handler func(key, val string) error) error {
-	for key, value := range e.Properties {
+func (m *Message) ForeachKey(handler func(key, val string) error) error {
+	for key, value := range m.Properties {
 		err := handler(key, value.(string))
 		if err != nil {
 			return err
@@ -69,24 +171,24 @@ func (e *Message) ForeachKey(handler func(key, val string) error) error {
 	return nil
 }
 
-func (e *Message) toMsg() *amqp.Message {
-	msg := e.message
+func (m *Message) toMsg() *amqp.Message {
+	msg := m.message
 	if msg == nil {
-		msg = amqp.NewMessage(e.Data)
+		msg = amqp.NewMessage(m.Data)
 	}
 
 	msg.Properties = &amqp.MessageProperties{
-		MessageID: e.ID,
+		MessageID: m.ID,
 	}
 
-	if e.GroupID != nil && e.GroupSequence != nil {
-		msg.Properties.GroupID = *e.GroupID
-		msg.Properties.GroupSequence = *e.GroupSequence
+	if m.GroupID != nil && m.GroupSequence != nil {
+		msg.Properties.GroupID = *m.GroupID
+		msg.Properties.GroupSequence = *m.GroupSequence
 	}
 
-	if len(e.Properties) > 0 {
+	if len(m.Properties) > 0 {
 		msg.ApplicationProperties = make(map[string]interface{})
-		for key, value := range e.Properties {
+		for key, value := range m.Properties {
 			msg.ApplicationProperties[key] = value
 		}
 	}

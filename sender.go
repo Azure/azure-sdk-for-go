@@ -204,7 +204,7 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 	amqpSender, err := amqpSession.NewSender(
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkReceiverSettle(amqp.ModeSecond))
+		amqp.LinkSenderSettle(amqp.ModeUnsettled))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err

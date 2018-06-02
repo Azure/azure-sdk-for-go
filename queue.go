@@ -26,7 +26,7 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-		"io/ioutil"
+	"io/ioutil"
 	"net/http"
 	"sync"
 	"time"

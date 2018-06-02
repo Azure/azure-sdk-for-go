@@ -57,9 +57,9 @@ handleErr(err)
 
 // Receive message from queue
 listenHandle, err := q.Receive(context.Background(), 
-	func(ctx context.Context, event *servicebus.Event) error {
-		fmt.Println(string(event.Data))
-		return nil
+	func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+		fmt.Println(string(msg.Data))
+		return msg.Accept()
 	})
 handleErr(err)
 defer listenHandle.Close(context.Background)

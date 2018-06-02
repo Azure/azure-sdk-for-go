@@ -37,6 +37,19 @@ func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName str
 	return span, ctx
 }
 
+func (m *Message) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+	ApplyComponentInfo(span)
+	span.SetTag("amqp.message-id", m.ID)
+	if m.GroupID != nil {
+		span.SetTag("amqp.message-group-id", *m.GroupID)
+	}
+	if m.GroupSequence != nil {
+		span.SetTag("amqp.message-group-sequence", *m.GroupSequence)
+	}
+	return span, ctx
+}
+
 func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
 	ApplyComponentInfo(span)

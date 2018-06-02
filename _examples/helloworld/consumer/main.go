@@ -29,7 +29,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Message) error {
+	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Message) servicebus.DispositionAction {
 		text := string(event.Data)
 		if text == "exit\n" {
 			fmt.Println("Oh snap!! Someone told me to exit!")
@@ -37,7 +37,7 @@ func main() {
 		} else {
 			fmt.Println(string(event.Data))
 		}
-		return nil
+		return event.Accept()
 	})
 	defer listenHandle.Close(context.Background())
 

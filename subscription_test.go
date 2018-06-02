@@ -287,9 +287,9 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Message) error {
+	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Message) DispositionAction {
 		wg.Done()
-		return nil
+		return evt.Accept()
 	})
 	if err != nil {
 		t.Fatal(err)

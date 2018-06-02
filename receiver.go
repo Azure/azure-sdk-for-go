@@ -138,13 +138,13 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
 
-	err = handler(ctx, event)
-	if err != nil {
-		msg.Modify(true, false, nil)
-		log.For(ctx).Error(fmt.Errorf("message modify(true, false, nil): id: %v", id))
-		return
+	dispositionAction := handler(ctx, event)
+	if dispositionAction != nil {
+		dispositionAction(ctx)
+	} else {
+		log.For(ctx).Info(fmt.Sprintf("disposition action not provided auto accepted message id %q", id))
+		event.Accept()
 	}
-	msg.Accept()
 }
 
 func extractWireContext(reader opentracing.TextMapReader) (opentracing.SpanContext, error) {
@@ -236,7 +236,8 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkCredit(100),
+		amqp.LinkCredit(10),
+		amqp.LinkReceiverSettle(amqp.ModeSecond),
 	}
 
 	if r.requiredSessionID != nil {

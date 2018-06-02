@@ -396,11 +396,11 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 	wg.Add(numMessages)
 	// ensure in-order processing of messages from the queue
 	count := 0
-	queue.Receive(ctx, func(ctx context.Context, event *Message) error {
+	queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
 		assert.Equal(t, messages[count], string(event.Data))
 		count++
 		wg.Done()
-		return nil
+		return event.Accept()
 	})
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
@@ -436,7 +436,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	var wg sync.WaitGroup
 	wg.Add(2)
 	received := make(map[interface{}]string)
-	queue.Receive(ctx, func(ctx context.Context, event *Message) error {
+	queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
 		// we should get 2 messages discarding the duplicate ID
 		received[event.ID] = string(event.Data)
 		wg.Done()
@@ -498,13 +498,13 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 	wg.Add(numMessages)
 	// ensure in-order processing of messages from the queue
 	count := 0
-	handler := func(ctx context.Context, event *Message) error {
+	handler := func(ctx context.Context, event *Message) DispositionAction {
 		if !assert.Equal(t, messages[count], string(event.Data)) {
 			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
 		}
 		count++
 		wg.Done()
-		return nil
+		return event.Accept()
 	}
 	listenHandle, err := queue.Receive(ctx, handler, ReceiverWithSession(sessionID))
 	if err != nil {

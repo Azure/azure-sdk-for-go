@@ -62,7 +62,7 @@ listenHandle, err := q.Receive(context.Background(),
 		return msg.Accept()
 	})
 handleErr(err)
-defer listenHandle.Close(context.Background)
+defer listenHandle.Close(context.Background())
 
 // Wait for a signal to quit:
 signalChan := make(chan os.Signal, 1)

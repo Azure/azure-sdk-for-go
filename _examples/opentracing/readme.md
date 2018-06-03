@@ -1,7 +1,7 @@
 # OpenTracing Support Example
 
-This example illustrates how to take advantage of OpenTracing support in the library to enable distributed message
-tracing.
+This example illustrates how to take advantage of [OpenTracing](http://opentracing.io) support in the library to enable 
+distributed message tracing.
 
 ## To Run
 - Start a Jaeger tracing service via docker:

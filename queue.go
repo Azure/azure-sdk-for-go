@@ -347,6 +347,9 @@ func queueEntryToEntity(entry *queueEntry) *QueueEntity {
 
 // NewQueue creates a new Queue Sender / Receiver
 func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOption) (*Queue, error) {
+	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewQueue")
+	defer span.Finish()
+
 	qm := ns.NewQueueManager()
 	qe, err := qm.Get(ctx, name)
 	if err != nil {

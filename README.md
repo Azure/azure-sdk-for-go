@@ -42,32 +42,54 @@ and the latter provides some common authentication, persistence and request-resp
 ### Quick start
 Let's send and receive `"hello, world!"`.
 ```go
-// Connect
-connStr := mustGetenv("SERVICEBUS_CONNECTION_STRING")
-ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
-handleErr(err)
+package main
 
-queueName := "helloworld"
-q, err := ns.NewQueue(context.Background(), queueName)
-handleErr(err)
+import (
+	"context"
+	"fmt"
+	"os"
+	"os/signal"
 
-// Send message to queue
-err := q.Send(context.Background(), servicebus.NewEventFromString("Hello World!"))
-handleErr(err)
+	"github.com/Azure/azure-service-bus-go"
+)
 
-// Receive message from queue
-listenHandle, err := q.Receive(context.Background(), 
-	func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
-		fmt.Println(string(msg.Data))
-		return msg.Accept()
-	})
-handleErr(err)
-defer listenHandle.Close(context.Background())
+func main() {
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString(connStr))
+	if err != nil {
+		// handle error
+	}
 
-// Wait for a signal to quit:
-signalChan := make(chan os.Signal, 1)
-signal.Notify(signalChan, os.Interrupt, os.Kill)
-<-signalChan
+	// Initialize and create a Service Bus Queue named helloworld if it doesn't exist
+	queueName := "helloworld"
+	q, err := ns.NewQueue(context.Background(), queueName)
+	if err != nil {
+		// handle queue creation error
+	}
+
+	// Send message to the Queue named helloworld
+	err = q.Send(context.Background(), servicebus.NewMessageFromString("Hello World!"))
+	if err != nil {
+		// handle message send error
+	}
+
+	// Receive message from queue named helloworld
+	listenHandle, err := q.Receive(context.Background(),
+		func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
+			fmt.Println(string(msg.Data))
+			return msg.Accept()
+		})
+	if err != nil {
+		// handle queue listener creation err
+	}
+	// Close the listener handle for the Service Bus Queue
+	defer listenHandle.Close(context.Background())
+
+	// Wait for a signal to quit:
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, os.Interrupt, os.Kill)
+	<-signalChan
+}
 ```
 
 ## Examples

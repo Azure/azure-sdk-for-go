@@ -241,6 +241,9 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 
 // NewSubscription creates a new Topic Subscription client
 func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...SubscriptionOption) (*Subscription, error) {
+	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewSubscription")
+	defer span.Finish()
+
 	sm := t.NewSubscriptionManager()
 	qe, err := sm.Get(ctx, name)
 	if err != nil {

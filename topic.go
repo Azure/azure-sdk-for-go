@@ -235,6 +235,9 @@ func topicEntryToEntity(entry *topicEntry) *TopicEntity {
 
 // NewTopic creates a new Topic Sender
 func (ns *Namespace) NewTopic(ctx context.Context, name string, opts ...TopicOption) (*Topic, error) {
+	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewTopic")
+	defer span.Finish()
+
 	tm := ns.NewTopicManager()
 	qe, err := tm.Get(ctx, name)
 	if err != nil {

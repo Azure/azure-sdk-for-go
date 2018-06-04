@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v17.1.0`
+
+### New Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|            iotcentral | 2017-07-01-privatepreview |
+
 ## `v17.0.0`
 
 ### New Services

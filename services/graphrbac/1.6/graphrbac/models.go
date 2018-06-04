@@ -249,6 +249,8 @@ type Application struct {
 	AppID *string `json:"appId,omitempty"`
 	// AppPermissions - The application permissions.
 	AppPermissions *[]string `json:"appPermissions,omitempty"`
+	// AppRoles - The collection of application roles that an application may declare.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is be available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -280,6 +282,9 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	}
 	if a.AppPermissions != nil {
 		objectMap["appPermissions"] = a.AppPermissions
+	}
+	if a.AppRoles != nil {
+		objectMap["appRoles"] = a.AppRoles
 	}
 	if a.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = a.AvailableToOtherTenants
@@ -368,6 +373,8 @@ func (aaop ApplicationAddOwnerParameters) MarshalJSON() ([]byte, error) {
 type ApplicationCreateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants.
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -391,6 +398,9 @@ type ApplicationCreateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationCreateParameters.
 func (acp ApplicationCreateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if acp.AppRoles != nil {
+		objectMap["appRoles"] = acp.AppRoles
+	}
 	if acp.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = acp.AvailableToOtherTenants
 	}
@@ -518,6 +528,8 @@ func (page ApplicationListResultPage) Values() []Application {
 type ApplicationUpdateParameters struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
+	// AppRoles - The collection of application roles that an application may declare.
+	AppRoles *[]AppRole `json:"appRoles,omitempty"`
 	// AvailableToOtherTenants - Whether the application is available to other tenants
 	AvailableToOtherTenants *bool `json:"availableToOtherTenants,omitempty"`
 	// DisplayName - The display name of the application.
@@ -541,6 +553,9 @@ type ApplicationUpdateParameters struct {
 // MarshalJSON is the custom marshaler for ApplicationUpdateParameters.
 func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if aup.AppRoles != nil {
+		objectMap["appRoles"] = aup.AppRoles
+	}
 	if aup.AvailableToOtherTenants != nil {
 		objectMap["availableToOtherTenants"] = aup.AvailableToOtherTenants
 	}
@@ -569,6 +584,53 @@ func (aup ApplicationUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap["requiredResourceAccess"] = aup.RequiredResourceAccess
 	}
 	for k, v := range aup.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// AppRole represents an application role that may be requested by a client application calling another application
+// or that may be used to assign an application to users or groups in a specified application role. The appRoles
+// property of the servicePrincipal entity and of the application entity is a collection of appRole.
+type AppRole struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// AllowedMemberTypes - Specifies whether this app role definition can be assigned to users and groups by setting to "User", or to other applications by setting to "Application", or to both.
+	AllowedMemberTypes *[]string `json:"allowedMemberTypes,omitempty"`
+	// Description - Permission help text that appears in the admin app assignment and consent experiences.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - Display name for the permission that appears in the admin consent and app assignment experiences. For example, "Read Only" or "Admin".
+	DisplayName *string `json:"displayName,omitempty"`
+	// ID - Unique role identifier inside the appRoles collection, such as "c20e145e-5459-4a6c-a074-b942bbd4cfe1".
+	ID *string `json:"id,omitempty"`
+	// IsEnabled - When creating or updating a role definition, this must be set to true (which is the default). To delete a role, this must first be set to false.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Value - Specifies the value of the roles claim that the application should expect in the authentication and access tokens, such as "ReadOnly" or "Admin".
+	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppRole.
+func (ar AppRole) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.AllowedMemberTypes != nil {
+		objectMap["allowedMemberTypes"] = ar.AllowedMemberTypes
+	}
+	if ar.Description != nil {
+		objectMap["description"] = ar.Description
+	}
+	if ar.DisplayName != nil {
+		objectMap["displayName"] = ar.DisplayName
+	}
+	if ar.ID != nil {
+		objectMap["id"] = ar.ID
+	}
+	if ar.IsEnabled != nil {
+		objectMap["isEnabled"] = ar.IsEnabled
+	}
+	if ar.Value != nil {
+		objectMap["value"] = ar.Value
+	}
+	for k, v := range ar.AdditionalProperties {
 		objectMap[k] = v
 	}
 	return json.Marshal(objectMap)

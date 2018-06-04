@@ -1656,7 +1656,7 @@ type DataDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach**  This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
@@ -3121,7 +3121,7 @@ type OSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach**  This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// DiskSizeGB - Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
@@ -3430,13 +3430,32 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 	return *page.rsr.Value
 }
 
-// RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation
+// ResourceUpdate the Resource model definition.
+type ResourceUpdate struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	Sku  *DiskSku           `json:"sku,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceUpdate.
+func (ru ResourceUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ru.Tags != nil {
+		objectMap["tags"] = ru.Tags
+	}
+	if ru.Sku != nil {
+		objectMap["sku"] = ru.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
+// RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation.
 type RollbackStatusInfo struct {
 	// SuccessfullyRolledbackInstanceCount - The number of instances which have been successfully rolled back.
 	SuccessfullyRolledbackInstanceCount *int32 `json:"successfullyRolledbackInstanceCount,omitempty"`
 	// FailedRolledbackInstanceCount - The number of instances which failed to rollback.
 	FailedRolledbackInstanceCount *int32 `json:"failedRolledbackInstanceCount,omitempty"`
-	// RollbackError - Error Details if OS rollback failed.
+	// RollbackError - Error details if OS rollback failed.
 	RollbackError *APIError `json:"rollbackError,omitempty"`
 }
 
@@ -4268,7 +4287,7 @@ type SnapshotUpdate struct {
 	*DiskUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	Sku  *SnapshotSku       `json:"sku,omitempty"`
+	Sku  *DiskSku           `json:"sku,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotUpdate.
@@ -4315,7 +4334,7 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 			}
 		case "sku":
 			if v != nil {
-				var sku SnapshotSku
+				var sku DiskSku
 				err = json.Unmarshal(*v, &sku)
 				if err != nil {
 					return err
@@ -6562,7 +6581,7 @@ type VirtualMachineScaleSetOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// WriteAcceleratorEnabled - Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool `json:"writeAcceleratorEnabled,omitempty"`
-	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage**  This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
+	// CreateOption - Specifies how the virtual machines in the scale set should be created.<br><br> The only allowed value is: **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'DiskCreateOptionTypesFromImage', 'DiskCreateOptionTypesEmpty', 'DiskCreateOptionTypesAttach'
 	CreateOption DiskCreateOptionTypes `json:"createOption,omitempty"`
 	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`

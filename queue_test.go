@@ -367,6 +367,9 @@ func (suite *serviceBusSuite) TestQueue() {
 				suite.cleanupQueue(queueName)
 			}()
 			testFunc(ctx, t, q)
+			if !t.Failed() {
+				checkZeroQueueMessages(ctx, t, ns, queueName)
+			}
 		}
 
 		suite.T().Run(name, setupTestTeardown)
@@ -440,7 +443,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 		// we should get 2 messages discarding the duplicate ID
 		received[event.ID] = string(event.Data)
 		wg.Done()
-		return nil
+		return event.Accept()
 	})
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
@@ -465,6 +468,9 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 				QueueWithRequiredSessions())
 			if suite.NoError(err) {
 				testFunc(ctx, t, q)
+				if !t.Failed() {
+					checkZeroQueueMessages(ctx, t, ns, queueName)
+				}
 			}
 			defer func() {
 				if q != nil {
@@ -526,6 +532,24 @@ func mustUUID(t *testing.T) uuid.UUID {
 		t.Fatal(err)
 	}
 	return id
+}
+
+func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
+	qm := ns.NewQueueManager()
+	maxTries := 10
+	for i := 0; i < maxTries; i ++ {
+		q, err := qm.Get(ctx, name)
+		if !assert.NoError(t, err) {
+			return
+		}
+		if *q.MessageCount == 0 {
+			return
+		}
+		t.Logf("try %d out of %d, message count was %d, not 0", i + 1, maxTries, *q.MessageCount)
+		time.Sleep(1 * time.Second)
+	}
+
+	assert.Fail(t, "message count never reached zero")
 }
 
 func waitUntil(t *testing.T, wg *sync.WaitGroup, d time.Duration) {

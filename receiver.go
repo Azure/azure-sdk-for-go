@@ -46,6 +46,8 @@ type (
 		Name              string
 		requiredSessionID *string
 		lastError         error
+		receiveMode       amqp.ReceiverSettleMode
+		prefetch          int
 	}
 
 	// ReceiverOptions provides a structure for configuring receivers
@@ -56,6 +58,17 @@ type (
 		r   *receiver
 		ctx context.Context
 	}
+
+	// ReceiveMode represents the behavior when consuming a message from a queue
+	ReceiveMode int
+)
+
+const (
+	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
+	ReceiveAndDeleteMode ReceiveMode = 0
+	// PeekLockMode causes a receiver to peek at a message, lock it so no others can consume and have the queue wait for
+	// the DispositionAction
+	PeekLockMode ReceiveMode = 1
 )
 
 // newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
@@ -236,8 +249,7 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkCredit(10),
-		amqp.LinkReceiverSettle(amqp.ModeSecond),
+		amqp.LinkReceiverSettle(r.receiveMode),
 	}
 
 	if r.requiredSessionID != nil {
@@ -258,6 +270,28 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 func ReceiverWithSession(sessionID string) ReceiverOptions {
 	return func(r *receiver) error {
 		r.requiredSessionID = &sessionID
+		return nil
+	}
+}
+
+// ReceiverWithReceiveMode configures a receiver to automatically pop messages from the Queue using ReceiveAndDeleteMode
+// vs. peeking at a message, locking it and waiting for the receiver to provide a DispositionAction before popping the
+// message
+func ReceiverWithReceiveMode(mode ReceiveMode) ReceiverOptions {
+	return func(r *receiver) error {
+		if mode == ReceiveAndDeleteMode {
+			r.receiveMode = amqp.ModeFirst
+		} else {
+			r.receiveMode = amqp.ModeSecond
+		}
+		return nil
+	}
+}
+
+// ReceiverWithPrefetch configures a receiver to fetch a maximum number of unacknowledged messages
+func ReceiverWithPrefetch(count int) ReceiverOptions {
+	return func(r *receiver) error {
+		r.prefetch = count
 		return nil
 	}
 }

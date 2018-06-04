@@ -267,6 +267,9 @@ func (suite *serviceBusSuite) TestSubscription() {
 						suite.cleanupSubscription(topic, subName)
 					}()
 					testFunc(ctx, t, topic, subscription)
+					if !t.Failed() {
+						checkZeroSubscriptionMessages(ctx, t, topic, subName)
+					}
 				}
 				defer func() {
 					closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
@@ -296,4 +299,22 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 	}
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
+}
+
+func checkZeroSubscriptionMessages(ctx context.Context, t *testing.T, topic *Topic, name string) {
+	sm := topic.NewSubscriptionManager()
+	maxTries := 10
+	for i := 0; i < maxTries; i ++ {
+		s, err := sm.Get(ctx, name)
+		if !assert.NoError(t, err) {
+			return
+		}
+		if *s.MessageCount == 0 {
+			return
+		}
+		t.Logf("try %d out of %d, message count was %d, not 0", i + 1, maxTries, *s.MessageCount)
+		time.Sleep(1 * time.Second)
+	}
+
+	assert.Fail(t, "message count never reached zero")
 }

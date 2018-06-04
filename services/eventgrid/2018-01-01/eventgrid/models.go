@@ -155,7 +155,7 @@ type ContainerRegistryImagePushedEventData struct {
 // DeviceLifeCycleEventProperties schema of the Data property of an EventGridEvent for a device life cycle event
 // (DeviceCreated, DeviceDeleted).
 type DeviceLifeCycleEventProperties struct {
-	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`
@@ -272,7 +272,7 @@ type EventHubCaptureFileCreatedEventData struct {
 
 // IotHubDeviceCreatedEventData event data for Microsoft.Devices.DeviceCreated event.
 type IotHubDeviceCreatedEventData struct {
-	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`
@@ -286,7 +286,7 @@ type IotHubDeviceCreatedEventData struct {
 
 // IotHubDeviceDeletedEventData event data for Microsoft.Devices.DeviceDeleted event.
 type IotHubDeviceDeletedEventData struct {
-	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+	// DeviceID - The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $ '.
 	DeviceID *string `json:"deviceId,omitempty"`
 	// HubName - Name of the IoT Hub where the device was created or deleted.
 	HubName *string `json:"hubName,omitempty"`

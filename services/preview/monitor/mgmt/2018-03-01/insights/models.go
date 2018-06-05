@@ -509,14 +509,17 @@ func PossibleUnitValues() []Unit {
 	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
 }
 
-// BasicAction ...
+// BasicAction an alert action.
 type BasicAction interface {
 	AsAlertingAction() (*AlertingAction, bool)
 	AsAction() (*Action, bool)
 }
 
-// Action ...
+// Action an alert action.
 type Action struct {
+	// ActionGroupID - the id of the action group to use.
+	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	WebhookProperties map[string]*string `json:"webhookProperties"`
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
@@ -562,6 +565,12 @@ func unmarshalBasicActionArray(body []byte) ([]BasicAction, error) {
 func (a Action) MarshalJSON() ([]byte, error) {
 	a.OdataType = OdataTypeAction
 	objectMap := make(map[string]interface{})
+	if a.ActionGroupID != nil {
+		objectMap["actionGroupId"] = a.ActionGroupID
+	}
+	if a.WebhookProperties != nil {
+		objectMap["webhookProperties"] = a.WebhookProperties
+	}
 	if a.OdataType != "" {
 		objectMap["odata.type"] = a.OdataType
 	}
@@ -1031,6 +1040,9 @@ type AlertingAction struct {
 	ThrottlingInMin *int32 `json:"throttlingInMin,omitempty"`
 	// Trigger - The trigger condition that results in the alert rule being.
 	Trigger *TriggerCondition `json:"trigger,omitempty"`
+	// ActionGroupID - the id of the action group to use.
+	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	WebhookProperties map[string]*string `json:"webhookProperties"`
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
@@ -1050,6 +1062,12 @@ func (aa AlertingAction) MarshalJSON() ([]byte, error) {
 	}
 	if aa.Trigger != nil {
 		objectMap["trigger"] = aa.Trigger
+	}
+	if aa.ActionGroupID != nil {
+		objectMap["actionGroupId"] = aa.ActionGroupID
+	}
+	if aa.WebhookProperties != nil {
+		objectMap["webhookProperties"] = aa.WebhookProperties
 	}
 	if aa.OdataType != "" {
 		objectMap["odata.type"] = aa.OdataType
@@ -3041,25 +3059,6 @@ type Metric struct {
 	Timeseries *[]TimeSeriesElement `json:"timeseries,omitempty"`
 }
 
-// MetricAlertAction an alert action.
-type MetricAlertAction struct {
-	// ActionGroupID - the id of the action group to use.
-	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
-	WebhookProperties map[string]*string `json:"webhookProperties"`
-}
-
-// MarshalJSON is the custom marshaler for MetricAlertAction.
-func (maa MetricAlertAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if maa.ActionGroupID != nil {
-		objectMap["actionGroupId"] = maa.ActionGroupID
-	}
-	if maa.WebhookProperties != nil {
-		objectMap["webhookProperties"] = maa.WebhookProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // BasicMetricAlertCriteria the rule criteria that defines the conditions of the alert rule.
 type BasicMetricAlertCriteria interface {
 	AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool)
@@ -3158,7 +3157,7 @@ type MetricAlertProperties struct {
 	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
 	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions *[]MetricAlertAction `json:"actions,omitempty"`
+	Actions *[]BasicAction `json:"actions,omitempty"`
 	// LastUpdatedTime - Last time the rule was updated in ISO8601 format.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 }
@@ -3245,8 +3244,7 @@ func (mapVar *MetricAlertProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "actions":
 			if v != nil {
-				var actions []MetricAlertAction
-				err = json.Unmarshal(*v, &actions)
+				actions, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}

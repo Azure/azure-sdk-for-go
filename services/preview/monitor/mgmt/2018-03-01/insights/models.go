@@ -509,14 +509,17 @@ func PossibleUnitValues() []Unit {
 	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
 }
 
-// BasicAction ...
+// BasicAction an alert action.
 type BasicAction interface {
 	AsAlertingAction() (*AlertingAction, bool)
 	AsAction() (*Action, bool)
 }
 
-// Action ...
+// Action an alert action.
 type Action struct {
+	// ActionGroupID - the id of the action group to use.
+	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	WebhookProperties map[string]*string `json:"webhookProperties"`
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
@@ -562,6 +565,12 @@ func unmarshalBasicActionArray(body []byte) ([]BasicAction, error) {
 func (a Action) MarshalJSON() ([]byte, error) {
 	a.OdataType = OdataTypeAction
 	objectMap := make(map[string]interface{})
+	if a.ActionGroupID != nil {
+		objectMap["actionGroupId"] = a.ActionGroupID
+	}
+	if a.WebhookProperties != nil {
+		objectMap["webhookProperties"] = a.WebhookProperties
+	}
 	if a.OdataType != "" {
 		objectMap["odata.type"] = a.OdataType
 	}
@@ -1031,6 +1040,9 @@ type AlertingAction struct {
 	ThrottlingInMin *int32 `json:"throttlingInMin,omitempty"`
 	// Trigger - The trigger condition that results in the alert rule being.
 	Trigger *TriggerCondition `json:"trigger,omitempty"`
+	// ActionGroupID - the id of the action group to use.
+	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	WebhookProperties map[string]*string `json:"webhookProperties"`
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
 }
@@ -1050,6 +1062,12 @@ func (aa AlertingAction) MarshalJSON() ([]byte, error) {
 	}
 	if aa.Trigger != nil {
 		objectMap["trigger"] = aa.Trigger
+	}
+	if aa.ActionGroupID != nil {
+		objectMap["actionGroupId"] = aa.ActionGroupID
+	}
+	if aa.WebhookProperties != nil {
+		objectMap["webhookProperties"] = aa.WebhookProperties
 	}
 	if aa.OdataType != "" {
 		objectMap["odata.type"] = aa.OdataType
@@ -2443,6 +2461,17 @@ type LogicAppReceiver struct {
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 }
 
+// LogMetricTrigger ...
+type LogMetricTrigger struct {
+	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
+	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
+	Threshold         *float64            `json:"threshold,omitempty"`
+	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
+	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
+	// MetricColumn - Evaluation of metric on a particular column
+	MetricColumn *string `json:"metricColumn,omitempty"`
+}
+
 // LogProfileCollection represents a collection of log profiles.
 type LogProfileCollection struct {
 	autorest.Response `json:"-"`
@@ -2722,6 +2751,12 @@ func (lsr *LogSearchRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// LogSearchRulePatch log Search Rule Definition for Patching
+type LogSearchRulePatch struct {
+	// Enabled - The flag which indicates whether the Log Search rule is enabled. Value should be true or false. Possible values include: 'True', 'False'
+	Enabled Enabled `json:"enabled,omitempty"`
+}
+
 // LogSearchRuleResource the Log Search Rule resource.
 type LogSearchRuleResource struct {
 	autorest.Response `json:"-"`
@@ -2837,6 +2872,59 @@ type LogSearchRuleResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The values for the Log Search Rule resources.
 	Value *[]LogSearchRuleResource `json:"value,omitempty"`
+}
+
+// LogSearchRuleResourcePatch the log search rule resource for patch operations.
+type LogSearchRuleResourcePatch struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// LogSearchRulePatch - The log search rule properties of the resource.
+	*LogSearchRulePatch `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogSearchRuleResourcePatch.
+func (lsrrp LogSearchRuleResourcePatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsrrp.Tags != nil {
+		objectMap["tags"] = lsrrp.Tags
+	}
+	if lsrrp.LogSearchRulePatch != nil {
+		objectMap["properties"] = lsrrp.LogSearchRulePatch
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LogSearchRuleResourcePatch struct.
+func (lsrrp *LogSearchRuleResourcePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				lsrrp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var logSearchRulePatch LogSearchRulePatch
+				err = json.Unmarshal(*v, &logSearchRulePatch)
+				if err != nil {
+					return err
+				}
+				lsrrp.LogSearchRulePatch = &logSearchRulePatch
+			}
+		}
+	}
+
+	return nil
 }
 
 // LogSettings part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
@@ -2971,25 +3059,6 @@ type Metric struct {
 	Timeseries *[]TimeSeriesElement `json:"timeseries,omitempty"`
 }
 
-// MetricAlertAction an alert action.
-type MetricAlertAction struct {
-	// ActionGroupID - the id of the action group to use.
-	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
-	WebhookProperties map[string]*string `json:"webhookProperties"`
-}
-
-// MarshalJSON is the custom marshaler for MetricAlertAction.
-func (maa MetricAlertAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if maa.ActionGroupID != nil {
-		objectMap["actionGroupId"] = maa.ActionGroupID
-	}
-	if maa.WebhookProperties != nil {
-		objectMap["webhookProperties"] = maa.WebhookProperties
-	}
-	return json.Marshal(objectMap)
-}
-
 // BasicMetricAlertCriteria the rule criteria that defines the conditions of the alert rule.
 type BasicMetricAlertCriteria interface {
 	AsMetricAlertSingleResourceMultipleMetricCriteria() (*MetricAlertSingleResourceMultipleMetricCriteria, bool)
@@ -3088,7 +3157,7 @@ type MetricAlertProperties struct {
 	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not.
 	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions *[]MetricAlertAction `json:"actions,omitempty"`
+	Actions *[]BasicAction `json:"actions,omitempty"`
 	// LastUpdatedTime - Last time the rule was updated in ISO8601 format.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 }
@@ -3175,8 +3244,7 @@ func (mapVar *MetricAlertProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "actions":
 			if v != nil {
-				var actions []MetricAlertAction
-				err = json.Unmarshal(*v, &actions)
+				actions, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}
@@ -3550,12 +3618,6 @@ type MetricTrigger struct {
 	Operator ComparisonOperationType `json:"operator,omitempty"`
 	// Threshold - the threshold of the metric that triggers the scale action.
 	Threshold *float64 `json:"threshold,omitempty"`
-	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
-	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
-	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
-	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
-	// MetricColumn - Evaluation of metric on a particular column
-	MetricColumn *string `json:"metricColumn,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -4300,7 +4362,7 @@ type Source struct {
 	AuthorizedResources *[]string `json:"authorizedResources,omitempty"`
 	// DataSourceID - The resource uri over which log search query is to be run.
 	DataSourceID *string `json:"dataSourceId,omitempty"`
-	// QueryType - Set value to ResultCount if query should be returning search result count. Set it to Number if its a metric query. Possible values include: 'ResultCount'
+	// QueryType - Set value to 'ResultCount'. Possible values include: 'ResultCount'
 	QueryType QueryType `json:"queryType,omitempty"`
 }
 
@@ -4471,7 +4533,7 @@ type TriggerCondition struct {
 	// Threshold - Result or count threshold based on which rule should be triggered.
 	Threshold *float64 `json:"threshold,omitempty"`
 	// MetricTrigger - Trigger condition for metric query rule
-	MetricTrigger *MetricTrigger `json:"metricTrigger,omitempty"`
+	MetricTrigger *LogMetricTrigger `json:"metricTrigger,omitempty"`
 }
 
 // VoiceReceiver a voice receiver.

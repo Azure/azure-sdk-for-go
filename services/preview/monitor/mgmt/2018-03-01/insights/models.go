@@ -2443,6 +2443,17 @@ type LogicAppReceiver struct {
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 }
 
+// LogMetricTrigger ...
+type LogMetricTrigger struct {
+	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
+	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
+	Threshold         *float64            `json:"threshold,omitempty"`
+	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
+	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
+	// MetricColumn - Evaluation of metric on a particular column
+	MetricColumn *string `json:"metricColumn,omitempty"`
+}
+
 // LogProfileCollection represents a collection of log profiles.
 type LogProfileCollection struct {
 	autorest.Response `json:"-"`
@@ -2722,6 +2733,12 @@ func (lsr *LogSearchRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// LogSearchRulePatch log Search Rule Definition for Patching
+type LogSearchRulePatch struct {
+	// Enabled - The flag which indicates whether the Log Search rule is enabled. Value should be true or false. Possible values include: 'True', 'False'
+	Enabled Enabled `json:"enabled,omitempty"`
+}
+
 // LogSearchRuleResource the Log Search Rule resource.
 type LogSearchRuleResource struct {
 	autorest.Response `json:"-"`
@@ -2837,6 +2854,59 @@ type LogSearchRuleResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - The values for the Log Search Rule resources.
 	Value *[]LogSearchRuleResource `json:"value,omitempty"`
+}
+
+// LogSearchRuleResourcePatch the log search rule resource for patch operations.
+type LogSearchRuleResourcePatch struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// LogSearchRulePatch - The log search rule properties of the resource.
+	*LogSearchRulePatch `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogSearchRuleResourcePatch.
+func (lsrrp LogSearchRuleResourcePatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lsrrp.Tags != nil {
+		objectMap["tags"] = lsrrp.Tags
+	}
+	if lsrrp.LogSearchRulePatch != nil {
+		objectMap["properties"] = lsrrp.LogSearchRulePatch
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LogSearchRuleResourcePatch struct.
+func (lsrrp *LogSearchRuleResourcePatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				lsrrp.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var logSearchRulePatch LogSearchRulePatch
+				err = json.Unmarshal(*v, &logSearchRulePatch)
+				if err != nil {
+					return err
+				}
+				lsrrp.LogSearchRulePatch = &logSearchRulePatch
+			}
+		}
+	}
+
+	return nil
 }
 
 // LogSettings part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
@@ -3550,12 +3620,6 @@ type MetricTrigger struct {
 	Operator ComparisonOperationType `json:"operator,omitempty"`
 	// Threshold - the threshold of the metric that triggers the scale action.
 	Threshold *float64 `json:"threshold,omitempty"`
-	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
-	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
-	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
-	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
-	// MetricColumn - Evaluation of metric on a particular column
-	MetricColumn *string `json:"metricColumn,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -4300,7 +4364,7 @@ type Source struct {
 	AuthorizedResources *[]string `json:"authorizedResources,omitempty"`
 	// DataSourceID - The resource uri over which log search query is to be run.
 	DataSourceID *string `json:"dataSourceId,omitempty"`
-	// QueryType - Set value to ResultCount if query should be returning search result count. Set it to Number if its a metric query. Possible values include: 'ResultCount'
+	// QueryType - Set value to 'ResultCount'. Possible values include: 'ResultCount'
 	QueryType QueryType `json:"queryType,omitempty"`
 }
 
@@ -4471,7 +4535,7 @@ type TriggerCondition struct {
 	// Threshold - Result or count threshold based on which rule should be triggered.
 	Threshold *float64 `json:"threshold,omitempty"`
 	// MetricTrigger - Trigger condition for metric query rule
-	MetricTrigger *MetricTrigger `json:"metricTrigger,omitempty"`
+	MetricTrigger *LogMetricTrigger `json:"metricTrigger,omitempty"`
 }
 
 // VoiceReceiver a voice receiver.

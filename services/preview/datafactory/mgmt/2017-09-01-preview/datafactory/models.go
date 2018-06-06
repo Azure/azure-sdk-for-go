@@ -87216,6 +87216,14 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// TriggerReference tumbling window trigger reference type.
+type TriggerReference struct {
+	// Type - Tumbling window trigger reference type.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Reference trigger name.
+	ReferenceName *string `json:"referenceName,omitempty"`
+}
+
 // TriggerResource trigger resource type.
 type TriggerResource struct {
 	autorest.Response `json:"-"`
@@ -87661,6 +87669,8 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	// DependsOn - Tumbling window triggers that this trigger depends on. Only tumbling window triggers are supported.
+	DependsOn *[]TriggerReference `json:"dependsOn,omitempty"`
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or

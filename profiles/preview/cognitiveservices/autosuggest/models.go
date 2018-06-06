@@ -52,6 +52,18 @@ const (
 	Strict   SafeSearch = original.Strict
 )
 
+type ScenarioType = original.ScenarioType
+
+const (
+	Custom                  ScenarioType = original.Custom
+	PersonalSearchDocuments ScenarioType = original.PersonalSearchDocuments
+	PersonalSearchTags      ScenarioType = original.PersonalSearchTags
+	SearchHistory           ScenarioType = original.SearchHistory
+	StoreApps               ScenarioType = original.StoreApps
+	Unknown                 ScenarioType = original.Unknown
+	Web                     ScenarioType = original.Web
+)
+
 type SearchKind = original.SearchKind
 
 const (
@@ -116,6 +128,9 @@ func PossibleResponseFormatValues() []ResponseFormat {
 }
 func PossibleSafeSearchValues() []SafeSearch {
 	return original.PossibleSafeSearchValues()
+}
+func PossibleScenarioTypeValues() []ScenarioType {
+	return original.PossibleScenarioTypeValues()
 }
 func PossibleSearchKindValues() []SearchKind {
 	return original.PossibleSearchKindValues()

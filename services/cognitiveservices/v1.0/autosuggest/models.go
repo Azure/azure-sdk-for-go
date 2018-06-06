@@ -77,6 +77,31 @@ func PossibleSafeSearchValues() []SafeSearch {
 	return []SafeSearch{Moderate, Off, Strict}
 }
 
+// ScenarioType enumerates the values for scenario type.
+type ScenarioType string
+
+const (
+	// Custom ...
+	Custom ScenarioType = "Custom"
+	// PersonalSearchDocuments ...
+	PersonalSearchDocuments ScenarioType = "PersonalSearchDocuments"
+	// PersonalSearchTags ...
+	PersonalSearchTags ScenarioType = "PersonalSearchTags"
+	// SearchHistory ...
+	SearchHistory ScenarioType = "SearchHistory"
+	// StoreApps ...
+	StoreApps ScenarioType = "StoreApps"
+	// Unknown ...
+	Unknown ScenarioType = "Unknown"
+	// Web ...
+	Web ScenarioType = "Web"
+)
+
+// PossibleScenarioTypeValues returns an array of possible values for the ScenarioType const type.
+func PossibleScenarioTypeValues() []ScenarioType {
+	return []ScenarioType{Custom, PersonalSearchDocuments, PersonalSearchTags, SearchHistory, StoreApps, Unknown, Web}
+}
+
 // SearchKind enumerates the values for search kind.
 type SearchKind string
 
@@ -3350,6 +3375,8 @@ func (sra *SearchResultsAnswer) UnmarshalJSON(body []byte) error {
 
 // SuggestionsSuggestionGroup ...
 type SuggestionsSuggestionGroup struct {
+	// Name - Possible values include: 'Unknown', 'Web', 'StoreApps', 'SearchHistory', 'PersonalSearchDocuments', 'PersonalSearchTags', 'Custom'
+	Name              ScenarioType    `json:"name,omitempty"`
 	SearchSuggestions *[]SearchAction `json:"searchSuggestions,omitempty"`
 }
 

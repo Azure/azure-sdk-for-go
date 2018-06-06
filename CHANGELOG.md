@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v17.2.0`
+
+### New Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|   managedapplications |      2018-06-01     |
+|             resources |      2018-05-01     |
+
+### Updated Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|  networksecuritygroup |       classic       |
+
 ## `v17.1.0`
 
 ### New Services

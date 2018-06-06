@@ -55,13 +55,27 @@ type Forecast = original.Forecast
 type ForecastProperties = original.ForecastProperties
 type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
 type ForecastsListResult = original.ForecastsListResult
+type MeterDetails = original.MeterDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type PriceSheetModel = original.PriceSheetModel
+type PriceSheetProperties = original.PriceSheetProperties
+type PriceSheetResult = original.PriceSheetResult
 type Resource = original.Resource
+type UsageDetail = original.UsageDetail
+type UsageDetailProperties = original.UsageDetailProperties
+type UsageDetailsListResult = original.UsageDetailsListResult
+type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
+type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
+type PriceSheetClient = original.PriceSheetClient
+type UsageDetailsClient = original.UsageDetailsClient
+type UsageDetailsByBillingAccountClient = original.UsageDetailsByBillingAccountClient
+type UsageDetailsByDepartmentClient = original.UsageDetailsByDepartmentClient
+type UsageDetailsByEnrollmentAccountClient = original.UsageDetailsByEnrollmentAccountClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -89,6 +103,36 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
+}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClient(subscriptionID)
+}
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByBillingAccountClient(subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClient(subscriptionID)
+}
+func NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByBillingAccountClient {
+	return original.NewUsageDetailsByBillingAccountClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByDepartmentClient(subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClient(subscriptionID)
+}
+func NewUsageDetailsByDepartmentClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByDepartmentClient {
+	return original.NewUsageDetailsByDepartmentClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUsageDetailsByEnrollmentAccountClient(subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClient(subscriptionID)
+}
+func NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsByEnrollmentAccountClient {
+	return original.NewUsageDetailsByEnrollmentAccountClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

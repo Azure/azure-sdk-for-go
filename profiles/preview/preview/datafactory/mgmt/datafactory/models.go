@@ -253,6 +253,7 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
+	AccessDenied     IntegrationRuntimeState = original.AccessDenied
 	Initial          IntegrationRuntimeState = original.Initial
 	Limited          IntegrationRuntimeState = original.Limited
 	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
@@ -1074,6 +1075,7 @@ type IntegrationRuntimeListResponsePage = original.IntegrationRuntimeListRespons
 type IntegrationRuntimeMonitoringData = original.IntegrationRuntimeMonitoringData
 type IntegrationRuntimeNodeIPAddress = original.IntegrationRuntimeNodeIPAddress
 type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonitoringData
+type IntegrationRuntimePermissionRequest = original.IntegrationRuntimePermissionRequest
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeRemoveNodeRequest = original.IntegrationRuntimeRemoveNodeRequest
@@ -1097,7 +1099,6 @@ type LinkedIntegrationRuntimeKey = original.LinkedIntegrationRuntimeKey
 type BasicLinkedIntegrationRuntimeProperties = original.BasicLinkedIntegrationRuntimeProperties
 type LinkedIntegrationRuntimeProperties = original.LinkedIntegrationRuntimeProperties
 type LinkedIntegrationRuntimeRbac = original.LinkedIntegrationRuntimeRbac
-type LinkedIntegrationRuntimeTypeProperties = original.LinkedIntegrationRuntimeTypeProperties
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse
@@ -1242,6 +1243,7 @@ type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
 type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
 type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
 type SelfHostedIntegrationRuntimeStatusTypeProperties = original.SelfHostedIntegrationRuntimeStatusTypeProperties
+type SelfHostedIntegrationRuntimeTypeProperties = original.SelfHostedIntegrationRuntimeTypeProperties
 type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset

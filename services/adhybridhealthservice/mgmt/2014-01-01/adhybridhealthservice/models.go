@@ -2110,6 +2110,16 @@ type PasswordManagementSettings struct {
 	UnlockAccount *bool `json:"unlockAccount,omitempty"`
 }
 
+// ReplicationDetailsList the list of replication details.
+type ReplicationDetailsList struct {
+	// Value - The value returned by the operation.
+	Value *[]ReplicationSummary `json:"value,omitempty"`
+	// TotalCount - The total count of replication detail elements.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
+}
+
 // ReplicationStatus replication summary for a domain controller.
 type ReplicationStatus struct {
 	autorest.Response `json:"-"`

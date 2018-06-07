@@ -25,6 +25,7 @@ type AdDomainServiceMembersClient = original.AdDomainServiceMembersClient
 type AddsServiceClient = original.AddsServiceClient
 type AddsServiceMembersClient = original.AddsServiceMembersClient
 type AddsServicesClient = original.AddsServicesClient
+type AddsServicesServiceMembersClient = original.AddsServicesServiceMembersClient
 type AlertsClient = original.AlertsClient
 
 const (
@@ -231,6 +232,7 @@ type Partition = original.Partition
 type PartitionScope = original.PartitionScope
 type PasswordHashSyncConfiguration = original.PasswordHashSyncConfiguration
 type PasswordManagementSettings = original.PasswordManagementSettings
+type ReplicationDetailsList = original.ReplicationDetailsList
 type ReplicationStatus = original.ReplicationStatus
 type ReplicationSummary = original.ReplicationSummary
 type ReplicationSummaryList = original.ReplicationSummaryList
@@ -282,6 +284,12 @@ func NewAddsServicesClient() AddsServicesClient {
 }
 func NewAddsServicesClientWithBaseURI(baseURI string) AddsServicesClient {
 	return original.NewAddsServicesClientWithBaseURI(baseURI)
+}
+func NewAddsServicesServiceMembersClient() AddsServicesServiceMembersClient {
+	return original.NewAddsServicesServiceMembersClient()
+}
+func NewAddsServicesServiceMembersClientWithBaseURI(baseURI string) AddsServicesServiceMembersClient {
+	return original.NewAddsServicesServiceMembersClientWithBaseURI(baseURI)
 }
 func NewAlertsClient() AlertsClient {
 	return original.NewAlertsClient()

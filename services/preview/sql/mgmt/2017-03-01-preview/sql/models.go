@@ -920,13 +920,11 @@ const (
 	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
 	// SecurityAlertPolicyStateEnabled ...
 	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-	// SecurityAlertPolicyStateNew ...
-	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
 )
 
 // PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
-	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled}
 }
 
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
@@ -2560,7 +2558,7 @@ func (dsap *DatabaseSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 
 // DatabaseSecurityAlertPolicyProperties properties for a database Threat Detection policy.
 type DatabaseSecurityAlertPolicyProperties struct {
-	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
 	// DisabledAlerts - Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
 	DisabledAlerts *string `json:"disabledAlerts,omitempty"`
@@ -8530,6 +8528,24 @@ func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp 
 	return
 }
 
+// SecurityAlertPolicyProperties properties of a security alert policy.
+type SecurityAlertPolicyProperties struct {
+	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	State SecurityAlertPolicyState `json:"state,omitempty"`
+	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
+	// EmailAddresses - Specifies an array of e-mail addresses to which the alert is sent.
+	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
+	// EmailAccountAdmins - Specifies that the alert is sent to the account administrators.
+	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
+	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
+	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	// StorageAccountAccessKey - Specifies the identifier key of the Threat Detection audit storage account.
+	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	// RetentionDays - Specifies the number of days to keep in the Threat Detection audit logs.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
 // Server an Azure SQL Database server.
 type Server struct {
 	autorest.Response `json:"-"`
@@ -9892,6 +9908,117 @@ func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Res
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ServerSecurityAlertPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ServerSecurityAlertPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServerSecurityAlertPoliciesCreateOrUpdateFuture) Result(client ServerSecurityAlertPoliciesClient) (ssap ServerSecurityAlertPolicy, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ssap.Response.Response, err = future.GetResult(sender); err == nil && ssap.Response.Response.StatusCode != http.StatusNoContent {
+		ssap, err = client.CreateOrUpdateResponder(ssap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerSecurityAlertPoliciesCreateOrUpdateFuture", "Result", ssap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ServerSecurityAlertPolicy a server security alert policy.
+type ServerSecurityAlertPolicy struct {
+	autorest.Response `json:"-"`
+	// SecurityAlertPolicyProperties - Resource properties.
+	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerSecurityAlertPolicy.
+func (ssap ServerSecurityAlertPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ssap.SecurityAlertPolicyProperties != nil {
+		objectMap["properties"] = ssap.SecurityAlertPolicyProperties
+	}
+	if ssap.ID != nil {
+		objectMap["id"] = ssap.ID
+	}
+	if ssap.Name != nil {
+		objectMap["name"] = ssap.Name
+	}
+	if ssap.Type != nil {
+		objectMap["type"] = ssap.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerSecurityAlertPolicy struct.
+func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var securityAlertPolicyProperties SecurityAlertPolicyProperties
+				err = json.Unmarshal(*v, &securityAlertPolicyProperties)
+				if err != nil {
+					return err
+				}
+				ssap.SecurityAlertPolicyProperties = &securityAlertPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ssap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ssap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ssap.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

@@ -571,13 +571,11 @@ const (
 	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
 	// SecurityAlertPolicyStateEnabled ...
 	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-	// SecurityAlertPolicyStateNew ...
-	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
 )
 
 // PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
-	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
+	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled}
 }
 
 // SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
@@ -1810,7 +1808,7 @@ func (dsap *DatabaseSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 
 // DatabaseSecurityAlertPolicyProperties properties for a database Threat Detection policy.
 type DatabaseSecurityAlertPolicyProperties struct {
-	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
 	State SecurityAlertPolicyState `json:"state,omitempty"`
 	// DisabledAlerts - Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Usage_Anomaly.
 	DisabledAlerts *string `json:"disabledAlerts,omitempty"`

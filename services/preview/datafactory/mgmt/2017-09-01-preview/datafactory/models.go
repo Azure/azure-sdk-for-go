@@ -77893,6 +77893,8 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	VersionStatus *string `json:"versionStatus,omitempty"`
 	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
 	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
+	// SharedWithFactories - The MSI-s of the data factories to which the integration runtime is shared.
+	SharedWithFactories *[]string `json:"sharedWithFactories,omitempty"`
 	// PushedVersion - The version that the integration runtime is going to update to.
 	PushedVersion *string `json:"pushedVersion,omitempty"`
 	// LatestVersion - The latest version on download center.
@@ -77940,6 +77942,9 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	}
 	if shirstp.Links != nil {
 		objectMap["links"] = shirstp.Links
+	}
+	if shirstp.SharedWithFactories != nil {
+		objectMap["sharedWithFactories"] = shirstp.SharedWithFactories
 	}
 	if shirstp.PushedVersion != nil {
 		objectMap["pushedVersion"] = shirstp.PushedVersion

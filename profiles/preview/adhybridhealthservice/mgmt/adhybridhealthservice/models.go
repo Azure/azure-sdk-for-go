@@ -25,7 +25,9 @@ type AdDomainServiceMembersClient = original.AdDomainServiceMembersClient
 type AddsServiceClient = original.AddsServiceClient
 type AddsServiceMembersClient = original.AddsServiceMembersClient
 type AddsServicesClient = original.AddsServicesClient
+type AddsServicesReplicationStatusClient = original.AddsServicesReplicationStatusClient
 type AddsServicesServiceMembersClient = original.AddsServicesServiceMembersClient
+type AddsServicesUserPreferenceClient = original.AddsServicesUserPreferenceClient
 type AlertsClient = original.AlertsClient
 
 const (
@@ -35,6 +37,7 @@ const (
 type BaseClient = original.BaseClient
 type ConfigurationClient = original.ConfigurationClient
 type DimensionsClient = original.DimensionsClient
+type MetricsClient = original.MetricsClient
 type AlgorithmStepType = original.AlgorithmStepType
 
 const (
@@ -257,7 +260,6 @@ type UserPreference = original.UserPreference
 type ValueDelta = original.ValueDelta
 type OperationsClient = original.OperationsClient
 type ReportsClient = original.ReportsClient
-type ServiceClient = original.ServiceClient
 type ServiceMembersClient = original.ServiceMembersClient
 type ServicesClient = original.ServicesClient
 
@@ -285,11 +287,23 @@ func NewAddsServicesClient() AddsServicesClient {
 func NewAddsServicesClientWithBaseURI(baseURI string) AddsServicesClient {
 	return original.NewAddsServicesClientWithBaseURI(baseURI)
 }
+func NewAddsServicesReplicationStatusClient() AddsServicesReplicationStatusClient {
+	return original.NewAddsServicesReplicationStatusClient()
+}
+func NewAddsServicesReplicationStatusClientWithBaseURI(baseURI string) AddsServicesReplicationStatusClient {
+	return original.NewAddsServicesReplicationStatusClientWithBaseURI(baseURI)
+}
 func NewAddsServicesServiceMembersClient() AddsServicesServiceMembersClient {
 	return original.NewAddsServicesServiceMembersClient()
 }
 func NewAddsServicesServiceMembersClientWithBaseURI(baseURI string) AddsServicesServiceMembersClient {
 	return original.NewAddsServicesServiceMembersClientWithBaseURI(baseURI)
+}
+func NewAddsServicesUserPreferenceClient() AddsServicesUserPreferenceClient {
+	return original.NewAddsServicesUserPreferenceClient()
+}
+func NewAddsServicesUserPreferenceClientWithBaseURI(baseURI string) AddsServicesUserPreferenceClient {
+	return original.NewAddsServicesUserPreferenceClientWithBaseURI(baseURI)
 }
 func NewAlertsClient() AlertsClient {
 	return original.NewAlertsClient()
@@ -314,6 +328,12 @@ func NewDimensionsClient() DimensionsClient {
 }
 func NewDimensionsClientWithBaseURI(baseURI string) DimensionsClient {
 	return original.NewDimensionsClientWithBaseURI(baseURI)
+}
+func NewMetricsClient() MetricsClient {
+	return original.NewMetricsClient()
+}
+func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
+	return original.NewMetricsClientWithBaseURI(baseURI)
 }
 func PossibleAlgorithmStepTypeValues() []AlgorithmStepType {
 	return original.PossibleAlgorithmStepTypeValues()
@@ -359,12 +379,6 @@ func NewReportsClient() ReportsClient {
 }
 func NewReportsClientWithBaseURI(baseURI string) ReportsClient {
 	return original.NewReportsClientWithBaseURI(baseURI)
-}
-func NewServiceClient() ServiceClient {
-	return original.NewServiceClient()
-}
-func NewServiceClientWithBaseURI(baseURI string) ServiceClient {
-	return original.NewServiceClientWithBaseURI(baseURI)
 }
 func NewServiceMembersClient() ServiceMembersClient {
 	return original.NewServiceMembersClient()

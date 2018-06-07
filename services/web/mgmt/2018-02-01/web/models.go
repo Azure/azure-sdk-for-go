@@ -3002,6 +3002,10 @@ type AppServiceEnvironment struct {
 	UserWhitelistedIPRanges *[]string `json:"userWhitelistedIpRanges,omitempty"`
 	// HasLinuxWorkers - Flag that displays whether an ASE has linux workers or not
 	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty"`
+	// SslCertKeyVaultID - Key Vault ID for ILB App Service Environment default SSL certificate
+	SslCertKeyVaultID *string `json:"sslCertKeyVaultId,omitempty"`
+	// SslCertKeyVaultSecretName - Key Vault Secret Name for ILB App Service Environment default SSL certificate
+	SslCertKeyVaultSecretName *string `json:"sslCertKeyVaultSecretName,omitempty"`
 }
 
 // AppServiceEnvironmentCollection collection of App Service Environments.
@@ -3969,6 +3973,8 @@ type AppServicePlanPatchResourceProperties struct {
 	IsSpot *bool `json:"isSpot,omitempty"`
 	// SpotExpirationTime - The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *date.Time `json:"spotExpirationTime,omitempty"`
+	// FreeOfferExpirationTime - The time when the server farm free offer expires.
+	FreeOfferExpirationTime *date.Time `json:"freeOfferExpirationTime,omitempty"`
 	// ResourceGroup - Resource group of the App Service plan.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
@@ -4008,6 +4014,8 @@ type AppServicePlanProperties struct {
 	IsSpot *bool `json:"isSpot,omitempty"`
 	// SpotExpirationTime - The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *date.Time `json:"spotExpirationTime,omitempty"`
+	// FreeOfferExpirationTime - The time when the server farm free offer expires.
+	FreeOfferExpirationTime *date.Time `json:"freeOfferExpirationTime,omitempty"`
 	// ResourceGroup - Resource group of the App Service plan.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Reserved - If Linux app service plan <code>true</code>, <code>false</code> otherwise.
@@ -5086,6 +5094,8 @@ type BillingMeterProperties struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ResourceType - App Service ResourceType meter used for
 	ResourceType *string `json:"resourceType,omitempty"`
+	// OsType - App Service OS type meter used for
+	OsType *string `json:"osType,omitempty"`
 }
 
 // Capability describes the capabilities/features allowed for a specific SKU.
@@ -10079,9 +10089,27 @@ type IdentifierProperties struct {
 // IPSecurityRestriction IP security restriction on an app.
 type IPSecurityRestriction struct {
 	// IPAddress - IP address the security restriction is valid for.
+	// It can be in form of pure ipv4 address (required SubnetMask property) or
+	// CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+	// SubnetMask property must not be specified.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// SubnetMask - Subnet mask for the range of IP addresses the restriction is valid for.
 	SubnetMask *string `json:"subnetMask,omitempty"`
+	// Action - ** New Implementation Only **
+	// Allow or Deny action.
+	Action *string `json:"action,omitempty"`
+	// Tag - ** New Implementation Only **
+	// Tag.
+	Tag *string `json:"tag,omitempty"`
+	// Priority - ** New Implementation Only **
+	// Priority.
+	Priority *int32 `json:"priority,omitempty"`
+	// Name - ** New Implementation Only **
+	// Name.
+	Name *string `json:"name,omitempty"`
+	// Description - ** New Implementation Only **
+	// Description.
+	Description *string `json:"description,omitempty"`
 }
 
 // Job web Job Information.
@@ -10375,6 +10403,13 @@ type LocalizableString struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - Localized name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// LogSpecification log Definition of a single resource metric.
+type LogSpecification struct {
+	Name         *string `json:"name,omitempty"`
+	DisplayName  *string `json:"displayName,omitempty"`
+	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
 // ManagedServiceIdentity managed service identity.
@@ -11840,6 +11875,115 @@ type PremierAddOnOfferProperties struct {
 	// MarketplacePublisher - Marketplace publisher.
 	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
 	// MarketplaceOffer - Marketplace offer.
+	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
+}
+
+// PremierAddOnPatchResource ARM resource for a PremierAddOn.
+type PremierAddOnPatchResource struct {
+	// PremierAddOnPatchResourceProperties - PremierAddOnPatchResource resource specific properties
+	*PremierAddOnPatchResourceProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PremierAddOnPatchResource.
+func (paopr PremierAddOnPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if paopr.PremierAddOnPatchResourceProperties != nil {
+		objectMap["properties"] = paopr.PremierAddOnPatchResourceProperties
+	}
+	if paopr.ID != nil {
+		objectMap["id"] = paopr.ID
+	}
+	if paopr.Name != nil {
+		objectMap["name"] = paopr.Name
+	}
+	if paopr.Kind != nil {
+		objectMap["kind"] = paopr.Kind
+	}
+	if paopr.Type != nil {
+		objectMap["type"] = paopr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PremierAddOnPatchResource struct.
+func (paopr *PremierAddOnPatchResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var premierAddOnPatchResourceProperties PremierAddOnPatchResourceProperties
+				err = json.Unmarshal(*v, &premierAddOnPatchResourceProperties)
+				if err != nil {
+					return err
+				}
+				paopr.PremierAddOnPatchResourceProperties = &premierAddOnPatchResourceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				paopr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				paopr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				paopr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				paopr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PremierAddOnPatchResourceProperties premierAddOnPatchResource resource specific properties
+type PremierAddOnPatchResourceProperties struct {
+	// Sku - Premier add on SKU.
+	Sku *string `json:"sku,omitempty"`
+	// Product - Premier add on Product.
+	Product *string `json:"product,omitempty"`
+	// Vendor - Premier add on Vendor.
+	Vendor *string `json:"vendor,omitempty"`
+	// MarketplacePublisher - Premier add on Marketplace publisher.
+	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
+	// MarketplaceOffer - Premier add on Marketplace offer.
 	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
 }
 
@@ -14577,6 +14721,7 @@ type RestoreRequestProperties struct {
 // ServiceSpecification resource metrics service provided by Microsoft.Insights resource provider.
 type ServiceSpecification struct {
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+	LogSpecifications    *[]LogSpecification    `json:"logSpecifications,omitempty"`
 }
 
 // SetObject ...
@@ -14949,8 +15094,8 @@ type SiteConfig struct {
 	NodeVersion *string `json:"nodeVersion,omitempty"`
 	// LinuxFxVersion - Linux App Framework and version
 	LinuxFxVersion *string `json:"linuxFxVersion,omitempty"`
-	// XenonFxVersion - Xenon App Framework and version
-	XenonFxVersion *string `json:"xenonFxVersion,omitempty"`
+	// WindowsFxVersion - Xenon App Framework and version
+	WindowsFxVersion *string `json:"windowsFxVersion,omitempty"`
 	// RequestTracingEnabled - <code>true</code> if request tracing is enabled; otherwise, <code>false</code>.
 	RequestTracingEnabled *bool `json:"requestTracingEnabled,omitempty"`
 	// RequestTracingExpirationTime - Request tracing expiration time.
@@ -15033,6 +15178,9 @@ type SiteConfig struct {
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
 	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
 	FtpsState FtpsState `json:"ftpsState,omitempty"`
+	// ReservedInstanceCount - Number of reserved instances.
+	// This setting only applies to the Consumption Plan
+	ReservedInstanceCount *int32 `json:"reservedInstanceCount,omitempty"`
 }
 
 // SiteConfigResource web app configuration ARM resource.
@@ -16066,8 +16214,6 @@ type SitePatchResourceProperties struct {
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty"`
 	// CloningInfo - If specified during app creation, the app is cloned from a source app.
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
-	// SnapshotInfo - If specified during app creation, the app is created from a previous snapshot.
-	SnapshotInfo *SnapshotRecoveryRequest `json:"snapshotInfo,omitempty"`
 	// ResourceGroup - Name of the resource group the app belongs to. Read-only.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// IsDefaultContainer - <code>true</code> if the app is a default container; otherwise, <code>false</code>.
@@ -16248,8 +16394,6 @@ type SiteProperties struct {
 	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty"`
 	// CloningInfo - If specified during app creation, the app is cloned from a source app.
 	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
-	// SnapshotInfo - If specified during app creation, the app is created from a previous snapshot.
-	SnapshotInfo *SnapshotRecoveryRequest `json:"snapshotInfo,omitempty"`
 	// ResourceGroup - Name of the resource group the app belongs to. Read-only.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// IsDefaultContainer - <code>true</code> if the app is a default container; otherwise, <code>false</code>.
@@ -17085,131 +17229,11 @@ type SnapshotProperties struct {
 	Time *string `json:"time,omitempty"`
 }
 
-// SnapshotRecoveryRequest details about app recovery operation.
-type SnapshotRecoveryRequest struct {
-	// SnapshotRecoveryRequestProperties - SnapshotRecoveryRequest resource specific properties
-	*SnapshotRecoveryRequestProperties `json:"properties,omitempty"`
-	// ID - Resource Id.
-	ID *string `json:"id,omitempty"`
-	// Name - Resource Name.
-	Name *string `json:"name,omitempty"`
-	// Kind - Kind of resource.
-	Kind *string `json:"kind,omitempty"`
-	// Type - Resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SnapshotRecoveryRequest.
-func (srr SnapshotRecoveryRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if srr.SnapshotRecoveryRequestProperties != nil {
-		objectMap["properties"] = srr.SnapshotRecoveryRequestProperties
-	}
-	if srr.ID != nil {
-		objectMap["id"] = srr.ID
-	}
-	if srr.Name != nil {
-		objectMap["name"] = srr.Name
-	}
-	if srr.Kind != nil {
-		objectMap["kind"] = srr.Kind
-	}
-	if srr.Type != nil {
-		objectMap["type"] = srr.Type
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SnapshotRecoveryRequest struct.
-func (srr *SnapshotRecoveryRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var snapshotRecoveryRequestProperties SnapshotRecoveryRequestProperties
-				err = json.Unmarshal(*v, &snapshotRecoveryRequestProperties)
-				if err != nil {
-					return err
-				}
-				srr.SnapshotRecoveryRequestProperties = &snapshotRecoveryRequestProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				srr.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				srr.Name = &name
-			}
-		case "kind":
-			if v != nil {
-				var kind string
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				srr.Kind = &kind
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				srr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SnapshotRecoveryRequestProperties snapshotRecoveryRequest resource specific properties
-type SnapshotRecoveryRequestProperties struct {
-	// SnapshotTime - Point in time in which the app recovery should be attempted, formatted as a DateTime string.
-	SnapshotTime *string `json:"snapshotTime,omitempty"`
-	// RecoveryTarget - Specifies the web app that snapshot contents will be written to.
-	RecoveryTarget *SnapshotRecoveryTarget `json:"recoveryTarget,omitempty"`
-	// Overwrite - If <code>true</code> the recovery operation can overwrite source app; otherwise, <code>false</code>.
-	Overwrite *bool `json:"overwrite,omitempty"`
-	// RecoverConfiguration - If true, site configuration, in addition to content, will be reverted.
-	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
-	// IgnoreConflictingHostNames - If true, custom hostname conflicts will be ignored when recovering to a target web app.
-	// This setting is only necessary when RecoverConfiguration is enabled.
-	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
-}
-
 // SnapshotRecoverySource specifies the web app that snapshot contents will be retrieved from.
 type SnapshotRecoverySource struct {
 	// Location - Geographical location of the source web app, e.g. SouthEastAsia, SouthCentralUS
 	Location *string `json:"location,omitempty"`
 	// ID - ARM resource ID of the source app.
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
-	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
-	ID *string `json:"id,omitempty"`
-}
-
-// SnapshotRecoveryTarget specifies the web app that snapshot contents will be written to.
-type SnapshotRecoveryTarget struct {
-	// Location - Geographical location of the target web app, e.g. SouthEastAsia, SouthCentralUS
-	Location *string `json:"location,omitempty"`
-	// ID - ARM resource ID of the target app.
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
 	ID *string `json:"id,omitempty"`
@@ -17971,6 +17995,111 @@ func (sd StringDictionary) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = sd.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// SwiftVirtualNetwork swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual
+// network integration.
+type SwiftVirtualNetwork struct {
+	autorest.Response `json:"-"`
+	// SwiftVirtualNetworkProperties - SwiftVirtualNetwork resource specific properties
+	*SwiftVirtualNetworkProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SwiftVirtualNetwork.
+func (svn SwiftVirtualNetwork) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if svn.SwiftVirtualNetworkProperties != nil {
+		objectMap["properties"] = svn.SwiftVirtualNetworkProperties
+	}
+	if svn.ID != nil {
+		objectMap["id"] = svn.ID
+	}
+	if svn.Name != nil {
+		objectMap["name"] = svn.Name
+	}
+	if svn.Kind != nil {
+		objectMap["kind"] = svn.Kind
+	}
+	if svn.Type != nil {
+		objectMap["type"] = svn.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SwiftVirtualNetwork struct.
+func (svn *SwiftVirtualNetwork) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var swiftVirtualNetworkProperties SwiftVirtualNetworkProperties
+				err = json.Unmarshal(*v, &swiftVirtualNetworkProperties)
+				if err != nil {
+					return err
+				}
+				svn.SwiftVirtualNetworkProperties = &swiftVirtualNetworkProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				svn.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				svn.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				svn.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				svn.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SwiftVirtualNetworkProperties swiftVirtualNetwork resource specific properties
+type SwiftVirtualNetworkProperties struct {
+	// SubnetResourceID - The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have a delegation to Microsoft.Web/serverFarms defined first.
+	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
+	// SwiftSupported - A flag that specifies if the scale unit this Web App is on supports Swift integration.
+	SwiftSupported *bool `json:"swiftSupported,omitempty"`
 }
 
 // TldLegalAgreement legal agreement for a top level domain.
@@ -19223,6 +19352,8 @@ type ValidateProperties struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 	// HostingEnvironment - Name of App Service Environment where app or App Service plan should be created.
 	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
+	// IsXenon - <code>true</code> if App Service plan is running as a windows container
+	IsXenon *bool `json:"isXenon,omitempty"`
 }
 
 // ValidateRequest resource validation request content.

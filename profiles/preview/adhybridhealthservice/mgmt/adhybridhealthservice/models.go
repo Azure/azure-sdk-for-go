@@ -22,6 +22,7 @@ package adhybridhealthservice
 import original "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 
 type AdDomainServiceMembersClient = original.AdDomainServiceMembersClient
+type AddsServiceClient = original.AddsServiceClient
 type AddsServiceMembersClient = original.AddsServiceMembersClient
 type AddsServicesClient = original.AddsServicesClient
 type AlertsClient = original.AlertsClient
@@ -250,8 +251,11 @@ type ServicesPage = original.ServicesPage
 type TabularExportError = original.TabularExportError
 type Tenant = original.Tenant
 type TenantOnboardingDetails = original.TenantOnboardingDetails
+type UserPreference = original.UserPreference
 type ValueDelta = original.ValueDelta
 type OperationsClient = original.OperationsClient
+type ReportsClient = original.ReportsClient
+type ServiceClient = original.ServiceClient
 type ServiceMembersClient = original.ServiceMembersClient
 type ServicesClient = original.ServicesClient
 
@@ -260,6 +264,12 @@ func NewAdDomainServiceMembersClient() AdDomainServiceMembersClient {
 }
 func NewAdDomainServiceMembersClientWithBaseURI(baseURI string) AdDomainServiceMembersClient {
 	return original.NewAdDomainServiceMembersClientWithBaseURI(baseURI)
+}
+func NewAddsServiceClient() AddsServiceClient {
+	return original.NewAddsServiceClient()
+}
+func NewAddsServiceClientWithBaseURI(baseURI string) AddsServiceClient {
+	return original.NewAddsServiceClientWithBaseURI(baseURI)
 }
 func NewAddsServiceMembersClient() AddsServiceMembersClient {
 	return original.NewAddsServiceMembersClient()
@@ -335,6 +345,18 @@ func NewOperationsClient() OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
+}
+func NewReportsClient() ReportsClient {
+	return original.NewReportsClient()
+}
+func NewReportsClientWithBaseURI(baseURI string) ReportsClient {
+	return original.NewReportsClientWithBaseURI(baseURI)
+}
+func NewServiceClient() ServiceClient {
+	return original.NewServiceClient()
+}
+func NewServiceClientWithBaseURI(baseURI string) ServiceClient {
+	return original.NewServiceClientWithBaseURI(baseURI)
 }
 func NewServiceMembersClient() ServiceMembersClient {
 	return original.NewServiceMembersClient()

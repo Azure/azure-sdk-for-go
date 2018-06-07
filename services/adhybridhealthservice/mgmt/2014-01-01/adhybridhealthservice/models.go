@@ -2613,6 +2613,13 @@ type TenantOnboardingDetails struct {
 	OnboardingDisplayURL *string `json:"onboardingDisplayUrl,omitempty"`
 }
 
+// UserPreference the user preference for a given feature.
+type UserPreference struct {
+	autorest.Response `json:"-"`
+	// MetricNames - The name of the metric.
+	MetricNames *[]string `json:"metricNames,omitempty"`
+}
+
 // ValueDelta the value of the delta.
 type ValueDelta struct {
 	// OperationType - The operation type. Possible values include: 'ValueDeltaOperationTypeUndefined', 'ValueDeltaOperationTypeAdd', 'ValueDeltaOperationTypeUpdate', 'ValueDeltaOperationTypeDelete'

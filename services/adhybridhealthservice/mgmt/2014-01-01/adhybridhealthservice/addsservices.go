@@ -103,6 +103,74 @@ func (client AddsServicesClient) AddResponder(resp *http.Response) (result Servi
 	return
 }
 
+// AddUserPreference adds the user preferences for a given feature.
+// Parameters:
+// serviceName - the name of the service.
+// featureName - the name of the feature.
+// setting - the user preference setting.
+func (client AddsServicesClient) AddUserPreference(ctx context.Context, serviceName string, featureName string, setting UserPreference) (result autorest.Response, err error) {
+	req, err := client.AddUserPreferencePreparer(ctx, serviceName, featureName, setting)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "AddUserPreference", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddUserPreferenceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "AddUserPreference", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddUserPreferenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "AddUserPreference", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddUserPreferencePreparer prepares the AddUserPreference request.
+func (client AddsServicesClient) AddUserPreferencePreparer(ctx context.Context, serviceName string, featureName string, setting UserPreference) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"featureName": autorest.Encode("path", featureName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/features/{featureName}/userpreference", pathParameters),
+		autorest.WithJSON(setting),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddUserPreferenceSender sends the AddUserPreference request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsServicesClient) AddUserPreferenceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// AddUserPreferenceResponder handles the response to the AddUserPreference request. The method always
+// closes the http.Response Body.
+func (client AddsServicesClient) AddUserPreferenceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Delete deletes an Active Directory Domain Service which is onboarded to Azure Active Directory Connect Health.
 // Parameters:
 // serviceName - the name of the service which needs to be deleted.
@@ -167,6 +235,71 @@ func (client AddsServicesClient) DeleteResponder(resp *http.Response) (result au
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteUserPreference deletes the user preferences for a given feature.
+// Parameters:
+// serviceName - the name of the service.
+// featureName - the name of the feature.
+func (client AddsServicesClient) DeleteUserPreference(ctx context.Context, serviceName string, featureName string) (result autorest.Response, err error) {
+	req, err := client.DeleteUserPreferencePreparer(ctx, serviceName, featureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "DeleteUserPreference", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteUserPreferenceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "DeleteUserPreference", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteUserPreferenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "DeleteUserPreference", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteUserPreferencePreparer prepares the DeleteUserPreference request.
+func (client AddsServicesClient) DeleteUserPreferencePreparer(ctx context.Context, serviceName string, featureName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"featureName": autorest.Encode("path", featureName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/features/{featureName}/userpreference", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteUserPreferenceSender sends the DeleteUserPreference request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsServicesClient) DeleteUserPreferenceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// DeleteUserPreferenceResponder handles the response to the DeleteUserPreference request. The method always
+// closes the http.Response Body.
+func (client AddsServicesClient) DeleteUserPreferenceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -503,6 +636,72 @@ func (client AddsServicesClient) GetReplicationStatusSender(req *http.Request) (
 // GetReplicationStatusResponder handles the response to the GetReplicationStatus request. The method always
 // closes the http.Response Body.
 func (client AddsServicesClient) GetReplicationStatusResponder(resp *http.Response) (result ReplicationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetUserPreference gets the user preferences for a given feature.
+// Parameters:
+// serviceName - the name of the service.
+// featureName - the name of the feature.
+func (client AddsServicesClient) GetUserPreference(ctx context.Context, serviceName string, featureName string) (result UserPreference, err error) {
+	req, err := client.GetUserPreferencePreparer(ctx, serviceName, featureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetUserPreference", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetUserPreferenceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetUserPreference", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetUserPreferenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "GetUserPreference", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetUserPreferencePreparer prepares the GetUserPreference request.
+func (client AddsServicesClient) GetUserPreferencePreparer(ctx context.Context, serviceName string, featureName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"featureName": autorest.Encode("path", featureName),
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/features/{featureName}/userpreference", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetUserPreferenceSender sends the GetUserPreference request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsServicesClient) GetUserPreferenceSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetUserPreferenceResponder handles the response to the GetUserPreference request. The method always
+// closes the http.Response Body.
+func (client AddsServicesClient) GetUserPreferenceResponder(resp *http.Response) (result UserPreference, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1016,6 +1215,79 @@ func (client AddsServicesClient) listPremiumServicesNextResults(lastResults Serv
 // ListPremiumServicesComplete enumerates all values, automatically crossing page boundaries as required.
 func (client AddsServicesClient) ListPremiumServicesComplete(ctx context.Context, filter string, serviceType string, skipCount *int32, takeCount *int32) (result ServicesIterator, err error) {
 	result.page, err = client.ListPremiumServices(ctx, filter, serviceType, skipCount, takeCount)
+	return
+}
+
+// ListReplicationDetails gets complete domain controller list along with replication details for a given Active
+// Directory Domain Service, that is onboarded to Azure Active Directory Connect Health.
+// Parameters:
+// serviceName - the name of the service.
+// filter - the server property filter to apply.
+// withDetails - indicates if InboundReplicationNeighbor details are required or not.
+func (client AddsServicesClient) ListReplicationDetails(ctx context.Context, serviceName string, filter string, withDetails *bool) (result ReplicationSummaryList, err error) {
+	req, err := client.ListReplicationDetailsPreparer(ctx, serviceName, filter, withDetails)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationDetails", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListReplicationDetailsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationDetails", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListReplicationDetailsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationDetails", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListReplicationDetailsPreparer prepares the ListReplicationDetails request.
+func (client AddsServicesClient) ListReplicationDetailsPreparer(ctx context.Context, serviceName string, filter string, withDetails *bool) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"serviceName": autorest.Encode("path", serviceName),
+	}
+
+	const APIVersion = "2014-01-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if withDetails != nil {
+		queryParameters["withDetails"] = autorest.Encode("query", *withDetails)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.ADHybridHealthService/addsservices/{serviceName}/replicationdetails", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListReplicationDetailsSender sends the ListReplicationDetails request. The method will close the
+// http.Response Body if it receives an error.
+func (client AddsServicesClient) ListReplicationDetailsSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListReplicationDetailsResponder handles the response to the ListReplicationDetails request. The method always
+// closes the http.Response Body.
+func (client AddsServicesClient) ListReplicationDetailsResponder(resp *http.Response) (result ReplicationSummaryList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

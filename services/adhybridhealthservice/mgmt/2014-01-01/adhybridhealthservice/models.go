@@ -2119,6 +2119,8 @@ type ReplicationDetailsList struct {
 	TotalCount *int32 `json:"totalCount,omitempty"`
 	// ContinuationToken - The continuation token for paginated calls.
 	ContinuationToken *string `json:"continuationToken,omitempty"`
+	// NextLink - The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ReplicationStatus replication summary for a domain controller.

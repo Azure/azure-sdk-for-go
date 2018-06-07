@@ -1224,7 +1224,7 @@ func (client AddsServicesClient) ListPremiumServicesComplete(ctx context.Context
 // serviceName - the name of the service.
 // filter - the server property filter to apply.
 // withDetails - indicates if InboundReplicationNeighbor details are required or not.
-func (client AddsServicesClient) ListReplicationDetails(ctx context.Context, serviceName string, filter string, withDetails *bool) (result ReplicationSummaryList, err error) {
+func (client AddsServicesClient) ListReplicationDetails(ctx context.Context, serviceName string, filter string, withDetails *bool) (result ReplicationDetailsList, err error) {
 	req, err := client.ListReplicationDetailsPreparer(ctx, serviceName, filter, withDetails)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListReplicationDetails", nil, "Failure preparing request")
@@ -1280,7 +1280,7 @@ func (client AddsServicesClient) ListReplicationDetailsSender(req *http.Request)
 
 // ListReplicationDetailsResponder handles the response to the ListReplicationDetails request. The method always
 // closes the http.Response Body.
-func (client AddsServicesClient) ListReplicationDetailsResponder(resp *http.Response) (result ReplicationSummaryList, err error) {
+func (client AddsServicesClient) ListReplicationDetailsResponder(resp *http.Response) (result ReplicationDetailsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

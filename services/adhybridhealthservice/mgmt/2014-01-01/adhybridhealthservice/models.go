@@ -2112,6 +2112,7 @@ type PasswordManagementSettings struct {
 
 // ReplicationDetailsList the list of replication details.
 type ReplicationDetailsList struct {
+	autorest.Response `json:"-"`
 	// Value - The value returned by the operation.
 	Value *[]ReplicationSummary `json:"value,omitempty"`
 	// TotalCount - The total count of replication detail elements.

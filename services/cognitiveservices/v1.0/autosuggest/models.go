@@ -143,6 +143,8 @@ const (
 	TypeResponse Type = "Response"
 	// TypeResponseBase ...
 	TypeResponseBase Type = "ResponseBase"
+	// TypeSearchAction ...
+	TypeSearchAction Type = "SearchAction"
 	// TypeSearchResultsAnswer ...
 	TypeSearchResultsAnswer Type = "SearchResultsAnswer"
 	// TypeSuggestions ...
@@ -153,7 +155,13 @@ const (
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeAction, TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeSuggestions, TypeThing}
+	return []Type{TypeAction, TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchAction, TypeSearchResultsAnswer, TypeSuggestions, TypeThing}
+}
+
+// BasicAction ...
+type BasicAction interface {
+	AsSearchAction() (*SearchAction, bool)
+	AsAction() (*Action, bool)
 }
 
 // Action ...
@@ -161,6 +169,9 @@ type Action struct {
 	Result      *[]BasicThing `json:"result,omitempty"`
 	DisplayName *string       `json:"displayName,omitempty"`
 	IsTopAction *bool         `json:"isTopAction,omitempty"`
+	ServiceURL  *string       `json:"serviceUrl,omitempty"`
+	// ThumbnailURL - The URL to a thumbnail of the item.
+	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
 	// About - For internal use only.
 	About *[]BasicThing `json:"about,omitempty"`
 	// Mentions - For internal use only.
@@ -170,6 +181,7 @@ type Action struct {
 	Creator  BasicThing    `json:"creator,omitempty"`
 	// Text - Text content of this creative work
 	Text                *string    `json:"text,omitempty"`
+	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
 	CommentCount        *int32     `json:"commentCount,omitempty"`
 	MainEntity          BasicThing `json:"mainEntity,omitempty"`
 	HeadLine            *string    `json:"headLine,omitempty"`
@@ -179,25 +191,57 @@ type Action struct {
 	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
 	Genre               *[]string  `json:"genre,omitempty"`
 	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
-	// Name - The name of the thing represented by this object.
-	Name *string `json:"name,omitempty"`
-	// Description - A short description of the item.
-	Description *string `json:"description,omitempty"`
-	WikipediaID *string `json:"wikipediaId,omitempty"`
-	FreebaseID  *string `json:"freebaseId,omitempty"`
-	// AlternateName - An alias for the item
-	AlternateName *string `json:"alternateName,omitempty"`
-	// BingID - An ID that uniquely identifies this item.
-	BingID          *string   `json:"bingId,omitempty"`
-	SatoriID        *string   `json:"satoriId,omitempty"`
-	YpID            *string   `json:"ypId,omitempty"`
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	// URL - The URL to get more information about the thing represented by this object.
+	URL *string `json:"url,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
+}
+
+func unmarshalBasicAction(body []byte) (BasicAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
+	default:
+		var a Action
+		err := json.Unmarshal(body, &a)
+		return a, err
+	}
+}
+func unmarshalBasicActionArray(body []byte) ([]BasicAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	aArray := make([]BasicAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		a, err := unmarshalBasicAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		aArray[index] = a
+	}
+	return aArray, nil
 }
 
 // MarshalJSON is the custom marshaler for Action.
@@ -213,6 +257,12 @@ func (a Action) MarshalJSON() ([]byte, error) {
 	if a.IsTopAction != nil {
 		objectMap["isTopAction"] = a.IsTopAction
 	}
+	if a.ServiceURL != nil {
+		objectMap["serviceUrl"] = a.ServiceURL
+	}
+	if a.ThumbnailURL != nil {
+		objectMap["thumbnailUrl"] = a.ThumbnailURL
+	}
 	if a.About != nil {
 		objectMap["about"] = a.About
 	}
@@ -225,6 +275,9 @@ func (a Action) MarshalJSON() ([]byte, error) {
 	objectMap["creator"] = a.Creator
 	if a.Text != nil {
 		objectMap["text"] = a.Text
+	}
+	if a.DiscussionURL != nil {
+		objectMap["discussionUrl"] = a.DiscussionURL
 	}
 	if a.CommentCount != nil {
 		objectMap["commentCount"] = a.CommentCount
@@ -249,35 +302,23 @@ func (a Action) MarshalJSON() ([]byte, error) {
 	if a.IsFamilyFriendly != nil {
 		objectMap["isFamilyFriendly"] = a.IsFamilyFriendly
 	}
-	if a.Name != nil {
-		objectMap["name"] = a.Name
+	if a.URL != nil {
+		objectMap["url"] = a.URL
 	}
-	if a.Description != nil {
-		objectMap["description"] = a.Description
+	if a.ReadLink != nil {
+		objectMap["readLink"] = a.ReadLink
 	}
-	if a.WikipediaID != nil {
-		objectMap["wikipediaId"] = a.WikipediaID
-	}
-	if a.FreebaseID != nil {
-		objectMap["freebaseId"] = a.FreebaseID
-	}
-	if a.AlternateName != nil {
-		objectMap["alternateName"] = a.AlternateName
-	}
-	if a.BingID != nil {
-		objectMap["bingId"] = a.BingID
-	}
-	if a.SatoriID != nil {
-		objectMap["satoriId"] = a.SatoriID
-	}
-	if a.YpID != nil {
-		objectMap["ypId"] = a.YpID
+	if a.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = a.WebSearchURL
 	}
 	if a.PotentialAction != nil {
 		objectMap["potentialAction"] = a.PotentialAction
 	}
 	if a.ImmediateAction != nil {
 		objectMap["immediateAction"] = a.ImmediateAction
+	}
+	if a.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = a.PreferredClickthroughURL
 	}
 	if a.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = a.AdaptiveCard
@@ -289,6 +330,11 @@ func (a Action) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = a.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for Action.
+func (a Action) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for Action.
@@ -328,6 +374,11 @@ func (a Action) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Action.
 func (a Action) AsAction() (*Action, bool) {
+	return &a, true
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Action.
+func (a Action) AsBasicAction() (BasicAction, bool) {
 	return &a, true
 }
 
@@ -411,6 +462,24 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				}
 				a.IsTopAction = &isTopAction
 			}
+		case "serviceUrl":
+			if v != nil {
+				var serviceURL string
+				err = json.Unmarshal(*v, &serviceURL)
+				if err != nil {
+					return err
+				}
+				a.ServiceURL = &serviceURL
+			}
+		case "thumbnailUrl":
+			if v != nil {
+				var thumbnailURL string
+				err = json.Unmarshal(*v, &thumbnailURL)
+				if err != nil {
+					return err
+				}
+				a.ThumbnailURL = &thumbnailURL
+			}
 		case "about":
 			if v != nil {
 				about, err := unmarshalBasicThingArray(*v)
@@ -451,6 +520,15 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Text = &textVar
+			}
+		case "discussionUrl":
+			if v != nil {
+				var discussionURL string
+				err = json.Unmarshal(*v, &discussionURL)
+				if err != nil {
+					return err
+				}
+				a.DiscussionURL = &discussionURL
 			}
 		case "commentCount":
 			if v != nil {
@@ -531,82 +609,36 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				}
 				a.IsFamilyFriendly = &isFamilyFriendly
 			}
-		case "name":
+		case "url":
 			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
+				var URL string
+				err = json.Unmarshal(*v, &URL)
 				if err != nil {
 					return err
 				}
-				a.Name = &name
+				a.URL = &URL
 			}
-		case "description":
+		case "readLink":
 			if v != nil {
-				var description string
-				err = json.Unmarshal(*v, &description)
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
 				if err != nil {
 					return err
 				}
-				a.Description = &description
+				a.ReadLink = &readLink
 			}
-		case "wikipediaId":
+		case "webSearchUrl":
 			if v != nil {
-				var wikipediaID string
-				err = json.Unmarshal(*v, &wikipediaID)
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
 				if err != nil {
 					return err
 				}
-				a.WikipediaID = &wikipediaID
-			}
-		case "freebaseId":
-			if v != nil {
-				var freebaseID string
-				err = json.Unmarshal(*v, &freebaseID)
-				if err != nil {
-					return err
-				}
-				a.FreebaseID = &freebaseID
-			}
-		case "alternateName":
-			if v != nil {
-				var alternateName string
-				err = json.Unmarshal(*v, &alternateName)
-				if err != nil {
-					return err
-				}
-				a.AlternateName = &alternateName
-			}
-		case "bingId":
-			if v != nil {
-				var bingID string
-				err = json.Unmarshal(*v, &bingID)
-				if err != nil {
-					return err
-				}
-				a.BingID = &bingID
-			}
-		case "satoriId":
-			if v != nil {
-				var satoriID string
-				err = json.Unmarshal(*v, &satoriID)
-				if err != nil {
-					return err
-				}
-				a.SatoriID = &satoriID
-			}
-		case "ypId":
-			if v != nil {
-				var ypID string
-				err = json.Unmarshal(*v, &ypID)
-				if err != nil {
-					return err
-				}
-				a.YpID = &ypID
+				a.WebSearchURL = &webSearchURL
 			}
 		case "potentialAction":
 			if v != nil {
-				var potentialAction []Action
-				err = json.Unmarshal(*v, &potentialAction)
+				potentialAction, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}
@@ -614,12 +646,20 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 			}
 		case "immediateAction":
 			if v != nil {
-				var immediateAction []Action
-				err = json.Unmarshal(*v, &immediateAction)
+				immediateAction, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}
 				a.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				a.PreferredClickthroughURL = &preferredClickthroughURL
 			}
 		case "adaptiveCard":
 			if v != nil {
@@ -664,12 +704,17 @@ type BasicAnswer interface {
 
 // Answer defines an answer.
 type Answer struct {
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -718,11 +763,20 @@ func unmarshalBasicAnswerArray(body []byte) ([]BasicAnswer, error) {
 func (a Answer) MarshalJSON() ([]byte, error) {
 	a.Type = TypeAnswer
 	objectMap := make(map[string]interface{})
+	if a.ReadLink != nil {
+		objectMap["readLink"] = a.ReadLink
+	}
+	if a.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = a.WebSearchURL
+	}
 	if a.PotentialAction != nil {
 		objectMap["potentialAction"] = a.PotentialAction
 	}
 	if a.ImmediateAction != nil {
 		objectMap["immediateAction"] = a.ImmediateAction
+	}
+	if a.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = a.PreferredClickthroughURL
 	}
 	if a.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = a.AdaptiveCard
@@ -734,6 +788,11 @@ func (a Answer) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = a.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for Answer.
+func (a Answer) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for Answer.
@@ -773,6 +832,11 @@ func (a Answer) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Answer.
 func (a Answer) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Answer.
+func (a Answer) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -821,16 +885,105 @@ func (a Answer) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &a, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for Answer struct.
+func (a *Answer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				a.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				a.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				a.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				a.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				a.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				a.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // BasicCreativeWork the most generic kind of creative work, including books, movies, photographs, software programs,
 // etc.
 type BasicCreativeWork interface {
+	AsSearchAction() (*SearchAction, bool)
 	AsAction() (*Action, bool)
+	AsBasicAction() (BasicAction, bool)
 	AsCreativeWork() (*CreativeWork, bool)
 }
 
 // CreativeWork the most generic kind of creative work, including books, movies, photographs, software programs,
 // etc.
 type CreativeWork struct {
+	// ThumbnailURL - The URL to a thumbnail of the item.
+	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
 	// About - For internal use only.
 	About *[]BasicThing `json:"about,omitempty"`
 	// Mentions - For internal use only.
@@ -840,6 +993,7 @@ type CreativeWork struct {
 	Creator  BasicThing    `json:"creator,omitempty"`
 	// Text - Text content of this creative work
 	Text                *string    `json:"text,omitempty"`
+	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
 	CommentCount        *int32     `json:"commentCount,omitempty"`
 	MainEntity          BasicThing `json:"mainEntity,omitempty"`
 	HeadLine            *string    `json:"headLine,omitempty"`
@@ -849,24 +1003,19 @@ type CreativeWork struct {
 	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
 	Genre               *[]string  `json:"genre,omitempty"`
 	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
-	// Name - The name of the thing represented by this object.
-	Name *string `json:"name,omitempty"`
-	// Description - A short description of the item.
-	Description *string `json:"description,omitempty"`
-	WikipediaID *string `json:"wikipediaId,omitempty"`
-	FreebaseID  *string `json:"freebaseId,omitempty"`
-	// AlternateName - An alias for the item
-	AlternateName *string `json:"alternateName,omitempty"`
-	// BingID - An ID that uniquely identifies this item.
-	BingID          *string   `json:"bingId,omitempty"`
-	SatoriID        *string   `json:"satoriId,omitempty"`
-	YpID            *string   `json:"ypId,omitempty"`
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	// URL - The URL to get more information about the thing represented by this object.
+	URL *string `json:"url,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -878,6 +1027,10 @@ func unmarshalBasicCreativeWork(body []byte) (BasicCreativeWork, error) {
 	}
 
 	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
 	case string(TypeAction):
 		var a Action
 		err := json.Unmarshal(body, &a)
@@ -911,6 +1064,9 @@ func unmarshalBasicCreativeWorkArray(body []byte) ([]BasicCreativeWork, error) {
 func (cw CreativeWork) MarshalJSON() ([]byte, error) {
 	cw.Type = TypeCreativeWork
 	objectMap := make(map[string]interface{})
+	if cw.ThumbnailURL != nil {
+		objectMap["thumbnailUrl"] = cw.ThumbnailURL
+	}
 	if cw.About != nil {
 		objectMap["about"] = cw.About
 	}
@@ -923,6 +1079,9 @@ func (cw CreativeWork) MarshalJSON() ([]byte, error) {
 	objectMap["creator"] = cw.Creator
 	if cw.Text != nil {
 		objectMap["text"] = cw.Text
+	}
+	if cw.DiscussionURL != nil {
+		objectMap["discussionUrl"] = cw.DiscussionURL
 	}
 	if cw.CommentCount != nil {
 		objectMap["commentCount"] = cw.CommentCount
@@ -947,35 +1106,23 @@ func (cw CreativeWork) MarshalJSON() ([]byte, error) {
 	if cw.IsFamilyFriendly != nil {
 		objectMap["isFamilyFriendly"] = cw.IsFamilyFriendly
 	}
-	if cw.Name != nil {
-		objectMap["name"] = cw.Name
+	if cw.URL != nil {
+		objectMap["url"] = cw.URL
 	}
-	if cw.Description != nil {
-		objectMap["description"] = cw.Description
+	if cw.ReadLink != nil {
+		objectMap["readLink"] = cw.ReadLink
 	}
-	if cw.WikipediaID != nil {
-		objectMap["wikipediaId"] = cw.WikipediaID
-	}
-	if cw.FreebaseID != nil {
-		objectMap["freebaseId"] = cw.FreebaseID
-	}
-	if cw.AlternateName != nil {
-		objectMap["alternateName"] = cw.AlternateName
-	}
-	if cw.BingID != nil {
-		objectMap["bingId"] = cw.BingID
-	}
-	if cw.SatoriID != nil {
-		objectMap["satoriId"] = cw.SatoriID
-	}
-	if cw.YpID != nil {
-		objectMap["ypId"] = cw.YpID
+	if cw.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = cw.WebSearchURL
 	}
 	if cw.PotentialAction != nil {
 		objectMap["potentialAction"] = cw.PotentialAction
 	}
 	if cw.ImmediateAction != nil {
 		objectMap["immediateAction"] = cw.ImmediateAction
+	}
+	if cw.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = cw.PreferredClickthroughURL
 	}
 	if cw.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = cw.AdaptiveCard
@@ -987,6 +1134,11 @@ func (cw CreativeWork) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = cw.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for CreativeWork.
+func (cw CreativeWork) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for CreativeWork.
@@ -1026,6 +1178,11 @@ func (cw CreativeWork) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for CreativeWork.
 func (cw CreativeWork) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for CreativeWork.
+func (cw CreativeWork) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -1083,6 +1240,15 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "thumbnailUrl":
+			if v != nil {
+				var thumbnailURL string
+				err = json.Unmarshal(*v, &thumbnailURL)
+				if err != nil {
+					return err
+				}
+				cw.ThumbnailURL = &thumbnailURL
+			}
 		case "about":
 			if v != nil {
 				about, err := unmarshalBasicThingArray(*v)
@@ -1123,6 +1289,15 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cw.Text = &textVar
+			}
+		case "discussionUrl":
+			if v != nil {
+				var discussionURL string
+				err = json.Unmarshal(*v, &discussionURL)
+				if err != nil {
+					return err
+				}
+				cw.DiscussionURL = &discussionURL
 			}
 		case "commentCount":
 			if v != nil {
@@ -1203,82 +1378,36 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 				}
 				cw.IsFamilyFriendly = &isFamilyFriendly
 			}
-		case "name":
+		case "url":
 			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
+				var URL string
+				err = json.Unmarshal(*v, &URL)
 				if err != nil {
 					return err
 				}
-				cw.Name = &name
+				cw.URL = &URL
 			}
-		case "description":
+		case "readLink":
 			if v != nil {
-				var description string
-				err = json.Unmarshal(*v, &description)
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
 				if err != nil {
 					return err
 				}
-				cw.Description = &description
+				cw.ReadLink = &readLink
 			}
-		case "wikipediaId":
+		case "webSearchUrl":
 			if v != nil {
-				var wikipediaID string
-				err = json.Unmarshal(*v, &wikipediaID)
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
 				if err != nil {
 					return err
 				}
-				cw.WikipediaID = &wikipediaID
-			}
-		case "freebaseId":
-			if v != nil {
-				var freebaseID string
-				err = json.Unmarshal(*v, &freebaseID)
-				if err != nil {
-					return err
-				}
-				cw.FreebaseID = &freebaseID
-			}
-		case "alternateName":
-			if v != nil {
-				var alternateName string
-				err = json.Unmarshal(*v, &alternateName)
-				if err != nil {
-					return err
-				}
-				cw.AlternateName = &alternateName
-			}
-		case "bingId":
-			if v != nil {
-				var bingID string
-				err = json.Unmarshal(*v, &bingID)
-				if err != nil {
-					return err
-				}
-				cw.BingID = &bingID
-			}
-		case "satoriId":
-			if v != nil {
-				var satoriID string
-				err = json.Unmarshal(*v, &satoriID)
-				if err != nil {
-					return err
-				}
-				cw.SatoriID = &satoriID
-			}
-		case "ypId":
-			if v != nil {
-				var ypID string
-				err = json.Unmarshal(*v, &ypID)
-				if err != nil {
-					return err
-				}
-				cw.YpID = &ypID
+				cw.WebSearchURL = &webSearchURL
 			}
 		case "potentialAction":
 			if v != nil {
-				var potentialAction []Action
-				err = json.Unmarshal(*v, &potentialAction)
+				potentialAction, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}
@@ -1286,12 +1415,20 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 			}
 		case "immediateAction":
 			if v != nil {
-				var immediateAction []Action
-				err = json.Unmarshal(*v, &immediateAction)
+				immediateAction, err := unmarshalBasicActionArray(*v)
 				if err != nil {
 					return err
 				}
 				cw.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				cw.PreferredClickthroughURL = &preferredClickthroughURL
 			}
 		case "adaptiveCard":
 			if v != nil {
@@ -1343,13 +1480,18 @@ type Error struct {
 // ErrorResponse the top-level response that represents a failed request.
 type ErrorResponse struct {
 	// Errors - A list of errors that describe the reasons why the request failed.
-	Errors          *[]Error  `json:"errors,omitempty"`
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	Errors *[]Error `json:"errors,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -1360,11 +1502,20 @@ func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 	if er.Errors != nil {
 		objectMap["errors"] = er.Errors
 	}
+	if er.ReadLink != nil {
+		objectMap["readLink"] = er.ReadLink
+	}
+	if er.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = er.WebSearchURL
+	}
 	if er.PotentialAction != nil {
 		objectMap["potentialAction"] = er.PotentialAction
 	}
 	if er.ImmediateAction != nil {
 		objectMap["immediateAction"] = er.ImmediateAction
+	}
+	if er.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = er.PreferredClickthroughURL
 	}
 	if er.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = er.AdaptiveCard
@@ -1376,6 +1527,11 @@ func (er ErrorResponse) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = er.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for ErrorResponse.
+func (er ErrorResponse) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for ErrorResponse.
@@ -1415,6 +1571,11 @@ func (er ErrorResponse) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for ErrorResponse.
 func (er ErrorResponse) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for ErrorResponse.
+func (er ErrorResponse) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -1463,8 +1624,103 @@ func (er ErrorResponse) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &er, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for ErrorResponse struct.
+func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "errors":
+			if v != nil {
+				var errorsVar []Error
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				er.Errors = &errorsVar
+			}
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				er.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				er.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				er.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				er.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				er.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				er.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				er.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				er.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // BasicIdentifiable defines the identity of a resource.
 type BasicIdentifiable interface {
+	AsSearchAction() (*SearchAction, bool)
 	AsSuggestions() (*Suggestions, bool)
 	AsSearchResultsAnswer() (*SearchResultsAnswer, bool)
 	AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool)
@@ -1473,6 +1729,7 @@ type BasicIdentifiable interface {
 	AsThing() (*Thing, bool)
 	AsBasicThing() (BasicThing, bool)
 	AsAction() (*Action, bool)
+	AsBasicAction() (BasicAction, bool)
 	AsResponse() (*Response, bool)
 	AsBasicResponse() (BasicResponse, bool)
 	AsErrorResponse() (*ErrorResponse, bool)
@@ -1485,7 +1742,7 @@ type BasicIdentifiable interface {
 type Identifiable struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -1497,6 +1754,10 @@ func unmarshalBasicIdentifiable(body []byte) (BasicIdentifiable, error) {
 	}
 
 	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
 	case string(TypeSuggestions):
 		var s Suggestions
 		err := json.Unmarshal(body, &s)
@@ -1567,6 +1828,11 @@ func (i Identifiable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsSearchAction is the BasicResponseBase implementation for Identifiable.
+func (i Identifiable) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
+}
+
 // AsSuggestions is the BasicResponseBase implementation for Identifiable.
 func (i Identifiable) AsSuggestions() (*Suggestions, bool) {
 	return nil, false
@@ -1604,6 +1870,11 @@ func (i Identifiable) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Identifiable.
 func (i Identifiable) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Identifiable.
+func (i Identifiable) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -1670,6 +1941,7 @@ type QueryContext struct {
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from
 // this
 type BasicResponse interface {
+	AsSearchAction() (*SearchAction, bool)
 	AsSuggestions() (*Suggestions, bool)
 	AsSearchResultsAnswer() (*SearchResultsAnswer, bool)
 	AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool)
@@ -1678,6 +1950,7 @@ type BasicResponse interface {
 	AsThing() (*Thing, bool)
 	AsBasicThing() (BasicThing, bool)
 	AsAction() (*Action, bool)
+	AsBasicAction() (BasicAction, bool)
 	AsErrorResponse() (*ErrorResponse, bool)
 	AsCreativeWork() (*CreativeWork, bool)
 	AsBasicCreativeWork() (BasicCreativeWork, bool)
@@ -1687,12 +1960,17 @@ type BasicResponse interface {
 // Response defines a response. All schemas that could be returned at the root of a response should inherit from
 // this
 type Response struct {
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -1704,6 +1982,10 @@ func unmarshalBasicResponse(body []byte) (BasicResponse, error) {
 	}
 
 	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
 	case string(TypeSuggestions):
 		var s Suggestions
 		err := json.Unmarshal(body, &s)
@@ -1761,11 +2043,20 @@ func unmarshalBasicResponseArray(body []byte) ([]BasicResponse, error) {
 func (r Response) MarshalJSON() ([]byte, error) {
 	r.Type = TypeResponse
 	objectMap := make(map[string]interface{})
+	if r.ReadLink != nil {
+		objectMap["readLink"] = r.ReadLink
+	}
+	if r.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = r.WebSearchURL
+	}
 	if r.PotentialAction != nil {
 		objectMap["potentialAction"] = r.PotentialAction
 	}
 	if r.ImmediateAction != nil {
 		objectMap["immediateAction"] = r.ImmediateAction
+	}
+	if r.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = r.PreferredClickthroughURL
 	}
 	if r.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = r.AdaptiveCard
@@ -1777,6 +2068,11 @@ func (r Response) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = r.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for Response.
+func (r Response) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for Response.
@@ -1816,6 +2112,11 @@ func (r Response) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Response.
 func (r Response) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Response.
+func (r Response) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -1864,8 +2165,94 @@ func (r Response) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &r, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for Response struct.
+func (r *Response) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				r.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				r.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				r.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				r.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				r.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				r.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				r.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				r.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // BasicResponseBase response base
 type BasicResponseBase interface {
+	AsSearchAction() (*SearchAction, bool)
 	AsSuggestions() (*Suggestions, bool)
 	AsSearchResultsAnswer() (*SearchResultsAnswer, bool)
 	AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool)
@@ -1874,6 +2261,7 @@ type BasicResponseBase interface {
 	AsThing() (*Thing, bool)
 	AsBasicThing() (BasicThing, bool)
 	AsAction() (*Action, bool)
+	AsBasicAction() (BasicAction, bool)
 	AsResponse() (*Response, bool)
 	AsBasicResponse() (BasicResponse, bool)
 	AsIdentifiable() (*Identifiable, bool)
@@ -1886,7 +2274,7 @@ type BasicResponseBase interface {
 
 // ResponseBase response base
 type ResponseBase struct {
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -1898,6 +2286,10 @@ func unmarshalBasicResponseBase(body []byte) (BasicResponseBase, error) {
 	}
 
 	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
 	case string(TypeSuggestions):
 		var s Suggestions
 		err := json.Unmarshal(body, &s)
@@ -1969,6 +2361,11 @@ func (rb ResponseBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsSearchAction is the BasicResponseBase implementation for ResponseBase.
+func (rb ResponseBase) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
+}
+
 // AsSuggestions is the BasicResponseBase implementation for ResponseBase.
 func (rb ResponseBase) AsSuggestions() (*Suggestions, bool) {
 	return nil, false
@@ -2006,6 +2403,11 @@ func (rb ResponseBase) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for ResponseBase.
 func (rb ResponseBase) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for ResponseBase.
+func (rb ResponseBase) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -2059,9 +2461,532 @@ type SearchAction struct {
 	DisplayText *string `json:"displayText,omitempty"`
 	Query       *string `json:"query,omitempty"`
 	// SearchKind - Possible values include: 'WebSearch', 'HistorySearch', 'DocumentSearch', 'TagSearch', 'LocationSearch', 'CustomSearch'
-	SearchKind SearchKind `json:"searchKind,omitempty"`
+	SearchKind  SearchKind    `json:"searchKind,omitempty"`
+	Result      *[]BasicThing `json:"result,omitempty"`
+	DisplayName *string       `json:"displayName,omitempty"`
+	IsTopAction *bool         `json:"isTopAction,omitempty"`
+	ServiceURL  *string       `json:"serviceUrl,omitempty"`
+	// ThumbnailURL - The URL to a thumbnail of the item.
+	ThumbnailURL *string `json:"thumbnailUrl,omitempty"`
+	// About - For internal use only.
+	About *[]BasicThing `json:"about,omitempty"`
+	// Mentions - For internal use only.
+	Mentions *[]BasicThing `json:"mentions,omitempty"`
+	// Provider - The source of the creative work.
+	Provider *[]BasicThing `json:"provider,omitempty"`
+	Creator  BasicThing    `json:"creator,omitempty"`
+	// Text - Text content of this creative work
+	Text                *string    `json:"text,omitempty"`
+	DiscussionURL       *string    `json:"discussionUrl,omitempty"`
+	CommentCount        *int32     `json:"commentCount,omitempty"`
+	MainEntity          BasicThing `json:"mainEntity,omitempty"`
+	HeadLine            *string    `json:"headLine,omitempty"`
+	CopyrightHolder     BasicThing `json:"copyrightHolder,omitempty"`
+	CopyrightYear       *int32     `json:"copyrightYear,omitempty"`
+	Disclaimer          *string    `json:"disclaimer,omitempty"`
+	IsAccessibleForFree *bool      `json:"isAccessibleForFree,omitempty"`
+	Genre               *[]string  `json:"genre,omitempty"`
+	IsFamilyFriendly    *bool      `json:"isFamilyFriendly,omitempty"`
 	// URL - The URL to get more information about the thing represented by this object.
 	URL *string `json:"url,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
+	// ID - A String identifier.
+	ID *string `json:"id,omitempty"`
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	Type Type `json:"_type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SearchAction.
+func (sa SearchAction) MarshalJSON() ([]byte, error) {
+	sa.Type = TypeSearchAction
+	objectMap := make(map[string]interface{})
+	if sa.DisplayText != nil {
+		objectMap["displayText"] = sa.DisplayText
+	}
+	if sa.Query != nil {
+		objectMap["query"] = sa.Query
+	}
+	if sa.SearchKind != "" {
+		objectMap["searchKind"] = sa.SearchKind
+	}
+	if sa.Result != nil {
+		objectMap["result"] = sa.Result
+	}
+	if sa.DisplayName != nil {
+		objectMap["displayName"] = sa.DisplayName
+	}
+	if sa.IsTopAction != nil {
+		objectMap["isTopAction"] = sa.IsTopAction
+	}
+	if sa.ServiceURL != nil {
+		objectMap["serviceUrl"] = sa.ServiceURL
+	}
+	if sa.ThumbnailURL != nil {
+		objectMap["thumbnailUrl"] = sa.ThumbnailURL
+	}
+	if sa.About != nil {
+		objectMap["about"] = sa.About
+	}
+	if sa.Mentions != nil {
+		objectMap["mentions"] = sa.Mentions
+	}
+	if sa.Provider != nil {
+		objectMap["provider"] = sa.Provider
+	}
+	objectMap["creator"] = sa.Creator
+	if sa.Text != nil {
+		objectMap["text"] = sa.Text
+	}
+	if sa.DiscussionURL != nil {
+		objectMap["discussionUrl"] = sa.DiscussionURL
+	}
+	if sa.CommentCount != nil {
+		objectMap["commentCount"] = sa.CommentCount
+	}
+	objectMap["mainEntity"] = sa.MainEntity
+	if sa.HeadLine != nil {
+		objectMap["headLine"] = sa.HeadLine
+	}
+	objectMap["copyrightHolder"] = sa.CopyrightHolder
+	if sa.CopyrightYear != nil {
+		objectMap["copyrightYear"] = sa.CopyrightYear
+	}
+	if sa.Disclaimer != nil {
+		objectMap["disclaimer"] = sa.Disclaimer
+	}
+	if sa.IsAccessibleForFree != nil {
+		objectMap["isAccessibleForFree"] = sa.IsAccessibleForFree
+	}
+	if sa.Genre != nil {
+		objectMap["genre"] = sa.Genre
+	}
+	if sa.IsFamilyFriendly != nil {
+		objectMap["isFamilyFriendly"] = sa.IsFamilyFriendly
+	}
+	if sa.URL != nil {
+		objectMap["url"] = sa.URL
+	}
+	if sa.ReadLink != nil {
+		objectMap["readLink"] = sa.ReadLink
+	}
+	if sa.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = sa.WebSearchURL
+	}
+	if sa.PotentialAction != nil {
+		objectMap["potentialAction"] = sa.PotentialAction
+	}
+	if sa.ImmediateAction != nil {
+		objectMap["immediateAction"] = sa.ImmediateAction
+	}
+	if sa.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = sa.PreferredClickthroughURL
+	}
+	if sa.AdaptiveCard != nil {
+		objectMap["adaptiveCard"] = sa.AdaptiveCard
+	}
+	if sa.ID != nil {
+		objectMap["id"] = sa.ID
+	}
+	if sa.Type != "" {
+		objectMap["_type"] = sa.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsSearchAction() (*SearchAction, bool) {
+	return &sa, true
+}
+
+// AsSuggestions is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsSuggestions() (*Suggestions, bool) {
+	return nil, false
+}
+
+// AsSearchResultsAnswer is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsSearchResultsAnswer() (*SearchResultsAnswer, bool) {
+	return nil, false
+}
+
+// AsBasicSearchResultsAnswer is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicSearchResultsAnswer() (BasicSearchResultsAnswer, bool) {
+	return nil, false
+}
+
+// AsAnswer is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsAnswer() (*Answer, bool) {
+	return nil, false
+}
+
+// AsBasicAnswer is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicAnswer() (BasicAnswer, bool) {
+	return nil, false
+}
+
+// AsThing is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsThing() (*Thing, bool) {
+	return nil, false
+}
+
+// AsBasicThing is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicThing() (BasicThing, bool) {
+	return &sa, true
+}
+
+// AsAction is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicAction() (BasicAction, bool) {
+	return &sa, true
+}
+
+// AsResponse is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsResponse() (*Response, bool) {
+	return nil, false
+}
+
+// AsBasicResponse is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicResponse() (BasicResponse, bool) {
+	return &sa, true
+}
+
+// AsIdentifiable is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsIdentifiable() (*Identifiable, bool) {
+	return nil, false
+}
+
+// AsBasicIdentifiable is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicIdentifiable() (BasicIdentifiable, bool) {
+	return &sa, true
+}
+
+// AsErrorResponse is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsErrorResponse() (*ErrorResponse, bool) {
+	return nil, false
+}
+
+// AsCreativeWork is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsCreativeWork() (*CreativeWork, bool) {
+	return nil, false
+}
+
+// AsBasicCreativeWork is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicCreativeWork() (BasicCreativeWork, bool) {
+	return &sa, true
+}
+
+// AsResponseBase is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsResponseBase() (*ResponseBase, bool) {
+	return nil, false
+}
+
+// AsBasicResponseBase is the BasicResponseBase implementation for SearchAction.
+func (sa SearchAction) AsBasicResponseBase() (BasicResponseBase, bool) {
+	return &sa, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for SearchAction struct.
+func (sa *SearchAction) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "displayText":
+			if v != nil {
+				var displayText string
+				err = json.Unmarshal(*v, &displayText)
+				if err != nil {
+					return err
+				}
+				sa.DisplayText = &displayText
+			}
+		case "query":
+			if v != nil {
+				var query string
+				err = json.Unmarshal(*v, &query)
+				if err != nil {
+					return err
+				}
+				sa.Query = &query
+			}
+		case "searchKind":
+			if v != nil {
+				var searchKind SearchKind
+				err = json.Unmarshal(*v, &searchKind)
+				if err != nil {
+					return err
+				}
+				sa.SearchKind = searchKind
+			}
+		case "result":
+			if v != nil {
+				resultVar, err := unmarshalBasicThingArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.Result = &resultVar
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				sa.DisplayName = &displayName
+			}
+		case "isTopAction":
+			if v != nil {
+				var isTopAction bool
+				err = json.Unmarshal(*v, &isTopAction)
+				if err != nil {
+					return err
+				}
+				sa.IsTopAction = &isTopAction
+			}
+		case "serviceUrl":
+			if v != nil {
+				var serviceURL string
+				err = json.Unmarshal(*v, &serviceURL)
+				if err != nil {
+					return err
+				}
+				sa.ServiceURL = &serviceURL
+			}
+		case "thumbnailUrl":
+			if v != nil {
+				var thumbnailURL string
+				err = json.Unmarshal(*v, &thumbnailURL)
+				if err != nil {
+					return err
+				}
+				sa.ThumbnailURL = &thumbnailURL
+			}
+		case "about":
+			if v != nil {
+				about, err := unmarshalBasicThingArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.About = &about
+			}
+		case "mentions":
+			if v != nil {
+				mentions, err := unmarshalBasicThingArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.Mentions = &mentions
+			}
+		case "provider":
+			if v != nil {
+				provider, err := unmarshalBasicThingArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.Provider = &provider
+			}
+		case "creator":
+			if v != nil {
+				creator, err := unmarshalBasicThing(*v)
+				if err != nil {
+					return err
+				}
+				sa.Creator = creator
+			}
+		case "text":
+			if v != nil {
+				var textVar string
+				err = json.Unmarshal(*v, &textVar)
+				if err != nil {
+					return err
+				}
+				sa.Text = &textVar
+			}
+		case "discussionUrl":
+			if v != nil {
+				var discussionURL string
+				err = json.Unmarshal(*v, &discussionURL)
+				if err != nil {
+					return err
+				}
+				sa.DiscussionURL = &discussionURL
+			}
+		case "commentCount":
+			if v != nil {
+				var commentCount int32
+				err = json.Unmarshal(*v, &commentCount)
+				if err != nil {
+					return err
+				}
+				sa.CommentCount = &commentCount
+			}
+		case "mainEntity":
+			if v != nil {
+				mainEntity, err := unmarshalBasicThing(*v)
+				if err != nil {
+					return err
+				}
+				sa.MainEntity = mainEntity
+			}
+		case "headLine":
+			if v != nil {
+				var headLine string
+				err = json.Unmarshal(*v, &headLine)
+				if err != nil {
+					return err
+				}
+				sa.HeadLine = &headLine
+			}
+		case "copyrightHolder":
+			if v != nil {
+				copyrightHolder, err := unmarshalBasicThing(*v)
+				if err != nil {
+					return err
+				}
+				sa.CopyrightHolder = copyrightHolder
+			}
+		case "copyrightYear":
+			if v != nil {
+				var copyrightYear int32
+				err = json.Unmarshal(*v, &copyrightYear)
+				if err != nil {
+					return err
+				}
+				sa.CopyrightYear = &copyrightYear
+			}
+		case "disclaimer":
+			if v != nil {
+				var disclaimer string
+				err = json.Unmarshal(*v, &disclaimer)
+				if err != nil {
+					return err
+				}
+				sa.Disclaimer = &disclaimer
+			}
+		case "isAccessibleForFree":
+			if v != nil {
+				var isAccessibleForFree bool
+				err = json.Unmarshal(*v, &isAccessibleForFree)
+				if err != nil {
+					return err
+				}
+				sa.IsAccessibleForFree = &isAccessibleForFree
+			}
+		case "genre":
+			if v != nil {
+				var genre []string
+				err = json.Unmarshal(*v, &genre)
+				if err != nil {
+					return err
+				}
+				sa.Genre = &genre
+			}
+		case "isFamilyFriendly":
+			if v != nil {
+				var isFamilyFriendly bool
+				err = json.Unmarshal(*v, &isFamilyFriendly)
+				if err != nil {
+					return err
+				}
+				sa.IsFamilyFriendly = &isFamilyFriendly
+			}
+		case "url":
+			if v != nil {
+				var URL string
+				err = json.Unmarshal(*v, &URL)
+				if err != nil {
+					return err
+				}
+				sa.URL = &URL
+			}
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				sa.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				sa.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				sa.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				sa.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				sa.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sa.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sa.Type = typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // BasicSearchResultsAnswer defines a search result answer.
@@ -2072,13 +2997,18 @@ type BasicSearchResultsAnswer interface {
 
 // SearchResultsAnswer defines a search result answer.
 type SearchResultsAnswer struct {
-	QueryContext    *QueryContext `json:"queryContext,omitempty"`
-	PotentialAction *[]Action     `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action     `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string       `json:"adaptiveCard,omitempty"`
+	QueryContext *QueryContext `json:"queryContext,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -2126,11 +3056,20 @@ func (sra SearchResultsAnswer) MarshalJSON() ([]byte, error) {
 	if sra.QueryContext != nil {
 		objectMap["queryContext"] = sra.QueryContext
 	}
+	if sra.ReadLink != nil {
+		objectMap["readLink"] = sra.ReadLink
+	}
+	if sra.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = sra.WebSearchURL
+	}
 	if sra.PotentialAction != nil {
 		objectMap["potentialAction"] = sra.PotentialAction
 	}
 	if sra.ImmediateAction != nil {
 		objectMap["immediateAction"] = sra.ImmediateAction
+	}
+	if sra.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = sra.PreferredClickthroughURL
 	}
 	if sra.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = sra.AdaptiveCard
@@ -2142,6 +3081,11 @@ func (sra SearchResultsAnswer) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = sra.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for SearchResultsAnswer.
+func (sra SearchResultsAnswer) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for SearchResultsAnswer.
@@ -2181,6 +3125,11 @@ func (sra SearchResultsAnswer) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for SearchResultsAnswer.
 func (sra SearchResultsAnswer) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for SearchResultsAnswer.
+func (sra SearchResultsAnswer) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -2229,17 +3178,116 @@ func (sra SearchResultsAnswer) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &sra, true
 }
 
-// Suggestions defines an AutoSuggest answer
+// UnmarshalJSON is the custom unmarshaler for SearchResultsAnswer struct.
+func (sra *SearchResultsAnswer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "queryContext":
+			if v != nil {
+				var queryContext QueryContext
+				err = json.Unmarshal(*v, &queryContext)
+				if err != nil {
+					return err
+				}
+				sra.QueryContext = &queryContext
+			}
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				sra.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				sra.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				sra.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				sra.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				sra.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				sra.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sra.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sra.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// Suggestions ...
 type Suggestions struct {
 	autorest.Response `json:"-"`
 	SuggestionGroups  *[]SuggestionsSuggestionGroup `json:"suggestionGroups,omitempty"`
 	QueryContext      *QueryContext                 `json:"queryContext,omitempty"`
-	PotentialAction   *[]Action                     `json:"potentialAction,omitempty"`
-	ImmediateAction   *[]Action                     `json:"immediateAction,omitempty"`
-	AdaptiveCard      *string                       `json:"adaptiveCard,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -2253,11 +3301,20 @@ func (s Suggestions) MarshalJSON() ([]byte, error) {
 	if s.QueryContext != nil {
 		objectMap["queryContext"] = s.QueryContext
 	}
+	if s.ReadLink != nil {
+		objectMap["readLink"] = s.ReadLink
+	}
+	if s.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = s.WebSearchURL
+	}
 	if s.PotentialAction != nil {
 		objectMap["potentialAction"] = s.PotentialAction
 	}
 	if s.ImmediateAction != nil {
 		objectMap["immediateAction"] = s.ImmediateAction
+	}
+	if s.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = s.PreferredClickthroughURL
 	}
 	if s.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = s.AdaptiveCard
@@ -2269,6 +3326,11 @@ func (s Suggestions) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = s.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for Suggestions.
+func (s Suggestions) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for Suggestions.
@@ -2308,6 +3370,11 @@ func (s Suggestions) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Suggestions.
 func (s Suggestions) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Suggestions.
+func (s Suggestions) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -2356,6 +3423,109 @@ func (s Suggestions) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &s, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for Suggestions struct.
+func (s *Suggestions) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "suggestionGroups":
+			if v != nil {
+				var suggestionGroups []SuggestionsSuggestionGroup
+				err = json.Unmarshal(*v, &suggestionGroups)
+				if err != nil {
+					return err
+				}
+				s.SuggestionGroups = &suggestionGroups
+			}
+		case "queryContext":
+			if v != nil {
+				var queryContext QueryContext
+				err = json.Unmarshal(*v, &queryContext)
+				if err != nil {
+					return err
+				}
+				s.QueryContext = &queryContext
+			}
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				s.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				s.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				s.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				s.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				s.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				s.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				s.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				s.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // SuggestionsSuggestionGroup ...
 type SuggestionsSuggestionGroup struct {
 	// Name - Possible values include: 'Unknown', 'Web', 'StoreApps', 'SearchHistory', 'PersonalSearchDocuments', 'PersonalSearchTags', 'Custom'
@@ -2365,7 +3535,9 @@ type SuggestionsSuggestionGroup struct {
 
 // BasicThing defines a thing.
 type BasicThing interface {
+	AsSearchAction() (*SearchAction, bool)
 	AsAction() (*Action, bool)
+	AsBasicAction() (BasicAction, bool)
 	AsCreativeWork() (*CreativeWork, bool)
 	AsBasicCreativeWork() (BasicCreativeWork, bool)
 	AsThing() (*Thing, bool)
@@ -2373,24 +3545,19 @@ type BasicThing interface {
 
 // Thing defines a thing.
 type Thing struct {
-	// Name - The name of the thing represented by this object.
-	Name *string `json:"name,omitempty"`
-	// Description - A short description of the item.
-	Description *string `json:"description,omitempty"`
-	WikipediaID *string `json:"wikipediaId,omitempty"`
-	FreebaseID  *string `json:"freebaseId,omitempty"`
-	// AlternateName - An alias for the item
-	AlternateName *string `json:"alternateName,omitempty"`
-	// BingID - An ID that uniquely identifies this item.
-	BingID          *string   `json:"bingId,omitempty"`
-	SatoriID        *string   `json:"satoriId,omitempty"`
-	YpID            *string   `json:"ypId,omitempty"`
-	PotentialAction *[]Action `json:"potentialAction,omitempty"`
-	ImmediateAction *[]Action `json:"immediateAction,omitempty"`
-	AdaptiveCard    *string   `json:"adaptiveCard,omitempty"`
+	// URL - The URL to get more information about the thing represented by this object.
+	URL *string `json:"url,omitempty"`
+	// ReadLink - The URL that returns this resource.
+	ReadLink *string `json:"readLink,omitempty"`
+	// WebSearchURL - The URL To Bing's search result for this item.
+	WebSearchURL             *string        `json:"webSearchUrl,omitempty"`
+	PotentialAction          *[]BasicAction `json:"potentialAction,omitempty"`
+	ImmediateAction          *[]BasicAction `json:"immediateAction,omitempty"`
+	PreferredClickthroughURL *string        `json:"preferredClickthroughUrl,omitempty"`
+	AdaptiveCard             *string        `json:"adaptiveCard,omitempty"`
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
-	// Type - Possible values include: 'TypeResponseBase', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
+	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
 	Type Type `json:"_type,omitempty"`
 }
 
@@ -2402,6 +3569,10 @@ func unmarshalBasicThing(body []byte) (BasicThing, error) {
 	}
 
 	switch m["_type"] {
+	case string(TypeSearchAction):
+		var sa SearchAction
+		err := json.Unmarshal(body, &sa)
+		return sa, err
 	case string(TypeAction):
 		var a Action
 		err := json.Unmarshal(body, &a)
@@ -2439,35 +3610,23 @@ func unmarshalBasicThingArray(body []byte) ([]BasicThing, error) {
 func (t Thing) MarshalJSON() ([]byte, error) {
 	t.Type = TypeThing
 	objectMap := make(map[string]interface{})
-	if t.Name != nil {
-		objectMap["name"] = t.Name
+	if t.URL != nil {
+		objectMap["url"] = t.URL
 	}
-	if t.Description != nil {
-		objectMap["description"] = t.Description
+	if t.ReadLink != nil {
+		objectMap["readLink"] = t.ReadLink
 	}
-	if t.WikipediaID != nil {
-		objectMap["wikipediaId"] = t.WikipediaID
-	}
-	if t.FreebaseID != nil {
-		objectMap["freebaseId"] = t.FreebaseID
-	}
-	if t.AlternateName != nil {
-		objectMap["alternateName"] = t.AlternateName
-	}
-	if t.BingID != nil {
-		objectMap["bingId"] = t.BingID
-	}
-	if t.SatoriID != nil {
-		objectMap["satoriId"] = t.SatoriID
-	}
-	if t.YpID != nil {
-		objectMap["ypId"] = t.YpID
+	if t.WebSearchURL != nil {
+		objectMap["webSearchUrl"] = t.WebSearchURL
 	}
 	if t.PotentialAction != nil {
 		objectMap["potentialAction"] = t.PotentialAction
 	}
 	if t.ImmediateAction != nil {
 		objectMap["immediateAction"] = t.ImmediateAction
+	}
+	if t.PreferredClickthroughURL != nil {
+		objectMap["preferredClickthroughUrl"] = t.PreferredClickthroughURL
 	}
 	if t.AdaptiveCard != nil {
 		objectMap["adaptiveCard"] = t.AdaptiveCard
@@ -2479,6 +3638,11 @@ func (t Thing) MarshalJSON() ([]byte, error) {
 		objectMap["_type"] = t.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsSearchAction is the BasicResponseBase implementation for Thing.
+func (t Thing) AsSearchAction() (*SearchAction, bool) {
+	return nil, false
 }
 
 // AsSuggestions is the BasicResponseBase implementation for Thing.
@@ -2518,6 +3682,11 @@ func (t Thing) AsBasicThing() (BasicThing, bool) {
 
 // AsAction is the BasicResponseBase implementation for Thing.
 func (t Thing) AsAction() (*Action, bool) {
+	return nil, false
+}
+
+// AsBasicAction is the BasicResponseBase implementation for Thing.
+func (t Thing) AsBasicAction() (BasicAction, bool) {
 	return nil, false
 }
 
@@ -2564,4 +3733,98 @@ func (t Thing) AsResponseBase() (*ResponseBase, bool) {
 // AsBasicResponseBase is the BasicResponseBase implementation for Thing.
 func (t Thing) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &t, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for Thing struct.
+func (t *Thing) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "url":
+			if v != nil {
+				var URL string
+				err = json.Unmarshal(*v, &URL)
+				if err != nil {
+					return err
+				}
+				t.URL = &URL
+			}
+		case "readLink":
+			if v != nil {
+				var readLink string
+				err = json.Unmarshal(*v, &readLink)
+				if err != nil {
+					return err
+				}
+				t.ReadLink = &readLink
+			}
+		case "webSearchUrl":
+			if v != nil {
+				var webSearchURL string
+				err = json.Unmarshal(*v, &webSearchURL)
+				if err != nil {
+					return err
+				}
+				t.WebSearchURL = &webSearchURL
+			}
+		case "potentialAction":
+			if v != nil {
+				potentialAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				t.PotentialAction = &potentialAction
+			}
+		case "immediateAction":
+			if v != nil {
+				immediateAction, err := unmarshalBasicActionArray(*v)
+				if err != nil {
+					return err
+				}
+				t.ImmediateAction = &immediateAction
+			}
+		case "preferredClickthroughUrl":
+			if v != nil {
+				var preferredClickthroughURL string
+				err = json.Unmarshal(*v, &preferredClickthroughURL)
+				if err != nil {
+					return err
+				}
+				t.PreferredClickthroughURL = &preferredClickthroughURL
+			}
+		case "adaptiveCard":
+			if v != nil {
+				var adaptiveCard string
+				err = json.Unmarshal(*v, &adaptiveCard)
+				if err != nil {
+					return err
+				}
+				t.AdaptiveCard = &adaptiveCard
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "_type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = typeVar
+			}
+		}
+	}
+
+	return nil
 }

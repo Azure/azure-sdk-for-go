@@ -85,11 +85,13 @@ const (
 	TypeIdentifiable        Type = original.TypeIdentifiable
 	TypeResponse            Type = original.TypeResponse
 	TypeResponseBase        Type = original.TypeResponseBase
+	TypeSearchAction        Type = original.TypeSearchAction
 	TypeSearchResultsAnswer Type = original.TypeSearchResultsAnswer
 	TypeSuggestions         Type = original.TypeSuggestions
 	TypeThing               Type = original.TypeThing
 )
 
+type BasicAction = original.BasicAction
 type Action = original.Action
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer

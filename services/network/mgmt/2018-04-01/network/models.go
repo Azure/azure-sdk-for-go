@@ -1261,12 +1261,6 @@ type VirtualNetworkGatewaySkuName string
 const (
 	// VirtualNetworkGatewaySkuNameBasic ...
 	VirtualNetworkGatewaySkuNameBasic VirtualNetworkGatewaySkuName = "Basic"
-	// VirtualNetworkGatewaySkuNameErGw1AZ ...
-	VirtualNetworkGatewaySkuNameErGw1AZ VirtualNetworkGatewaySkuName = "ErGw1AZ"
-	// VirtualNetworkGatewaySkuNameErGw2AZ ...
-	VirtualNetworkGatewaySkuNameErGw2AZ VirtualNetworkGatewaySkuName = "ErGw2AZ"
-	// VirtualNetworkGatewaySkuNameErGw3AZ ...
-	VirtualNetworkGatewaySkuNameErGw3AZ VirtualNetworkGatewaySkuName = "ErGw3AZ"
 	// VirtualNetworkGatewaySkuNameHighPerformance ...
 	VirtualNetworkGatewaySkuNameHighPerformance VirtualNetworkGatewaySkuName = "HighPerformance"
 	// VirtualNetworkGatewaySkuNameStandard ...
@@ -1275,21 +1269,15 @@ const (
 	VirtualNetworkGatewaySkuNameUltraPerformance VirtualNetworkGatewaySkuName = "UltraPerformance"
 	// VirtualNetworkGatewaySkuNameVpnGw1 ...
 	VirtualNetworkGatewaySkuNameVpnGw1 VirtualNetworkGatewaySkuName = "VpnGw1"
-	// VirtualNetworkGatewaySkuNameVpnGw1AZ ...
-	VirtualNetworkGatewaySkuNameVpnGw1AZ VirtualNetworkGatewaySkuName = "VpnGw1AZ"
 	// VirtualNetworkGatewaySkuNameVpnGw2 ...
 	VirtualNetworkGatewaySkuNameVpnGw2 VirtualNetworkGatewaySkuName = "VpnGw2"
-	// VirtualNetworkGatewaySkuNameVpnGw2AZ ...
-	VirtualNetworkGatewaySkuNameVpnGw2AZ VirtualNetworkGatewaySkuName = "VpnGw2AZ"
 	// VirtualNetworkGatewaySkuNameVpnGw3 ...
 	VirtualNetworkGatewaySkuNameVpnGw3 VirtualNetworkGatewaySkuName = "VpnGw3"
-	// VirtualNetworkGatewaySkuNameVpnGw3AZ ...
-	VirtualNetworkGatewaySkuNameVpnGw3AZ VirtualNetworkGatewaySkuName = "VpnGw3AZ"
 )
 
 // PossibleVirtualNetworkGatewaySkuNameValues returns an array of possible values for the VirtualNetworkGatewaySkuName const type.
 func PossibleVirtualNetworkGatewaySkuNameValues() []VirtualNetworkGatewaySkuName {
-	return []VirtualNetworkGatewaySkuName{VirtualNetworkGatewaySkuNameBasic, VirtualNetworkGatewaySkuNameErGw1AZ, VirtualNetworkGatewaySkuNameErGw2AZ, VirtualNetworkGatewaySkuNameErGw3AZ, VirtualNetworkGatewaySkuNameHighPerformance, VirtualNetworkGatewaySkuNameStandard, VirtualNetworkGatewaySkuNameUltraPerformance, VirtualNetworkGatewaySkuNameVpnGw1, VirtualNetworkGatewaySkuNameVpnGw1AZ, VirtualNetworkGatewaySkuNameVpnGw2, VirtualNetworkGatewaySkuNameVpnGw2AZ, VirtualNetworkGatewaySkuNameVpnGw3, VirtualNetworkGatewaySkuNameVpnGw3AZ}
+	return []VirtualNetworkGatewaySkuName{VirtualNetworkGatewaySkuNameBasic, VirtualNetworkGatewaySkuNameHighPerformance, VirtualNetworkGatewaySkuNameStandard, VirtualNetworkGatewaySkuNameUltraPerformance, VirtualNetworkGatewaySkuNameVpnGw1, VirtualNetworkGatewaySkuNameVpnGw2, VirtualNetworkGatewaySkuNameVpnGw3}
 }
 
 // VirtualNetworkGatewaySkuTier enumerates the values for virtual network gateway sku tier.
@@ -1298,12 +1286,6 @@ type VirtualNetworkGatewaySkuTier string
 const (
 	// VirtualNetworkGatewaySkuTierBasic ...
 	VirtualNetworkGatewaySkuTierBasic VirtualNetworkGatewaySkuTier = "Basic"
-	// VirtualNetworkGatewaySkuTierErGw1AZ ...
-	VirtualNetworkGatewaySkuTierErGw1AZ VirtualNetworkGatewaySkuTier = "ErGw1AZ"
-	// VirtualNetworkGatewaySkuTierErGw2AZ ...
-	VirtualNetworkGatewaySkuTierErGw2AZ VirtualNetworkGatewaySkuTier = "ErGw2AZ"
-	// VirtualNetworkGatewaySkuTierErGw3AZ ...
-	VirtualNetworkGatewaySkuTierErGw3AZ VirtualNetworkGatewaySkuTier = "ErGw3AZ"
 	// VirtualNetworkGatewaySkuTierHighPerformance ...
 	VirtualNetworkGatewaySkuTierHighPerformance VirtualNetworkGatewaySkuTier = "HighPerformance"
 	// VirtualNetworkGatewaySkuTierStandard ...
@@ -1312,21 +1294,15 @@ const (
 	VirtualNetworkGatewaySkuTierUltraPerformance VirtualNetworkGatewaySkuTier = "UltraPerformance"
 	// VirtualNetworkGatewaySkuTierVpnGw1 ...
 	VirtualNetworkGatewaySkuTierVpnGw1 VirtualNetworkGatewaySkuTier = "VpnGw1"
-	// VirtualNetworkGatewaySkuTierVpnGw1AZ ...
-	VirtualNetworkGatewaySkuTierVpnGw1AZ VirtualNetworkGatewaySkuTier = "VpnGw1AZ"
 	// VirtualNetworkGatewaySkuTierVpnGw2 ...
 	VirtualNetworkGatewaySkuTierVpnGw2 VirtualNetworkGatewaySkuTier = "VpnGw2"
-	// VirtualNetworkGatewaySkuTierVpnGw2AZ ...
-	VirtualNetworkGatewaySkuTierVpnGw2AZ VirtualNetworkGatewaySkuTier = "VpnGw2AZ"
 	// VirtualNetworkGatewaySkuTierVpnGw3 ...
 	VirtualNetworkGatewaySkuTierVpnGw3 VirtualNetworkGatewaySkuTier = "VpnGw3"
-	// VirtualNetworkGatewaySkuTierVpnGw3AZ ...
-	VirtualNetworkGatewaySkuTierVpnGw3AZ VirtualNetworkGatewaySkuTier = "VpnGw3AZ"
 )
 
 // PossibleVirtualNetworkGatewaySkuTierValues returns an array of possible values for the VirtualNetworkGatewaySkuTier const type.
 func PossibleVirtualNetworkGatewaySkuTierValues() []VirtualNetworkGatewaySkuTier {
-	return []VirtualNetworkGatewaySkuTier{VirtualNetworkGatewaySkuTierBasic, VirtualNetworkGatewaySkuTierErGw1AZ, VirtualNetworkGatewaySkuTierErGw2AZ, VirtualNetworkGatewaySkuTierErGw3AZ, VirtualNetworkGatewaySkuTierHighPerformance, VirtualNetworkGatewaySkuTierStandard, VirtualNetworkGatewaySkuTierUltraPerformance, VirtualNetworkGatewaySkuTierVpnGw1, VirtualNetworkGatewaySkuTierVpnGw1AZ, VirtualNetworkGatewaySkuTierVpnGw2, VirtualNetworkGatewaySkuTierVpnGw2AZ, VirtualNetworkGatewaySkuTierVpnGw3, VirtualNetworkGatewaySkuTierVpnGw3AZ}
+	return []VirtualNetworkGatewaySkuTier{VirtualNetworkGatewaySkuTierBasic, VirtualNetworkGatewaySkuTierHighPerformance, VirtualNetworkGatewaySkuTierStandard, VirtualNetworkGatewaySkuTierUltraPerformance, VirtualNetworkGatewaySkuTierVpnGw1, VirtualNetworkGatewaySkuTierVpnGw2, VirtualNetworkGatewaySkuTierVpnGw3}
 }
 
 // VirtualNetworkGatewayType enumerates the values for virtual network gateway type.
@@ -1524,7 +1500,7 @@ func (ag *ApplicationGateway) UnmarshalJSON(body []byte) error {
 // ApplicationGatewayAuthenticationCertificate authentication certificates of an application gateway.
 type ApplicationGatewayAuthenticationCertificate struct {
 	*ApplicationGatewayAuthenticationCertificatePropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the authentication certificate that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -1869,7 +1845,7 @@ type ApplicationGatewayBackendAddress struct {
 // ApplicationGatewayBackendAddressPool backend Address Pool of an application gateway.
 type ApplicationGatewayBackendAddressPool struct {
 	*ApplicationGatewayBackendAddressPoolPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the backend address pool that is unique within an Application Gateway.
+	// Name - Resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2006,7 +1982,7 @@ type ApplicationGatewayBackendHealthServer struct {
 // ApplicationGatewayBackendHTTPSettings backend address pool settings of an application gateway.
 type ApplicationGatewayBackendHTTPSettings struct {
 	*ApplicationGatewayBackendHTTPSettingsPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the backend http settings that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2100,9 +2076,9 @@ func (agbhs *ApplicationGatewayBackendHTTPSettings) UnmarshalJSON(body []byte) e
 // ApplicationGatewayBackendHTTPSettingsPropertiesFormat properties of Backend address pool settings of an
 // application gateway.
 type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
-	// Port - The destination port on the backend.
+	// Port - Port
 	Port *int32 `json:"port,omitempty"`
-	// Protocol - The protocol used to communicate with the backend. Possible values are 'Http' and 'Https'. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol. Possible values include: 'HTTP', 'HTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// CookieBasedAffinity - Cookie based affinity. Possible values include: 'Enabled', 'Disabled'
 	CookieBasedAffinity ApplicationGatewayCookieBasedAffinity `json:"cookieBasedAffinity,omitempty"`
@@ -2286,7 +2262,7 @@ type ApplicationGatewayFirewallRuleSetPropertiesFormat struct {
 // ApplicationGatewayFrontendIPConfiguration frontend IP configuration of an application gateway.
 type ApplicationGatewayFrontendIPConfiguration struct {
 	*ApplicationGatewayFrontendIPConfigurationPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the frontend IP configuration that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2395,7 +2371,7 @@ type ApplicationGatewayFrontendIPConfigurationPropertiesFormat struct {
 // ApplicationGatewayFrontendPort frontend port of an application gateway.
 type ApplicationGatewayFrontendPort struct {
 	*ApplicationGatewayFrontendPortPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the frontend port that is unique within an Application Gateway
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2497,7 +2473,7 @@ type ApplicationGatewayFrontendPortPropertiesFormat struct {
 // ApplicationGatewayHTTPListener http listener of an application gateway.
 type ApplicationGatewayHTTPListener struct {
 	*ApplicationGatewayHTTPListenerPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the HTTP listener that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2594,7 +2570,7 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
 	// FrontendPort - Frontend port resource of an application gateway.
 	FrontendPort *SubResource `json:"frontendPort,omitempty"`
-	// Protocol - Protocol of the HTTP listener. Possible values are 'Http' and 'Https'. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol. Possible values include: 'HTTP', 'HTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// HostName - Host name of HTTP listener.
 	HostName *string `json:"hostName,omitempty"`
@@ -2610,7 +2586,7 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 // IP configuration is allowed.
 type ApplicationGatewayIPConfiguration struct {
 	*ApplicationGatewayIPConfigurationPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the IP configuration that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2814,7 +2790,7 @@ func (page ApplicationGatewayListResultPage) Values() []ApplicationGateway {
 // ApplicationGatewayPathRule path rule of URL path map of an application gateway.
 type ApplicationGatewayPathRule struct {
 	*ApplicationGatewayPathRulePropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the path rule that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -2922,7 +2898,7 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 // ApplicationGatewayProbe probe of the application gateway.
 type ApplicationGatewayProbe struct {
 	*ApplicationGatewayProbePropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the probe that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -3023,7 +2999,7 @@ type ApplicationGatewayProbeHealthResponseMatch struct {
 
 // ApplicationGatewayProbePropertiesFormat properties of probe of an application gateway.
 type ApplicationGatewayProbePropertiesFormat struct {
-	// Protocol - The protocol used for the probe. Possible values are 'Http' and 'Https'. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol. Possible values include: 'HTTP', 'HTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// Host - Host name to send the probe to.
 	Host *string `json:"host,omitempty"`
@@ -3090,7 +3066,7 @@ type ApplicationGatewayPropertiesFormat struct {
 // ApplicationGatewayRedirectConfiguration redirect configuration of an application gateway.
 type ApplicationGatewayRedirectConfiguration struct {
 	*ApplicationGatewayRedirectConfigurationPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the redirect configuration that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -3205,7 +3181,7 @@ type ApplicationGatewayRedirectConfigurationPropertiesFormat struct {
 // ApplicationGatewayRequestRoutingRule request routing rule of an application gateway.
 type ApplicationGatewayRequestRoutingRule struct {
 	*ApplicationGatewayRequestRoutingRulePropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the request routing rule that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -3303,7 +3279,7 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	RuleType ApplicationGatewayRequestRoutingRuleType `json:"ruleType,omitempty"`
 	// BackendAddressPool - Backend address pool resource of the application gateway.
 	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
-	// BackendHTTPSettings - Backend http settings resource of the application gateway.
+	// BackendHTTPSettings - Frontend port resource of the application gateway.
 	BackendHTTPSettings *SubResource `json:"backendHttpSettings,omitempty"`
 	// HTTPListener - Http listener resource of the application gateway.
 	HTTPListener *SubResource `json:"httpListener,omitempty"`
@@ -3409,7 +3385,7 @@ type ApplicationGatewaySku struct {
 // ApplicationGatewaySslCertificate SSL certificates of an application gateway.
 type ApplicationGatewaySslCertificate struct {
 	*ApplicationGatewaySslCertificatePropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the SSL certificate that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -3529,7 +3505,7 @@ type ApplicationGatewaySslPolicy struct {
 // ApplicationGatewaySslPredefinedPolicy an Ssl predefined policy
 type ApplicationGatewaySslPredefinedPolicy struct {
 	autorest.Response `json:"-"`
-	// Name - Name of the Ssl predefined policy.
+	// Name - Name of Ssl predefined policy.
 	Name                                                   *string `json:"name,omitempty"`
 	*ApplicationGatewaySslPredefinedPolicyPropertiesFormat `json:"properties,omitempty"`
 	// ID - Resource ID.
@@ -3680,7 +3656,7 @@ func (future *ApplicationGatewaysUpdateTagsFuture) Result(client ApplicationGate
 // PathBasedRouting.
 type ApplicationGatewayURLPathMap struct {
 	*ApplicationGatewayURLPathMapPropertiesFormat `json:"properties,omitempty"`
-	// Name - Name of the URL path map that is unique within an Application Gateway.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -5852,9 +5828,9 @@ func (erc *ExpressRouteCircuit) UnmarshalJSON(body []byte) error {
 
 // ExpressRouteCircuitArpTable the ARP table associated with the ExpressRouteCircuit.
 type ExpressRouteCircuitArpTable struct {
-	// Age - Entry age in minutes
+	// Age - Age
 	Age *int32 `json:"age,omitempty"`
-	// Interface - Interface address
+	// Interface - Interface
 	Interface *string `json:"interface,omitempty"`
 	// IPAddress - The IP address.
 	IPAddress *string `json:"ipAddress,omitempty"`
@@ -6571,21 +6547,21 @@ type ExpressRouteCircuitReference struct {
 
 // ExpressRouteCircuitRoutesTable the routes table associated with the ExpressRouteCircuit
 type ExpressRouteCircuitRoutesTable struct {
-	// NetworkProperty - IP address of a network entity
+	// NetworkProperty - network
 	NetworkProperty *string `json:"network,omitempty"`
-	// NextHop - NextHop address
+	// NextHop - nextHop
 	NextHop *string `json:"nextHop,omitempty"`
-	// LocPrf - Local preference value as set with the set local-preference route-map configuration command
+	// LocPrf - locPrf
 	LocPrf *string `json:"locPrf,omitempty"`
-	// Weight - Route Weight.
+	// Weight - weight.
 	Weight *int32 `json:"weight,omitempty"`
-	// Path - Autonomous system paths to the destination network.
+	// Path - path
 	Path *string `json:"path,omitempty"`
 }
 
 // ExpressRouteCircuitRoutesTableSummary the routes table associated with the ExpressRouteCircuit.
 type ExpressRouteCircuitRoutesTableSummary struct {
-	// Neighbor - IP address of the neighbor.
+	// Neighbor - Neighbor
 	Neighbor *string `json:"neighbor,omitempty"`
 	// V - BGP version number spoken to the neighbor.
 	V *int32 `json:"v,omitempty"`
@@ -7745,13 +7721,12 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// FlowLogInformation information on the configuration of flow log and traffic analytics (optional) .
+// FlowLogInformation information on the configuration of flow log.
 type FlowLogInformation struct {
 	autorest.Response `json:"-"`
-	// TargetResourceID - The ID of the resource to configure for flow log and traffic analytics (optional) .
-	TargetResourceID           *string `json:"targetResourceId,omitempty"`
-	*FlowLogProperties         `json:"properties,omitempty"`
-	FlowAnalyticsConfiguration *TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
+	// TargetResourceID - The ID of the resource to configure for flow logging.
+	TargetResourceID   *string `json:"targetResourceId,omitempty"`
+	*FlowLogProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FlowLogInformation.
@@ -7762,9 +7737,6 @@ func (fli FlowLogInformation) MarshalJSON() ([]byte, error) {
 	}
 	if fli.FlowLogProperties != nil {
 		objectMap["properties"] = fli.FlowLogProperties
-	}
-	if fli.FlowAnalyticsConfiguration != nil {
-		objectMap["flowAnalyticsConfiguration"] = fli.FlowAnalyticsConfiguration
 	}
 	return json.Marshal(objectMap)
 }
@@ -7796,15 +7768,6 @@ func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
 				}
 				fli.FlowLogProperties = &flowLogProperties
 			}
-		case "flowAnalyticsConfiguration":
-			if v != nil {
-				var flowAnalyticsConfiguration TrafficAnalyticsProperties
-				err = json.Unmarshal(*v, &flowAnalyticsConfiguration)
-				if err != nil {
-					return err
-				}
-				fli.FlowAnalyticsConfiguration = &flowAnalyticsConfiguration
-			}
 		}
 	}
 
@@ -7820,10 +7783,9 @@ type FlowLogProperties struct {
 	RetentionPolicy *RetentionPolicyParameters `json:"retentionPolicy,omitempty"`
 }
 
-// FlowLogStatusParameters parameters that define a resource to query flow log and traffic analytics (optional)
-// status.
+// FlowLogStatusParameters parameters that define a resource to query flow log status.
 type FlowLogStatusParameters struct {
-	// TargetResourceID - The target resource where getting the flow log and traffic analytics (optional) status.
+	// TargetResourceID - The target resource where getting the flow logging status.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 }
 
@@ -14006,23 +13968,6 @@ type TopologyResource struct {
 	Associations *[]TopologyAssociation `json:"associations,omitempty"`
 }
 
-// TrafficAnalyticsConfigurationProperties parameters that define the configuration of traffic analytics.
-type TrafficAnalyticsConfigurationProperties struct {
-	// Enabled - Flag to enable/disable traffic analytics.
-	Enabled *bool `json:"enabled,omitempty"`
-	// WorkspaceID - The resource guid of the attached workspace
-	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// WorkspaceRegion - The location of the attached workspace
-	WorkspaceRegion *string `json:"workspaceRegion,omitempty"`
-	// WorkspaceResourceID - Resource Id of the attached workspace
-	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
-}
-
-// TrafficAnalyticsProperties parameters that define the configuration of traffic analytics.
-type TrafficAnalyticsProperties struct {
-	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties `json:"networkWatcherFlowAnalyticsConfiguration,omitempty"`
-}
-
 // TroubleshootingDetails information gained from troubleshooting of specified resource.
 type TroubleshootingDetails struct {
 	// ID - The id of the get troubleshoot operation.
@@ -15632,35 +15577,6 @@ func (future *VirtualNetworkGatewaysGetLearnedRoutesFuture) Result(client Virtua
 	return
 }
 
-// VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vcipp.Response.Response, err = future.GetResult(sender); err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
-		vcipp, err = client.GetVpnclientIpsecParametersResponder(vcipp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", vcipp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VirtualNetworkGatewaysGetVpnProfilePackageURLFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type VirtualNetworkGatewaysGetVpnProfilePackageURLFuture struct {
@@ -15692,9 +15608,9 @@ func (future *VirtualNetworkGatewaysGetVpnProfilePackageURLFuture) Result(client
 
 // VirtualNetworkGatewaySku virtualNetworkGatewaySku details
 type VirtualNetworkGatewaySku struct {
-	// Name - Gateway SKU name. Possible values include: 'VirtualNetworkGatewaySkuNameBasic', 'VirtualNetworkGatewaySkuNameHighPerformance', 'VirtualNetworkGatewaySkuNameStandard', 'VirtualNetworkGatewaySkuNameUltraPerformance', 'VirtualNetworkGatewaySkuNameVpnGw1', 'VirtualNetworkGatewaySkuNameVpnGw2', 'VirtualNetworkGatewaySkuNameVpnGw3', 'VirtualNetworkGatewaySkuNameVpnGw1AZ', 'VirtualNetworkGatewaySkuNameVpnGw2AZ', 'VirtualNetworkGatewaySkuNameVpnGw3AZ', 'VirtualNetworkGatewaySkuNameErGw1AZ', 'VirtualNetworkGatewaySkuNameErGw2AZ', 'VirtualNetworkGatewaySkuNameErGw3AZ'
+	// Name - Gateway SKU name. Possible values include: 'VirtualNetworkGatewaySkuNameBasic', 'VirtualNetworkGatewaySkuNameHighPerformance', 'VirtualNetworkGatewaySkuNameStandard', 'VirtualNetworkGatewaySkuNameUltraPerformance', 'VirtualNetworkGatewaySkuNameVpnGw1', 'VirtualNetworkGatewaySkuNameVpnGw2', 'VirtualNetworkGatewaySkuNameVpnGw3'
 	Name VirtualNetworkGatewaySkuName `json:"name,omitempty"`
-	// Tier - Gateway SKU tier. Possible values include: 'VirtualNetworkGatewaySkuTierBasic', 'VirtualNetworkGatewaySkuTierHighPerformance', 'VirtualNetworkGatewaySkuTierStandard', 'VirtualNetworkGatewaySkuTierUltraPerformance', 'VirtualNetworkGatewaySkuTierVpnGw1', 'VirtualNetworkGatewaySkuTierVpnGw2', 'VirtualNetworkGatewaySkuTierVpnGw3', 'VirtualNetworkGatewaySkuTierVpnGw1AZ', 'VirtualNetworkGatewaySkuTierVpnGw2AZ', 'VirtualNetworkGatewaySkuTierVpnGw3AZ', 'VirtualNetworkGatewaySkuTierErGw1AZ', 'VirtualNetworkGatewaySkuTierErGw2AZ', 'VirtualNetworkGatewaySkuTierErGw3AZ'
+	// Tier - Gateway SKU tier. Possible values include: 'VirtualNetworkGatewaySkuTierBasic', 'VirtualNetworkGatewaySkuTierHighPerformance', 'VirtualNetworkGatewaySkuTierStandard', 'VirtualNetworkGatewaySkuTierUltraPerformance', 'VirtualNetworkGatewaySkuTierVpnGw1', 'VirtualNetworkGatewaySkuTierVpnGw2', 'VirtualNetworkGatewaySkuTierVpnGw3'
 	Tier VirtualNetworkGatewaySkuTier `json:"tier,omitempty"`
 	// Capacity - The capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -15724,35 +15640,6 @@ func (future *VirtualNetworkGatewaysResetFuture) Result(client VirtualNetworkGat
 		vng, err = client.ResetResponder(vng.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", vng.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture) Result(client VirtualNetworkGatewaysClient) (vcipp VpnClientIPsecParameters, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vcipp.Response.Response, err = future.GetResult(sender); err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
-		vcipp, err = client.SetVpnclientIpsecParametersResponder(vcipp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", vcipp.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -16393,7 +16280,6 @@ type VpnClientConfiguration struct {
 
 // VpnClientIPsecParameters an IPSec parameters for a virtual network gateway P2S connection.
 type VpnClientIPsecParameters struct {
-	autorest.Response `json:"-"`
 	// SaLifeTimeSeconds - The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
 	SaLifeTimeSeconds *int32 `json:"saLifeTimeSeconds,omitempty"`
 	// SaDataSizeKilobytes - The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for P2S client..

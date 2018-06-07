@@ -55,7 +55,7 @@ func NewWithBaseURI(baseURI string) BaseClient {
 	}
 }
 
-// Method sends the auto suggest method request.
+// AutoSuggest sends the auto suggest request.
 // Parameters:
 // query - the user's search term.
 // acceptLanguage - a comma-delimited list of one or more languages to use for user interface strings. The list
@@ -165,30 +165,30 @@ func NewWithBaseURI(baseURI string) BaseClient {
 // responseFormat - the media type to use for the response. The following are the possible case-insensitive
 // values: JSON, JSONLD. The default is JSON. If you specify JSONLD, the response body includes JSON-LD objects
 // that contain the search results.
-func (client BaseClient) Method(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (result AutoSuggest, err error) {
-	req, err := client.MethodPreparer(ctx, query, acceptLanguage, pragma, userAgent, clientID, clientIP, location, countryCode, market, safeSearch, setLang, responseFormat)
+func (client BaseClient) AutoSuggest(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (result Suggestions, err error) {
+	req, err := client.AutoSuggestPreparer(ctx, query, acceptLanguage, pragma, userAgent, clientID, clientIP, location, countryCode, market, safeSearch, setLang, responseFormat)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "Method", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "AutoSuggest", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.MethodSender(req)
+	resp, err := client.AutoSuggestSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "Method", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "AutoSuggest", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.MethodResponder(resp)
+	result, err = client.AutoSuggestResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "Method", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "autosuggest.BaseClient", "AutoSuggest", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// MethodPreparer prepares the Method request.
-func (client BaseClient) MethodPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (*http.Request, error) {
+// AutoSuggestPreparer prepares the AutoSuggest request.
+func (client BaseClient) AutoSuggestPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"q": autorest.Encode("query", query),
 	}
@@ -243,16 +243,16 @@ func (client BaseClient) MethodPreparer(ctx context.Context, query string, accep
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// MethodSender sends the Method request. The method will close the
+// AutoSuggestSender sends the AutoSuggest request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) MethodSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) AutoSuggestSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// MethodResponder handles the response to the Method request. The method always
+// AutoSuggestResponder handles the response to the AutoSuggest request. The method always
 // closes the http.Response Body.
-func (client BaseClient) MethodResponder(resp *http.Response) (result AutoSuggest, err error) {
+func (client BaseClient) AutoSuggestResponder(resp *http.Response) (result Suggestions, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -80,22 +80,19 @@ type Type = original.Type
 const (
 	TypeAction              Type = original.TypeAction
 	TypeAnswer              Type = original.TypeAnswer
-	TypeAutoSuggest         Type = original.TypeAutoSuggest
 	TypeCreativeWork        Type = original.TypeCreativeWork
 	TypeErrorResponse       Type = original.TypeErrorResponse
 	TypeIdentifiable        Type = original.TypeIdentifiable
 	TypeResponse            Type = original.TypeResponse
 	TypeResponseBase        Type = original.TypeResponseBase
-	TypeSearchAction        Type = original.TypeSearchAction
 	TypeSearchResultsAnswer Type = original.TypeSearchResultsAnswer
+	TypeSuggestions         Type = original.TypeSuggestions
 	TypeThing               Type = original.TypeThing
 )
 
-type BasicAction = original.BasicAction
 type Action = original.Action
 type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
-type AutoSuggest = original.AutoSuggest
 type BasicCreativeWork = original.BasicCreativeWork
 type CreativeWork = original.CreativeWork
 type Error = original.Error
@@ -110,6 +107,7 @@ type ResponseBase = original.ResponseBase
 type SearchAction = original.SearchAction
 type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
 type SearchResultsAnswer = original.SearchResultsAnswer
+type Suggestions = original.Suggestions
 type SuggestionsSuggestionGroup = original.SuggestionsSuggestionGroup
 type BasicThing = original.BasicThing
 type Thing = original.Thing

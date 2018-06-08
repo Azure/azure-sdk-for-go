@@ -5744,6 +5744,157 @@ func (client AppsClient) DeleteSourceControlSlotResponder(resp *http.Response) (
 	return
 }
 
+// DeleteSwiftVirtualNetwork deletes a Swift Virtual Network connection from an app (or deployment slot).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteSwiftVirtualNetwork", err.Error())
+	}
+
+	req, err := client.DeleteSwiftVirtualNetworkPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSwiftVirtualNetworkSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteSwiftVirtualNetworkResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetwork", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteSwiftVirtualNetworkPreparer prepares the DeleteSwiftVirtualNetwork request.
+func (client AppsClient) DeleteSwiftVirtualNetworkPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSwiftVirtualNetworkSender sends the DeleteSwiftVirtualNetwork request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteSwiftVirtualNetworkSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteSwiftVirtualNetworkResponder handles the response to the DeleteSwiftVirtualNetwork request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteSwiftVirtualNetworkResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteSwiftVirtualNetworkSlot deletes a Swift Virtual Network connection from an app (or deployment slot).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will delete the connection for the
+// production slot.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteSwiftVirtualNetworkSlot", err.Error())
+	}
+
+	req, err := client.DeleteSwiftVirtualNetworkSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSwiftVirtualNetworkSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteSwiftVirtualNetworkSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteSwiftVirtualNetworkSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteSwiftVirtualNetworkSlotPreparer prepares the DeleteSwiftVirtualNetworkSlot request.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSwiftVirtualNetworkSlotSender sends the DeleteSwiftVirtualNetworkSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlotSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteSwiftVirtualNetworkSlotResponder handles the response to the DeleteSwiftVirtualNetworkSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteSwiftVirtualNetworkSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // DeleteTriggeredWebJob delete a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -5899,11 +6050,12 @@ func (client AppsClient) DeleteTriggeredWebJobSlotResponder(resp *http.Response)
 	return
 }
 
-// DeleteVnetConnection deletes a Swift Virtual Network connection from an app (or deployment slot).
+// DeleteVnetConnection deletes a connection from an app (or deployment slot to a named virtual network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
-func (client AppsClient) DeleteVnetConnection(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+// vnetName - name of the virtual network.
+func (client AppsClient) DeleteVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -5912,7 +6064,7 @@ func (client AppsClient) DeleteVnetConnection(ctx context.Context, resourceGroup
 		return result, validation.NewError("web.AppsClient", "DeleteVnetConnection", err.Error())
 	}
 
-	req, err := client.DeleteVnetConnectionPreparer(ctx, resourceGroupName, name)
+	req, err := client.DeleteVnetConnectionPreparer(ctx, resourceGroupName, name, vnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection", nil, "Failure preparing request")
 		return
@@ -5934,11 +6086,12 @@ func (client AppsClient) DeleteVnetConnection(ctx context.Context, resourceGroup
 }
 
 // DeleteVnetConnectionPreparer prepares the DeleteVnetConnection request.
-func (client AppsClient) DeleteVnetConnectionPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+func (client AppsClient) DeleteVnetConnectionPreparer(ctx context.Context, resourceGroupName string, name string, vnetName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
 	const APIVersion = "2018-02-01"
@@ -5949,7 +6102,7 @@ func (client AppsClient) DeleteVnetConnectionPreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -5973,89 +6126,14 @@ func (client AppsClient) DeleteVnetConnectionResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteVnetConnection1 deletes a connection from an app (or deployment slot to a named virtual network.
+// DeleteVnetConnectionSlot deletes a connection from an app (or deployment slot to a named virtual network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
 // vnetName - name of the virtual network.
-func (client AppsClient) DeleteVnetConnection1(ctx context.Context, resourceGroupName string, name string, vnetName string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "DeleteVnetConnection1", err.Error())
-	}
-
-	req, err := client.DeleteVnetConnection1Preparer(ctx, resourceGroupName, name, vnetName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection1", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteVnetConnection1Sender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection1", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteVnetConnection1Responder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnection1", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteVnetConnection1Preparer prepares the DeleteVnetConnection1 request.
-func (client AppsClient) DeleteVnetConnection1Preparer(ctx context.Context, resourceGroupName string, name string, vnetName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"vnetName":          autorest.Encode("path", vnetName),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteVnetConnection1Sender sends the DeleteVnetConnection1 request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) DeleteVnetConnection1Sender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteVnetConnection1Responder handles the response to the DeleteVnetConnection1 request. The method always
-// closes the http.Response Body.
-func (client AppsClient) DeleteVnetConnection1Responder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteVnetConnectionSlot deletes a Swift Virtual Network connection from an app (or deployment slot).
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
 // slot - name of the deployment slot. If a slot is not specified, the API will delete the connection for the
 // production slot.
-func (client AppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+func (client AppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (result autorest.Response, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -6064,7 +6142,7 @@ func (client AppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceG
 		return result, validation.NewError("web.AppsClient", "DeleteVnetConnectionSlot", err.Error())
 	}
 
-	req, err := client.DeleteVnetConnectionSlotPreparer(ctx, resourceGroupName, name, slot)
+	req, err := client.DeleteVnetConnectionSlotPreparer(ctx, resourceGroupName, name, vnetName, slot)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot", nil, "Failure preparing request")
 		return
@@ -6086,85 +6164,7 @@ func (client AppsClient) DeleteVnetConnectionSlot(ctx context.Context, resourceG
 }
 
 // DeleteVnetConnectionSlotPreparer prepares the DeleteVnetConnectionSlot request.
-func (client AppsClient) DeleteVnetConnectionSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteVnetConnectionSlotSender sends the DeleteVnetConnectionSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) DeleteVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteVnetConnectionSlotResponder handles the response to the DeleteVnetConnectionSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) DeleteVnetConnectionSlotResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteVnetConnectionSlot1 deletes a connection from an app (or deployment slot to a named virtual network.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
-// vnetName - name of the virtual network.
-// slot - name of the deployment slot. If a slot is not specified, the API will delete the connection for the
-// production slot.
-func (client AppsClient) DeleteVnetConnectionSlot1(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "DeleteVnetConnectionSlot1", err.Error())
-	}
-
-	req, err := client.DeleteVnetConnectionSlot1Preparer(ctx, resourceGroupName, name, vnetName, slot)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot1", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteVnetConnectionSlot1Sender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot1", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteVnetConnectionSlot1Responder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteVnetConnectionSlot1", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteVnetConnectionSlot1Preparer prepares the DeleteVnetConnectionSlot1 request.
-func (client AppsClient) DeleteVnetConnectionSlot1Preparer(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (*http.Request, error) {
+func (client AppsClient) DeleteVnetConnectionSlotPreparer(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"name":              autorest.Encode("path", name),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -6186,16 +6186,16 @@ func (client AppsClient) DeleteVnetConnectionSlot1Preparer(ctx context.Context, 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteVnetConnectionSlot1Sender sends the DeleteVnetConnectionSlot1 request. The method will close the
+// DeleteVnetConnectionSlotSender sends the DeleteVnetConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
-func (client AppsClient) DeleteVnetConnectionSlot1Sender(req *http.Request) (*http.Response, error) {
+func (client AppsClient) DeleteVnetConnectionSlotSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// DeleteVnetConnectionSlot1Responder handles the response to the DeleteVnetConnectionSlot1 request. The method always
+// DeleteVnetConnectionSlotResponder handles the response to the DeleteVnetConnectionSlot request. The method always
 // closes the http.Response Body.
-func (client AppsClient) DeleteVnetConnectionSlot1Responder(resp *http.Response) (result autorest.Response, err error) {
+func (client AppsClient) DeleteVnetConnectionSlotResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

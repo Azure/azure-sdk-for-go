@@ -44,17 +44,13 @@ func PossibleActionTypeValues() []ActionType {
 type DeletionRecoveryLevel string
 
 const (
-	// Purgeable Soft-delete is not enabled for this vault. A DELETE operation results in immediate and
-	// irreversible data loss.
+	// Purgeable ...
 	Purgeable DeletionRecoveryLevel = "Purgeable"
-	// Recoverable Soft-delete is enabled for this vault and purge has been disabled. A deleted entity will
-	// remain in this state until recovered, or the end of the retention interval.
+	// Recoverable ...
 	Recoverable DeletionRecoveryLevel = "Recoverable"
-	// RecoverableProtectedSubscription Soft-delete is enabled for this vault, and the subscription is
-	// protected against immediate deletion.
+	// RecoverableProtectedSubscription ...
 	RecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-	// RecoverablePurgeable Soft-delete is enabled for this vault; A priveleged user may trigger an immediate,
-	// irreversible deletion(purge) of a deleted entity.
+	// RecoverablePurgeable ...
 	RecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 

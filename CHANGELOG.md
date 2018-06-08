@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v17.3.0`
+
+### New Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|     containerinstance |      2018-06-01     |
+|          reservations |      2018-06-01     |
+
+### Updated Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|           datafactory |      2017-09-01     |
+|               network |      2015-06-15     |
+
 ## `v17.2.0`
 
 ### New Services

@@ -86273,8 +86273,10 @@ func (slstp *SybaseLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error
 
 // TabularTranslator a copy activity tabular translator.
 type TabularTranslator struct {
-	// ColumnMappings - Column mappings. Type: string (or Expression with resultType string).
+	// ColumnMappings - Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with resultType string).
 	ColumnMappings interface{} `json:"columnMappings,omitempty"`
+	// SchemaMapping - The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType object).
+	SchemaMapping interface{} `json:"schemaMapping,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Type - Possible values include: 'TypeCopyTranslator', 'TypeTabularTranslator'
@@ -86286,6 +86288,7 @@ func (tt TabularTranslator) MarshalJSON() ([]byte, error) {
 	tt.Type = TypeTabularTranslator
 	objectMap := make(map[string]interface{})
 	objectMap["columnMappings"] = tt.ColumnMappings
+	objectMap["schemaMapping"] = tt.SchemaMapping
 	if tt.Type != "" {
 		objectMap["type"] = tt.Type
 	}

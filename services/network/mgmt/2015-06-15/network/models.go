@@ -3790,6 +3790,8 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	// PrivateIPAllocationMethod - Defines how a private IP address is assigned. Possible values are: 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	Subnet                    *Subnet            `json:"subnet,omitempty"`
+	// Primary - Gets whether this is a primary customer address on the network interface.
+	Primary           *bool            `json:"primary,omitempty"`
 	PublicIPAddress           *PublicIPAddress   `json:"publicIPAddress,omitempty"`
 	ProvisioningState         *string            `json:"provisioningState,omitempty"`
 }

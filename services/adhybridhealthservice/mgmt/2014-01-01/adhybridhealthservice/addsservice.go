@@ -40,7 +40,7 @@ func NewAddsServiceClientWithBaseURI(baseURI string) AddsServiceClient {
 	return AddsServiceClient{NewWithBaseURI(baseURI)}
 }
 
-// ListMetrics gets the server related metrics for a given metric and group combination.
+// GetMetrics gets the server related metrics for a given metric and group combination.
 // Parameters:
 // serviceName - the name of the service.
 // metricName - the metric name
@@ -48,30 +48,30 @@ func NewAddsServiceClientWithBaseURI(baseURI string) AddsServiceClient {
 // groupKey - the group key
 // fromDate - the start date.
 // toDate - the end date.
-func (client AddsServiceClient) ListMetrics(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
-	req, err := client.ListMetricsPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
+func (client AddsServiceClient) GetMetrics(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
+	req, err := client.GetMetricsPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "ListMetrics", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListMetricsSender(req)
+	resp, err := client.GetMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "ListMetrics", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListMetricsResponder(resp)
+	result, err = client.GetMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "ListMetrics", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceClient", "GetMetrics", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListMetricsPreparer prepares the ListMetrics request.
-func (client AddsServiceClient) ListMetricsPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
+// GetMetricsPreparer prepares the GetMetrics request.
+func (client AddsServiceClient) GetMetricsPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupName":   autorest.Encode("path", groupName),
 		"metricName":  autorest.Encode("path", metricName),
@@ -100,16 +100,16 @@ func (client AddsServiceClient) ListMetricsPreparer(ctx context.Context, service
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListMetricsSender sends the ListMetrics request. The method will close the
+// GetMetricsSender sends the GetMetrics request. The method will close the
 // http.Response Body if it receives an error.
-func (client AddsServiceClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
+func (client AddsServiceClient) GetMetricsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListMetricsResponder handles the response to the ListMetrics request. The method always
+// GetMetricsResponder handles the response to the GetMetrics request. The method always
 // closes the http.Response Body.
-func (client AddsServiceClient) ListMetricsResponder(resp *http.Response) (result MetricSets, err error) {
+func (client AddsServiceClient) GetMetricsResponder(resp *http.Response) (result MetricSets, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

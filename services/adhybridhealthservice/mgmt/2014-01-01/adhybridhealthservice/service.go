@@ -25,22 +25,22 @@ import (
 	"net/http"
 )
 
-// MetricsClient is the REST APIs for Azure Active Drectory Connect Health
-type MetricsClient struct {
+// ServiceClient is the REST APIs for Azure Active Drectory Connect Health
+type ServiceClient struct {
 	BaseClient
 }
 
-// NewMetricsClient creates an instance of the MetricsClient client.
-func NewMetricsClient() MetricsClient {
-	return NewMetricsClientWithBaseURI(DefaultBaseURI)
+// NewServiceClient creates an instance of the ServiceClient client.
+func NewServiceClient() ServiceClient {
+	return NewServiceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMetricsClientWithBaseURI creates an instance of the MetricsClient client.
-func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
-	return MetricsClient{NewWithBaseURI(baseURI)}
+// NewServiceClientWithBaseURI creates an instance of the ServiceClient client.
+func NewServiceClientWithBaseURI(baseURI string) ServiceClient {
+	return ServiceClient{NewWithBaseURI(baseURI)}
 }
 
-// List gets the server related metrics for a given metric and group combination.
+// GetMetrics gets the server related metrics for a given metric and group combination.
 // Parameters:
 // serviceName - the name of the service.
 // metricName - the metric name
@@ -48,30 +48,30 @@ func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
 // groupKey - the group key
 // fromDate - the start date.
 // toDate - the end date.
-func (client MetricsClient) List(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
-	req, err := client.ListPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
+func (client ServiceClient) GetMetrics(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (result MetricSets, err error) {
+	req, err := client.GetMetricsPreparer(ctx, serviceName, metricName, groupName, groupKey, fromDate, toDate)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.MetricsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceClient", "GetMetrics", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.GetMetricsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.MetricsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceClient", "GetMetrics", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.GetMetricsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "adhybridhealthservice.MetricsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ServiceClient", "GetMetrics", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client MetricsClient) ListPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
+// GetMetricsPreparer prepares the GetMetrics request.
+func (client ServiceClient) GetMetricsPreparer(ctx context.Context, serviceName string, metricName string, groupName string, groupKey string, fromDate *date.Time, toDate *date.Time) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupName":   autorest.Encode("path", groupName),
 		"metricName":  autorest.Encode("path", metricName),
@@ -100,16 +100,16 @@ func (client MetricsClient) ListPreparer(ctx context.Context, serviceName string
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// GetMetricsSender sends the GetMetrics request. The method will close the
 // http.Response Body if it receives an error.
-func (client MetricsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ServiceClient) GetMetricsSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ListResponder handles the response to the List request. The method always
+// GetMetricsResponder handles the response to the GetMetrics request. The method always
 // closes the http.Response Body.
-func (client MetricsClient) ListResponder(resp *http.Response) (result MetricSets, err error) {
+func (client ServiceClient) GetMetricsResponder(resp *http.Response) (result MetricSets, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

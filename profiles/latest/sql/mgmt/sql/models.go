@@ -168,6 +168,7 @@ type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 const (
 	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = original.SecurityAlertPolicyStateDisabled
 	SecurityAlertPolicyStateEnabled  SecurityAlertPolicyState = original.SecurityAlertPolicyStateEnabled
+	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
 type SecurityAlertPolicyUseServerDefault = original.SecurityAlertPolicyUseServerDefault

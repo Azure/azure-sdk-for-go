@@ -129,33 +129,72 @@ func PossibleSearchKindValues() []SearchKind {
 type Type string
 
 const (
-	// TypeAction ...
-	TypeAction Type = "Action"
-	// TypeAnswer ...
-	TypeAnswer Type = "Answer"
-	// TypeCreativeWork ...
-	TypeCreativeWork Type = "CreativeWork"
-	// TypeErrorResponse ...
-	TypeErrorResponse Type = "ErrorResponse"
-	// TypeIdentifiable ...
-	TypeIdentifiable Type = "Identifiable"
-	// TypeResponse ...
-	TypeResponse Type = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase Type = "ResponseBase"
-	// TypeSearchAction ...
-	TypeSearchAction Type = "SearchAction"
-	// TypeSearchResultsAnswer ...
-	TypeSearchResultsAnswer Type = "SearchResultsAnswer"
-	// TypeSuggestions ...
-	TypeSuggestions Type = "Suggestions"
-	// TypeThing ...
-	TypeThing Type = "Thing"
+	// TypeSuggestionsSuggestionGroup ...
+	TypeSuggestionsSuggestionGroup Type = "Suggestions/SuggestionGroup"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeAction, TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchAction, TypeSearchResultsAnswer, TypeSuggestions, TypeThing}
+	return []Type{TypeSuggestionsSuggestionGroup}
+}
+
+// TypeBasicError enumerates the values for type basic error.
+type TypeBasicError string
+
+const (
+	// TypeError ...
+	TypeError TypeBasicError = "Error"
+)
+
+// PossibleTypeBasicErrorValues returns an array of possible values for the TypeBasicError const type.
+func PossibleTypeBasicErrorValues() []TypeBasicError {
+	return []TypeBasicError{TypeError}
+}
+
+// TypeBasicQueryContext enumerates the values for type basic query context.
+type TypeBasicQueryContext string
+
+const (
+	// TypeQueryContext ...
+	TypeQueryContext TypeBasicQueryContext = "QueryContext"
+)
+
+// PossibleTypeBasicQueryContextValues returns an array of possible values for the TypeBasicQueryContext const type.
+func PossibleTypeBasicQueryContextValues() []TypeBasicQueryContext {
+	return []TypeBasicQueryContext{TypeQueryContext}
+}
+
+// TypeBasicResponseBase enumerates the values for type basic response base.
+type TypeBasicResponseBase string
+
+const (
+	// TypeAction ...
+	TypeAction TypeBasicResponseBase = "Action"
+	// TypeAnswer ...
+	TypeAnswer TypeBasicResponseBase = "Answer"
+	// TypeCreativeWork ...
+	TypeCreativeWork TypeBasicResponseBase = "CreativeWork"
+	// TypeErrorResponse ...
+	TypeErrorResponse TypeBasicResponseBase = "ErrorResponse"
+	// TypeIdentifiable ...
+	TypeIdentifiable TypeBasicResponseBase = "Identifiable"
+	// TypeResponse ...
+	TypeResponse TypeBasicResponseBase = "Response"
+	// TypeResponseBase ...
+	TypeResponseBase TypeBasicResponseBase = "ResponseBase"
+	// TypeSearchAction ...
+	TypeSearchAction TypeBasicResponseBase = "SearchAction"
+	// TypeSearchResultsAnswer ...
+	TypeSearchResultsAnswer TypeBasicResponseBase = "SearchResultsAnswer"
+	// TypeSuggestions ...
+	TypeSuggestions TypeBasicResponseBase = "Suggestions"
+	// TypeThing ...
+	TypeThing TypeBasicResponseBase = "Thing"
+)
+
+// PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return []TypeBasicResponseBase{TypeAction, TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchAction, TypeSearchResultsAnswer, TypeSuggestions, TypeThing}
 }
 
 // BasicAction ...
@@ -204,7 +243,7 @@ type Action struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicAction(body []byte) (BasicAction, error) {
@@ -681,7 +720,7 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -715,7 +754,7 @@ type Answer struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicAnswer(body []byte) (BasicAnswer, error) {
@@ -957,7 +996,7 @@ func (a *Answer) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -1016,7 +1055,7 @@ type CreativeWork struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicCreativeWork(body []byte) (BasicCreativeWork, error) {
@@ -1450,7 +1489,7 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -1461,6 +1500,11 @@ func (cw *CreativeWork) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// BasicError defines the error that occurred.
+type BasicError interface {
+	AsError() (*Error, bool)
 }
 
 // Error defines the error that occurred.
@@ -1475,12 +1519,82 @@ type Error struct {
 	Parameter *string `json:"parameter,omitempty"`
 	// Value - The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
+	// Type - Possible values include: 'TypeError'
+	Type TypeBasicError `json:"_type,omitempty"`
+}
+
+func unmarshalBasicError(body []byte) (BasicError, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["_type"] {
+	default:
+		var e Error
+		err := json.Unmarshal(body, &e)
+		return e, err
+	}
+}
+func unmarshalBasicErrorArray(body []byte) ([]BasicError, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	eArray := make([]BasicError, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		e, err := unmarshalBasicError(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		eArray[index] = e
+	}
+	return eArray, nil
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	e.Type = TypeError
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	if e.MoreDetails != nil {
+		objectMap["moreDetails"] = e.MoreDetails
+	}
+	if e.Parameter != nil {
+		objectMap["parameter"] = e.Parameter
+	}
+	if e.Value != nil {
+		objectMap["value"] = e.Value
+	}
+	if e.Type != "" {
+		objectMap["_type"] = e.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsError is the BasicError implementation for Error.
+func (e Error) AsError() (*Error, bool) {
+	return &e, true
+}
+
+// AsBasicError is the BasicError implementation for Error.
+func (e Error) AsBasicError() (BasicError, bool) {
+	return &e, true
 }
 
 // ErrorResponse the top-level response that represents a failed request.
 type ErrorResponse struct {
 	// Errors - A list of errors that describe the reasons why the request failed.
-	Errors *[]Error `json:"errors,omitempty"`
+	Errors *[]BasicError `json:"errors,omitempty"`
 	// ReadLink - The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
 	// WebSearchURL - The URL To Bing's search result for this item.
@@ -1492,7 +1606,7 @@ type ErrorResponse struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ErrorResponse.
@@ -1635,8 +1749,7 @@ func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "errors":
 			if v != nil {
-				var errorsVar []Error
-				err = json.Unmarshal(*v, &errorsVar)
+				errorsVar, err := unmarshalBasicErrorArray(*v)
 				if err != nil {
 					return err
 				}
@@ -1705,7 +1818,7 @@ func (er *ErrorResponse) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -1743,7 +1856,7 @@ type Identifiable struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicIdentifiable(body []byte) (BasicIdentifiable, error) {
@@ -1923,6 +2036,11 @@ func (i Identifiable) AsBasicResponseBase() (BasicResponseBase, bool) {
 	return &i, true
 }
 
+// BasicQueryContext defines the query context that Bing used for the request.
+type BasicQueryContext interface {
+	AsQueryContext() (*QueryContext, bool)
+}
+
 // QueryContext defines the query context that Bing used for the request.
 type QueryContext struct {
 	// OriginalQuery - The query string as specified in the request.
@@ -1936,6 +2054,79 @@ type QueryContext struct {
 	// AskUserForLocation - A Boolean value that indicates whether Bing requires the user's location to provide accurate results. If you specified the user's location by using the X-MSEdge-ClientIP and X-Search-Location headers, you can ignore this field. For location aware queries, such as "today's weather" or "restaurants near me" that need the user's location to provide accurate results, this field is set to true. For location aware queries that include the location (for example, "Seattle weather"), this field is set to false. This field is also set to false for queries that are not location aware, such as "best sellers".
 	AskUserForLocation *bool `json:"askUserForLocation,omitempty"`
 	IsTransactional    *bool `json:"isTransactional,omitempty"`
+	// Type - Possible values include: 'TypeQueryContext'
+	Type TypeBasicQueryContext `json:"_type,omitempty"`
+}
+
+func unmarshalBasicQueryContext(body []byte) (BasicQueryContext, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["_type"] {
+	default:
+		var qc QueryContext
+		err := json.Unmarshal(body, &qc)
+		return qc, err
+	}
+}
+func unmarshalBasicQueryContextArray(body []byte) ([]BasicQueryContext, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	qcArray := make([]BasicQueryContext, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		qc, err := unmarshalBasicQueryContext(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		qcArray[index] = qc
+	}
+	return qcArray, nil
+}
+
+// MarshalJSON is the custom marshaler for QueryContext.
+func (qc QueryContext) MarshalJSON() ([]byte, error) {
+	qc.Type = TypeQueryContext
+	objectMap := make(map[string]interface{})
+	if qc.OriginalQuery != nil {
+		objectMap["originalQuery"] = qc.OriginalQuery
+	}
+	if qc.AlteredQuery != nil {
+		objectMap["alteredQuery"] = qc.AlteredQuery
+	}
+	if qc.AlterationOverrideQuery != nil {
+		objectMap["alterationOverrideQuery"] = qc.AlterationOverrideQuery
+	}
+	if qc.AdultIntent != nil {
+		objectMap["adultIntent"] = qc.AdultIntent
+	}
+	if qc.AskUserForLocation != nil {
+		objectMap["askUserForLocation"] = qc.AskUserForLocation
+	}
+	if qc.IsTransactional != nil {
+		objectMap["isTransactional"] = qc.IsTransactional
+	}
+	if qc.Type != "" {
+		objectMap["_type"] = qc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsQueryContext is the BasicQueryContext implementation for QueryContext.
+func (qc QueryContext) AsQueryContext() (*QueryContext, bool) {
+	return &qc, true
+}
+
+// AsBasicQueryContext is the BasicQueryContext implementation for QueryContext.
+func (qc QueryContext) AsBasicQueryContext() (BasicQueryContext, bool) {
+	return &qc, true
 }
 
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from
@@ -1971,7 +2162,7 @@ type Response struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicResponse(body []byte) (BasicResponse, error) {
@@ -2237,7 +2428,7 @@ func (r *Response) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -2275,7 +2466,7 @@ type BasicResponseBase interface {
 // ResponseBase response base
 type ResponseBase struct {
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicResponseBase(body []byte) (BasicResponseBase, error) {
@@ -2500,7 +2691,7 @@ type SearchAction struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SearchAction.
@@ -2976,7 +3167,7 @@ func (sa *SearchAction) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -2997,7 +3188,7 @@ type BasicSearchResultsAnswer interface {
 
 // SearchResultsAnswer defines a search result answer.
 type SearchResultsAnswer struct {
-	QueryContext *QueryContext `json:"queryContext,omitempty"`
+	QueryContext BasicQueryContext `json:"queryContext,omitempty"`
 	// ReadLink - The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
 	// WebSearchURL - The URL To Bing's search result for this item.
@@ -3009,7 +3200,7 @@ type SearchResultsAnswer struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicSearchResultsAnswer(body []byte) (BasicSearchResultsAnswer, error) {
@@ -3053,9 +3244,7 @@ func unmarshalBasicSearchResultsAnswerArray(body []byte) ([]BasicSearchResultsAn
 func (sra SearchResultsAnswer) MarshalJSON() ([]byte, error) {
 	sra.Type = TypeSearchResultsAnswer
 	objectMap := make(map[string]interface{})
-	if sra.QueryContext != nil {
-		objectMap["queryContext"] = sra.QueryContext
-	}
+	objectMap["queryContext"] = sra.QueryContext
 	if sra.ReadLink != nil {
 		objectMap["readLink"] = sra.ReadLink
 	}
@@ -3189,12 +3378,11 @@ func (sra *SearchResultsAnswer) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "queryContext":
 			if v != nil {
-				var queryContext QueryContext
-				err = json.Unmarshal(*v, &queryContext)
+				queryContext, err := unmarshalBasicQueryContext(*v)
 				if err != nil {
 					return err
 				}
-				sra.QueryContext = &queryContext
+				sra.QueryContext = queryContext
 			}
 		case "readLink":
 			if v != nil {
@@ -3259,7 +3447,7 @@ func (sra *SearchResultsAnswer) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -3275,8 +3463,8 @@ func (sra *SearchResultsAnswer) UnmarshalJSON(body []byte) error {
 // Suggestions ...
 type Suggestions struct {
 	autorest.Response `json:"-"`
-	SuggestionGroups  *[]SuggestionsSuggestionGroup `json:"suggestionGroups,omitempty"`
-	QueryContext      *QueryContext                 `json:"queryContext,omitempty"`
+	SuggestionGroups  *[]BasicSuggestionsSuggestionGroup `json:"suggestionGroups,omitempty"`
+	QueryContext      BasicQueryContext                  `json:"queryContext,omitempty"`
 	// ReadLink - The URL that returns this resource.
 	ReadLink *string `json:"readLink,omitempty"`
 	// WebSearchURL - The URL To Bing's search result for this item.
@@ -3288,7 +3476,7 @@ type Suggestions struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Suggestions.
@@ -3298,9 +3486,7 @@ func (s Suggestions) MarshalJSON() ([]byte, error) {
 	if s.SuggestionGroups != nil {
 		objectMap["suggestionGroups"] = s.SuggestionGroups
 	}
-	if s.QueryContext != nil {
-		objectMap["queryContext"] = s.QueryContext
-	}
+	objectMap["queryContext"] = s.QueryContext
 	if s.ReadLink != nil {
 		objectMap["readLink"] = s.ReadLink
 	}
@@ -3434,8 +3620,7 @@ func (s *Suggestions) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "suggestionGroups":
 			if v != nil {
-				var suggestionGroups []SuggestionsSuggestionGroup
-				err = json.Unmarshal(*v, &suggestionGroups)
+				suggestionGroups, err := unmarshalBasicSuggestionsSuggestionGroupArray(*v)
 				if err != nil {
 					return err
 				}
@@ -3443,12 +3628,11 @@ func (s *Suggestions) UnmarshalJSON(body []byte) error {
 			}
 		case "queryContext":
 			if v != nil {
-				var queryContext QueryContext
-				err = json.Unmarshal(*v, &queryContext)
+				queryContext, err := unmarshalBasicQueryContext(*v)
 				if err != nil {
 					return err
 				}
-				s.QueryContext = &queryContext
+				s.QueryContext = queryContext
 			}
 		case "readLink":
 			if v != nil {
@@ -3513,7 +3697,7 @@ func (s *Suggestions) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
@@ -3526,11 +3710,77 @@ func (s *Suggestions) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BasicSuggestionsSuggestionGroup ...
+type BasicSuggestionsSuggestionGroup interface {
+	AsSuggestionsSuggestionGroup() (*SuggestionsSuggestionGroup, bool)
+}
+
 // SuggestionsSuggestionGroup ...
 type SuggestionsSuggestionGroup struct {
 	// Name - Possible values include: 'Unknown', 'Web', 'StoreApps', 'SearchHistory', 'PersonalSearchDocuments', 'PersonalSearchTags', 'Custom'
 	Name              ScenarioType    `json:"name,omitempty"`
 	SearchSuggestions *[]SearchAction `json:"searchSuggestions,omitempty"`
+	// Type - Possible values include: 'TypeSuggestionsSuggestionGroup'
+	Type Type `json:"_type,omitempty"`
+}
+
+func unmarshalBasicSuggestionsSuggestionGroup(body []byte) (BasicSuggestionsSuggestionGroup, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["_type"] {
+	default:
+		var ssg SuggestionsSuggestionGroup
+		err := json.Unmarshal(body, &ssg)
+		return ssg, err
+	}
+}
+func unmarshalBasicSuggestionsSuggestionGroupArray(body []byte) ([]BasicSuggestionsSuggestionGroup, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	ssgArray := make([]BasicSuggestionsSuggestionGroup, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ssg, err := unmarshalBasicSuggestionsSuggestionGroup(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		ssgArray[index] = ssg
+	}
+	return ssgArray, nil
+}
+
+// MarshalJSON is the custom marshaler for SuggestionsSuggestionGroup.
+func (ssg SuggestionsSuggestionGroup) MarshalJSON() ([]byte, error) {
+	ssg.Type = TypeSuggestionsSuggestionGroup
+	objectMap := make(map[string]interface{})
+	if ssg.Name != "" {
+		objectMap["name"] = ssg.Name
+	}
+	if ssg.SearchSuggestions != nil {
+		objectMap["searchSuggestions"] = ssg.SearchSuggestions
+	}
+	if ssg.Type != "" {
+		objectMap["_type"] = ssg.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSuggestionsSuggestionGroup is the BasicSuggestionsSuggestionGroup implementation for SuggestionsSuggestionGroup.
+func (ssg SuggestionsSuggestionGroup) AsSuggestionsSuggestionGroup() (*SuggestionsSuggestionGroup, bool) {
+	return &ssg, true
+}
+
+// AsBasicSuggestionsSuggestionGroup is the BasicSuggestionsSuggestionGroup implementation for SuggestionsSuggestionGroup.
+func (ssg SuggestionsSuggestionGroup) AsBasicSuggestionsSuggestionGroup() (BasicSuggestionsSuggestionGroup, bool) {
+	return &ssg, true
 }
 
 // BasicThing defines a thing.
@@ -3558,7 +3808,7 @@ type Thing struct {
 	// ID - A String identifier.
 	ID *string `json:"id,omitempty"`
 	// Type - Possible values include: 'TypeResponseBase', 'TypeSearchAction', 'TypeSuggestions', 'TypeSearchResultsAnswer', 'TypeAnswer', 'TypeThing', 'TypeAction', 'TypeResponse', 'TypeIdentifiable', 'TypeErrorResponse', 'TypeCreativeWork'
-	Type Type `json:"_type,omitempty"`
+	Type TypeBasicResponseBase `json:"_type,omitempty"`
 }
 
 func unmarshalBasicThing(body []byte) (BasicThing, error) {
@@ -3816,7 +4066,7 @@ func (t *Thing) UnmarshalJSON(body []byte) error {
 			}
 		case "_type":
 			if v != nil {
-				var typeVar Type
+				var typeVar TypeBasicResponseBase
 				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err

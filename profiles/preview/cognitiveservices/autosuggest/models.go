@@ -78,17 +78,35 @@ const (
 type Type = original.Type
 
 const (
-	TypeAction              Type = original.TypeAction
-	TypeAnswer              Type = original.TypeAnswer
-	TypeCreativeWork        Type = original.TypeCreativeWork
-	TypeErrorResponse       Type = original.TypeErrorResponse
-	TypeIdentifiable        Type = original.TypeIdentifiable
-	TypeResponse            Type = original.TypeResponse
-	TypeResponseBase        Type = original.TypeResponseBase
-	TypeSearchAction        Type = original.TypeSearchAction
-	TypeSearchResultsAnswer Type = original.TypeSearchResultsAnswer
-	TypeSuggestions         Type = original.TypeSuggestions
-	TypeThing               Type = original.TypeThing
+	TypeSuggestionsSuggestionGroup Type = original.TypeSuggestionsSuggestionGroup
+)
+
+type TypeBasicError = original.TypeBasicError
+
+const (
+	TypeError TypeBasicError = original.TypeError
+)
+
+type TypeBasicQueryContext = original.TypeBasicQueryContext
+
+const (
+	TypeQueryContext TypeBasicQueryContext = original.TypeQueryContext
+)
+
+type TypeBasicResponseBase = original.TypeBasicResponseBase
+
+const (
+	TypeAction              TypeBasicResponseBase = original.TypeAction
+	TypeAnswer              TypeBasicResponseBase = original.TypeAnswer
+	TypeCreativeWork        TypeBasicResponseBase = original.TypeCreativeWork
+	TypeErrorResponse       TypeBasicResponseBase = original.TypeErrorResponse
+	TypeIdentifiable        TypeBasicResponseBase = original.TypeIdentifiable
+	TypeResponse            TypeBasicResponseBase = original.TypeResponse
+	TypeResponseBase        TypeBasicResponseBase = original.TypeResponseBase
+	TypeSearchAction        TypeBasicResponseBase = original.TypeSearchAction
+	TypeSearchResultsAnswer TypeBasicResponseBase = original.TypeSearchResultsAnswer
+	TypeSuggestions         TypeBasicResponseBase = original.TypeSuggestions
+	TypeThing               TypeBasicResponseBase = original.TypeThing
 )
 
 type BasicAction = original.BasicAction
@@ -97,10 +115,12 @@ type BasicAnswer = original.BasicAnswer
 type Answer = original.Answer
 type BasicCreativeWork = original.BasicCreativeWork
 type CreativeWork = original.CreativeWork
+type BasicError = original.BasicError
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
 type BasicIdentifiable = original.BasicIdentifiable
 type Identifiable = original.Identifiable
+type BasicQueryContext = original.BasicQueryContext
 type QueryContext = original.QueryContext
 type BasicResponse = original.BasicResponse
 type Response = original.Response
@@ -110,6 +130,7 @@ type SearchAction = original.SearchAction
 type BasicSearchResultsAnswer = original.BasicSearchResultsAnswer
 type SearchResultsAnswer = original.SearchResultsAnswer
 type Suggestions = original.Suggestions
+type BasicSuggestionsSuggestionGroup = original.BasicSuggestionsSuggestionGroup
 type SuggestionsSuggestionGroup = original.SuggestionsSuggestionGroup
 type BasicThing = original.BasicThing
 type Thing = original.Thing
@@ -137,6 +158,15 @@ func PossibleSearchKindValues() []SearchKind {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleTypeBasicErrorValues() []TypeBasicError {
+	return original.PossibleTypeBasicErrorValues()
+}
+func PossibleTypeBasicQueryContextValues() []TypeBasicQueryContext {
+	return original.PossibleTypeBasicQueryContextValues()
+}
+func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
+	return original.PossibleTypeBasicResponseBaseValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -570,7 +570,7 @@ func (client IntegrationRuntimesClient) GetStatusResponder(resp *http.Response) 
 // integrationRuntimeName - the integration runtime name.
 // integrationRuntimePermissionRequest - the data factory identity which will be granted the access to given
 // integration runtime.
-func (client IntegrationRuntimesClient) GrantAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result autorest.Response, err error) {
+func (client IntegrationRuntimesClient) GrantAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result IntegrationRuntimePermissionResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -597,7 +597,7 @@ func (client IntegrationRuntimesClient) GrantAccess(ctx context.Context, resourc
 
 	resp, err := client.GrantAccessSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "GrantAccess", resp, "Failure sending request")
 		return
 	}
@@ -643,13 +643,14 @@ func (client IntegrationRuntimesClient) GrantAccessSender(req *http.Request) (*h
 
 // GrantAccessResponder handles the response to the GrantAccess request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimesClient) GrantAccessResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client IntegrationRuntimesClient) GrantAccessResponder(resp *http.Response) (result IntegrationRuntimePermissionResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -1027,7 +1028,7 @@ func (client IntegrationRuntimesClient) RemoveNodeResponder(resp *http.Response)
 // integrationRuntimeName - the integration runtime name.
 // integrationRuntimePermissionRequest - the data factory identity which will be revoked the access to given
 // integration runtime.
-func (client IntegrationRuntimesClient) RevokeAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result autorest.Response, err error) {
+func (client IntegrationRuntimesClient) RevokeAccess(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result IntegrationRuntimePermissionResponse, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1054,7 +1055,7 @@ func (client IntegrationRuntimesClient) RevokeAccess(ctx context.Context, resour
 
 	resp, err := client.RevokeAccessSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RevokeAccess", resp, "Failure sending request")
 		return
 	}
@@ -1100,13 +1101,14 @@ func (client IntegrationRuntimesClient) RevokeAccessSender(req *http.Request) (*
 
 // RevokeAccessResponder handles the response to the RevokeAccess request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimesClient) RevokeAccessResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client IntegrationRuntimesClient) RevokeAccessResponder(resp *http.Response) (result IntegrationRuntimePermissionResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

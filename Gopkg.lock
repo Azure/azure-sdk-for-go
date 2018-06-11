@@ -39,8 +39,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "eaa7994b2278094c904d31993d26f56324db3052"
-  version = "v10.8.1"
+  revision = "d21db7ee8958d471f5b185d700762c903549ee08"
+  version = "v10.10.0"
 
 [[projects]]
   branch = "master"
@@ -125,7 +125,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "2491c5de3490fced2f6cff376127c667efeed857"
+  revision = "1e491301e022f8f977054da4c2d852decd59571f"
 
 [[projects]]
   name = "pack.ag/amqp"
@@ -133,8 +133,8 @@
     ".",
     "internal/testconn"
   ]
-  revision = "390d7eaeac0368026b93a13f4f7bc30d903c61cd"
-  version = "v0.5.0"
+  revision = "b9bf967e3a73da612f8923137a4db396a766431e"
+  version = "v0.5.1"
 
 [solve-meta]
   analyzer-name = "dep"

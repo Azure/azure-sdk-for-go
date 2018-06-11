@@ -46,39 +46,30 @@ type (
 		Name              string
 		requiredSessionID *string
 		lastError         error
-		receiveMode       amqp.ReceiverSettleMode
-		prefetch          int
+		mode              amqp.ReceiverSettleMode
+		prefetch          uint32
 	}
 
-	// ReceiverOptions provides a structure for configuring receivers
-	ReceiverOptions func(receiver *receiver) error
+	// receiverOption provides a structure for configuring receivers
+	receiverOption func(receiver *receiver) error
 
 	// ListenerHandle provides the ability to close or listen to the close of a Receiver
 	ListenerHandle struct {
 		r   *receiver
 		ctx context.Context
 	}
-
-	// ReceiveMode represents the behavior when consuming a message from a queue
-	ReceiveMode int
-)
-
-const (
-	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
-	ReceiveAndDeleteMode ReceiveMode = 0
-	// PeekLockMode causes a receiver to peek at a message, lock it so no others can consume and have the queue wait for
-	// the DispositionAction
-	PeekLockMode ReceiveMode = 1
 )
 
 // newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ...ReceiverOptions) (*receiver, error) {
+func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ...receiverOption) (*receiver, error) {
 	span, ctx := ns.startSpanFromContext(ctx, "sb.Hub.newReceiver")
 	defer span.Finish()
 
 	receiver := &receiver{
 		namespace:  ns,
 		entityPath: entityPath,
+		mode:       amqp.ModeSecond,
+		prefetch:   1,
 	}
 
 	for _, opt := range opts {
@@ -156,7 +147,7 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		dispositionAction(ctx)
 	} else {
 		log.For(ctx).Info(fmt.Sprintf("disposition action not provided auto accepted message id %q", id))
-		event.Accept()
+		event.Complete()
 	}
 }
 
@@ -249,7 +240,8 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkReceiverSettle(r.receiveMode),
+		amqp.LinkReceiverSettle(r.mode),
+		amqp.LinkCredit(r.prefetch),
 	}
 
 	if r.requiredSessionID != nil {
@@ -266,33 +258,26 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 	return nil
 }
 
-// ReceiverWithSession configures a receiver to use a session
-func ReceiverWithSession(sessionID string) ReceiverOptions {
+// receiverWithSession configures a receiver to use a session
+func receiverWithSession(sessionID string) receiverOption {
 	return func(r *receiver) error {
 		r.requiredSessionID = &sessionID
 		return nil
 	}
 }
 
-// ReceiverWithReceiveMode configures a receiver to automatically pop messages from the Queue using ReceiveAndDeleteMode
-// vs. peeking at a message, locking it and waiting for the receiver to provide a DispositionAction before popping the
-// message
-func ReceiverWithReceiveMode(mode ReceiveMode) ReceiverOptions {
+func receiverWithReceiveMode(mode ReceiveMode) receiverOption {
 	return func(r *receiver) error {
-		if mode == ReceiveAndDeleteMode {
-			r.receiveMode = amqp.ModeFirst
-		} else {
-			r.receiveMode = amqp.ModeSecond
+		switch mode {
+		case ReceiveAndDeleteMode:
+			r.mode = amqp.ModeFirst
+			return nil
+		case PeekLockMode:
+			r.mode = amqp.ModeSecond
+			return nil
+		default:
+			return fmt.Errorf("unknown receive mode %q", mode)
 		}
-		return nil
-	}
-}
-
-// ReceiverWithPrefetch configures a receiver to fetch a maximum number of unacknowledged messages
-func ReceiverWithPrefetch(count int) ReceiverOptions {
-	return func(r *receiver) error {
-		r.prefetch = count
-		return nil
 	}
 }
 

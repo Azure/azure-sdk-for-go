@@ -292,50 +292,50 @@ func testDefaultQueue(ctx context.Context, t *testing.T, qm *QueueManager, name 
 
 func testQueueWithAutoDeleteOnIdle(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(20 * time.Minute)
-	q := buildQueue(ctx, t, qm, name, QueueWithAutoDeleteOnIdle(&window))
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithAutoDeleteOnIdle(&window))
 	assert.Equal(t, "PT20M", *q.AutoDeleteOnIdle)
 }
 
 func testQueueWithRequiredSessions(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(ctx, t, qm, name, QueueWithRequiredSessions())
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithRequiredSessions())
 	assert.True(t, *q.RequiresSession)
 }
 
 func testQueueWithDeadLetteringOnMessageExpiration(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(ctx, t, qm, name, QueueWithDeadLetteringOnMessageExpiration())
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithDeadLetteringOnMessageExpiration())
 	assert.True(t, *q.DeadLetteringOnMessageExpiration)
 }
 
 func testQueueWithPartitioning(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
-	q := buildQueue(ctx, t, qm, name, QueueWithPartitioning())
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithPartitioning())
 	assert.True(t, *q.EnablePartitioning)
 }
 
 func testQueueWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	size := 3 * Megabytes
-	q := buildQueue(ctx, t, qm, name, QueueWithMaxSizeInMegabytes(size))
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithMaxSizeInMegabytes(size))
 	assert.Equal(t, int32(size), *q.MaxSizeInMegabytes)
 }
 
 func testQueueWithDuplicateDetection(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(20 * time.Minute)
-	q := buildQueue(ctx, t, qm, name, QueueWithDuplicateDetection(&window))
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithDuplicateDetection(&window))
 	assert.Equal(t, "PT20M", *q.DuplicateDetectionHistoryTimeWindow)
 }
 
 func testQueueWithMessageTimeToLive(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(10 * 24 * 60 * time.Minute)
-	q := buildQueue(ctx, t, qm, name, QueueWithMessageTimeToLive(&window))
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithMessageTimeToLive(&window))
 	assert.Equal(t, "P10D", *q.DefaultMessageTimeToLive)
 }
 
 func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManager, name string) {
 	window := time.Duration(3 * time.Minute)
-	q := buildQueue(ctx, t, qm, name, QueueWithLockDuration(&window))
+	q := buildQueue(ctx, t, qm, name, QueueEntityWithLockDuration(&window))
 	assert.Equal(t, "PT3M", *q.LockDuration)
 }
 
-func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueOption) *QueueEntity {
+func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueManagementOption) *QueueEntity {
 	q, err := qm.Put(ctx, name, opts...)
 	if err != nil {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
@@ -357,14 +357,15 @@ func (suite *serviceBusSuite) TestQueue() {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			window := 3 * time.Minute
-			q, err := ns.NewQueue(ctx, queueName,
-				QueueWithPartitioning(),
-				QueueWithDuplicateDetection(&window),
-				QueueWithLockDuration(&window))
+			cleanup := makeQueue(ctx, t, ns, queueName,
+				QueueEntityWithPartitioning(),
+				QueueEntityWithDuplicateDetection(&window),
+				QueueEntityWithLockDuration(&window))
+			q, err := ns.NewQueue(ctx, queueName)
 			suite.NoError(err)
 			defer func() {
 				q.Close(ctx)
-				suite.cleanupQueue(queueName)
+				cleanup()
 			}()
 			testFunc(ctx, t, q)
 			if !t.Failed() {
@@ -403,7 +404,7 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 		assert.Equal(t, messages[count], string(event.Data))
 		count++
 		wg.Done()
-		return event.Accept()
+		return event.Complete()
 	})
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
@@ -430,7 +431,9 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	}
 
 	for _, msg := range messages {
-		err := queue.Send(ctx, NewMessageFromString(msg.Data), SendWithMessageID(msg.ID))
+		m := NewMessageFromString(msg.Data)
+		m.ID = msg.ID
+		err := queue.Send(ctx, m)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -443,7 +446,7 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 		// we should get 2 messages discarding the duplicate ID
 		received[event.ID] = string(event.Data)
 		wg.Done()
-		return event.Accept()
+		return event.Complete()
 	})
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
@@ -459,13 +462,12 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 		setupTestTeardown := func(t *testing.T) {
 			ns := suite.getNewSasInstance()
 			queueName := suite.randEntityName()
-			window := 3 * time.Minute
+			sessionID := mustUUID(t).String()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			q, err := ns.NewQueue(ctx, queueName,
-				QueueWithPartitioning(),
-				QueueWithDuplicateDetection(&window),
-				QueueWithLockDuration(&window),
-				QueueWithRequiredSessions())
+			cleanup := makeQueue(ctx, t, ns, queueName,
+				QueueEntityWithPartitioning(),
+				QueueEntityWithRequiredSessions())
+			q, err := ns.NewQueue(ctx, queueName, QueueWithRequiredSession(sessionID))
 			if suite.NoError(err) {
 				testFunc(ctx, t, q)
 				if !t.Failed() {
@@ -477,7 +479,7 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 					q.Close(ctx)
 				}
 				cancel()
-				suite.cleanupQueue(queueName)
+				cleanup()
 			}()
 		}
 
@@ -486,15 +488,14 @@ func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
 }
 
 func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.T, queue *Queue) {
-	sessionID := mustUUID(t).String()
 	numMessages := rand.Intn(100) + 20
 	messages := make([]string, numMessages)
 	for i := 0; i < numMessages; i++ {
 		messages[i] = test.RandomString("hello", 10)
 	}
 
-	for idx, message := range messages {
-		err := queue.Send(ctx, NewMessageFromString(message), SendWithSession(sessionID, uint32(idx)))
+	for _, message := range messages {
+		err := queue.Send(ctx, NewMessageFromString(message))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -510,9 +511,9 @@ func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.
 		}
 		count++
 		wg.Done()
-		return event.Accept()
+		return event.Complete()
 	}
-	listenHandle, err := queue.Receive(ctx, handler, ReceiverWithSession(sessionID))
+	listenHandle, err := queue.Receive(ctx, handler)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -534,10 +535,31 @@ func mustUUID(t *testing.T) uuid.UUID {
 	return id
 }
 
+func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
+	qm := ns.NewQueueManager()
+	entity, err := qm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, "could not GET a subscription")
+	}
+
+	if entity == nil {
+		entity, err = qm.Put(ctx, name, opts...)
+		if !assert.NoError(t, err) {
+			assert.FailNow(t, "could not PUT a subscription")
+		}
+	}
+	return func() {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+
+		_ = qm.Delete(ctx, entity.Name)
+	}
+}
+
 func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, name string) {
 	qm := ns.NewQueueManager()
 	maxTries := 10
-	for i := 0; i < maxTries; i ++ {
+	for i := 0; i < maxTries; i++ {
 		q, err := qm.Get(ctx, name)
 		if !assert.NoError(t, err) {
 			return
@@ -545,7 +567,7 @@ func checkZeroQueueMessages(ctx context.Context, t *testing.T, ns *Namespace, na
 		if *q.MessageCount == 0 {
 			return
 		}
-		t.Logf("try %d out of %d, message count was %d, not 0", i + 1, maxTries, *q.MessageCount)
+		t.Logf("try %d out of %d, message count was %d, not 0", i+1, maxTries, *q.MessageCount)
 		time.Sleep(1 * time.Second)
 	}
 

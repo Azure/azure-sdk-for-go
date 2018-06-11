@@ -50,7 +50,7 @@ func main() {
 			defer func(){
 				done <- nil
 			}()
-			return msg.Accept()
+			return msg.Complete()
 		})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)

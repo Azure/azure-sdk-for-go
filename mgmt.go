@@ -26,6 +26,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -130,7 +131,17 @@ type (
 		EnableExpress            *bool                    `xml:"EnableExpress,omitempty"`
 		DefaultMessageTimeToLive *string                  `xml:"DefaultMessageTimeToLive,omitempty"` // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
 	}
+
+	managementError struct {
+		XMLName xml.Name `xml:"Error"`
+		Code    int      `xml:"Code"`
+		Detail  string   `xml:"Detail"`
+	}
 )
+
+func (m *managementError) String() string {
+	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
+}
 
 // NewEntityManager creates a new instance of an EntityManager given a token provider and host
 func NewEntityManager(host string, tokenProvider auth.TokenProvider) *EntityManager {
@@ -250,4 +261,14 @@ func ptrString(toPtr string) *string {
 // durationTo8601Seconds takes a duration and returns a string period of whole seconds (int cast of float)
 func durationTo8601Seconds(duration *time.Duration) *string {
 	return ptrString(fmt.Sprintf("PT%dS", int(duration.Seconds())))
+}
+
+func formatManagementError(body []byte) error {
+	var mgmtError managementError
+	unmarshalErr := xml.Unmarshal(body, &mgmtError)
+	if unmarshalErr != nil {
+		return errors.New(string(body))
+	}
+
+	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
 }

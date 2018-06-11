@@ -1755,7 +1755,7 @@ type CloudTask struct {
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed.
+	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed. There is a maximum size for the list of resource files.  When this is exceeded, the task cannot be added and the response error code will be RequestEntityTooLarge. If this occurs the recommended solution is to use an ApplicationPackage.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
 	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`
@@ -2283,7 +2283,7 @@ type JobManagerTask struct {
 	CommandLine *string `json:"commandLine,omitempty"`
 	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - Files listed under this element are located in the task's working directory.
+	// ResourceFiles - Files listed under this element are located in the task's working directory. There is a maximum size for the list of resource files.  When this is exceeded, the task cannot be added and the response error code will be RequestEntityTooLarge. If this occurs the recommended solution is to use an ApplicationPackage.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
 	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`
@@ -3366,7 +3366,7 @@ type TaskAddParameter struct {
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
 	// ExitConditions - How the Batch service should respond when the task completes.
 	ExitConditions *ExitConditions `json:"exitConditions,omitempty"`
-	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed.
+	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed. There is a maximum size for the list of resource files.  When this is exceeded, the task cannot be added and the response error code will be RequestEntityTooLarge. If this occurs the recommended solution is to use an ApplicationPackage.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
 	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`

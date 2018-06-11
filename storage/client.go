@@ -343,7 +343,7 @@ func NewAccountSASClient(account string, token url.Values, env azure.Environment
 
 	// Get API version and protocol from token
 	c.apiVersion = token.Get("sv")
-	c.useHTTPS = token.Get("spr") == "https"
+	c.useHTTPS = token.Get("spr") != "http"
 	return c
 }
 
@@ -384,7 +384,7 @@ func NewAccountSASClientFromEndpointToken(endpoint string, sasToken string) (Cli
 
 	// Get API version and protocol from token
 	c.apiVersion = token.Get("sv")
-	c.useHTTPS = token.Get("spr") == "https"
+	c.useHTTPS = token.Get("spr") != "http"
 	return c, nil
 }
 

@@ -493,92 +493,6 @@ type AgentPoolProfile struct {
 	OsType OSType `json:"osType,omitempty"`
 }
 
-// ComputeOperationListResult the List Compute Operation operation response.
-type ComputeOperationListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of compute operations
-	Value *[]ComputeOperationValue `json:"value,omitempty"`
-}
-
-// ComputeOperationValue describes the properties of a Compute Operation value.
-type ComputeOperationValue struct {
-	// Origin - The origin of the compute operation.
-	Origin *string `json:"origin,omitempty"`
-	// Name - The name of the compute operation.
-	Name *string `json:"name,omitempty"`
-	// ComputeOperationValueDisplay - Describes the properties of a Compute Operation Value Display.
-	*ComputeOperationValueDisplay `json:"display,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ComputeOperationValue.
-func (cov ComputeOperationValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cov.Origin != nil {
-		objectMap["origin"] = cov.Origin
-	}
-	if cov.Name != nil {
-		objectMap["name"] = cov.Name
-	}
-	if cov.ComputeOperationValueDisplay != nil {
-		objectMap["display"] = cov.ComputeOperationValueDisplay
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ComputeOperationValue struct.
-func (cov *ComputeOperationValue) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "origin":
-			if v != nil {
-				var origin string
-				err = json.Unmarshal(*v, &origin)
-				if err != nil {
-					return err
-				}
-				cov.Origin = &origin
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				cov.Name = &name
-			}
-		case "display":
-			if v != nil {
-				var computeOperationValueDisplay ComputeOperationValueDisplay
-				err = json.Unmarshal(*v, &computeOperationValueDisplay)
-				if err != nil {
-					return err
-				}
-				cov.ComputeOperationValueDisplay = &computeOperationValueDisplay
-			}
-		}
-	}
-
-	return nil
-}
-
-// ComputeOperationValueDisplay describes the properties of a Compute Operation Value Display.
-type ComputeOperationValueDisplay struct {
-	// Operation - The display name of the compute operation.
-	Operation *string `json:"operation,omitempty"`
-	// Resource - The display name of the resource the operation applies to.
-	Resource *string `json:"resource,omitempty"`
-	// Description - The description of the operation.
-	Description *string `json:"description,omitempty"`
-	// Provider - The resource provider for the operation.
-	Provider *string `json:"provider,omitempty"`
-}
-
 // ContainerService container service.
 type ContainerService struct {
 	autorest.Response `json:"-"`
@@ -1283,6 +1197,8 @@ type ManagedClusterProperties struct {
 	ServicePrincipalProfile *ServicePrincipalProfile `json:"servicePrincipalProfile,omitempty"`
 	// AddonProfiles - Profile of managed cluster add-on.
 	AddonProfiles map[string]*ManagedClusterAddonProfile `json:"addonProfiles"`
+	// NodeResourceGroup - Name of the resource group containing agent pool nodes.
+	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
 	// NetworkProfile - Profile of network configuration.
@@ -1317,6 +1233,9 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.AddonProfiles != nil {
 		objectMap["addonProfiles"] = mcp.AddonProfiles
+	}
+	if mcp.NodeResourceGroup != nil {
+		objectMap["nodeResourceGroup"] = mcp.NodeResourceGroup
 	}
 	if mcp.EnableRBAC != nil {
 		objectMap["enableRBAC"] = mcp.EnableRBAC
@@ -1506,6 +1425,92 @@ type NetworkProfile struct {
 	DNSServiceIP *string `json:"dnsServiceIP,omitempty"`
 	// DockerBridgeCidr - A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.
 	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+}
+
+// OperationListResult the List Compute Operation operation response.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of compute operations
+	Value *[]OperationValue `json:"value,omitempty"`
+}
+
+// OperationValue describes the properties of a Compute Operation value.
+type OperationValue struct {
+	// Origin - The origin of the compute operation.
+	Origin *string `json:"origin,omitempty"`
+	// Name - The name of the compute operation.
+	Name *string `json:"name,omitempty"`
+	// OperationValueDisplay - Describes the properties of a Compute Operation Value Display.
+	*OperationValueDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationValue.
+func (ov OperationValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ov.Origin != nil {
+		objectMap["origin"] = ov.Origin
+	}
+	if ov.Name != nil {
+		objectMap["name"] = ov.Name
+	}
+	if ov.OperationValueDisplay != nil {
+		objectMap["display"] = ov.OperationValueDisplay
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OperationValue struct.
+func (ov *OperationValue) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "origin":
+			if v != nil {
+				var origin string
+				err = json.Unmarshal(*v, &origin)
+				if err != nil {
+					return err
+				}
+				ov.Origin = &origin
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ov.Name = &name
+			}
+		case "display":
+			if v != nil {
+				var operationValueDisplay OperationValueDisplay
+				err = json.Unmarshal(*v, &operationValueDisplay)
+				if err != nil {
+					return err
+				}
+				ov.OperationValueDisplay = &operationValueDisplay
+			}
+		}
+	}
+
+	return nil
+}
+
+// OperationValueDisplay describes the properties of a Compute Operation Value Display.
+type OperationValueDisplay struct {
+	// Operation - The display name of the compute operation.
+	Operation *string `json:"operation,omitempty"`
+	// Resource - The display name of the resource the operation applies to.
+	Resource *string `json:"resource,omitempty"`
+	// Description - The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Provider - The resource provider for the operation.
+	Provider *string `json:"provider,omitempty"`
 }
 
 // OrchestratorProfile contains information about orchestrator.

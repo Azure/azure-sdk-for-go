@@ -246,9 +246,6 @@ const (
 
 type AccessProfile = original.AccessProfile
 type AgentPoolProfile = original.AgentPoolProfile
-type ComputeOperationListResult = original.ComputeOperationListResult
-type ComputeOperationValue = original.ComputeOperationValue
-type ComputeOperationValueDisplay = original.ComputeOperationValueDisplay
 type ContainerService = original.ContainerService
 type ContainerServicesCreateOrUpdateFutureType = original.ContainerServicesCreateOrUpdateFutureType
 type ContainerServicesDeleteFutureType = original.ContainerServicesDeleteFutureType
@@ -275,6 +272,9 @@ type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
+type OperationListResult = original.OperationListResult
+type OperationValue = original.OperationValue
+type OperationValueDisplay = original.OperationValueDisplay
 type OrchestratorProfile = original.OrchestratorProfile
 type OrchestratorProfileType = original.OrchestratorProfileType
 type OrchestratorVersionProfile = original.OrchestratorVersionProfile

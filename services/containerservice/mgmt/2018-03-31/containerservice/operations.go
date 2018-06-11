@@ -40,7 +40,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 
 // List gets a list of compute operations.
-func (client OperationsClient) List(ctx context.Context) (result ComputeOperationListResult, err error) {
+func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.OperationsClient", "List", nil, "Failure preparing request")
@@ -86,7 +86,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result ComputeOperationListResult, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

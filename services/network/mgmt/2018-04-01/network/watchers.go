@@ -414,11 +414,11 @@ func (client WatchersClient) GetAzureReachabilityReportResponder(resp *http.Resp
 	return
 }
 
-// GetFlowLogStatus queries status of flow log and traffic analytics (optional) on a specified resource.
+// GetFlowLogStatus queries status of flow log on a specified resource.
 // Parameters:
 // resourceGroupName - the name of the network watcher resource group.
 // networkWatcherName - the name of the network watcher resource.
-// parameters - parameters that define a resource to query flow log and traffic analytics (optional)  status.
+// parameters - parameters that define a resource to query flow log status.
 func (client WatchersClient) GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters FlowLogStatusParameters) (result WatchersGetFlowLogStatusFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
@@ -1091,7 +1091,7 @@ func (client WatchersClient) ListAvailableProvidersResponder(resp *http.Response
 	return
 }
 
-// SetFlowLogConfiguration configures flow log  and traffic analytics (optional) on a specified resource.
+// SetFlowLogConfiguration configures flow log on a specified resource.
 // Parameters:
 // resourceGroupName - the name of the network watcher resource group.
 // networkWatcherName - the name of the network watcher resource.
@@ -1103,14 +1103,6 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 				{Target: "parameters.FlowLogProperties", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.FlowLogProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.FlowLogProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-					}},
-				{Target: "parameters.FlowAnalyticsConfiguration", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceID", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceRegion", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.WorkspaceResourceID", Name: validation.Null, Rule: true, Chain: nil},
-						}},
 					}}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "SetFlowLogConfiguration", err.Error())
 	}

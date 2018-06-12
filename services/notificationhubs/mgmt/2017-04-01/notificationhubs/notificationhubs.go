@@ -280,7 +280,7 @@ func (client Client) CreateOrUpdateAuthorizationRuleResponder(resp *http.Respons
 // namespaceName - the namespace name.
 // notificationHubName - the notification hub name.
 // parameters - the shared access authorization rule.
-func (client Client) DebugSend(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters string) (result ResourceType, err error) {
+func (client Client) DebugSend(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters string) (result DebugSendResponse, err error) {
 	req, err := client.DebugSendPreparer(ctx, resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "DebugSend", nil, "Failure preparing request")
@@ -335,7 +335,7 @@ func (client Client) DebugSendSender(req *http.Request) (*http.Response, error) 
 
 // DebugSendResponder handles the response to the DebugSend request. The method always
 // closes the http.Response Body.
-func (client Client) DebugSendResponder(resp *http.Response) (result ResourceType, err error) {
+func (client Client) DebugSendResponder(resp *http.Response) (result DebugSendResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

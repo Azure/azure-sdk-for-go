@@ -447,6 +447,140 @@ func (coup *CreateOrUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DebugSendResponse description of a NotificationHub Resource.
+type DebugSendResponse struct {
+	autorest.Response `json:"-"`
+	// DebugSendResult - Properties of the NotificationHub.
+	*DebugSendResult `json:"properties,omitempty"`
+	// ID - Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Sku - The sku of the created namespace
+	Sku *Sku `json:"sku,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DebugSendResponse.
+func (dsr DebugSendResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsr.DebugSendResult != nil {
+		objectMap["properties"] = dsr.DebugSendResult
+	}
+	if dsr.ID != nil {
+		objectMap["id"] = dsr.ID
+	}
+	if dsr.Name != nil {
+		objectMap["name"] = dsr.Name
+	}
+	if dsr.Type != nil {
+		objectMap["type"] = dsr.Type
+	}
+	if dsr.Location != nil {
+		objectMap["location"] = dsr.Location
+	}
+	if dsr.Tags != nil {
+		objectMap["tags"] = dsr.Tags
+	}
+	if dsr.Sku != nil {
+		objectMap["sku"] = dsr.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DebugSendResponse struct.
+func (dsr *DebugSendResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var debugSendResult DebugSendResult
+				err = json.Unmarshal(*v, &debugSendResult)
+				if err != nil {
+					return err
+				}
+				dsr.DebugSendResult = &debugSendResult
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dsr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dsr.Tags = tags
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				dsr.Sku = &sku
+			}
+		}
+	}
+
+	return nil
+}
+
+// DebugSendResult ...
+type DebugSendResult struct {
+	// Success - successful send
+	Success *float64 `json:"success,omitempty"`
+	// Failure - send failure
+	Failure *float64 `json:"failure,omitempty"`
+	// Results - actual failure description
+	Results *string `json:"results,omitempty"`
+}
+
 // ErrorResponse error reponse indicates NotificationHubs service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {

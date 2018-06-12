@@ -962,7 +962,7 @@ func (client Client) ListKeysResponder(resp *http.Response) (result ResourceList
 // namespaceName - the namespace name.
 // notificationHubName - the notification hub name.
 // parameters - parameters supplied to patch a NotificationHub Resource.
-func (client Client) Patch(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters PatchParameters) (result ResourceType, err error) {
+func (client Client) Patch(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters *PatchParameters) (result ResourceType, err error) {
 	req, err := client.PatchPreparer(ctx, resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "Patch", nil, "Failure preparing request")
@@ -985,7 +985,7 @@ func (client Client) Patch(ctx context.Context, resourceGroupName string, namesp
 }
 
 // PatchPreparer prepares the Patch request.
-func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters PatchParameters) (*http.Request, error) {
+func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters *PatchParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":       autorest.Encode("path", namespaceName),
 		"notificationHubName": autorest.Encode("path", notificationHubName),
@@ -1003,8 +1003,11 @@ func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if parameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

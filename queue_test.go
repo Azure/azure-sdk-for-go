@@ -348,6 +348,7 @@ func (suite *serviceBusSuite) TestQueue() {
 		"SimpleSend":            testQueueSend,
 		"SendAndReceiveInOrder": testQueueSendAndReceiveInOrder,
 		"DuplicateDetection":    testDuplicateDetection,
+		"MessageProperties":     testQueueMessageProperties,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -374,6 +375,36 @@ func (suite *serviceBusSuite) TestQueue() {
 		}
 
 		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func testQueueMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
+	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		var receivedMsg *Message
+		listenHandle, err := q.Receive(context.Background(),
+			func(ctx context.Context, msg *Message) DispositionAction {
+				receivedMsg = msg
+				defer func() {
+					wg.Done()
+				}()
+				return msg.Complete()
+			})
+		if assert.NoError(t, err) {
+			defer listenHandle.Close(ctx)
+			end, _ := ctx.Deadline()
+			waitUntil(t, &wg, time.Until(end))
+
+			if assert.NoError(t, err) {
+				t.Log(receivedMsg.TTL, receivedMsg.DeliveryCount, receivedMsg.ID)
+				assert.NotNil(t, receivedMsg.ID)
+				assert.NotNil(t, receivedMsg.TTL)
+				assert.EqualValues(t, 0, receivedMsg.DeliveryCount)
+				assert.NotNil(t, receivedMsg.GroupSequence)
+				assert.NotNil(t, receivedMsg.GroupID)
+			}
+		}
 	}
 }
 
@@ -451,6 +482,59 @@ func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
 	assert.Equal(t, 2, len(received), "should not have more than 2 messages", received)
+}
+
+func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SimpleSendAndReceive": testQueueSendAndReceiveWithReceiveAndDelete,
+	}
+
+	ns := suite.getNewSasInstance()
+	for name, testFunc := range tests {
+		setupTestTeardown := func(t *testing.T) {
+			queueName := suite.randEntityName()
+			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			defer cancel()
+			cleanup := makeQueue(ctx, t, ns, queueName)
+			q, err := ns.NewQueue(ctx, queueName, QueueWithReceiveAndDelete())
+			suite.NoError(err)
+			defer func() {
+				cleanup()
+			}()
+			testFunc(ctx, t, q)
+			q.Close(ctx)
+			if !t.Failed() {
+				checkZeroQueueMessages(ctx, t, ns, queueName)
+			}
+		}
+		suite.T().Run(name, setupTestTeardown)
+	}
+}
+
+func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing.T, queue *Queue) {
+	numMessages := rand.Intn(100) + 20
+	messages := make([]string, numMessages)
+	for i := 0; i < numMessages; i++ {
+		messages[i] = test.RandomString("hello", 10)
+	}
+
+	for _, message := range messages {
+		if !assert.NoError(t, queue.Send(ctx, NewMessageFromString(message))) {
+			assert.FailNow(t, "failed to send message")
+		}
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(numMessages)
+	count := 0
+	queue.Receive(ctx, func(ctx context.Context, msg *Message) DispositionAction {
+		assert.Equal(t, messages[count], string(msg.Data))
+		count++
+		wg.Done()
+		return nil
+	})
+	end, _ := ctx.Deadline()
+	waitUntil(t, &wg, time.Until(end))
 }
 
 func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {

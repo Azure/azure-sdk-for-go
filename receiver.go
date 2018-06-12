@@ -46,7 +46,7 @@ type (
 		Name              string
 		requiredSessionID *string
 		lastError         error
-		mode              amqp.ReceiverSettleMode
+		mode              ReceiveMode
 		prefetch          uint32
 	}
 
@@ -68,7 +68,7 @@ func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ..
 	receiver := &receiver{
 		namespace:  ns,
 		entityPath: entityPath,
-		mode:       amqp.ModeSecond,
+		mode:       PeekLockMode,
 		prefetch:   1,
 	}
 
@@ -141,6 +141,11 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
+
+	if r.mode == ReceiveAndDeleteMode {
+		// tell broker the message is completed since I've received it
+		event.Complete()(ctx)
+	}
 
 	dispositionAction := handler(ctx, event)
 	if dispositionAction != nil {
@@ -240,7 +245,7 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkReceiverSettle(r.mode),
+		amqp.LinkReceiverSettle(amqp.ModeSecond),
 		amqp.LinkCredit(r.prefetch),
 	}
 
@@ -268,16 +273,8 @@ func receiverWithSession(sessionID string) receiverOption {
 
 func receiverWithReceiveMode(mode ReceiveMode) receiverOption {
 	return func(r *receiver) error {
-		switch mode {
-		case ReceiveAndDeleteMode:
-			r.mode = amqp.ModeFirst
-			return nil
-		case PeekLockMode:
-			r.mode = amqp.ModeSecond
-			return nil
-		default:
-			return fmt.Errorf("unknown receive mode %q", mode)
-		}
+		r.mode = mode
+		return nil
 	}
 }
 

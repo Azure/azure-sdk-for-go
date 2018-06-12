@@ -103,11 +103,11 @@ type (
 )
 
 const (
-	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
-	ReceiveAndDeleteMode ReceiveMode = 0
 	// PeekLockMode causes a receiver to peek at a message, lock it so no others can consume and have the queue wait for
 	// the DispositionAction
-	PeekLockMode ReceiveMode = 1
+	PeekLockMode ReceiveMode = 0
+	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
+	ReceiveAndDeleteMode ReceiveMode = 1
 )
 
 /*
@@ -389,6 +389,7 @@ func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOpt
 			namespace: ns,
 			Name:      name,
 		},
+		receiveMode: PeekLockMode,
 	}
 
 	for _, opt := range opts {
@@ -479,7 +480,7 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 	q.senderMu.Lock()
 	defer q.senderMu.Unlock()
 
-	opts := []senderOption{senderWithSendMode(q.receiveMode)}
+	var opts []senderOption
 	if q.requiredSessionID != nil {
 		opts = append(opts, sendWithSession(*q.requiredSessionID))
 	}

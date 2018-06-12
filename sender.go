@@ -24,8 +24,7 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
-	"time"
+		"time"
 
 	"github.com/Azure/azure-amqp-common-go"
 	"github.com/Azure/azure-amqp-common-go/log"
@@ -43,7 +42,6 @@ type (
 		sender     *amqp.Sender
 		entityPath string
 		Name       string
-		mode       amqp.SenderSettleMode
 		sessionID  *string
 	}
 
@@ -221,7 +219,7 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 	amqpSender, err := amqpSession.NewSender(
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkSenderSettle(s.mode))
+		amqp.LinkSenderSettle(amqp.ModeUnsettled))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err
@@ -246,20 +244,5 @@ func sendWithSession(sessionID string) senderOption {
 	return func(event *sender) error {
 		event.sessionID = &sessionID
 		return nil
-	}
-}
-
-func senderWithSendMode(mode ReceiveMode) senderOption {
-	return func(s *sender) error {
-		switch mode {
-		case ReceiveAndDeleteMode:
-			s.mode = amqp.ModeSettled
-			return nil
-		case PeekLockMode:
-			s.mode = amqp.ModeUnsettled
-			return nil
-		default:
-			return fmt.Errorf("unknown receive mode %q", mode)
-		}
 	}
 }

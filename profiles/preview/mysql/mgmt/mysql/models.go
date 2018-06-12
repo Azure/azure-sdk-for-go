@@ -39,6 +39,7 @@ const (
 	CreateModeDefault                   CreateMode = original.CreateModeDefault
 	CreateModeGeoRestore                CreateMode = original.CreateModeGeoRestore
 	CreateModePointInTimeRestore        CreateMode = original.CreateModePointInTimeRestore
+	CreateModeReplica                   CreateMode = original.CreateModeReplica
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
 
@@ -131,6 +132,7 @@ type BasicServerPropertiesForCreate = original.BasicServerPropertiesForCreate
 type ServerPropertiesForCreate = original.ServerPropertiesForCreate
 type ServerPropertiesForDefaultCreate = original.ServerPropertiesForDefaultCreate
 type ServerPropertiesForGeoRestore = original.ServerPropertiesForGeoRestore
+type ServerPropertiesForReplica = original.ServerPropertiesForReplica
 type ServerPropertiesForRestore = original.ServerPropertiesForRestore
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
@@ -148,6 +150,7 @@ type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
 type VirtualNetworkRulesCreateOrUpdateFuture = original.VirtualNetworkRulesCreateOrUpdateFuture
 type VirtualNetworkRulesDeleteFuture = original.VirtualNetworkRulesDeleteFuture
 type OperationsClient = original.OperationsClient
+type ReplicasClient = original.ReplicasClient
 type ServersClient = original.ServersClient
 type VirtualNetworkRulesClient = original.VirtualNetworkRulesClient
 
@@ -222,6 +225,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewReplicasClient(subscriptionID string) ReplicasClient {
+	return original.NewReplicasClient(subscriptionID)
+}
+func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
+	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServersClient(subscriptionID string) ServersClient {
 	return original.NewServersClient(subscriptionID)

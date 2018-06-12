@@ -578,7 +578,7 @@ type DebugSendResult struct {
 	// Failure - send failure
 	Failure *float64 `json:"failure,omitempty"`
 	// Results - actual failure description
-	Results *string `json:"results,omitempty"`
+	Results interface{} `json:"results,omitempty"`
 }
 
 // ErrorResponse error reponse indicates NotificationHubs service is not able to process the incoming request. The

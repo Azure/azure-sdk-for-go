@@ -79,6 +79,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type PatchParameters = original.PatchParameters
 type PnsCredentialsProperties = original.PnsCredentialsProperties
 type PnsCredentialsResource = original.PnsCredentialsResource
 type PolicykeyResource = original.PolicykeyResource

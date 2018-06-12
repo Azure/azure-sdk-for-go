@@ -27,6 +27,9 @@ const (
 
 type BaseClient = original.BaseClient
 type Client = original.Client
+type OperationDefinition = original.OperationDefinition
+type OperationDisplay = original.OperationDisplay
+type OperationsList = original.OperationsList
 type OperationsListResult = original.OperationsListResult
 type OperationsListResultIterator = original.OperationsListResultIterator
 type OperationsListResultPage = original.OperationsListResultPage

@@ -70,8 +70,8 @@ func NewWithoutDefaults(azureRegion AzureRegions) BaseClient {
 // comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the
 // image.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, visualFeatures []VisualFeatureTypes, details []Details, language string) (result ImageAnalysis, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
@@ -158,8 +158,8 @@ func (client BaseClient) AnalyzeImageResponder(resp *http.Response) (result Imag
 // model - the domain-specific content to recognize.
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string, imageURL ImageURL, language string) (result DomainModelResults, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
@@ -244,8 +244,8 @@ func (client BaseClient) AnalyzeImageByDomainResponder(resp *http.Response) (res
 // model - the domain-specific content to recognize.
 // imageParameter - an image stream.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (result DomainModelResults, err error) {
 	req, err := client.AnalyzeImageByDomainInStreamPreparer(ctx, model, imageParameter, language)
 	if err != nil {
@@ -330,8 +330,8 @@ func (client BaseClient) AnalyzeImageByDomainInStreamResponder(resp *http.Respon
 // comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the
 // image.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) AnalyzeImageInStream(ctx context.Context, imageParameter io.ReadCloser, visualFeatures []VisualFeatureTypes, details string, language string) (result ImageAnalysis, err error) {
 	req, err := client.AnalyzeImageInStreamPreparer(ctx, imageParameter, visualFeatures, details, language)
 	if err != nil {
@@ -413,8 +413,8 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // maxCandidates - maximum number of candidate descriptions to be returned.  The default is 1.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, maxCandidates string, language string) (result ImageDescription, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
@@ -501,8 +501,8 @@ func (client BaseClient) DescribeImageResponder(resp *http.Response) (result Ima
 // imageParameter - an image stream.
 // maxCandidates - maximum number of candidate descriptions to be returned.  The default is 1.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) DescribeImageInStream(ctx context.Context, imageParameter io.ReadCloser, maxCandidates string, language string) (result ImageDescription, err error) {
 	req, err := client.DescribeImageInStreamPreparer(ctx, imageParameter, maxCandidates, language)
 	if err != nil {
@@ -1189,8 +1189,8 @@ func (client BaseClient) RecognizeTextInStreamResponder(resp *http.Response) (re
 // Parameters:
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL, language string) (result TagResult, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: imageURL,
@@ -1270,8 +1270,8 @@ func (client BaseClient) TagImageResponder(resp *http.Response) (result TagResul
 // Parameters:
 // imageParameter - an image stream.
 // language - the desired language for output generation. If this parameter is not specified, the default value
-// is &quot;en&quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified
-// Chinese.
+// is &quot;en&quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese,
+// zh - Simplified Chinese.
 func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io.ReadCloser, language string) (result TagResult, err error) {
 	req, err := client.TagImageInStreamPreparer(ctx, imageParameter, language)
 	if err != nil {

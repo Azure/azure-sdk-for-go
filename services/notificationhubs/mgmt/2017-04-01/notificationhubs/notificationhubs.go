@@ -279,7 +279,7 @@ func (client Client) CreateOrUpdateAuthorizationRuleResponder(resp *http.Respons
 // resourceGroupName - the name of the resource group.
 // namespaceName - the namespace name.
 // notificationHubName - the notification hub name.
-// parameters - the shared access authorization rule.
+// parameters - debug send message payload
 func (client Client) DebugSend(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters string) (result DebugSendResponse, err error) {
 	req, err := client.DebugSendPreparer(ctx, resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
@@ -321,8 +321,11 @@ func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName st
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/debugsend", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(parameters) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(parameters))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

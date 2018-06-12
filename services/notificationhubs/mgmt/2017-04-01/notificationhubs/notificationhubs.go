@@ -308,6 +308,12 @@ func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName st
 		"namespaceName":       autorest.Encode("path", namespaceName),
 		"notificationHubName": autorest.Encode("path", notificationHubName),
 		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -315,7 +321,8 @@ func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName st
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/debugsend", pathParameters),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

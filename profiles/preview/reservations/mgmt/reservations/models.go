@@ -33,13 +33,6 @@ const (
 	Single AppliedScopeType = original.Single
 )
 
-type AppliedScopeType1 = original.AppliedScopeType1
-
-const (
-	AppliedScopeType1Shared AppliedScopeType1 = original.AppliedScopeType1Shared
-	AppliedScopeType1Single AppliedScopeType1 = original.AppliedScopeType1Single
-)
-
 type Code = original.Code
 
 const (
@@ -106,14 +99,6 @@ const (
 	NotSupported InstanceFlexibility = original.NotSupported
 	Off          InstanceFlexibility = original.Off
 	On           InstanceFlexibility = original.On
-)
-
-type InstanceFlexibility1 = original.InstanceFlexibility1
-
-const (
-	InstanceFlexibility1NotSupported InstanceFlexibility1 = original.InstanceFlexibility1NotSupported
-	InstanceFlexibility1Off          InstanceFlexibility1 = original.InstanceFlexibility1Off
-	InstanceFlexibility1On           InstanceFlexibility1 = original.InstanceFlexibility1On
 )
 
 type Location = original.Location
@@ -265,17 +250,11 @@ func NewWithBaseURI(baseURI string) BaseClient {
 func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return original.PossibleAppliedScopeTypeValues()
 }
-func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
-	return original.PossibleAppliedScopeType1Values()
-}
 func PossibleCodeValues() []Code {
 	return original.PossibleCodeValues()
 }
 func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return original.PossibleInstanceFlexibilityValues()
-}
-func PossibleInstanceFlexibility1Values() []InstanceFlexibility1 {
-	return original.PossibleInstanceFlexibility1Values()
 }
 func PossibleLocationValues() []Location {
 	return original.PossibleLocationValues()

@@ -41,21 +41,6 @@ func PossibleAppliedScopeTypeValues() []AppliedScopeType {
 	return []AppliedScopeType{Shared, Single}
 }
 
-// AppliedScopeType1 enumerates the values for applied scope type 1.
-type AppliedScopeType1 string
-
-const (
-	// AppliedScopeType1Shared ...
-	AppliedScopeType1Shared AppliedScopeType1 = "Shared"
-	// AppliedScopeType1Single ...
-	AppliedScopeType1Single AppliedScopeType1 = "Single"
-)
-
-// PossibleAppliedScopeType1Values returns an array of possible values for the AppliedScopeType1 const type.
-func PossibleAppliedScopeType1Values() []AppliedScopeType1 {
-	return []AppliedScopeType1{AppliedScopeType1Shared, AppliedScopeType1Single}
-}
-
 // Code enumerates the values for code.
 type Code string
 
@@ -192,23 +177,6 @@ const (
 // PossibleInstanceFlexibilityValues returns an array of possible values for the InstanceFlexibility const type.
 func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return []InstanceFlexibility{NotSupported, Off, On}
-}
-
-// InstanceFlexibility1 enumerates the values for instance flexibility 1.
-type InstanceFlexibility1 string
-
-const (
-	// InstanceFlexibility1NotSupported ...
-	InstanceFlexibility1NotSupported InstanceFlexibility1 = "NotSupported"
-	// InstanceFlexibility1Off ...
-	InstanceFlexibility1Off InstanceFlexibility1 = "Off"
-	// InstanceFlexibility1On ...
-	InstanceFlexibility1On InstanceFlexibility1 = "On"
-)
-
-// PossibleInstanceFlexibility1Values returns an array of possible values for the InstanceFlexibility1 const type.
-func PossibleInstanceFlexibility1Values() []InstanceFlexibility1 {
-	return []InstanceFlexibility1{InstanceFlexibility1NotSupported, InstanceFlexibility1Off, InstanceFlexibility1On}
 }
 
 // Location enumerates the values for location.
@@ -1074,11 +1042,11 @@ func (p *Patch) UnmarshalJSON(body []byte) error {
 
 // PatchProperties ...
 type PatchProperties struct {
-	// AppliedScopeType - Possible values include: 'AppliedScopeType1Single', 'AppliedScopeType1Shared'
-	AppliedScopeType AppliedScopeType1 `json:"appliedScopeType,omitempty"`
-	AppliedScopes    *[]string         `json:"appliedScopes,omitempty"`
-	// InstanceFlexibility - Possible values include: 'InstanceFlexibility1On', 'InstanceFlexibility1Off', 'InstanceFlexibility1NotSupported'
-	InstanceFlexibility InstanceFlexibility1 `json:"instanceFlexibility,omitempty"`
+	// AppliedScopeType - Possible values include: 'Single', 'Shared'
+	AppliedScopeType AppliedScopeType `json:"appliedScopeType,omitempty"`
+	AppliedScopes    *[]string        `json:"appliedScopes,omitempty"`
+	// InstanceFlexibility - Possible values include: 'On', 'Off', 'NotSupported'
+	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 }
 
 // Properties ...

@@ -20,6 +20,7 @@ package botservice
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
 )
@@ -1577,6 +1578,28 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 		return nil
 	}
 	return *page.oelr.Value
+}
+
+// OperationResultGetFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type OperationResultGetFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *OperationResultGetFuture) Result(client OperationResultClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.OperationResultGetFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("botservice.OperationResultGetFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // Resource azure resource

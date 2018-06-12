@@ -123,6 +123,7 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
+type OperationResultGetFuture = original.OperationResultGetFuture
 type Resource = original.Resource
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderParameter = original.ServiceProviderParameter
@@ -140,6 +141,7 @@ type TelegramChannelProperties = original.TelegramChannelProperties
 type WebChatChannel = original.WebChatChannel
 type WebChatChannelProperties = original.WebChatChannelProperties
 type WebChatSite = original.WebChatSite
+type OperationResultClient = original.OperationResultClient
 type OperationsClient = original.OperationsClient
 
 func NewBotConnectionClient(subscriptionID string) BotConnectionClient {
@@ -180,6 +182,12 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func NewOperationResultClient(subscriptionID string) OperationResultClient {
+	return original.NewOperationResultClient(subscriptionID)
+}
+func NewOperationResultClientWithBaseURI(baseURI string, subscriptionID string) OperationResultClient {
+	return original.NewOperationResultClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

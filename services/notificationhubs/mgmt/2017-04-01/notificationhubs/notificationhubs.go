@@ -279,8 +279,8 @@ func (client Client) CreateOrUpdateAuthorizationRuleResponder(resp *http.Respons
 // resourceGroupName - the name of the resource group.
 // namespaceName - the namespace name.
 // notificationHubName - the notification hub name.
-// parameters - debug send message payload
-func (client Client) DebugSend(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters string) (result DebugSendResponse, err error) {
+// parameters - debug send parameters
+func (client Client) DebugSend(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters *interface{}) (result DebugSendResponse, err error) {
 	req, err := client.DebugSendPreparer(ctx, resourceGroupName, namespaceName, notificationHubName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "notificationhubs.Client", "DebugSend", nil, "Failure preparing request")
@@ -303,7 +303,7 @@ func (client Client) DebugSend(ctx context.Context, resourceGroupName string, na
 }
 
 // DebugSendPreparer prepares the DebugSend request.
-func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters string) (*http.Request, error) {
+func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName string, namespaceName string, notificationHubName string, parameters *interface{}) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"namespaceName":       autorest.Encode("path", namespaceName),
 		"notificationHubName": autorest.Encode("path", notificationHubName),
@@ -322,7 +322,7 @@ func (client Client) DebugSendPreparer(ctx context.Context, resourceGroupName st
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/notificationHubs/{notificationHubName}/debugsend", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
-	if len(parameters) > 0 {
+	if parameters != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(parameters))
 	}

@@ -22,7 +22,6 @@ package consumption
 import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
 
 type BillingAccountDimensionsClient = original.BillingAccountDimensionsClient
-type BillingAccountInsightsClient = original.BillingAccountInsightsClient
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -105,15 +104,15 @@ type Forecast = original.Forecast
 type ForecastProperties = original.ForecastProperties
 type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
 type ForecastsListResult = original.ForecastsListResult
-type Insight = original.Insight
-type InsightColumn = original.InsightColumn
-type InsightProperties = original.InsightProperties
-type InsightsListResult = original.InsightsListResult
+type MeterDetails = original.MeterDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type PriceSheetModel = original.PriceSheetModel
+type PriceSheetProperties = original.PriceSheetProperties
+type PriceSheetResult = original.PriceSheetResult
 type ReportConfig = original.ReportConfig
 type ReportConfigAggregation = original.ReportConfigAggregation
 type ReportConfigComparisonExpression = original.ReportConfigComparisonExpression
@@ -130,24 +129,27 @@ type ReportConfigRecurrencePeriod = original.ReportConfigRecurrencePeriod
 type ReportConfigSchedule = original.ReportConfigSchedule
 type ReportConfigTimePeriod = original.ReportConfigTimePeriod
 type Resource = original.Resource
+type UsageAnalysis = original.UsageAnalysis
+type UsageAnalysisColumn = original.UsageAnalysisColumn
+type UsageAnalysisProperties = original.UsageAnalysisProperties
+type UsageAnalysisResult = original.UsageAnalysisResult
+type UsageDetail = original.UsageDetail
+type UsageDetailProperties = original.UsageDetailProperties
+type UsageDetailsListResult = original.UsageDetailsListResult
+type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
+type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
+type PriceSheetClient = original.PriceSheetClient
 type ReportConfigClient = original.ReportConfigClient
 type ResourceGroupDimensionsClient = original.ResourceGroupDimensionsClient
-type ResourceGroupInsightsClient = original.ResourceGroupInsightsClient
 type SubscriptionDimensionsClient = original.SubscriptionDimensionsClient
-type SubscriptionInsightsClient = original.SubscriptionInsightsClient
+type UsageDetailsClient = original.UsageDetailsClient
 
 func NewBillingAccountDimensionsClient(subscriptionID string) BillingAccountDimensionsClient {
 	return original.NewBillingAccountDimensionsClient(subscriptionID)
 }
 func NewBillingAccountDimensionsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountDimensionsClient {
 	return original.NewBillingAccountDimensionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewBillingAccountInsightsClient(subscriptionID string) BillingAccountInsightsClient {
-	return original.NewBillingAccountInsightsClient(subscriptionID)
-}
-func NewBillingAccountInsightsClientWithBaseURI(baseURI string, subscriptionID string) BillingAccountInsightsClient {
-	return original.NewBillingAccountInsightsClientWithBaseURI(baseURI, subscriptionID)
 }
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -194,6 +196,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClient(subscriptionID)
+}
+func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
+	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewReportConfigClient(subscriptionID string) ReportConfigClient {
 	return original.NewReportConfigClient(subscriptionID)
 }
@@ -206,23 +214,17 @@ func NewResourceGroupDimensionsClient(subscriptionID string) ResourceGroupDimens
 func NewResourceGroupDimensionsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupDimensionsClient {
 	return original.NewResourceGroupDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewResourceGroupInsightsClient(subscriptionID string) ResourceGroupInsightsClient {
-	return original.NewResourceGroupInsightsClient(subscriptionID)
-}
-func NewResourceGroupInsightsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGroupInsightsClient {
-	return original.NewResourceGroupInsightsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewSubscriptionDimensionsClient(subscriptionID string) SubscriptionDimensionsClient {
 	return original.NewSubscriptionDimensionsClient(subscriptionID)
 }
 func NewSubscriptionDimensionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDimensionsClient {
 	return original.NewSubscriptionDimensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSubscriptionInsightsClient(subscriptionID string) SubscriptionInsightsClient {
-	return original.NewSubscriptionInsightsClient(subscriptionID)
+func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClient(subscriptionID)
 }
-func NewSubscriptionInsightsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionInsightsClient {
-	return original.NewSubscriptionInsightsClientWithBaseURI(baseURI, subscriptionID)
+func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) UsageDetailsClient {
+	return original.NewUsageDetailsClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -170,7 +170,6 @@ type ComponentPurgeBody = original.ComponentPurgeBody
 type ComponentPurgeBodyFilters = original.ComponentPurgeBodyFilters
 type ComponentPurgeResponse = original.ComponentPurgeResponse
 type ComponentPurgeStatusResponse = original.ComponentPurgeStatusResponse
-type ComponentsPurgeFuture = original.ComponentsPurgeFuture
 type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type InnerError = original.InnerError

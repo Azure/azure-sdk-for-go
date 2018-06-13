@@ -20,7 +20,6 @@ package insights
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -190,9 +189,9 @@ type PurgeState string
 
 const (
 	// Completed ...
-	Completed PurgeState = "Completed"
+	Completed PurgeState = "completed"
 	// Pending ...
-	Pending PurgeState = "Pending"
+	Pending PurgeState = "pending"
 )
 
 // PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
@@ -876,42 +875,16 @@ type ComponentPurgeBodyFilters struct {
 
 // ComponentPurgeResponse response containing operationId for a specific purge action.
 type ComponentPurgeResponse struct {
+	autorest.Response `json:"-"`
 	// OperationID - Id to use when querying for status for a particular purge operation.
 	OperationID *string `json:"operationId,omitempty"`
 }
 
 // ComponentPurgeStatusResponse response containing status for a specific purge operation.
 type ComponentPurgeStatusResponse struct {
+	autorest.Response `json:"-"`
 	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
 	Status PurgeState `json:"status,omitempty"`
-}
-
-// ComponentsPurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ComponentsPurgeFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ComponentsPurgeFuture) Result(client ComponentsClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("insights.ComponentsPurgeFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.PurgeResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // ErrorFieldContract error Field contract.

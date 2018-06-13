@@ -901,9 +901,28 @@ type Identity struct {
 	// PrincipalID - The principal ID of resource identity.
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID   *string                         `json:"tenantId,omitempty"`
+	Identities map[string]*UserDefinedIdentity `json:"identities"`
 	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.PrincipalID != nil {
+		objectMap["principalId"] = i.PrincipalID
+	}
+	if i.TenantID != nil {
+		objectMap["tenantId"] = i.TenantID
+	}
+	if i.Identities != nil {
+		objectMap["identities"] = i.Identities
+	}
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ListResult list of resource groups.
@@ -1517,6 +1536,12 @@ func (future *UpdateFuture) Result(client Client) (gr GenericResource, err error
 		}
 	}
 	return
+}
+
+// UserDefinedIdentity ...
+type UserDefinedIdentity struct {
+	ClientID    *string `json:"clientId,omitempty"`
+	PrincipalID *string `json:"principalId,omitempty"`
 }
 
 // ValidateMoveResourcesFuture an abstraction for monitoring and retrieving the results of a long-running

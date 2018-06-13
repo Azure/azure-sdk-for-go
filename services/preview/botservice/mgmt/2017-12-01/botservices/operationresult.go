@@ -43,17 +43,23 @@ func NewOperationResultClientWithBaseURI(baseURI string, subscriptionID string) 
 // Parameters:
 // location - the region name which the operation will lookup into. including 'global'
 // operationID - the target operation Id.
-func (client OperationResultClient) Get(ctx context.Context, location string, operationID string) (result OperationResultGetFuture, err error) {
+func (client OperationResultClient) Get(ctx context.Context, location string, operationID string) (result autorest.Response, err error) {
 	req, err := client.GetPreparer(ctx, location, operationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "botservice.OperationResultClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.GetSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.OperationResultClient", "Get", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "botservice.OperationResultClient", "Get", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "botservice.OperationResultClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -82,19 +88,9 @@ func (client OperationResultClient) GetPreparer(ctx context.Context, location st
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationResultClient) GetSender(req *http.Request) (future OperationResultGetFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client OperationResultClient) GetSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // GetResponder handles the response to the Get request. The method always

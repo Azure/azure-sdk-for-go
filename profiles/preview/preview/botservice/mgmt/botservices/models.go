@@ -123,7 +123,6 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
-type OperationResultGetFuture = original.OperationResultGetFuture
 type Resource = original.Resource
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderParameter = original.ServiceProviderParameter

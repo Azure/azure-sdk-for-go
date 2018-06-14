@@ -19,7 +19,7 @@
 
 package computervision
 
-import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/computervision"
+import original "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/computervision"
 
 type BaseClient = original.BaseClient
 type AzureRegions = original.AzureRegions
@@ -112,6 +112,13 @@ const (
 	Succeeded  TextOperationStatusCodes = original.Succeeded
 )
 
+type TextRecognitionMode = original.TextRecognitionMode
+
+const (
+	Handwritten TextRecognitionMode = original.Handwritten
+	Printed     TextRecognitionMode = original.Printed
+)
+
 type VisualFeatureTypes = original.VisualFeatureTypes
 
 const (
@@ -180,6 +187,9 @@ func PossibleOcrLanguagesValues() []OcrLanguages {
 }
 func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
 	return original.PossibleTextOperationStatusCodesValues()
+}
+func PossibleTextRecognitionModeValues() []TextRecognitionMode {
+	return original.PossibleTextRecognitionModeValues()
 }
 func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
 	return original.PossibleVisualFeatureTypesValues()

@@ -274,6 +274,8 @@ type Category struct {
 type CategoryDetail struct {
 	// Celebrities - An array of celebrities if any identified.
 	Celebrities *[]CelebritiesModel `json:"celebrities,omitempty"`
+	// Landmarks - An array of landmarks if any identified.
+	Landmarks *[]LandmarksModel `json:"landmarks,omitempty"`
 }
 
 // CelebritiesModel an object describing possible celebrity identification.
@@ -379,6 +381,9 @@ type ImageCaption struct {
 type ImageDescription struct {
 	autorest.Response        `json:"-"`
 	*ImageDescriptionDetails `json:"description,omitempty"`
+	// RequestID - Id of the REST API request.
+	RequestID *string        `json:"requestId,omitempty"`
+	Metadata  *ImageMetadata `json:"metadata,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageDescription.
@@ -386,6 +391,12 @@ func (ID ImageDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ID.ImageDescriptionDetails != nil {
 		objectMap["description"] = ID.ImageDescriptionDetails
+	}
+	if ID.RequestID != nil {
+		objectMap["requestId"] = ID.RequestID
+	}
+	if ID.Metadata != nil {
+		objectMap["metadata"] = ID.Metadata
 	}
 	return json.Marshal(objectMap)
 }
@@ -408,6 +419,24 @@ func (ID *ImageDescription) UnmarshalJSON(body []byte) error {
 				}
 				ID.ImageDescriptionDetails = &imageDescriptionDetails
 			}
+		case "requestId":
+			if v != nil {
+				var requestID string
+				err = json.Unmarshal(*v, &requestID)
+				if err != nil {
+					return err
+				}
+				ID.RequestID = &requestID
+			}
+		case "metadata":
+			if v != nil {
+				var metadata ImageMetadata
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				ID.Metadata = &metadata
+			}
 		}
 	}
 
@@ -421,9 +450,6 @@ type ImageDescriptionDetails struct {
 	Tags *[]string `json:"tags,omitempty"`
 	// Captions - A list of captions, sorted by confidence level.
 	Captions *[]ImageCaption `json:"captions,omitempty"`
-	// RequestID - Id of the REST API request.
-	RequestID *string        `json:"requestId,omitempty"`
-	Metadata  *ImageMetadata `json:"metadata,omitempty"`
 }
 
 // ImageMetadata image metadata
@@ -460,14 +486,14 @@ type ImageURL struct {
 
 // LandmarkResults list of landmarks recognized in the image.
 type LandmarkResults struct {
-	Landmarks *[]LandmarkResultsLandmarksItem `json:"landmarks,omitempty"`
+	Landmarks *[]LandmarksModel `json:"landmarks,omitempty"`
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
 }
 
-// LandmarkResultsLandmarksItem a landmark recognized in the image
-type LandmarkResultsLandmarksItem struct {
+// LandmarksModel a landmark recognized in the image
+type LandmarksModel struct {
 	// Name - Name of the landmark.
 	Name *string `json:"name,omitempty"`
 	// Confidence - Confidence level for the landmark recognition.

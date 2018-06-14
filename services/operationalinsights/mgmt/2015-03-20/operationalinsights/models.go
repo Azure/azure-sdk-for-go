@@ -31,9 +31,9 @@ type PurgeState string
 
 const (
 	// Completed ...
-	Completed PurgeState = "Completed"
+	Completed PurgeState = "completed"
 	// Pending ...
-	Pending PurgeState = "Pending"
+	Pending PurgeState = "pending"
 )
 
 // PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.

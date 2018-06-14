@@ -887,6 +887,41 @@ type ComponentPurgeStatusResponse struct {
 	Status PurgeState `json:"status,omitempty"`
 }
 
+// ComponentsResource an azure resource object
+type ComponentsResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for ComponentsResource.
+func (cr ComponentsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.ID != nil {
+		objectMap["id"] = cr.ID
+	}
+	if cr.Name != nil {
+		objectMap["name"] = cr.Name
+	}
+	if cr.Type != nil {
+		objectMap["type"] = cr.Type
+	}
+	if cr.Location != nil {
+		objectMap["location"] = cr.Location
+	}
+	if cr.Tags != nil {
+		objectMap["tags"] = cr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorFieldContract error Field contract.
 type ErrorFieldContract struct {
 	// Code - Property level error code.
@@ -1079,41 +1114,6 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
-}
-
-// Resource an azure resource object
-type Resource struct {
-	// ID - Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
-	return json.Marshal(objectMap)
 }
 
 // SetObject ...
@@ -1403,6 +1403,41 @@ type WebTestPropertiesConfiguration struct {
 	WebTest *string `json:"WebTest,omitempty"`
 }
 
+// WebtestsResource an azure resource object
+type WebtestsResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebtestsResource.
+func (wr WebtestsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wr.ID != nil {
+		objectMap["id"] = wr.ID
+	}
+	if wr.Name != nil {
+		objectMap["name"] = wr.Name
+	}
+	if wr.Type != nil {
+		objectMap["type"] = wr.Type
+	}
+	if wr.Location != nil {
+		objectMap["location"] = wr.Location
+	}
+	if wr.Tags != nil {
+		objectMap["tags"] = wr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Workbook an Application Insights workbook definition.
 type Workbook struct {
 	autorest.Response `json:"-"`
@@ -1559,6 +1594,41 @@ type WorkbookProperties struct {
 	UserID *string `json:"userId,omitempty"`
 	// SourceResourceID - Optional resourceId for a source resource.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// WorkbookResource an azure resource object
+type WorkbookResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WorkbookResource.
+func (wr WorkbookResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wr.ID != nil {
+		objectMap["id"] = wr.ID
+	}
+	if wr.Name != nil {
+		objectMap["name"] = wr.Name
+	}
+	if wr.Type != nil {
+		objectMap["type"] = wr.Type
+	}
+	if wr.Location != nil {
+		objectMap["location"] = wr.Location
+	}
+	if wr.Tags != nil {
+		objectMap["tags"] = wr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Workbooks workbook list result.

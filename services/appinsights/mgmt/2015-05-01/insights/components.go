@@ -250,6 +250,75 @@ func (client ComponentsClient) GetResponder(resp *http.Response) (result Applica
 	return
 }
 
+// GetPurgeStatus get status for an ongoing purge operation.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// resourceName - the name of the Application Insights component resource.
+// purgeID - in a purge status request, this is the Id of the operation the status of which is returned.
+func (client ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (result ComponentPurgeStatusResponse, err error) {
+	req, err := client.GetPurgeStatusPreparer(ctx, resourceGroupName, resourceName, purgeID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "GetPurgeStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetPurgeStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "GetPurgeStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetPurgeStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "GetPurgeStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPurgeStatusPreparer prepares the GetPurgeStatus request.
+func (client ComponentsClient) GetPurgeStatusPreparer(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"purgeId":           autorest.Encode("path", purgeID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/operations/{purgeId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetPurgeStatusSender sends the GetPurgeStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client ComponentsClient) GetPurgeStatusSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetPurgeStatusResponder handles the response to the GetPurgeStatus request. The method always
+// closes the http.Response Body.
+func (client ComponentsClient) GetPurgeStatusResponder(resp *http.Response) (result ComponentPurgeStatusResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List gets a list of all Application Insights components within a subscription.
 func (client ComponentsClient) List(ctx context.Context) (result ApplicationInsightsComponentListResultPage, err error) {
 	result.fn = client.listNextResults
@@ -484,7 +553,7 @@ func (client ComponentsClient) PurgePreparer(ctx context.Context, resourceGroupN
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/components/{resourceName}/purge", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/purge", pathParameters),
 		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -504,75 +573,6 @@ func (client ComponentsClient) PurgeResponder(resp *http.Response) (result Compo
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// PurgeStatus get status for an ongoing purge operation.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// resourceName - the name of the Application Insights component resource.
-// purgeID - in a purge status request, this is the Id of the operation the status of which is returned.
-func (client ComponentsClient) PurgeStatus(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (result ComponentPurgeStatusResponse, err error) {
-	req, err := client.PurgeStatusPreparer(ctx, resourceGroupName, resourceName, purgeID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "PurgeStatus", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.PurgeStatusSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "PurgeStatus", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.PurgeStatusResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentsClient", "PurgeStatus", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// PurgeStatusPreparer prepares the PurgeStatus request.
-func (client ComponentsClient) PurgeStatusPreparer(ctx context.Context, resourceGroupName string, resourceName string, purgeID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"purgeId":           autorest.Encode("path", purgeID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"resourceName":      autorest.Encode("path", resourceName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/operations/{purgeId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// PurgeStatusSender sends the PurgeStatus request. The method will close the
-// http.Response Body if it receives an error.
-func (client ComponentsClient) PurgeStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// PurgeStatusResponder handles the response to the PurgeStatus request. The method always
-// closes the http.Response Body.
-func (client ComponentsClient) PurgeStatusResponder(resp *http.Response) (result ComponentPurgeStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

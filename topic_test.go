@@ -306,7 +306,7 @@ func (suite *serviceBusSuite) TestTopic() {
 
 func testTopicSend(ctx context.Context, t *testing.T, topic *Topic) {
 	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 }
 
 func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...TopicManagementOption) func() {

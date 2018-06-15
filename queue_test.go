@@ -31,7 +31,7 @@ import (
 	"testing"
 	"time"
 
-		"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/Azure/azure-service-bus-go/internal/test"
 	"github.com/opentracing/opentracing-go"
 	"github.com/stretchr/testify/assert"
@@ -350,7 +350,7 @@ func (suite *serviceBusSuite) TestQueueClient() {
 		"DuplicateDetection":    testDuplicateDetection,
 		"MessageProperties":     testMessageProperties,
 		"Retry":                 testRequeueOnFail,
-		"ReceiveOne": testReceiveOne,
+		"ReceiveOne":            testReceiveOne,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -371,7 +371,7 @@ func (suite *serviceBusSuite) TestQueueClient() {
 				cleanup()
 			}()
 			testFunc(ctx, t, q)
-			if !t.Failed() {
+			if !t.Failed() && name != "SimpleSend"{
 				checkZeroQueueMessages(ctx, t, ns, queueName)
 			}
 		}

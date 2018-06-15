@@ -231,9 +231,10 @@ func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManage
 	return s
 }
 
-func (suite *serviceBusSuite) TestSubscription() {
+func (suite *serviceBusSuite) TestSubscriptionClient() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
 		"SimpleReceive": testSubscriptionReceive,
+		"ReceiveOne":    testSubscriptionReceiveOne,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -267,7 +268,9 @@ func (suite *serviceBusSuite) TestSubscription() {
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -275,11 +278,23 @@ func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, su
 		wg.Done()
 		return msg.Complete()
 	})
-	if err != nil {
-		t.Fatal(err)
+	if !assert.NoError(t, err) {
+		t.FailNow()
 	}
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
+}
+
+func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
+	err := topic.Send(ctx, NewMessageFromString("hello!"))
+	assert.Nil(t, err)
+
+	msg, err := sub.ReceiveOne(ctx)
+	if !assert.NoError(t, err) {
+		t.FailNow()
+	}
+
+	msg.Complete()
 }
 
 func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {

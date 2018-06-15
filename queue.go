@@ -220,6 +220,15 @@ func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 	}
 }
 
+// QueueEntityWithMaxDeliveryCount configures the queue to have a maximum number of delivery attempts before
+// dead-lettering the message
+func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		q.MaxDeliveryCount = &count
+		return nil
+	}
+}
+
 // NewQueueManager creates a new QueueManager for a Service Bus Namespace
 func (ns *Namespace) NewQueueManager() *QueueManager {
 	return &QueueManager{
@@ -371,13 +380,13 @@ func QueueWithReceiveAndDelete() QueueOption {
 	}
 }
 
-// QueueWithRequiredSession configures a queue to use a session
-func QueueWithRequiredSession(sessionID string) QueueOption {
-	return func(q *Queue) error {
-		q.requiredSessionID = &sessionID
-		return nil
-	}
-}
+//// QueueWithRequiredSession configures a queue to use a session
+//func QueueWithRequiredSession(sessionID string) QueueOption {
+//	return func(q *Queue) error {
+//		q.requiredSessionID = &sessionID
+//		return nil
+//	}
+//}
 
 // NewQueue creates a new Queue Sender / Receiver
 func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOption) (*Queue, error) {
@@ -415,8 +424,16 @@ func (q *Queue) Send(ctx context.Context, event *Message) error {
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
-func (q *Queue) ReceiveOne(ctx context.Context) (*Message, error) {
-	return nil, nil
+func (q *Queue) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
+	defer span.Finish()
+
+	err := q.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return q.receiver.ReceiveOne(ctx)
 }
 
 // Receive subscribes for messages sent to the Queue

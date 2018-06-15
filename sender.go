@@ -24,7 +24,7 @@ package servicebus
 
 import (
 	"context"
-		"time"
+	"time"
 
 	"github.com/Azure/azure-amqp-common-go"
 	"github.com/Azure/azure-amqp-common-go/log"
@@ -219,7 +219,7 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 	amqpSender, err := amqpSession.NewSender(
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkSenderSettle(amqp.ModeUnsettled))
+		amqp.LinkSenderSettle(amqp.ModeMixed))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err

@@ -39,8 +39,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "d21db7ee8958d471f5b185d700762c903549ee08"
-  version = "v10.10.0"
+  revision = "76796dcb80ab6491bf22e344402023c081a7a282"
+  version = "v10.11.1"
 
 [[projects]]
   branch = "master"
@@ -59,6 +59,12 @@
   packages = ["."]
   revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
   version = "v3.2.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
 
 [[projects]]
   name = "github.com/opentracing/opentracing-go"
@@ -89,8 +95,8 @@
     "require",
     "suite"
   ]
-  revision = "12b6f73e6084dad08a7c6e575284b177ecafbc71"
-  version = "v1.2.1"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   name = "github.com/uber/jaeger-client-go"
@@ -125,7 +131,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "1e491301e022f8f977054da4c2d852decd59571f"
+  revision = "db08ff08e8622530d9ed3a0e8ac279f6d4c02196"
 
 [[projects]]
   name = "pack.ag/amqp"
@@ -139,6 +145,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b881f99847eeeaaa110edf7e17a56a5da4bcf7d05c4252cf1521caca57b1c4dc"
+  inputs-digest = "6bae36bbcba90590521ac949fd4f7bae7cbfa2af26e2426f3802bc842409ca18"
   solver-name = "gps-cdcl"
   solver-version = 1

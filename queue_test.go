@@ -31,9 +31,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/uuid"
-	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
+		"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 	"github.com/Azure/azure-service-bus-go/internal/test"
+	"github.com/opentracing/opentracing-go"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -343,12 +343,14 @@ func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string
 	return q
 }
 
-func (suite *serviceBusSuite) TestQueue() {
+func (suite *serviceBusSuite) TestQueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"SimpleSend":            testQueueSend,
 		"SendAndReceiveInOrder": testQueueSendAndReceiveInOrder,
 		"DuplicateDetection":    testDuplicateDetection,
-		"MessageProperties":     testQueueMessageProperties,
+		"MessageProperties":     testMessageProperties,
+		"Retry":                 testRequeueOnFail,
+		"ReceiveOne": testReceiveOne,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -357,11 +359,11 @@ func (suite *serviceBusSuite) TestQueue() {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			window := 3 * time.Minute
+			dupWindow := 30 * time.Second
 			cleanup := makeQueue(ctx, t, ns, queueName,
 				QueueEntityWithPartitioning(),
-				QueueEntityWithDuplicateDetection(&window),
-				QueueEntityWithLockDuration(&window))
+				QueueEntityWithDuplicateDetection(&dupWindow),
+				QueueEntityWithMaxDeliveryCount(10))
 			q, err := ns.NewQueue(ctx, queueName)
 			suite.NoError(err)
 			defer func() {
@@ -378,7 +380,48 @@ func (suite *serviceBusSuite) TestQueue() {
 	}
 }
 
-func testQueueMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
+func testReceiveOne(ctx context.Context, t *testing.T, q *Queue) {
+	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
+		messageWithContext, err := q.ReceiveOne(ctx)
+		if assert.NoError(t, err) {
+			span, _ := opentracing.StartSpanFromContext(messageWithContext.Ctx, "continue-message-span")
+			defer span.Finish()
+			messageWithContext.Complete()
+		}
+	}
+}
+
+func testRequeueOnFail(ctx context.Context, t *testing.T, q *Queue) {
+	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
+		var wg sync.WaitGroup
+		wg.Add(2)
+		var receivedMsg *Message
+		fail := true
+		listenHandle, err := q.Receive(context.Background(),
+			func(ctx context.Context, msg *Message) DispositionAction {
+				receivedMsg = msg
+				defer func() {
+					wg.Done()
+				}()
+				if fail {
+					fail = false
+					return msg.Abandon()
+				}
+				return msg.Complete()
+			})
+		if assert.NoError(t, err) {
+			defer listenHandle.Close(ctx)
+			end, _ := ctx.Deadline()
+			waitUntil(t, &wg, time.Until(end))
+
+			if assert.NoError(t, err) {
+				assert.EqualValues(t, 2, receivedMsg.DeliveryCount)
+			}
+		}
+	}
+}
+
+func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
 		var wg sync.WaitGroup
 		wg.Add(1)
@@ -397,12 +440,13 @@ func testQueueMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 			waitUntil(t, &wg, time.Until(end))
 
 			if assert.NoError(t, err) {
-				t.Log(receivedMsg.TTL, receivedMsg.DeliveryCount, receivedMsg.ID)
-				assert.NotNil(t, receivedMsg.ID)
-				assert.NotNil(t, receivedMsg.TTL)
-				assert.EqualValues(t, 0, receivedMsg.DeliveryCount)
-				assert.NotNil(t, receivedMsg.GroupSequence)
-				assert.NotNil(t, receivedMsg.GroupID)
+				sp := receivedMsg.SystemProperties
+				assert.NotNil(t, sp.LockedUntil, "LockedUntil")
+				assert.NotNil(t, sp.EnqueuedSequenceNumber, "EnqueuedSequenceNumber")
+				assert.NotNil(t, sp.EnqueuedTime, "EnqueuedTime")
+				assert.NotNil(t, sp.SequenceNumber, "SequenceNumber")
+				assert.NotNil(t, sp.PartitionID, "PartitionID")
+				assert.NotNil(t, sp.PartitionKey, "PartitionKey")
 			}
 		}
 	}
@@ -442,46 +486,46 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
-	dupID := mustUUID(t)
-	messages := []struct {
-		ID   string
-		Data string
-	}{
-		{
-			ID:   dupID.String(),
-			Data: "hello 1!",
-		},
-		{
-			ID:   dupID.String(),
-			Data: "hello 1!",
-		},
-		{
-			ID:   mustUUID(t).String(),
-			Data: "hello 2!",
-		},
+	messages := []*Message{
+		NewMessageFromString("hello, "),
+		NewMessageFromString("world!"),
 	}
 
+	messages[0].ID = "foo"
+	messages[1].ID = "bar"
+
 	for _, msg := range messages {
-		m := NewMessageFromString(msg.Data)
-		m.ID = msg.ID
-		err := queue.Send(ctx, m)
-		if err != nil {
-			t.Fatal(err)
+		if !assert.NoError(t, queue.Send(ctx, msg)) {
+			t.FailNow()
 		}
+	}
+
+	// send dup
+	if !assert.NoError(t, queue.Send(ctx, messages[0])) {
+		t.FailNow()
 	}
 
 	var wg sync.WaitGroup
 	wg.Add(2)
 	received := make(map[interface{}]string)
-	queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
-		// we should get 2 messages discarding the duplicate ID
-		received[event.ID] = string(event.Data)
-		wg.Done()
-		return event.Complete()
+	var all []*Message
+	queue.Receive(ctx, func(ctx context.Context, message *Message) DispositionAction {
+		all = append(all, message)
+		if _, ok := received[message.ID]; !ok {
+			// caught a new one
+			defer wg.Done()
+			received[message.ID] = string(message.Data)
+		} else {
+			// caught a dup
+			assert.Fail(t, "received a duplicate message")
+			for _, item := range all {
+				t.Logf("mID: %q, gID: %q, gSeq: %q, lockT: %q", item.ID, *item.GroupID, *item.GroupSequence, *item.LockToken)
+			}
+		}
+		return message.Complete()
 	})
 	end, _ := ctx.Deadline()
 	waitUntil(t, &wg, time.Until(end))
-	assert.Equal(t, 2, len(received), "should not have more than 2 messages", received)
 }
 
 func (suite *serviceBusSuite) TestQueueWithReceiveAndDelete() {
@@ -537,87 +581,87 @@ func testQueueSendAndReceiveWithReceiveAndDelete(ctx context.Context, t *testing
 	waitUntil(t, &wg, time.Until(end))
 }
 
-func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
-	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"TestSendAndReceiveSession": testQueueWithRequiredSessionSendAndReceive,
-	}
-
-	for name, testFunc := range tests {
-		setupTestTeardown := func(t *testing.T) {
-			ns := suite.getNewSasInstance()
-			queueName := suite.randEntityName()
-			sessionID := mustUUID(t).String()
-			ctx, cancel := context.WithTimeout(context.Background(), timeout)
-			cleanup := makeQueue(ctx, t, ns, queueName,
-				QueueEntityWithPartitioning(),
-				QueueEntityWithRequiredSessions())
-			q, err := ns.NewQueue(ctx, queueName, QueueWithRequiredSession(sessionID))
-			if suite.NoError(err) {
-				testFunc(ctx, t, q)
-				if !t.Failed() {
-					checkZeroQueueMessages(ctx, t, ns, queueName)
-				}
-			}
-			defer func() {
-				if q != nil {
-					q.Close(ctx)
-				}
-				cancel()
-				cleanup()
-			}()
-		}
-
-		suite.T().Run(name, setupTestTeardown)
-	}
-}
-
-func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.T, queue *Queue) {
-	numMessages := rand.Intn(100) + 20
-	messages := make([]string, numMessages)
-	for i := 0; i < numMessages; i++ {
-		messages[i] = test.RandomString("hello", 10)
-	}
-
-	for _, message := range messages {
-		err := queue.Send(ctx, NewMessageFromString(message))
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(numMessages)
-	// ensure in-order processing of messages from the queue
-	count := 0
-	handler := func(ctx context.Context, event *Message) DispositionAction {
-		if !assert.Equal(t, messages[count], string(event.Data)) {
-			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
-		}
-		count++
-		wg.Done()
-		return event.Complete()
-	}
-	listenHandle, err := queue.Receive(ctx, handler)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		defer cancel()
-		listenHandle.Close(ctx)
-	}()
-
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
-}
-
-func mustUUID(t *testing.T) uuid.UUID {
-	id, err := uuid.NewV4()
-	if err != nil {
-		t.Fatal(err)
-	}
-	return id
-}
+//func (suite *serviceBusSuite) TestQueueWithRequiredSessions() {
+//	tests := map[string]func(context.Context, *testing.T, *Queue){
+//		"TestSendAndReceiveSession": testQueueWithRequiredSessionSendAndReceive,
+//	}
+//
+//	for name, testFunc := range tests {
+//		setupTestTeardown := func(t *testing.T) {
+//			ns := suite.getNewSasInstance()
+//			queueName := suite.randEntityName()
+//			sessionID := mustUUID(t).String()
+//			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+//			cleanup := makeQueue(ctx, t, ns, queueName,
+//				QueueEntityWithPartitioning(),
+//				QueueEntityWithRequiredSessions())
+//			q, err := ns.NewQueue(ctx, queueName, QueueWithRequiredSession(sessionID))
+//			if suite.NoError(err) {
+//				testFunc(ctx, t, q)
+//				if !t.Failed() {
+//					checkZeroQueueMessages(ctx, t, ns, queueName)
+//				}
+//			}
+//			defer func() {
+//				if q != nil {
+//					q.Close(ctx)
+//				}
+//				cancel()
+//				cleanup()
+//			}()
+//		}
+//
+//		suite.T().Run(name, setupTestTeardown)
+//	}
+//}
+//
+//func testQueueWithRequiredSessionSendAndReceive(ctx context.Context, t *testing.T, queue *Queue) {
+//	numMessages := rand.Intn(100) + 20
+//	messages := make([]string, numMessages)
+//	for i := 0; i < numMessages; i++ {
+//		messages[i] = test.RandomString("hello", 10)
+//	}
+//
+//	for _, message := range messages {
+//		err := queue.Send(ctx, NewMessageFromString(message))
+//		if err != nil {
+//			t.Fatal(err)
+//		}
+//	}
+//
+//	var wg sync.WaitGroup
+//	wg.Add(numMessages)
+//	// ensure in-order processing of messages from the queue
+//	count := 0
+//	handler := func(ctx context.Context, event *Message) DispositionAction {
+//		if !assert.Equal(t, messages[count], string(event.Data)) {
+//			assert.FailNow(t, fmt.Sprintf("message %d %q didn't match %q", count, messages[count], string(event.Data)))
+//		}
+//		count++
+//		wg.Done()
+//		return event.Complete()
+//	}
+//	listenHandle, err := queue.Receive(ctx, handler)
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	defer func() {
+//		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+//		defer cancel()
+//		listenHandle.Close(ctx)
+//	}()
+//
+//	end, _ := ctx.Deadline()
+//	waitUntil(t, &wg, time.Until(end))
+//}
+//
+//func mustUUID(t *testing.T) uuid.UUID {
+//	id, err := uuid.NewV4()
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	return id
+//}
 
 func makeQueue(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...QueueManagementOption) func() {
 	qm := ns.NewQueueManager()

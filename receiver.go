@@ -97,6 +97,43 @@ func (r *receiver) Recover(ctx context.Context) error {
 	return r.newSessionAndLink(ctx)
 }
 
+func (r *receiver) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.ReceiveOne")
+	defer span.Finish()
+
+	amqpMsg, err := r.listenForMessage(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return nil, err
+	}
+
+	msg, err := messageFromAMQPMessage(amqpMsg)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return nil, err
+	}
+
+	return r.messageToMessageWithContext(ctx, msg), nil
+}
+
+func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) (*MessageWithContext) {
+	const optName = "sb.receiver.amqpEventToMessageWithContext"
+	var span opentracing.Span
+	wireContext, err := extractWireContext(msg)
+	if err == nil {
+		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
+	} else {
+		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
+	}
+	defer span.Finish()
+
+	span.SetTag("amqp.message-id", msg.ID)
+	return &MessageWithContext{
+		Message: msg,
+		Ctx: ctx,
+	}
+}
+
 // Listen start a listener for messages sent to the entity path
 func (r *receiver) Listen(handler Handler) *ListenerHandle {
 	ctx, done := context.WithCancel(context.Background())
@@ -129,25 +166,30 @@ func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 }
 
 func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
-	event := messageFromAMQPMessage(msg)
+	const optName = "sb.receiver.handleMessage"
+	event, err := messageFromAMQPMessage(msg)
+	if err != nil {
+		_, ctx := r.startConsumerSpanFromContext(ctx, optName)
+		log.For(ctx).Error(err)
+	}
 	var span opentracing.Span
 	wireContext, err := extractWireContext(event)
 	if err == nil {
-		span, ctx = r.startConsumerSpanFromWire(ctx, "sb.receiver.handleMessage", wireContext)
+		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
 	} else {
-		span, ctx = r.startConsumerSpanFromContext(ctx, "sb.receiver.handleMessage")
+		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
 	}
 	defer span.Finish()
 
 	id := messageID(msg)
 	span.SetTag("amqp.message-id", id)
 
+	dispositionAction := handler(ctx, event)
+
 	if r.mode == ReceiveAndDeleteMode {
-		// tell broker the message is completed since I've received it
-		event.Complete()(ctx)
+		return
 	}
 
-	dispositionAction := handler(ctx, event)
 	if dispositionAction != nil {
 		dispositionAction(ctx)
 	} else {
@@ -243,9 +285,17 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 		return err
 	}
 
+	receiveMode := amqp.ModeSecond
+	sendMode := amqp.ModeUnsettled
+	if r.mode == ReceiveAndDeleteMode {
+		receiveMode = amqp.ModeFirst
+		sendMode = amqp.ModeSettled
+	}
+
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkReceiverSettle(amqp.ModeSecond),
+		amqp.LinkSenderSettle(sendMode),
+		amqp.LinkReceiverSettle(receiveMode),
 		amqp.LinkCredit(r.prefetch),
 	}
 

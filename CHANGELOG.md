@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v17.3.1`
+
+### Updated Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|               network | 2017-10-01<br/>2017-11-01<br/>2018-01-01<br/>2018-02-01<br/>2018-04-01<br/>2018-05-01 |
+|         servicefabric | 5.6<br/>6.0<br/>6.1<br/>6.2 |
+
 ## `v17.3.0`
 
 ### New Services

@@ -32,20 +32,36 @@ const (
 // BaseClient is the base client for Hdinsight.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI           string
+	SubscriptionID    string
+	ResourceGroupName string
+	ClusterName       string
+	ApplicationName   string
+	Location          string
+	ConfigurationName string
+	ExtensionName     string
+	ScriptName        string
+	ScriptExecutionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:            autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:           baseURI,
+		SubscriptionID:    subscriptionID,
+		ResourceGroupName: resourceGroupName,
+		ClusterName:       clusterName,
+		ApplicationName:   applicationName,
+		Location:          location,
+		ConfigurationName: configurationName,
+		ExtensionName:     extensionName,
+		ScriptName:        scriptName,
+		ScriptExecutionID: scriptExecutionID,
 	}
 }

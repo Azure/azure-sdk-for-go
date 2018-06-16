@@ -30,22 +30,18 @@ type ConfigurationsClient struct {
 }
 
 // NewConfigurationsClient creates an instance of the ConfigurationsClient client.
-func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
-	return NewConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewConfigurationsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ConfigurationsClient {
+	return NewConfigurationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewConfigurationsClientWithBaseURI creates an instance of the ConfigurationsClient client.
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
-	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ConfigurationsClient {
+	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // Get the configuration object for the specified cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-// configurationName - the constant for configuration type of gateway.
-func (client ConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, configurationName string) (result SetString, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, configurationName)
+func (client ConfigurationsClient) Get(ctx context.Context) (result SetString, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -67,11 +63,11 @@ func (client ConfigurationsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client ConfigurationsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, configurationName string) (*http.Request, error) {
+func (client ConfigurationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"configurationName": autorest.Encode("path", configurationName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"configurationName": autorest.Encode("path", client.ConfigurationName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -110,11 +106,9 @@ func (client ConfigurationsClient) GetResponder(resp *http.Response) (result Set
 
 // UpdateHTTPSettings configures the HTTP settings on the specified cluster.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the name of the resource group.
-func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, resourceGroupName string, clusterName string, parameters HTTPConnectivitySettings) (result ConfigurationsUpdateHTTPSettingsFuture, err error) {
-	req, err := client.UpdateHTTPSettingsPreparer(ctx, resourceGroupName, clusterName, parameters)
+func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, parameters HTTPConnectivitySettings) (result ConfigurationsUpdateHTTPSettingsFuture, err error) {
+	req, err := client.UpdateHTTPSettingsPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "UpdateHTTPSettings", nil, "Failure preparing request")
 		return
@@ -130,11 +124,11 @@ func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, resou
 }
 
 // UpdateHTTPSettingsPreparer prepares the UpdateHTTPSettings request.
-func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters HTTPConnectivitySettings) (*http.Request, error) {
+func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Context, parameters HTTPConnectivitySettings) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"configurationName": autorest.Encode("path", "gateway"),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"configurationName": autorest.Encode("path", client.ConfigurationName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

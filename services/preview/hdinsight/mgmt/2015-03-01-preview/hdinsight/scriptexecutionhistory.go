@@ -30,22 +30,19 @@ type ScriptExecutionHistoryClient struct {
 }
 
 // NewScriptExecutionHistoryClient creates an instance of the ScriptExecutionHistoryClient client.
-func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHistoryClient {
-	return NewScriptExecutionHistoryClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewScriptExecutionHistoryClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptExecutionHistoryClient {
+	return NewScriptExecutionHistoryClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewScriptExecutionHistoryClientWithBaseURI creates an instance of the ScriptExecutionHistoryClient client.
-func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
-	return ScriptExecutionHistoryClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptExecutionHistoryClient {
+	return ScriptExecutionHistoryClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // List lists all scripts' execution history for the specified cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ScriptExecutionHistoryClient) List(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListPage, err error) {
+func (client ScriptExecutionHistoryClient) List(ctx context.Context) (result ScriptActionExecutionHistoryListPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", nil, "Failure preparing request")
 		return
@@ -67,10 +64,10 @@ func (client ScriptExecutionHistoryClient) List(ctx context.Context, resourceGro
 }
 
 // ListPreparer prepares the List request.
-func (client ScriptExecutionHistoryClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ScriptExecutionHistoryClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -129,18 +126,14 @@ func (client ScriptExecutionHistoryClient) listNextResults(lastResults ScriptAct
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ScriptExecutionHistoryClient) ListComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, clusterName)
+func (client ScriptExecutionHistoryClient) ListComplete(ctx context.Context) (result ScriptActionExecutionHistoryListIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }
 
 // Promote promotes the specified ad-hoc script execution to a persisted script.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-// scriptExecutionID - the script execution ID.
-func (client ScriptExecutionHistoryClient) Promote(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID int64) (result autorest.Response, err error) {
-	req, err := client.PromotePreparer(ctx, resourceGroupName, clusterName, scriptExecutionID)
+func (client ScriptExecutionHistoryClient) Promote(ctx context.Context) (result autorest.Response, err error) {
+	req, err := client.PromotePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "Promote", nil, "Failure preparing request")
 		return
@@ -162,11 +155,11 @@ func (client ScriptExecutionHistoryClient) Promote(ctx context.Context, resource
 }
 
 // PromotePreparer prepares the Promote request.
-func (client ScriptExecutionHistoryClient) PromotePreparer(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID int64) (*http.Request, error) {
+func (client ScriptExecutionHistoryClient) PromotePreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"scriptExecutionId": autorest.Encode("path", scriptExecutionID),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"scriptExecutionId": autorest.Encode("path", client.ScriptExecutionID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

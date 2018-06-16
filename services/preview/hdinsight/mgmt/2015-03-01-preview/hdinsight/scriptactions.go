@@ -30,22 +30,18 @@ type ScriptActionsClient struct {
 }
 
 // NewScriptActionsClient creates an instance of the ScriptActionsClient client.
-func NewScriptActionsClient(subscriptionID string) ScriptActionsClient {
-	return NewScriptActionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewScriptActionsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptActionsClient {
+	return NewScriptActionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewScriptActionsClientWithBaseURI creates an instance of the ScriptActionsClient client.
-func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) ScriptActionsClient {
-	return ScriptActionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptActionsClient {
+	return ScriptActionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // Delete deletes a specified persisted script action of the cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-// scriptName - the name of the script.
-func (client ScriptActionsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, scriptName string) (result autorest.Response, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName, scriptName)
+func (client ScriptActionsClient) Delete(ctx context.Context) (result autorest.Response, err error) {
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -67,11 +63,11 @@ func (client ScriptActionsClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ScriptActionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, scriptName string) (*http.Request, error) {
+func (client ScriptActionsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"scriptName":        autorest.Encode("path", scriptName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"scriptName":        autorest.Encode("path", client.ScriptName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -108,12 +104,8 @@ func (client ScriptActionsClient) DeleteResponder(resp *http.Response) (result a
 }
 
 // GetExecutionDetail gets the script execution detail for the given script execution ID.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-// scriptExecutionID - the script execution Id
-func (client ScriptActionsClient) GetExecutionDetail(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string) (result RuntimeScriptActionDetail, err error) {
-	req, err := client.GetExecutionDetailPreparer(ctx, resourceGroupName, clusterName, scriptExecutionID)
+func (client ScriptActionsClient) GetExecutionDetail(ctx context.Context) (result RuntimeScriptActionDetail, err error) {
+	req, err := client.GetExecutionDetailPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "GetExecutionDetail", nil, "Failure preparing request")
 		return
@@ -135,11 +127,11 @@ func (client ScriptActionsClient) GetExecutionDetail(ctx context.Context, resour
 }
 
 // GetExecutionDetailPreparer prepares the GetExecutionDetail request.
-func (client ScriptActionsClient) GetExecutionDetailPreparer(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string) (*http.Request, error) {
+func (client ScriptActionsClient) GetExecutionDetailPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"scriptExecutionId": autorest.Encode("path", scriptExecutionID),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"scriptExecutionId": autorest.Encode("path", client.ScriptExecutionID),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -177,12 +169,9 @@ func (client ScriptActionsClient) GetExecutionDetailResponder(resp *http.Respons
 }
 
 // ListPersistedScripts lists all the persisted script actions for the specified cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListPage, err error) {
+func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context) (result ScriptActionsListPage, err error) {
 	result.fn = client.listPersistedScriptsNextResults
-	req, err := client.ListPersistedScriptsPreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.ListPersistedScriptsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", nil, "Failure preparing request")
 		return
@@ -204,10 +193,10 @@ func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context, reso
 }
 
 // ListPersistedScriptsPreparer prepares the ListPersistedScripts request.
-func (client ScriptActionsClient) ListPersistedScriptsPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ScriptActionsClient) ListPersistedScriptsPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -266,7 +255,7 @@ func (client ScriptActionsClient) listPersistedScriptsNextResults(lastResults Sc
 }
 
 // ListPersistedScriptsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ScriptActionsClient) ListPersistedScriptsComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListIterator, err error) {
-	result.page, err = client.ListPersistedScripts(ctx, resourceGroupName, clusterName)
+func (client ScriptActionsClient) ListPersistedScriptsComplete(ctx context.Context) (result ScriptActionsListIterator, err error) {
+	result.page, err = client.ListPersistedScripts(ctx)
 	return
 }

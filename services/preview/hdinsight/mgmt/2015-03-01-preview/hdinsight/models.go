@@ -676,9 +676,9 @@ type ClusterMonitoringRequest struct {
 type ClusterMonitoringResponse struct {
 	autorest.Response `json:"-"`
 	// ClusterMonitoringEnabled - The status of the Operations Management Suite (OMS) on the HDInsight cluster.
-	ClusterMonitoringEnabled *bool `json:"ClusterMonitoringEnabled,omitempty"`
+	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
 	// WorkspaceID - The workspace ID of the Operations Management Suite (OMS) on the HDInsight cluster.
-	WorkspaceID *string `json:"WorkspaceId,omitempty"`
+	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
 // ClusterPatchParameters the PatchCluster request parameters

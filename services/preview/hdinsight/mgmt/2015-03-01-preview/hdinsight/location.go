@@ -30,20 +30,18 @@ type LocationClient struct {
 }
 
 // NewLocationClient creates an instance of the LocationClient client.
-func NewLocationClient(subscriptionID string) LocationClient {
-	return NewLocationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLocationClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) LocationClient {
+	return NewLocationClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewLocationClientWithBaseURI creates an instance of the LocationClient client.
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
-	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) LocationClient {
+	return LocationClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // GetCapabilities gets the capabilities for the specified location.
-// Parameters:
-// location - the location to get capabilities for.
-func (client LocationClient) GetCapabilities(ctx context.Context, location string) (result CapabilitiesResult, err error) {
-	req, err := client.GetCapabilitiesPreparer(ctx, location)
+func (client LocationClient) GetCapabilities(ctx context.Context) (result CapabilitiesResult, err error) {
+	req, err := client.GetCapabilitiesPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "GetCapabilities", nil, "Failure preparing request")
 		return
@@ -65,9 +63,9 @@ func (client LocationClient) GetCapabilities(ctx context.Context, location strin
 }
 
 // GetCapabilitiesPreparer prepares the GetCapabilities request.
-func (client LocationClient) GetCapabilitiesPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client LocationClient) GetCapabilitiesPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
+		"location":       autorest.Encode("path", client.Location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 

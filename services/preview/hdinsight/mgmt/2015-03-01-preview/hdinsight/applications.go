@@ -30,22 +30,20 @@ type ApplicationsClient struct {
 }
 
 // NewApplicationsClient creates an instance of the ApplicationsClient client.
-func NewApplicationsClient(subscriptionID string) ApplicationsClient {
-	return NewApplicationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewApplicationsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ApplicationsClient {
+	return NewApplicationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client.
-func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
-	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ApplicationsClient {
+	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // Create creates applications for the HDInsight cluster.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the application create request.
-func (client ApplicationsClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters ApplicationGetProperties) (result Application, err error) {
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
+func (client ApplicationsClient) Create(ctx context.Context, parameters ApplicationGetProperties) (result Application, err error) {
+	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Create", nil, "Failure preparing request")
 		return
@@ -67,11 +65,11 @@ func (client ApplicationsClient) Create(ctx context.Context, resourceGroupName s
 }
 
 // CreatePreparer prepares the Create request.
-func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ApplicationGetProperties) (*http.Request, error) {
+func (client ApplicationsClient) CreatePreparer(ctx context.Context, parameters ApplicationGetProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":   autorest.Encode("path", "hue"),
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"applicationName":   autorest.Encode("path", client.ApplicationName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -111,11 +109,8 @@ func (client ApplicationsClient) CreateResponder(resp *http.Response) (result Ap
 }
 
 // Delete deletes the specified application on the HDInsight cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ApplicationsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationsDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
+func (client ApplicationsClient) Delete(ctx context.Context) (result ApplicationsDeleteFuture, err error) {
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -131,11 +126,11 @@ func (client ApplicationsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ApplicationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ApplicationsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":   autorest.Encode("path", "hue"),
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"applicationName":   autorest.Encode("path", client.ApplicationName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -182,12 +177,8 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 }
 
 // Get lists properties of the specified application.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-// applicationName - the constant value for the application name.
-func (client ApplicationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result Application, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, applicationName)
+func (client ApplicationsClient) Get(ctx context.Context) (result Application, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "Get", nil, "Failure preparing request")
 		return
@@ -209,11 +200,11 @@ func (client ApplicationsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // GetPreparer prepares the Get request.
-func (client ApplicationsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (*http.Request, error) {
+func (client ApplicationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":   autorest.Encode("path", applicationName),
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"applicationName":   autorest.Encode("path", client.ApplicationName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -251,12 +242,9 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 }
 
 // List lists all of the applications HDInsight cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ApplicationsClient) List(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultPage, err error) {
+func (client ApplicationsClient) List(ctx context.Context) (result ApplicationListResultPage, err error) {
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName)
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", nil, "Failure preparing request")
 		return
@@ -278,10 +266,10 @@ func (client ApplicationsClient) List(ctx context.Context, resourceGroupName str
 }
 
 // ListPreparer prepares the List request.
-func (client ApplicationsClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ApplicationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -340,7 +328,7 @@ func (client ApplicationsClient) listNextResults(lastResults ApplicationListResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ApplicationsClient) ListComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, clusterName)
+func (client ApplicationsClient) ListComplete(ctx context.Context) (result ApplicationListResultIterator, err error) {
+	result.page, err = client.List(ctx)
 	return
 }

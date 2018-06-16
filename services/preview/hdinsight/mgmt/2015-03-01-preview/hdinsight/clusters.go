@@ -31,22 +31,20 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates an instance of the ClustersClient client.
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return NewClustersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewClustersClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ClustersClient {
+	return NewClustersClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
 }
 
 // NewClustersClientWithBaseURI creates an instance of the ClustersClient client.
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ClustersClient {
+	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)}
 }
 
 // Create creates a new HDInsight cluster with the specified parameters.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the cluster create request.
-func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterCreateParametersExtended) (result ClustersCreateFuture, err error) {
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
+func (client ClustersClient) Create(ctx context.Context, parameters ClusterCreateParametersExtended) (result ClustersCreateFuture, err error) {
+	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "Create", nil, "Failure preparing request")
 		return
@@ -62,10 +60,10 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterCreateParametersExtended) (*http.Request, error) {
+func (client ClustersClient) CreatePreparer(ctx context.Context, parameters ClusterCreateParametersExtended) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -115,11 +113,8 @@ func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluste
 }
 
 // Delete deletes the specified HDInsight cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ClustersClient) Delete(ctx context.Context, resourceGroupName string, clusterName string) (result ClustersDeleteFuture, err error) {
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName)
+func (client ClustersClient) Delete(ctx context.Context) (result ClustersDeleteFuture, err error) {
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "Delete", nil, "Failure preparing request")
 		return
@@ -135,10 +130,10 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ClustersClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -186,17 +181,15 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 
 // ExecuteScriptActions executes script actions on the specified HDInsight cluster.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the parameters for executing script actions.
-func (client ClustersClient) ExecuteScriptActions(ctx context.Context, resourceGroupName string, clusterName string, parameters ExecuteScriptActionParameters) (result ClustersExecuteScriptActionsFuture, err error) {
+func (client ClustersClient) ExecuteScriptActions(ctx context.Context, parameters ExecuteScriptActionParameters) (result ClustersExecuteScriptActionsFuture, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.PersistOnSuccess", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hdinsight.ClustersClient", "ExecuteScriptActions", err.Error())
 	}
 
-	req, err := client.ExecuteScriptActionsPreparer(ctx, resourceGroupName, clusterName, parameters)
+	req, err := client.ExecuteScriptActionsPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "ExecuteScriptActions", nil, "Failure preparing request")
 		return
@@ -212,10 +205,10 @@ func (client ClustersClient) ExecuteScriptActions(ctx context.Context, resourceG
 }
 
 // ExecuteScriptActionsPreparer prepares the ExecuteScriptActions request.
-func (client ClustersClient) ExecuteScriptActionsPreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ExecuteScriptActionParameters) (*http.Request, error) {
+func (client ClustersClient) ExecuteScriptActionsPreparer(ctx context.Context, parameters ExecuteScriptActionParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -264,11 +257,8 @@ func (client ClustersClient) ExecuteScriptActionsResponder(resp *http.Response) 
 }
 
 // Get gets the specified cluster.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
-func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string) (result Cluster, err error) {
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName)
+func (client ClustersClient) Get(ctx context.Context) (result Cluster, err error) {
+	req, err := client.GetPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "Get", nil, "Failure preparing request")
 		return
@@ -290,10 +280,10 @@ func (client ClustersClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ClustersClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -421,11 +411,9 @@ func (client ClustersClient) ListComplete(ctx context.Context) (result ClusterLi
 }
 
 // ListByResourceGroup lists the HDInsight clusters in a resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group.
-func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ClusterListResultPage, err error) {
+func (client ClustersClient) ListByResourceGroup(ctx context.Context) (result ClusterListResultPage, err error) {
 	result.fn = client.listByResourceGroupNextResults
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -447,9 +435,9 @@ func (client ClustersClient) ListByResourceGroup(ctx context.Context, resourceGr
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -508,18 +496,16 @@ func (client ClustersClient) listByResourceGroupNextResults(lastResults ClusterL
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ClusterListResultIterator, err error) {
-	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+func (client ClustersClient) ListByResourceGroupComplete(ctx context.Context) (result ClusterListResultIterator, err error) {
+	result.page, err = client.ListByResourceGroup(ctx)
 	return
 }
 
 // Resize resizes the specified HDInsight cluster to the specified size.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the parameters for the resize operation.
-func (client ClustersClient) Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterResizeParameters) (result ClustersResizeFuture, err error) {
-	req, err := client.ResizePreparer(ctx, resourceGroupName, clusterName, parameters)
+func (client ClustersClient) Resize(ctx context.Context, parameters ClusterResizeParameters) (result ClustersResizeFuture, err error) {
+	req, err := client.ResizePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "Resize", nil, "Failure preparing request")
 		return
@@ -535,10 +521,10 @@ func (client ClustersClient) Resize(ctx context.Context, resourceGroupName strin
 }
 
 // ResizePreparer prepares the Resize request.
-func (client ClustersClient) ResizePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterResizeParameters) (*http.Request, error) {
+func (client ClustersClient) ResizePreparer(ctx context.Context, parameters ClusterResizeParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"roleName":          autorest.Encode("path", "workernode"),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -589,11 +575,9 @@ func (client ClustersClient) ResizeResponder(resp *http.Response) (result autore
 
 // Update patch HDInsight cluster with the specified parameters.
 // Parameters:
-// resourceGroupName - the name of the resource group.
-// clusterName - the name of the cluster.
 // parameters - the cluster patch request.
-func (client ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterPatchParameters) (result Cluster, err error) {
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, parameters)
+func (client ClustersClient) Update(ctx context.Context, parameters ClusterPatchParameters) (result Cluster, err error) {
+	req, err := client.UpdatePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ClustersClient", "Update", nil, "Failure preparing request")
 		return
@@ -615,10 +599,10 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterPatchParameters) (*http.Request, error) {
+func (client ClustersClient) UpdatePreparer(ctx context.Context, parameters ClusterPatchParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"clusterName":       autorest.Encode("path", client.ClusterName),
+		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 

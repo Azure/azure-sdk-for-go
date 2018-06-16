@@ -501,3 +501,84 @@ func (client WorkspacesClient) ListByResourceGroupComplete(ctx context.Context, 
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName, maxResults)
 	return
 }
+
+// Update updates properties of a Workspace.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// workspaceName - the name of the workspace. Workspace names can only contain a combination of alphanumeric
+// characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+// parameters - additional parameters for workspace update.
+func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspaceUpdateParameters) (result Workspace, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 64, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[-\w_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("batchai.WorkspacesClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, workspaceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "Update", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "Update", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "Update", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdatePreparer prepares the Update request.
+func (client WorkspacesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspaceUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2018-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateSender sends the Update request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkspacesClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// UpdateResponder handles the response to the Update request. The method always
+// closes the http.Response Body.
+func (client WorkspacesClient) UpdateResponder(resp *http.Response) (result Workspace, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

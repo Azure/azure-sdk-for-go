@@ -24,7 +24,6 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go"
@@ -43,6 +42,7 @@ type (
 		sender     *amqp.Sender
 		entityPath string
 		Name       string
+		sessionID  *string
 	}
 
 	// SendOption provides a way to customize a message on sending
@@ -52,10 +52,13 @@ type (
 		Set(key, value string)
 		toMsg() *amqp.Message
 	}
+
+	// senderOption provides a way to customize a sender
+	senderOption func(*sender) error
 )
 
 // newSender creates a new Service Bus message sender given an AMQP client and entity path
-func (ns *Namespace) newSender(ctx context.Context, entityPath string) (*sender, error) {
+func (ns *Namespace) newSender(ctx context.Context, entityPath string, opts ...senderOption) (*sender, error) {
 	span, ctx := ns.startSpanFromContext(ctx, "sb.sender.newSender")
 	defer span.Finish()
 
@@ -63,8 +66,18 @@ func (ns *Namespace) newSender(ctx context.Context, entityPath string) (*sender,
 		namespace:  ns,
 		entityPath: entityPath,
 	}
-	log.For(ctx).Debug(fmt.Sprintf("creating a new sender for entity path %s", s.entityPath))
+
+	for _, opt := range opts {
+		if err := opt(s); err != nil {
+			log.For(ctx).Error(err)
+			return nil, err
+		}
+	}
+
 	err := s.newSessionAndLink(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+	}
 	return s, err
 }
 
@@ -101,6 +114,7 @@ func (s *sender) Send(ctx context.Context, event *Message, opts ...SendOption) e
 	if event.ID == "" {
 		id, err := uuid.NewV4()
 		if err != nil {
+			log.For(ctx).Error(err)
 			return err
 		}
 		event.ID = id.String()
@@ -109,6 +123,7 @@ func (s *sender) Send(ctx context.Context, event *Message, opts ...SendOption) e
 	for _, opt := range opts {
 		err := opt(event)
 		if err != nil {
+			log.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -204,7 +219,7 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 
 	amqpSender, err := amqpSession.NewSender(
 		amqp.LinkTargetAddress(s.getAddress()),
-		amqp.LinkSenderSettle(amqp.ModeUnsettled))
+		amqp.LinkSenderSettle(amqp.ModeMixed))
 	if err != nil {
 		log.For(ctx).Error(err)
 		return err
@@ -215,36 +230,19 @@ func (s *sender) newSessionAndLink(ctx context.Context) error {
 		log.For(ctx).Error(err)
 		return err
 	}
+	if s.sessionID != nil {
+		s.session.SessionID = *s.sessionID
+	}
 
 	s.sender = amqpSender
 	return nil
 }
 
-// SendWithMessageID configures the message with a message ID
-func SendWithMessageID(messageID string) SendOption {
-	return func(event *Message) error {
-		event.ID = messageID
-		return nil
-	}
-}
-
-// SendWithSession configures the message to send with a specific session and sequence. By default, a sender has a
+// sendWithSession configures the message to send with a specific session and sequence. By default, a sender has a
 // default session (uuid.NewV4()) and sequence generator.
-func SendWithSession(sessionID string, sequence uint32) SendOption {
-	return func(event *Message) error {
-		event.GroupID = &sessionID
-		event.GroupSequence = &sequence
-		return nil
-	}
-}
-
-// SendWithoutSessionID will set the SessionID to nil. If sending to a partitioned Service Bus queue, this will cause
-// the queue distributed the message in a round robin fashion to the next available partition with the effect of not
-// enforcing FIFO ordering of messages, but enabling more efficient distribution of messages across partitions.
-func SendWithoutSessionID() SendOption {
-	return func(event *Message) error {
-		event.GroupID = nil
-		event.GroupSequence = nil
+func sendWithSession(sessionID string) senderOption {
+	return func(event *sender) error {
+		event.sessionID = &sessionID
 		return nil
 	}
 }

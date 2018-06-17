@@ -90,3 +90,9 @@ help:
 .PHONY: version
 version:
 	@echo $(VERSION)
+
+.PHONY: examples
+examples: ; $(info $(M) building examples…)	@ ## Building examples
+	@for d in `find _examples -type d -d 1`; do \
+	  $(MAKE) -C $$d; \
+	done

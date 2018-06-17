@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-service-bus-go"
 	"github.com/uber/jaeger-client-go"
@@ -28,14 +29,13 @@ func main() {
 	}
 
 	// Initialize and create a Service Bus Queue named helloworld if it doesn't exist
-	queueName := "helloworld"
-	q, err := ns.NewQueue(context.Background(), queueName)
+	q, err := getQueue(ns, "helloworld")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Send message to the Queue named helloworld
+	// Send the message "Hello World!" to the Queue named helloworld
 	err = q.Send(context.Background(), servicebus.NewMessageFromString("Hello World!"))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -43,14 +43,14 @@ func main() {
 	}
 
 	done := make(chan interface{}, 1)
-	// Receive message from queue named helloworld
+	// Receive the message "Hello World!" from queue named helloworld
 	listenHandle, err := q.Receive(context.Background(),
 		func(ctx context.Context, msg *servicebus.Message) servicebus.DispositionAction {
 			fmt.Println(string(msg.Data))
 			defer func(){
 				done <- nil
 			}()
-			return msg.Accept()
+			return msg.Complete()
 		})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
@@ -85,4 +85,11 @@ func startOpenTracing() (io.Closer, error) {
 		"opentracing_example",
 		config.Logger(jLogger),
 	)
+}
+
+func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	q, err := ns.NewQueue(ctx, queueName)
+	return q, err
 }

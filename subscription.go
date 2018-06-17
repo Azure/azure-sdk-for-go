@@ -32,7 +32,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 type (
@@ -41,9 +43,11 @@ type (
 	//Messages are received from a subscription identically to the way they are received from a queue.
 	Subscription struct {
 		*entity
-		Topic      *Topic
-		receiver   *receiver
-		receiverMu sync.Mutex
+		Topic             *Topic
+		receiver          *receiver
+		receiverMu        sync.Mutex
+		receiveMode       ReceiveMode
+		requiredSessionID *string
 	}
 
 	// SubscriptionManager provides CRUD functionality for Service Bus Subscription
@@ -79,15 +83,28 @@ type (
 
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
-		XMLName xml.Name `xml:"SubscriptionDescription"`
-		ReceiveBaseDescription
+		XMLName                                   xml.Name                 `xml:"SubscriptionDescription"`
 		BaseEntityDescription
-		DeadLetteringOnFilterEvaluationExceptions *bool     `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
-		AccessedAt                                date.Time `xml:"AccessedAt,omitempty"`
+		LockDuration                              *string                  `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		RequiresSession                           *bool                    `xml:"RequiresSession,omitempty"`
+		DefaultMessageTimeToLive                  *string                  `xml:"DefaultMessageTimeToLive,omitempty"`         // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		DeadLetteringOnMessageExpiration          *bool                    `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		DeadLetteringOnFilterEvaluationExceptions *bool                    `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
+		MessageCount                              *int64                   `xml:"MessageCount,omitempty"`            // MessageCount - The number of messages in the queue.
+		MaxDeliveryCount                          *int32                   `xml:"MaxDeliveryCount,omitempty"`        // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		EnableBatchedOperations                   *bool                    `xml:"EnableBatchedOperations,omitempty"` // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		Status                                    *servicebus.EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                                 *date.Time               `xml:"CreatedAt,omitempty"`
+		UpdatedAt                                 *date.Time               `xml:"UpdatedAt,omitempty"`
+		AccessedAt                                *date.Time               `xml:"AccessedAt,omitempty"`
+		AutoDeleteOnIdle                          *string                  `xml:"AutoDeleteOnIdle,omitempty"`
 	}
 
-	// SubscriptionOption represents named options for assisting Subscription creation
-	SubscriptionOption func(topic *SubscriptionDescription) error
+	// SubscriptionManagementOption represents named options for assisting Subscription creation
+	SubscriptionManagementOption func(*SubscriptionDescription) error
+
+	// SubscriptionOption configures the Subscription Azure Service Bus client
+	SubscriptionOption func(*Subscription) error
 )
 
 // NewSubscriptionManager creates a new SubscriptionManager for a Service Bus Topic
@@ -120,7 +137,7 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Topic
-func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionOption) (*SubscriptionEntity, error) {
+func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionManagementOption) (*SubscriptionEntity, error) {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
 	defer span.Finish()
 
@@ -131,8 +148,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 		}
 	}
 
-	sd.InstanceMetadataSchema = instanceMetadataSchema
-	sd.ServiceBusSchema = serviceBusSchema
+	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &subscriptionEntry{
 		Entry: &Entry{
@@ -141,7 +157,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 			AtomSchema:                atomSchema,
 		},
 		Content: &subscriptionContent{
-			Type: applicationXML,
+			Type:                    applicationXML,
 			SubscriptionDescription: *sd,
 		},
 	}
@@ -165,7 +181,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	var entry subscriptionEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 	return subscriptionEntryToEntity(&entry), nil
 }
@@ -188,7 +204,7 @@ func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity,
 	var feed subscriptionFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 
 	subs := make([]*SubscriptionEntity, len(feed.Entries))
@@ -223,7 +239,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 		if isEmptyFeed(b) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 	return subscriptionEntryToEntity(&entry), nil
 }
@@ -231,7 +247,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 	return &SubscriptionEntity{
 		SubscriptionDescription: &entry.Content.SubscriptionDescription,
-		Name: entry.Title,
+		Name:                    entry.Title,
 	}
 }
 
@@ -239,63 +255,83 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 	return "/" + sm.Topic.Name + "/subscriptions/" + name
 }
 
+// SubscriptionWithReceiveAndDelete configures a subscription to pop and delete messages off of the queue upon receiving the message.
+// This differs from the default, PeekLock, where PeekLock receives a message, locks it for a period of time, then sends
+// a disposition to the broker when the message has been processed.
+func SubscriptionWithReceiveAndDelete() SubscriptionOption {
+	return func(s *Subscription) error {
+		s.receiveMode = ReceiveAndDeleteMode
+		return nil
+	}
+}
+
 // NewSubscription creates a new Topic Subscription client
 func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...SubscriptionOption) (*Subscription, error) {
 	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewSubscription")
 	defer span.Finish()
 
-	sm := t.NewSubscriptionManager()
-	qe, err := sm.Get(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-
-	if qe == nil {
-		_, err := sm.Put(ctx, name, opts...)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return &Subscription{
+	sub := &Subscription{
 		entity: &entity{
 			namespace: t.namespace,
 			Name:      name,
 		},
 		Topic: t,
-	}, nil
+	}
+
+	for _, opt := range opts {
+		if err := opt(sub); err != nil {
+			log.For(ctx).Error(err)
+			return nil, err
+		}
+	}
+	return sub, nil
+}
+
+// ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
+func (s *Subscription) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveOne")
+	defer span.Finish()
+
+	err := s.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.receiver.ReceiveOne(ctx)
 }
 
 // Receive subscribes for messages sent to the Subscription
-func (s *Subscription) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+func (s *Subscription) Receive(ctx context.Context, handler Handler) (*ListenerHandle, error) {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.Receive")
+	defer span.Finish()
+
+	err := s.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return s.receiver.Listen(handler), nil
+}
+
+func (s *Subscription) ensureReceiver(ctx context.Context) error {
+	span, ctx := s.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
 	defer span.Finish()
 
 	s.receiverMu.Lock()
 	defer s.receiverMu.Unlock()
 
-	if s.receiver != nil {
-		if err := s.receiver.Close(ctx); err != nil {
-			log.For(ctx).Error(err)
-			return nil, err
-		}
+	opts := []receiverOption{receiverWithReceiveMode(s.receiveMode)}
+	if s.requiredSessionID != nil {
+		opts = append(opts, receiverWithSession(*s.requiredSessionID))
 	}
 
-	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name)
-	for _, opt := range opts {
-		if err := opt(receiver); err != nil {
-			log.For(ctx).Error(err)
-			return nil, err
-		}
-	}
-
+	receiver, err := s.namespace.newReceiver(ctx, s.Topic.Name+"/Subscriptions/"+s.Name, opts...)
 	if err != nil {
 		log.For(ctx).Error(err)
-		return nil, err
+		return err
 	}
 
 	s.receiver = receiver
-	return receiver.Listen(handler), err
+	return nil
 }
 
 // Close the underlying connection to Service Bus
@@ -307,7 +343,7 @@ func (s *Subscription) Close(ctx context.Context) error {
 }
 
 // SubscriptionWithBatchedOperations configures the subscription to batch server-side operations.
-func SubscriptionWithBatchedOperations() SubscriptionOption {
+func SubscriptionWithBatchedOperations() SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		s.EnableBatchedOperations = ptrBool(true)
 		return nil
@@ -317,7 +353,7 @@ func SubscriptionWithBatchedOperations() SubscriptionOption {
 // SubscriptionWithLockDuration configures the subscription to have a duration of a peek-lock; that is, the amount of
 // time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default
 // value is 1 minute.
-func SubscriptionWithLockDuration(window *time.Duration) SubscriptionOption {
+func SubscriptionWithLockDuration(window *time.Duration) SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		if window == nil {
 			duration := time.Duration(1 * time.Minute)
@@ -329,7 +365,7 @@ func SubscriptionWithLockDuration(window *time.Duration) SubscriptionOption {
 }
 
 // SubscriptionWithRequiredSessions will ensure the subscription requires senders and receivers to have sessionIDs
-func SubscriptionWithRequiredSessions() SubscriptionOption {
+func SubscriptionWithRequiredSessions() SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		s.RequiresSession = ptrBool(true)
 		return nil
@@ -338,7 +374,7 @@ func SubscriptionWithRequiredSessions() SubscriptionOption {
 
 // SubscriptionWithDeadLetteringOnMessageExpiration will ensure the Subscription sends expired messages to the dead
 // letter queue
-func SubscriptionWithDeadLetteringOnMessageExpiration() SubscriptionOption {
+func SubscriptionWithDeadLetteringOnMessageExpiration() SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		s.DeadLetteringOnMessageExpiration = ptrBool(true)
 		return nil
@@ -347,7 +383,7 @@ func SubscriptionWithDeadLetteringOnMessageExpiration() SubscriptionOption {
 
 // SubscriptionWithAutoDeleteOnIdle configures the subscription to automatically delete after the specified idle
 // interval. The minimum duration is 5 minutes.
-func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionOption {
+func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		if window != nil {
 			if window.Minutes() < 5 {
@@ -362,7 +398,7 @@ func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionOption 
 // SubscriptionWithMessageTimeToLive configures the subscription to set a time to live on messages. This is the duration
 // after which the message expires, starting from when the message is sent to Service Bus. This is the default value
 // used when TimeToLive is not set on a message itself. If nil, defaults to 14 days.
-func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionOption {
+func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionManagementOption {
 	return func(s *SubscriptionDescription) error {
 		if window == nil {
 			duration := time.Duration(14 * 24 * time.Hour)

@@ -29,15 +29,15 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	listenHandle, err := q.Receive(ctx, func(ctx context.Context, event *servicebus.Message) servicebus.DispositionAction {
-		text := string(event.Data)
+	listenHandle, err := q.Receive(ctx, func(ctx context.Context, message *servicebus.Message) servicebus.DispositionAction {
+		text := string(message.Data)
 		if text == "exit\n" {
 			fmt.Println("Oh snap!! Someone told me to exit!")
 			exit <- *new(struct{})
 		} else {
-			fmt.Println(string(event.Data))
+			fmt.Println(string(message.Data))
 		}
-		return event.Accept()
+		return message.Complete()
 	})
 	defer listenHandle.Close(context.Background())
 
@@ -62,6 +62,20 @@ func main() {
 func getQueue(ns *servicebus.Namespace, queueName string) (*servicebus.Queue, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	qm := ns.NewQueueManager()
+	qe, err := qm.Get(ctx, queueName)
+	if err != nil {
+		return nil, err
+	}
+
+	if qe == nil {
+		_, err := qm.Put(ctx, queueName)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	q, err := ns.NewQueue(ctx, queueName)
 	return q, err
 }

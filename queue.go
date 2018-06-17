@@ -32,6 +32,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 type (
@@ -46,10 +49,12 @@ type (
 	// message consumer.
 	Queue struct {
 		*entity
-		sender     *sender
-		receiver   *receiver
-		receiverMu sync.Mutex
-		senderMu   sync.Mutex
+		sender            *sender
+		receiver          *receiver
+		receiverMu        sync.Mutex
+		senderMu          sync.Mutex
+		receiveMode       ReceiveMode
+		requiredSessionID *string
 	}
 
 	// QueueManager provides CRUD functionality for Service Bus Queues
@@ -85,17 +90,48 @@ type (
 	// QueueDescription is the content type for Queue management requests
 	QueueDescription struct {
 		XMLName xml.Name `xml:"QueueDescription"`
-		ReceiveBaseDescription
-		SendBaseDescription
 		BaseEntityDescription
+		LockDuration                        *string                  `xml:"LockDuration,omitempty"`               // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		MaxSizeInMegabytes                  *int32                   `xml:"MaxSizeInMegabytes,omitempty"`         // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool                    `xml:"RequiresDuplicateDetection,omitempty"` // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		RequiresSession                     *bool                    `xml:"RequiresSession,omitempty"`
+		DefaultMessageTimeToLive            *string                  `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		DeadLetteringOnMessageExpiration    *bool                    `xml:"DeadLetteringOnMessageExpiration,omitempty"`    // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		DuplicateDetectionHistoryTimeWindow *string                  `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		MaxDeliveryCount                    *int32                   `xml:"MaxDeliveryCount,omitempty"`                    // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		EnableBatchedOperations             *bool                    `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64                   `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		MessageCount                        *int64                   `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
+		IsAnonymousAccessible               *bool                    `xml:"IsAnonymousAccessible,omitempty"`
+		Status                              *servicebus.EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                           *date.Time               `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           *date.Time               `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool                    `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string                  `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool                    `xml:"EnablePartitioning,omitempty"`
+		EnableExpress                       *bool                    `xml:"EnableExpress,omitempty"`
 	}
 
-	// QueueOption represents named options for assisting queue creation
-	QueueOption func(queue *QueueDescription) error
+	// QueueManagementOption represents named configuration options for queue mutation
+	QueueManagementOption func(*QueueDescription) error
+
+	// QueueOption represents named options for assisting Queue message handling
+	QueueOption func(*Queue) error
+
+	// ReceiveMode represents the behavior when consuming a message from a queue
+	ReceiveMode int
+)
+
+const (
+	// PeekLockMode causes a receiver to peek at a message, lock it so no others can consume and have the queue wait for
+	// the DispositionAction
+	PeekLockMode ReceiveMode = 0
+	// ReceiveAndDeleteMode causes a receiver to pop messages off of the queue without waiting for DispositionAction
+	ReceiveAndDeleteMode ReceiveMode = 1
 )
 
 /*
-QueueWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
+QueueEntityWithPartitioning ensure the created queue will be a partitioned queue. Partitioned queues offer increased
 storage and availability compared to non-partitioned queues with the trade-off of requiring the following to ensure
 FIFO message retrieval:
 
@@ -114,19 +150,19 @@ property serves as the partition key if the SessionId or a PartitionKey properti
 all copies of the same message are handled by the same message broker and, thus, allows Service Bus to detect and
 eliminate duplicate messages
 */
-func QueueWithPartitioning() QueueOption {
+func QueueEntityWithPartitioning() QueueManagementOption {
 	return func(queue *QueueDescription) error {
 		queue.EnablePartitioning = ptrBool(true)
 		return nil
 	}
 }
 
-// QueueWithMaxSizeInMegabytes configures the maximum size of the queue in megabytes (1 * 1024 - 5 * 1024), which is the size of
+// QueueEntityWithMaxSizeInMegabytes configures the maximum size of the queue in megabytes (1 * 1024 - 5 * 1024), which is the size of
 // the memory allocated for the queue. Default is 1 MB (1 * 1024).
-func QueueWithMaxSizeInMegabytes(size int) QueueOption {
+func QueueEntityWithMaxSizeInMegabytes(size int) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		if size < 1*Megabytes || size > 5*Megabytes {
-			return errors.New("QueueWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
+			return errors.New("QueueEntityWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
 		}
 		int32Size := int32(size)
 		q.MaxSizeInMegabytes = &int32Size
@@ -134,9 +170,9 @@ func QueueWithMaxSizeInMegabytes(size int) QueueOption {
 	}
 }
 
-// QueueWithDuplicateDetection configures the queue to detect duplicates for a given time window. If window
+// QueueEntityWithDuplicateDetection configures the queue to detect duplicates for a given time window. If window
 // is not specified, then it uses the default of 10 minutes.
-func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
+func QueueEntityWithDuplicateDetection(window *time.Duration) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		q.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
@@ -146,29 +182,29 @@ func QueueWithDuplicateDetection(window *time.Duration) QueueOption {
 	}
 }
 
-// QueueWithRequiredSessions will ensure the queue requires senders and receivers to have sessionIDs
-func QueueWithRequiredSessions() QueueOption {
+// QueueEntityWithRequiredSessions will ensure the queue requires senders and receivers to have sessionIDs
+func QueueEntityWithRequiredSessions() QueueManagementOption {
 	return func(q *QueueDescription) error {
 		q.RequiresSession = ptrBool(true)
 		return nil
 	}
 }
 
-// QueueWithDeadLetteringOnMessageExpiration will ensure the queue sends expired messages to the dead letter queue
-func QueueWithDeadLetteringOnMessageExpiration() QueueOption {
+// QueueEntityWithDeadLetteringOnMessageExpiration will ensure the queue sends expired messages to the dead letter queue
+func QueueEntityWithDeadLetteringOnMessageExpiration() QueueManagementOption {
 	return func(q *QueueDescription) error {
 		q.DeadLetteringOnMessageExpiration = ptrBool(true)
 		return nil
 	}
 }
 
-// QueueWithAutoDeleteOnIdle configures the queue to automatically delete after the specified idle interval. The
+// QueueEntityWithAutoDeleteOnIdle configures the queue to automatically delete after the specified idle interval. The
 // minimum duration is 5 minutes.
-func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
+func QueueEntityWithAutoDeleteOnIdle(window *time.Duration) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		if window != nil {
 			if window.Minutes() < 5 {
-				return errors.New("QueueWithAutoDeleteOnIdle: window must be greater than 5 minutes")
+				return errors.New("QueueEntityWithAutoDeleteOnIdle: window must be greater than 5 minutes")
 			}
 			q.AutoDeleteOnIdle = durationTo8601Seconds(window)
 		}
@@ -176,10 +212,10 @@ func QueueWithAutoDeleteOnIdle(window *time.Duration) QueueOption {
 	}
 }
 
-// QueueWithMessageTimeToLive configures the queue to set a time to live on messages. This is the duration after which
+// QueueEntityWithMessageTimeToLive configures the queue to set a time to live on messages. This is the duration after which
 // the message expires, starting from when the message is sent to Service Bus. This is the default value used when
 // TimeToLive is not set on a message itself. If nil, defaults to 14 days.
-func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
+func QueueEntityWithMessageTimeToLive(window *time.Duration) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		if window == nil {
 			duration := time.Duration(14 * 24 * time.Hour)
@@ -190,16 +226,25 @@ func QueueWithMessageTimeToLive(window *time.Duration) QueueOption {
 	}
 }
 
-// QueueWithLockDuration configures the queue to have a duration of a peek-lock; that is, the amount of time that the
+// QueueEntityWithLockDuration configures the queue to have a duration of a peek-lock; that is, the amount of time that the
 // message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
 // minute.
-func QueueWithLockDuration(window *time.Duration) QueueOption {
+func QueueEntityWithLockDuration(window *time.Duration) QueueManagementOption {
 	return func(q *QueueDescription) error {
 		if window == nil {
 			duration := time.Duration(1 * time.Minute)
 			window = &duration
 		}
 		q.LockDuration = durationTo8601Seconds(window)
+		return nil
+	}
+}
+
+// QueueEntityWithMaxDeliveryCount configures the queue to have a maximum number of delivery attempts before
+// dead-lettering the message
+func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
+	return func(q *QueueDescription) error {
+		q.MaxDeliveryCount = &count
 		return nil
 	}
 }
@@ -221,7 +266,7 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Queue
-func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOption) (*QueueEntity, error) {
+func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManagementOption) (*QueueEntity, error) {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
 	defer span.Finish()
 
@@ -233,14 +278,11 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOptio
 		}
 	}
 
-	qd.InstanceMetadataSchema = instanceMetadataSchema
-	qd.ServiceBusSchema = serviceBusSchema
+	qd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &queueEntry{
 		Entry: &Entry{
-			DataServiceSchema:         dataServiceSchema,
-			DataServiceMetadataSchema: dataServiceMetadataSchema,
-			AtomSchema:                atomSchema,
+			AtomSchema: atomSchema,
 		},
 		Content: &queueContent{
 			Type:             applicationXML,
@@ -270,7 +312,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueOptio
 	var entry queueEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 	return queueEntryToEntity(&entry), nil
 }
@@ -295,7 +337,7 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	var feed queueFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 
 	qd := make([]*QueueEntity, len(feed.Entries))
@@ -332,7 +374,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 		if isEmptyFeed(b) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 
 	return queueEntryToEntity(&entry), nil
@@ -345,34 +387,48 @@ func queueEntryToEntity(entry *queueEntry) *QueueEntity {
 	}
 }
 
+// QueueWithReceiveAndDelete configures a queue to pop and delete messages off of the queue upon receiving the message.
+// This differs from the default, PeekLock, where PeekLock receives a message, locks it for a period of time, then sends
+// a disposition to the broker when the message has been processed.
+func QueueWithReceiveAndDelete() QueueOption {
+	return func(q *Queue) error {
+		q.receiveMode = ReceiveAndDeleteMode
+		return nil
+	}
+}
+
+//// QueueWithRequiredSession configures a queue to use a session
+//func QueueWithRequiredSession(sessionID string) QueueOption {
+//	return func(q *Queue) error {
+//		q.requiredSessionID = &sessionID
+//		return nil
+//	}
+//}
+
 // NewQueue creates a new Queue Sender / Receiver
 func (ns *Namespace) NewQueue(ctx context.Context, name string, opts ...QueueOption) (*Queue, error) {
 	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewQueue")
 	defer span.Finish()
 
-	qm := ns.NewQueueManager()
-	qe, err := qm.Get(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-
-	if qe == nil {
-		_, err := qm.Put(ctx, name, opts...)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return &Queue{
+	queue := &Queue{
 		entity: &entity{
 			namespace: ns,
 			Name:      name,
 		},
-	}, nil
+		receiveMode: PeekLockMode,
+	}
+
+	for _, opt := range opts {
+		if err := opt(queue); err != nil {
+			log.For(ctx).Error(err)
+			return nil, err
+		}
+	}
+	return queue, nil
 }
 
 // Send sends messages to the Queue
-func (q *Queue) Send(ctx context.Context, event *Message, opts ...SendOption) error {
+func (q *Queue) Send(ctx context.Context, event *Message) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Send")
 	defer span.Finish()
 
@@ -381,32 +437,54 @@ func (q *Queue) Send(ctx context.Context, event *Message, opts ...SendOption) er
 		log.For(ctx).Error(err)
 		return err
 	}
-	return q.sender.Send(ctx, event, opts...)
+	return q.sender.Send(ctx, event)
+}
+
+// ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
+func (q *Queue) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ReceiveOne")
+	defer span.Finish()
+
+	err := q.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return q.receiver.ReceiveOne(ctx)
 }
 
 // Receive subscribes for messages sent to the Queue
-func (q *Queue) Receive(ctx context.Context, handler Handler, opts ...ReceiverOptions) (*ListenerHandle, error) {
+func (q *Queue) Receive(ctx context.Context, handler Handler) (*ListenerHandle, error) {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.Receive")
+	defer span.Finish()
+
+	err := q.ensureReceiver(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return q.receiver.Listen(handler), nil
+}
+
+func (q *Queue) ensureReceiver(ctx context.Context) error {
+	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.ensureReceiver")
 	defer span.Finish()
 
 	q.receiverMu.Lock()
 	defer q.receiverMu.Unlock()
 
-	if q.receiver != nil {
-		if err := q.receiver.Close(ctx); err != nil {
-			log.For(ctx).Error(err)
-			return nil, err
-		}
+	opts := []receiverOption{receiverWithReceiveMode(q.receiveMode)}
+	if q.requiredSessionID != nil {
+		opts = append(opts, receiverWithSession(*q.requiredSessionID))
 	}
 
 	receiver, err := q.namespace.newReceiver(ctx, q.Name, opts...)
 	if err != nil {
 		log.For(ctx).Error(err)
-		return nil, err
+		return err
 	}
 
 	q.receiver = receiver
-	return receiver.Listen(handler), err
+	return nil
 }
 
 // Close the underlying connection to Service Bus
@@ -436,8 +514,13 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 	q.senderMu.Lock()
 	defer q.senderMu.Unlock()
 
+	var opts []senderOption
+	if q.requiredSessionID != nil {
+		opts = append(opts, sendWithSession(*q.requiredSessionID))
+	}
+
 	if q.sender == nil {
-		s, err := q.namespace.newSender(ctx, q.Name)
+		s, err := q.namespace.newSender(ctx, q.Name, opts...)
 		if err != nil {
 			log.For(ctx).Error(err)
 			return err

@@ -103,6 +103,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 	outerCtx, outerCancel := context.WithTimeout(context.Background(), timeout)
 	defer outerCancel()
 	topicName := suite.RandomName("gosb", 6)
+	cleanupTopic := makeTopic(outerCtx, suite.T(), ns, topicName)
 	topic, err := ns.NewTopic(outerCtx, topicName)
 	if suite.NoError(err) {
 		sm := topic.NewSubscriptionManager()
@@ -116,6 +117,7 @@ func (suite *serviceBusSuite) TestSubscriptionManagementWrites() {
 			})
 		}
 	}
+	defer cleanupTopic()
 }
 
 func testPutSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string) {
@@ -150,43 +152,29 @@ func (suite *serviceBusSuite) TestSubscriptionManagement() {
 	}
 
 	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
-
 	for name, testFunc := range tests {
+		topicName := suite.randEntityName()
+		subName := suite.randEntityName()
+
 		setupTestTeardown := func(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-
-			topicName := suite.randEntityName()
-			subName := suite.randEntityName()
-
-			_, err := tm.Put(ctx, topicName)
-			if err != nil {
-				t.Fatal(err)
-			}
+			cleanupTopic := makeTopic(ctx, t, ns, topicName)
 			topic, err := ns.NewTopic(ctx, topicName)
 			if suite.NoError(err) {
 				sm := topic.NewSubscriptionManager()
-				_, err = sm.Put(ctx, topicName)
-				if err != nil {
-					t.Fatal(err)
+				if suite.NoError(err) {
+					defer func(sName string) {
+						ctx, cancel := context.WithTimeout(context.Background(), timeout)
+						defer cancel()
+						if !suite.NoError(sm.Delete(ctx, sName)) {
+							suite.Fail(err.Error())
+						}
+					}(subName)
+					testFunc(ctx, t, sm, topicName, subName)
 				}
-
-				defer func(tName, sName string) {
-					innerCtx, cancel := context.WithTimeout(context.Background(), timeout)
-					defer cancel()
-					err = sm.Delete(innerCtx, sName)
-					err2 := tm.Delete(innerCtx, tName)
-					if err != nil {
-						suite.T().Fatal(err)
-					}
-					if err2 != nil {
-						suite.T().Fatal(err2)
-					}
-				}(topicName, subName)
-
-				testFunc(ctx, t, sm, topicName, subName)
 			}
+			defer cleanupTopic()
 		}
 		suite.T().Run(name, setupTestTeardown)
 	}
@@ -235,17 +223,23 @@ func testSubscriptionWithLockDuration(ctx context.Context, t *testing.T, sm *Sub
 	assert.Equal(t, "PT3M", *s.LockDuration)
 }
 
-func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionOption) *SubscriptionEntity {
-	s, err := sm.Put(ctx, name, opts...)
+func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) *SubscriptionEntity {
+	_, err := sm.Put(ctx, name, opts...)
 	if err != nil {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
+	}
+
+	s, err := sm.Get(ctx, name)
+	if !assert.NoError(t, err) {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
 	return s
 }
 
-func (suite *serviceBusSuite) TestSubscription() {
+func (suite *serviceBusSuite) TestSubscriptionClient() {
 	tests := map[string]func(context.Context, *testing.T, *Topic, *Subscription){
 		"SimpleReceive": testSubscriptionReceive,
+		"ReceiveOne":    testSubscriptionReceiveOne,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -255,25 +249,21 @@ func (suite *serviceBusSuite) TestSubscription() {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 
+			topicCleanup := makeTopic(ctx, t, ns, topicName)
 			topic, err := ns.NewTopic(ctx, topicName)
 			if suite.NoError(err) {
 				subName := suite.randEntityName()
+				subCleanup := makeSubscription(ctx, t, topic, subName)
 				subscription, err := topic.NewSubscription(ctx, subName)
+
 				if suite.NoError(err) {
-					defer func() {
-						closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
-						defer closeCancel()
-						subscription.Close(closeCtx)
-						suite.cleanupSubscription(topic, subName)
-					}()
+					defer subCleanup()
 					testFunc(ctx, t, topic, subscription)
+					if !t.Failed() {
+						checkZeroSubscriptionMessages(ctx, t, topic, subName)
+					}
 				}
-				defer func() {
-					closeCtx, closeCancel := context.WithTimeout(context.Background(), timeout)
-					defer closeCancel()
-					topic.Close(closeCtx)
-					suite.cleanupTopic(topicName)
-				}()
+				defer topicCleanup()
 			}
 		}
 
@@ -282,18 +272,68 @@ func (suite *serviceBusSuite) TestSubscription() {
 }
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
+	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		_, err := sub.Receive(ctx, func(eventCtx context.Context, msg *Message) DispositionAction {
+			wg.Done()
+			return msg.Complete()
+		})
+		if !assert.NoError(t, err) {
+			t.FailNow()
+		}
+		end, _ := ctx.Deadline()
+		waitUntil(t, &wg, time.Until(end))
+	}
+}
+
+func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
 	err := topic.Send(ctx, NewMessageFromString("hello!"))
 	assert.Nil(t, err)
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-	_, err = sub.Receive(ctx, func(eventCtx context.Context, evt *Message) DispositionAction {
-		wg.Done()
-		return evt.Accept()
-	})
-	if err != nil {
-		t.Fatal(err)
+	msg, err := sub.ReceiveOne(ctx)
+	if !assert.NoError(t, err) {
+		t.FailNow()
 	}
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
+
+	msg.Complete()
+}
+
+func makeSubscription(ctx context.Context, t *testing.T, topic *Topic, name string, opts ...SubscriptionManagementOption) func() {
+	sm := topic.NewSubscriptionManager()
+	entity, err := sm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, "could not GET a subscription")
+	}
+
+	if entity == nil {
+		entity, err = sm.Put(ctx, name, opts...)
+		if !assert.NoError(t, err) {
+			assert.FailNow(t, "could not PUT a subscription")
+		}
+	}
+	return func() {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+
+		_ = sm.Delete(ctx, entity.Name)
+	}
+}
+
+func checkZeroSubscriptionMessages(ctx context.Context, t *testing.T, topic *Topic, name string) {
+	sm := topic.NewSubscriptionManager()
+	maxTries := 10
+	for i := 0; i < maxTries; i++ {
+		s, err := sm.Get(ctx, name)
+		if !assert.NoError(t, err) {
+			return
+		}
+		if *s.MessageCount == 0 {
+			return
+		}
+		t.Logf("try %d out of %d, message count was %d, not 0", i+1, maxTries, *s.MessageCount)
+		time.Sleep(1 * time.Second)
+	}
+
+	assert.Fail(t, "message count never reached zero")
 }

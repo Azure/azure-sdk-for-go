@@ -32,6 +32,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 type (
@@ -82,15 +85,31 @@ type (
 
 	// TopicDescription is the content type for Topic management requests
 	TopicDescription struct {
-		XMLName xml.Name `xml:"TopicDescription"`
-		SendBaseDescription
+		XMLName                             xml.Name                 `xml:"TopicDescription"`
 		BaseEntityDescription
-		FilteringMessagesBeforePublishing *bool `xml:"FilteringMessagesBeforePublishing,omitempty"`
-		EnableSubscriptionPartitioning    *bool `xml:"EnableSubscriptionPartitioning,omitempty"`
+		DefaultMessageTimeToLive            *string                  `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message time span to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		MaxSizeInMegabytes                  *int32                   `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool                    `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		DuplicateDetectionHistoryTimeWindow *string                  `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		EnableBatchedOperations             *bool                    `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64                   `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		FilteringMessagesBeforePublishing   *bool                    `xml:"FilteringMessagesBeforePublishing,omitempty"`
+		IsAnonymousAccessible               *bool                    `xml:"IsAnonymousAccessible,omitempty"`
+		Status                              *servicebus.EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                           *date.Time               `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           *date.Time               `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool                    `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string                  `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool                    `xml:"EnablePartitioning,omitempty"`
+		EnableSubscriptionPartitioning      *bool                    `xml:"EnableSubscriptionPartitioning,omitempty"`
+		EnableExpress                       *bool                    `xml:"EnableExpress,omitempty"`
 	}
 
-	// TopicOption represents named options for assisting Topic creation
-	TopicOption func(topic *TopicDescription) error
+	// TopicManagementOption represents named options for assisting Topic creation
+	TopicManagementOption func(*TopicDescription) error
+
+	// TopicOption represents named options for assisting Topic message handling
+	TopicOption func(*Topic) error
 )
 
 // NewTopicManager creates a new TopicManager for a Service Bus Namespace
@@ -110,7 +129,7 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 }
 
 // Put creates or updates a Service Bus Topic
-func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOption) (*TopicEntity, error) {
+func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManagementOption) (*TopicEntity, error) {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
 	defer span.Finish()
 
@@ -122,8 +141,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOptio
 		}
 	}
 
-	td.InstanceMetadataSchema = instanceMetadataSchema
-	td.ServiceBusSchema = serviceBusSchema
+	td.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &topicEntry{
 		Entry: &Entry{
@@ -159,7 +177,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicOptio
 	var entry topicEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 	return topicEntryToEntity(&entry), nil
 }
@@ -184,7 +202,7 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	var feed topicFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 
 	topics := make([]*TopicEntity, len(feed.Entries))
@@ -221,7 +239,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 		if isEmptyFeed(b) {
 			return nil, nil
 		}
-		return nil, err
+		return nil, formatManagementError(b)
 	}
 	return topicEntryToEntity(&entry), nil
 }
@@ -238,25 +256,21 @@ func (ns *Namespace) NewTopic(ctx context.Context, name string, opts ...TopicOpt
 	span, ctx := ns.startSpanFromContext(ctx, "sb.Namespace.NewTopic")
 	defer span.Finish()
 
-	tm := ns.NewTopicManager()
-	qe, err := tm.Get(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-
-	if qe == nil {
-		_, err := tm.Put(ctx, name, opts...)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return &Topic{
+	topic := &Topic{
 		entity: &entity{
 			namespace: ns,
 			Name:      name,
 		},
-	}, nil
+	}
+
+	for _, opt := range opts {
+		if err := opt(topic); err != nil {
+			log.For(ctx).Error(err)
+			return nil, err
+		}
+	}
+
+	return topic, nil
 }
 
 // Send sends messages to the Topic
@@ -304,7 +318,7 @@ func (t *Topic) ensureSender(ctx context.Context) error {
 
 // TopicWithMaxSizeInMegabytes configures the maximum size of the topic in megabytes (1 * 1024 - 5 * 1024), which is the size of
 // the memory allocated for the topic. Default is 1 MB (1 * 1024).
-func TopicWithMaxSizeInMegabytes(size int) TopicOption {
+func TopicWithMaxSizeInMegabytes(size int) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		if size < 1*Megabytes || size > 5*Megabytes {
 			return errors.New("TopicWithMaxSizeInMegabytes: must be between 1 * Megabytes and 5 * Megabytes")
@@ -316,7 +330,7 @@ func TopicWithMaxSizeInMegabytes(size int) TopicOption {
 }
 
 // TopicWithPartitioning configures the topic to be partitioned across multiple message brokers.
-func TopicWithPartitioning() TopicOption {
+func TopicWithPartitioning() TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.EnablePartitioning = ptrBool(true)
 		return nil
@@ -324,7 +338,7 @@ func TopicWithPartitioning() TopicOption {
 }
 
 // TopicWithOrdering configures the topic to support ordering of messages.
-func TopicWithOrdering() TopicOption {
+func TopicWithOrdering() TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.SupportOrdering = ptrBool(true)
 		return nil
@@ -333,7 +347,7 @@ func TopicWithOrdering() TopicOption {
 
 // TopicWithDuplicateDetection configures the topic to detect duplicates for a given time window. If window
 // is not specified, then it uses the default of 10 minutes.
-func TopicWithDuplicateDetection(window *time.Duration) TopicOption {
+func TopicWithDuplicateDetection(window *time.Duration) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
@@ -344,7 +358,7 @@ func TopicWithDuplicateDetection(window *time.Duration) TopicOption {
 }
 
 // TopicWithExpress configures the topic to hold a message in memory temporarily before writing it to persistent storage.
-func TopicWithExpress() TopicOption {
+func TopicWithExpress() TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.EnableExpress = ptrBool(true)
 		return nil
@@ -352,7 +366,7 @@ func TopicWithExpress() TopicOption {
 }
 
 // TopicWithBatchedOperations configures the topic to batch server-side operations.
-func TopicWithBatchedOperations() TopicOption {
+func TopicWithBatchedOperations() TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.EnableBatchedOperations = ptrBool(true)
 		return nil
@@ -361,7 +375,7 @@ func TopicWithBatchedOperations() TopicOption {
 
 // TopicWithAutoDeleteOnIdle configures the topic to automatically delete after the specified idle interval. The
 // minimum duration is 5 minutes.
-func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicOption {
+func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		if window != nil {
 			if window.Minutes() < 5 {
@@ -376,7 +390,7 @@ func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicOption {
 // TopicWithMessageTimeToLive configures the topic to set a time to live on messages. This is the duration after which
 // the message expires, starting from when the message is sent to Service Bus. This is the default value used when
 // TimeToLive is not set on a message itself. If nil, defaults to 14 days.
-func TopicWithMessageTimeToLive(window *time.Duration) TopicOption {
+func TopicWithMessageTimeToLive(window *time.Duration) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		if window == nil {
 			duration := time.Duration(14 * 24 * time.Hour)

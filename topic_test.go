@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"fmt"
 	"testing"
 	"time"
 
@@ -270,10 +271,15 @@ func testTopicWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, tm *Topi
 	assert.Equal(t, int32(size), *topic.MaxSizeInMegabytes)
 }
 
-func buildTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string, opts ...TopicOption) *TopicEntity {
-	topic, err := tm.Put(ctx, name, opts...)
-	if err != nil {
-		t.Fatal(err)
+func buildTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string, opts ...TopicManagementOption) *TopicEntity {
+	_, err := tm.Put(ctx, name, opts...)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
+	}
+
+	topic, err := tm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
 	return topic
 }
@@ -289,6 +295,7 @@ func (suite *serviceBusSuite) TestTopic() {
 			name := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
+			_ = makeTopic(ctx, t, ns, name)
 			topic, err := ns.NewTopic(ctx, name)
 			if suite.NoError(err) {
 				defer func() {
@@ -304,8 +311,28 @@ func (suite *serviceBusSuite) TestTopic() {
 }
 
 func testTopicSend(ctx context.Context, t *testing.T, topic *Topic) {
-	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	assert.Nil(t, err)
+	assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!")))
+}
+
+func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...TopicManagementOption) func() {
+	tm := ns.NewTopicManager()
+	entity, err := tm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, "could not GET a subscription")
+	}
+
+	if entity == nil {
+		entity, err = tm.Put(ctx, name, opts...)
+		if !assert.NoError(t, err) {
+			assert.FailNow(t, "could not PUT a subscription")
+		}
+	}
+	return func() {
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
+
+		_ = tm.Delete(ctx, entity.Name)
+	}
 }
 
 func (suite *serviceBusSuite) cleanupTopic(name string) {

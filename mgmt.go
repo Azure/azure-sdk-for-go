@@ -26,6 +26,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -34,12 +35,10 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
-	"github.com/Azure/go-autorest/autorest/date"
+		"github.com/Azure/go-autorest/autorest/date"
 )
 
 const (
-	instanceMetadataSchema    = "http://www.w3.org/2001/XMLSchema-instance"
 	serviceBusSchema          = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
 	dataServiceSchema         = "http://schemas.microsoft.com/ado/2007/08/dataservices"
 	dataServiceMetadataSchema = "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
@@ -66,15 +65,15 @@ type (
 	// Entry is the Atom wrapper for a management request
 	Entry struct {
 		XMLName                   xml.Name   `xml:"entry"`
-		ID                        string     `xml:"id"`
-		Title                     string     `xml:"title"`
+		ID                        string     `xml:"id,omitempty"`
+		Title                     string     `xml:"title,omitempty"`
 		Published                 *date.Time `xml:"published,omitempty"`
 		Updated                   *date.Time `xml:"updated,omitempty"`
 		Author                    *Author    `xml:"author,omitempty"`
 		Link                      *Link      `xml:"link,omitempty"`
 		Content                   *Content   `xml:"content"`
-		DataServiceSchema         string     `xml:"xmlns:d,attr"`
-		DataServiceMetadataSchema string     `xml:"xmlns:m,attr"`
+		DataServiceSchema         string     `xml:"xmlns:d,attr,omitempty"`
+		DataServiceMetadataSchema string     `xml:"xmlns:m,attr,omitempty"`
 		AtomSchema                string     `xml:"xmlns,attr"`
 	}
 
@@ -98,39 +97,22 @@ type (
 		Body    string   `xml:",innerxml"`
 	}
 
-	// ReceiveBaseDescription provides common fields for Subscriptions and Queues
-	ReceiveBaseDescription struct {
-		LockDuration                     *string `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-		RequiresSession                  *bool   `xml:"RequiresSession,omitempty"`
-		DeadLetteringOnMessageExpiration *bool   `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
-		MaxDeliveryCount                 *int32  `xml:"MaxDeliveryCount,omitempty"`                 // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-		MessageCount                     *int64  `xml:"MessageCount,omitempty"`                     // MessageCount - The number of messages in the queue.
-	}
-
-	// SendBaseDescription provides common fields for Queues and Topics
-	SendBaseDescription struct {
-		RequiresDuplicateDetection          *bool   `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
-		DuplicateDetectionHistoryTimeWindow *string `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-		SizeInBytes                         *int64  `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
-	}
-
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
 	BaseEntityDescription struct {
-		InstanceMetadataSchema   string                   `xml:"xmlns:i,attr"`
-		ServiceBusSchema         string                   `xml:"xmlns,attr"`
-		MaxSizeInMegabytes       *int32                   `xml:"MaxSizeInMegabytes,omitempty"`      // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
-		EnableBatchedOperations  *bool                    `xml:"EnableBatchedOperations,omitempty"` // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
-		IsAnonymousAccessible    *bool                    `xml:"IsAnonymousAccessible,omitempty"`
-		Status                   *servicebus.EntityStatus `xml:"Status,omitempty"`
-		CreatedAt                *date.Time               `xml:"CreatedAt,omitempty"`
-		UpdatedAt                *date.Time               `xml:"UpdatedAt,omitempty"`
-		SupportOrdering          *bool                    `xml:"SupportOrdering,omitempty"`
-		AutoDeleteOnIdle         *string                  `xml:"AutoDeleteOnIdle,omitempty"`
-		EnablePartitioning       *bool                    `xml:"EnablePartitioning,omitempty"`
-		EnableExpress            *bool                    `xml:"EnableExpress,omitempty"`
-		DefaultMessageTimeToLive *string                  `xml:"DefaultMessageTimeToLive,omitempty"` // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		InstanceMetadataSchema   *string                  `xml:"xmlns:i,attr,omitempty"`
+		ServiceBusSchema         *string                  `xml:"xmlns,attr,omitempty"`
+	}
+
+	managementError struct {
+		XMLName xml.Name `xml:"Error"`
+		Code    int      `xml:"Code"`
+		Detail  string   `xml:"Detail"`
 	}
 )
+
+func (m *managementError) String() string {
+	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
+}
 
 // NewEntityManager creates a new instance of an EntityManager given a token provider and host
 func NewEntityManager(host string, tokenProvider auth.TokenProvider) *EntityManager {
@@ -250,4 +232,14 @@ func ptrString(toPtr string) *string {
 // durationTo8601Seconds takes a duration and returns a string period of whole seconds (int cast of float)
 func durationTo8601Seconds(duration *time.Duration) *string {
 	return ptrString(fmt.Sprintf("PT%dS", int(duration.Seconds())))
+}
+
+func formatManagementError(body []byte) error {
+	var mgmtError managementError
+	unmarshalErr := xml.Unmarshal(body, &mgmtError)
+	if unmarshalErr != nil {
+		return errors.New(string(body))
+	}
+
+	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
 }

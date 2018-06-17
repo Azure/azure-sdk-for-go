@@ -5,7 +5,7 @@
 
 [[constraint]]
     name = "pack.ag/amqp"
-    version = "0.5"
+    version = "0.5.1"
 
 [[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"

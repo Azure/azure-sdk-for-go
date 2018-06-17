@@ -46,10 +46,12 @@ type (
 		Name              string
 		requiredSessionID *string
 		lastError         error
+		mode              ReceiveMode
+		prefetch          uint32
 	}
 
-	// ReceiverOptions provides a structure for configuring receivers
-	ReceiverOptions func(receiver *receiver) error
+	// receiverOption provides a structure for configuring receivers
+	receiverOption func(receiver *receiver) error
 
 	// ListenerHandle provides the ability to close or listen to the close of a Receiver
 	ListenerHandle struct {
@@ -59,13 +61,15 @@ type (
 )
 
 // newReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ...ReceiverOptions) (*receiver, error) {
+func (ns *Namespace) newReceiver(ctx context.Context, entityPath string, opts ...receiverOption) (*receiver, error) {
 	span, ctx := ns.startSpanFromContext(ctx, "sb.Hub.newReceiver")
 	defer span.Finish()
 
 	receiver := &receiver{
 		namespace:  ns,
 		entityPath: entityPath,
+		mode:       PeekLockMode,
+		prefetch:   1,
 	}
 
 	for _, opt := range opts {
@@ -91,6 +95,43 @@ func (r *receiver) Close(ctx context.Context) error {
 func (r *receiver) Recover(ctx context.Context) error {
 	_ = r.Close(ctx) // we expect the receiver is in an error state
 	return r.newSessionAndLink(ctx)
+}
+
+func (r *receiver) ReceiveOne(ctx context.Context) (*MessageWithContext, error) {
+	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.receiver.ReceiveOne")
+	defer span.Finish()
+
+	amqpMsg, err := r.listenForMessage(ctx)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return nil, err
+	}
+
+	msg, err := messageFromAMQPMessage(amqpMsg)
+	if err != nil {
+		log.For(ctx).Error(err)
+		return nil, err
+	}
+
+	return r.messageToMessageWithContext(ctx, msg), nil
+}
+
+func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) (*MessageWithContext) {
+	const optName = "sb.receiver.amqpEventToMessageWithContext"
+	var span opentracing.Span
+	wireContext, err := extractWireContext(msg)
+	if err == nil {
+		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
+	} else {
+		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
+	}
+	defer span.Finish()
+
+	span.SetTag("amqp.message-id", msg.ID)
+	return &MessageWithContext{
+		Message: msg,
+		Ctx: ctx,
+	}
 }
 
 // Listen start a listener for messages sent to the entity path
@@ -125,13 +166,18 @@ func (r *receiver) handleMessages(ctx context.Context, messages chan *amqp.Messa
 }
 
 func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
-	event := messageFromAMQPMessage(msg)
+	const optName = "sb.receiver.handleMessage"
+	event, err := messageFromAMQPMessage(msg)
+	if err != nil {
+		_, ctx := r.startConsumerSpanFromContext(ctx, optName)
+		log.For(ctx).Error(err)
+	}
 	var span opentracing.Span
 	wireContext, err := extractWireContext(event)
 	if err == nil {
-		span, ctx = r.startConsumerSpanFromWire(ctx, "sb.receiver.handleMessage", wireContext)
+		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
 	} else {
-		span, ctx = r.startConsumerSpanFromContext(ctx, "sb.receiver.handleMessage")
+		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
 	}
 	defer span.Finish()
 
@@ -139,11 +185,16 @@ func (r *receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	span.SetTag("amqp.message-id", id)
 
 	dispositionAction := handler(ctx, event)
+
+	if r.mode == ReceiveAndDeleteMode {
+		return
+	}
+
 	if dispositionAction != nil {
 		dispositionAction(ctx)
 	} else {
 		log.For(ctx).Info(fmt.Sprintf("disposition action not provided auto accepted message id %q", id))
-		event.Accept()
+		event.Complete()
 	}
 }
 
@@ -234,10 +285,18 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 		return err
 	}
 
+	receiveMode := amqp.ModeSecond
+	sendMode := amqp.ModeUnsettled
+	if r.mode == ReceiveAndDeleteMode {
+		receiveMode = amqp.ModeFirst
+		sendMode = amqp.ModeSettled
+	}
+
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
-		amqp.LinkCredit(10),
-		amqp.LinkReceiverSettle(amqp.ModeSecond),
+		amqp.LinkSenderSettle(sendMode),
+		amqp.LinkReceiverSettle(receiveMode),
+		amqp.LinkCredit(r.prefetch),
 	}
 
 	if r.requiredSessionID != nil {
@@ -254,10 +313,17 @@ func (r *receiver) newSessionAndLink(ctx context.Context) error {
 	return nil
 }
 
-// ReceiverWithSession configures a receiver to use a session
-func ReceiverWithSession(sessionID string) ReceiverOptions {
+// receiverWithSession configures a receiver to use a session
+func receiverWithSession(sessionID string) receiverOption {
 	return func(r *receiver) error {
 		r.requiredSessionID = &sessionID
+		return nil
+	}
+}
+
+func receiverWithReceiveMode(mode ReceiveMode) receiverOption {
+	return func(r *receiver) error {
+		r.mode = mode
 		return nil
 	}
 }

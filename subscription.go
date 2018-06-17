@@ -255,6 +255,16 @@ func (sm *SubscriptionManager) getResourceURI(name string) string {
 	return "/" + sm.Topic.Name + "/subscriptions/" + name
 }
 
+// SubscriptionWithReceiveAndDelete configures a subscription to pop and delete messages off of the queue upon receiving the message.
+// This differs from the default, PeekLock, where PeekLock receives a message, locks it for a period of time, then sends
+// a disposition to the broker when the message has been processed.
+func SubscriptionWithReceiveAndDelete() SubscriptionOption {
+	return func(s *Subscription) error {
+		s.receiveMode = ReceiveAndDeleteMode
+		return nil
+	}
+}
+
 // NewSubscription creates a new Topic Subscription client
 func (t *Topic) NewSubscription(ctx context.Context, name string, opts ...SubscriptionOption) (*Subscription, error) {
 	span, ctx := t.startSpanFromContext(ctx, "sb.Topic.NewSubscription")

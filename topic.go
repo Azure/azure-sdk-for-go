@@ -33,6 +33,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 )
@@ -55,7 +56,7 @@ type (
 
 	// TopicManager provides CRUD functionality for Service Bus Topics
 	TopicManager struct {
-		*EntityManager
+		*entityManager
 	}
 
 	// TopicEntity is the Azure Service Bus description of a Topic for management activities
@@ -64,19 +65,19 @@ type (
 		Name string
 	}
 
-	// topicFeed is a specialized Feed containing Topic Entries
+	// topicFeed is a specialized feed containing Topic Entries
 	topicFeed struct {
-		*Feed
+		*atom.Feed
 		Entries []topicEntry `xml:"entry"`
 	}
 
-	// topicEntry is a specialized Topic Feed Entry
+	// topicEntry is a specialized Topic feed entry
 	topicEntry struct {
-		*Entry
+		*atom.Entry
 		Content *topicContent `xml:"content"`
 	}
 
-	// topicContent is a specialized Topic body for an Atom Entry
+	// topicContent is a specialized Topic body for an Atom entry
 	topicContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
@@ -115,7 +116,7 @@ type (
 // NewTopicManager creates a new TopicManager for a Service Bus Namespace
 func (ns *Namespace) NewTopicManager() *TopicManager {
 	return &TopicManager{
-		EntityManager: NewEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
+		entityManager: newEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
 	}
 }
 
@@ -124,7 +125,7 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
 	defer span.Finish()
 
-	_, err := tm.EntityManager.Delete(ctx, "/"+name)
+	_, err := tm.entityManager.Delete(ctx, "/"+name)
 	return err
 }
 
@@ -144,10 +145,8 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	td.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &topicEntry{
-		Entry: &Entry{
-			DataServiceSchema:         dataServiceSchema,
-			DataServiceMetadataSchema: dataServiceMetadataSchema,
-			AtomSchema:                atomSchema,
+		Entry: &atom.Entry{
+			AtomSchema: atomSchema,
 		},
 		Content: &topicContent{
 			Type:             applicationXML,
@@ -162,7 +161,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := tm.EntityManager.Put(ctx, "/"+name, reqBytes)
+	res, err := tm.entityManager.Put(ctx, "/"+name, reqBytes)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -187,7 +186,7 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
 	defer span.Finish()
 
-	res, err := tm.EntityManager.Get(ctx, `/$Resources/Topics`)
+	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -217,7 +216,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
 	defer span.Finish()
 
-	res, err := tm.EntityManager.Get(ctx, name)
+	res, err := tm.entityManager.Get(ctx, name)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

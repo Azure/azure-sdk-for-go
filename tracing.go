@@ -50,7 +50,7 @@ func (m *Message) startSpanFromContext(ctx context.Context, operationName string
 	return span, ctx
 }
 
-func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
+func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
 	applyComponentInfo(span)
 	tag.SpanKindRPCClient.Set(span)

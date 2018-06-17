@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -87,7 +88,7 @@ func (suite *serviceBusSuite) TestTopicEntryUnmarshal() {
 }
 
 func (suite *serviceBusSuite) TestTopicUnmarshal() {
-	var entry Entry
+	var entry atom.Entry
 	err := xml.Unmarshal([]byte(topicEntry1), &entry)
 	suite.Nil(err)
 

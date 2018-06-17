@@ -764,7 +764,7 @@ type CustomToolkitSettings struct {
 type DataDisks struct {
 	// DiskSizeInGB - Disk size in GB for the blank data disks.
 	DiskSizeInGB *int32 `json:"diskSizeInGB,omitempty"`
-	// CachingType - Caching Type for the disks. Available values are none (default), readonly, readwrite. Caching type can be set only for VM sizes supporting premium storage. Possible values include: 'None', 'Readonly', 'Readwrite'
+	// CachingType - Caching type for the disks. Available values are none (default), readonly, readwrite. Caching type can be set only for VM sizes supporting premium storage. Possible values include: 'None', 'Readonly', 'Readwrite'
 	CachingType CachingType `json:"cachingType,omitempty"`
 	// DiskCount - Number of data disks attached to the File Server. If multiple disks attached, they will be configured in RAID level 0.
 	DiskCount *int32 `json:"diskCount,omitempty"`
@@ -2022,9 +2022,9 @@ func (future *JobsTerminateFuture) Result(client JobsClient) (ar autorest.Respon
 
 // KeyVaultSecretReference key Vault Secret reference.
 type KeyVaultSecretReference struct {
-	// SourceVault - Fully qualified resource ID for the Key Vault.
+	// SourceVault - Fully qualified resource indentifier of the Key Vault.
 	SourceVault *ResourceID `json:"sourceVault,omitempty"`
-	// SecretURL - The URL referencing a secret in a Key Vault.
+	// SecretURL - The URL referencing a secret in the Key Vault.
 	SecretURL *string `json:"secretUrl,omitempty"`
 }
 
@@ -2138,9 +2138,9 @@ type ManualScaleSettings struct {
 	NodeDeallocationOption DeallocationOption `json:"nodeDeallocationOption,omitempty"`
 }
 
-// MountSettings file Server Mount Information.
+// MountSettings file Server mount Information.
 type MountSettings struct {
-	// MountPoint - Path where the NFS is mounted on the File Server.
+	// MountPoint - Path where the data disks are mounted on the File Server.
 	MountPoint *string `json:"mountPoint,omitempty"`
 	// FileServerPublicIP - Public IP address of the File Server which can be used to SSH to the node from outside of the subnet.
 	FileServerPublicIP *string `json:"fileServerPublicIP,omitempty"`

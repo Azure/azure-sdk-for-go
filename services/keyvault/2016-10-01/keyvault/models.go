@@ -1737,7 +1737,8 @@ type KeyOperationResult struct {
 type KeyOperationsParameters struct {
 	// Algorithm - algorithm identifier. Possible values include: 'RSAOAEP', 'RSAOAEP256', 'RSA15'
 	Algorithm JSONWebKeyEncryptionAlgorithm `json:"alg,omitempty"`
-	Value     *string                       `json:"value,omitempty"`
+	// Value - an unpadded, url-encoded base-64 encoded string (see encoding/base64.RawURLEncoding)
+	Value *string `json:"value,omitempty"`
 }
 
 // KeyProperties properties of the key pair backing a certificate.

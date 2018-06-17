@@ -376,7 +376,7 @@ func (suite *serviceBusSuite) TestQueueClient() {
 				cleanup()
 			}()
 			testFunc(ctx, t, q)
-			if !t.Failed() && name != "SimpleSend"{
+			if !t.Failed() && name != "SimpleSend" {
 				checkZeroQueueMessages(ctx, t, ns, queueName)
 			}
 		}

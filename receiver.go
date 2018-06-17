@@ -116,7 +116,7 @@ func (r *receiver) ReceiveOne(ctx context.Context) (*MessageWithContext, error) 
 	return r.messageToMessageWithContext(ctx, msg), nil
 }
 
-func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) (*MessageWithContext) {
+func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message) *MessageWithContext {
 	const optName = "sb.receiver.amqpEventToMessageWithContext"
 	var span opentracing.Span
 	wireContext, err := extractWireContext(msg)
@@ -130,7 +130,7 @@ func (r *receiver) messageToMessageWithContext(ctx context.Context, msg *Message
 	span.SetTag("amqp.message-id", msg.ID)
 	return &MessageWithContext{
 		Message: msg,
-		Ctx: ctx,
+		Ctx:     ctx,
 	}
 }
 

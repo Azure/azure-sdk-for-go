@@ -80,7 +80,7 @@ type (
 	// MessageWithContext is a Service Bus message with its context which propagates the distributed trace information
 	MessageWithContext struct {
 		*Message
-		Ctx     context.Context
+		Ctx context.Context
 	}
 )
 

@@ -33,13 +33,13 @@ import (
 
 func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	return span, ctx
 }
 
 func (m *Message) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	span.SetTag("amqp.message-id", m.ID)
 	if m.GroupID != nil {
 		span.SetTag("amqp.message-group-id", *m.GroupID)
@@ -52,7 +52,7 @@ func (m *Message) startSpanFromContext(ctx context.Context, operationName string
 
 func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	tag.SpanKindRPCClient.Set(span)
 	return span, ctx
 }
@@ -68,13 +68,13 @@ func applyResponseInfo(span opentracing.Span, res *http.Response) {
 
 func (s *entity) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	return span, ctx
 }
 
 func (s *sender) startProducerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	tag.SpanKindProducer.Set(span)
 	tag.MessageBusDestination.Set(span, s.getFullIdentifier())
 	return span, ctx
@@ -82,7 +82,7 @@ func (s *sender) startProducerSpanFromContext(ctx context.Context, operationName
 
 func (r *receiver) startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	tag.SpanKindConsumer.Set(span)
 	tag.MessageBusDestination.Set(span, r.entityPath)
 	return span, ctx
@@ -92,14 +92,13 @@ func (r *receiver) startConsumerSpanFromWire(ctx context.Context, operationName 
 	opts = append(opts, opentracing.FollowsFrom(reference))
 	span := opentracing.StartSpan(operationName, opts...)
 	ctx = opentracing.ContextWithSpan(ctx, span)
-	ApplyComponentInfo(span)
+	applyComponentInfo(span)
 	tag.SpanKindConsumer.Set(span)
 	tag.MessageBusDestination.Set(span, r.entityPath)
 	return span, ctx
 }
 
-// ApplyComponentInfo applies eventhub library and network info to the span
-func ApplyComponentInfo(span opentracing.Span) {
+func applyComponentInfo(span opentracing.Span) {
 	tag.Component.Set(span, "github.com/Azure/azure-service-bus-go")
 	span.SetTag("version", Version)
 	applyNetworkInfo(span)

@@ -85,7 +85,7 @@ type (
 
 	// TopicDescription is the content type for Topic management requests
 	TopicDescription struct {
-		XMLName                             xml.Name                 `xml:"TopicDescription"`
+		XMLName xml.Name `xml:"TopicDescription"`
 		BaseEntityDescription
 		DefaultMessageTimeToLive            *string                  `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message time span to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
 		MaxSizeInMegabytes                  *int32                   `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.

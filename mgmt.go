@@ -35,7 +35,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/log"
-		"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 const (
@@ -99,8 +99,8 @@ type (
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
 	BaseEntityDescription struct {
-		InstanceMetadataSchema   *string                  `xml:"xmlns:i,attr,omitempty"`
-		ServiceBusSchema         *string                  `xml:"xmlns,attr,omitempty"`
+		InstanceMetadataSchema *string `xml:"xmlns:i,attr,omitempty"`
+		ServiceBusSchema       *string `xml:"xmlns,attr,omitempty"`
 	}
 
 	managementError struct {

@@ -83,7 +83,7 @@ type (
 
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
-		XMLName                                   xml.Name                 `xml:"SubscriptionDescription"`
+		XMLName xml.Name `xml:"SubscriptionDescription"`
 		BaseEntityDescription
 		LockDuration                              *string                  `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
 		RequiresSession                           *bool                    `xml:"RequiresSession,omitempty"`
@@ -157,7 +157,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 			AtomSchema:                atomSchema,
 		},
 		Content: &subscriptionContent{
-			Type:                    applicationXML,
+			Type: applicationXML,
 			SubscriptionDescription: *sd,
 		},
 	}
@@ -247,7 +247,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 	return &SubscriptionEntity{
 		SubscriptionDescription: &entry.Content.SubscriptionDescription,
-		Name:                    entry.Title,
+		Name: entry.Title,
 	}
 }
 

@@ -32,6 +32,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/azure-service-bus-go/internal/test"
 	"github.com/opentracing/opentracing-go"
 	"github.com/stretchr/testify/assert"
@@ -144,7 +145,7 @@ func (suite *serviceBusSuite) TestQueueEntryUnmarshal() {
 }
 
 func (suite *serviceBusSuite) TestQueueUnmarshal() {
-	var entry Entry
+	var entry atom.Entry
 	err := xml.Unmarshal([]byte(queueEntry1), &entry)
 	assert.Nil(suite.T(), err)
 

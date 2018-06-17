@@ -33,6 +33,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 )
@@ -59,7 +60,7 @@ type (
 
 	// QueueManager provides CRUD functionality for Service Bus Queues
 	QueueManager struct {
-		*EntityManager
+		*entityManager
 	}
 
 	// QueueEntity is the Azure Service Bus description of a Queue for management activities
@@ -68,19 +69,19 @@ type (
 		Name string
 	}
 
-	// queueFeed is a specialized Feed containing QueueEntries
+	// queueFeed is a specialized feed containing QueueEntries
 	queueFeed struct {
-		*Feed
+		*atom.Feed
 		Entries []queueEntry `xml:"entry"`
 	}
 
-	// queueEntry is a specialized Queue Feed Entry
+	// queueEntry is a specialized Queue feed entry
 	queueEntry struct {
-		*Entry
+		*atom.Entry
 		Content *queueContent `xml:"content"`
 	}
 
-	// queueContent is a specialized Queue body for an Atom Entry
+	// queueContent is a specialized Queue body for an Atom entry
 	queueContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
@@ -252,7 +253,7 @@ func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
 // NewQueueManager creates a new QueueManager for a Service Bus Namespace
 func (ns *Namespace) NewQueueManager() *QueueManager {
 	return &QueueManager{
-		EntityManager: NewEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
+		entityManager: newEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
 	}
 }
 
@@ -261,7 +262,7 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
 	defer span.Finish()
 
-	_, err := qm.EntityManager.Delete(ctx, "/"+name)
+	_, err := qm.entityManager.Delete(ctx, "/"+name)
 	return err
 }
 
@@ -281,7 +282,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	qd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &queueEntry{
-		Entry: &Entry{
+		Entry: &atom.Entry{
 			AtomSchema: atomSchema,
 		},
 		Content: &queueContent{
@@ -297,7 +298,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := qm.EntityManager.Put(ctx, "/"+name, reqBytes)
+	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -322,7 +323,7 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
 	defer span.Finish()
 
-	res, err := qm.EntityManager.Get(ctx, `/$Resources/Queues`)
+	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -352,7 +353,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
 	defer span.Finish()
 
-	res, err := qm.EntityManager.Get(ctx, name)
+	res, err := qm.entityManager.Get(ctx, name)
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

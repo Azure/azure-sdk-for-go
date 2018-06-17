@@ -26,12 +26,13 @@ import (
 	"encoding/xml"
 	"time"
 
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/stretchr/testify/assert"
 )
 
 func (suite *serviceBusSuite) TestFeedUnmarshal() {
-	var feed Feed
+	var feed atom.Feed
 	err := xml.Unmarshal([]byte(feedOfQueues), &feed)
 	assert.Nil(suite.T(), err)
 	updated, err := date.ParseTime(time.RFC3339, "2018-05-03T00:21:15Z")
@@ -47,7 +48,7 @@ func (suite *serviceBusSuite) TestFeedUnmarshal() {
 }
 
 func (suite *serviceBusSuite) TestEntryUnmarshal() {
-	var entry Entry
+	var entry atom.Entry
 	err := xml.Unmarshal([]byte(queueEntry1), &entry)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), "https://sbdjtest.servicebus.windows.net/foo", entry.ID)

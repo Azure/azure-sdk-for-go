@@ -35,66 +35,19 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 const (
-	serviceBusSchema          = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-	dataServiceSchema         = "http://schemas.microsoft.com/ado/2007/08/dataservices"
-	dataServiceMetadataSchema = "http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
-	atomSchema                = "http://www.w3.org/2005/Atom"
-	applicationXML            = "application/xml"
+	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	atomSchema       = "http://www.w3.org/2005/Atom"
+	applicationXML   = "application/xml"
 )
 
 type (
-	// EntityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
-	EntityManager struct {
+	// entityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
+	entityManager struct {
 		TokenProvider auth.TokenProvider
 		Host          string
-	}
-
-	// Feed is an Atom feed which contains entries
-	Feed struct {
-		XMLName xml.Name   `xml:"feed"`
-		ID      string     `xml:"id"`
-		Title   string     `xml:"title"`
-		Updated *date.Time `xml:"updated,omitempty"`
-		Entries []Entry    `xml:"entry"`
-	}
-
-	// Entry is the Atom wrapper for a management request
-	Entry struct {
-		XMLName                   xml.Name   `xml:"entry"`
-		ID                        string     `xml:"id,omitempty"`
-		Title                     string     `xml:"title,omitempty"`
-		Published                 *date.Time `xml:"published,omitempty"`
-		Updated                   *date.Time `xml:"updated,omitempty"`
-		Author                    *Author    `xml:"author,omitempty"`
-		Link                      *Link      `xml:"link,omitempty"`
-		Content                   *Content   `xml:"content"`
-		DataServiceSchema         string     `xml:"xmlns:d,attr,omitempty"`
-		DataServiceMetadataSchema string     `xml:"xmlns:m,attr,omitempty"`
-		AtomSchema                string     `xml:"xmlns,attr"`
-	}
-
-	// Author is an Atom author used in an Entry
-	Author struct {
-		XMLName xml.Name `xml:"author"`
-		Name    *string  `xml:"name,omitempty"`
-	}
-
-	// Link is an Atom link used in an Entry
-	Link struct {
-		XMLName xml.Name `xml:"link"`
-		Rel     string   `xml:"rel,attr"`
-		HREF    string   `xml:"href,attr"`
-	}
-
-	// Content is a generic body for an Atom Entry
-	Content struct {
-		XMLName xml.Name `xml:"content"`
-		Type    string   `xml:"type,attr"`
-		Body    string   `xml:",innerxml"`
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -114,16 +67,16 @@ func (m *managementError) String() string {
 	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
 }
 
-// NewEntityManager creates a new instance of an EntityManager given a token provider and host
-func NewEntityManager(host string, tokenProvider auth.TokenProvider) *EntityManager {
-	return &EntityManager{
+// newEntityManager creates a new instance of an entityManager given a token provider and host
+func newEntityManager(host string, tokenProvider auth.TokenProvider) *entityManager {
+	return &entityManager{
 		Host:          host,
 		TokenProvider: tokenProvider,
 	}
 }
 
 // Get performs an HTTP Get for a given entity path
-func (em *EntityManager) Get(ctx context.Context, entityPath string) (*http.Response, error) {
+func (em *entityManager) Get(ctx context.Context, entityPath string) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
 	defer span.Finish()
 
@@ -131,7 +84,7 @@ func (em *EntityManager) Get(ctx context.Context, entityPath string) (*http.Resp
 }
 
 // Put performs an HTTP PUT for a given entity path and body
-func (em *EntityManager) Put(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
+func (em *entityManager) Put(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
 	defer span.Finish()
 
@@ -139,7 +92,7 @@ func (em *EntityManager) Put(ctx context.Context, entityPath string, body []byte
 }
 
 // Delete performs an HTTP DELETE for a given entity path
-func (em *EntityManager) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
+func (em *entityManager) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
 	defer span.Finish()
 
@@ -147,7 +100,7 @@ func (em *EntityManager) Delete(ctx context.Context, entityPath string) (*http.R
 }
 
 // Post performs an HTTP POST for a given entity path and body
-func (em *EntityManager) Post(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
+func (em *entityManager) Post(ctx context.Context, entityPath string, body []byte) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
 	defer span.Finish()
 
@@ -155,7 +108,7 @@ func (em *EntityManager) Post(ctx context.Context, entityPath string, body []byt
 }
 
 // Execute performs an HTTP request given a http method, path and body
-func (em *EntityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader) (*http.Response, error) {
+func (em *entityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader) (*http.Response, error) {
 	span, ctx := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
 	defer span.Finish()
 
@@ -190,7 +143,7 @@ func isEmptyFeed(b []byte) bool {
 	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
 }
 
-func (em *EntityManager) addAuthorization(req *http.Request) (*http.Request, error) {
+func (em *entityManager) addAuthorization(req *http.Request) (*http.Request, error) {
 	signature, err := em.TokenProvider.GetToken(req.URL.String())
 	if err != nil {
 		return nil, err
@@ -202,7 +155,7 @@ func (em *EntityManager) addAuthorization(req *http.Request) (*http.Request, err
 
 func addAtomXMLContentType(req *http.Request) *http.Request {
 	if req.Method != http.MethodGet && req.Method != http.MethodHead {
-		req.Header.Add("Content-Type", "application/atom+xml;type=entry;charset=utf-8")
+		req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
 	}
 	return req
 }

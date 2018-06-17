@@ -33,6 +33,7 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
+	"github.com/Azure/azure-service-bus-go/atom"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 )
@@ -52,7 +53,7 @@ type (
 
 	// SubscriptionManager provides CRUD functionality for Service Bus Subscription
 	SubscriptionManager struct {
-		*EntityManager
+		*entityManager
 		Topic *Topic
 	}
 
@@ -62,19 +63,19 @@ type (
 		Name string
 	}
 
-	// subscriptionFeed is a specialized Feed containing Topic Subscriptions
+	// subscriptionFeed is a specialized feed containing Topic Subscriptions
 	subscriptionFeed struct {
-		*Feed
+		*atom.Feed
 		Entries []subscriptionEntry `xml:"entry"`
 	}
 
-	// subscriptionEntryContent is a specialized Topic Feed Subscription
+	// subscriptionEntryContent is a specialized Topic feed Subscription
 	subscriptionEntry struct {
-		*Entry
+		*atom.Entry
 		Content *subscriptionContent `xml:"content"`
 	}
 
-	// subscriptionContent is a specialized Subscription body for an Atom Entry
+	// subscriptionContent is a specialized Subscription body for an Atom entry
 	subscriptionContent struct {
 		XMLName                 xml.Name                `xml:"content"`
 		Type                    string                  `xml:"type,attr"`
@@ -110,7 +111,7 @@ type (
 // NewSubscriptionManager creates a new SubscriptionManager for a Service Bus Topic
 func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 	return &SubscriptionManager{
-		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
+		entityManager: newEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
 		Topic:         t,
 	}
 }
@@ -122,7 +123,7 @@ func (ns *Namespace) NewSubscriptionManager(ctx context.Context, topicName strin
 		return nil, err
 	}
 	return &SubscriptionManager{
-		EntityManager: NewEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
+		entityManager: newEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
 		Topic:         t,
 	}, nil
 }
@@ -132,7 +133,7 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
 	defer span.Finish()
 
-	_, err := sm.EntityManager.Delete(ctx, sm.getResourceURI(name))
+	_, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
 	return err
 }
 
@@ -151,10 +152,8 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &subscriptionEntry{
-		Entry: &Entry{
-			DataServiceSchema:         dataServiceSchema,
-			DataServiceMetadataSchema: dataServiceMetadataSchema,
-			AtomSchema:                atomSchema,
+		Entry: &atom.Entry{
+			AtomSchema: atomSchema,
 		},
 		Content: &subscriptionContent{
 			Type: applicationXML,
@@ -168,7 +167,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	}
 
 	reqBytes = xmlDoc(reqBytes)
-	res, err := sm.EntityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
+	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +190,7 @@ func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity,
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
 	defer span.Finish()
 
-	res, err := sm.EntityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
+	res, err := sm.entityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +218,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
 	defer span.Finish()
 
-	res, err := sm.EntityManager.Get(ctx, sm.getResourceURI(name))
+	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
 	if err != nil {
 		return nil, err
 	}

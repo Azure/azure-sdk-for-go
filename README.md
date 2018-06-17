@@ -35,10 +35,6 @@ If you need to install Go, follow [the official instructions](https://golang.org
 ## Using Service Bus
 In this section we'll cover some basics of the library to help you get started.
 
-This library has two main dependencies, [vcabbage/amqp](https://github.com/vcabbage/amqp) and 
-[Azure AMQP Common](https://github.com/Azure/azure-amqp-common-go). The former provides the AMQP protocol implementation
-and the latter provides some common authentication, persistence and request-response message flows.
-
 ### Quick start
 Let's send and receive `"hello, world!"`.
 ```go

@@ -224,8 +224,13 @@ func testSubscriptionWithLockDuration(ctx context.Context, t *testing.T, sm *Sub
 }
 
 func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) *SubscriptionEntity {
-	s, err := sm.Put(ctx, name, opts...)
+	_, err := sm.Put(ctx, name, opts...)
 	if err != nil {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
+	}
+
+	s, err := sm.Get(ctx, name)
+	if !assert.NoError(t, err) {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
 	return s
@@ -267,22 +272,19 @@ func (suite *serviceBusSuite) TestSubscriptionClient() {
 }
 
 func testSubscriptionReceive(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {
-	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	if !assert.NoError(t, err) {
-		t.FailNow()
+	if assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!"))) {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		_, err := sub.Receive(ctx, func(eventCtx context.Context, msg *Message) DispositionAction {
+			wg.Done()
+			return msg.Complete()
+		})
+		if !assert.NoError(t, err) {
+			t.FailNow()
+		}
+		end, _ := ctx.Deadline()
+		waitUntil(t, &wg, time.Until(end))
 	}
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	_, err = sub.Receive(ctx, func(eventCtx context.Context, msg *Message) DispositionAction {
-		wg.Done()
-		return msg.Complete()
-	})
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
 }
 
 func testSubscriptionReceiveOne(ctx context.Context, t *testing.T, topic *Topic, sub *Subscription) {

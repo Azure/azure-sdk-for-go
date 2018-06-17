@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"fmt"
 	"testing"
 	"time"
 
@@ -271,9 +272,14 @@ func testTopicWithMaxSizeInMegabytes(ctx context.Context, t *testing.T, tm *Topi
 }
 
 func buildTopic(ctx context.Context, t *testing.T, tm *TopicManager, name string, opts ...TopicManagementOption) *TopicEntity {
-	topic, err := tm.Put(ctx, name, opts...)
-	if err != nil {
-		t.Fatal(err)
+	_, err := tm.Put(ctx, name, opts...)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
+	}
+
+	topic, err := tm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
 	return topic
 }
@@ -305,8 +311,7 @@ func (suite *serviceBusSuite) TestTopic() {
 }
 
 func testTopicSend(ctx context.Context, t *testing.T, topic *Topic) {
-	err := topic.Send(ctx, NewMessageFromString("hello!"))
-	assert.NoError(t, err)
+	assert.NoError(t, topic.Send(ctx, NewMessageFromString("hello!")))
 }
 
 func makeTopic(ctx context.Context, t *testing.T, ns *Namespace, name string, opts ...TopicManagementOption) func() {

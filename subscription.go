@@ -32,7 +32,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 type (
@@ -81,11 +83,21 @@ type (
 
 	// SubscriptionDescription is the content type for Subscription management requests
 	SubscriptionDescription struct {
-		XMLName xml.Name `xml:"SubscriptionDescription"`
-		ReceiveBaseDescription
+		XMLName                                   xml.Name                 `xml:"SubscriptionDescription"`
 		BaseEntityDescription
-		DeadLetteringOnFilterEvaluationExceptions *bool     `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
-		AccessedAt                                date.Time `xml:"AccessedAt,omitempty"`
+		LockDuration                              *string                  `xml:"LockDuration,omitempty"` // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		RequiresSession                           *bool                    `xml:"RequiresSession,omitempty"`
+		DefaultMessageTimeToLive                  *string                  `xml:"DefaultMessageTimeToLive,omitempty"`         // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		DeadLetteringOnMessageExpiration          *bool                    `xml:"DeadLetteringOnMessageExpiration,omitempty"` // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		DeadLetteringOnFilterEvaluationExceptions *bool                    `xml:"DeadLetteringOnFilterEvaluationExceptions,omitempty"`
+		MessageCount                              *int64                   `xml:"MessageCount,omitempty"`            // MessageCount - The number of messages in the queue.
+		MaxDeliveryCount                          *int32                   `xml:"MaxDeliveryCount,omitempty"`        // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		EnableBatchedOperations                   *bool                    `xml:"EnableBatchedOperations,omitempty"` // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		Status                                    *servicebus.EntityStatus `xml:"Status,omitempty"`
+		CreatedAt                                 *date.Time               `xml:"CreatedAt,omitempty"`
+		UpdatedAt                                 *date.Time               `xml:"UpdatedAt,omitempty"`
+		AccessedAt                                *date.Time               `xml:"AccessedAt,omitempty"`
+		AutoDeleteOnIdle                          *string                  `xml:"AutoDeleteOnIdle,omitempty"`
 	}
 
 	// SubscriptionManagementOption represents named options for assisting Subscription creation
@@ -136,8 +148,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 		}
 	}
 
-	sd.InstanceMetadataSchema = instanceMetadataSchema
-	sd.ServiceBusSchema = serviceBusSchema
+	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &subscriptionEntry{
 		Entry: &Entry{

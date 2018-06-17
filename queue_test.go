@@ -336,10 +336,16 @@ func testQueueWithLockDuration(ctx context.Context, t *testing.T, qm *QueueManag
 }
 
 func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string, opts ...QueueManagementOption) *QueueEntity {
-	q, err := qm.Put(ctx, name, opts...)
-	if err != nil {
+	_, err := qm.Put(ctx, name, opts...)
+	if !assert.NoError(t, err) {
 		assert.FailNow(t, fmt.Sprintf("%v", err))
 	}
+
+	q, err := qm.Get(ctx, name)
+	if !assert.NoError(t, err) {
+		assert.FailNow(t, fmt.Sprintf("%v", err))
+	}
+
 	return q
 }
 
@@ -359,11 +365,10 @@ func (suite *serviceBusSuite) TestQueueClient() {
 			queueName := suite.randEntityName()
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
-			dupWindow := 30 * time.Second
+			window := time.Duration(30 * time.Second)
 			cleanup := makeQueue(ctx, t, ns, queueName,
 				QueueEntityWithPartitioning(),
-				QueueEntityWithDuplicateDetection(&dupWindow),
-				QueueEntityWithMaxDeliveryCount(10))
+				QueueEntityWithDuplicateDetection(&window))
 			q, err := ns.NewQueue(ctx, queueName)
 			suite.NoError(err)
 			defer func() {
@@ -386,6 +391,7 @@ func testReceiveOne(ctx context.Context, t *testing.T, q *Queue) {
 		if assert.NoError(t, err) {
 			span, _ := opentracing.StartSpanFromContext(messageWithContext.Ctx, "continue-message-span")
 			defer span.Finish()
+
 			messageWithContext.Complete()
 		}
 	}

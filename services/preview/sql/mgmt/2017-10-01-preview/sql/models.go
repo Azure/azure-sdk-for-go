@@ -1409,6 +1409,7 @@ func (du *DatabaseUpdate) UnmarshalJSON(body []byte) error {
 
 // DatabaseVulnerabilityAssessment a database vulnerability assessment.
 type DatabaseVulnerabilityAssessment struct {
+	autorest.Response `json:"-"`
 	// DatabaseVulnerabilityAssessmentProperties - Resource properties.
 	*DatabaseVulnerabilityAssessmentProperties `json:"properties,omitempty"`
 	// ID - Resource ID.
@@ -1496,6 +1497,102 @@ type DatabaseVulnerabilityAssessmentProperties struct {
 	StorageContainerSasKey *string `json:"storageContainerSasKey,omitempty"`
 	// RecurringScans - The recurring scans settings
 	RecurringScans *VulnerabilityAssessmentRecurringScansProperties `json:"recurringScans,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentRuleBaseline a database vulnerability assessment rule baseline.
+type DatabaseVulnerabilityAssessmentRuleBaseline struct {
+	autorest.Response `json:"-"`
+	// DatabaseVulnerabilityAssessmentRuleBaselineProperties - Resource properties.
+	*DatabaseVulnerabilityAssessmentRuleBaselineProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseVulnerabilityAssessmentRuleBaseline.
+func (dvarb DatabaseVulnerabilityAssessmentRuleBaseline) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dvarb.DatabaseVulnerabilityAssessmentRuleBaselineProperties != nil {
+		objectMap["properties"] = dvarb.DatabaseVulnerabilityAssessmentRuleBaselineProperties
+	}
+	if dvarb.ID != nil {
+		objectMap["id"] = dvarb.ID
+	}
+	if dvarb.Name != nil {
+		objectMap["name"] = dvarb.Name
+	}
+	if dvarb.Type != nil {
+		objectMap["type"] = dvarb.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DatabaseVulnerabilityAssessmentRuleBaseline struct.
+func (dvarb *DatabaseVulnerabilityAssessmentRuleBaseline) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var databaseVulnerabilityAssessmentRuleBaselineProperties DatabaseVulnerabilityAssessmentRuleBaselineProperties
+				err = json.Unmarshal(*v, &databaseVulnerabilityAssessmentRuleBaselineProperties)
+				if err != nil {
+					return err
+				}
+				dvarb.DatabaseVulnerabilityAssessmentRuleBaselineProperties = &databaseVulnerabilityAssessmentRuleBaselineProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dvarb.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dvarb.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dvarb.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatabaseVulnerabilityAssessmentRuleBaselineItem properties for an Azure SQL Database Vulnerability Assessment
+// rule baseline's result.
+type DatabaseVulnerabilityAssessmentRuleBaselineItem struct {
+	// Result - The rule baseline result
+	Result *[]string `json:"result,omitempty"`
+}
+
+// DatabaseVulnerabilityAssessmentRuleBaselineProperties properties of a database Vulnerability Assessment rule
+// baseline.
+type DatabaseVulnerabilityAssessmentRuleBaselineProperties struct {
+	// BaselineResults - The rule baseline result
+	BaselineResults *[]DatabaseVulnerabilityAssessmentRuleBaselineItem `json:"baselineResults,omitempty"`
 }
 
 // DatabaseVulnerabilityAssessmentScanExportProperties properties of the export operation's result.
@@ -2677,6 +2774,29 @@ type LogSizeCapability struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Unit - The units that the limit is expressed in. Possible values include: 'Megabytes', 'Gigabytes', 'Terabytes', 'Petabytes', 'Percent'
 	Unit LogSizeUnit `json:"unit,omitempty"`
+}
+
+// ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture) Result(client ManagedDatabaseVulnerabilityAssessmentScansClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // ManagedInstanceEditionCapability the managed server capability

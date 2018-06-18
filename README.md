@@ -1,4 +1,8 @@
 # Microsoft Azure Service Bus Client for Golang
+[![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-service-bus-go)](https://goreportcard.com/report/github.com/Azure/azure-service-bus-go)
+[![godoc](https://godoc.org/github.com/Azure/azure-service-bus-go?status.svg)](https://godoc.org/github.com/Azure/azure-service-bus-go)
+[![Build Status](https://travis-ci.org/Azure/azure-service-bus-go.svg?branch=master)](https://travis-ci.org/Azure/azure-service-bus-go)
+[![Coverage Status](https://coveralls.io/repos/github/Azure/azure-service-bus-go/badge.svg?branch=master)](https://coveralls.io/github/Azure/azure-service-bus-go?branch=master)
 
 Microsoft Azure Service Bus is a reliable cloud messaging service (MaaS) which simplifies enterprise cloud messaging. It
 enables developers to build scalable cloud solutions and implement complex messaging workflows over an efficient binary
@@ -10,11 +14,6 @@ and Subscriptions.
 For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/en-us/services/service-bus/).
 
 This library is a pure Golang implementation of Azure Service Bus over AMQP.
-[![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-service-bus-go)](https://goreportcard.com/report/github.com/Azure/azure-service-bus-go)
-[![godoc](https://godoc.org/github.com/Azure/azure-service-bus-go?status.svg)](https://godoc.org/github.com/Azure/azure-service-bus-go)
-[![Build Status](https://travis-ci.org/Azure/azure-service-bus-go.svg?branch=master)](https://travis-ci.org/Azure/azure-service-bus-go)
-[![Coverage Status](https://coveralls.io/repos/github/Azure/azure-service-bus-go/badge.svg?branch=master)](https://coveralls.io/github/Azure/azure-service-bus-go?branch=master)
-
 
 ## Preview of Service Bus for Golang
 This library is currently a preview. There may be breaking interface changes until it reaches semantic version `v1.0.0`. 

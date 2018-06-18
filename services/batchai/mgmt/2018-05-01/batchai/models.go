@@ -1680,7 +1680,7 @@ func (j *Job) UnmarshalJSON(body []byte) error {
 
 // JobBaseProperties the properties of a Batch AI Job.
 type JobBaseProperties struct {
-	// SchedulingPriority - Scheduling priority associated with the job. Possible values include: 'Low', 'Normal', 'High'
+	// SchedulingPriority - Scheduling priority associated with the job. Possible values: low, normal, high. Possible values include: 'Low', 'Normal', 'High'
 	SchedulingPriority JobPriority `json:"schedulingPriority,omitempty"`
 	// Cluster - Resource ID of the cluster on which this job will run.
 	Cluster *ResourceID `json:"cluster,omitempty"`

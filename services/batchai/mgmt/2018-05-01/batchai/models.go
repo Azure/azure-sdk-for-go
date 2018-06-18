@@ -444,7 +444,7 @@ type ClusterBaseProperties struct {
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
 	// VirtualMachineConfiguration - OS image configuration for cluster nodes. All nodes in a cluster have the same OS image.
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-	// NodeSetup - Setup (mount file systems, performance counters settings and custom setup task) to be performed on each compute node in the cluster.
+	// NodeSetup - Setup to be performed on each compute node in the cluster.
 	NodeSetup *NodeSetup `json:"nodeSetup,omitempty"`
 	// UserAccountSettings - Settings for an administrator user account that will be created on each compute node in the cluster.
 	UserAccountSettings *UserAccountSettings `json:"userAccountSettings,omitempty"`

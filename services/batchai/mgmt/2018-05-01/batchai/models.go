@@ -304,7 +304,7 @@ type Caffe2Settings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the python script.
+	// CommandLineArgs - Command line arguments that need to be passed to the python script.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 }
 
@@ -316,7 +316,7 @@ type CaffeSettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter. The property can be specified only if the pythonScriptFilePath is specified.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the Caffe job.
+	// CommandLineArgs - Command line arguments that need to be passed to the Caffe job.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 	// ProcessCount - Number of processes to launch for the job execution. The default value for this property is equal to nodeCount property
 	ProcessCount *int32 `json:"processCount,omitempty"`
@@ -328,7 +328,7 @@ type ChainerSettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the python script.
+	// CommandLineArgs - Command line arguments that need to be passed to the python script.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 	// ProcessCount - Number of processes to launch for the job execution. The default value for this property is equal to nodeCount property
 	ProcessCount *int32 `json:"processCount,omitempty"`
@@ -732,7 +732,7 @@ type CNTKsettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter. This property can be specified only if the languageType is 'Python'.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the python script or cntk executable.
+	// CommandLineArgs - Command line arguments that need to be passed to the python script or cntk executable.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 	// ProcessCount - Number of processes to launch for the job execution. The default value for this property is equal to nodeCount property
 	ProcessCount *int32 `json:"processCount,omitempty"`
@@ -1558,7 +1558,7 @@ type HorovodSettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the python script.
+	// CommandLineArgs - Command line arguments that need to be passed to the python script.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 	// ProcessCount - Number of processes to launch for the job execution. The default value for this property is equal to nodeCount property
 	ProcessCount *int32 `json:"processCount,omitempty"`
@@ -2353,7 +2353,7 @@ type PyTorchSettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// CommandLineArgs - Command line arguments that needs to be passed to the python script.
+	// CommandLineArgs - Command line arguments that need to be passed to the python script.
 	CommandLineArgs *string `json:"commandLineArgs,omitempty"`
 	// ProcessCount - Number of processes to launch for the job execution. The default value for this property is equal to nodeCount property
 	ProcessCount *int32 `json:"processCount,omitempty"`
@@ -2552,11 +2552,11 @@ type TensorFlowSettings struct {
 	PythonScriptFilePath *string `json:"pythonScriptFilePath,omitempty"`
 	// PythonInterpreterPath - The path to the Python interpreter.
 	PythonInterpreterPath *string `json:"pythonInterpreterPath,omitempty"`
-	// MasterCommandLineArgs - Command line arguments that needs to be passed to the python script for the master task.
+	// MasterCommandLineArgs - Command line arguments that need to be passed to the python script for the master task.
 	MasterCommandLineArgs *string `json:"masterCommandLineArgs,omitempty"`
-	// WorkerCommandLineArgs - Command line arguments that needs to be passed to the python script for the worker task. Optional for single process jobs.
+	// WorkerCommandLineArgs - Command line arguments that need to be passed to the python script for the worker task. Optional for single process jobs.
 	WorkerCommandLineArgs *string `json:"workerCommandLineArgs,omitempty"`
-	// ParameterServerCommandLineArgs - Command line arguments that needs to be passed to the python script for the parameter server. Optional for single process jobs.
+	// ParameterServerCommandLineArgs - Command line arguments that need to be passed to the python script for the parameter server. Optional for single process jobs.
 	ParameterServerCommandLineArgs *string `json:"parameterServerCommandLineArgs,omitempty"`
 	// WorkerCount - The number of worker tasks. If specified, the value must be less than or equal to (nodeCount * numberOfGPUs per VM). If not specified, the default value is equal to nodeCount. This property can be specified only for distributed TensorFlow training.
 	WorkerCount *int32 `json:"workerCount,omitempty"`

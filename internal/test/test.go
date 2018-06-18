@@ -29,6 +29,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-amqp-common-go/conn"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"
@@ -76,16 +77,19 @@ func (suite *BaseSuite) SetupSuite() {
 	suite.SubscriptionID = mustGetEnv("AZURE_SUBSCRIPTION_ID")
 	suite.ClientID = mustGetEnv("AZURE_CLIENT_ID")
 	suite.ClientSecret = mustGetEnv("AZURE_CLIENT_SECRET")
-	suite.Namespace = mustGetEnv("SERVICEBUS_NAMESPACE")
 	suite.ConnStr = mustGetEnv("SERVICEBUS_CONNECTION_STRING")
+	parsed, err := conn.ParsedConnectionFromStr(suite.ConnStr)
+	if !suite.NoError(err) {
+		suite.FailNow("connection string could not be parsed")
+	}
+	suite.Namespace = parsed.Namespace
 	suite.Token = suite.servicePrincipalToken()
 	suite.Environment = azure.PublicCloud
 	suite.TagID = RandomString("tag", 10)
 	suite.setupTracing()
 
-	err := suite.ensureProvisioned(sbmgmt.SkuTierStandard)
-	if err != nil {
-		suite.T().Fatal(err)
+	if !suite.NoError(suite.ensureProvisioned(sbmgmt.SkuTierStandard)) {
+		suite.FailNow("failed to ensure provisioned")
 	}
 }
 

@@ -1,22 +1,27 @@
 language: go
-
+sudo: false
 go:
-  - 1.9
-  - 1.10
-  - tip
-
-matrix:
-  allow_failures:
-      - go: top
-    fast_finish: true
-
+- 1.x
+- 1.9.x
 before_install:
-  - go get github.com/golang/lint/golint
-  - go get github.com/fzipp/gocyclo
-  - go get github.com/golang/lint/golint
-  - go get github.com/mattn/goveralls
-  - go get golang.org/x/tools/cmd/cover
-
+- go get github.com/mattn/goveralls
+- go get golang.org/x/tools/cmd/cover
+- go get github.com/fzipp/gocyclo
+- go get github.com/golang/dep/cmd/dep
+- go get honnef.co/go/tools/cmd/megacheck
+- go get -u golang.org/x/lint/golint
+jobs:
+  include:
+  - stage: integration tests
+    if: type IN (push, cron)
+    env:
+    - secure: TsDOhh0oWTh5pkpo8YOC9RD20fkC5G228E5z7HlgTaZCIhqr6UOjo/nF4KGGKxCCWzIjC7PcAyEOFf3ZfHZVbMc2RWt+ZoDvnYXTJ1x58ea5r14fswyUdFWpx55DhiaFZNMM6xiB2roFQaFloAUuI5pITknjuslnAXCNXA8ONfNIaBSF842rEfyRV8Jke8pTUe3BpXHg1uRky6HjC1P1hVW3VFmGQ9ODIbxxBD6fKPdznxGLkKmVghIBZ4tqj1e+ysH2Peu+FhwGfxEFXp6WF+K6GIMNheE+P2wn1bDsm+mWwpS5FxcvvcRVEaWCfQf8tf9uXdwGC8sndBmmN2IS5HA5cxuVeBNlVFJOCMaZxSo7NpsRI7jjm0cYFSwegt6ZSKtGw8Lk4ijcz56KyblhBXZoG6mT8NcCXxxsSi3slJHEKHiTqh0UMkXzl5tYAVSS0/WUm+DjxNCb1+zkiwNhBi0rRAkxA3WaY176LWbiftvu9O/chPBWR00Kicr4z95hsafCF908l5Lx31OwgBEJt+NXa/luWP73WyK/klan/Az9OJym/QR2wqUy/JLdlW3tzVLq4vxL88Z36aDjPJGAWRxHs6sfAFNlS73WZr1OXoNBZW9pesedAYXtLnQffN1toyCRwpP+7Hi2KM1c47aIUJFUgITv6oIZwYSwIXuRU1Y=
+    - secure: BFrdWPJl9wWB0uYs4Z3oq0Qvlog1vQEhvCRVrtZ8VqZaw4mnmNRmoBWpSKduaDobP3U59ZMcc8nHRTpOmauEUkHO+N1xSrABof9bk25+2cVMoz1PKoUZ952r/e1nEHzvcziuXfBL4htUbMb0bl7k1reqoUZYe9qPGYi7zEICXrnI/Q3Y5zUqmm3ftddbjZoBSDi8l4BueV45x3F6tPR1fbMbFpmIyyYteTmf2vQbAQvoewoAN2fkk4IKFFNBdjdHbQ1qS8dBEHfIBKff6goird1GO3awX3WXPJoxUP4Tc4RBc5tnZMAEafiNjSh94wkT9DQ1XSIt420MzauYW5uezNMrzHflBfmlvFjeBEwhXOVkXVEm1c1Bf/DIsZ/4RcU045T8ajblljkVkfNZBHFCzjJyOIgfMoVNXn5Q5sulWmK4lmhpquc6LkKnLA5GHWoZ73HTLqCib5QaEKPYkde/0Vh8RNW+x/UCc+sfqtQ5Uk2LNmqn2FYYJOtCG1yXfFt6g/WXSOa8QsfxFuQjxTpLF82GbrFAgoFzrpr9BEKaXWz3Ad23FWyWkMemwhgKG39MHoO7f0sKJAodNjbkOGLuliLzUfG6zTrym7j6yFvZD6eEW0a5mbqzMocUSkVHtIxz0xUkZzCUYtYkfMnd5RqPQWUcPWLHv3BJbPN4rKzb+Vo=
+    - secure: HcMJOmXrm/sWJ6ZsZXB5UhDVftafSU5rGi7mFCcAUZuYEX5rm+jPZX1gDQRke2FQiSwPpH1gO0AXLahA0bVAFZpKrwGWy+XfLMIHYl1euDN9rZrWXNWGB1TyszjxiDHPEBYfnzj8cIQD6m4YZLD7tOkDHBdMr8hzchRDB/vMInl4vRQSucPePY9GevTZ67ERdNPdcM4mpwWLQp5H206zv4gm6BFWUygNA9+4LfTqMg6kvcbYUi2UBI1Ah15gvFWqY/upMO0e96jwxV91umMTFp+TDure3VubaULvI6Dq0EQvdQ6LJQYp++IkIQgnJWWJN+ZTnxjRgQmuA8CuRL8kWld6fpiNAbvkmji2AunMjmBR0zaZIjRs3GP/puJIMFdmGaTh+Tm06GXew1RhUb9usgEaE6iN4edcPRpsj6MCzxGIAKynI1iJYsfzuadKzG/w7Eh+uenppAm9HBjpsHiISvZ2XFNrACZJqt2N3N1IRNbzPvBolcQLvc0SypB/1L3hPD4ALINwJhicoRPCaYk6sG7PSq0BDonMyZvYcQAYY8sNopwe5CDbTHOrC7umOaIQ8KIgpe4TLPn7680YLPAmYSRDJyNro/6mZjM2BWLAMI5RANw6qDlz7tnf0BmeiVLXTHNxkr/eXWXq4znTY59rcffusVhdV9UM9jZW7X1UuKQ=
+    - secure: NWWk6IHwesfabUd5K1wxYdy17trFIRGajNyLnaXQPe/QQrx/YTIPtqZABnI+Dert7I45Oopu+81WxQV9qKWZ66x/4tCkCAGRC/tm+iNRM1kz7B7nnjcK8Eby9KhR8t4aiu6nDudEweRK3Jf1aI29V6A5Ji5MCtqe9eTo7ys4Lojrxf0tO1czolRNkQErHcIMmP7a1nlvPCcl3glJx9yGnY8xgA22XrbZ2GzH0WD+N2UP9N3nTi3dVcrpD4vCkbRc5z33bu1cBDTk/Ekhy306G5DaaiaVJa8mEndfJ0FRrjgTSmvXX+s+O8taeN0bToW7w2p1FTgtZsQt5idHNCfxCc/utfqV02oEIRIvwxuEMkC6RMrl6wtSSif+FUTj4dVllMt9fNg3CW7+fA7RuK7z174x0EFl/jNpW30fMyUc74xP/yrvSTRIZph5nBxtSCknVSCjFWLg5Zjm7l4bkol8SLZp6jQ7pQmzZFWgXhuOVedd0pFJ3NJgdvYXgCrufN5MALXr2HLDL4h9pajpBIOTzvnxnBpnUqots7nnsPsMQknCjL858QZSGwWNdp0wPunsh9J/9Sr7Wdna+At797nTuR8pz4X7iSa3nR8a/YeBDPwnn4gQUUnnWeEa6BGJjNMqpWVVOPl4HTFcxTrYza1rmjzVA8XkC3esNBL4IFScHfw=
+    - secure: HEE7ZrDXItBc0S5iL3tStjFtlpPjLq3ZiF5LRu+s9rr/HmGr+yuD911pUGgqP9+Fvc49520sW7QSkM8bd2GiVN+Fp05DWIl/syQkonFjAxlwg9qzWF4dtFV5n787hkIuqO9W5cRvqe4AEdQ5CdbBpvJ//tVp/DsoFCJKS3VG8gL16vCLmuH+awj0Wk+lnhYHuI6Rce5+W1qSonyQzTWFUaLOQsJw4BYIw9UD0MaZGZjd0xy/93/BW7gKms9f1QGBWCyASaHlPKMS9yUu+rLqm6egfrZf1vL4YufPUlAYLtCvZ1BfEQVLpvAzZPDhK9QGJglgYfkxAZAvw55emvtZQgvLy9LKsNm7YKSdRKjIJsZ+7q76GUew3KT2lqWKK/DXvgd0Q9t+v2jl2n/tEm9Ge0EWOdwRYztNNl+btw/oRGY4CTKwVhSQvYkbkz9h2L5LZ3kRuNfG1ArXHtu/9OdtlUZtEKJ/T21AKEQ7uxyhnvMTXDgH/POXC239Q+YcjHiHTEAPF/pO2qeKcYgRf6LUVrXVjenHgRXIRGWRRs+y7dFzS+0qXM/hCyoXMbJZa3+0srNvN4GjWyodMNuIfvf7xc70pccfyRpaRZr5dM5Ciykm1DALZ7YfWzifNPd/B3ADnooL5JCXDycZi42wIN/9FXXeETBZMAvVrDdu6wcopzI=
+    script:
+    - make test-cover
+    - goveralls -coverprofile=cover.out -service=travis-ci
 script:
-  - make test-cover
-  - goveralls -coverprofile=cover.out -service=travis-ci
+- make

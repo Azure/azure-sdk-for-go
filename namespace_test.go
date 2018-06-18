@@ -47,7 +47,7 @@ func TestCreateNamespaceFromConnectionString(t *testing.T) {
 	assert.Contains(t, connStr, ns.Name)
 }
 
-func TestServiceBusSuite(t *testing.T) {
+func TestSB(t *testing.T) {
 	suite.Run(t, new(serviceBusSuite))
 }
 

@@ -172,15 +172,19 @@ const (
 	StandardMedium ApplicationGatewaySkuName = "Standard_Medium"
 	// StandardSmall ...
 	StandardSmall ApplicationGatewaySkuName = "Standard_Small"
+	// StandardV2 ...
+	StandardV2 ApplicationGatewaySkuName = "Standard_v2"
 	// WAFLarge ...
 	WAFLarge ApplicationGatewaySkuName = "WAF_Large"
 	// WAFMedium ...
 	WAFMedium ApplicationGatewaySkuName = "WAF_Medium"
+	// WAFV2 ...
+	WAFV2 ApplicationGatewaySkuName = "WAF_v2"
 )
 
 // PossibleApplicationGatewaySkuNameValues returns an array of possible values for the ApplicationGatewaySkuName const type.
 func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
-	return []ApplicationGatewaySkuName{StandardLarge, StandardMedium, StandardSmall, WAFLarge, WAFMedium}
+	return []ApplicationGatewaySkuName{StandardLarge, StandardMedium, StandardSmall, StandardV2, WAFLarge, WAFMedium, WAFV2}
 }
 
 // ApplicationGatewaySslCipherSuite enumerates the values for application gateway ssl cipher suite.
@@ -297,15 +301,19 @@ func PossibleApplicationGatewaySslProtocolValues() []ApplicationGatewaySslProtoc
 type ApplicationGatewayTier string
 
 const (
-	// Standard ...
-	Standard ApplicationGatewayTier = "Standard"
-	// WAF ...
-	WAF ApplicationGatewayTier = "WAF"
+	// ApplicationGatewayTierStandard ...
+	ApplicationGatewayTierStandard ApplicationGatewayTier = "Standard"
+	// ApplicationGatewayTierStandardV2 ...
+	ApplicationGatewayTierStandardV2 ApplicationGatewayTier = "Standard_v2"
+	// ApplicationGatewayTierWAF ...
+	ApplicationGatewayTierWAF ApplicationGatewayTier = "WAF"
+	// ApplicationGatewayTierWAFV2 ...
+	ApplicationGatewayTierWAFV2 ApplicationGatewayTier = "WAF_v2"
 )
 
 // PossibleApplicationGatewayTierValues returns an array of possible values for the ApplicationGatewayTier const type.
 func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
-	return []ApplicationGatewayTier{Standard, WAF}
+	return []ApplicationGatewayTier{ApplicationGatewayTierStandard, ApplicationGatewayTierStandardV2, ApplicationGatewayTierWAF, ApplicationGatewayTierWAFV2}
 }
 
 // AssociationType enumerates the values for association type.
@@ -608,15 +616,15 @@ func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily
 type ExpressRouteCircuitSkuTier string
 
 const (
-	// ExpressRouteCircuitSkuTierPremium ...
-	ExpressRouteCircuitSkuTierPremium ExpressRouteCircuitSkuTier = "Premium"
-	// ExpressRouteCircuitSkuTierStandard ...
-	ExpressRouteCircuitSkuTierStandard ExpressRouteCircuitSkuTier = "Standard"
+	// Premium ...
+	Premium ExpressRouteCircuitSkuTier = "Premium"
+	// Standard ...
+	Standard ExpressRouteCircuitSkuTier = "Standard"
 )
 
 // PossibleExpressRouteCircuitSkuTierValues returns an array of possible values for the ExpressRouteCircuitSkuTier const type.
 func PossibleExpressRouteCircuitSkuTierValues() []ExpressRouteCircuitSkuTier {
-	return []ExpressRouteCircuitSkuTier{ExpressRouteCircuitSkuTierPremium, ExpressRouteCircuitSkuTierStandard}
+	return []ExpressRouteCircuitSkuTier{Premium, Standard}
 }
 
 // ExpressRoutePeeringState enumerates the values for express route peering state.
@@ -1021,15 +1029,13 @@ type ProbeProtocol string
 const (
 	// ProbeProtocolHTTP ...
 	ProbeProtocolHTTP ProbeProtocol = "Http"
-	// ProbeProtocolHTTPS ...
-	ProbeProtocolHTTPS ProbeProtocol = "Https"
 	// ProbeProtocolTCP ...
 	ProbeProtocolTCP ProbeProtocol = "Tcp"
 )
 
 // PossibleProbeProtocolValues returns an array of possible values for the ProbeProtocol const type.
 func PossibleProbeProtocolValues() []ProbeProtocol {
-	return []ProbeProtocol{ProbeProtocolHTTP, ProbeProtocolHTTPS, ProbeProtocolTCP}
+	return []ProbeProtocol{ProbeProtocolHTTP, ProbeProtocolTCP}
 }
 
 // ProcessorArchitecture enumerates the values for processor architecture.
@@ -1369,13 +1375,15 @@ type VpnClientProtocol string
 const (
 	// IkeV2 ...
 	IkeV2 VpnClientProtocol = "IkeV2"
+	// OpenVPN ...
+	OpenVPN VpnClientProtocol = "OpenVPN"
 	// SSTP ...
 	SSTP VpnClientProtocol = "SSTP"
 )
 
 // PossibleVpnClientProtocolValues returns an array of possible values for the VpnClientProtocol const type.
 func PossibleVpnClientProtocolValues() []VpnClientProtocol {
-	return []VpnClientProtocol{IkeV2, SSTP}
+	return []VpnClientProtocol{IkeV2, OpenVPN, SSTP}
 }
 
 // VpnType enumerates the values for vpn type.
@@ -1406,6 +1414,8 @@ type ApplicationGateway struct {
 	*ApplicationGatewayPropertiesFormat `json:"properties,omitempty"`
 	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Zones - A list of availability zones denoting where the resource needs to come from.
+	Zones *[]string `json:"zones,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - Resource name.
@@ -1426,6 +1436,9 @@ func (ag ApplicationGateway) MarshalJSON() ([]byte, error) {
 	}
 	if ag.Etag != nil {
 		objectMap["etag"] = ag.Etag
+	}
+	if ag.Zones != nil {
+		objectMap["zones"] = ag.Zones
 	}
 	if ag.ID != nil {
 		objectMap["id"] = ag.ID
@@ -1471,6 +1484,15 @@ func (ag *ApplicationGateway) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ag.Etag = &etag
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				ag.Zones = &zones
 			}
 		case "id":
 			if v != nil {
@@ -1624,6 +1646,21 @@ type ApplicationGatewayAuthenticationCertificatePropertiesFormat struct {
 	Data *string `json:"data,omitempty"`
 	// ProvisioningState - Provisioning state of the authentication certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ApplicationGatewayAutoscaleBounds application Gateway autoscale bounds on number of Application Gateway
+// instance.
+type ApplicationGatewayAutoscaleBounds struct {
+	// Min - Lower bound on number of Application Gateway instances.
+	Min *int32 `json:"min,omitempty"`
+	// Max - Upper bound on number of Application Gateway instances.
+	Max *int32 `json:"max,omitempty"`
+}
+
+// ApplicationGatewayAutoscaleConfiguration application Gateway autoscale configuration.
+type ApplicationGatewayAutoscaleConfiguration struct {
+	// Bounds - Autoscale bounds
+	Bounds *ApplicationGatewayAutoscaleBounds `json:"bounds,omitempty"`
 }
 
 // ApplicationGatewayAvailableSslOptions response for ApplicationGatewayAvailableSslOptions API service call.
@@ -3083,6 +3120,10 @@ type ApplicationGatewayPropertiesFormat struct {
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration `json:"webApplicationFirewallConfiguration,omitempty"`
 	// EnableHTTP2 - Whether HTTP2 is enabled on the application gateway resource.
 	EnableHTTP2 *bool `json:"enableHttp2,omitempty"`
+	// EnableFIPS - Whether FIPS is enabled on the application gateway resource.
+	EnableFIPS *bool `json:"enableFIPS,omitempty"`
+	// AutoscaleConfiguration - Autoscale Configuration.
+	AutoscaleConfiguration *ApplicationGatewayAutoscaleConfiguration `json:"autoscaleConfiguration,omitempty"`
 	// ResourceGUID - Resource GUID property of the application gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - Provisioning state of the application gateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
@@ -3400,9 +3441,9 @@ func (future *ApplicationGatewaysDeleteFuture) Result(client ApplicationGateways
 
 // ApplicationGatewaySku SKU of an application gateway
 type ApplicationGatewaySku struct {
-	// Name - Name of an application gateway SKU. Possible values include: 'StandardSmall', 'StandardMedium', 'StandardLarge', 'WAFMedium', 'WAFLarge'
+	// Name - Name of an application gateway SKU. Possible values include: 'StandardSmall', 'StandardMedium', 'StandardLarge', 'WAFMedium', 'WAFLarge', 'StandardV2', 'WAFV2'
 	Name ApplicationGatewaySkuName `json:"name,omitempty"`
-	// Tier - Tier of an application gateway. Possible values include: 'Standard', 'WAF'
+	// Tier - Tier of an application gateway. Possible values include: 'ApplicationGatewayTierStandard', 'ApplicationGatewayTierWAF', 'ApplicationGatewayTierStandardV2', 'ApplicationGatewayTierWAFV2'
 	Tier ApplicationGatewayTier `json:"tier,omitempty"`
 	// Capacity - Capacity (instance count) of an application gateway.
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -6674,7 +6715,7 @@ type ExpressRouteCircuitServiceProviderProperties struct {
 type ExpressRouteCircuitSku struct {
 	// Name - The name of the SKU.
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium'
+	// Tier - The tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'Standard', 'Premium'
 	Tier ExpressRouteCircuitSkuTier `json:"tier,omitempty"`
 	// Family - The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'
 	Family ExpressRouteCircuitSkuFamily `json:"family,omitempty"`
@@ -11342,7 +11383,7 @@ func (p *Probe) UnmarshalJSON(body []byte) error {
 type ProbePropertiesFormat struct {
 	// LoadBalancingRules - The load balancer rules that use this probe.
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
-	// Protocol - The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'ProbeProtocolHTTP', 'ProbeProtocolTCP', 'ProbeProtocolHTTPS'
+	// Protocol - The protocol of the end point. Possible values are: 'Http' or 'Tcp'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'ProbeProtocolHTTP', 'ProbeProtocolTCP'
 	Protocol ProbeProtocol `json:"protocol,omitempty"`
 	// Port - The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
 	Port *int32 `json:"port,omitempty"`

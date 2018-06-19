@@ -25,6 +25,8 @@ package servicebus
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/go-autorest/autorest/to"
@@ -81,6 +83,11 @@ type (
 	MessageWithContext struct {
 		*Message
 		Ctx context.Context
+	}
+
+	mapStructureTag struct {
+		Name         string
+		PersistEmpty bool
 	}
 )
 
@@ -235,7 +242,7 @@ func (m *Message) ForeachKey(handler func(key, val string) error) error {
 	return nil
 }
 
-func (m *Message) toMsg() *amqp.Message {
+func (m *Message) toMsg() (*amqp.Message, error) {
 	amqpMsg := m.message
 	if amqpMsg == nil {
 		amqpMsg = amqp.NewMessage(m.Data)
@@ -263,6 +270,14 @@ func (m *Message) toMsg() *amqp.Message {
 		}
 	}
 
+	if m.SystemProperties != nil {
+		da, err := encodeStructureToMap(m.SystemProperties)
+		if err != nil {
+			return nil, err
+		}
+		amqpMsg.Annotations = annotationsFromMap(da)
+	}
+
 	if m.LockToken != nil {
 		if amqpMsg.DeliveryAnnotations == nil {
 			amqpMsg.DeliveryAnnotations = make(amqp.Annotations)
@@ -270,7 +285,15 @@ func (m *Message) toMsg() *amqp.Message {
 		amqpMsg.DeliveryAnnotations[lockTokenName] = m.LockToken
 	}
 
-	return amqpMsg
+	return amqpMsg, nil
+}
+
+func annotationsFromMap(m map[string]interface{}) amqp.Annotations {
+	a := make(amqp.Annotations)
+	for key, val := range m {
+		a[key] = val
+	}
+	return a
 }
 
 func messageFromAMQPMessage(msg *amqp.Message) (*Message, error) {
@@ -314,7 +337,6 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 	if amqpMsg.DeliveryAnnotations != nil {
 		var da deliveryAnnotations
 		if err := mapstructure.Decode(amqpMsg.DeliveryAnnotations, &da); err != nil {
-			fmt.Println("ERROR!!", err.Error())
 			return msg, err
 		}
 		if da.LockToken != nil {
@@ -323,4 +345,66 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 	}
 
 	return msg, nil
+}
+
+func encodeStructureToMap(structPointer interface{}) (map[string]interface{}, error) {
+	valueOfStruct := reflect.ValueOf(structPointer)
+	s := valueOfStruct.Elem()
+	if s.Kind() != reflect.Struct {
+		return nil, fmt.Errorf("must provide a struct")
+	}
+
+	encoded := make(map[string]interface{})
+	for i := 0; i < s.NumField(); i++ {
+		f := s.Field(i)
+		if f.IsValid() && f.CanSet() {
+			tf := s.Type().Field(i)
+			tag, err := parseMapStructureTag(tf.Tag)
+			if err != nil {
+				return nil, err
+			}
+
+			if tag != nil {
+				switch f.Kind() {
+				case reflect.Ptr:
+					if !f.IsNil() || tag.PersistEmpty {
+						if f.IsNil() {
+							encoded[tag.Name] = nil
+						} else {
+							encoded[tag.Name] = f.Elem().Interface()
+						}
+					}
+				default:
+					if f.Interface() != reflect.Zero(f.Type()).Interface() || tag.PersistEmpty {
+						encoded[tag.Name] = f.Interface()
+					}
+				}
+			}
+		}
+	}
+
+	return encoded, nil
+}
+
+func parseMapStructureTag(tag reflect.StructTag) (*mapStructureTag, error) {
+	str, ok := tag.Lookup("mapstructure")
+	if !ok {
+		return nil, nil
+	}
+
+	mapTag := new(mapStructureTag)
+	split := strings.Split(str, ",")
+	mapTag.Name = strings.TrimSpace(split[0])
+
+	if len(split) > 1 {
+		for _, tagKey := range split[1:] {
+			switch tagKey {
+			case "persistempty":
+				mapTag.PersistEmpty = true
+			default:
+				return nil, fmt.Errorf("key %q is not understood", tagKey)
+			}
+		}
+	}
+	return mapTag, nil
 }

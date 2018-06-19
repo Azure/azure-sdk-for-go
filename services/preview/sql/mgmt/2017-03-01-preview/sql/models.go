@@ -944,21 +944,6 @@ func PossibleSecurityAlertPolicyUseServerDefaultValues() []SecurityAlertPolicyUs
 	return []SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
 }
 
-// SecurityAlertState enumerates the values for security alert state.
-type SecurityAlertState string
-
-const (
-	// SecurityAlertStateDisabled ...
-	SecurityAlertStateDisabled SecurityAlertState = "Disabled"
-	// SecurityAlertStateEnabled ...
-	SecurityAlertStateEnabled SecurityAlertState = "Enabled"
-)
-
-// PossibleSecurityAlertStateValues returns an array of possible values for the SecurityAlertState const type.
-func PossibleSecurityAlertStateValues() []SecurityAlertState {
-	return []SecurityAlertState{SecurityAlertStateDisabled, SecurityAlertStateEnabled}
-}
-
 // ServerConnectionType enumerates the values for server connection type.
 type ServerConnectionType string
 
@@ -8948,8 +8933,8 @@ func (future *RestorePointsCreateFuture) Result(client RestorePointsClient) (rp 
 
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
-	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'SecurityAlertStateEnabled', 'SecurityAlertStateDisabled'
-	State SecurityAlertState `json:"state,omitempty"`
+	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
+	State SecurityAlertPolicyState `json:"state,omitempty"`
 	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
 	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
 	// EmailAddresses - Specifies an array of e-mail addresses to which the alert is sent.

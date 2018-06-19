@@ -1029,13 +1029,15 @@ type ProbeProtocol string
 const (
 	// ProbeProtocolHTTP ...
 	ProbeProtocolHTTP ProbeProtocol = "Http"
+	// ProbeProtocolHTTPS ...
+	ProbeProtocolHTTPS ProbeProtocol = "Https"
 	// ProbeProtocolTCP ...
 	ProbeProtocolTCP ProbeProtocol = "Tcp"
 )
 
 // PossibleProbeProtocolValues returns an array of possible values for the ProbeProtocol const type.
 func PossibleProbeProtocolValues() []ProbeProtocol {
-	return []ProbeProtocol{ProbeProtocolHTTP, ProbeProtocolTCP}
+	return []ProbeProtocol{ProbeProtocolHTTP, ProbeProtocolHTTPS, ProbeProtocolTCP}
 }
 
 // ProcessorArchitecture enumerates the values for processor architecture.
@@ -3120,8 +3122,8 @@ type ApplicationGatewayPropertiesFormat struct {
 	WebApplicationFirewallConfiguration *ApplicationGatewayWebApplicationFirewallConfiguration `json:"webApplicationFirewallConfiguration,omitempty"`
 	// EnableHTTP2 - Whether HTTP2 is enabled on the application gateway resource.
 	EnableHTTP2 *bool `json:"enableHttp2,omitempty"`
-	// EnableFIPS - Whether FIPS is enabled on the application gateway resource.
-	EnableFIPS *bool `json:"enableFIPS,omitempty"`
+	// EnableFips - Whether FIPS is enabled on the application gateway resource.
+	EnableFips *bool `json:"enableFips,omitempty"`
 	// AutoscaleConfiguration - Autoscale Configuration.
 	AutoscaleConfiguration *ApplicationGatewayAutoscaleConfiguration `json:"autoscaleConfiguration,omitempty"`
 	// ResourceGUID - Resource GUID property of the application gateway resource.
@@ -5120,6 +5122,8 @@ type ConnectionSharedKey struct {
 	autorest.Response `json:"-"`
 	// Value - The virtual network connection shared key value.
 	Value *string `json:"value,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // ConnectionStateSnapshot connection state snapshot.
@@ -11383,7 +11387,7 @@ func (p *Probe) UnmarshalJSON(body []byte) error {
 type ProbePropertiesFormat struct {
 	// LoadBalancingRules - The load balancer rules that use this probe.
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
-	// Protocol - The protocol of the end point. Possible values are: 'Http' or 'Tcp'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'ProbeProtocolHTTP', 'ProbeProtocolTCP'
+	// Protocol - The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be successful. Possible values include: 'ProbeProtocolHTTP', 'ProbeProtocolTCP', 'ProbeProtocolHTTPS'
 	Protocol ProbeProtocol `json:"protocol,omitempty"`
 	// Port - The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
 	Port *int32 `json:"port,omitempty"`
@@ -14712,7 +14716,6 @@ func (vngc *VirtualNetworkGatewayConnection) UnmarshalJSON(body []byte) error {
 
 // VirtualNetworkGatewayConnectionListEntity a common class for general resource information
 type VirtualNetworkGatewayConnectionListEntity struct {
-	autorest.Response `json:"-"`
 	// VirtualNetworkGatewayConnectionListEntityPropertiesFormat - Properties of the virtual network gateway connection.
 	*VirtualNetworkGatewayConnectionListEntityPropertiesFormat `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
@@ -15131,7 +15134,7 @@ type VirtualNetworkGatewayConnectionsUpdateTagsFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualNetworkGatewayConnectionsUpdateTagsFuture) Result(client VirtualNetworkGatewayConnectionsClient) (vngcle VirtualNetworkGatewayConnectionListEntity, err error) {
+func (future *VirtualNetworkGatewayConnectionsUpdateTagsFuture) Result(client VirtualNetworkGatewayConnectionsClient) (vngc VirtualNetworkGatewayConnection, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -15143,10 +15146,10 @@ func (future *VirtualNetworkGatewayConnectionsUpdateTagsFuture) Result(client Vi
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vngcle.Response.Response, err = future.GetResult(sender); err == nil && vngcle.Response.Response.StatusCode != http.StatusNoContent {
-		vngcle, err = client.UpdateTagsResponder(vngcle.Response.Response)
+	if vngc.Response.Response, err = future.GetResult(sender); err == nil && vngc.Response.Response.StatusCode != http.StatusNoContent {
+		vngc, err = client.UpdateTagsResponder(vngc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsUpdateTagsFuture", "Result", vngcle.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsUpdateTagsFuture", "Result", vngc.Response.Response, "Failure responding to request")
 		}
 	}
 	return

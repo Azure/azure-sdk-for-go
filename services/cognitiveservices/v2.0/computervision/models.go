@@ -468,6 +468,8 @@ type ImageTag struct {
 	Name *string `json:"name,omitempty"`
 	// Confidence - The level of confidence the service has in the caption
 	Confidence *float64 `json:"confidence,omitempty"`
+	// Hint - Optional categorization for the tag
+	Hint *string `json:"hint,omitempty"`
 }
 
 // ImageType an object providing possible image types and matching confidence levels.

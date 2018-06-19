@@ -20,7 +20,6 @@ package insights
 import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"net/http"
@@ -190,9 +189,9 @@ type PurgeState string
 
 const (
 	// Completed ...
-	Completed PurgeState = "Completed"
+	Completed PurgeState = "completed"
 	// Pending ...
-	Pending PurgeState = "Pending"
+	Pending PurgeState = "pending"
 )
 
 // PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
@@ -876,42 +875,51 @@ type ComponentPurgeBodyFilters struct {
 
 // ComponentPurgeResponse response containing operationId for a specific purge action.
 type ComponentPurgeResponse struct {
+	autorest.Response `json:"-"`
 	// OperationID - Id to use when querying for status for a particular purge operation.
 	OperationID *string `json:"operationId,omitempty"`
 }
 
 // ComponentPurgeStatusResponse response containing status for a specific purge operation.
 type ComponentPurgeStatusResponse struct {
+	autorest.Response `json:"-"`
 	// Status - Status of the operation represented by the requested Id. Possible values include: 'Pending', 'Completed'
 	Status PurgeState `json:"status,omitempty"`
 }
 
-// ComponentsPurgeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ComponentsPurgeFuture struct {
-	azure.Future
+// ComponentsResource an azure resource object
+type ComponentsResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 }
 
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ComponentsPurgeFuture) Result(client ComponentsClient) (so SetObject, err error) {
-	var done bool
-	done, err = future.Done(client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", future.Response(), "Polling failure")
-		return
+// MarshalJSON is the custom marshaler for ComponentsResource.
+func (cr ComponentsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.ID != nil {
+		objectMap["id"] = cr.ID
 	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("insights.ComponentsPurgeFuture")
-		return
+	if cr.Name != nil {
+		objectMap["name"] = cr.Name
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.PurgeResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "insights.ComponentsPurgeFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
+	if cr.Type != nil {
+		objectMap["type"] = cr.Type
 	}
-	return
+	if cr.Location != nil {
+		objectMap["location"] = cr.Location
+	}
+	if cr.Tags != nil {
+		objectMap["tags"] = cr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorFieldContract error Field contract.
@@ -1106,41 +1114,6 @@ func (page OperationListResultPage) Values() []Operation {
 		return nil
 	}
 	return *page.olr.Value
-}
-
-// Resource an azure resource object
-type Resource struct {
-	// ID - Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
-	return json.Marshal(objectMap)
 }
 
 // SetObject ...
@@ -1430,6 +1403,41 @@ type WebTestPropertiesConfiguration struct {
 	WebTest *string `json:"WebTest,omitempty"`
 }
 
+// WebtestsResource an azure resource object
+type WebtestsResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebtestsResource.
+func (wr WebtestsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wr.ID != nil {
+		objectMap["id"] = wr.ID
+	}
+	if wr.Name != nil {
+		objectMap["name"] = wr.Name
+	}
+	if wr.Type != nil {
+		objectMap["type"] = wr.Type
+	}
+	if wr.Location != nil {
+		objectMap["location"] = wr.Location
+	}
+	if wr.Tags != nil {
+		objectMap["tags"] = wr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Workbook an Application Insights workbook definition.
 type Workbook struct {
 	autorest.Response `json:"-"`
@@ -1586,6 +1594,41 @@ type WorkbookProperties struct {
 	UserID *string `json:"userId,omitempty"`
 	// SourceResourceID - Optional resourceId for a source resource.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+}
+
+// WorkbookResource an azure resource object
+type WorkbookResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WorkbookResource.
+func (wr WorkbookResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wr.ID != nil {
+		objectMap["id"] = wr.ID
+	}
+	if wr.Name != nil {
+		objectMap["name"] = wr.Name
+	}
+	if wr.Type != nil {
+		objectMap["type"] = wr.Type
+	}
+	if wr.Location != nil {
+		objectMap["location"] = wr.Location
+	}
+	if wr.Tags != nil {
+		objectMap["tags"] = wr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Workbooks workbook list result.

@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## `v17.4.0`
+
+### New Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|           autosuggest |         v1.0        |
+|      containerservice |      2018-03-31     |
+
+### Updated Services
+
+|          Package Name |     API Version     |
+| --------------------: | :-----------------: |
+|           consumption |      2018-05-31     |
+|            documentdb |      2015-04-08     |
+|               network | 2018-02-01<br/>2018-04-01<br/>2018-05-01 |
+|      notificationhubs |      2017-04-01     |
+|                   sql | 2017-03-01-preview<br/>2017-10-01-preview |
+
 ## `v17.3.1`
 
 ### Updated Services

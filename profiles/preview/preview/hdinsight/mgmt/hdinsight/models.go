@@ -56,13 +56,6 @@ const (
 	ActiveDirectory DirectoryType = original.ActiveDirectory
 )
 
-type EnabledCredential = original.EnabledCredential
-
-const (
-	False EnabledCredential = original.False
-	True  EnabledCredential = original.True
-)
-
 type OSType = original.OSType
 
 const (
@@ -85,7 +78,6 @@ type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
-type CapabilitiesResult = original.CapabilitiesResult
 type Cluster = original.Cluster
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
 type ClusterCreateProperties = original.ClusterCreateProperties
@@ -114,8 +106,8 @@ type Extension = original.Extension
 type ExtensionDisableMonitoringFuture = original.ExtensionDisableMonitoringFuture
 type ExtensionEnableMonitoringFuture = original.ExtensionEnableMonitoringFuture
 type HardwareProfile = original.HardwareProfile
-type HTTPConnectivitySettings = original.HTTPConnectivitySettings
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
+type LocalizedName = original.LocalizedName
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -124,10 +116,7 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationResource = original.OperationResource
 type OsProfile = original.OsProfile
 type ProxyResource = original.ProxyResource
-type QuotaCapability = original.QuotaCapability
 type QuotaInfo = original.QuotaInfo
-type RegionalQuotaCapability = original.RegionalQuotaCapability
-type RegionsCapability = original.RegionsCapability
 type Resource = original.Resource
 type Role = original.Role
 type RuntimeScriptAction = original.RuntimeScriptAction
@@ -148,11 +137,9 @@ type SSHPublicKey = original.SSHPublicKey
 type StorageAccount = original.StorageAccount
 type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
-type VersionsCapability = original.VersionsCapability
-type VersionSpec = original.VersionSpec
+type Usage = original.Usage
+type UsagesResult = original.UsagesResult
 type VirtualNetworkProfile = original.VirtualNetworkProfile
-type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
-type VMSizesCapability = original.VMSizesCapability
 type OperationsClient = original.OperationsClient
 type ScriptActionsClient = original.ScriptActionsClient
 type ScriptExecutionHistoryClient = original.ScriptExecutionHistoryClient
@@ -201,9 +188,6 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 }
 func PossibleDirectoryTypeValues() []DirectoryType {
 	return original.PossibleDirectoryTypeValues()
-}
-func PossibleEnabledCredentialValues() []EnabledCredential {
-	return original.PossibleEnabledCredentialValues()
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()

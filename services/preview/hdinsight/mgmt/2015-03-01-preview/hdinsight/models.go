@@ -76,21 +76,6 @@ func PossibleDirectoryTypeValues() []DirectoryType {
 	return []DirectoryType{ActiveDirectory}
 }
 
-// EnabledCredential enumerates the values for enabled credential.
-type EnabledCredential string
-
-const (
-	// False ...
-	False EnabledCredential = "false"
-	// True ...
-	True EnabledCredential = "true"
-)
-
-// PossibleEnabledCredentialValues returns an array of possible values for the EnabledCredential const type.
-func PossibleEnabledCredentialValues() []EnabledCredential {
-	return []EnabledCredential{False, True}
-}
-
 // OSType enumerates the values for os type.
 type OSType string
 
@@ -358,47 +343,6 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	}
 	ar.Response = future.Response()
 	return
-}
-
-// CapabilitiesResult the Get Capabilities operation response.
-type CapabilitiesResult struct {
-	autorest.Response `json:"-"`
-	// Versions - The version capability.
-	Versions map[string]*VersionsCapability `json:"versions"`
-	// Regions - The virtual machine size compatibilty features.
-	Regions map[string]*RegionsCapability `json:"regions"`
-	// VMSizes - The virtual machine sizes.
-	VMSizes map[string]*VMSizesCapability `json:"vmSizes"`
-	// VMSizeFilters - The virtual machine size compatibilty filters.
-	VMSizeFilters *[]VMSizeCompatibilityFilter `json:"vmSize_filters,omitempty"`
-	// Features - The capabilty features.
-	Features *[]string `json:"features,omitempty"`
-	// Quota - The quota capability.
-	Quota *QuotaCapability `json:"quota,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CapabilitiesResult.
-func (cr CapabilitiesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cr.Versions != nil {
-		objectMap["versions"] = cr.Versions
-	}
-	if cr.Regions != nil {
-		objectMap["regions"] = cr.Regions
-	}
-	if cr.VMSizes != nil {
-		objectMap["vmSizes"] = cr.VMSizes
-	}
-	if cr.VMSizeFilters != nil {
-		objectMap["vmSize_filters"] = cr.VMSizeFilters
-	}
-	if cr.Features != nil {
-		objectMap["features"] = cr.Features
-	}
-	if cr.Quota != nil {
-		objectMap["quota"] = cr.Quota
-	}
-	return json.Marshal(objectMap)
 }
 
 // Cluster the HDInsight cluster.
@@ -925,16 +869,6 @@ type HardwareProfile struct {
 	VMSize *string `json:"vmSize,omitempty"`
 }
 
-// HTTPConnectivitySettings the payload for a Configure HTTP settings request.
-type HTTPConnectivitySettings struct {
-	// EnabledCredential - Whether or not the HTTP based authorization is enabled. Possible values include: 'True', 'False'
-	EnabledCredential EnabledCredential `json:"restAuthCredential.isEnabled,omitempty"`
-	// Username - The HTTP username.
-	Username *string `json:"restAuthCredential.username,omitempty"`
-	// Password - The HTTP user password.
-	Password *string `json:"restAuthCredential.password,omitempty"`
-}
-
 // LinuxOperatingSystemProfile the ssh username, password, and ssh public key.
 type LinuxOperatingSystemProfile struct {
 	// Username - The username.
@@ -943,6 +877,14 @@ type LinuxOperatingSystemProfile struct {
 	Password *string `json:"password,omitempty"`
 	// SSHProfile - The SSH profile.
 	SSHProfile *SSHProfile `json:"sshProfile,omitempty"`
+}
+
+// LocalizedName the details about the localizable name of a type of usage.
+type LocalizedName struct {
+	// Value - The name of the used resource.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - The localized name of the used resource.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
 // Operation the HDInsight REST API operation.
@@ -1091,32 +1033,10 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// QuotaCapability the regional quota capability.
-type QuotaCapability struct {
-	// RegionalQuotas - The list of region quota capabilities.
-	RegionalQuotas *[]RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
-}
-
 // QuotaInfo the quota properties for the cluster.
 type QuotaInfo struct {
 	// CoresUsed - The cores used by the cluster.
 	CoresUsed *int32 `json:"coresUsed,omitempty"`
-}
-
-// RegionalQuotaCapability the regional quota capacity.
-type RegionalQuotaCapability struct {
-	// RegionName - The region name.
-	RegionName *string `json:"region_name,omitempty"`
-	// CoresUsed - The number of cores used in the region.
-	CoresUsed *int64 `json:"cores_used,omitempty"`
-	// CoresAvailable - The number of courses available in the region.
-	CoresAvailable *int64 `json:"cores_available,omitempty"`
-}
-
-// RegionsCapability the regions capability.
-type RegionsCapability struct {
-	// Available - The list of region capabilities.
-	Available *[]string `json:"available,omitempty"`
 }
 
 // Resource the core properties of ARM resources
@@ -1527,40 +1447,23 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VersionsCapability the version capability.
-type VersionsCapability struct {
-	// Available - The list of version capabilities.
-	Available *[]VersionSpec `json:"available,omitempty"`
+// Usage the details about the usage of a particular limited resource.
+type Usage struct {
+	// Unit - The type of measurement for usage.
+	Unit *string `json:"unit,omitempty"`
+	// CurrentValue - The current usage.
+	CurrentValue *int32 `json:"currentValue,omitempty"`
+	// Limit - The maximum allowed usage.
+	Limit *int32 `json:"limit,omitempty"`
+	// Name - The details about the localizable name of the used resource.
+	Name *LocalizedName `json:"name,omitempty"`
 }
 
-// VersionSpec the version properties.
-type VersionSpec struct {
-	// FriendlyName - The friendly name
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// DisplayName - The display name
-	DisplayName *string `json:"displayName,omitempty"`
-	// IsDefault - Whether or not the version is the default version.
-	IsDefault *string `json:"isDefault,omitempty"`
-	// ComponentVersions - The component version property.
-	ComponentVersions map[string]*string `json:"componentVersions"`
-}
-
-// MarshalJSON is the custom marshaler for VersionSpec.
-func (vs VersionSpec) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if vs.FriendlyName != nil {
-		objectMap["friendlyName"] = vs.FriendlyName
-	}
-	if vs.DisplayName != nil {
-		objectMap["displayName"] = vs.DisplayName
-	}
-	if vs.IsDefault != nil {
-		objectMap["isDefault"] = vs.IsDefault
-	}
-	if vs.ComponentVersions != nil {
-		objectMap["componentVersions"] = vs.ComponentVersions
-	}
-	return json.Marshal(objectMap)
+// UsagesResult the response for the operation to get regional usages for a subscription.
+type UsagesResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of usages.
+	Value *[]Usage `json:"value,omitempty"`
 }
 
 // VirtualNetworkProfile the virtual network properties.
@@ -1569,26 +1472,4 @@ type VirtualNetworkProfile struct {
 	ID *string `json:"id,omitempty"`
 	// Subnet - The name of the subnet.
 	Subnet *string `json:"subnet,omitempty"`
-}
-
-// VMSizeCompatibilityFilter the virtual machine type compatibility filter.
-type VMSizeCompatibilityFilter struct {
-	// FilterMode - The mode for the filter.
-	FilterMode *string `json:"FilterMode,omitempty"`
-	// Regions - The list of regions.
-	Regions *[]string `json:"Regions,omitempty"`
-	// ClusterFlavors - The list of cluster types available.
-	ClusterFlavors *[]string `json:"ClusterFlavors,omitempty"`
-	// NodeTypes - The list of node types.
-	NodeTypes *[]string `json:"NodeTypes,omitempty"`
-	// ClusterVersions - The list of cluster versions.
-	ClusterVersions *[]string `json:"ClusterVersions,omitempty"`
-	// Vmsizes - The list of virtual machine sizes.
-	Vmsizes *[]string `json:"vmsizes,omitempty"`
-}
-
-// VMSizesCapability the virtual machine sizes capability.
-type VMSizesCapability struct {
-	// Available - The list of virtual machine size capabilities.
-	Available *[]string `json:"available,omitempty"`
 }

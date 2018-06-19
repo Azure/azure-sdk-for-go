@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"net/http"
 )
 
@@ -106,8 +107,14 @@ func (client ConfigurationsClient) GetResponder(resp *http.Response) (result Set
 
 // UpdateHTTPSettings configures the HTTP settings on the specified cluster.
 // Parameters:
-// parameters - the name of the resource group.
-func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, parameters HTTPConnectivitySettings) (result ConfigurationsUpdateHTTPSettingsFuture, err error) {
+// parameters - the cluster configurations.
+func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, parameters map[string]*string) (result ConfigurationsUpdateHTTPSettingsFuture, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("hdinsight.ConfigurationsClient", "UpdateHTTPSettings", err.Error())
+	}
+
 	req, err := client.UpdateHTTPSettingsPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ConfigurationsClient", "UpdateHTTPSettings", nil, "Failure preparing request")
@@ -124,7 +131,7 @@ func (client ConfigurationsClient) UpdateHTTPSettings(ctx context.Context, param
 }
 
 // UpdateHTTPSettingsPreparer prepares the UpdateHTTPSettings request.
-func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Context, parameters HTTPConnectivitySettings) (*http.Request, error) {
+func (client ConfigurationsClient) UpdateHTTPSettingsPreparer(ctx context.Context, parameters map[string]*string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", client.ClusterName),
 		"configurationName": autorest.Encode("path", client.ConfigurationName),

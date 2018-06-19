@@ -59,7 +59,7 @@ func (client UsageDetailsClient) List(ctx context.Context, expand string, filter
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "List", err.Error())
@@ -187,7 +187,7 @@ func (client UsageDetailsClient) ListByBillingAccount(ctx context.Context, billi
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListByBillingAccount", err.Error())
@@ -316,7 +316,7 @@ func (client UsageDetailsClient) ListByBillingPeriod(ctx context.Context, billin
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListByBillingPeriod", err.Error())
@@ -445,7 +445,7 @@ func (client UsageDetailsClient) ListByDepartment(ctx context.Context, departmen
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListByDepartment", err.Error())
@@ -573,7 +573,7 @@ func (client UsageDetailsClient) ListByEnrollmentAccount(ctx context.Context, en
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListByEnrollmentAccount", err.Error())
@@ -703,7 +703,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByBillingAccount(ctx contex
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", err.Error())
@@ -834,7 +834,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByDepartment(ctx context.Co
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", err.Error())
@@ -965,7 +965,7 @@ func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccount(ctx con
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: 1000, Chain: nil},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", err.Error())

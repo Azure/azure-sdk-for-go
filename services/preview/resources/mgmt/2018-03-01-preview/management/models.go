@@ -138,28 +138,28 @@ func PossibleStatusValues() []Status {
 type Type string
 
 const (
-	// ProvidersMicrosoftManagementmanagementGroups ...
-	ProvidersMicrosoftManagementmanagementGroups Type = "/providers/Microsoft.Management/managementGroups"
+	// ProvidersMicrosoftManagementmanagementGroup ...
+	ProvidersMicrosoftManagementmanagementGroup Type = "/providers/Microsoft.Management/managementGroup"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{ProvidersMicrosoftManagementmanagementGroups}
+	return []Type{ProvidersMicrosoftManagementmanagementGroup}
 }
 
 // Type1 enumerates the values for type 1.
 type Type1 string
 
 const (
-	// Type1ProvidersMicrosoftManagementmanagementGroups ...
-	Type1ProvidersMicrosoftManagementmanagementGroups Type1 = "/providers/Microsoft.Management/managementGroups"
-	// Type1Subscriptions ...
-	Type1Subscriptions Type1 = "/subscriptions"
+	// ProvidersMicrosoftManagementmanagementGroups ...
+	ProvidersMicrosoftManagementmanagementGroups Type1 = "/providers/Microsoft.Management/managementGroups"
+	// Subscriptions ...
+	Subscriptions Type1 = "/subscriptions"
 )
 
 // PossibleType1Values returns an array of possible values for the Type1 const type.
 func PossibleType1Values() []Type1 {
-	return []Type1{Type1ProvidersMicrosoftManagementmanagementGroups, Type1Subscriptions}
+	return []Type1{ProvidersMicrosoftManagementmanagementGroups, Subscriptions}
 }
 
 // Type2 enumerates the values for type 2.
@@ -181,7 +181,7 @@ func PossibleType2Values() []Type2 {
 type CheckNameAvailabilityRequest struct {
 	// Name - the name to check for availability
 	Name *string `json:"name,omitempty"`
-	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'ProvidersMicrosoftManagementmanagementGroups'
+	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'ProvidersMicrosoftManagementmanagementGroup'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -198,7 +198,7 @@ type CheckNameAvailabilityResult struct {
 
 // ChildInfo the child information of a management group.
 type ChildInfo struct {
-	// Type - The fully qualified resource type which includes provider namespace (e.g. /providers/Microsoft.Management/managementGroups). Possible values include: 'Type1ProvidersMicrosoftManagementmanagementGroups', 'Type1Subscriptions'
+	// Type - The fully qualified resource type which includes provider namespace (e.g. /providers/Microsoft.Management/managementGroups). Possible values include: 'ProvidersMicrosoftManagementmanagementGroups', 'Subscriptions'
 	Type Type1 `json:"type,omitempty"`
 	// ID - The fully qualified ID for the child resource (management group or subscription).  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`
@@ -409,6 +409,62 @@ type Details struct {
 	Parent    *ParentGroupInfo `json:"parent,omitempty"`
 }
 
+// EntitiesListAllFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type EntitiesListAllFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EntitiesListAllFuture) Result(client EntitiesClient) (elrp EntityListResultPage, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesListAllFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managementgroups.EntitiesListAllFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if elrp.elr.Response.Response, err = future.GetResult(sender); err == nil && elrp.elr.Response.Response.StatusCode != http.StatusNoContent {
+		elrp, err = client.ListResponder(elrp.elr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.EntitiesListAllFuture", "Result", elrp.elr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// EntitiesListFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type EntitiesListFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EntitiesListFuture) Result(client EntitiesClient) (elrp EntityListResultPage, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesListFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managementgroups.EntitiesListFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if elrp.elr.Response.Response, err = future.GetResult(sender); err == nil && elrp.elr.Response.Response.StatusCode != http.StatusNoContent {
+		elrp, err = client.ListResponder(elrp.elr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.EntitiesListFuture", "Result", elrp.elr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // EntityHierarchyItem the management group details for the hierarchy view.
 type EntityHierarchyItem struct {
 	// ID - The fully qualified ID for the management group.  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
@@ -591,6 +647,10 @@ type EntityInfoProperties struct {
 	// InheritedPermissions - Possible values include: 'Noaccess', 'View', 'Edit', 'Delete'
 	InheritedPermissions InheritedPermissions `json:"inheritedPermissions,omitempty"`
 	NumberOfDescendants  *int32               `json:"numberOfDescendants,omitempty"`
+	// NumberOfChildren - Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current Group.
+	NumberOfChildren *int32 `json:"numberOfChildren,omitempty"`
+	// NumberOfChildGroups - Number of children is the number of Groups that are exactly one level underneath the current Group.
+	NumberOfChildGroups *int32 `json:"numberOfChildGroups,omitempty"`
 	// ParentDisplayNameChain - The parent display name chain from the root group to the immediate parent
 	ParentDisplayNameChain *[]string `json:"parentDisplayNameChain,omitempty"`
 	// ParentNameChain - The parent name chain from the root group to the immediate parent
@@ -602,6 +662,8 @@ type EntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of entities.
 	Value *[]EntityInfo `json:"value,omitempty"`
+	// Count - Total count of records that match the filter
+	Count *int32 `json:"count,omitempty"`
 	// NextLink - The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1234,6 +1296,34 @@ type Properties struct {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// StartTenantBackfillFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type StartTenantBackfillFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *StartTenantBackfillFuture) Result(client BaseClient) (tbsr TenantBackfillStatusResult, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managementgroups.StartTenantBackfillFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tbsr.Response.Response, err = future.GetResult(sender); err == nil && tbsr.Response.Response.StatusCode != http.StatusNoContent {
+		tbsr, err = client.StartTenantBackfillResponder(tbsr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.StartTenantBackfillFuture", "Result", tbsr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // TenantBackfillStatusResult the tenant backfill status

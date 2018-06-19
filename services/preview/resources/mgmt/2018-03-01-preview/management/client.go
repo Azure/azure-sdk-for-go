@@ -1,7 +1,9 @@
 // Package managementgroups implements the Azure ARM Managementgroups service API version 2018-03-01-preview.
 //
-// The Azure Management Groups API enables consolidation of multiple subscriptions/resources into an organizational
-// hierarchy and centrally manage access control, policies, alerting and reporting for those resources.
+// The Azure Management Groups API enables consolidation of multiple
+// subscriptions/resources into an organizational hierarchy and centrally
+// manage access control, policies, alerting and reporting for those resources.
+//
 package managementgroups
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -36,19 +38,27 @@ const (
 // BaseClient is the base client for Managementgroups.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	BaseURI           string
+	OperationResultID string
+	Skip              *int32
+	Top               *int32
+	Skiptoken         string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:            autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:           baseURI,
+		OperationResultID: operationResultID,
+		Skip:              skip,
+		Top:               top,
+		Skiptoken:         skiptoken,
 	}
 }
 
@@ -115,23 +125,17 @@ func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 }
 
 // StartTenantBackfill starts backfilling subscriptions for the Tenant.
-func (client BaseClient) StartTenantBackfill(ctx context.Context) (result TenantBackfillStatusResult, err error) {
+func (client BaseClient) StartTenantBackfill(ctx context.Context) (result StartTenantBackfillFuture, err error) {
 	req, err := client.StartTenantBackfillPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.StartTenantBackfillSender(req)
+	result, err = client.StartTenantBackfillSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.StartTenantBackfillResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managementgroups.BaseClient", "StartTenantBackfill", resp, "Failure responding to request")
 	}
 
 	return
@@ -154,9 +158,19 @@ func (client BaseClient) StartTenantBackfillPreparer(ctx context.Context) (*http
 
 // StartTenantBackfillSender sends the StartTenantBackfill request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) StartTenantBackfillSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client BaseClient) StartTenantBackfillSender(req *http.Request) (future StartTenantBackfillFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // StartTenantBackfillResponder handles the response to the StartTenantBackfill request. The method always
@@ -165,7 +179,7 @@ func (client BaseClient) StartTenantBackfillResponder(resp *http.Response) (resu
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

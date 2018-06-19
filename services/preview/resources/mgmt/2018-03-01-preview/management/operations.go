@@ -24,21 +24,21 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the the Azure Management Groups API enables consolidation of multiple subscriptions/resources
-// into an organizational hierarchy and centrally manage access control, policies, alerting and reporting for those
-// resources.
+// OperationsClient is the the Azure Management Groups API enables consolidation of multiple
+// subscriptions/resources into an organizational hierarchy and centrally
+// manage access control, policies, alerting and reporting for those resources.
 type OperationsClient struct {
 	BaseClient
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient() OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI)
+func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI)}
+func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
 }
 
 // List lists all of the available Management REST API operations.

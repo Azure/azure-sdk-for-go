@@ -125,7 +125,11 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
 	defer span.Finish()
 
-	_, err := tm.entityManager.Delete(ctx, "/"+name)
+	res, err := tm.entityManager.Delete(ctx, "/"+name)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	return err
 }
 
@@ -162,6 +166,10 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := tm.entityManager.Put(ctx, "/"+name, reqBytes)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -187,6 +195,10 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 	defer span.Finish()
 
 	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -217,6 +229,10 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	defer span.Finish()
 
 	res, err := tm.entityManager.Get(ctx, name)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

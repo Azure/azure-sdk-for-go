@@ -328,6 +328,13 @@ const (
 	InternalLoadBalancingModeWeb        InternalLoadBalancingMode = original.InternalLoadBalancingModeWeb
 )
 
+type IPFilterTag = original.IPFilterTag
+
+const (
+	Default  IPFilterTag = original.Default
+	XffProxy IPFilterTag = original.XffProxy
+)
+
 type IssueType = original.IssueType
 
 const (
@@ -456,6 +463,15 @@ const (
 	FileZilla3 PublishingProfileFormat = original.FileZilla3
 	Ftp        PublishingProfileFormat = original.Ftp
 	WebDeploy  PublishingProfileFormat = original.WebDeploy
+)
+
+type RenderingType = original.RenderingType
+
+const (
+	NoGraph               RenderingType = original.NoGraph
+	Table                 RenderingType = original.Table
+	TimeSeries            RenderingType = original.TimeSeries
+	TimeSeriesPerInstance RenderingType = original.TimeSeriesPerInstance
 )
 
 type ResourceScopeType = original.ResourceScopeType
@@ -594,13 +610,13 @@ const (
 type WorkerSizeOptions = original.WorkerSizeOptions
 
 const (
-	D1      WorkerSizeOptions = original.D1
-	D2      WorkerSizeOptions = original.D2
-	D3      WorkerSizeOptions = original.D3
-	Default WorkerSizeOptions = original.Default
-	Large   WorkerSizeOptions = original.Large
-	Medium  WorkerSizeOptions = original.Medium
-	Small   WorkerSizeOptions = original.Small
+	WorkerSizeOptionsD1      WorkerSizeOptions = original.WorkerSizeOptionsD1
+	WorkerSizeOptionsD2      WorkerSizeOptions = original.WorkerSizeOptionsD2
+	WorkerSizeOptionsD3      WorkerSizeOptions = original.WorkerSizeOptionsD3
+	WorkerSizeOptionsDefault WorkerSizeOptions = original.WorkerSizeOptionsDefault
+	WorkerSizeOptionsLarge   WorkerSizeOptions = original.WorkerSizeOptionsLarge
+	WorkerSizeOptionsMedium  WorkerSizeOptions = original.WorkerSizeOptionsMedium
+	WorkerSizeOptionsSmall   WorkerSizeOptions = original.WorkerSizeOptionsSmall
 )
 
 type AbnormalTimePeriod = original.AbnormalTimePeriod
@@ -747,6 +763,8 @@ type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
 type DatabaseBackupSetting = original.DatabaseBackupSetting
 type DataSource = original.DataSource
+type DataTableResponseColumn = original.DataTableResponseColumn
+type DataTableResponseObject = original.DataTableResponseObject
 type DefaultErrorResponse = original.DefaultErrorResponse
 type DefaultErrorResponseError = original.DefaultErrorResponseError
 type DefaultErrorResponseErrorDetailsItem = original.DefaultErrorResponseErrorDetailsItem
@@ -765,6 +783,12 @@ type DeploymentProperties = original.DeploymentProperties
 type DetectorAbnormalTimePeriod = original.DetectorAbnormalTimePeriod
 type DetectorDefinition = original.DetectorDefinition
 type DetectorDefinitionProperties = original.DetectorDefinitionProperties
+type DetectorInfo = original.DetectorInfo
+type DetectorResponse = original.DetectorResponse
+type DetectorResponseCollection = original.DetectorResponseCollection
+type DetectorResponseCollectionIterator = original.DetectorResponseCollectionIterator
+type DetectorResponseCollectionPage = original.DetectorResponseCollectionPage
+type DetectorResponseProperties = original.DetectorResponseProperties
 type DiagnosticAnalysis = original.DiagnosticAnalysis
 type DiagnosticAnalysisCollection = original.DiagnosticAnalysisCollection
 type DiagnosticAnalysisCollectionIterator = original.DiagnosticAnalysisCollectionIterator
@@ -775,6 +799,7 @@ type DiagnosticCategoryCollection = original.DiagnosticCategoryCollection
 type DiagnosticCategoryCollectionIterator = original.DiagnosticCategoryCollectionIterator
 type DiagnosticCategoryCollectionPage = original.DiagnosticCategoryCollectionPage
 type DiagnosticCategoryProperties = original.DiagnosticCategoryProperties
+type DiagnosticData = original.DiagnosticData
 type DiagnosticDetectorCollection = original.DiagnosticDetectorCollection
 type DiagnosticDetectorCollectionIterator = original.DiagnosticDetectorCollectionIterator
 type DiagnosticDetectorCollectionPage = original.DiagnosticDetectorCollectionPage
@@ -940,6 +965,7 @@ type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
 type RelayServiceConnectionEntityProperties = original.RelayServiceConnectionEntityProperties
+type Rendering = original.Rendering
 type RenewCertificateOrderRequest = original.RenewCertificateOrderRequest
 type RenewCertificateOrderRequestProperties = original.RenewCertificateOrderRequestProperties
 type RequestsBasedTrigger = original.RequestsBasedTrigger
@@ -1258,6 +1284,9 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
 	return original.PossibleInternalLoadBalancingModeValues()
 }
+func PossibleIPFilterTagValues() []IPFilterTag {
+	return original.PossibleIPFilterTagValues()
+}
 func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
 }
@@ -1299,6 +1328,9 @@ func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
 }
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return original.PossiblePublishingProfileFormatValues()
+}
+func PossibleRenderingTypeValues() []RenderingType {
+	return original.PossibleRenderingTypeValues()
 }
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()

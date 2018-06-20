@@ -639,6 +639,21 @@ func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
 	return []InternalLoadBalancingMode{InternalLoadBalancingModeNone, InternalLoadBalancingModePublishing, InternalLoadBalancingModeWeb}
 }
 
+// IPFilterTag enumerates the values for ip filter tag.
+type IPFilterTag string
+
+const (
+	// Default ...
+	Default IPFilterTag = "Default"
+	// XffProxy ...
+	XffProxy IPFilterTag = "XffProxy"
+)
+
+// PossibleIPFilterTagValues returns an array of possible values for the IPFilterTag const type.
+func PossibleIPFilterTagValues() []IPFilterTag {
+	return []IPFilterTag{Default, XffProxy}
+}
+
 // IssueType enumerates the values for issue type.
 type IssueType string
 
@@ -911,6 +926,25 @@ const (
 // PossiblePublishingProfileFormatValues returns an array of possible values for the PublishingProfileFormat const type.
 func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
 	return []PublishingProfileFormat{FileZilla3, Ftp, WebDeploy}
+}
+
+// RenderingType enumerates the values for rendering type.
+type RenderingType string
+
+const (
+	// NoGraph ...
+	NoGraph RenderingType = "NoGraph"
+	// Table ...
+	Table RenderingType = "Table"
+	// TimeSeries ...
+	TimeSeries RenderingType = "TimeSeries"
+	// TimeSeriesPerInstance ...
+	TimeSeriesPerInstance RenderingType = "TimeSeriesPerInstance"
+)
+
+// PossibleRenderingTypeValues returns an array of possible values for the RenderingType const type.
+func PossibleRenderingTypeValues() []RenderingType {
+	return []RenderingType{NoGraph, Table, TimeSeries, TimeSeriesPerInstance}
 }
 
 // ResourceScopeType enumerates the values for resource scope type.
@@ -1198,25 +1232,25 @@ func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
 type WorkerSizeOptions string
 
 const (
-	// D1 ...
-	D1 WorkerSizeOptions = "D1"
-	// D2 ...
-	D2 WorkerSizeOptions = "D2"
-	// D3 ...
-	D3 WorkerSizeOptions = "D3"
-	// Default ...
-	Default WorkerSizeOptions = "Default"
-	// Large ...
-	Large WorkerSizeOptions = "Large"
-	// Medium ...
-	Medium WorkerSizeOptions = "Medium"
-	// Small ...
-	Small WorkerSizeOptions = "Small"
+	// WorkerSizeOptionsD1 ...
+	WorkerSizeOptionsD1 WorkerSizeOptions = "D1"
+	// WorkerSizeOptionsD2 ...
+	WorkerSizeOptionsD2 WorkerSizeOptions = "D2"
+	// WorkerSizeOptionsD3 ...
+	WorkerSizeOptionsD3 WorkerSizeOptions = "D3"
+	// WorkerSizeOptionsDefault ...
+	WorkerSizeOptionsDefault WorkerSizeOptions = "Default"
+	// WorkerSizeOptionsLarge ...
+	WorkerSizeOptionsLarge WorkerSizeOptions = "Large"
+	// WorkerSizeOptionsMedium ...
+	WorkerSizeOptionsMedium WorkerSizeOptions = "Medium"
+	// WorkerSizeOptionsSmall ...
+	WorkerSizeOptionsSmall WorkerSizeOptions = "Small"
 )
 
 // PossibleWorkerSizeOptionsValues returns an array of possible values for the WorkerSizeOptions const type.
 func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
-	return []WorkerSizeOptions{D1, D2, D3, Default, Large, Medium, Small}
+	return []WorkerSizeOptions{WorkerSizeOptionsD1, WorkerSizeOptionsD2, WorkerSizeOptionsD3, WorkerSizeOptionsDefault, WorkerSizeOptionsLarge, WorkerSizeOptionsMedium, WorkerSizeOptionsSmall}
 }
 
 // AbnormalTimePeriod class representing Abnormal Time Period identified in diagnosis
@@ -6554,6 +6588,26 @@ type DataSource struct {
 	DataSourceURI *[]NameValuePair `json:"dataSourceUri,omitempty"`
 }
 
+// DataTableResponseColumn column definition
+type DataTableResponseColumn struct {
+	// ColumnName - Name of the column
+	ColumnName *string `json:"columnName,omitempty"`
+	// DataType - Data type which looks like 'String' or 'Int32'.
+	DataType *string `json:"dataType,omitempty"`
+	// ColumnType - Column Type
+	ColumnType *string `json:"columnType,omitempty"`
+}
+
+// DataTableResponseObject data Table which defines columns and raw row values
+type DataTableResponseObject struct {
+	// TableName - Name of the table
+	TableName *string `json:"tableName,omitempty"`
+	// Columns - List of columns with data types
+	Columns *[]DataTableResponseColumn `json:"columns,omitempty"`
+	// Rows - Raw row values
+	Rows *[][]string `json:"rows,omitempty"`
+}
+
 // DefaultErrorResponse app Service error response.
 type DefaultErrorResponse struct {
 	// Error - Error model.
@@ -7167,6 +7221,224 @@ type DetectorDefinitionProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
+// DetectorInfo definition of Detector
+type DetectorInfo struct {
+	// Description - Short description of the detector and its purpose
+	Description *string `json:"description,omitempty"`
+	// Category - Support Category
+	Category *string `json:"category,omitempty"`
+	// SubCategory - Support Sub Category
+	SubCategory *string `json:"subCategory,omitempty"`
+	// SupportTopicID - Support Topic Id
+	SupportTopicID *string `json:"supportTopicId,omitempty"`
+}
+
+// DetectorResponse class representing Response from Detector
+type DetectorResponse struct {
+	autorest.Response `json:"-"`
+	// DetectorResponseProperties - DetectorResponse resource specific properties
+	*DetectorResponseProperties `json:"properties,omitempty"`
+	// ID - Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DetectorResponse.
+func (dr DetectorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dr.DetectorResponseProperties != nil {
+		objectMap["properties"] = dr.DetectorResponseProperties
+	}
+	if dr.ID != nil {
+		objectMap["id"] = dr.ID
+	}
+	if dr.Name != nil {
+		objectMap["name"] = dr.Name
+	}
+	if dr.Kind != nil {
+		objectMap["kind"] = dr.Kind
+	}
+	if dr.Type != nil {
+		objectMap["type"] = dr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DetectorResponse struct.
+func (dr *DetectorResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var detectorResponseProperties DetectorResponseProperties
+				err = json.Unmarshal(*v, &detectorResponseProperties)
+				if err != nil {
+					return err
+				}
+				dr.DetectorResponseProperties = &detectorResponseProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				dr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DetectorResponseCollection collection of detector responses
+type DetectorResponseCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resources.
+	Value *[]DetectorResponse `json:"value,omitempty"`
+	// NextLink - Link to next page of resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DetectorResponseCollectionIterator provides access to a complete listing of DetectorResponse values.
+type DetectorResponseCollectionIterator struct {
+	i    int
+	page DetectorResponseCollectionPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DetectorResponseCollectionIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DetectorResponseCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DetectorResponseCollectionIterator) Response() DetectorResponseCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DetectorResponseCollectionIterator) Value() DetectorResponse {
+	if !iter.page.NotDone() {
+		return DetectorResponse{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (drc DetectorResponseCollection) IsEmpty() bool {
+	return drc.Value == nil || len(*drc.Value) == 0
+}
+
+// detectorResponseCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (drc DetectorResponseCollection) detectorResponseCollectionPreparer() (*http.Request, error) {
+	if drc.NextLink == nil || len(to.String(drc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(drc.NextLink)))
+}
+
+// DetectorResponseCollectionPage contains a page of DetectorResponse values.
+type DetectorResponseCollectionPage struct {
+	fn  func(DetectorResponseCollection) (DetectorResponseCollection, error)
+	drc DetectorResponseCollection
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DetectorResponseCollectionPage) Next() error {
+	next, err := page.fn(page.drc)
+	if err != nil {
+		return err
+	}
+	page.drc = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DetectorResponseCollectionPage) NotDone() bool {
+	return !page.drc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DetectorResponseCollectionPage) Response() DetectorResponseCollection {
+	return page.drc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DetectorResponseCollectionPage) Values() []DetectorResponse {
+	if page.drc.IsEmpty() {
+		return nil
+	}
+	return *page.drc.Value
+}
+
+// DetectorResponseProperties detectorResponse resource specific properties
+type DetectorResponseProperties struct {
+	// Metadata - metadata for the detector
+	Metadata *DetectorInfo `json:"metadata,omitempty"`
+	// Dataset - Data Set
+	Dataset *[]DiagnosticData `json:"dataset,omitempty"`
+}
+
 // DiagnosticAnalysis class representing a diagnostic analysis done on an application
 type DiagnosticAnalysis struct {
 	autorest.Response `json:"-"`
@@ -7581,6 +7853,14 @@ func (page DiagnosticCategoryCollectionPage) Values() []DiagnosticCategory {
 type DiagnosticCategoryProperties struct {
 	// Description - Description of the diagnostic category
 	Description *string `json:"description,omitempty"`
+}
+
+// DiagnosticData set of data with rendering instructions
+type DiagnosticData struct {
+	// Table - Data in table form
+	Table *DataTableResponseObject `json:"table,omitempty"`
+	// RenderingProperties - Properties that describe how the table should be rendered
+	RenderingProperties *Rendering `json:"renderingProperties,omitempty"`
 }
 
 // DiagnosticDetectorCollection collection of Diagnostic Detectors
@@ -10095,20 +10375,15 @@ type IPSecurityRestriction struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// SubnetMask - Subnet mask for the range of IP addresses the restriction is valid for.
 	SubnetMask *string `json:"subnetMask,omitempty"`
-	// Action - ** New Implementation Only **
-	// Allow or Deny action.
+	// Action - Allow or Deny access for this IP range.
 	Action *string `json:"action,omitempty"`
-	// Tag - ** New Implementation Only **
-	// Tag.
-	Tag *string `json:"tag,omitempty"`
-	// Priority - ** New Implementation Only **
-	// Priority.
+	// Tag - Defines what this IP filter will be used for. This is to support IP filtering on proxies. Possible values include: 'Default', 'XffProxy'
+	Tag IPFilterTag `json:"tag,omitempty"`
+	// Priority - Priority of IP restriction rule.
 	Priority *int32 `json:"priority,omitempty"`
-	// Name - ** New Implementation Only **
-	// Name.
+	// Name - IP restriction rule name.
 	Name *string `json:"name,omitempty"`
-	// Description - ** New Implementation Only **
-	// Description.
+	// Description - IP restriction rule description.
 	Description *string `json:"description,omitempty"`
 }
 
@@ -13914,6 +14189,16 @@ type RelayServiceConnectionEntityProperties struct {
 	BiztalkURI               *string `json:"biztalkUri,omitempty"`
 }
 
+// Rendering instructions for rendering the data
+type Rendering struct {
+	// Type - Rendering Type. Possible values include: 'NoGraph', 'Table', 'TimeSeries', 'TimeSeriesPerInstance'
+	Type RenderingType `json:"type,omitempty"`
+	// Title - Title of data
+	Title *string `json:"title,omitempty"`
+	// Description - Description of the data that will help it be interpreted
+	Description *string `json:"description,omitempty"`
+}
+
 // RenewCertificateOrderRequest class representing certificate renew request.
 type RenewCertificateOrderRequest struct {
 	// RenewCertificateOrderRequestProperties - RenewCertificateOrderRequest resource specific properties
@@ -17612,7 +17897,7 @@ type StampCapacity struct {
 	Unit *string `json:"unit,omitempty"`
 	// ComputeMode - Shared/dedicated workers. Possible values include: 'ComputeModeOptionsShared', 'ComputeModeOptionsDedicated', 'ComputeModeOptionsDynamic'
 	ComputeMode ComputeModeOptions `json:"computeMode,omitempty"`
-	// WorkerSize - Size of the machines. Possible values include: 'Small', 'Medium', 'Large', 'D1', 'D2', 'D3', 'Default'
+	// WorkerSize - Size of the machines. Possible values include: 'WorkerSizeOptionsSmall', 'WorkerSizeOptionsMedium', 'WorkerSizeOptionsLarge', 'WorkerSizeOptionsD1', 'WorkerSizeOptionsD2', 'WorkerSizeOptionsD3', 'WorkerSizeOptionsDefault'
 	WorkerSize WorkerSizeOptions `json:"workerSize,omitempty"`
 	// WorkerSizeID - Size ID of machines:
 	// 0 - Small

@@ -352,12 +352,13 @@ func buildQueue(ctx context.Context, t *testing.T, qm *QueueManager, name string
 
 func (suite *serviceBusSuite) TestQueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SimpleSend":            testQueueSend,
-		"SendAndReceiveInOrder": testQueueSendAndReceiveInOrder,
-		"DuplicateDetection":    testDuplicateDetection,
-		"MessageProperties":     testMessageProperties,
-		"Retry":                 testRequeueOnFail,
-		"ReceiveOne":            testReceiveOne,
+		"SimpleSend":              testQueueSend,
+		"SendAndReceiveInOrder":   testQueueSendAndReceiveInOrder,
+		"DuplicateDetection":      testDuplicateDetection,
+		"MessageProperties":       testMessageProperties,
+		"Retry":                   testRequeueOnFail,
+		"ReceiveOne":              testReceiveOne,
+		"SendAndReceiveScheduled": testQueueSendAndReceiveScheduled,
 	}
 
 	ns := suite.getNewSasInstance()
@@ -482,14 +483,40 @@ func testQueueSendAndReceiveInOrder(ctx context.Context, t *testing.T, queue *Qu
 	wg.Add(numMessages)
 	// ensure in-order processing of messages from the queue
 	count := 0
-	queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
+	listener, err := queue.Receive(ctx, func(ctx context.Context, event *Message) DispositionAction {
 		assert.Equal(t, messages[count], string(event.Data))
 		count++
 		wg.Done()
 		return event.Complete()
 	})
-	end, _ := ctx.Deadline()
-	waitUntil(t, &wg, time.Until(end))
+	if assert.NoError(t, err) {
+		defer listener.Close(ctx)
+		end, _ := ctx.Deadline()
+		waitUntil(t, &wg, time.Until(end))
+	}
+}
+
+func testQueueSendAndReceiveScheduled(ctx context.Context, t *testing.T, queue *Queue) {
+	msg := NewMessageFromString("to the future!!")
+	futureTime := time.Now().UTC().Add(15 * time.Second)
+	msg.SystemProperties = &SystemProperties{
+		ScheduledEnqueueTime: &futureTime,
+	}
+	if assert.NoError(t, queue.Send(ctx, msg)) {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		listener, err := queue.Receive(ctx, func(ctx context.Context, received *Message) DispositionAction {
+			defer wg.Done()
+			arrivalTime := time.Now().UTC()
+			assert.True(t, arrivalTime.After(futureTime))
+			return received.Complete()
+		})
+		if assert.NoError(t, err) {
+			defer listener.Close(ctx)
+			end, _ := ctx.Deadline()
+			waitUntil(t, &wg, time.Until(end))
+		}
+	}
 }
 
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {

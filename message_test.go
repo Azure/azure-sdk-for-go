@@ -6,7 +6,7 @@ import (
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/mitchellh/mapstructure"
-		"pack.ag/amqp"
+	"pack.ag/amqp"
 )
 
 func (suite *serviceBusSuite) TestMapStructureEncode() {
@@ -31,7 +31,7 @@ func (suite *serviceBusSuite) TestMapStructureEncode() {
 	sp.EnqueuedTime = &now
 	sp.EnqueuedSequenceNumber = to.Int64Ptr(43)
 	sp.DeadLetterSource = to.StringPtr("bar")
-	sp.ScheduledEnqueuedTime = &now
+	sp.ScheduledEnqueueTime = &now
 	sp.ViaPartitionKey = to.StringPtr("via")
 
 	m, err = encodeStructureToMap(sp)
@@ -71,7 +71,7 @@ func (suite *serviceBusSuite) TestMessageToAMQPMessage() {
 			PartitionKey:           to.StringPtr("key"),
 			EnqueuedTime:           &until,
 			DeadLetterSource:       to.StringPtr("deadLetterSource"),
-			ScheduledEnqueuedTime:  &until,
+			ScheduledEnqueueTime:   &until,
 			EnqueuedSequenceNumber: to.Int64Ptr(1),
 			ViaPartitionKey:        to.StringPtr("via"),
 		},
@@ -135,17 +135,17 @@ func (suite *serviceBusSuite) TestAMQPMessageToMessage() {
 			"x-opt-partition-key":           "key",
 			"x-opt-enqueued-time":           until,
 			"x-opt-deadletter-source":       "deadLetterSource",
-			"x-opt-scheduled-enqueued-time": until,
+			"x-opt-scheduled-enqueue-time":  until,
 			"x-opt-enqueue-sequence-number": int64(1),
 			"x-opt-via-partition-key":       "via",
 		},
-		ApplicationProperties: map[string]interface{} {
+		ApplicationProperties: map[string]interface{}{
 			"test": "foo",
 		},
 		Header: &amqp.MessageHeader{
 			TTL: d,
 		},
-		Data:[][]byte{[]byte("foo")},
+		Data: [][]byte{[]byte("foo")},
 	}
 
 	msg, err := messageFromAMQPMessage(aMsg)

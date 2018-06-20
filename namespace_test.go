@@ -30,7 +30,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-service-bus-go/internal/test"
-		"github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/suite"
 )
 
 type (
@@ -50,7 +50,6 @@ func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
 		suite.Contains(connStr, ns.Name)
 	}
 }
-
 
 // TearDownSuite destroys created resources during the run of the suite
 func (suite *serviceBusSuite) TearDownSuite() {

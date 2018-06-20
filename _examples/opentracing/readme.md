@@ -3,11 +3,15 @@
 This example illustrates how to take advantage of [OpenTracing](http://opentracing.io) support in the library to enable 
 distributed message tracing.
 
+## Setup
+- Create an Azure Service Bus namespace with a queue named "helloworld" in the [Azure Portal](https://protal.azure.com).
+- After creation copy the Service Bus connection string and use it as shown below.
+
 ## To Run
 - Start a Jaeger tracing service via docker:
   - `id=$(docker run -d -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 -p 9411:9411 jaegertracing/all-in-one:latest)`
 - From this directory execute:
-  - `SERVICEBUS_CONNECTION_STRING="your-SB-conn-string" go run main.go`
+  - `SERVICEBUS_CONNECTION_STRING='your-SB-conn-string' go run main.go`
 - You should see "Hello World!" printed on the screen and the process should exit
 
 ## Viewing the Traces with Jaeger

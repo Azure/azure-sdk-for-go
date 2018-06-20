@@ -30,7 +30,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
-		"github.com/mitchellh/mapstructure"
+	"github.com/mitchellh/mapstructure"
 	"pack.ag/amqp"
 )
 
@@ -73,7 +73,7 @@ type (
 		PartitionKey           *string    `mapstructure:"x-opt-partition-key"`
 		EnqueuedTime           *time.Time `mapstructure:"x-opt-enqueued-time"`
 		DeadLetterSource       *string    `mapstructure:"x-opt-deadletter-source"`
-		ScheduledEnqueuedTime  *time.Time `mapstructure:"x-opt-scheduled-enqueued-time"`
+		ScheduledEnqueueTime   *time.Time `mapstructure:"x-opt-scheduled-enqueue-time"`
 		EnqueuedSequenceNumber *int64     `mapstructure:"x-opt-enqueue-sequence-number"`
 		ViaPartitionKey        *string    `mapstructure:"x-opt-via-partition-key"`
 	}

@@ -29,8 +29,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/mitchellh/mapstructure"
+	"github.com/Azure/azure-amqp-common-go/uuid"
+		"github.com/mitchellh/mapstructure"
 	"pack.ag/amqp"
 )
 
@@ -45,12 +45,11 @@ type (
 		GroupSequence    *uint32
 		ID               string
 		Label            string
-		PartitionKey     string
 		ReplyTo          string
 		ReplyToGroupID   string
 		To               string
-		TTL              time.Duration
-		LockToken        *string
+		TTL              *time.Duration
+		LockToken        *uuid.UUID
 		SystemProperties *SystemProperties
 		UserProperties   map[string]interface{}
 		message          *amqp.Message
@@ -258,6 +257,7 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 	}
 
 	amqpMsg.Properties.CorrelationID = m.CorrelationID
+	amqpMsg.Properties.ContentType = m.ContentType
 	amqpMsg.Properties.Subject = m.Label
 	amqpMsg.Properties.To = m.To
 	amqpMsg.Properties.ReplyTo = m.ReplyTo
@@ -271,18 +271,25 @@ func (m *Message) toMsg() (*amqp.Message, error) {
 	}
 
 	if m.SystemProperties != nil {
-		da, err := encodeStructureToMap(m.SystemProperties)
+		sysPropMap, err := encodeStructureToMap(m.SystemProperties)
 		if err != nil {
 			return nil, err
 		}
-		amqpMsg.Annotations = annotationsFromMap(da)
+		amqpMsg.Annotations = annotationsFromMap(sysPropMap)
 	}
 
 	if m.LockToken != nil {
 		if amqpMsg.DeliveryAnnotations == nil {
 			amqpMsg.DeliveryAnnotations = make(amqp.Annotations)
 		}
-		amqpMsg.DeliveryAnnotations[lockTokenName] = m.LockToken
+		amqpMsg.DeliveryAnnotations[lockTokenName] = *m.LockToken
+	}
+
+	if m.TTL != nil {
+		if amqpMsg.Header == nil {
+			amqpMsg.Header = new(amqp.MessageHeader)
+		}
+		amqpMsg.Header.TTL = *m.TTL
 	}
 
 	return amqpMsg, nil
@@ -325,7 +332,7 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		msg.ReplyTo = amqpMsg.Properties.ReplyTo
 		msg.ReplyToGroupID = amqpMsg.Properties.ReplyToGroupID
 		msg.DeliveryCount = amqpMsg.Header.DeliveryCount + 1
-		msg.TTL = amqpMsg.Header.TTL
+		msg.TTL = &amqpMsg.Header.TTL
 	}
 
 	if amqpMsg.Annotations != nil {
@@ -340,7 +347,9 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 			return msg, err
 		}
 		if da.LockToken != nil {
-			msg.LockToken = to.StringPtr(da.LockToken.String())
+			foo := *da.LockToken
+			bar := uuid.UUID(foo)
+			msg.LockToken = &bar
 		}
 	}
 

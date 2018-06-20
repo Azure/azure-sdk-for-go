@@ -116,8 +116,9 @@ func (client ProtectionContainersClient) GetResponder(resp *http.Response) (resu
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // fabricName - fabric Name associated with the container.
 // containerName - name of the container in which inquiry needs to be triggered.
-func (client ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string) (result autorest.Response, err error) {
-	req, err := client.InquirePreparer(ctx, vaultName, resourceGroupName, fabricName, containerName)
+// filter - oData filter options.
+func (client ProtectionContainersClient) Inquire(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, filter string) (result autorest.Response, err error) {
+	req, err := client.InquirePreparer(ctx, vaultName, resourceGroupName, fabricName, containerName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.ProtectionContainersClient", "Inquire", nil, "Failure preparing request")
 		return
@@ -139,7 +140,7 @@ func (client ProtectionContainersClient) Inquire(ctx context.Context, vaultName 
 }
 
 // InquirePreparer prepares the Inquire request.
-func (client ProtectionContainersClient) InquirePreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string) (*http.Request, error) {
+func (client ProtectionContainersClient) InquirePreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"containerName":     autorest.Encode("path", containerName),
 		"fabricName":        autorest.Encode("path", fabricName),
@@ -151,6 +152,9 @@ func (client ProtectionContainersClient) InquirePreparer(ctx context.Context, va
 	const APIVersion = "2016-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(

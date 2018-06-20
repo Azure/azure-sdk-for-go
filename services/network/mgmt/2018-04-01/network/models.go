@@ -353,6 +353,56 @@ func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
 	return []AuthorizationUseStatus{Available, InUse}
 }
 
+// AzureFirewallApplicationRuleProtocolType enumerates the values for azure firewall application rule protocol
+// type.
+type AzureFirewallApplicationRuleProtocolType string
+
+const (
+	// AzureFirewallApplicationRuleProtocolTypeHTTP ...
+	AzureFirewallApplicationRuleProtocolTypeHTTP AzureFirewallApplicationRuleProtocolType = "Http"
+	// AzureFirewallApplicationRuleProtocolTypeHTTPS ...
+	AzureFirewallApplicationRuleProtocolTypeHTTPS AzureFirewallApplicationRuleProtocolType = "Https"
+)
+
+// PossibleAzureFirewallApplicationRuleProtocolTypeValues returns an array of possible values for the AzureFirewallApplicationRuleProtocolType const type.
+func PossibleAzureFirewallApplicationRuleProtocolTypeValues() []AzureFirewallApplicationRuleProtocolType {
+	return []AzureFirewallApplicationRuleProtocolType{AzureFirewallApplicationRuleProtocolTypeHTTP, AzureFirewallApplicationRuleProtocolTypeHTTPS}
+}
+
+// AzureFirewallNetworkRuleProtocol enumerates the values for azure firewall network rule protocol.
+type AzureFirewallNetworkRuleProtocol string
+
+const (
+	// Any ...
+	Any AzureFirewallNetworkRuleProtocol = "Any"
+	// ICMP ...
+	ICMP AzureFirewallNetworkRuleProtocol = "ICMP"
+	// TCP ...
+	TCP AzureFirewallNetworkRuleProtocol = "TCP"
+	// UDP ...
+	UDP AzureFirewallNetworkRuleProtocol = "UDP"
+)
+
+// PossibleAzureFirewallNetworkRuleProtocolValues returns an array of possible values for the AzureFirewallNetworkRuleProtocol const type.
+func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRuleProtocol {
+	return []AzureFirewallNetworkRuleProtocol{Any, ICMP, TCP, UDP}
+}
+
+// AzureFirewallRCActionType enumerates the values for azure firewall rc action type.
+type AzureFirewallRCActionType string
+
+const (
+	// AzureFirewallRCActionTypeAllow ...
+	AzureFirewallRCActionTypeAllow AzureFirewallRCActionType = "Allow"
+	// AzureFirewallRCActionTypeDeny ...
+	AzureFirewallRCActionTypeDeny AzureFirewallRCActionType = "Deny"
+)
+
+// PossibleAzureFirewallRCActionTypeValues returns an array of possible values for the AzureFirewallRCActionType const type.
+func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
+	return []AzureFirewallRCActionType{AzureFirewallRCActionTypeAllow, AzureFirewallRCActionTypeDeny}
+}
+
 // BgpPeerState enumerates the values for bgp peer state.
 type BgpPeerState string
 
@@ -524,17 +574,17 @@ func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
 type EffectiveSecurityRuleProtocol string
 
 const (
-	// All ...
-	All EffectiveSecurityRuleProtocol = "All"
-	// TCP ...
-	TCP EffectiveSecurityRuleProtocol = "Tcp"
-	// UDP ...
-	UDP EffectiveSecurityRuleProtocol = "Udp"
+	// EffectiveSecurityRuleProtocolAll ...
+	EffectiveSecurityRuleProtocolAll EffectiveSecurityRuleProtocol = "All"
+	// EffectiveSecurityRuleProtocolTCP ...
+	EffectiveSecurityRuleProtocolTCP EffectiveSecurityRuleProtocol = "Tcp"
+	// EffectiveSecurityRuleProtocolUDP ...
+	EffectiveSecurityRuleProtocolUDP EffectiveSecurityRuleProtocol = "Udp"
 )
 
 // PossibleEffectiveSecurityRuleProtocolValues returns an array of possible values for the EffectiveSecurityRuleProtocol const type.
 func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtocol {
-	return []EffectiveSecurityRuleProtocol{All, TCP, UDP}
+	return []EffectiveSecurityRuleProtocol{EffectiveSecurityRuleProtocolAll, EffectiveSecurityRuleProtocolTCP, EffectiveSecurityRuleProtocolUDP}
 }
 
 // EvaluationState enumerates the values for evaluation state.
@@ -4276,6 +4326,616 @@ type AzureAsyncOperationResult struct {
 	Error  *Error          `json:"error,omitempty"`
 }
 
+// AzureFirewall azure Firewall resource
+type AzureFirewall struct {
+	autorest.Response              `json:"-"`
+	*AzureFirewallPropertiesFormat `json:"properties,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewall.
+func (af AzureFirewall) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if af.AzureFirewallPropertiesFormat != nil {
+		objectMap["properties"] = af.AzureFirewallPropertiesFormat
+	}
+	if af.Etag != nil {
+		objectMap["etag"] = af.Etag
+	}
+	if af.ID != nil {
+		objectMap["id"] = af.ID
+	}
+	if af.Name != nil {
+		objectMap["name"] = af.Name
+	}
+	if af.Type != nil {
+		objectMap["type"] = af.Type
+	}
+	if af.Location != nil {
+		objectMap["location"] = af.Location
+	}
+	if af.Tags != nil {
+		objectMap["tags"] = af.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFirewall struct.
+func (af *AzureFirewall) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var azureFirewallPropertiesFormat AzureFirewallPropertiesFormat
+				err = json.Unmarshal(*v, &azureFirewallPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				af.AzureFirewallPropertiesFormat = &azureFirewallPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				af.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				af.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				af.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				af.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				af.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				af.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// AzureFirewallApplicationRule properties of an application rule.
+type AzureFirewallApplicationRule struct {
+	// Name - Name of the application rule.
+	Name *string `json:"name,omitempty"`
+	// Description - Description of the rule.
+	Description *string `json:"description,omitempty"`
+	// SourceAddresses - List of source IP addresses for this rule.
+	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
+	// Protocols - Array of ApplicationRuleProtocols.
+	Protocols *[]AzureFirewallApplicationRuleProtocol `json:"protocols,omitempty"`
+	// TargetUrls - List of URLs for this rule.
+	TargetUrls *[]string `json:"targetUrls,omitempty"`
+}
+
+// AzureFirewallApplicationRuleCollection application rule collection resource
+type AzureFirewallApplicationRuleCollection struct {
+	*AzureFirewallApplicationRuleCollectionPropertiesFormat `json:"properties,omitempty"`
+	// Name - Gets name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallApplicationRuleCollection.
+func (afarc AzureFirewallApplicationRuleCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afarc.AzureFirewallApplicationRuleCollectionPropertiesFormat != nil {
+		objectMap["properties"] = afarc.AzureFirewallApplicationRuleCollectionPropertiesFormat
+	}
+	if afarc.Name != nil {
+		objectMap["name"] = afarc.Name
+	}
+	if afarc.Etag != nil {
+		objectMap["etag"] = afarc.Etag
+	}
+	if afarc.ID != nil {
+		objectMap["id"] = afarc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFirewallApplicationRuleCollection struct.
+func (afarc *AzureFirewallApplicationRuleCollection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var azureFirewallApplicationRuleCollectionPropertiesFormat AzureFirewallApplicationRuleCollectionPropertiesFormat
+				err = json.Unmarshal(*v, &azureFirewallApplicationRuleCollectionPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				afarc.AzureFirewallApplicationRuleCollectionPropertiesFormat = &azureFirewallApplicationRuleCollectionPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				afarc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				afarc.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				afarc.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// AzureFirewallApplicationRuleCollectionPropertiesFormat properties of the application rule collection.
+type AzureFirewallApplicationRuleCollectionPropertiesFormat struct {
+	// Priority - Priority of the application rule collection resource.
+	Priority *int32 `json:"priority,omitempty"`
+	// Action - The action type of a rule collection
+	Action *AzureFirewallRCAction `json:"action,omitempty"`
+	// Rules - Collection of rules used by a application rule collection.
+	Rules *[]AzureFirewallApplicationRule `json:"rules,omitempty"`
+	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AzureFirewallApplicationRuleProtocol properties of the application rule protocol.
+type AzureFirewallApplicationRuleProtocol struct {
+	// ProtocolType - Protocol type. Possible values include: 'AzureFirewallApplicationRuleProtocolTypeHTTP', 'AzureFirewallApplicationRuleProtocolTypeHTTPS'
+	ProtocolType AzureFirewallApplicationRuleProtocolType `json:"protocolType,omitempty"`
+	// Port - Port number for the protocol, cannot be greater than 64000. This field is optional.
+	Port *int32 `json:"port,omitempty"`
+}
+
+// AzureFirewallIPConfiguration IP configuration of an Azure Firewall.
+type AzureFirewallIPConfiguration struct {
+	*AzureFirewallIPConfigurationPropertiesFormat `json:"properties,omitempty"`
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallIPConfiguration.
+func (afic AzureFirewallIPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afic.AzureFirewallIPConfigurationPropertiesFormat != nil {
+		objectMap["properties"] = afic.AzureFirewallIPConfigurationPropertiesFormat
+	}
+	if afic.Name != nil {
+		objectMap["name"] = afic.Name
+	}
+	if afic.Etag != nil {
+		objectMap["etag"] = afic.Etag
+	}
+	if afic.ID != nil {
+		objectMap["id"] = afic.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFirewallIPConfiguration struct.
+func (afic *AzureFirewallIPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var azureFirewallIPConfigurationPropertiesFormat AzureFirewallIPConfigurationPropertiesFormat
+				err = json.Unmarshal(*v, &azureFirewallIPConfigurationPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				afic.AzureFirewallIPConfigurationPropertiesFormat = &azureFirewallIPConfigurationPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				afic.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				afic.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				afic.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// AzureFirewallIPConfigurationPropertiesFormat properties of IP configuration of an Azure Firewall.
+type AzureFirewallIPConfigurationPropertiesFormat struct {
+	// PrivateIPAddress - PrivateIPAddress of the network interface IP Configuration. This field is populated in the output.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	// Subnet - Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
+	Subnet *SubResource `json:"subnet,omitempty"`
+	// InternalPublicIPAddress - Reference of the PublicIP resource. This field is a mandatory input.
+	InternalPublicIPAddress *SubResource `json:"internalPublicIpAddress,omitempty"`
+	// PublicIPAddress - Reference of the PublicIP resource. This field is populated in the output.
+	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
+	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AzureFirewallListResult response for ListAzureFirewalls API service call.
+type AzureFirewallListResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of a Azure Firewalls in a resource group.
+	Value *[]AzureFirewall `json:"value,omitempty"`
+	// NextLink - URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AzureFirewallListResultIterator provides access to a complete listing of AzureFirewall values.
+type AzureFirewallListResultIterator struct {
+	i    int
+	page AzureFirewallListResultPage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AzureFirewallListResultIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AzureFirewallListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AzureFirewallListResultIterator) Response() AzureFirewallListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AzureFirewallListResultIterator) Value() AzureFirewall {
+	if !iter.page.NotDone() {
+		return AzureFirewall{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aflr AzureFirewallListResult) IsEmpty() bool {
+	return aflr.Value == nil || len(*aflr.Value) == 0
+}
+
+// azureFirewallListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aflr AzureFirewallListResult) azureFirewallListResultPreparer() (*http.Request, error) {
+	if aflr.NextLink == nil || len(to.String(aflr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aflr.NextLink)))
+}
+
+// AzureFirewallListResultPage contains a page of AzureFirewall values.
+type AzureFirewallListResultPage struct {
+	fn   func(AzureFirewallListResult) (AzureFirewallListResult, error)
+	aflr AzureFirewallListResult
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AzureFirewallListResultPage) Next() error {
+	next, err := page.fn(page.aflr)
+	if err != nil {
+		return err
+	}
+	page.aflr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AzureFirewallListResultPage) NotDone() bool {
+	return !page.aflr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AzureFirewallListResultPage) Response() AzureFirewallListResult {
+	return page.aflr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AzureFirewallListResultPage) Values() []AzureFirewall {
+	if page.aflr.IsEmpty() {
+		return nil
+	}
+	return *page.aflr.Value
+}
+
+// AzureFirewallNetworkRule properties of the network rule.
+type AzureFirewallNetworkRule struct {
+	// Name - Name of the network rule.
+	Name *string `json:"name,omitempty"`
+	// Description - Description of the rule.
+	Description *string `json:"description,omitempty"`
+	// Protocols - Array of AzureFirewallNetworkRuleProtocols.
+	Protocols *[]AzureFirewallNetworkRuleProtocol `json:"protocols,omitempty"`
+	// SourceAddresses - List of source IP addresses for this rule.
+	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
+	// DestinationAddresses - List of destination IP addresses.
+	DestinationAddresses *[]string `json:"destinationAddresses,omitempty"`
+	// DestinationPorts - List of destination ports.
+	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
+}
+
+// AzureFirewallNetworkRuleCollection network rule collection resource
+type AzureFirewallNetworkRuleCollection struct {
+	*AzureFirewallNetworkRuleCollectionPropertiesFormat `json:"properties,omitempty"`
+	// Name - Gets name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallNetworkRuleCollection.
+func (afnrc AzureFirewallNetworkRuleCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afnrc.AzureFirewallNetworkRuleCollectionPropertiesFormat != nil {
+		objectMap["properties"] = afnrc.AzureFirewallNetworkRuleCollectionPropertiesFormat
+	}
+	if afnrc.Name != nil {
+		objectMap["name"] = afnrc.Name
+	}
+	if afnrc.Etag != nil {
+		objectMap["etag"] = afnrc.Etag
+	}
+	if afnrc.ID != nil {
+		objectMap["id"] = afnrc.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFirewallNetworkRuleCollection struct.
+func (afnrc *AzureFirewallNetworkRuleCollection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var azureFirewallNetworkRuleCollectionPropertiesFormat AzureFirewallNetworkRuleCollectionPropertiesFormat
+				err = json.Unmarshal(*v, &azureFirewallNetworkRuleCollectionPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				afnrc.AzureFirewallNetworkRuleCollectionPropertiesFormat = &azureFirewallNetworkRuleCollectionPropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				afnrc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				afnrc.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				afnrc.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// AzureFirewallNetworkRuleCollectionPropertiesFormat properties of the network rule collection.
+type AzureFirewallNetworkRuleCollectionPropertiesFormat struct {
+	// Priority - Priority of the network rule collection resource.
+	Priority *int32 `json:"priority,omitempty"`
+	// Action - The action type of a rule collection
+	Action *AzureFirewallRCAction `json:"action,omitempty"`
+	// Rules - Collection of rules used by a network rule collection.
+	Rules *[]AzureFirewallNetworkRule `json:"rules,omitempty"`
+	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AzureFirewallPropertiesFormat properties of the Azure Firewall.
+type AzureFirewallPropertiesFormat struct {
+	// ApplicationRuleCollections - Collection of application rule collections used by a Azure Firewall.
+	ApplicationRuleCollections *[]AzureFirewallApplicationRuleCollection `json:"applicationRuleCollections,omitempty"`
+	// NetworkRuleCollections - Collection of network rule collections used by a Azure Firewall.
+	NetworkRuleCollections *[]AzureFirewallNetworkRuleCollection `json:"networkRuleCollections,omitempty"`
+	// IPConfigurations - IP configuration of the Azure Firewall resource.
+	IPConfigurations *[]AzureFirewallIPConfiguration `json:"ipConfigurations,omitempty"`
+	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AzureFirewallRCAction properties of the AzureFirewallRCAction.
+type AzureFirewallRCAction struct {
+	// Type - The type of action. Possible values include: 'AzureFirewallRCActionTypeAllow', 'AzureFirewallRCActionTypeDeny'
+	Type AzureFirewallRCActionType `json:"type,omitempty"`
+}
+
+// AzureFirewallsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AzureFirewallsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AzureFirewallsCreateOrUpdateFuture) Result(client AzureFirewallsClient) (af AzureFirewall, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AzureFirewallsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.AzureFirewallsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if af.Response.Response, err = future.GetResult(sender); err == nil && af.Response.Response.StatusCode != http.StatusNoContent {
+		af, err = client.CreateOrUpdateResponder(af.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.AzureFirewallsCreateOrUpdateFuture", "Result", af.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AzureFirewallsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type AzureFirewallsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AzureFirewallsDeleteFuture) Result(client AzureFirewallsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AzureFirewallsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.AzureFirewallsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // AzureReachabilityReport azure reachability report details.
 type AzureReachabilityReport struct {
 	autorest.Response `json:"-"`
@@ -5532,7 +6192,7 @@ type EffectiveNetworkSecurityGroupListResult struct {
 type EffectiveNetworkSecurityRule struct {
 	// Name - The name of the security rule specified by the user (if created by the user).
 	Name *string `json:"name,omitempty"`
-	// Protocol - The network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and 'All'. Possible values include: 'TCP', 'UDP', 'All'
+	// Protocol - The network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and 'All'. Possible values include: 'EffectiveSecurityRuleProtocolTCP', 'EffectiveSecurityRuleProtocolUDP', 'EffectiveSecurityRuleProtocolAll'
 	Protocol EffectiveSecurityRuleProtocol `json:"protocol,omitempty"`
 	// SourcePortRange - The source port or range.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`

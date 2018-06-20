@@ -120,6 +120,7 @@ func (em *entityManager) Execute(ctx context.Context, method string, entityPath 
 		log.For(ctx).Error(err)
 		return nil, err
 	}
+
 	req = addAtomXMLContentType(req)
 	req = addAPIVersion201704(req)
 	applyRequestInfo(span, req)
@@ -128,12 +129,15 @@ func (em *entityManager) Execute(ctx context.Context, method string, entityPath 
 		log.For(ctx).Error(err)
 		return nil, err
 	}
+
 	req = req.WithContext(ctx)
 	res, err := client.Do(req)
+
 	applyResponseInfo(span, res)
 	if err != nil {
 		log.For(ctx).Error(err)
 	}
+
 	return res, err
 }
 

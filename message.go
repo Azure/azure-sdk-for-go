@@ -25,9 +25,11 @@ package servicebus
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"strings"
 	"time"
 
-	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/mitchellh/mapstructure"
 	"pack.ag/amqp"
 )
@@ -43,12 +45,11 @@ type (
 		GroupSequence    *uint32
 		ID               string
 		Label            string
-		PartitionKey     string
 		ReplyTo          string
 		ReplyToGroupID   string
 		To               string
-		TTL              time.Duration
-		LockToken        *string
+		TTL              *time.Duration
+		LockToken        *uuid.UUID
 		SystemProperties *SystemProperties
 		UserProperties   map[string]interface{}
 		message          *amqp.Message
@@ -72,7 +73,7 @@ type (
 		PartitionKey           *string    `mapstructure:"x-opt-partition-key"`
 		EnqueuedTime           *time.Time `mapstructure:"x-opt-enqueued-time"`
 		DeadLetterSource       *string    `mapstructure:"x-opt-deadletter-source"`
-		ScheduledEnqueuedTime  *time.Time `mapstructure:"x-opt-scheduled-enqueued-time"`
+		ScheduledEnqueueTime   *time.Time `mapstructure:"x-opt-scheduled-enqueue-time"`
 		EnqueuedSequenceNumber *int64     `mapstructure:"x-opt-enqueue-sequence-number"`
 		ViaPartitionKey        *string    `mapstructure:"x-opt-via-partition-key"`
 	}
@@ -81,6 +82,11 @@ type (
 	MessageWithContext struct {
 		*Message
 		Ctx context.Context
+	}
+
+	mapStructureTag struct {
+		Name         string
+		PersistEmpty bool
 	}
 )
 
@@ -235,7 +241,7 @@ func (m *Message) ForeachKey(handler func(key, val string) error) error {
 	return nil
 }
 
-func (m *Message) toMsg() *amqp.Message {
+func (m *Message) toMsg() (*amqp.Message, error) {
 	amqpMsg := m.message
 	if amqpMsg == nil {
 		amqpMsg = amqp.NewMessage(m.Data)
@@ -251,6 +257,7 @@ func (m *Message) toMsg() *amqp.Message {
 	}
 
 	amqpMsg.Properties.CorrelationID = m.CorrelationID
+	amqpMsg.Properties.ContentType = m.ContentType
 	amqpMsg.Properties.Subject = m.Label
 	amqpMsg.Properties.To = m.To
 	amqpMsg.Properties.ReplyTo = m.ReplyTo
@@ -263,14 +270,37 @@ func (m *Message) toMsg() *amqp.Message {
 		}
 	}
 
+	if m.SystemProperties != nil {
+		sysPropMap, err := encodeStructureToMap(m.SystemProperties)
+		if err != nil {
+			return nil, err
+		}
+		amqpMsg.Annotations = annotationsFromMap(sysPropMap)
+	}
+
 	if m.LockToken != nil {
 		if amqpMsg.DeliveryAnnotations == nil {
 			amqpMsg.DeliveryAnnotations = make(amqp.Annotations)
 		}
-		amqpMsg.DeliveryAnnotations[lockTokenName] = m.LockToken
+		amqpMsg.DeliveryAnnotations[lockTokenName] = *m.LockToken
 	}
 
-	return amqpMsg
+	if m.TTL != nil {
+		if amqpMsg.Header == nil {
+			amqpMsg.Header = new(amqp.MessageHeader)
+		}
+		amqpMsg.Header.TTL = *m.TTL
+	}
+
+	return amqpMsg, nil
+}
+
+func annotationsFromMap(m map[string]interface{}) amqp.Annotations {
+	a := make(amqp.Annotations)
+	for key, val := range m {
+		a[key] = val
+	}
+	return a
 }
 
 func messageFromAMQPMessage(msg *amqp.Message) (*Message, error) {
@@ -302,7 +332,7 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 		msg.ReplyTo = amqpMsg.Properties.ReplyTo
 		msg.ReplyToGroupID = amqpMsg.Properties.ReplyToGroupID
 		msg.DeliveryCount = amqpMsg.Header.DeliveryCount + 1
-		msg.TTL = amqpMsg.Header.TTL
+		msg.TTL = &amqpMsg.Header.TTL
 	}
 
 	if amqpMsg.Annotations != nil {
@@ -314,13 +344,76 @@ func newMessage(data []byte, amqpMsg *amqp.Message) (*Message, error) {
 	if amqpMsg.DeliveryAnnotations != nil {
 		var da deliveryAnnotations
 		if err := mapstructure.Decode(amqpMsg.DeliveryAnnotations, &da); err != nil {
-			fmt.Println("ERROR!!", err.Error())
 			return msg, err
 		}
 		if da.LockToken != nil {
-			msg.LockToken = to.StringPtr(da.LockToken.String())
+			foo := *da.LockToken
+			bar := uuid.UUID(foo)
+			msg.LockToken = &bar
 		}
 	}
 
 	return msg, nil
+}
+
+func encodeStructureToMap(structPointer interface{}) (map[string]interface{}, error) {
+	valueOfStruct := reflect.ValueOf(structPointer)
+	s := valueOfStruct.Elem()
+	if s.Kind() != reflect.Struct {
+		return nil, fmt.Errorf("must provide a struct")
+	}
+
+	encoded := make(map[string]interface{})
+	for i := 0; i < s.NumField(); i++ {
+		f := s.Field(i)
+		if f.IsValid() && f.CanSet() {
+			tf := s.Type().Field(i)
+			tag, err := parseMapStructureTag(tf.Tag)
+			if err != nil {
+				return nil, err
+			}
+
+			if tag != nil {
+				switch f.Kind() {
+				case reflect.Ptr:
+					if !f.IsNil() || tag.PersistEmpty {
+						if f.IsNil() {
+							encoded[tag.Name] = nil
+						} else {
+							encoded[tag.Name] = f.Elem().Interface()
+						}
+					}
+				default:
+					if f.Interface() != reflect.Zero(f.Type()).Interface() || tag.PersistEmpty {
+						encoded[tag.Name] = f.Interface()
+					}
+				}
+			}
+		}
+	}
+
+	return encoded, nil
+}
+
+func parseMapStructureTag(tag reflect.StructTag) (*mapStructureTag, error) {
+	str, ok := tag.Lookup("mapstructure")
+	if !ok {
+		return nil, nil
+	}
+
+	mapTag := new(mapStructureTag)
+	split := strings.Split(str, ",")
+	mapTag.Name = strings.TrimSpace(split[0])
+
+	if len(split) > 1 {
+		for _, tagKey := range split[1:] {
+			switch tagKey {
+			case "persistempty":
+				mapTag.PersistEmpty = true
+			default:
+				return nil, fmt.Errorf("key %q is not understood", tagKey)
+			}
+		}
+	}
+	return mapTag, nil
 }

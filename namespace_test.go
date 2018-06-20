@@ -30,7 +30,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-service-bus-go/internal/test"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -40,15 +39,16 @@ type (
 	}
 )
 
-func TestCreateNamespaceFromConnectionString(t *testing.T) {
-	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
-	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
-	assert.Nil(t, err)
-	assert.Contains(t, connStr, ns.Name)
-}
-
 func TestSB(t *testing.T) {
 	suite.Run(t, new(serviceBusSuite))
+}
+
+func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
+	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
+	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
+	if suite.NoError(err) {
+		suite.Contains(connStr, ns.Name)
+	}
 }
 
 // TearDownSuite destroys created resources during the run of the suite

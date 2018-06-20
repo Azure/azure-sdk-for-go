@@ -50,7 +50,7 @@ type (
 
 	eventer interface {
 		Set(key, value string)
-		toMsg() *amqp.Message
+		toMsg() (*amqp.Message, error)
 	}
 
 	// senderOption provides a way to customize a sender
@@ -159,7 +159,11 @@ func (s *sender) trySend(ctx context.Context, evt eventer) error {
 				return nil, err
 			}
 
-			msg := evt.toMsg()
+			msg, err := evt.toMsg()
+			if err != nil {
+				return nil, err
+			}
+
 			sp.SetTag("sb.message-id", msg.Properties.MessageID)
 			err = s.sender.Send(innerCtx, msg)
 			if err != nil {

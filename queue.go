@@ -262,7 +262,11 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
 	defer span.Finish()
 
-	_, err := qm.entityManager.Delete(ctx, "/"+name)
+	res, err := qm.entityManager.Delete(ctx, "/"+name)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	return err
 }
 
@@ -299,6 +303,10 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := qm.entityManager.Put(ctx, "/"+name, reqBytes)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -324,6 +332,10 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err
@@ -354,6 +366,10 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 	defer span.Finish()
 
 	res, err := qm.entityManager.Get(ctx, name)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		log.For(ctx).Error(err)
 		return nil, err

@@ -133,7 +133,11 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 	span, ctx := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
 	defer span.Finish()
 
-	_, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
+	res, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	return err
 }
 
@@ -168,6 +172,10 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -191,6 +199,10 @@ func (sm *SubscriptionManager) List(ctx context.Context) ([]*SubscriptionEntity,
 	defer span.Finish()
 
 	res, err := sm.entityManager.Get(ctx, "/"+sm.Topic.Name+"/subscriptions")
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -219,6 +231,10 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	defer span.Finish()
 
 	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
+	if res != nil {
+		defer res.Body.Close()
+	}
+
 	if err != nil {
 		return nil, err
 	}

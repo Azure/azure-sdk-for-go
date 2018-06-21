@@ -509,13 +509,13 @@ func PossibleUnitValues() []Unit {
 	return []Unit{UnitBytes, UnitByteSeconds, UnitBytesPerSecond, UnitCount, UnitCountPerSecond, UnitMilliSeconds, UnitPercent, UnitSeconds, UnitUnspecified}
 }
 
-// BasicAction ...
+// BasicAction action descriptor.
 type BasicAction interface {
 	AsAlertingAction() (*AlertingAction, bool)
 	AsAction() (*Action, bool)
 }
 
-// Action ...
+// Action action descriptor.
 type Action struct {
 	// OdataType - Possible values include: 'OdataTypeAction', 'OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction'
 	OdataType OdataTypeBasicAction `json:"odata.type,omitempty"`
@@ -1826,7 +1826,8 @@ type DiagnosticSettingsCategory struct {
 
 // DiagnosticSettingsCategoryResource the diagnostic settings category resource.
 type DiagnosticSettingsCategoryResource struct {
-	autorest.Response           `json:"-"`
+	autorest.Response `json:"-"`
+	// DiagnosticSettingsCategory - The properties of a Diagnostic Settings Category.
 	*DiagnosticSettingsCategory `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -1914,7 +1915,8 @@ type DiagnosticSettingsCategoryResourceCollection struct {
 
 // DiagnosticSettingsResource the diagnostic setting resource.
 type DiagnosticSettingsResource struct {
-	autorest.Response   `json:"-"`
+	autorest.Response `json:"-"`
+	// DiagnosticSettings - Properties of a Diagnostic Settings Resource.
 	*DiagnosticSettings `json:"properties,omitempty"`
 	// ID - Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -2044,6 +2046,7 @@ type EventCategoryCollection struct {
 
 // EventData the Azure event log entries are of type EventData
 type EventData struct {
+	// Authorization - The sender authorization information.
 	Authorization *SenderAuthorization `json:"authorization,omitempty"`
 	// Claims - key value pairs to identify ARM permissions.
 	Claims map[string]*string `json:"claims"`
@@ -2443,11 +2446,12 @@ type LogicAppReceiver struct {
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 }
 
-// LogMetricTrigger ...
+// LogMetricTrigger a log metrics trigger descriptor.
 type LogMetricTrigger struct {
 	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
 	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
-	Threshold         *float64            `json:"threshold,omitempty"`
+	// Threshold - The threshold of the metric trigger.
+	Threshold *float64 `json:"threshold,omitempty"`
 	// MetricTriggerType - Metric Trigger Type - 'Consecutive' or 'Total'. Possible values include: 'MetricTriggerTypeConsecutive', 'MetricTriggerTypeTotal'
 	MetricTriggerType MetricTriggerType `json:"metricTriggerType,omitempty"`
 	// MetricColumn - Evaluation of metric on a particular column
@@ -3044,7 +3048,8 @@ type Metric struct {
 // MetricAlertAction an alert action.
 type MetricAlertAction struct {
 	// ActionGroupID - the id of the action group to use.
-	ActionGroupID     *string            `json:"actionGroupId,omitempty"`
+	ActionGroupID *string `json:"actionGroupId,omitempty"`
+	// WebhookProperties - The properties of a webhook object.
 	WebhookProperties map[string]*string `json:"webhookProperties"`
 }
 
@@ -3500,6 +3505,7 @@ type MetricAlertStatusCollection struct {
 
 // MetricAlertStatusProperties an alert status properties.
 type MetricAlertStatusProperties struct {
+	// Dimensions - An object describing the type of the dimensions.
 	Dimensions map[string]*string `json:"dimensions"`
 	// Status - status value
 	Status *string `json:"status,omitempty"`
@@ -3531,7 +3537,7 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
-// MetricCriteria ...
+// MetricCriteria criterion to filter metrics.
 type MetricCriteria struct {
 	// Name - Name of the criteria.
 	Name *string `json:"name,omitempty"`
@@ -3580,7 +3586,7 @@ type MetricDefinitionCollection struct {
 	Value *[]MetricDefinition `json:"value,omitempty"`
 }
 
-// MetricDimension ...
+// MetricDimension specifies a metric dimension.
 type MetricDimension struct {
 	// Name - Name of the dimension.
 	Name *string `json:"name,omitempty"`

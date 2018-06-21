@@ -318,31 +318,31 @@ func (client AlertRulesClient) ListByResourceGroupResponder(resp *http.Response)
 	return
 }
 
-// ListBySusbscription list the alert rules within a subscription.
-func (client AlertRulesClient) ListBySusbscription(ctx context.Context) (result AlertRuleResourceCollection, err error) {
-	req, err := client.ListBySusbscriptionPreparer(ctx)
+// ListBySubscription list the alert rules within a subscription.
+func (client AlertRulesClient) ListBySubscription(ctx context.Context) (result AlertRuleResourceCollection, err error) {
+	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySusbscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySubscription", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListBySusbscriptionSender(req)
+	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySusbscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListBySusbscriptionResponder(resp)
+	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySusbscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "insights.AlertRulesClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListBySusbscriptionPreparer prepares the ListBySusbscription request.
-func (client AlertRulesClient) ListBySusbscriptionPreparer(ctx context.Context) (*http.Request, error) {
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client AlertRulesClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -360,16 +360,16 @@ func (client AlertRulesClient) ListBySusbscriptionPreparer(ctx context.Context) 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListBySusbscriptionSender sends the ListBySusbscription request. The method will close the
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
-func (client AlertRulesClient) ListBySusbscriptionSender(req *http.Request) (*http.Response, error) {
+func (client AlertRulesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListBySusbscriptionResponder handles the response to the ListBySusbscription request. The method always
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client AlertRulesClient) ListBySusbscriptionResponder(resp *http.Response) (result AlertRuleResourceCollection, err error) {
+func (client AlertRulesClient) ListBySubscriptionResponder(resp *http.Response) (result AlertRuleResourceCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

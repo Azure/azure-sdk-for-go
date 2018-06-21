@@ -2203,8 +2203,8 @@ type KeyOperationsParameters struct {
 type KeyProperties struct {
 	// Exportable - Indicates if the private key can be exported.
 	Exportable *bool `json:"exportable,omitempty"`
-	// Kty - The type of key pair to be used for the certificate. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
-	Kty JSONWebKeyType `json:"kty,omitempty"`
+	// KeyType - The type of key pair to be used for the certificate. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
+	KeyType JSONWebKeyType `json:"kty,omitempty"`
 	// KeySize - The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
 	// ReuseKey - Indicates if the same key pair will be used on certificate renewal.

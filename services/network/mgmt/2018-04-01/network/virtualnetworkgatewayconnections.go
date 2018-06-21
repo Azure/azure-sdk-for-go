@@ -659,7 +659,7 @@ func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsSender(req *http.
 
 // UpdateTagsResponder handles the response to the UpdateTags request. The method always
 // closes the http.Response Body.
-func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsResponder(resp *http.Response) (result VirtualNetworkGatewayConnectionListEntity, err error) {
+func (client VirtualNetworkGatewayConnectionsClient) UpdateTagsResponder(resp *http.Response) (result VirtualNetworkGatewayConnection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

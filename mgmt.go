@@ -43,6 +43,16 @@ const (
 	applicationXML   = "application/xml"
 )
 
+// CountDetails has current active (and other) messages for queue/topic.
+type CountDetails struct {
+	XMLName                        xml.Name `xml:"CountDetails"`
+	ActiveMessageCount             *int32   `xml:"ActiveMessageCount,omitempty"`
+	DeadLetterMessageCount         *int32   `xml:"DeadLetterMessageCount,omitempty"`
+	ScheduledMessageCount          *int32   `xml:"ScheduledMessageCount,omitempty"`
+	TransferDeadLetterMessageCount *int32   `xml:"TransferDeadLetterMessageCount,omitempty"`
+	TransferMessageCount           *int32   `xml:"TransferMessageCount,omitempty"`
+}
+
 type (
 	// entityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
 	entityManager struct {

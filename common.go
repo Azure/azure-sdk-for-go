@@ -24,6 +24,7 @@ import "encoding/xml"
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //	SOFTWARE
 
+// CountDetails has current active (and other) messages for queue/topic.
 type CountDetails struct {
 	XMLName                        xml.Name `xml:"CountDetails"`
 	ActiveMessageCount             *int32   `xml:"ActiveMessageCount,omitempty"`

@@ -960,6 +960,8 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The identities of the resource, should be represented as an object where the property names are the resource id of the identity and the value an empty JObject.
+	UserAssignedIdentities interface{} `json:"userAssignedIdentities,omitempty"`
 }
 
 // ListResult list of resource groups.

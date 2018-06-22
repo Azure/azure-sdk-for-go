@@ -31,7 +31,7 @@ type BaseClient = original.BaseClient
 type ClustersClient = original.ClustersClient
 type ConfigurationsClient = original.ConfigurationsClient
 type ExtensionsClient = original.ExtensionsClient
-type LocationClient = original.LocationClient
+type LocationsClient = original.LocationsClient
 type AsyncOperationState = original.AsyncOperationState
 
 const (
@@ -178,11 +178,11 @@ func NewExtensionsClient(subscriptionID string) ExtensionsClient {
 func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
 	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLocationClient(subscriptionID string) LocationClient {
-	return original.NewLocationClient(subscriptionID)
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
 }
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
-	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAsyncOperationStateValues() []AsyncOperationState {
 	return original.PossibleAsyncOperationStateValues()

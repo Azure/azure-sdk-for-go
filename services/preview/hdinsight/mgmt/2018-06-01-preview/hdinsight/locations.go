@@ -24,48 +24,48 @@ import (
 	"net/http"
 )
 
-// LocationClient is the hDInsight Management Client
-type LocationClient struct {
+// LocationsClient is the hDInsight Management Client
+type LocationsClient struct {
 	BaseClient
 }
 
-// NewLocationClient creates an instance of the LocationClient client.
-func NewLocationClient(subscriptionID string) LocationClient {
-	return NewLocationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLocationsClient creates an instance of the LocationsClient client.
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return NewLocationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewLocationClientWithBaseURI creates an instance of the LocationClient client.
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
-	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLocationsClientWithBaseURI creates an instance of the LocationsClient client.
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return LocationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListUsages lists the usages for the specified location.
 // Parameters:
 // location - the location to get capabilities for.
-func (client LocationClient) ListUsages(ctx context.Context, location string) (result UsagesListResult, err error) {
+func (client LocationsClient) ListUsages(ctx context.Context, location string) (result UsagesListResult, err error) {
 	req, err := client.ListUsagesPreparer(ctx, location)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "ListUsages", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.LocationsClient", "ListUsages", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListUsagesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "ListUsages", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.LocationsClient", "ListUsages", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListUsagesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "ListUsages", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.LocationsClient", "ListUsages", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListUsagesPreparer prepares the ListUsages request.
-func (client LocationClient) ListUsagesPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client LocationsClient) ListUsagesPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -86,14 +86,14 @@ func (client LocationClient) ListUsagesPreparer(ctx context.Context, location st
 
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
-func (client LocationClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
+func (client LocationsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always
 // closes the http.Response Body.
-func (client LocationClient) ListUsagesResponder(resp *http.Response) (result UsagesListResult, err error) {
+func (client LocationsClient) ListUsagesResponder(resp *http.Response) (result UsagesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

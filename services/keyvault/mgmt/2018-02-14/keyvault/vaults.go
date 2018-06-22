@@ -926,7 +926,7 @@ func (client VaultsClient) UpdateResponder(resp *http.Response) (result Vault, e
 	return
 }
 
-// UpdateAccessPolicy update access policies in a key vault in the specified subscription.
+// UpdateAccessPolicy update access policies on a key vault in the specified subscription.
 // Parameters:
 // resourceGroupName - the name of the Resource Group to which the vault belongs.
 // vaultName - name of the vault

@@ -820,6 +820,14 @@ type DataDisksGroups struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 }
 
+// ErrorResponse describes the format of Error response.
+type ErrorResponse struct {
+	// Code - Error code
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+}
+
 // Errors the error message associated with the cluster creation.
 type Errors struct {
 	// Code - The error code.

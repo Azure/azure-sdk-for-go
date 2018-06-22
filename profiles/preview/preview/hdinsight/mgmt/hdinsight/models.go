@@ -101,6 +101,7 @@ type ComputeProfile = original.ComputeProfile
 type ConfigurationsUpdateHTTPSettingsFuture = original.ConfigurationsUpdateHTTPSettingsFuture
 type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
+type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
 type Extension = original.Extension

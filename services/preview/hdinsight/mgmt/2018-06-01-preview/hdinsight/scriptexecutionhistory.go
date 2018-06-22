@@ -39,42 +39,42 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 	return ScriptExecutionHistoryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all scripts' execution history for the specified cluster.
+// ListByCluster lists all scripts' execution history for the specified cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
-func (client ScriptExecutionHistoryClient) List(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName)
+func (client ScriptExecutionHistoryClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListPage, err error) {
+	result.fn = client.listByClusterNextResults
+	req, err := client.ListByClusterPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "ListByCluster", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.saehl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "ListByCluster", resp, "Failure sending request")
 		return
 	}
 
-	result.saehl, err = client.ListResponder(resp)
+	result.saehl, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "ListByCluster", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client ScriptExecutionHistoryClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+// ListByClusterPreparer prepares the ListByCluster request.
+func (client ScriptExecutionHistoryClient) ListByClusterPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -87,16 +87,16 @@ func (client ScriptExecutionHistoryClient) ListPreparer(ctx context.Context, res
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// ListByClusterSender sends the ListByCluster request. The method will close the
 // http.Response Body if it receives an error.
-func (client ScriptExecutionHistoryClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ScriptExecutionHistoryClient) ListByClusterSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListByClusterResponder handles the response to the ListByCluster request. The method always
 // closes the http.Response Body.
-func (client ScriptExecutionHistoryClient) ListResponder(resp *http.Response) (result ScriptActionExecutionHistoryList, err error) {
+func (client ScriptExecutionHistoryClient) ListByClusterResponder(resp *http.Response) (result ScriptActionExecutionHistoryList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -107,30 +107,30 @@ func (client ScriptExecutionHistoryClient) ListResponder(resp *http.Response) (r
 	return
 }
 
-// listNextResults retrieves the next set of results, if any.
-func (client ScriptExecutionHistoryClient) listNextResults(lastResults ScriptActionExecutionHistoryList) (result ScriptActionExecutionHistoryList, err error) {
+// listByClusterNextResults retrieves the next set of results, if any.
+func (client ScriptExecutionHistoryClient) listByClusterNextResults(lastResults ScriptActionExecutionHistoryList) (result ScriptActionExecutionHistoryList, err error) {
 	req, err := lastResults.scriptActionExecutionHistoryListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listByClusterNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listByClusterNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListResponder(resp)
+	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "listByClusterNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ScriptExecutionHistoryClient) ListComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, clusterName)
+// ListByClusterComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ScriptExecutionHistoryClient) ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionExecutionHistoryListIterator, err error) {
+	result.page, err = client.ListByCluster(ctx, resourceGroupName, clusterName)
 	return
 }
 
@@ -170,7 +170,7 @@ func (client ScriptExecutionHistoryClient) PromotePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

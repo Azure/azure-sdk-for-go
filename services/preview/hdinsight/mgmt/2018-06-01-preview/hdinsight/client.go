@@ -1,4 +1,4 @@
-// Package hdinsight implements the Azure ARM Hdinsight service API version 2015-03-01-preview.
+// Package hdinsight implements the Azure ARM Hdinsight service API version 2018-06-01-preview.
 //
 // HDInsight Management Client
 package hdinsight

@@ -39,74 +39,9 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 	return LocationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetCapabilities gets the capabilities for the specified location.
-// Parameters:
-// location - the location.
-func (client LocationClient) GetCapabilities(ctx context.Context, location string) (result CapabilitiesResult, err error) {
-	req, err := client.GetCapabilitiesPreparer(ctx, location)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "GetCapabilities", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetCapabilitiesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "GetCapabilities", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetCapabilitiesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.LocationClient", "GetCapabilities", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetCapabilitiesPreparer prepares the GetCapabilities request.
-func (client LocationClient) GetCapabilitiesPreparer(ctx context.Context, location string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2015-03-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/capabilities", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetCapabilitiesSender sends the GetCapabilities request. The method will close the
-// http.Response Body if it receives an error.
-func (client LocationClient) GetCapabilitiesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetCapabilitiesResponder handles the response to the GetCapabilities request. The method always
-// closes the http.Response Body.
-func (client LocationClient) GetCapabilitiesResponder(resp *http.Response) (result CapabilitiesResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // ListUsages lists the usages for the specified location.
 // Parameters:
-// location - the location.
+// location - the location to get capabilities for.
 func (client LocationClient) ListUsages(ctx context.Context, location string) (result UsagesListResult, err error) {
 	req, err := client.ListUsagesPreparer(ctx, location)
 	if err != nil {
@@ -136,7 +71,7 @@ func (client LocationClient) ListUsagesPreparer(ctx context.Context, location st
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

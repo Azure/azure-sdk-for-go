@@ -70,7 +70,7 @@ func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -145,7 +145,7 @@ func (client ApplicationsClient) DeletePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -187,7 +187,7 @@ func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Get lists properties of the specified application.
+// Get gets properties of the specified application.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
@@ -223,7 +223,7 @@ func (client ApplicationsClient) GetPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -256,42 +256,42 @@ func (client ApplicationsClient) GetResponder(resp *http.Response) (result Appli
 	return
 }
 
-// List lists all of the applications for the HDInsight cluster.
+// ListByCluster lists all of the applications for the HDInsight cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
-func (client ApplicationsClient) List(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultPage, err error) {
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName)
+func (client ApplicationsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultPage, err error) {
+	result.fn = client.listByClusterNextResults
+	req, err := client.ListByClusterPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "ListByCluster", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "ListByCluster", resp, "Failure sending request")
 		return
 	}
 
-	result.alr, err = client.ListResponder(resp)
+	result.alr, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "ListByCluster", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client ApplicationsClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+// ListByClusterPreparer prepares the ListByCluster request.
+func (client ApplicationsClient) ListByClusterPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -304,16 +304,16 @@ func (client ApplicationsClient) ListPreparer(ctx context.Context, resourceGroup
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// ListByClusterSender sends the ListByCluster request. The method will close the
 // http.Response Body if it receives an error.
-func (client ApplicationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ApplicationsClient) ListByClusterSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListByClusterResponder handles the response to the ListByCluster request. The method always
 // closes the http.Response Body.
-func (client ApplicationsClient) ListResponder(resp *http.Response) (result ApplicationListResult, err error) {
+func (client ApplicationsClient) ListByClusterResponder(resp *http.Response) (result ApplicationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -324,29 +324,29 @@ func (client ApplicationsClient) ListResponder(resp *http.Response) (result Appl
 	return
 }
 
-// listNextResults retrieves the next set of results, if any.
-func (client ApplicationsClient) listNextResults(lastResults ApplicationListResult) (result ApplicationListResult, err error) {
+// listByClusterNextResults retrieves the next set of results, if any.
+func (client ApplicationsClient) listByClusterNextResults(lastResults ApplicationListResult) (result ApplicationListResult, err error) {
 	req, err := lastResults.applicationListResultPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listByClusterNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listByClusterNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListResponder(resp)
+	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ApplicationsClient", "listByClusterNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ApplicationsClient) ListComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultIterator, err error) {
-	result.page, err = client.List(ctx, resourceGroupName, clusterName)
+// ListByClusterComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ApplicationsClient) ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationListResultIterator, err error) {
+	result.page, err = client.ListByCluster(ctx, resourceGroupName, clusterName)
 	return
 }

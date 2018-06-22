@@ -75,7 +75,7 @@ func (client ScriptActionsClient) DeletePreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -143,7 +143,7 @@ func (client ScriptActionsClient) GetExecutionDetailPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -176,42 +176,42 @@ func (client ScriptActionsClient) GetExecutionDetailResponder(resp *http.Respons
 	return
 }
 
-// ListPersistedScripts lists all the persisted script actions for the specified cluster.
+// ListByCluster lists all the persisted script actions for the specified cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
-func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListPage, err error) {
-	result.fn = client.listPersistedScriptsNextResults
-	req, err := client.ListPersistedScriptsPreparer(ctx, resourceGroupName, clusterName)
+func (client ScriptActionsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListPage, err error) {
+	result.fn = client.listByClusterNextResults
+	req, err := client.ListByClusterPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListByCluster", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListPersistedScriptsSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.sal.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListByCluster", resp, "Failure sending request")
 		return
 	}
 
-	result.sal, err = client.ListPersistedScriptsResponder(resp)
+	result.sal, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListByCluster", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPersistedScriptsPreparer prepares the ListPersistedScripts request.
-func (client ScriptActionsClient) ListPersistedScriptsPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+// ListByClusterPreparer prepares the ListByCluster request.
+func (client ScriptActionsClient) ListByClusterPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -224,16 +224,16 @@ func (client ScriptActionsClient) ListPersistedScriptsPreparer(ctx context.Conte
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListPersistedScriptsSender sends the ListPersistedScripts request. The method will close the
+// ListByClusterSender sends the ListByCluster request. The method will close the
 // http.Response Body if it receives an error.
-func (client ScriptActionsClient) ListPersistedScriptsSender(req *http.Request) (*http.Response, error) {
+func (client ScriptActionsClient) ListByClusterSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListPersistedScriptsResponder handles the response to the ListPersistedScripts request. The method always
+// ListByClusterResponder handles the response to the ListByCluster request. The method always
 // closes the http.Response Body.
-func (client ScriptActionsClient) ListPersistedScriptsResponder(resp *http.Response) (result ScriptActionsList, err error) {
+func (client ScriptActionsClient) ListByClusterResponder(resp *http.Response) (result ScriptActionsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -244,29 +244,29 @@ func (client ScriptActionsClient) ListPersistedScriptsResponder(resp *http.Respo
 	return
 }
 
-// listPersistedScriptsNextResults retrieves the next set of results, if any.
-func (client ScriptActionsClient) listPersistedScriptsNextResults(lastResults ScriptActionsList) (result ScriptActionsList, err error) {
+// listByClusterNextResults retrieves the next set of results, if any.
+func (client ScriptActionsClient) listByClusterNextResults(lastResults ScriptActionsList) (result ScriptActionsList, err error) {
 	req, err := lastResults.scriptActionsListPreparer()
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listPersistedScriptsNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listByClusterNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListPersistedScriptsSender(req)
+	resp, err := client.ListByClusterSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listPersistedScriptsNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listByClusterNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListPersistedScriptsResponder(resp)
+	result, err = client.ListByClusterResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listPersistedScriptsNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "listByClusterNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListPersistedScriptsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ScriptActionsClient) ListPersistedScriptsComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListIterator, err error) {
-	result.page, err = client.ListPersistedScripts(ctx, resourceGroupName, clusterName)
+// ListByClusterComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ScriptActionsClient) ListByClusterComplete(ctx context.Context, resourceGroupName string, clusterName string) (result ScriptActionsListIterator, err error) {
+	result.page, err = client.ListByCluster(ctx, resourceGroupName, clusterName)
 	return
 }

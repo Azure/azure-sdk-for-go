@@ -19,7 +19,7 @@
 
 package hdinsight
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight"
 
 type ApplicationsClient = original.ApplicationsClient
 
@@ -30,7 +30,7 @@ const (
 type BaseClient = original.BaseClient
 type ClustersClient = original.ClustersClient
 type ConfigurationsClient = original.ConfigurationsClient
-type ExtensionClient = original.ExtensionClient
+type ExtensionsClient = original.ExtensionsClient
 type LocationClient = original.LocationClient
 type AsyncOperationState = original.AsyncOperationState
 
@@ -73,10 +73,11 @@ const (
 type Application = original.Application
 type ApplicationGetEndpoint = original.ApplicationGetEndpoint
 type ApplicationGetHTTPSEndpoint = original.ApplicationGetHTTPSEndpoint
-type ApplicationGetProperties = original.ApplicationGetProperties
 type ApplicationListResult = original.ApplicationListResult
 type ApplicationListResultIterator = original.ApplicationListResultIterator
 type ApplicationListResultPage = original.ApplicationListResultPage
+type ApplicationProperties = original.ApplicationProperties
+type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type Cluster = original.Cluster
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
@@ -103,8 +104,10 @@ type DataDisksGroups = original.DataDisksGroups
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
 type Extension = original.Extension
-type ExtensionDisableMonitoringFuture = original.ExtensionDisableMonitoringFuture
-type ExtensionEnableMonitoringFuture = original.ExtensionEnableMonitoringFuture
+type ExtensionsCreateFuture = original.ExtensionsCreateFuture
+type ExtensionsDeleteFuture = original.ExtensionsDeleteFuture
+type ExtensionsDisableMonitoringFuture = original.ExtensionsDisableMonitoringFuture
+type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFuture
 type HardwareProfile = original.HardwareProfile
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type LocalizedName = original.LocalizedName
@@ -138,47 +141,47 @@ type StorageAccount = original.StorageAccount
 type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
 type Usage = original.Usage
-type UsagesResult = original.UsagesResult
+type UsagesListResult = original.UsagesListResult
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 type OperationsClient = original.OperationsClient
 type ScriptActionsClient = original.ScriptActionsClient
 type ScriptExecutionHistoryClient = original.ScriptExecutionHistoryClient
 
-func NewApplicationsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ApplicationsClient {
-	return original.NewApplicationsClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewApplicationsClient(subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClient(subscriptionID)
 }
-func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
+	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func New(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) BaseClient {
-	return original.New(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewClustersClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewClustersClient(subscriptionID string) ClustersClient {
+	return original.NewClustersClient(subscriptionID)
 }
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewConfigurationsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ConfigurationsClient {
-	return original.NewConfigurationsClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClient(subscriptionID)
 }
-func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ConfigurationsClient {
-	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
+	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewExtensionClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ExtensionClient {
-	return original.NewExtensionClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClient(subscriptionID)
 }
-func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ExtensionClient {
-	return original.NewExtensionClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLocationClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) LocationClient {
-	return original.NewLocationClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewLocationClient(subscriptionID string) LocationClient {
+	return original.NewLocationClient(subscriptionID)
 }
-func NewLocationClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) LocationClient {
-	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) LocationClient {
+	return original.NewLocationClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAsyncOperationStateValues() []AsyncOperationState {
 	return original.PossibleAsyncOperationStateValues()
@@ -195,23 +198,23 @@ func PossibleOSTypeValues() []OSType {
 func PossibleTierValues() []Tier {
 	return original.PossibleTierValues()
 }
-func NewOperationsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewScriptActionsClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptActionsClient {
-	return original.NewScriptActionsClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewScriptActionsClient(subscriptionID string) ScriptActionsClient {
+	return original.NewScriptActionsClient(subscriptionID)
 }
-func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptActionsClient {
-	return original.NewScriptActionsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewScriptActionsClientWithBaseURI(baseURI string, subscriptionID string) ScriptActionsClient {
+	return original.NewScriptActionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewScriptExecutionHistoryClient(subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptExecutionHistoryClient {
-	return original.NewScriptExecutionHistoryClient(subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHistoryClient {
+	return original.NewScriptExecutionHistoryClient(subscriptionID)
 }
-func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, clusterName string, applicationName string, location string, configurationName string, extensionName string, scriptName string, scriptExecutionID string) ScriptExecutionHistoryClient {
-	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, clusterName, applicationName, location, configurationName, extensionName, scriptName, scriptExecutionID)
+func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
+	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

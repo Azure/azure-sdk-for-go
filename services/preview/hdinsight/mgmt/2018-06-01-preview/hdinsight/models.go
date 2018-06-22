@@ -373,47 +373,6 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	return
 }
 
-// CapabilitiesResult the Get Capabilities operation response.
-type CapabilitiesResult struct {
-	autorest.Response `json:"-"`
-	// Versions - The version capability.
-	Versions map[string]*VersionsCapability `json:"versions"`
-	// Regions - The virtual machine size compatibilty features.
-	Regions map[string]*RegionsCapability `json:"regions"`
-	// VMSizes - The virtual machine sizes.
-	VMSizes map[string]*VMSizesCapability `json:"vmSizes"`
-	// VMSizeFilters - The virtual machine size compatibilty filters.
-	VMSizeFilters *[]VMSizeCompatibilityFilter `json:"vmSize_filters,omitempty"`
-	// Features - The capabilty features.
-	Features *[]string `json:"features,omitempty"`
-	// Quota - The quota capability.
-	Quota *QuotaCapability `json:"quota,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CapabilitiesResult.
-func (cr CapabilitiesResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cr.Versions != nil {
-		objectMap["versions"] = cr.Versions
-	}
-	if cr.Regions != nil {
-		objectMap["regions"] = cr.Regions
-	}
-	if cr.VMSizes != nil {
-		objectMap["vmSizes"] = cr.VMSizes
-	}
-	if cr.VMSizeFilters != nil {
-		objectMap["vmSize_filters"] = cr.VMSizeFilters
-	}
-	if cr.Features != nil {
-		objectMap["features"] = cr.Features
-	}
-	if cr.Quota != nil {
-		objectMap["quota"] = cr.Quota
-	}
-	return json.Marshal(objectMap)
-}
-
 // Cluster the HDInsight cluster.
 type Cluster struct {
 	autorest.Response `json:"-"`
@@ -886,46 +845,90 @@ type Extension struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 }
 
-// ExtensionDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ExtensionDisableMonitoringFuture struct {
+// ExtensionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ExtensionsCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ExtensionDisableMonitoringFuture) Result(client ExtensionClient) (ar autorest.Response, err error) {
+func (future *ExtensionsCreateFuture) Result(client ExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionDisableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionDisableMonitoringFuture")
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsCreateFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// ExtensionEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ExtensionEnableMonitoringFuture struct {
+// ExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ExtensionsDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ExtensionEnableMonitoringFuture) Result(client ExtensionClient) (ar autorest.Response, err error) {
+func (future *ExtensionsDeleteFuture) Result(client ExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionEnableMonitoringFuture")
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExtensionsDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExtensionsDisableMonitoringFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExtensionsDisableMonitoringFuture) Result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDisableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDisableMonitoringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExtensionsEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExtensionsEnableMonitoringFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ExtensionsEnableMonitoringFuture) Result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsEnableMonitoringFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -1102,32 +1105,10 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// QuotaCapability the regional quota capability.
-type QuotaCapability struct {
-	// RegionalQuotas - The list of region quota capabilities.
-	RegionalQuotas *[]RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
-}
-
 // QuotaInfo the quota properties for the cluster.
 type QuotaInfo struct {
 	// CoresUsed - The cores used by the cluster.
 	CoresUsed *int32 `json:"coresUsed,omitempty"`
-}
-
-// RegionalQuotaCapability the regional quota capacity.
-type RegionalQuotaCapability struct {
-	// RegionName - The region name.
-	RegionName *string `json:"region_name,omitempty"`
-	// CoresUsed - The number of cores used in the region.
-	CoresUsed *int64 `json:"cores_used,omitempty"`
-	// CoresAvailable - The number of courses available in the region.
-	CoresAvailable *int64 `json:"cores_available,omitempty"`
-}
-
-// RegionsCapability the regions capability.
-type RegionsCapability struct {
-	// Available - The list of region capabilities.
-	Available *[]string `json:"available,omitempty"`
 }
 
 // Resource the core properties of ARM resources
@@ -1557,68 +1538,10 @@ type UsagesListResult struct {
 	Value *[]Usage `json:"value,omitempty"`
 }
 
-// VersionsCapability the version capability.
-type VersionsCapability struct {
-	// Available - The list of version capabilities.
-	Available *[]VersionSpec `json:"available,omitempty"`
-}
-
-// VersionSpec the version properties.
-type VersionSpec struct {
-	// FriendlyName - The friendly name
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// DisplayName - The display name
-	DisplayName *string `json:"displayName,omitempty"`
-	// IsDefault - Whether or not the version is the default version.
-	IsDefault *string `json:"isDefault,omitempty"`
-	// ComponentVersions - The component version property.
-	ComponentVersions map[string]*string `json:"componentVersions"`
-}
-
-// MarshalJSON is the custom marshaler for VersionSpec.
-func (vs VersionSpec) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if vs.FriendlyName != nil {
-		objectMap["friendlyName"] = vs.FriendlyName
-	}
-	if vs.DisplayName != nil {
-		objectMap["displayName"] = vs.DisplayName
-	}
-	if vs.IsDefault != nil {
-		objectMap["isDefault"] = vs.IsDefault
-	}
-	if vs.ComponentVersions != nil {
-		objectMap["componentVersions"] = vs.ComponentVersions
-	}
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkProfile the virtual network properties.
 type VirtualNetworkProfile struct {
 	// ID - The ID of the virtual network.
 	ID *string `json:"id,omitempty"`
 	// Subnet - The name of the subnet.
 	Subnet *string `json:"subnet,omitempty"`
-}
-
-// VMSizeCompatibilityFilter the virtual machine type compatibility filter.
-type VMSizeCompatibilityFilter struct {
-	// FilterMode - The mode for the filter.
-	FilterMode *string `json:"FilterMode,omitempty"`
-	// Regions - The list of regions.
-	Regions *[]string `json:"Regions,omitempty"`
-	// ClusterFlavors - The list of cluster types available.
-	ClusterFlavors *[]string `json:"ClusterFlavors,omitempty"`
-	// NodeTypes - The list of node types.
-	NodeTypes *[]string `json:"NodeTypes,omitempty"`
-	// ClusterVersions - The list of cluster versions.
-	ClusterVersions *[]string `json:"ClusterVersions,omitempty"`
-	// Vmsizes - The list of virtual machine sizes.
-	Vmsizes *[]string `json:"vmsizes,omitempty"`
-}
-
-// VMSizesCapability the virtual machine sizes capability.
-type VMSizesCapability struct {
-	// Available - The list of virtual machine size capabilities.
-	Available *[]string `json:"available,omitempty"`
 }

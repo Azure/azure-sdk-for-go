@@ -28,6 +28,27 @@ const (
 type BaseClient = original.BaseClient
 type ClustersClient = original.ClustersClient
 type ConfigurationClient = original.ConfigurationClient
+type IPAction = original.IPAction
+
+const (
+	Accept IPAction = original.Accept
+	Reject IPAction = original.Reject
+)
+
+type SkuName = original.SkuName
+
+const (
+	Basic    SkuName = original.Basic
+	Standard SkuName = original.Standard
+)
+
+type SkuTier = original.SkuTier
+
+const (
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierStandard SkuTier = original.SkuTierStandard
+)
+
 type Cluster = original.Cluster
 type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
@@ -36,15 +57,28 @@ type ClusterProperties = original.ClusterProperties
 type ClusterQuotaConfigurationProperties = original.ClusterQuotaConfigurationProperties
 type ClusterSku = original.ClusterSku
 type ClustersPatchFuture = original.ClustersPatchFuture
+type EHNamespace = original.EHNamespace
+type EHNamespaceListResult = original.EHNamespaceListResult
+type EHNamespaceListResultIterator = original.EHNamespaceListResultIterator
+type EHNamespaceListResultPage = original.EHNamespaceListResultPage
+type EHNamespaceProperties = original.EHNamespaceProperties
 type ErrorResponse = original.ErrorResponse
-type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
-type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
+type IPFilterRule = original.IPFilterRule
+type IPFilterRuleListResult = original.IPFilterRuleListResult
+type IPFilterRuleListResultIterator = original.IPFilterRuleListResultIterator
+type IPFilterRuleListResultPage = original.IPFilterRuleListResultPage
+type IPFilterRuleProperties = original.IPFilterRuleProperties
+type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
+type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type Resource = original.Resource
+type Sku = original.Sku
 type TrackedResource = original.TrackedResource
-type OperationsClient = original.OperationsClient
+type VirtualNetworkRule = original.VirtualNetworkRule
+type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
+type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResultIterator
+type VirtualNetworkRuleListResultPage = original.VirtualNetworkRuleListResultPage
+type VirtualNetworkRuleProperties = original.VirtualNetworkRuleProperties
+type NamespacesClient = original.NamespacesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -64,11 +98,20 @@ func NewConfigurationClient(subscriptionID string) ConfigurationClient {
 func NewConfigurationClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationClient {
 	return original.NewConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func PossibleIPActionValues() []IPAction {
+	return original.PossibleIPActionValues()
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func PossibleSkuNameValues() []SkuName {
+	return original.PossibleSkuNameValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
+}
+func NewNamespacesClient(subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClient(subscriptionID)
+}
+func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) NamespacesClient {
+	return original.NewNamespacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

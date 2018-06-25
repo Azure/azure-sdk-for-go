@@ -1,6 +1,6 @@
 // Package operationalinsights implements the Azure ARM Operationalinsights service API version v1.
 //
-// Operational Insights Data Client
+// Log Analytics Data Plane Client
 package operationalinsights
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.

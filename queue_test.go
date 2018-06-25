@@ -132,6 +132,42 @@ var (
 	timeout = 60 * time.Second
 )
 
+func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
+
+	ns := suite.getNewSasInstance()
+	qm := ns.NewQueueManager()
+
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	queueName := suite.randEntityName()
+
+	_, err := qm.Put(ctx, queueName)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+	q, err := ns.NewQueue(ctx, queueName)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+
+	q.Send(ctx, NewMessageFromString("Hello World!"))
+
+	// Without sleep finding the results are inconsistent.
+	// Have observed that checkZeroQueueMessages also does this.
+	time.Sleep(1 * time.Second)
+
+	qq, err := qm.Get(ctx, queueName)
+	if err != nil {
+		suite.T().Fatal(err)
+	}
+
+	// confirm we have an active message!
+	suite.Equal(int32(1), *qq.CountDetails.ActiveMessageCount)
+	suite.cleanupQueue(queueName)
+
+}
+
 func (suite *serviceBusSuite) TestQueueEntryUnmarshal() {
 	var entry queueEntry
 	err := xml.Unmarshal([]byte(queueEntry1), &entry)

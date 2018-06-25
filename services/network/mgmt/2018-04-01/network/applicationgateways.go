@@ -133,12 +133,6 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, reso
 								{Target: "parameters.ApplicationGatewayPropertiesFormat.WebApplicationFirewallConfiguration.MaxRequestBodySize", Name: validation.InclusiveMinimum, Rule: 8, Chain: nil},
 							}},
 					}},
-					{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration.Bounds", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration.Bounds.Min", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration.Bounds.Max", Name: validation.Null, Rule: true, Chain: nil},
-							}},
-						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("network.ApplicationGatewaysClient", "CreateOrUpdate", err.Error())
 	}

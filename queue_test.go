@@ -133,39 +133,60 @@ var (
 )
 
 func (suite *serviceBusSuite) TestQueueManagementPopulatedQueue() {
+	tests := map[string]func(context.Context, *testing.T, *QueueManager, string, *Queue){
+		"TestCountDetails": testCountDetails,
+	}
 
 	ns := suite.getNewSasInstance()
 	qm := ns.NewQueueManager()
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+	for name, testFunc := range tests {
+		suite.T().Run(name, func(t *testing.T) {
+			ctx, cancel := context.WithTimeout(context.Background(), timeout)
+			defer cancel()
 
-	queueName := suite.randEntityName()
+			// setup queue for population
+			queueName := suite.randEntityName()
+			_, err := qm.Put(ctx, queueName)
+			if err != nil {
+				suite.T().Fatal(err)
+			}
 
-	_, err := qm.Put(ctx, queueName)
-	if err != nil {
-		suite.T().Fatal(err)
+			q, err := ns.NewQueue(ctx, queueName)
+			if err != nil {
+				suite.T().Fatal(err)
+			}
+
+			testFunc(ctx, t, qm, queueName, q)
+			defer suite.cleanupQueue(queueName)
+		})
 	}
-	q, err := ns.NewQueue(ctx, queueName)
-	if err != nil {
-		suite.T().Fatal(err)
+}
+
+func getCountDetailsResults(ctx context.Context, qm *QueueManager, t *testing.T, queueName string, wg *sync.WaitGroup) {
+	for {
+		qq, err := qm.Get(ctx, queueName)
+		assert.NoError(t, err)
+		if *qq.CountDetails.ActiveMessageCount == 0 {
+			// sleep...   evil....
+			time.Sleep(1 * time.Second)
+		} else {
+			// if not 0.... then assert on what we got. Should be 1
+			assert.Equal(t, *qq.CountDetails.ActiveMessageCount, int32(1))
+			wg.Done()
+			break
+		}
 	}
+}
 
-	q.Send(ctx, NewMessageFromString("Hello World!"))
-
-	// Without sleep finding the results are inconsistent.
-	// Have observed that checkZeroQueueMessages also does this.
-	time.Sleep(1 * time.Second)
-
-	qq, err := qm.Get(ctx, queueName)
-	if err != nil {
-		suite.T().Fatal(err)
+func testCountDetails(ctx context.Context, t *testing.T, qm *QueueManager, queueName string, q *Queue) {
+	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		go getCountDetailsResults(ctx,qm, t,queueName, &wg)
+		end, _ := ctx.Deadline()
+		waitUntil(t, &wg, time.Until(end))
 	}
-
-	// confirm we have an active message!
-	suite.Equal(int32(1), *qq.CountDetails.ActiveMessageCount)
-	suite.cleanupQueue(queueName)
-
 }
 
 func (suite *serviceBusSuite) TestQueueEntryUnmarshal() {

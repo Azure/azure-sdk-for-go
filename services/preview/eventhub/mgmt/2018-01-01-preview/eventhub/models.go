@@ -603,6 +603,8 @@ type EHNamespaceProperties struct {
 	MaximumThroughputUnits *int32 `json:"maximumThroughputUnits,omitempty"`
 	// KafkaEnabled - Value that indicates whether Kafka is enabled for eventhub namespace.
 	KafkaEnabled *bool `json:"kafkaEnabled,omitempty"`
+	// ZoneRedundant - Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
 // ErrorResponse error response that indicates the service is not able to process the incoming request. The reason

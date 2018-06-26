@@ -111,6 +111,7 @@ type (
 		AutoDeleteOnIdle                    *string                  `xml:"AutoDeleteOnIdle,omitempty"`
 		EnablePartitioning                  *bool                    `xml:"EnablePartitioning,omitempty"`
 		EnableExpress                       *bool                    `xml:"EnableExpress,omitempty"`
+		CountDetails                        *CountDetails            `xml:"CountDetails,omitempty"`
 	}
 
 	// QueueManagementOption represents named configuration options for queue mutation

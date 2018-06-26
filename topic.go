@@ -104,6 +104,7 @@ type (
 		EnablePartitioning                  *bool                    `xml:"EnablePartitioning,omitempty"`
 		EnableSubscriptionPartitioning      *bool                    `xml:"EnableSubscriptionPartitioning,omitempty"`
 		EnableExpress                       *bool                    `xml:"EnableExpress,omitempty"`
+		CountDetails                        *CountDetails            `xml:"CountDetails,omitempty"`
 	}
 
 	// TopicManagementOption represents named options for assisting Topic creation

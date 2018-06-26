@@ -1284,21 +1284,9 @@ func (a *Assessment) UnmarshalJSON(body []byte) error {
 type AssessmentOptionsResultList struct {
 	autorest.Response `json:"-"`
 	// VMFamilies - Dictionary of VM families grouped by vm family name describing the targeted azure locations of VM family and the category of the family.
-	VMFamilies map[string]*VMFamily `json:"vmFamilies"`
+	VMFamilies *[]interface{} `json:"vmFamilies,omitempty"`
 	// ReservedInstanceVMFamilies - List of supported VM Families.
 	ReservedInstanceVMFamilies *[]string `json:"reservedInstanceVmFamilies,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AssessmentOptionsResultList.
-func (aorl AssessmentOptionsResultList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if aorl.VMFamilies != nil {
-		objectMap["vmFamilies"] = aorl.VMFamilies
-	}
-	if aorl.ReservedInstanceVMFamilies != nil {
-		objectMap["reservedInstanceVmFamilies"] = aorl.ReservedInstanceVMFamilies
-	}
-	return json.Marshal(objectMap)
 }
 
 // AssessmentProperties properties of an assessment.

@@ -328,11 +328,9 @@ func (client ProjectsClient) GetKeysResponder(resp *http.Response) (result Proje
 	return
 }
 
-// List get all the projects in the resource group.
-// Parameters:
-// resourceGroupName - name of the Azure Resource Group that project is part of.
-func (client ProjectsClient) List(ctx context.Context, resourceGroupName string) (result ProjectResultList, err error) {
-	req, err := client.ListPreparer(ctx, resourceGroupName)
+// List get all the projects in thh subscription.
+func (client ProjectsClient) List(ctx context.Context) (result ProjectResultList, err error) {
+	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List", nil, "Failure preparing request")
 		return
@@ -354,7 +352,75 @@ func (client ProjectsClient) List(ctx context.Context, resourceGroupName string)
 }
 
 // ListPreparer prepares the List request.
-func (client ProjectsClient) ListPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ProjectsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Migrate/projects", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSender sends the List request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProjectsClient) ListSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListResponder handles the response to the List request. The method always
+// closes the http.Response Body.
+func (client ProjectsClient) ListResponder(resp *http.Response) (result ProjectResultList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// List1 get all the projects in the resource group.
+// Parameters:
+// resourceGroupName - name of the Azure Resource Group that project is part of.
+func (client ProjectsClient) List1(ctx context.Context, resourceGroupName string) (result ProjectResultList, err error) {
+	req, err := client.List1Preparer(ctx, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.List1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List1", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.List1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// List1Preparer prepares the List1 request.
+func (client ProjectsClient) List1Preparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -377,16 +443,16 @@ func (client ProjectsClient) ListPreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// List1Sender sends the List1 request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProjectsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProjectsClient) List1Sender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListResponder handles the response to the List request. The method always
+// List1Responder handles the response to the List1 request. The method always
 // closes the http.Response Body.
-func (client ProjectsClient) ListResponder(resp *http.Response) (result ProjectResultList, err error) {
+func (client ProjectsClient) List1Responder(resp *http.Response) (result ProjectResultList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

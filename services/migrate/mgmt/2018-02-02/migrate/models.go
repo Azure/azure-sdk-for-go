@@ -1280,6 +1280,27 @@ func (a *Assessment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AssessmentOptionsResultList list of assessment options.
+type AssessmentOptionsResultList struct {
+	autorest.Response `json:"-"`
+	// VMFamilies - Dictionary of VM families grouped by vm family name describing the targeted azure locations of VM family and the category of the family.
+	VMFamilies map[string]*VMFamily `json:"vmFamilies"`
+	// ReservedInstanceVMFamilies - List of supported VM Families.
+	ReservedInstanceVMFamilies *[]string `json:"reservedInstanceVmFamilies,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentOptionsResultList.
+func (aorl AssessmentOptionsResultList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aorl.VMFamilies != nil {
+		objectMap["vmFamilies"] = aorl.VMFamilies
+	}
+	if aorl.ReservedInstanceVMFamilies != nil {
+		objectMap["reservedInstanceVmFamilies"] = aorl.ReservedInstanceVMFamilies
+	}
+	return json.Marshal(objectMap)
+}
+
 // AssessmentProperties properties of an assessment.
 type AssessmentProperties struct {
 	// AzureLocation - Target Azure location for which the machines should be assessed. These enums are the same as used by Compute API. Possible values include: 'AzureLocationUnknown', 'AzureLocationEastAsia', 'AzureLocationSoutheastAsia', 'AzureLocationAustraliaEast', 'AzureLocationAustraliaSoutheast', 'AzureLocationBrazilSouth', 'AzureLocationCanadaCentral', 'AzureLocationCanadaEast', 'AzureLocationWestEurope', 'AzureLocationNorthEurope', 'AzureLocationCentralIndia', 'AzureLocationSouthIndia', 'AzureLocationWestIndia', 'AzureLocationJapanEast', 'AzureLocationJapanWest', 'AzureLocationKoreaCentral', 'AzureLocationKoreaSouth', 'AzureLocationUkWest', 'AzureLocationUkSouth', 'AzureLocationNorthCentralUs', 'AzureLocationEastUs', 'AzureLocationWestUs2', 'AzureLocationSouthCentralUs', 'AzureLocationCentralUs', 'AzureLocationEastUs2', 'AzureLocationWestUs', 'AzureLocationWestCentralUs', 'AzureLocationGermanyCentral', 'AzureLocationGermanyNortheast', 'AzureLocationChinaNorth', 'AzureLocationChinaEast'
@@ -1859,4 +1880,14 @@ type ProjectResultList struct {
 	autorest.Response `json:"-"`
 	// Value - List of projects.
 	Value *[]Project `json:"value,omitempty"`
+}
+
+// VMFamily VM family name, the list of targeted azure locations and the category of the family.
+type VMFamily struct {
+	// FamilyName - Name of the VM family.
+	FamilyName *string `json:"familyName,omitempty"`
+	// TargetLocations - List of Azure regions.
+	TargetLocations *[]string `json:"targetLocations,omitempty"`
+	// Category - Category of the VM family.
+	Category *[]string `json:"category,omitempty"`
 }

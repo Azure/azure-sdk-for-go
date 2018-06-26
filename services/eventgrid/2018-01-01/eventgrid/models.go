@@ -247,6 +247,10 @@ type Event struct {
 	DataVersion *string `json:"dataVersion,omitempty"`
 }
 
+// EventData base type for system event data published by Azure services to Event Grid.
+type EventData struct {
+}
+
 // EventHubCaptureFileCreatedEventData schema of the Data property of an EventGridEvent for an
 // Microsoft.EventHub.CaptureFileCreated event.
 type EventHubCaptureFileCreatedEventData struct {

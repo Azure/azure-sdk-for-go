@@ -183,7 +183,7 @@ func testCountDetails(ctx context.Context, t *testing.T, qm *QueueManager, queue
 	if assert.NoError(t, q.Send(ctx, NewMessageFromString("Hello World!"))) {
 		var wg sync.WaitGroup
 		wg.Add(1)
-		go getCountDetailsResults(ctx,qm, t,queueName, &wg)
+		go getCountDetailsResults(ctx, qm, t, queueName, &wg)
 		end, _ := ctx.Deadline()
 		waitUntil(t, &wg, time.Until(end))
 	}

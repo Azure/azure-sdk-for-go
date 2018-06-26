@@ -95,6 +95,7 @@ func main() {
 - [HelloWorld: Producer and Consumer](./_examples/helloworld): an example of sending and receiving messages from a 
 Service Bus Queue.
 - [OpenTracing Support](./_examples/opentracing): an example of how to enable distributed tracing using [OpenTracing](http://opentracing.io)
+- [Scheduled Messages](./_examples/scheduledMessage): an example of how to send a message to be delivered in the future
 
 # Contributing
 

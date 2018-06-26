@@ -48,6 +48,7 @@ type DeviceTwinInfoX509Thumbprint = original.DeviceTwinInfoX509Thumbprint
 type DeviceTwinMetadata = original.DeviceTwinMetadata
 type DeviceTwinProperties = original.DeviceTwinProperties
 type Event = original.Event
+type EventData = original.EventData
 type EventHubCaptureFileCreatedEventData = original.EventHubCaptureFileCreatedEventData
 type IotHubDeviceCreatedEventData = original.IotHubDeviceCreatedEventData
 type IotHubDeviceDeletedEventData = original.IotHubDeviceDeletedEventData

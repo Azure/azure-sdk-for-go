@@ -1284,7 +1284,7 @@ func (a *Assessment) UnmarshalJSON(body []byte) error {
 type AssessmentOptionsResultList struct {
 	autorest.Response `json:"-"`
 	// VMFamilies - Dictionary of VM families grouped by vm family name describing the targeted azure locations of VM family and the category of the family.
-	VMFamilies *[]interface{} `json:"vmFamilies,omitempty"`
+	VMFamilies *[]VMFamily `json:"vmFamilies,omitempty"`
 	// ReservedInstanceVMFamilies - List of supported VM Families.
 	ReservedInstanceVMFamilies *[]string `json:"reservedInstanceVmFamilies,omitempty"`
 }

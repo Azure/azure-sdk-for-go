@@ -63,15 +63,16 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 
 	rpt.CommitsReports = map[string]pkgsReport{}
 	worker := func(rootDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
+		vprintf("generating diff between %s and %s\n", baseCommit, targetCommit)
 		// get for lhs
-		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
+		dprintf("checking out base commit %s and gathering exports\n", baseCommit)
 		lhs, err := getRepoContentForCommit(cloneRepo, rootDir, baseCommit)
 		if err != nil {
 			return err
 		}
 
 		// get for rhs
-		vprintf("checking out target commit %s and gathering exports\n", targetCommit)
+		dprintf("checking out target commit %s and gathering exports\n", targetCommit)
 		var rhs repoContent
 		rhs, err = getRepoContentForCommit(cloneRepo, rootDir, targetCommit)
 		if err != nil {
@@ -129,7 +130,7 @@ func getRepoContentForCommit(wt repo.WorkingTree, dir, commit string) (r repoCon
 	if err != nil {
 		return
 	}
-	if verboseFlag {
+	if debugFlag {
 		fmt.Println("found the following package directories")
 		for _, d := range pkgDirs {
 			fmt.Printf("\t%s\n", d)
@@ -150,7 +151,7 @@ type repoContent map[string]exports.Content
 func getExportsForPackages(root string, pkgDirs []string) (repoContent, error) {
 	exps := repoContent{}
 	for _, pkgDir := range pkgDirs {
-		vprintf("getting exports for %s\n", pkgDir)
+		dprintf("getting exports for %s\n", pkgDir)
 		// pkgDir = "C:\Users\somebody\AppData\Local\Temp\apidiff-1529437978\services\addons\mgmt\2017-05-15\addons"
 		// convert to package path "github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2016-05-16/analysisservices"
 		pkgPath := strings.Replace(pkgDir, root, "github.com/Azure/azure-sdk-for-go", -1)

@@ -1631,8 +1631,8 @@ func (wr WorkbookResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Workbooks workbook list result.
-type Workbooks struct {
+// WorkbooksListResult workbook list result.
+type WorkbooksListResult struct {
 	autorest.Response `json:"-"`
 	// Value - An array of workbooks.
 	Value *[]Workbook `json:"value,omitempty"`

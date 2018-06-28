@@ -24,19 +24,19 @@ import (
 	"net/http"
 )
 
-// ExtensionClient is the hDInsight Management Client
-type ExtensionClient struct {
+// ExtensionsClient is the hDInsight Management Client
+type ExtensionsClient struct {
 	BaseClient
 }
 
-// NewExtensionClient creates an instance of the ExtensionClient client.
-func NewExtensionClient(subscriptionID string) ExtensionClient {
-	return NewExtensionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewExtensionsClient creates an instance of the ExtensionsClient client.
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return NewExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewExtensionClientWithBaseURI creates an instance of the ExtensionClient client.
-func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) ExtensionClient {
-	return ExtensionClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewExtensionsClientWithBaseURI creates an instance of the ExtensionsClient client.
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return ExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates an HDInsight cluster extension.
@@ -45,30 +45,24 @@ func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) Extens
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
 // parameters - the cluster extensions create request.
-func (client ExtensionClient) Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (result autorest.Response, err error) {
+func (client ExtensionsClient) Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (result ExtensionsCreateFuture, err error) {
 	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, extensionName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Create", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client ExtensionClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (*http.Request, error) {
+func (client ExtensionsClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"extensionName":     autorest.Encode("path", extensionName),
@@ -76,7 +70,7 @@ func (client ExtensionClient) CreatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -93,14 +87,24 @@ func (client ExtensionClient) CreatePreparer(ctx context.Context, resourceGroupN
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client ExtensionsClient) CreateSender(req *http.Request) (future ExtensionsCreateFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExtensionsClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,30 +119,24 @@ func (client ExtensionClient) CreateResponder(resp *http.Response) (result autor
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
-func (client ExtensionClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result autorest.Response, err error) {
+func (client ExtensionsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result ExtensionsDeleteFuture, err error) {
 	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName, extensionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ExtensionClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (*http.Request, error) {
+func (client ExtensionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"extensionName":     autorest.Encode("path", extensionName),
@@ -146,7 +144,7 @@ func (client ExtensionClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -161,14 +159,24 @@ func (client ExtensionClient) DeletePreparer(ctx context.Context, resourceGroupN
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client ExtensionsClient) DeleteSender(req *http.Request) (future ExtensionsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	err = autorest.Respond(resp, azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -182,16 +190,16 @@ func (client ExtensionClient) DeleteResponder(resp *http.Response) (result autor
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
-func (client ExtensionClient) DisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string) (result ExtensionDisableMonitoringFuture, err error) {
+func (client ExtensionsClient) DisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string) (result ExtensionsDisableMonitoringFuture, err error) {
 	req, err := client.DisableMonitoringPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "DisableMonitoring", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DisableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "DisableMonitoring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "DisableMonitoring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -199,14 +207,14 @@ func (client ExtensionClient) DisableMonitoring(ctx context.Context, resourceGro
 }
 
 // DisableMonitoringPreparer prepares the DisableMonitoring request.
-func (client ExtensionClient) DisableMonitoringPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ExtensionsClient) DisableMonitoringPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -221,7 +229,7 @@ func (client ExtensionClient) DisableMonitoringPreparer(ctx context.Context, res
 
 // DisableMonitoringSender sends the DisableMonitoring request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (future ExtensionDisableMonitoringFuture, err error) {
+func (client ExtensionsClient) DisableMonitoringSender(req *http.Request) (future ExtensionsDisableMonitoringFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -238,7 +246,7 @@ func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (future
 
 // DisableMonitoringResponder handles the response to the DisableMonitoring request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) DisableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExtensionsClient) DisableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -253,16 +261,16 @@ func (client ExtensionClient) DisableMonitoringResponder(resp *http.Response) (r
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // parameters - the Operations Management Suite (OMS) workspace parameters.
-func (client ExtensionClient) EnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest) (result ExtensionEnableMonitoringFuture, err error) {
+func (client ExtensionsClient) EnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest) (result ExtensionsEnableMonitoringFuture, err error) {
 	req, err := client.EnableMonitoringPreparer(ctx, resourceGroupName, clusterName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "EnableMonitoring", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.EnableMonitoringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "EnableMonitoring", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "EnableMonitoring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -270,14 +278,14 @@ func (client ExtensionClient) EnableMonitoring(ctx context.Context, resourceGrou
 }
 
 // EnableMonitoringPreparer prepares the EnableMonitoring request.
-func (client ExtensionClient) EnableMonitoringPreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest) (*http.Request, error) {
+func (client ExtensionsClient) EnableMonitoringPreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterMonitoringRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -294,7 +302,7 @@ func (client ExtensionClient) EnableMonitoringPreparer(ctx context.Context, reso
 
 // EnableMonitoringSender sends the EnableMonitoring request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) EnableMonitoringSender(req *http.Request) (future ExtensionEnableMonitoringFuture, err error) {
+func (client ExtensionsClient) EnableMonitoringSender(req *http.Request) (future ExtensionsEnableMonitoringFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -311,7 +319,7 @@ func (client ExtensionClient) EnableMonitoringSender(req *http.Request) (future 
 
 // EnableMonitoringResponder handles the response to the EnableMonitoring request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) EnableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ExtensionsClient) EnableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -326,30 +334,30 @@ func (client ExtensionClient) EnableMonitoringResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
-func (client ExtensionClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result Extension, err error) {
+func (client ExtensionsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result Extension, err error) {
 	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, extensionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ExtensionClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (*http.Request, error) {
+func (client ExtensionsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"extensionName":     autorest.Encode("path", extensionName),
@@ -357,7 +365,7 @@ func (client ExtensionClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -372,14 +380,14 @@ func (client ExtensionClient) GetPreparer(ctx context.Context, resourceGroupName
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ExtensionsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) GetResponder(resp *http.Response) (result Extension, err error) {
+func (client ExtensionsClient) GetResponder(resp *http.Response) (result Extension, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -394,37 +402,37 @@ func (client ExtensionClient) GetResponder(resp *http.Response) (result Extensio
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
-func (client ExtensionClient) GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string) (result ClusterMonitoringResponse, err error) {
+func (client ExtensionsClient) GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string) (result ClusterMonitoringResponse, err error) {
 	req, err := client.GetMonitoringStatusPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "GetMonitoringStatus", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetMonitoringStatusSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "GetMonitoringStatus", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetMonitoringStatusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "GetMonitoringStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsClient", "GetMonitoringStatus", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetMonitoringStatusPreparer prepares the GetMonitoringStatus request.
-func (client ExtensionClient) GetMonitoringStatusPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+func (client ExtensionsClient) GetMonitoringStatusPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-03-01-preview"
+	const APIVersion = "2018-06-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -439,14 +447,14 @@ func (client ExtensionClient) GetMonitoringStatusPreparer(ctx context.Context, r
 
 // GetMonitoringStatusSender sends the GetMonitoringStatus request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) GetMonitoringStatusSender(req *http.Request) (*http.Response, error) {
+func (client ExtensionsClient) GetMonitoringStatusSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetMonitoringStatusResponder handles the response to the GetMonitoringStatus request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) GetMonitoringStatusResponder(resp *http.Response) (result ClusterMonitoringResponse, err error) {
+func (client ExtensionsClient) GetMonitoringStatusResponder(resp *http.Response) (result ClusterMonitoringResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

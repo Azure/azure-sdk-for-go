@@ -27,6 +27,19 @@ import (
 	"net/http"
 )
 
+// AlwaysLog enumerates the values for always log.
+type AlwaysLog string
+
+const (
+	// AllErrors Always log all erroneous request regardless of sampling settings.
+	AllErrors AlwaysLog = "allErrors"
+)
+
+// PossibleAlwaysLogValues returns an array of possible values for the AlwaysLog const type.
+func PossibleAlwaysLogValues() []AlwaysLog {
+	return []AlwaysLog{AllErrors}
+}
+
 // APIType enumerates the values for api type.
 type APIType string
 
@@ -434,6 +447,19 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{ProtocolHTTP, ProtocolHTTPS}
+}
+
+// SamplingType enumerates the values for sampling type.
+type SamplingType string
+
+const (
+	// Fixed Fixed-rate sampling.
+	Fixed SamplingType = "fixed"
+)
+
+// PossibleSamplingTypeValues returns an array of possible values for the SamplingType const type.
+func PossibleSamplingTypeValues() []SamplingType {
+	return []SamplingType{Fixed}
 }
 
 // SkuType enumerates the values for sku type.
@@ -2563,6 +2589,12 @@ func (bup *BackendUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BodyDiagnosticSettings body logging settings.
+type BodyDiagnosticSettings struct {
+	// Bytes - Number of request body bytes to log.
+	Bytes *int32 `json:"bytes,omitempty"`
+}
+
 // CertificateCollection paged Certificates list representation.
 type CertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -3036,8 +3068,16 @@ func (dc *DiagnosticContract) UnmarshalJSON(body []byte) error {
 
 // DiagnosticContractProperties diagnostic Entity Properties
 type DiagnosticContractProperties struct {
-	// Enabled - Indicates whether a diagnostic should receive data or not.
-	Enabled *bool `json:"enabled,omitempty"`
+	// AlwaysLog - Specifies for what type of messages sampling settings should not apply. Possible values include: 'AllErrors'
+	AlwaysLog AlwaysLog `json:"alwaysLog,omitempty"`
+	// LoggerID - Resource Id of a target logger.
+	LoggerID *string `json:"loggerId,omitempty"`
+	// Sampling - Sampling settings for Diagnostic.
+	Sampling *SamplingSettings `json:"sampling,omitempty"`
+	// Frontend - Diagnostic settings for incoming/outcoming HTTP messages to the Gateway.
+	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
+	// Backend - Diagnostic settings for incoming/outcoming HTTP messages to the Backend
+	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
 }
 
 // EmailTemplateCollection paged email template list representation.
@@ -3697,6 +3737,14 @@ type HostnameConfigurationOld struct {
 	Hostname *string `json:"hostname,omitempty"`
 	// Certificate - Certificate information.
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
+}
+
+// HTTPMessageDiagnostic http message diagnostic settings.
+type HTTPMessageDiagnostic struct {
+	// Headers - Array of HTTP Headers to log.
+	Headers *[]string `json:"headers,omitempty"`
+	// Body - Body logging settings.
+	Body *BodyDiagnosticSettings `json:"body,omitempty"`
 }
 
 // IdentityProviderBaseParameters identity Provider Base Parameter Properties.
@@ -4772,6 +4820,8 @@ type LoggerContractProperties struct {
 	Credentials map[string]*string `json:"credentials"`
 	// IsBuffered - Whether records are buffered in the logger before publishing. Default is assumed to be true.
 	IsBuffered *bool `json:"isBuffered,omitempty"`
+	// ResourceID - Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application Insights resource).
+	ResourceID *string `json:"resourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LoggerContractProperties.
@@ -4788,6 +4838,9 @@ func (lcp LoggerContractProperties) MarshalJSON() ([]byte, error) {
 	}
 	if lcp.IsBuffered != nil {
 		objectMap["isBuffered"] = lcp.IsBuffered
+	}
+	if lcp.ResourceID != nil {
+		objectMap["resourceId"] = lcp.ResourceID
 	}
 	return json.Marshal(objectMap)
 }
@@ -5802,6 +5855,14 @@ type ParameterContract struct {
 	Values *[]string `json:"values,omitempty"`
 }
 
+// PipelineDiagnosticSettings diagnostic settings for incoming/outcoming HTTP messages to the Gateway.
+type PipelineDiagnosticSettings struct {
+	// Request - Diagnostic settings for request.
+	Request *HTTPMessageDiagnostic `json:"request,omitempty"`
+	// Response - Diagnostic settings for response.
+	Response *HTTPMessageDiagnostic `json:"response,omitempty"`
+}
+
 // PolicyCollection the response of the list policy operation.
 type PolicyCollection struct {
 	autorest.Response `json:"-"`
@@ -6386,9 +6447,9 @@ type ProductContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -6402,9 +6463,9 @@ type ProductEntityBaseParameters struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -6422,9 +6483,9 @@ type ProductTagResourceContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -6479,9 +6540,9 @@ type ProductUpdateProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -7392,6 +7453,14 @@ type ResponseContract struct {
 	Representations *[]RepresentationContract `json:"representations,omitempty"`
 	// Headers - Collection of operation response headers.
 	Headers *[]ParameterContract `json:"headers,omitempty"`
+}
+
+// SamplingSettings sampling settings for Diagnostic.
+type SamplingSettings struct {
+	// SamplingType - Sampling type. Possible values include: 'Fixed'
+	SamplingType SamplingType `json:"samplingType,omitempty"`
+	// Percentage - Rate of sampling for fixed-rate sampling.
+	Percentage *float64 `json:"percentage,omitempty"`
 }
 
 // SaveConfigurationParameter parameters supplied to the Save Tenant Configuration operation.

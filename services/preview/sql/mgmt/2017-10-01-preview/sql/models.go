@@ -2719,6 +2719,29 @@ type ManagedInstancePairInfo struct {
 	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
 }
 
+// ManagedInstanceTdeCertificatesCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ManagedInstanceTdeCertificatesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedInstanceTdeCertificatesCreateFuture) Result(client ManagedInstanceTdeCertificatesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceTdeCertificatesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceTdeCertificatesCreateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ManagedInstanceVcoresCapability the managed instance virtual cores capability.
 type ManagedInstanceVcoresCapability struct {
 	// Name - The virtual cores identifier.
@@ -2857,6 +2880,118 @@ type Sku struct {
 	Family *string `json:"family,omitempty"`
 	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// TdeCertificate a TDE certificate that can be uploaded into a server.
+type TdeCertificate struct {
+	// TdeCertificateProperties - Resource properties.
+	*TdeCertificateProperties `json:"properties,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TdeCertificate.
+func (tc TdeCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tc.TdeCertificateProperties != nil {
+		objectMap["properties"] = tc.TdeCertificateProperties
+	}
+	if tc.ID != nil {
+		objectMap["id"] = tc.ID
+	}
+	if tc.Name != nil {
+		objectMap["name"] = tc.Name
+	}
+	if tc.Type != nil {
+		objectMap["type"] = tc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TdeCertificate struct.
+func (tc *TdeCertificate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tdeCertificateProperties TdeCertificateProperties
+				err = json.Unmarshal(*v, &tdeCertificateProperties)
+				if err != nil {
+					return err
+				}
+				tc.TdeCertificateProperties = &tdeCertificateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				tc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				tc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				tc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// TdeCertificateProperties properties of a TDE certificate.
+type TdeCertificateProperties struct {
+	// PrivateBlob - The base64 encoded certificate private blob.
+	PrivateBlob *string `json:"privateBlob,omitempty"`
+	// CertPassword - The certificate password.
+	CertPassword *string `json:"certPassword,omitempty"`
+}
+
+// TdeCertificatesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TdeCertificatesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TdeCertificatesCreateFuture) Result(client TdeCertificatesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.Done(client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.TdeCertificatesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.TdeCertificatesCreateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // TrackedResource ARM tracked top level resource.

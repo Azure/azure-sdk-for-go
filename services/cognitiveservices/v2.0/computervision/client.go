@@ -586,10 +586,10 @@ func (client BaseClient) DescribeImageInStreamResponder(resp *http.Response) (re
 func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, height int32, imageURL ImageURL, smartCropping *bool) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
-			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: 1023, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
 				{Target: "width", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 		{TargetValue: height,
-			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: 1023, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
 				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -675,10 +675,10 @@ func (client BaseClient) GenerateThumbnailResponder(resp *http.Response) (result
 func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width int32, height int32, imageParameter io.ReadCloser, smartCropping *bool) (result ReadCloser, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
-			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: 1023, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
 				{Target: "width", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
 		{TargetValue: height,
-			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: 1023, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: int64(1023), Chain: nil},
 				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("computervision.BaseClient", "GenerateThumbnailInStream", err.Error())
 	}

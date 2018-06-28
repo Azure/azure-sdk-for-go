@@ -141,6 +141,7 @@ const (
 
 type Annotation = original.Annotation
 type AnnotationError = original.AnnotationError
+type AnnotationsListResult = original.AnnotationsListResult
 type APIKeyRequest = original.APIKeyRequest
 type ApplicationInsightsComponent = original.ApplicationInsightsComponent
 type ApplicationInsightsComponentAnalyticsItem = original.ApplicationInsightsComponentAnalyticsItem
@@ -179,7 +180,6 @@ type ListApplicationInsightsComponentAnalyticsItem = original.ListApplicationIns
 type ListApplicationInsightsComponentExportConfiguration = original.ListApplicationInsightsComponentExportConfiguration
 type ListApplicationInsightsComponentFavorite = original.ListApplicationInsightsComponentFavorite
 type ListApplicationInsightsComponentProactiveDetectionConfiguration = original.ListApplicationInsightsComponentProactiveDetectionConfiguration
-type ListWorkItemConfiguration = original.ListWorkItemConfiguration
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -202,6 +202,7 @@ type WorkbookResource = original.WorkbookResource
 type WorkbooksListResult = original.WorkbooksListResult
 type WorkItemConfiguration = original.WorkItemConfiguration
 type WorkItemConfigurationError = original.WorkItemConfigurationError
+type WorkItemConfigurationsListResult = original.WorkItemConfigurationsListResult
 type WorkItemCreateConfiguration = original.WorkItemCreateConfiguration
 type OperationsClient = original.OperationsClient
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient

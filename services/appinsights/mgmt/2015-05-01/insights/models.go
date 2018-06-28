@@ -267,6 +267,13 @@ type AnnotationError struct {
 	Innererror *InnerError `json:"innererror,omitempty"`
 }
 
+// AnnotationsListResult annotations list result.
+type AnnotationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of annotations.
+	Value *[]Annotation `json:"value,omitempty"`
+}
+
 // APIKeyRequest an Application Insights component API Key createion request definition.
 type APIKeyRequest struct {
 	// Name - The name of the API Key.
@@ -989,12 +996,6 @@ type ListApplicationInsightsComponentProactiveDetectionConfiguration struct {
 	Value             *[]ApplicationInsightsComponentProactiveDetectionConfiguration `json:"value,omitempty"`
 }
 
-// ListWorkItemConfiguration ...
-type ListWorkItemConfiguration struct {
-	autorest.Response `json:"-"`
-	Value             *[]WorkItemConfiguration `json:"value,omitempty"`
-}
-
 // Operation CDN REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -1660,6 +1661,13 @@ type WorkItemConfigurationError struct {
 	// Message - Error message
 	Message    *string     `json:"message,omitempty"`
 	Innererror *InnerError `json:"innererror,omitempty"`
+}
+
+// WorkItemConfigurationsListResult work item configuration list result.
+type WorkItemConfigurationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of work item configurations.
+	Value *[]WorkItemConfiguration `json:"value,omitempty"`
 }
 
 // WorkItemCreateConfiguration work item configuration creation payload

@@ -197,17 +197,17 @@ const (
 	Cntk ToolType = "cntk"
 	// Custom ...
 	Custom ToolType = "custom"
+	// Custommpi ...
+	Custommpi ToolType = "custommpi"
 	// Horovod ...
 	Horovod ToolType = "horovod"
-	// Mpi ...
-	Mpi ToolType = "mpi"
 	// Tensorflow ...
 	Tensorflow ToolType = "tensorflow"
 )
 
 // PossibleToolTypeValues returns an array of possible values for the ToolType const type.
 func PossibleToolTypeValues() []ToolType {
-	return []ToolType{Caffe, Caffe2, Chainer, Cntk, Custom, Horovod, Mpi, Tensorflow}
+	return []ToolType{Caffe, Caffe2, Chainer, Cntk, Custom, Custommpi, Horovod, Tensorflow}
 }
 
 // UsageUnit enumerates the values for usage unit.
@@ -1889,7 +1889,7 @@ type JobProperties struct {
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// ContainerSettings - If the container was downloaded as part of cluster setup then the same container image will be used. If not provided, the job will run on the VM.
 	ContainerSettings *ContainerSettings `json:"containerSettings,omitempty"`
-	// ToolType - Possible values are: cntk, tensorflow, caffe, caffe2, chainer, pytorch, custom, mpi, horovod. Possible values include: 'Cntk', 'Tensorflow', 'Caffe', 'Caffe2', 'Chainer', 'Horovod', 'Mpi', 'Custom'
+	// ToolType - Possible values are: cntk, tensorflow, caffe, caffe2, chainer, pytorch, custom, custommpi, horovod. Possible values include: 'Cntk', 'Tensorflow', 'Caffe', 'Caffe2', 'Chainer', 'Horovod', 'Custommpi', 'Custom'
 	ToolType              ToolType               `json:"toolType,omitempty"`
 	CntkSettings          *CNTKsettings          `json:"cntkSettings,omitempty"`
 	PyTorchSettings       *PyTorchSettings       `json:"pyTorchSettings,omitempty"`

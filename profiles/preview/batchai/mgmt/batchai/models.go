@@ -112,8 +112,8 @@ const (
 	Chainer    ToolType = original.Chainer
 	Cntk       ToolType = original.Cntk
 	Custom     ToolType = original.Custom
+	Custommpi  ToolType = original.Custommpi
 	Horovod    ToolType = original.Horovod
-	Mpi        ToolType = original.Mpi
 	Tensorflow ToolType = original.Tensorflow
 )
 

@@ -41,91 +41,22 @@ func NewFactoriesClientWithBaseURI(baseURI string, subscriptionID string) Factor
 	return FactoriesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CancelPipelineRun cancel a pipeline run by its run ID.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-// runID - the pipeline run identifier.
-func (client FactoriesClient) CancelPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.FactoriesClient", "CancelPipelineRun", err.Error())
-	}
-
-	req, err := client.CancelPipelineRunPreparer(ctx, resourceGroupName, factoryName, runID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CancelPipelineRun", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CancelPipelineRunSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CancelPipelineRun", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CancelPipelineRunResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CancelPipelineRun", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CancelPipelineRunPreparer prepares the CancelPipelineRun request.
-func (client FactoriesClient) CancelPipelineRunPreparer(ctx context.Context, resourceGroupName string, factoryName string, runID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":       autorest.Encode("path", factoryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"runId":             autorest.Encode("path", runID),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/cancelpipelinerun/{runId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CancelPipelineRunSender sends the CancelPipelineRun request. The method will close the
-// http.Response Body if it receives an error.
-func (client FactoriesClient) CancelPipelineRunSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CancelPipelineRunResponder handles the response to the CancelPipelineRun request. The method always
-// closes the http.Response Body.
-func (client FactoriesClient) CancelPipelineRunResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // ConfigureFactoryRepo updates a factory's repo information.
 // Parameters:
 // locationID - the location identifier.
 // factoryRepoUpdate - update factory repo request definition.
 func (client FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate) (result Factory, err error) {
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: factoryRepoUpdate,
+			Constraints: []validation.Constraint{{Target: "factoryRepoUpdate.RepoConfiguration", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "factoryRepoUpdate.RepoConfiguration.AccountName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "factoryRepoUpdate.RepoConfiguration.RepositoryName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "factoryRepoUpdate.RepoConfiguration.CollaborationBranch", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "factoryRepoUpdate.RepoConfiguration.RootFolder", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("datafactory.FactoriesClient", "ConfigureFactoryRepo", err.Error())
+	}
+
 	req, err := client.ConfigureFactoryRepoPreparer(ctx, locationID, factoryRepoUpdate)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ConfigureFactoryRepo", nil, "Failure preparing request")
@@ -154,7 +85,7 @@ func (client FactoriesClient) ConfigureFactoryRepoPreparer(ctx context.Context, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -194,7 +125,9 @@ func (client FactoriesClient) ConfigureFactoryRepoResponder(resp *http.Response)
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // factory - factory resource definition.
-func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, factory Factory) (result Factory, err error) {
+// ifMatch - eTag of the factory entity. Should only be specified for update, for which it should match
+// existing entity or can be * for unconditional update.
+func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, ifMatch string) (result Factory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -206,11 +139,19 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: factory,
 			Constraints: []validation.Constraint{{Target: "factory.Identity", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "factory.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "factory.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "factory.FactoryProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "factory.FactoryProperties.RepoConfiguration", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "factory.FactoryProperties.RepoConfiguration.AccountName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "factory.FactoryProperties.RepoConfiguration.RepositoryName", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "factory.FactoryProperties.RepoConfiguration.CollaborationBranch", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "factory.FactoryProperties.RepoConfiguration.RootFolder", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+					}}}}}); err != nil {
 		return result, validation.NewError("datafactory.FactoriesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, factoryName, factory)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, factoryName, factory, ifMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -232,14 +173,14 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client FactoriesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, factory Factory) (*http.Request, error) {
+func (client FactoriesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"factoryName":       autorest.Encode("path", factoryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -251,6 +192,10 @@ func (client FactoriesClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}", pathParameters),
 		autorest.WithJSON(factory),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-Match", autorest.String(ifMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -320,7 +265,7 @@ func (client FactoriesClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -356,7 +301,9 @@ func (client FactoriesClient) DeleteResponder(resp *http.Response) (result autor
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
-func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string, factoryName string) (result Factory, err error) {
+// ifNoneMatch - eTag of the factory entity. Should only be specified for get. If the ETag matches the existing
+// entity tag, or if * was provided, then no content will be returned.
+func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, ifNoneMatch string) (result Factory, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -369,7 +316,7 @@ func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string,
 		return result, validation.NewError("datafactory.FactoriesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, factoryName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, factoryName, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "Get", nil, "Failure preparing request")
 		return
@@ -391,14 +338,14 @@ func (client FactoriesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetPreparer prepares the Get request.
-func (client FactoriesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
+func (client FactoriesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, ifNoneMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"factoryName":       autorest.Encode("path", factoryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -408,6 +355,10 @@ func (client FactoriesClient) GetPreparer(ctx context.Context, resourceGroupName
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -424,7 +375,7 @@ func (client FactoriesClient) GetResponder(resp *http.Response) (result Factory,
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -461,7 +412,7 @@ func (client FactoriesClient) ListPreparer(ctx context.Context) (*http.Request, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -562,7 +513,7 @@ func (client FactoriesClient) ListByResourceGroupPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -622,224 +573,6 @@ func (client FactoriesClient) ListByResourceGroupComplete(ctx context.Context, r
 	return
 }
 
-// ListSharedFactories list data factories which the given data factory has access.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-func (client FactoriesClient) ListSharedFactories(ctx context.Context, resourceGroupName string, factoryName string) (result FactoryListResponsePage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.FactoriesClient", "ListSharedFactories", err.Error())
-	}
-
-	result.fn = client.listSharedFactoriesNextResults
-	req, err := client.ListSharedFactoriesPreparer(ctx, resourceGroupName, factoryName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactories", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSharedFactoriesSender(req)
-	if err != nil {
-		result.flr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactories", resp, "Failure sending request")
-		return
-	}
-
-	result.flr, err = client.ListSharedFactoriesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedFactories", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListSharedFactoriesPreparer prepares the ListSharedFactories request.
-func (client FactoriesClient) ListSharedFactoriesPreparer(ctx context.Context, resourceGroupName string, factoryName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":       autorest.Encode("path", factoryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/listSharedFactories", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSharedFactoriesSender sends the ListSharedFactories request. The method will close the
-// http.Response Body if it receives an error.
-func (client FactoriesClient) ListSharedFactoriesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListSharedFactoriesResponder handles the response to the ListSharedFactories request. The method always
-// closes the http.Response Body.
-func (client FactoriesClient) ListSharedFactoriesResponder(resp *http.Response) (result FactoryListResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listSharedFactoriesNextResults retrieves the next set of results, if any.
-func (client FactoriesClient) listSharedFactoriesNextResults(lastResults FactoryListResponse) (result FactoryListResponse, err error) {
-	req, err := lastResults.factoryListResponsePreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoriesNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSharedFactoriesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoriesNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListSharedFactoriesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedFactoriesNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListSharedFactoriesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client FactoriesClient) ListSharedFactoriesComplete(ctx context.Context, resourceGroupName string, factoryName string) (result FactoryListResponseIterator, err error) {
-	result.page, err = client.ListSharedFactories(ctx, resourceGroupName, factoryName)
-	return
-}
-
-// ListSharedIntegrationRuntimes list integration runtimes which the given data factory has access.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-// dataFactoryResourceID - the factory resource identifier.
-func (client FactoriesClient) ListSharedIntegrationRuntimes(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (result IntegrationRuntimeListResponsePage, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.FactoriesClient", "ListSharedIntegrationRuntimes", err.Error())
-	}
-
-	result.fn = client.listSharedIntegrationRuntimesNextResults
-	req, err := client.ListSharedIntegrationRuntimesPreparer(ctx, resourceGroupName, factoryName, dataFactoryResourceID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntimes", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSharedIntegrationRuntimesSender(req)
-	if err != nil {
-		result.irlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntimes", resp, "Failure sending request")
-		return
-	}
-
-	result.irlr, err = client.ListSharedIntegrationRuntimesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "ListSharedIntegrationRuntimes", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListSharedIntegrationRuntimesPreparer prepares the ListSharedIntegrationRuntimes request.
-func (client FactoriesClient) ListSharedIntegrationRuntimesPreparer(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":       autorest.Encode("path", factoryName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(dataFactoryResourceID) > 0 {
-		queryParameters["dataFactoryResourceId"] = autorest.Encode("query", dataFactoryResourceID)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/listSharedIntegrationRuntimes", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSharedIntegrationRuntimesSender sends the ListSharedIntegrationRuntimes request. The method will close the
-// http.Response Body if it receives an error.
-func (client FactoriesClient) ListSharedIntegrationRuntimesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// ListSharedIntegrationRuntimesResponder handles the response to the ListSharedIntegrationRuntimes request. The method always
-// closes the http.Response Body.
-func (client FactoriesClient) ListSharedIntegrationRuntimesResponder(resp *http.Response) (result IntegrationRuntimeListResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listSharedIntegrationRuntimesNextResults retrieves the next set of results, if any.
-func (client FactoriesClient) listSharedIntegrationRuntimesNextResults(lastResults IntegrationRuntimeListResponse) (result IntegrationRuntimeListResponse, err error) {
-	req, err := lastResults.integrationRuntimeListResponsePreparer()
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimesNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSharedIntegrationRuntimesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimesNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListSharedIntegrationRuntimesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.FactoriesClient", "listSharedIntegrationRuntimesNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListSharedIntegrationRuntimesComplete enumerates all values, automatically crossing page boundaries as required.
-func (client FactoriesClient) ListSharedIntegrationRuntimesComplete(ctx context.Context, resourceGroupName string, factoryName string, dataFactoryResourceID string) (result IntegrationRuntimeListResponseIterator, err error) {
-	result.page, err = client.ListSharedIntegrationRuntimes(ctx, resourceGroupName, factoryName, dataFactoryResourceID)
-	return
-}
-
 // Update updates a factory.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -887,7 +620,7 @@ func (client FactoriesClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

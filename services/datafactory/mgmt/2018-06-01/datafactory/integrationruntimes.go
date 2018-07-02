@@ -41,97 +41,6 @@ func NewIntegrationRuntimesClientWithBaseURI(baseURI string, subscriptionID stri
 	return IntegrationRuntimesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// AddIdentity grant integration runtime access to other data factory.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-// integrationRuntimeName - the integration runtime name.
-// integrationRuntimePermissionRequest - the data factory identity which will be granted the access to given
-// integration runtime.
-func (client IntegrationRuntimesClient) AddIdentity(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result IntegrationRuntimePermissionResponse, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntimeName,
-			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntimePermissionRequest,
-			Constraints: []validation.Constraint{{Target: "integrationRuntimePermissionRequest.FactoryIdentity", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "AddIdentity", err.Error())
-	}
-
-	req, err := client.AddIdentityPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "AddIdentity", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.AddIdentitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "AddIdentity", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.AddIdentityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "AddIdentity", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// AddIdentityPreparer prepares the AddIdentity request.
-func (client IntegrationRuntimesClient) AddIdentityPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":            autorest.Encode("path", factoryName),
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/addIdentity", pathParameters),
-		autorest.WithJSON(integrationRuntimePermissionRequest),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// AddIdentitySender sends the AddIdentity request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimesClient) AddIdentitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// AddIdentityResponder handles the response to the AddIdentity request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimesClient) AddIdentityResponder(resp *http.Response) (result IntegrationRuntimePermissionResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // CreateOrUpdate creates or updates an integration runtime.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -189,7 +98,7 @@ func (client IntegrationRuntimesClient) CreateOrUpdatePreparer(ctx context.Conte
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -280,7 +189,7 @@ func (client IntegrationRuntimesClient) DeletePreparer(ctx context.Context, reso
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -317,7 +226,9 @@ func (client IntegrationRuntimesClient) DeleteResponder(resp *http.Response) (re
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // integrationRuntimeName - the integration runtime name.
-func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (result IntegrationRuntimeResource, err error) {
+// ifNoneMatch - eTag of the integration runtime entity. Should only be specified for get. If the ETag matches
+// the existing entity tag, or if * was provided, then no content will be returned.
+func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, ifNoneMatch string) (result IntegrationRuntimeResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -334,7 +245,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupNa
 		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "Get", nil, "Failure preparing request")
 		return
@@ -356,7 +267,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // GetPreparer prepares the Get request.
-func (client IntegrationRuntimesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string) (*http.Request, error) {
+func (client IntegrationRuntimesClient) GetPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, ifNoneMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"factoryName":            autorest.Encode("path", factoryName),
 		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
@@ -364,7 +275,7 @@ func (client IntegrationRuntimesClient) GetPreparer(ctx context.Context, resourc
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -374,6 +285,10 @@ func (client IntegrationRuntimesClient) GetPreparer(ctx context.Context, resourc
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(ifNoneMatch) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("If-None-Match", autorest.String(ifNoneMatch)))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -390,7 +305,7 @@ func (client IntegrationRuntimesClient) GetResponder(resp *http.Response) (resul
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotModified),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -450,7 +365,7 @@ func (client IntegrationRuntimesClient) GetConnectionInfoPreparer(ctx context.Co
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -536,7 +451,7 @@ func (client IntegrationRuntimesClient) GetMonitoringDataPreparer(ctx context.Co
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -621,7 +536,7 @@ func (client IntegrationRuntimesClient) GetStatusPreparer(ctx context.Context, r
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -706,7 +621,7 @@ func (client IntegrationRuntimesClient) ListAuthKeysPreparer(ctx context.Context
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -786,7 +701,7 @@ func (client IntegrationRuntimesClient) ListByFactoryPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -899,7 +814,7 @@ func (client IntegrationRuntimesClient) RegenerateAuthKeyPreparer(ctx context.Co
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -931,184 +846,6 @@ func (client IntegrationRuntimesClient) RegenerateAuthKeyResponder(resp *http.Re
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// RemoveIdentity revoke the integration runtime access from other data factory.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-// integrationRuntimeName - the integration runtime name.
-// integrationRuntimePermissionRequest - the data factory identity which will be revoked the access to given
-// integration runtime.
-func (client IntegrationRuntimesClient) RemoveIdentity(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (result IntegrationRuntimePermissionResponse, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntimeName,
-			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntimePermissionRequest,
-			Constraints: []validation.Constraint{{Target: "integrationRuntimePermissionRequest.FactoryIdentity", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "RemoveIdentity", err.Error())
-	}
-
-	req, err := client.RemoveIdentityPreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, integrationRuntimePermissionRequest)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveIdentity", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.RemoveIdentitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveIdentity", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.RemoveIdentityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveIdentity", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// RemoveIdentityPreparer prepares the RemoveIdentity request.
-func (client IntegrationRuntimesClient) RemoveIdentityPreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, integrationRuntimePermissionRequest IntegrationRuntimePermissionRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":            autorest.Encode("path", factoryName),
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeIdentity", pathParameters),
-		autorest.WithJSON(integrationRuntimePermissionRequest),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// RemoveIdentitySender sends the RemoveIdentity request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimesClient) RemoveIdentitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// RemoveIdentityResponder handles the response to the RemoveIdentity request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimesClient) RemoveIdentityResponder(resp *http.Response) (result IntegrationRuntimePermissionResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// RemoveNode remove a node from integration runtime.
-// Parameters:
-// resourceGroupName - the resource group name.
-// factoryName - the factory name.
-// integrationRuntimeName - the integration runtime name.
-// removeNodeParameters - the name of the node to be removed from an integration runtime.
-func (client IntegrationRuntimesClient) RemoveNode(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, removeNodeParameters IntegrationRuntimeRemoveNodeRequest) (result autorest.Response, err error) {
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: factoryName,
-			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
-		{TargetValue: integrationRuntimeName,
-			Constraints: []validation.Constraint{{Target: "integrationRuntimeName", Name: validation.MaxLength, Rule: 63, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "RemoveNode", err.Error())
-	}
-
-	req, err := client.RemoveNodePreparer(ctx, resourceGroupName, factoryName, integrationRuntimeName, removeNodeParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveNode", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.RemoveNodeSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveNode", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.RemoveNodeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesClient", "RemoveNode", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// RemoveNodePreparer prepares the RemoveNode request.
-func (client IntegrationRuntimesClient) RemoveNodePreparer(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, removeNodeParameters IntegrationRuntimeRemoveNodeRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"factoryName":            autorest.Encode("path", factoryName),
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2017-09-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/removeNode", pathParameters),
-		autorest.WithJSON(removeNodeParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// RemoveNodeSender sends the RemoveNode request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimesClient) RemoveNodeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// RemoveNodeResponder handles the response to the RemoveNode request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimesClient) RemoveNodeResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -1158,7 +895,7 @@ func (client IntegrationRuntimesClient) StartPreparer(ctx context.Context, resou
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1247,7 +984,7 @@ func (client IntegrationRuntimesClient) StopPreparer(ctx context.Context, resour
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1344,7 +1081,7 @@ func (client IntegrationRuntimesClient) SyncCredentialsPreparer(ctx context.Cont
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1382,7 +1119,7 @@ func (client IntegrationRuntimesClient) SyncCredentialsResponder(resp *http.Resp
 // factoryName - the factory name.
 // integrationRuntimeName - the integration runtime name.
 // updateIntegrationRuntimeRequest - the parameters for updating an integration runtime.
-func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest) (result IntegrationRuntimeStatusResponse, err error) {
+func (client IntegrationRuntimesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, updateIntegrationRuntimeRequest UpdateIntegrationRuntimeRequest) (result IntegrationRuntimeResource, err error) {
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
@@ -1429,7 +1166,7 @@ func (client IntegrationRuntimesClient) UpdatePreparer(ctx context.Context, reso
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1453,7 +1190,7 @@ func (client IntegrationRuntimesClient) UpdateSender(req *http.Request) (*http.R
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimesClient) UpdateResponder(resp *http.Response) (result IntegrationRuntimeStatusResponse, err error) {
+func (client IntegrationRuntimesClient) UpdateResponder(resp *http.Response) (result IntegrationRuntimeResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1516,7 +1253,7 @@ func (client IntegrationRuntimesClient) UpgradePreparer(ctx context.Context, res
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-09-01-preview"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

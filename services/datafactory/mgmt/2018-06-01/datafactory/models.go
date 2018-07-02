@@ -7007,7 +7007,7 @@ type AzureBlobStorageLinkedServiceTypeProperties struct {
 	// Tenant - The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
 	Tenant interface{} `json:"tenant,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential *string `json:"encryptedCredential,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for AzureBlobStorageLinkedServiceTypeProperties struct.
@@ -7073,12 +7073,12 @@ func (abslstp *AzureBlobStorageLinkedServiceTypeProperties) UnmarshalJSON(body [
 			}
 		case "encryptedCredential":
 			if v != nil {
-				var encryptedCredential interface{}
+				var encryptedCredential string
 				err = json.Unmarshal(*v, &encryptedCredential)
 				if err != nil {
 					return err
 				}
-				abslstp.EncryptedCredential = encryptedCredential
+				abslstp.EncryptedCredential = &encryptedCredential
 			}
 		}
 	}
@@ -17580,7 +17580,7 @@ type AzureStorageLinkedServiceTypeProperties struct {
 	// SasURI - SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
 	SasURI BasicSecretBase `json:"sasUri,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+	EncryptedCredential *string `json:"encryptedCredential,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for AzureStorageLinkedServiceTypeProperties struct.
@@ -17611,12 +17611,12 @@ func (aslstp *AzureStorageLinkedServiceTypeProperties) UnmarshalJSON(body []byte
 			}
 		case "encryptedCredential":
 			if v != nil {
-				var encryptedCredential interface{}
+				var encryptedCredential string
 				err = json.Unmarshal(*v, &encryptedCredential)
 				if err != nil {
 					return err
 				}
-				aslstp.EncryptedCredential = encryptedCredential
+				aslstp.EncryptedCredential = &encryptedCredential
 			}
 		}
 	}

@@ -19,7 +19,7 @@
 
 package automation
 
-import original "github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2015-10-31/automation"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2017-05-15-preview/automation"
 
 type AccountClient = original.AccountClient
 type ActivityClient = original.ActivityClient
@@ -194,6 +194,15 @@ const (
 	Read KeyPermissions = original.Read
 )
 
+type LinuxUpdateClasses = original.LinuxUpdateClasses
+
+const (
+	Critical     LinuxUpdateClasses = original.Critical
+	Other        LinuxUpdateClasses = original.Other
+	Security     LinuxUpdateClasses = original.Security
+	Unclassified LinuxUpdateClasses = original.Unclassified
+)
+
 type ModuleProvisioningState = original.ModuleProvisioningState
 
 const (
@@ -213,6 +222,21 @@ const (
 	ModuleProvisioningStateStartingImportModuleRunbook ModuleProvisioningState = original.ModuleProvisioningStateStartingImportModuleRunbook
 	ModuleProvisioningStateSucceeded                   ModuleProvisioningState = original.ModuleProvisioningStateSucceeded
 	ModuleProvisioningStateUpdating                    ModuleProvisioningState = original.ModuleProvisioningStateUpdating
+)
+
+type OperatingSystemType = original.OperatingSystemType
+
+const (
+	Linux   OperatingSystemType = original.Linux
+	Windows OperatingSystemType = original.Windows
+)
+
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Completed ProvisioningState = original.Completed
+	Failed    ProvisioningState = original.Failed
+	Running   ProvisioningState = original.Running
 )
 
 type RunbookProvisioningState = original.RunbookProvisioningState
@@ -269,6 +293,42 @@ const (
 	Free  SkuNameEnum = original.Free
 )
 
+type SourceType = original.SourceType
+
+const (
+	GitHub  SourceType = original.GitHub
+	VsoGit  SourceType = original.VsoGit
+	VsoTfvc SourceType = original.VsoTfvc
+)
+
+type StartType = original.StartType
+
+const (
+	AutoSync   StartType = original.AutoSync
+	ManualSync StartType = original.ManualSync
+)
+
+type StreamType = original.StreamType
+
+const (
+	StreamTypeError  StreamType = original.StreamTypeError
+	StreamTypeOutput StreamType = original.StreamTypeOutput
+)
+
+type WindowsUpdateClasses = original.WindowsUpdateClasses
+
+const (
+	WindowsUpdateClassesCritical     WindowsUpdateClasses = original.WindowsUpdateClassesCritical
+	WindowsUpdateClassesDefinition   WindowsUpdateClasses = original.WindowsUpdateClassesDefinition
+	WindowsUpdateClassesFeaturePack  WindowsUpdateClasses = original.WindowsUpdateClassesFeaturePack
+	WindowsUpdateClassesSecurity     WindowsUpdateClasses = original.WindowsUpdateClassesSecurity
+	WindowsUpdateClassesServicePack  WindowsUpdateClasses = original.WindowsUpdateClassesServicePack
+	WindowsUpdateClassesTools        WindowsUpdateClasses = original.WindowsUpdateClassesTools
+	WindowsUpdateClassesUnclassified WindowsUpdateClasses = original.WindowsUpdateClassesUnclassified
+	WindowsUpdateClassesUpdateRollup WindowsUpdateClasses = original.WindowsUpdateClassesUpdateRollup
+	WindowsUpdateClassesUpdates      WindowsUpdateClasses = original.WindowsUpdateClassesUpdates
+)
+
 type Account = original.Account
 type AccountCreateOrUpdateParameters = original.AccountCreateOrUpdateParameters
 type AccountCreateOrUpdateProperties = original.AccountCreateOrUpdateProperties
@@ -301,6 +361,7 @@ type CertificateListResultPage = original.CertificateListResultPage
 type CertificateProperties = original.CertificateProperties
 type CertificateUpdateParameters = original.CertificateUpdateParameters
 type CertificateUpdateProperties = original.CertificateUpdateProperties
+type CollectionItemUpdateConfiguration = original.CollectionItemUpdateConfiguration
 type Connection = original.Connection
 type ConnectionCreateOrUpdateParameters = original.ConnectionCreateOrUpdateParameters
 type ConnectionCreateOrUpdateProperties = original.ConnectionCreateOrUpdateProperties
@@ -376,11 +437,14 @@ type HybridRunbookWorkerGroupsListResultIterator = original.HybridRunbookWorkerG
 type HybridRunbookWorkerGroupsListResultPage = original.HybridRunbookWorkerGroupsListResultPage
 type HybridRunbookWorkerGroupUpdateParameters = original.HybridRunbookWorkerGroupUpdateParameters
 type Job = original.Job
+type JobCollectionItem = original.JobCollectionItem
+type JobCollectionItemProperties = original.JobCollectionItemProperties
 type JobCreateParameters = original.JobCreateParameters
 type JobCreateProperties = original.JobCreateProperties
-type JobListResult = original.JobListResult
-type JobListResultIterator = original.JobListResultIterator
-type JobListResultPage = original.JobListResultPage
+type JobListResultV2 = original.JobListResultV2
+type JobListResultV2Iterator = original.JobListResultV2Iterator
+type JobListResultV2Page = original.JobListResultV2Page
+type JobNavigation = original.JobNavigation
 type JobProperties = original.JobProperties
 type JobSchedule = original.JobSchedule
 type JobScheduleCreateParameters = original.JobScheduleCreateParameters
@@ -397,6 +461,7 @@ type JobStreamProperties = original.JobStreamProperties
 type Key = original.Key
 type KeyListResult = original.KeyListResult
 type LinkedWorkspace = original.LinkedWorkspace
+type LinuxProperties = original.LinuxProperties
 type Module = original.Module
 type ModuleCreateOrUpdateParameters = original.ModuleCreateOrUpdateParameters
 type ModuleCreateOrUpdateProperties = original.ModuleCreateOrUpdateProperties
@@ -411,7 +476,6 @@ type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type ProxyResource = original.ProxyResource
-type ReadCloser = original.ReadCloser
 type Resource = original.Resource
 type RunAsCredentialAssociationProperty = original.RunAsCredentialAssociationProperty
 type Runbook = original.Runbook
@@ -443,6 +507,41 @@ type ScheduleUpdateParameters = original.ScheduleUpdateParameters
 type ScheduleUpdateProperties = original.ScheduleUpdateProperties
 type SetObject = original.SetObject
 type Sku = original.Sku
+type SoftwareUpdateConfiguration = original.SoftwareUpdateConfiguration
+type SoftwareUpdateConfigurationCollectionItem = original.SoftwareUpdateConfigurationCollectionItem
+type SoftwareUpdateConfigurationCollectionItemProperties = original.SoftwareUpdateConfigurationCollectionItemProperties
+type SoftwareUpdateConfigurationListResult = original.SoftwareUpdateConfigurationListResult
+type SoftwareUpdateConfigurationMachineRun = original.SoftwareUpdateConfigurationMachineRun
+type SoftwareUpdateConfigurationMachineRunListResult = original.SoftwareUpdateConfigurationMachineRunListResult
+type SoftwareUpdateConfigurationProperties = original.SoftwareUpdateConfigurationProperties
+type SoftwareUpdateConfigurationRun = original.SoftwareUpdateConfigurationRun
+type SoftwareUpdateConfigurationRunListResult = original.SoftwareUpdateConfigurationRunListResult
+type SoftwareUpdateConfigurationRunProperties = original.SoftwareUpdateConfigurationRunProperties
+type SourceControl = original.SourceControl
+type SourceControlCreateOrUpdateParameters = original.SourceControlCreateOrUpdateParameters
+type SourceControlCreateOrUpdateProperties = original.SourceControlCreateOrUpdateProperties
+type SourceControlListResult = original.SourceControlListResult
+type SourceControlListResultIterator = original.SourceControlListResultIterator
+type SourceControlListResultPage = original.SourceControlListResultPage
+type SourceControlProperties = original.SourceControlProperties
+type SourceControlSyncJob = original.SourceControlSyncJob
+type SourceControlSyncJobByID = original.SourceControlSyncJobByID
+type SourceControlSyncJobByIDProperties = original.SourceControlSyncJobByIDProperties
+type SourceControlSyncJobCreateParameters = original.SourceControlSyncJobCreateParameters
+type SourceControlSyncJobCreateProperties = original.SourceControlSyncJobCreateProperties
+type SourceControlSyncJobListResult = original.SourceControlSyncJobListResult
+type SourceControlSyncJobListResultIterator = original.SourceControlSyncJobListResultIterator
+type SourceControlSyncJobListResultPage = original.SourceControlSyncJobListResultPage
+type SourceControlSyncJobProperties = original.SourceControlSyncJobProperties
+type SourceControlSyncJobStream = original.SourceControlSyncJobStream
+type SourceControlSyncJobStreamByID = original.SourceControlSyncJobStreamByID
+type SourceControlSyncJobStreamByIDProperties = original.SourceControlSyncJobStreamByIDProperties
+type SourceControlSyncJobStreamProperties = original.SourceControlSyncJobStreamProperties
+type SourceControlSyncJobStreamsListBySyncJob = original.SourceControlSyncJobStreamsListBySyncJob
+type SourceControlSyncJobStreamsListBySyncJobIterator = original.SourceControlSyncJobStreamsListBySyncJobIterator
+type SourceControlSyncJobStreamsListBySyncJobPage = original.SourceControlSyncJobStreamsListBySyncJobPage
+type SourceControlUpdateParameters = original.SourceControlUpdateParameters
+type SourceControlUpdateProperties = original.SourceControlUpdateProperties
 type Statistics = original.Statistics
 type StatisticsListResult = original.StatisticsListResult
 type String = original.String
@@ -451,6 +550,9 @@ type TestJobCreateParameters = original.TestJobCreateParameters
 type TrackedResource = original.TrackedResource
 type TypeField = original.TypeField
 type TypeFieldListResult = original.TypeFieldListResult
+type UpdateConfiguration = original.UpdateConfiguration
+type UpdateConfigurationMachineRunProperties = original.UpdateConfigurationMachineRunProperties
+type UpdateConfigurationNavigation = original.UpdateConfigurationNavigation
 type Usage = original.Usage
 type UsageCounterName = original.UsageCounterName
 type UsageListResult = original.UsageListResult
@@ -472,6 +574,7 @@ type WebhookListResultPage = original.WebhookListResultPage
 type WebhookProperties = original.WebhookProperties
 type WebhookUpdateParameters = original.WebhookUpdateParameters
 type WebhookUpdateProperties = original.WebhookUpdateProperties
+type WindowsProperties = original.WindowsProperties
 type ModuleClient = original.ModuleClient
 type NodeReportsClient = original.NodeReportsClient
 type ObjectDataTypesClient = original.ObjectDataTypesClient
@@ -479,6 +582,12 @@ type OperationsClient = original.OperationsClient
 type RunbookClient = original.RunbookClient
 type RunbookDraftClient = original.RunbookDraftClient
 type ScheduleClient = original.ScheduleClient
+type SoftwareUpdateConfigurationMachineRunsClient = original.SoftwareUpdateConfigurationMachineRunsClient
+type SoftwareUpdateConfigurationRunsClient = original.SoftwareUpdateConfigurationRunsClient
+type SoftwareUpdateConfigurationsClient = original.SoftwareUpdateConfigurationsClient
+type SourceControlClient = original.SourceControlClient
+type SourceControlSyncJobClient = original.SourceControlSyncJobClient
+type SourceControlSyncJobStreamsClient = original.SourceControlSyncJobStreamsClient
 type StatisticsClient = original.StatisticsClient
 type TestJobClient = original.TestJobClient
 type TestJobStreamsClient = original.TestJobStreamsClient
@@ -642,8 +751,17 @@ func PossibleKeyNameValues() []KeyName {
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return original.PossibleKeyPermissionsValues()
 }
+func PossibleLinuxUpdateClassesValues() []LinuxUpdateClasses {
+	return original.PossibleLinuxUpdateClassesValues()
+}
 func PossibleModuleProvisioningStateValues() []ModuleProvisioningState {
 	return original.PossibleModuleProvisioningStateValues()
+}
+func PossibleOperatingSystemTypeValues() []OperatingSystemType {
+	return original.PossibleOperatingSystemTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleRunbookProvisioningStateValues() []RunbookProvisioningState {
 	return original.PossibleRunbookProvisioningStateValues()
@@ -662,6 +780,18 @@ func PossibleScheduleFrequencyValues() []ScheduleFrequency {
 }
 func PossibleSkuNameEnumValues() []SkuNameEnum {
 	return original.PossibleSkuNameEnumValues()
+}
+func PossibleSourceTypeValues() []SourceType {
+	return original.PossibleSourceTypeValues()
+}
+func PossibleStartTypeValues() []StartType {
+	return original.PossibleStartTypeValues()
+}
+func PossibleStreamTypeValues() []StreamType {
+	return original.PossibleStreamTypeValues()
+}
+func PossibleWindowsUpdateClassesValues() []WindowsUpdateClasses {
+	return original.PossibleWindowsUpdateClassesValues()
 }
 func NewModuleClient(subscriptionID string) ModuleClient {
 	return original.NewModuleClient(subscriptionID)
@@ -705,6 +835,42 @@ func NewScheduleClient(subscriptionID string) ScheduleClient {
 func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) ScheduleClient {
 	return original.NewScheduleClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
+	return original.NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID)
+}
+func NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
+	return original.NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return original.NewSoftwareUpdateConfigurationRunsClient(subscriptionID)
+}
+func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return original.NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSoftwareUpdateConfigurationsClient(subscriptionID string) SoftwareUpdateConfigurationsClient {
+	return original.NewSoftwareUpdateConfigurationsClient(subscriptionID)
+}
+func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationsClient {
+	return original.NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSourceControlClient(subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClient(subscriptionID)
+}
+func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobClient {
+	return original.NewSourceControlSyncJobClient(subscriptionID)
+}
+func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
+	return original.NewSourceControlSyncJobClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSourceControlSyncJobStreamsClient(subscriptionID string) SourceControlSyncJobStreamsClient {
+	return original.NewSourceControlSyncJobStreamsClient(subscriptionID)
+}
+func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobStreamsClient {
+	return original.NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewStatisticsClient(subscriptionID string) StatisticsClient {
 	return original.NewStatisticsClient(subscriptionID)
 }
@@ -736,7 +902,7 @@ func NewVariableClientWithBaseURI(baseURI string, subscriptionID string) Variabl
 	return original.NewVariableClientWithBaseURI(baseURI, subscriptionID)
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/latest"
+	return original.UserAgent() + " profiles/preview"
 }
 func Version() string {
 	return original.Version()

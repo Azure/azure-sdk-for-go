@@ -185,6 +185,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type Resource = original.Resource
 type SetObject = original.SetObject
 type TagsResource = original.TagsResource
 type WebTest = original.WebTest
@@ -198,8 +199,9 @@ type WebtestsResource = original.WebtestsResource
 type Workbook = original.Workbook
 type WorkbookError = original.WorkbookError
 type WorkbookProperties = original.WorkbookProperties
-type WorkbookResource = original.WorkbookResource
-type WorkbooksListResult = original.WorkbooksListResult
+type WorkbookPropertiesUpdateParameters = original.WorkbookPropertiesUpdateParameters
+type Workbooks = original.Workbooks
+type WorkbookUpdateParameters = original.WorkbookUpdateParameters
 type WorkItemConfiguration = original.WorkItemConfiguration
 type WorkItemConfigurationError = original.WorkItemConfigurationError
 type WorkItemConfigurationsListResult = original.WorkItemConfigurationsListResult
@@ -208,6 +210,7 @@ type OperationsClient = original.OperationsClient
 type ProactiveDetectionConfigurationsClient = original.ProactiveDetectionConfigurationsClient
 type WebTestLocationsClient = original.WebTestLocationsClient
 type WebTestsClient = original.WebTestsClient
+type WorkbookClient = original.WorkbookClient
 type WorkbooksClient = original.WorkbooksClient
 type WorkItemConfigurationsClient = original.WorkItemConfigurationsClient
 
@@ -345,6 +348,12 @@ func NewWebTestsClient(subscriptionID string) WebTestsClient {
 }
 func NewWebTestsClientWithBaseURI(baseURI string, subscriptionID string) WebTestsClient {
 	return original.NewWebTestsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkbookClient(subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClient(subscriptionID)
+}
+func NewWorkbookClientWithBaseURI(baseURI string, subscriptionID string) WorkbookClient {
+	return original.NewWorkbookClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkbooksClient(subscriptionID string) WorkbooksClient {
 	return original.NewWorkbooksClient(subscriptionID)

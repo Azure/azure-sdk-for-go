@@ -224,7 +224,7 @@
     "imports",
     "internal/fastwalk"
   ]
-  revision = "1c99e1239a0c8b0e59c34000995c4e319b7702ca"
+  revision = "ffe88906718454e356e61776b54256e873fc133b"
 
 [[projects]]
   branch = "v1"

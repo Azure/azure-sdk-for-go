@@ -1117,41 +1117,6 @@ func (page OperationListResultPage) Values() []Operation {
 	return *page.olr.Value
 }
 
-// Resource an azure resource object
-type Resource struct {
-	// ID - Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // SetObject ...
 type SetObject struct {
 	autorest.Response `json:"-"`
@@ -1632,104 +1597,46 @@ type WorkbookProperties struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 }
 
-// WorkbookPropertiesUpdateParameters properties that contain a workbook for PATCH operation.
-type WorkbookPropertiesUpdateParameters struct {
-	// Name - The user-defined name (display name) of the workbook.
+// WorkbookResource an azure resource object
+type WorkbookResource struct {
+	// ID - Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - Azure resource name
 	Name *string `json:"name,omitempty"`
-	// SerializedData - Configuration of this particular workbook. Configuration data is a string containing valid JSON
-	SerializedData *string `json:"serializedData,omitempty"`
-	// Category - Workbook category, as defined by the user at creation time.
-	Category *string `json:"category,omitempty"`
-	// Tags - A list of 0 or more tags that are associated with this workbook definition
-	Tags *[]string `json:"tags,omitempty"`
-}
-
-// Workbooks workbook list result.
-type Workbooks struct {
-	autorest.Response `json:"-"`
-	// Value - An array of workbooks.
-	Value *[]Workbook `json:"value,omitempty"`
-}
-
-// WorkbookUpdateParameters the parameters that can be provided when updating workbook properties properties.
-type WorkbookUpdateParameters struct {
-	// Kind - The kind of workbook. Choices are user and shared. Possible values include: 'SharedTypeKindUser', 'SharedTypeKindShared'
-	Kind SharedTypeKind `json:"kind,omitempty"`
-	// Tags - Resource tags
-	Tags *[]interface{} `json:"tags,omitempty"`
+	// Type - Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
-	// WorkbookPropertiesUpdateParameters - Metadata describing a workbook for an Azure resource.
-	*WorkbookPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for WorkbookUpdateParameters.
-func (wup WorkbookUpdateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for WorkbookResource.
+func (wr WorkbookResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wup.Kind != "" {
-		objectMap["kind"] = wup.Kind
+	if wr.ID != nil {
+		objectMap["id"] = wr.ID
 	}
-	if wup.Tags != nil {
-		objectMap["tags"] = wup.Tags
+	if wr.Name != nil {
+		objectMap["name"] = wr.Name
 	}
-	if wup.Location != nil {
-		objectMap["location"] = wup.Location
+	if wr.Type != nil {
+		objectMap["type"] = wr.Type
 	}
-	if wup.WorkbookPropertiesUpdateParameters != nil {
-		objectMap["properties"] = wup.WorkbookPropertiesUpdateParameters
+	if wr.Location != nil {
+		objectMap["location"] = wr.Location
+	}
+	if wr.Tags != nil {
+		objectMap["tags"] = wr.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for WorkbookUpdateParameters struct.
-func (wup *WorkbookUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "kind":
-			if v != nil {
-				var kind SharedTypeKind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				wup.Kind = kind
-			}
-		case "tags":
-			if v != nil {
-				var tags []interface{}
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				wup.Tags = &tags
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				wup.Location = &location
-			}
-		case "properties":
-			if v != nil {
-				var workbookPropertiesUpdateParameters WorkbookPropertiesUpdateParameters
-				err = json.Unmarshal(*v, &workbookPropertiesUpdateParameters)
-				if err != nil {
-					return err
-				}
-				wup.WorkbookPropertiesUpdateParameters = &workbookPropertiesUpdateParameters
-			}
-		}
-	}
-
-	return nil
+// WorkbooksListResult workbook list result.
+type WorkbooksListResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of workbooks.
+	Value *[]Workbook `json:"value,omitempty"`
 }
 
 // WorkItemConfiguration work item configuration associated with an application insights resource.

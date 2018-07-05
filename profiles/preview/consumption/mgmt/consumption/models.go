@@ -19,51 +19,21 @@
 
 package consumption
 
-import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
+import original "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-06-30/consumption"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type BaseClient = original.BaseClient
-type ForecastsClient = original.ForecastsClient
-type Bound = original.Bound
-
-const (
-	Lower Bound = original.Lower
-	Upper Bound = original.Upper
-)
-
-type ChargeType = original.ChargeType
-
-const (
-	ChargeTypeActual   ChargeType = original.ChargeTypeActual
-	ChargeTypeForecast ChargeType = original.ChargeTypeForecast
-)
-
-type Grain = original.Grain
-
-const (
-	Daily   Grain = original.Daily
-	Monthly Grain = original.Monthly
-	Yearly  Grain = original.Yearly
-)
-
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
-type Forecast = original.Forecast
-type ForecastProperties = original.ForecastProperties
-type ForecastPropertiesConfidenceLevelsItem = original.ForecastPropertiesConfidenceLevelsItem
-type ForecastsListResult = original.ForecastsListResult
 type MeterDetails = original.MeterDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type PriceSheetModel = original.PriceSheetModel
-type PriceSheetProperties = original.PriceSheetProperties
-type PriceSheetResult = original.PriceSheetResult
 type Resource = original.Resource
 type UsageDetail = original.UsageDetail
 type UsageDetailProperties = original.UsageDetailProperties
@@ -71,7 +41,6 @@ type UsageDetailsListResult = original.UsageDetailsListResult
 type UsageDetailsListResultIterator = original.UsageDetailsListResultIterator
 type UsageDetailsListResultPage = original.UsageDetailsListResultPage
 type OperationsClient = original.OperationsClient
-type PriceSheetClient = original.PriceSheetClient
 type UsageDetailsClient = original.UsageDetailsClient
 
 func New(subscriptionID string) BaseClient {
@@ -80,32 +49,11 @@ func New(subscriptionID string) BaseClient {
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func NewForecastsClient(subscriptionID string) ForecastsClient {
-	return original.NewForecastsClient(subscriptionID)
-}
-func NewForecastsClientWithBaseURI(baseURI string, subscriptionID string) ForecastsClient {
-	return original.NewForecastsClientWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleBoundValues() []Bound {
-	return original.PossibleBoundValues()
-}
-func PossibleChargeTypeValues() []ChargeType {
-	return original.PossibleChargeTypeValues()
-}
-func PossibleGrainValues() []Grain {
-	return original.PossibleGrainValues()
-}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewPriceSheetClient(subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClient(subscriptionID)
-}
-func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) PriceSheetClient {
-	return original.NewPriceSheetClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageDetailsClient(subscriptionID string) UsageDetailsClient {
 	return original.NewUsageDetailsClient(subscriptionID)

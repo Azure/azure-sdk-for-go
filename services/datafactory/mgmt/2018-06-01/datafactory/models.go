@@ -46,23 +46,6 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return []AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
 }
 
-// AuthorizationType enumerates the values for authorization type.
-type AuthorizationType string
-
-const (
-	// AuthorizationTypeKey ...
-	AuthorizationTypeKey AuthorizationType = "Key"
-	// AuthorizationTypeLinkedIntegrationRuntimeProperties ...
-	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = "LinkedIntegrationRuntimeProperties"
-	// AuthorizationTypeRBAC ...
-	AuthorizationTypeRBAC AuthorizationType = "RBAC"
-)
-
-// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
-func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeProperties, AuthorizationTypeRBAC}
-}
-
 // AzureSearchIndexWriteBehaviorType enumerates the values for azure search index write behavior type.
 type AzureSearchIndexWriteBehaviorType string
 
@@ -654,74 +637,6 @@ func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
 	return []PhoenixAuthenticationType{PhoenixAuthenticationTypeAnonymous, PhoenixAuthenticationTypeUsernameAndPassword, PhoenixAuthenticationTypeWindowsAzureHDInsightService}
 }
 
-// PipelineRunQueryFilterOperand enumerates the values for pipeline run query filter operand.
-type PipelineRunQueryFilterOperand string
-
-const (
-	// PipelineName ...
-	PipelineName PipelineRunQueryFilterOperand = "PipelineName"
-	// RunEnd ...
-	RunEnd PipelineRunQueryFilterOperand = "RunEnd"
-	// RunStart ...
-	RunStart PipelineRunQueryFilterOperand = "RunStart"
-	// Status ...
-	Status PipelineRunQueryFilterOperand = "Status"
-)
-
-// PossiblePipelineRunQueryFilterOperandValues returns an array of possible values for the PipelineRunQueryFilterOperand const type.
-func PossiblePipelineRunQueryFilterOperandValues() []PipelineRunQueryFilterOperand {
-	return []PipelineRunQueryFilterOperand{PipelineName, RunEnd, RunStart, Status}
-}
-
-// PipelineRunQueryFilterOperator enumerates the values for pipeline run query filter operator.
-type PipelineRunQueryFilterOperator string
-
-const (
-	// Equals ...
-	Equals PipelineRunQueryFilterOperator = "Equals"
-	// In ...
-	In PipelineRunQueryFilterOperator = "In"
-	// NotEquals ...
-	NotEquals PipelineRunQueryFilterOperator = "NotEquals"
-	// NotIn ...
-	NotIn PipelineRunQueryFilterOperator = "NotIn"
-)
-
-// PossiblePipelineRunQueryFilterOperatorValues returns an array of possible values for the PipelineRunQueryFilterOperator const type.
-func PossiblePipelineRunQueryFilterOperatorValues() []PipelineRunQueryFilterOperator {
-	return []PipelineRunQueryFilterOperator{Equals, In, NotEquals, NotIn}
-}
-
-// PipelineRunQueryOrder enumerates the values for pipeline run query order.
-type PipelineRunQueryOrder string
-
-const (
-	// ASC ...
-	ASC PipelineRunQueryOrder = "ASC"
-	// DESC ...
-	DESC PipelineRunQueryOrder = "DESC"
-)
-
-// PossiblePipelineRunQueryOrderValues returns an array of possible values for the PipelineRunQueryOrder const type.
-func PossiblePipelineRunQueryOrderValues() []PipelineRunQueryOrder {
-	return []PipelineRunQueryOrder{ASC, DESC}
-}
-
-// PipelineRunQueryOrderByField enumerates the values for pipeline run query order by field.
-type PipelineRunQueryOrderByField string
-
-const (
-	// PipelineRunQueryOrderByFieldRunEnd ...
-	PipelineRunQueryOrderByFieldRunEnd PipelineRunQueryOrderByField = "RunEnd"
-	// PipelineRunQueryOrderByFieldRunStart ...
-	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = "RunStart"
-)
-
-// PossiblePipelineRunQueryOrderByFieldValues returns an array of possible values for the PipelineRunQueryOrderByField const type.
-func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField {
-	return []PipelineRunQueryOrderByField{PipelineRunQueryOrderByFieldRunEnd, PipelineRunQueryOrderByFieldRunStart}
-}
-
 // PolybaseSettingsRejectType enumerates the values for polybase settings reject type.
 type PolybaseSettingsRejectType string
 
@@ -775,6 +690,100 @@ const (
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return []RecurrenceFrequency{Day, Hour, Minute, Month, NotSpecified, Week, Year}
+}
+
+// RunQueryFilterOperand enumerates the values for run query filter operand.
+type RunQueryFilterOperand string
+
+const (
+	// ActivityName ...
+	ActivityName RunQueryFilterOperand = "ActivityName"
+	// ActivityRunEnd ...
+	ActivityRunEnd RunQueryFilterOperand = "ActivityRunEnd"
+	// ActivityRunStart ...
+	ActivityRunStart RunQueryFilterOperand = "ActivityRunStart"
+	// ActivityType ...
+	ActivityType RunQueryFilterOperand = "ActivityType"
+	// PipelineName ...
+	PipelineName RunQueryFilterOperand = "PipelineName"
+	// RunEnd ...
+	RunEnd RunQueryFilterOperand = "RunEnd"
+	// RunStart ...
+	RunStart RunQueryFilterOperand = "RunStart"
+	// Status ...
+	Status RunQueryFilterOperand = "Status"
+	// TriggerName ...
+	TriggerName RunQueryFilterOperand = "TriggerName"
+	// TriggerRunTimestamp ...
+	TriggerRunTimestamp RunQueryFilterOperand = "TriggerRunTimestamp"
+)
+
+// PossibleRunQueryFilterOperandValues returns an array of possible values for the RunQueryFilterOperand const type.
+func PossibleRunQueryFilterOperandValues() []RunQueryFilterOperand {
+	return []RunQueryFilterOperand{ActivityName, ActivityRunEnd, ActivityRunStart, ActivityType, PipelineName, RunEnd, RunStart, Status, TriggerName, TriggerRunTimestamp}
+}
+
+// RunQueryFilterOperator enumerates the values for run query filter operator.
+type RunQueryFilterOperator string
+
+const (
+	// Equals ...
+	Equals RunQueryFilterOperator = "Equals"
+	// In ...
+	In RunQueryFilterOperator = "In"
+	// NotEquals ...
+	NotEquals RunQueryFilterOperator = "NotEquals"
+	// NotIn ...
+	NotIn RunQueryFilterOperator = "NotIn"
+)
+
+// PossibleRunQueryFilterOperatorValues returns an array of possible values for the RunQueryFilterOperator const type.
+func PossibleRunQueryFilterOperatorValues() []RunQueryFilterOperator {
+	return []RunQueryFilterOperator{Equals, In, NotEquals, NotIn}
+}
+
+// RunQueryOrder enumerates the values for run query order.
+type RunQueryOrder string
+
+const (
+	// ASC ...
+	ASC RunQueryOrder = "ASC"
+	// DESC ...
+	DESC RunQueryOrder = "DESC"
+)
+
+// PossibleRunQueryOrderValues returns an array of possible values for the RunQueryOrder const type.
+func PossibleRunQueryOrderValues() []RunQueryOrder {
+	return []RunQueryOrder{ASC, DESC}
+}
+
+// RunQueryOrderByField enumerates the values for run query order by field.
+type RunQueryOrderByField string
+
+const (
+	// RunQueryOrderByFieldActivityName ...
+	RunQueryOrderByFieldActivityName RunQueryOrderByField = "ActivityName"
+	// RunQueryOrderByFieldActivityRunEnd ...
+	RunQueryOrderByFieldActivityRunEnd RunQueryOrderByField = "ActivityRunEnd"
+	// RunQueryOrderByFieldActivityRunStart ...
+	RunQueryOrderByFieldActivityRunStart RunQueryOrderByField = "ActivityRunStart"
+	// RunQueryOrderByFieldPipelineName ...
+	RunQueryOrderByFieldPipelineName RunQueryOrderByField = "PipelineName"
+	// RunQueryOrderByFieldRunEnd ...
+	RunQueryOrderByFieldRunEnd RunQueryOrderByField = "RunEnd"
+	// RunQueryOrderByFieldRunStart ...
+	RunQueryOrderByFieldRunStart RunQueryOrderByField = "RunStart"
+	// RunQueryOrderByFieldStatus ...
+	RunQueryOrderByFieldStatus RunQueryOrderByField = "Status"
+	// RunQueryOrderByFieldTriggerName ...
+	RunQueryOrderByFieldTriggerName RunQueryOrderByField = "TriggerName"
+	// RunQueryOrderByFieldTriggerRunTimestamp ...
+	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = "TriggerRunTimestamp"
+)
+
+// PossibleRunQueryOrderByFieldValues returns an array of possible values for the RunQueryOrderByField const type.
+func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
+	return []RunQueryOrderByField{RunQueryOrderByFieldActivityName, RunQueryOrderByFieldActivityRunEnd, RunQueryOrderByFieldActivityRunStart, RunQueryOrderByFieldPipelineName, RunQueryOrderByFieldRunEnd, RunQueryOrderByFieldRunStart, RunQueryOrderByFieldStatus, RunQueryOrderByFieldTriggerName, RunQueryOrderByFieldTriggerRunTimestamp}
 }
 
 // SalesforceSinkWriteBehavior enumerates the values for salesforce sink write behavior.
@@ -1473,6 +1482,23 @@ func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageForm
 	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
 }
 
+// TypeBasicFactoryRepoConfiguration enumerates the values for type basic factory repo configuration.
+type TypeBasicFactoryRepoConfiguration string
+
+const (
+	// TypeFactoryGithubConfiguration ...
+	TypeFactoryGithubConfiguration TypeBasicFactoryRepoConfiguration = "FactoryGithubConfiguration"
+	// TypeFactoryRepoConfiguration ...
+	TypeFactoryRepoConfiguration TypeBasicFactoryRepoConfiguration = "FactoryRepoConfiguration"
+	// TypeFactoryVSTSConfiguration ...
+	TypeFactoryVSTSConfiguration TypeBasicFactoryRepoConfiguration = "FactoryVSTSConfiguration"
+)
+
+// PossibleTypeBasicFactoryRepoConfigurationValues returns an array of possible values for the TypeBasicFactoryRepoConfiguration const type.
+func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
+	return []TypeBasicFactoryRepoConfiguration{TypeFactoryGithubConfiguration, TypeFactoryRepoConfiguration, TypeFactoryVSTSConfiguration}
+}
+
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
 type TypeBasicIntegrationRuntime string
 
@@ -1743,6 +1769,8 @@ type Activity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -1888,6 +1916,9 @@ func (a Activity) MarshalJSON() ([]byte, error) {
 	}
 	if a.DependsOn != nil {
 		objectMap["dependsOn"] = a.DependsOn
+	}
+	if a.UserProperties != nil {
+		objectMap["userProperties"] = a.UserProperties
 	}
 	if a.Type != "" {
 		objectMap["type"] = a.Type
@@ -2168,106 +2199,13 @@ func (ar ActivityRun) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ActivityRunsListResponse a list activity runs.
-type ActivityRunsListResponse struct {
+// ActivityRunsQueryResponse a list activity runs.
+type ActivityRunsQueryResponse struct {
 	autorest.Response `json:"-"`
 	// Value - List of activity runs.
 	Value *[]ActivityRun `json:"value,omitempty"`
-	// NextLink - The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ActivityRunsListResponseIterator provides access to a complete listing of ActivityRun values.
-type ActivityRunsListResponseIterator struct {
-	i    int
-	page ActivityRunsListResponsePage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *ActivityRunsListResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ActivityRunsListResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter ActivityRunsListResponseIterator) Response() ActivityRunsListResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter ActivityRunsListResponseIterator) Value() ActivityRun {
-	if !iter.page.NotDone() {
-		return ActivityRun{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (arlr ActivityRunsListResponse) IsEmpty() bool {
-	return arlr.Value == nil || len(*arlr.Value) == 0
-}
-
-// activityRunsListResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (arlr ActivityRunsListResponse) activityRunsListResponsePreparer() (*http.Request, error) {
-	if arlr.NextLink == nil || len(to.String(arlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(arlr.NextLink)))
-}
-
-// ActivityRunsListResponsePage contains a page of ActivityRun values.
-type ActivityRunsListResponsePage struct {
-	fn   func(ActivityRunsListResponse) (ActivityRunsListResponse, error)
-	arlr ActivityRunsListResponse
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *ActivityRunsListResponsePage) Next() error {
-	next, err := page.fn(page.arlr)
-	if err != nil {
-		return err
-	}
-	page.arlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ActivityRunsListResponsePage) NotDone() bool {
-	return !page.arlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page ActivityRunsListResponsePage) Response() ActivityRunsListResponse {
-	return page.arlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page ActivityRunsListResponsePage) Values() []ActivityRun {
-	if page.arlr.IsEmpty() {
-		return nil
-	}
-	return *page.arlr.Value
+	// ContinuationToken - The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // AmazonMWSLinkedService amazon Marketplace Web Service linked service.
@@ -9747,6 +9685,8 @@ type AzureMLBatchExecutionActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -9772,6 +9712,9 @@ func (ambea AzureMLBatchExecutionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ambea.DependsOn != nil {
 		objectMap["dependsOn"] = ambea.DependsOn
+	}
+	if ambea.UserProperties != nil {
+		objectMap["userProperties"] = ambea.UserProperties
 	}
 	if ambea.Type != "" {
 		objectMap["type"] = ambea.Type
@@ -9996,6 +9939,15 @@ func (ambea *AzureMLBatchExecutionActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ambea.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ambea.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -10634,6 +10586,8 @@ type AzureMLUpdateResourceActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -10659,6 +10613,9 @@ func (amura AzureMLUpdateResourceActivity) MarshalJSON() ([]byte, error) {
 	}
 	if amura.DependsOn != nil {
 		objectMap["dependsOn"] = amura.DependsOn
+	}
+	if amura.UserProperties != nil {
+		objectMap["userProperties"] = amura.UserProperties
 	}
 	if amura.Type != "" {
 		objectMap["type"] = amura.Type
@@ -10883,6 +10840,15 @@ func (amura *AzureMLUpdateResourceActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				amura.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				amura.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -19790,6 +19756,57 @@ type CassandraTableDatasetTypeProperties struct {
 	Keyspace interface{} `json:"keyspace,omitempty"`
 }
 
+// CloudError the object that defines the structure of an Azure Data Factory error response.
+type CloudError struct {
+	// CloudErrorBody - Error data
+	*CloudErrorBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudError.
+func (ce CloudError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ce.CloudErrorBody != nil {
+		objectMap["error"] = ce.CloudErrorBody
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudError struct.
+func (ce *CloudError) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "error":
+			if v != nil {
+				var cloudErrorBody CloudErrorBody
+				err = json.Unmarshal(*v, &cloudErrorBody)
+				if err != nil {
+					return err
+				}
+				ce.CloudErrorBody = &cloudErrorBody
+			}
+		}
+	}
+
+	return nil
+}
+
+// CloudErrorBody the object that defines the structure of an Azure Data Factory error.
+type CloudErrorBody struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message.
+	Message *string `json:"message,omitempty"`
+	// Target - Property name/path in request associated with error.
+	Target *string `json:"target,omitempty"`
+	// Details - Array with additional error details.
+	Details *[]CloudError `json:"details,omitempty"`
+}
+
 // ConcurLinkedService concur Serivce linked service.
 type ConcurLinkedService struct {
 	// ConcurLinkedServiceTypeProperties - Concur Serivce linked service properties.
@@ -21002,6 +21019,8 @@ type ControlActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -21075,6 +21094,9 @@ func (ca ControlActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.DependsOn != nil {
 		objectMap["dependsOn"] = ca.DependsOn
+	}
+	if ca.UserProperties != nil {
+		objectMap["userProperties"] = ca.UserProperties
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
@@ -21245,6 +21267,8 @@ type CopyActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -21276,6 +21300,9 @@ func (ca CopyActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.DependsOn != nil {
 		objectMap["dependsOn"] = ca.DependsOn
+	}
+	if ca.UserProperties != nil {
+		objectMap["userProperties"] = ca.UserProperties
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
@@ -21519,6 +21546,15 @@ func (ca *CopyActivity) UnmarshalJSON(body []byte) error {
 				}
 				ca.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ca.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -21548,8 +21584,8 @@ type CopyActivityTypeProperties struct {
 	StagingSettings *StagingSettings `json:"stagingSettings,omitempty"`
 	// ParallelCopies - Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type: integer (or Expression with resultType integer), minimum: 0.
 	ParallelCopies interface{} `json:"parallelCopies,omitempty"`
-	// CloudDataMovementUnits - Maximum number of cloud data movement units that can be used to perform this data movement. Type: integer (or Expression with resultType integer), minimum: 0.
-	CloudDataMovementUnits interface{} `json:"cloudDataMovementUnits,omitempty"`
+	// DataIntegrationUnits - Maximum number of data integration units that can be used to perform this data movement. Type: integer (or Expression with resultType integer), minimum: 0.
+	DataIntegrationUnits interface{} `json:"dataIntegrationUnits,omitempty"`
 	// EnableSkipIncompatibleRow - Whether to skip incompatible row. Default value is false. Type: boolean (or Expression with resultType boolean).
 	EnableSkipIncompatibleRow interface{} `json:"enableSkipIncompatibleRow,omitempty"`
 	// RedirectIncompatibleRowSettings - Redirect incompatible row settings when EnableSkipIncompatibleRow is true.
@@ -21616,14 +21652,14 @@ func (catp *CopyActivityTypeProperties) UnmarshalJSON(body []byte) error {
 				}
 				catp.ParallelCopies = parallelCopies
 			}
-		case "cloudDataMovementUnits":
+		case "dataIntegrationUnits":
 			if v != nil {
-				var cloudDataMovementUnits interface{}
-				err = json.Unmarshal(*v, &cloudDataMovementUnits)
+				var dataIntegrationUnits interface{}
+				err = json.Unmarshal(*v, &dataIntegrationUnits)
 				if err != nil {
 					return err
 				}
-				catp.CloudDataMovementUnits = cloudDataMovementUnits
+				catp.DataIntegrationUnits = dataIntegrationUnits
 			}
 		case "enableSkipIncompatibleRow":
 			if v != nil {
@@ -24146,6 +24182,8 @@ type CustomActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -24171,6 +24209,9 @@ func (ca CustomActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ca.DependsOn != nil {
 		objectMap["dependsOn"] = ca.DependsOn
+	}
+	if ca.UserProperties != nil {
+		objectMap["userProperties"] = ca.UserProperties
 	}
 	if ca.Type != "" {
 		objectMap["type"] = ca.Type
@@ -24395,6 +24436,15 @@ func (ca *CustomActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ca.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ca.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -25192,6 +25242,8 @@ type DatabricksNotebookActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -25217,6 +25269,9 @@ func (dna DatabricksNotebookActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dna.DependsOn != nil {
 		objectMap["dependsOn"] = dna.DependsOn
+	}
+	if dna.UserProperties != nil {
+		objectMap["userProperties"] = dna.UserProperties
 	}
 	if dna.Type != "" {
 		objectMap["type"] = dna.Type
@@ -25442,6 +25497,15 @@ func (dna *DatabricksNotebookActivity) UnmarshalJSON(body []byte) error {
 				}
 				dna.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				dna.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -25491,6 +25555,8 @@ type DataLakeAnalyticsUSQLActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -25516,6 +25582,9 @@ func (dlaua DataLakeAnalyticsUSQLActivity) MarshalJSON() ([]byte, error) {
 	}
 	if dlaua.DependsOn != nil {
 		objectMap["dependsOn"] = dlaua.DependsOn
+	}
+	if dlaua.UserProperties != nil {
+		objectMap["userProperties"] = dlaua.UserProperties
 	}
 	if dlaua.Type != "" {
 		objectMap["type"] = dlaua.Type
@@ -25740,6 +25809,15 @@ func (dlaua *DataLakeAnalyticsUSQLActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dlaua.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				dlaua.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -32209,18 +32287,6 @@ func (es EloquaSource) AsBasicCopySource() (BasicCopySource, bool) {
 	return &es, true
 }
 
-// ErrorResponse the object that defines the structure of an Azure Data Factory response.
-type ErrorResponse struct {
-	// Code - Error code.
-	Code *string `json:"code,omitempty"`
-	// Message - Error message.
-	Message *string `json:"message,omitempty"`
-	// Target - Property name/path in request associated with error.
-	Target *string `json:"target,omitempty"`
-	// Details - Array with additional error details.
-	Details *[]ErrorResponse `json:"details,omitempty"`
-}
-
 // ExecutePipelineActivity execute pipeline activity.
 type ExecutePipelineActivity struct {
 	// ExecutePipelineActivityTypeProperties - Execute pipeline activity properties.
@@ -32233,6 +32299,8 @@ type ExecutePipelineActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -32252,6 +32320,9 @@ func (epa ExecutePipelineActivity) MarshalJSON() ([]byte, error) {
 	}
 	if epa.DependsOn != nil {
 		objectMap["dependsOn"] = epa.DependsOn
+	}
+	if epa.UserProperties != nil {
+		objectMap["userProperties"] = epa.UserProperties
 	}
 	if epa.Type != "" {
 		objectMap["type"] = epa.Type
@@ -32459,6 +32530,15 @@ func (epa *ExecutePipelineActivity) UnmarshalJSON(body []byte) error {
 				}
 				epa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				epa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -32515,6 +32595,8 @@ type ExecuteSSISPackageActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -32540,6 +32622,9 @@ func (espa ExecuteSSISPackageActivity) MarshalJSON() ([]byte, error) {
 	}
 	if espa.DependsOn != nil {
 		objectMap["dependsOn"] = espa.DependsOn
+	}
+	if espa.UserProperties != nil {
+		objectMap["userProperties"] = espa.UserProperties
 	}
 	if espa.Type != "" {
 		objectMap["type"] = espa.Type
@@ -32765,6 +32850,15 @@ func (espa *ExecuteSSISPackageActivity) UnmarshalJSON(body []byte) error {
 				}
 				espa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				espa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -32875,6 +32969,8 @@ type ExecutionActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -32994,6 +33090,9 @@ func (ea ExecutionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ea.DependsOn != nil {
 		objectMap["dependsOn"] = ea.DependsOn
+	}
+	if ea.UserProperties != nil {
+		objectMap["userProperties"] = ea.UserProperties
 	}
 	if ea.Type != "" {
 		objectMap["type"] = ea.Type
@@ -33171,6 +33270,8 @@ type Factory struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
+	// ETag - Etag identifies change in the resource.
+	ETag *string `json:"eTag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Factory.
@@ -33196,6 +33297,9 @@ func (f Factory) MarshalJSON() ([]byte, error) {
 	}
 	if f.Tags != nil {
 		objectMap["tags"] = f.Tags
+	}
+	if f.ETag != nil {
+		objectMap["eTag"] = f.ETag
 	}
 	for k, v := range f.AdditionalProperties {
 		objectMap[k] = v
@@ -33287,10 +33391,85 @@ func (f *Factory) UnmarshalJSON(body []byte) error {
 				}
 				f.Tags = tags
 			}
+		case "eTag":
+			if v != nil {
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
+				if err != nil {
+					return err
+				}
+				f.ETag = &eTag
+			}
 		}
 	}
 
 	return nil
+}
+
+// FactoryGitHubConfiguration factory's GitHub repo information.
+type FactoryGitHubConfiguration struct {
+	// HostName - GitHub repo host name.
+	HostName *string `json:"hostName,omitempty"`
+	// AccountName - Account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// RepositoryName - Rrepository name.
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// CollaborationBranch - Collaboration branch.
+	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	// RootFolder - Root folder.
+	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - Last commit id.
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FactoryGitHubConfiguration.
+func (fghc FactoryGitHubConfiguration) MarshalJSON() ([]byte, error) {
+	fghc.Type = TypeFactoryGithubConfiguration
+	objectMap := make(map[string]interface{})
+	if fghc.HostName != nil {
+		objectMap["hostName"] = fghc.HostName
+	}
+	if fghc.AccountName != nil {
+		objectMap["accountName"] = fghc.AccountName
+	}
+	if fghc.RepositoryName != nil {
+		objectMap["repositoryName"] = fghc.RepositoryName
+	}
+	if fghc.CollaborationBranch != nil {
+		objectMap["collaborationBranch"] = fghc.CollaborationBranch
+	}
+	if fghc.RootFolder != nil {
+		objectMap["rootFolder"] = fghc.RootFolder
+	}
+	if fghc.LastCommitID != nil {
+		objectMap["lastCommitId"] = fghc.LastCommitID
+	}
+	if fghc.Type != "" {
+		objectMap["type"] = fghc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsFactoryVSTSConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryGitHubConfiguration.
+func (fghc FactoryGitHubConfiguration) AsFactoryVSTSConfiguration() (*FactoryVSTSConfiguration, bool) {
+	return nil, false
+}
+
+// AsFactoryGitHubConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryGitHubConfiguration.
+func (fghc FactoryGitHubConfiguration) AsFactoryGitHubConfiguration() (*FactoryGitHubConfiguration, bool) {
+	return &fghc, true
+}
+
+// AsFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryGitHubConfiguration.
+func (fghc FactoryGitHubConfiguration) AsFactoryRepoConfiguration() (*FactoryRepoConfiguration, bool) {
+	return nil, false
+}
+
+// AsBasicFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryGitHubConfiguration.
+func (fghc FactoryGitHubConfiguration) AsBasicFactoryRepoConfiguration() (BasicFactoryRepoConfiguration, bool) {
+	return &fghc, true
 }
 
 // FactoryIdentity identity properties of the factory resource.
@@ -33413,18 +33592,207 @@ type FactoryProperties struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 	// Version - Version of the factory.
 	Version *string `json:"version,omitempty"`
-	// VstsConfiguration - VSTS repo information of the factory.
-	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
+	// RepoConfiguration - Git repo information of the factory.
+	RepoConfiguration BasicFactoryRepoConfiguration `json:"repoConfiguration,omitempty"`
 }
 
-// FactoryRepoUpdate factory's VSTS repo information.
+// UnmarshalJSON is the custom unmarshaler for FactoryProperties struct.
+func (fp *FactoryProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				fp.ProvisioningState = &provisioningState
+			}
+		case "createTime":
+			if v != nil {
+				var createTime date.Time
+				err = json.Unmarshal(*v, &createTime)
+				if err != nil {
+					return err
+				}
+				fp.CreateTime = &createTime
+			}
+		case "version":
+			if v != nil {
+				var version string
+				err = json.Unmarshal(*v, &version)
+				if err != nil {
+					return err
+				}
+				fp.Version = &version
+			}
+		case "repoConfiguration":
+			if v != nil {
+				repoConfiguration, err := unmarshalBasicFactoryRepoConfiguration(*v)
+				if err != nil {
+					return err
+				}
+				fp.RepoConfiguration = repoConfiguration
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicFactoryRepoConfiguration factory's git repo information.
+type BasicFactoryRepoConfiguration interface {
+	AsFactoryVSTSConfiguration() (*FactoryVSTSConfiguration, bool)
+	AsFactoryGitHubConfiguration() (*FactoryGitHubConfiguration, bool)
+	AsFactoryRepoConfiguration() (*FactoryRepoConfiguration, bool)
+}
+
+// FactoryRepoConfiguration factory's git repo information.
+type FactoryRepoConfiguration struct {
+	// AccountName - Account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// RepositoryName - Rrepository name.
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// CollaborationBranch - Collaboration branch.
+	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	// RootFolder - Root folder.
+	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - Last commit id.
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
+}
+
+func unmarshalBasicFactoryRepoConfiguration(body []byte) (BasicFactoryRepoConfiguration, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeFactoryVSTSConfiguration):
+		var fvc FactoryVSTSConfiguration
+		err := json.Unmarshal(body, &fvc)
+		return fvc, err
+	case string(TypeFactoryGithubConfiguration):
+		var fghc FactoryGitHubConfiguration
+		err := json.Unmarshal(body, &fghc)
+		return fghc, err
+	default:
+		var frc FactoryRepoConfiguration
+		err := json.Unmarshal(body, &frc)
+		return frc, err
+	}
+}
+func unmarshalBasicFactoryRepoConfigurationArray(body []byte) ([]BasicFactoryRepoConfiguration, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	frcArray := make([]BasicFactoryRepoConfiguration, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		frc, err := unmarshalBasicFactoryRepoConfiguration(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		frcArray[index] = frc
+	}
+	return frcArray, nil
+}
+
+// MarshalJSON is the custom marshaler for FactoryRepoConfiguration.
+func (frc FactoryRepoConfiguration) MarshalJSON() ([]byte, error) {
+	frc.Type = TypeFactoryRepoConfiguration
+	objectMap := make(map[string]interface{})
+	if frc.AccountName != nil {
+		objectMap["accountName"] = frc.AccountName
+	}
+	if frc.RepositoryName != nil {
+		objectMap["repositoryName"] = frc.RepositoryName
+	}
+	if frc.CollaborationBranch != nil {
+		objectMap["collaborationBranch"] = frc.CollaborationBranch
+	}
+	if frc.RootFolder != nil {
+		objectMap["rootFolder"] = frc.RootFolder
+	}
+	if frc.LastCommitID != nil {
+		objectMap["lastCommitId"] = frc.LastCommitID
+	}
+	if frc.Type != "" {
+		objectMap["type"] = frc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsFactoryVSTSConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryRepoConfiguration.
+func (frc FactoryRepoConfiguration) AsFactoryVSTSConfiguration() (*FactoryVSTSConfiguration, bool) {
+	return nil, false
+}
+
+// AsFactoryGitHubConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryRepoConfiguration.
+func (frc FactoryRepoConfiguration) AsFactoryGitHubConfiguration() (*FactoryGitHubConfiguration, bool) {
+	return nil, false
+}
+
+// AsFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryRepoConfiguration.
+func (frc FactoryRepoConfiguration) AsFactoryRepoConfiguration() (*FactoryRepoConfiguration, bool) {
+	return &frc, true
+}
+
+// AsBasicFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryRepoConfiguration.
+func (frc FactoryRepoConfiguration) AsBasicFactoryRepoConfiguration() (BasicFactoryRepoConfiguration, bool) {
+	return &frc, true
+}
+
+// FactoryRepoUpdate factory's git repo information.
 type FactoryRepoUpdate struct {
 	// FactoryResourceID - The factory resource id.
 	FactoryResourceID *string `json:"factoryResourceId,omitempty"`
-	// ResourceGroupName - The resource group name.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// VstsConfiguration - VSTS repo information of the factory.
-	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
+	// RepoConfiguration - Git repo information of the factory.
+	RepoConfiguration BasicFactoryRepoConfiguration `json:"repoConfiguration,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for FactoryRepoUpdate struct.
+func (fru *FactoryRepoUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "factoryResourceId":
+			if v != nil {
+				var factoryResourceID string
+				err = json.Unmarshal(*v, &factoryResourceID)
+				if err != nil {
+					return err
+				}
+				fru.FactoryResourceID = &factoryResourceID
+			}
+		case "repoConfiguration":
+			if v != nil {
+				repoConfiguration, err := unmarshalBasicFactoryRepoConfiguration(*v)
+				if err != nil {
+					return err
+				}
+				fru.RepoConfiguration = repoConfiguration
+			}
+		}
+	}
+
+	return nil
 }
 
 // FactoryUpdateParameters parameters for updating a factory resource.
@@ -33449,20 +33817,73 @@ func (fup FactoryUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // FactoryVSTSConfiguration factory's VSTS repo information.
 type FactoryVSTSConfiguration struct {
-	// AccountName - VSTS account name.
-	AccountName *string `json:"accountName,omitempty"`
 	// ProjectName - VSTS project name.
 	ProjectName *string `json:"projectName,omitempty"`
-	// RepositoryName - VSTS repository name.
-	RepositoryName *string `json:"repositoryName,omitempty"`
-	// CollaborationBranch - VSTS collaboration branch.
-	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
-	// RootFolder - VSTS root folder.
-	RootFolder *string `json:"rootFolder,omitempty"`
-	// LastCommitID - VSTS last commit id.
-	LastCommitID *string `json:"lastCommitId,omitempty"`
 	// TenantID - VSTS tenant id.
 	TenantID *string `json:"tenantId,omitempty"`
+	// AccountName - Account name.
+	AccountName *string `json:"accountName,omitempty"`
+	// RepositoryName - Rrepository name.
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// CollaborationBranch - Collaboration branch.
+	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
+	// RootFolder - Root folder.
+	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - Last commit id.
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// Type - Possible values include: 'TypeFactoryRepoConfiguration', 'TypeFactoryVSTSConfiguration', 'TypeFactoryGithubConfiguration'
+	Type TypeBasicFactoryRepoConfiguration `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FactoryVSTSConfiguration.
+func (fvc FactoryVSTSConfiguration) MarshalJSON() ([]byte, error) {
+	fvc.Type = TypeFactoryVSTSConfiguration
+	objectMap := make(map[string]interface{})
+	if fvc.ProjectName != nil {
+		objectMap["projectName"] = fvc.ProjectName
+	}
+	if fvc.TenantID != nil {
+		objectMap["tenantId"] = fvc.TenantID
+	}
+	if fvc.AccountName != nil {
+		objectMap["accountName"] = fvc.AccountName
+	}
+	if fvc.RepositoryName != nil {
+		objectMap["repositoryName"] = fvc.RepositoryName
+	}
+	if fvc.CollaborationBranch != nil {
+		objectMap["collaborationBranch"] = fvc.CollaborationBranch
+	}
+	if fvc.RootFolder != nil {
+		objectMap["rootFolder"] = fvc.RootFolder
+	}
+	if fvc.LastCommitID != nil {
+		objectMap["lastCommitId"] = fvc.LastCommitID
+	}
+	if fvc.Type != "" {
+		objectMap["type"] = fvc.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsFactoryVSTSConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryVSTSConfiguration.
+func (fvc FactoryVSTSConfiguration) AsFactoryVSTSConfiguration() (*FactoryVSTSConfiguration, bool) {
+	return &fvc, true
+}
+
+// AsFactoryGitHubConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryVSTSConfiguration.
+func (fvc FactoryVSTSConfiguration) AsFactoryGitHubConfiguration() (*FactoryGitHubConfiguration, bool) {
+	return nil, false
+}
+
+// AsFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryVSTSConfiguration.
+func (fvc FactoryVSTSConfiguration) AsFactoryRepoConfiguration() (*FactoryRepoConfiguration, bool) {
+	return nil, false
+}
+
+// AsBasicFactoryRepoConfiguration is the BasicFactoryRepoConfiguration implementation for FactoryVSTSConfiguration.
+func (fvc FactoryVSTSConfiguration) AsBasicFactoryRepoConfiguration() (BasicFactoryRepoConfiguration, bool) {
+	return &fvc, true
 }
 
 // FileServerLinkedService file system linked service.
@@ -34920,6 +35341,8 @@ type FilterActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -34939,6 +35362,9 @@ func (fa FilterActivity) MarshalJSON() ([]byte, error) {
 	}
 	if fa.DependsOn != nil {
 		objectMap["dependsOn"] = fa.DependsOn
+	}
+	if fa.UserProperties != nil {
+		objectMap["userProperties"] = fa.UserProperties
 	}
 	if fa.Type != "" {
 		objectMap["type"] = fa.Type
@@ -35146,6 +35572,15 @@ func (fa *FilterActivity) UnmarshalJSON(body []byte) error {
 				}
 				fa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				fa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -35181,6 +35616,8 @@ type ForEachActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -35200,6 +35637,9 @@ func (fea ForEachActivity) MarshalJSON() ([]byte, error) {
 	}
 	if fea.DependsOn != nil {
 		objectMap["dependsOn"] = fea.DependsOn
+	}
+	if fea.UserProperties != nil {
+		objectMap["userProperties"] = fea.UserProperties
 	}
 	if fea.Type != "" {
 		objectMap["type"] = fea.Type
@@ -35406,6 +35846,15 @@ func (fea *ForEachActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				fea.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				fea.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -36093,6 +36542,8 @@ type GetMetadataActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -36118,6 +36569,9 @@ func (gma GetMetadataActivity) MarshalJSON() ([]byte, error) {
 	}
 	if gma.DependsOn != nil {
 		objectMap["dependsOn"] = gma.DependsOn
+	}
+	if gma.UserProperties != nil {
+		objectMap["userProperties"] = gma.UserProperties
 	}
 	if gma.Type != "" {
 		objectMap["type"] = gma.Type
@@ -36342,6 +36796,15 @@ func (gma *GetMetadataActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gma.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				gma.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -40820,6 +41283,8 @@ type HDInsightHiveActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -40845,6 +41310,9 @@ func (hiha HDInsightHiveActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hiha.DependsOn != nil {
 		objectMap["dependsOn"] = hiha.DependsOn
+	}
+	if hiha.UserProperties != nil {
+		objectMap["userProperties"] = hiha.UserProperties
 	}
 	if hiha.Type != "" {
 		objectMap["type"] = hiha.Type
@@ -41069,6 +41537,15 @@ func (hiha *HDInsightHiveActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hiha.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				hiha.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -41710,6 +42187,8 @@ type HDInsightMapReduceActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -41735,6 +42214,9 @@ func (himra HDInsightMapReduceActivity) MarshalJSON() ([]byte, error) {
 	}
 	if himra.DependsOn != nil {
 		objectMap["dependsOn"] = himra.DependsOn
+	}
+	if himra.UserProperties != nil {
+		objectMap["userProperties"] = himra.UserProperties
 	}
 	if himra.Type != "" {
 		objectMap["type"] = himra.Type
@@ -41959,6 +42441,15 @@ func (himra *HDInsightMapReduceActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				himra.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				himra.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -42870,6 +43361,8 @@ type HDInsightPigActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -42895,6 +43388,9 @@ func (hipa HDInsightPigActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hipa.DependsOn != nil {
 		objectMap["dependsOn"] = hipa.DependsOn
+	}
+	if hipa.UserProperties != nil {
+		objectMap["userProperties"] = hipa.UserProperties
 	}
 	if hipa.Type != "" {
 		objectMap["type"] = hipa.Type
@@ -43120,6 +43616,15 @@ func (hipa *HDInsightPigActivity) UnmarshalJSON(body []byte) error {
 				}
 				hipa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				hipa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -43189,6 +43694,8 @@ type HDInsightSparkActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -43214,6 +43721,9 @@ func (hisa HDInsightSparkActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hisa.DependsOn != nil {
 		objectMap["dependsOn"] = hisa.DependsOn
+	}
+	if hisa.UserProperties != nil {
+		objectMap["userProperties"] = hisa.UserProperties
 	}
 	if hisa.Type != "" {
 		objectMap["type"] = hisa.Type
@@ -43439,6 +43949,15 @@ func (hisa *HDInsightSparkActivity) UnmarshalJSON(body []byte) error {
 				}
 				hisa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				hisa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -43514,6 +44033,8 @@ type HDInsightStreamingActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -43539,6 +44060,9 @@ func (hisa HDInsightStreamingActivity) MarshalJSON() ([]byte, error) {
 	}
 	if hisa.DependsOn != nil {
 		objectMap["dependsOn"] = hisa.DependsOn
+	}
+	if hisa.UserProperties != nil {
+		objectMap["userProperties"] = hisa.UserProperties
 	}
 	if hisa.Type != "" {
 		objectMap["type"] = hisa.Type
@@ -43763,6 +44287,15 @@ func (hisa *HDInsightStreamingActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				hisa.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				hisa.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -47735,6 +48268,8 @@ type IfConditionActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -47754,6 +48289,9 @@ func (ica IfConditionActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ica.DependsOn != nil {
 		objectMap["dependsOn"] = ica.DependsOn
+	}
+	if ica.UserProperties != nil {
+		objectMap["userProperties"] = ica.UserProperties
 	}
 	if ica.Type != "" {
 		objectMap["type"] = ica.Type
@@ -47960,6 +48498,15 @@ func (ica *IfConditionActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ica.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ica.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -49587,7 +50134,7 @@ type IntegrationRuntimeNodeMonitoringData struct {
 	// AvailableMemoryInMB - Available memory (MB) on the integration runtime node.
 	AvailableMemoryInMB *int32 `json:"availableMemoryInMB,omitempty"`
 	// CPUUtilization - CPU percentage on the integration runtime node.
-	CPUUtilization *float64 `json:"cpuUtilization,omitempty"`
+	CPUUtilization *int32 `json:"cpuUtilization,omitempty"`
 	// ConcurrentJobsLimit - Maximum concurrent jobs on the integration runtime node.
 	ConcurrentJobsLimit *int32 `json:"concurrentJobsLimit,omitempty"`
 	// ConcurrentJobsRunning - The number of jobs currently running on the integration runtime node.
@@ -49662,26 +50209,6 @@ func (irr IntegrationRuntimeReference) MarshalJSON() ([]byte, error) {
 type IntegrationRuntimeRegenerateKeyParameters struct {
 	// KeyName - The name of the authentication key to regenerate. Possible values include: 'AuthKey1', 'AuthKey2'
 	KeyName IntegrationRuntimeAuthKeyName `json:"keyName,omitempty"`
-}
-
-// IntegrationRuntimeRemoveNodeRequest request to remove a node.
-type IntegrationRuntimeRemoveNodeRequest struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
-	// NodeName - The name of the node to be removed.
-	NodeName *string `json:"nodeName,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IntegrationRuntimeRemoveNodeRequest.
-func (irrnr IntegrationRuntimeRemoveNodeRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if irrnr.NodeName != nil {
-		objectMap["nodeName"] = irrnr.NodeName
-	}
-	for k, v := range irrnr.AdditionalProperties {
-		objectMap[k] = v
-	}
-	return json.Marshal(objectMap)
 }
 
 // IntegrationRuntimeResource integration runtime resource type.
@@ -51334,214 +51861,6 @@ func (jf JSONFormat) AsBasicDatasetStorageFormat() (BasicDatasetStorageFormat, b
 	return &jf, true
 }
 
-// LinkedIntegrationRuntime the linked integration runtime information.
-type LinkedIntegrationRuntime struct {
-	// Name - The name of the linked integration runtime.
-	Name *string `json:"name,omitempty"`
-	// SubscriptionID - The subscription ID for which the linked integration runtime belong to.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// DataFactoryName - The name of the data factory for which the linked integration runtime belong to.
-	DataFactoryName *string `json:"dataFactoryName,omitempty"`
-	// DataFactoryLocation - The location of the data factory for which the linked integration runtime belong to.
-	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
-	// CreateTime - The creating time of the linked integration runtime.
-	CreateTime *date.Time `json:"createTime,omitempty"`
-}
-
-// LinkedIntegrationRuntimeKey the base definition of a secret type.
-type LinkedIntegrationRuntimeKey struct {
-	// Key - Type of the secret.
-	Key *SecureString `json:"key,omitempty"`
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
-	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) MarshalJSON() ([]byte, error) {
-	lirk.AuthorizationType = AuthorizationTypeKey
-	objectMap := make(map[string]interface{})
-	if lirk.Key != nil {
-		objectMap["key"] = lirk.Key
-	}
-	if lirk.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirk.AuthorizationType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
-	return nil, false
-}
-
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
-	return &lirk, true
-}
-
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
-	return nil, false
-}
-
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirk, true
-}
-
-// BasicLinkedIntegrationRuntimeProperties the base definition of a secret type.
-type BasicLinkedIntegrationRuntimeProperties interface {
-	AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool)
-	AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool)
-	AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool)
-}
-
-// LinkedIntegrationRuntimeProperties the base definition of a secret type.
-type LinkedIntegrationRuntimeProperties struct {
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
-	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
-}
-
-func unmarshalBasicLinkedIntegrationRuntimeProperties(body []byte) (BasicLinkedIntegrationRuntimeProperties, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["authorizationType"] {
-	case string(AuthorizationTypeRBAC):
-		var lirr LinkedIntegrationRuntimeRbac
-		err := json.Unmarshal(body, &lirr)
-		return lirr, err
-	case string(AuthorizationTypeKey):
-		var lirk LinkedIntegrationRuntimeKey
-		err := json.Unmarshal(body, &lirk)
-		return lirk, err
-	default:
-		var lirp LinkedIntegrationRuntimeProperties
-		err := json.Unmarshal(body, &lirp)
-		return lirp, err
-	}
-}
-func unmarshalBasicLinkedIntegrationRuntimePropertiesArray(body []byte) ([]BasicLinkedIntegrationRuntimeProperties, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	lirpArray := make([]BasicLinkedIntegrationRuntimeProperties, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		lirp, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		lirpArray[index] = lirp
-	}
-	return lirpArray, nil
-}
-
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) MarshalJSON() ([]byte, error) {
-	lirp.AuthorizationType = AuthorizationTypeLinkedIntegrationRuntimeProperties
-	objectMap := make(map[string]interface{})
-	if lirp.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirp.AuthorizationType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
-	return nil, false
-}
-
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
-	return nil, false
-}
-
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
-	return &lirp, true
-}
-
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirp, true
-}
-
-// LinkedIntegrationRuntimeRbac the base definition of a secret type.
-type LinkedIntegrationRuntimeRbac struct {
-	// ResourceID - The resource ID of the integration runtime to be shared.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
-	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) MarshalJSON() ([]byte, error) {
-	lirr.AuthorizationType = AuthorizationTypeRBAC
-	objectMap := make(map[string]interface{})
-	if lirr.ResourceID != nil {
-		objectMap["resourceId"] = lirr.ResourceID
-	}
-	if lirr.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirr.AuthorizationType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
-	return &lirr, true
-}
-
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
-	return nil, false
-}
-
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
-	return nil, false
-}
-
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirr, true
-}
-
-// LinkedIntegrationRuntimeTypeProperties the base definition of a secret type.
-type LinkedIntegrationRuntimeTypeProperties struct {
-	LinkedInfo BasicLinkedIntegrationRuntimeProperties `json:"linkedInfo,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for LinkedIntegrationRuntimeTypeProperties struct.
-func (lirtp *LinkedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "linkedInfo":
-			if v != nil {
-				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*v)
-				if err != nil {
-					return err
-				}
-				lirtp.LinkedInfo = linkedInfo
-			}
-		}
-	}
-
-	return nil
-}
-
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be
 // used to connect with related store or compute resource.
 type BasicLinkedService interface {
@@ -52550,6 +52869,8 @@ type LookupActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -52575,6 +52896,9 @@ func (la LookupActivity) MarshalJSON() ([]byte, error) {
 	}
 	if la.DependsOn != nil {
 		objectMap["dependsOn"] = la.DependsOn
+	}
+	if la.UserProperties != nil {
+		objectMap["userProperties"] = la.UserProperties
 	}
 	if la.Type != "" {
 		objectMap["type"] = la.Type
@@ -52799,6 +53123,15 @@ func (la *LookupActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				la.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				la.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -61491,6 +61824,99 @@ type OperationListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// OperationListResponseIterator provides access to a complete listing of Operation values.
+type OperationListResponseIterator struct {
+	i    int
+	page OperationListResponsePage
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OperationListResponseIterator) Next() error {
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err := iter.page.Next()
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OperationListResponseIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OperationListResponseIterator) Response() OperationListResponse {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OperationListResponseIterator) Value() Operation {
+	if !iter.page.NotDone() {
+		return Operation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (olr OperationListResponse) IsEmpty() bool {
+	return olr.Value == nil || len(*olr.Value) == 0
+}
+
+// operationListResponsePreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (olr OperationListResponse) operationListResponsePreparer() (*http.Request, error) {
+	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare(&http.Request{},
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(olr.NextLink)))
+}
+
+// OperationListResponsePage contains a page of Operation values.
+type OperationListResponsePage struct {
+	fn  func(OperationListResponse) (OperationListResponse, error)
+	olr OperationListResponse
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OperationListResponsePage) Next() error {
+	next, err := page.fn(page.olr)
+	if err != nil {
+		return err
+	}
+	page.olr = next
+	return nil
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OperationListResponsePage) NotDone() bool {
+	return !page.olr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OperationListResponsePage) Response() OperationListResponse {
+	return page.olr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OperationListResponsePage) Values() []Operation {
+	if page.olr.IsEmpty() {
+		return nil
+	}
+	return *page.olr.Value
+}
+
 // OperationLogSpecification details about an operation related to logs.
 type OperationLogSpecification struct {
 	// Name - The name of the log category.
@@ -61507,6 +61933,16 @@ type OperationMetricAvailability struct {
 	TimeGrain *string `json:"timeGrain,omitempty"`
 	// BlobDuration - Blob created in the customer storage account, per hour.
 	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
+// OperationMetricDimension defines the metric dimension.
+type OperationMetricDimension struct {
+	// Name - The name of the dimension for the metric.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The display name of the metric dimension.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ToBeExportedForShoebox - Whether the dimension should be exported to Azure Monitor.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // OperationMetricSpecification details about an operation related to metrics.
@@ -61529,6 +61965,8 @@ type OperationMetricSpecification struct {
 	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
 	// Availabilities - Defines how often data for metrics becomes available.
 	Availabilities *[]OperationMetricAvailability `json:"availabilities,omitempty"`
+	// Dimensions - Defines the metric dimension.
+	Dimensions *[]OperationMetricDimension `json:"dimensions,omitempty"`
 }
 
 // OperationProperties additional details about an operation.
@@ -65823,48 +66261,18 @@ func (pr PipelineRun) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PipelineRunFilterParameters query parameters for listing pipeline runs.
-type PipelineRunFilterParameters struct {
-	// ContinuationToken - The continuation token for getting the next page of results. Null for first page.
-	ContinuationToken *string `json:"continuationToken,omitempty"`
-	// LastUpdatedAfter - The time at or after which the pipeline run event was updated in 'ISO 8601' format.
-	LastUpdatedAfter *date.Time `json:"lastUpdatedAfter,omitempty"`
-	// LastUpdatedBefore - The time at or before which the pipeline run event was updated in 'ISO 8601' format.
-	LastUpdatedBefore *date.Time `json:"lastUpdatedBefore,omitempty"`
-	// Filters - List of filters.
-	Filters *[]PipelineRunQueryFilter `json:"filters,omitempty"`
-	// OrderBy - List of OrderBy option.
-	OrderBy *[]PipelineRunQueryOrderBy `json:"orderBy,omitempty"`
-}
-
 // PipelineRunInvokedBy provides entity name and id that started the pipeline run.
 type PipelineRunInvokedBy struct {
 	// Name - Name of the entity that started the pipeline run.
 	Name *string `json:"name,omitempty"`
 	// ID - The ID of the entity that started the run.
 	ID *string `json:"id,omitempty"`
+	// InvokedByType - The type of the entity that started the run.
+	InvokedByType *string `json:"invokedByType,omitempty"`
 }
 
-// PipelineRunQueryFilter query filter option for listing pipeline runs.
-type PipelineRunQueryFilter struct {
-	// Operand - Parameter name to be used for filter. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd'
-	Operand PipelineRunQueryFilterOperand `json:"operand,omitempty"`
-	// Operator - Operator to be used for filter. Possible values include: 'Equals', 'NotEquals', 'In', 'NotIn'
-	Operator PipelineRunQueryFilterOperator `json:"operator,omitempty"`
-	// Values - List of filter values.
-	Values *[]string `json:"values,omitempty"`
-}
-
-// PipelineRunQueryOrderBy an object to provide order by options for listing pipeline runs.
-type PipelineRunQueryOrderBy struct {
-	// OrderBy - Parameter name to be used for order by. Possible values include: 'PipelineRunQueryOrderByFieldRunStart', 'PipelineRunQueryOrderByFieldRunEnd'
-	OrderBy PipelineRunQueryOrderByField `json:"orderBy,omitempty"`
-	// Order - Sorting order of the parameter. Possible values include: 'ASC', 'DESC'
-	Order PipelineRunQueryOrder `json:"order,omitempty"`
-}
-
-// PipelineRunQueryResponse a list pipeline runs.
-type PipelineRunQueryResponse struct {
+// PipelineRunsQueryResponse a list pipeline runs.
+type PipelineRunsQueryResponse struct {
 	autorest.Response `json:"-"`
 	// Value - List of pipeline runs.
 	Value *[]PipelineRun `json:"value,omitempty"`
@@ -69714,6 +70122,8 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
+	// ETag - Etag identifies change in the resource.
+	ETag *string `json:"eTag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
@@ -69733,6 +70143,9 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags
+	}
+	if r.ETag != nil {
+		objectMap["eTag"] = r.ETag
 	}
 	return json.Marshal(objectMap)
 }
@@ -70934,6 +71347,38 @@ type RetryPolicy struct {
 	Count interface{} `json:"count,omitempty"`
 	// IntervalInSeconds - Interval between retries in seconds. Default is 30.
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
+}
+
+// RunFilterParameters query parameters for listing runs.
+type RunFilterParameters struct {
+	// ContinuationToken - The continuation token for getting the next page of results. Null for first page.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
+	// LastUpdatedAfter - The time at or after which the run event was updated in 'ISO 8601' format.
+	LastUpdatedAfter *date.Time `json:"lastUpdatedAfter,omitempty"`
+	// LastUpdatedBefore - The time at or before which the run event was updated in 'ISO 8601' format.
+	LastUpdatedBefore *date.Time `json:"lastUpdatedBefore,omitempty"`
+	// Filters - List of filters.
+	Filters *[]RunQueryFilter `json:"filters,omitempty"`
+	// OrderBy - List of OrderBy option.
+	OrderBy *[]RunQueryOrderBy `json:"orderBy,omitempty"`
+}
+
+// RunQueryFilter query filter option for listing runs.
+type RunQueryFilter struct {
+	// Operand - Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart', 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp'
+	Operand RunQueryFilterOperand `json:"operand,omitempty"`
+	// Operator - Operator to be used for filter. Possible values include: 'Equals', 'NotEquals', 'In', 'NotIn'
+	Operator RunQueryFilterOperator `json:"operator,omitempty"`
+	// Values - List of filter values.
+	Values *[]string `json:"values,omitempty"`
+}
+
+// RunQueryOrderBy an object to provide order by options for listing runs.
+type RunQueryOrderBy struct {
+	// OrderBy - Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'RunQueryOrderByFieldRunStart', 'RunQueryOrderByFieldRunEnd', 'RunQueryOrderByFieldPipelineName', 'RunQueryOrderByFieldStatus', 'RunQueryOrderByFieldActivityName', 'RunQueryOrderByFieldActivityRunStart', 'RunQueryOrderByFieldActivityRunEnd', 'RunQueryOrderByFieldTriggerName', 'RunQueryOrderByFieldTriggerRunTimestamp'
+	OrderBy RunQueryOrderByField `json:"orderBy,omitempty"`
+	// Order - Sorting order of the parameter. Possible values include: 'ASC', 'DESC'
+	Order RunQueryOrder `json:"order,omitempty"`
 }
 
 // SalesforceLinkedService linked service for Salesforce.
@@ -77615,8 +78060,6 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 
 // SelfHostedIntegrationRuntime self-hosted integration runtime.
 type SelfHostedIntegrationRuntime struct {
-	// LinkedIntegrationRuntimeTypeProperties - When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
-	*LinkedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -77629,9 +78072,6 @@ type SelfHostedIntegrationRuntime struct {
 func (shir SelfHostedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	shir.Type = TypeSelfHosted
 	objectMap := make(map[string]interface{})
-	if shir.LinkedIntegrationRuntimeTypeProperties != nil {
-		objectMap["typeProperties"] = shir.LinkedIntegrationRuntimeTypeProperties
-	}
 	if shir.Description != nil {
 		objectMap["description"] = shir.Description
 	}
@@ -77662,60 +78102,6 @@ func (shir SelfHostedIntegrationRuntime) AsIntegrationRuntime() (*IntegrationRun
 // AsBasicIntegrationRuntime is the BasicIntegrationRuntime implementation for SelfHostedIntegrationRuntime.
 func (shir SelfHostedIntegrationRuntime) AsBasicIntegrationRuntime() (BasicIntegrationRuntime, bool) {
 	return &shir, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntime struct.
-func (shir *SelfHostedIntegrationRuntime) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "typeProperties":
-			if v != nil {
-				var linkedIntegrationRuntimeTypeProperties LinkedIntegrationRuntimeTypeProperties
-				err = json.Unmarshal(*v, &linkedIntegrationRuntimeTypeProperties)
-				if err != nil {
-					return err
-				}
-				shir.LinkedIntegrationRuntimeTypeProperties = &linkedIntegrationRuntimeTypeProperties
-			}
-		default:
-			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if shir.AdditionalProperties == nil {
-					shir.AdditionalProperties = make(map[string]interface{})
-				}
-				shir.AdditionalProperties[k] = additionalProperties
-			}
-		case "description":
-			if v != nil {
-				var description string
-				err = json.Unmarshal(*v, &description)
-				if err != nil {
-					return err
-				}
-				shir.Description = &description
-			}
-		case "type":
-			if v != nil {
-				var typeVar TypeBasicIntegrationRuntime
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				shir.Type = typeVar
-			}
-		}
-	}
-
-	return nil
 }
 
 // SelfHostedIntegrationRuntimeNode properties of Self-hosted integration runtime node.
@@ -77964,8 +78350,10 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	AutoUpdate IntegrationRuntimeAutoUpdate `json:"autoUpdate,omitempty"`
 	// VersionStatus - Status of the integration runtime version.
 	VersionStatus *string `json:"versionStatus,omitempty"`
-	// Links - The list of linked integration runtimes that are created to share with this integration runtime.
-	Links *[]LinkedIntegrationRuntime `json:"links,omitempty"`
+	// PushedVersion - The version that the integration runtime is going to update to.
+	PushedVersion *string `json:"pushedVersion,omitempty"`
+	// LatestVersion - The latest version on download center.
+	LatestVersion *string `json:"latestVersion,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
@@ -78007,8 +78395,11 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	if shirstp.VersionStatus != nil {
 		objectMap["versionStatus"] = shirstp.VersionStatus
 	}
-	if shirstp.Links != nil {
-		objectMap["links"] = shirstp.Links
+	if shirstp.PushedVersion != nil {
+		objectMap["pushedVersion"] = shirstp.PushedVersion
+	}
+	if shirstp.LatestVersion != nil {
+		objectMap["latestVersion"] = shirstp.LatestVersion
 	}
 	return json.Marshal(objectMap)
 }
@@ -83293,6 +83684,8 @@ type SQLServerStoredProcedureActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -83318,6 +83711,9 @@ func (ssspa SQLServerStoredProcedureActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ssspa.DependsOn != nil {
 		objectMap["dependsOn"] = ssspa.DependsOn
+	}
+	if ssspa.UserProperties != nil {
+		objectMap["userProperties"] = ssspa.UserProperties
 	}
 	if ssspa.Type != "" {
 		objectMap["type"] = ssspa.Type
@@ -83542,6 +83938,15 @@ func (ssspa *SQLServerStoredProcedureActivity) UnmarshalJSON(body []byte) error 
 					return err
 				}
 				ssspa.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ssspa.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -87219,14 +87624,6 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TriggerReference tumbling window trigger reference type.
-type TriggerReference struct {
-	// Type - Tumbling window trigger reference type.
-	Type *string `json:"type,omitempty"`
-	// ReferenceName - Reference trigger name.
-	ReferenceName *string `json:"referenceName,omitempty"`
-}
-
 // TriggerResource trigger resource type.
 type TriggerResource struct {
 	autorest.Response `json:"-"`
@@ -87356,106 +87753,13 @@ func (tr TriggerRun) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TriggerRunListResponse a list of trigger runs.
-type TriggerRunListResponse struct {
+// TriggerRunsQueryResponse a list of trigger runs.
+type TriggerRunsQueryResponse struct {
 	autorest.Response `json:"-"`
 	// Value - List of trigger runs.
 	Value *[]TriggerRun `json:"value,omitempty"`
-	// NextLink - The link to the next page of results, if any remaining results exist.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// TriggerRunListResponseIterator provides access to a complete listing of TriggerRun values.
-type TriggerRunListResponseIterator struct {
-	i    int
-	page TriggerRunListResponsePage
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *TriggerRunListResponseIterator) Next() error {
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err := iter.page.Next()
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter TriggerRunListResponseIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter TriggerRunListResponseIterator) Response() TriggerRunListResponse {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter TriggerRunListResponseIterator) Value() TriggerRun {
-	if !iter.page.NotDone() {
-		return TriggerRun{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (trlr TriggerRunListResponse) IsEmpty() bool {
-	return trlr.Value == nil || len(*trlr.Value) == 0
-}
-
-// triggerRunListResponsePreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (trlr TriggerRunListResponse) triggerRunListResponsePreparer() (*http.Request, error) {
-	if trlr.NextLink == nil || len(to.String(trlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare(&http.Request{},
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(trlr.NextLink)))
-}
-
-// TriggerRunListResponsePage contains a page of TriggerRun values.
-type TriggerRunListResponsePage struct {
-	fn   func(TriggerRunListResponse) (TriggerRunListResponse, error)
-	trlr TriggerRunListResponse
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *TriggerRunListResponsePage) Next() error {
-	next, err := page.fn(page.trlr)
-	if err != nil {
-		return err
-	}
-	page.trlr = next
-	return nil
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page TriggerRunListResponsePage) NotDone() bool {
-	return !page.trlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page TriggerRunListResponsePage) Response() TriggerRunListResponse {
-	return page.trlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page TriggerRunListResponsePage) Values() []TriggerRun {
-	if page.trlr.IsEmpty() {
-		return nil
-	}
-	return *page.trlr.Value
+	// ContinuationToken - The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -87672,8 +87976,6 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
-	// DependsOn - Tumbling window triggers that this trigger depends on. Only tumbling window triggers are supported.
-	DependsOn *[]TriggerReference `json:"dependsOn,omitempty"`
 }
 
 // UntilActivity this activity executes inner activities until the specified boolean expression results to true or
@@ -87689,6 +87991,8 @@ type UntilActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -87708,6 +88012,9 @@ func (ua UntilActivity) MarshalJSON() ([]byte, error) {
 	}
 	if ua.DependsOn != nil {
 		objectMap["dependsOn"] = ua.DependsOn
+	}
+	if ua.UserProperties != nil {
+		objectMap["userProperties"] = ua.UserProperties
 	}
 	if ua.Type != "" {
 		objectMap["type"] = ua.Type
@@ -87914,6 +88221,15 @@ func (ua *UntilActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ua.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				ua.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {
@@ -89111,6 +89427,8 @@ type WaitActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -89130,6 +89448,9 @@ func (wa WaitActivity) MarshalJSON() ([]byte, error) {
 	}
 	if wa.DependsOn != nil {
 		objectMap["dependsOn"] = wa.DependsOn
+	}
+	if wa.UserProperties != nil {
+		objectMap["userProperties"] = wa.UserProperties
 	}
 	if wa.Type != "" {
 		objectMap["type"] = wa.Type
@@ -89337,6 +89658,15 @@ func (wa *WaitActivity) UnmarshalJSON(body []byte) error {
 				}
 				wa.DependsOn = &dependsOn
 			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				wa.UserProperties = userProperties
+			}
 		case "type":
 			if v != nil {
 				var typeVar TypeBasicActivity
@@ -89374,6 +89704,8 @@ type WebActivity struct {
 	Description *string `json:"description,omitempty"`
 	// DependsOn - Activity depends on condition.
 	DependsOn *[]ActivityDependency `json:"dependsOn,omitempty"`
+	// UserProperties - Activity user properties.
+	UserProperties map[string]*string `json:"userProperties"`
 	// Type - Possible values include: 'TypeActivity', 'TypeDatabricksNotebook', 'TypeDataLakeAnalyticsUSQL', 'TypeAzureMLUpdateResource', 'TypeAzureMLBatchExecution', 'TypeGetMetadata', 'TypeWebActivity', 'TypeLookup', 'TypeSQLServerStoredProcedure', 'TypeCustom', 'TypeExecuteSSISPackage', 'TypeHDInsightSpark', 'TypeHDInsightStreaming', 'TypeHDInsightMapReduce', 'TypeHDInsightPig', 'TypeHDInsightHive', 'TypeCopy', 'TypeExecution', 'TypeFilter', 'TypeUntil', 'TypeWait', 'TypeForEach', 'TypeIfCondition', 'TypeExecutePipeline', 'TypeContainer'
 	Type TypeBasicActivity `json:"type,omitempty"`
 }
@@ -89399,6 +89731,9 @@ func (wa WebActivity) MarshalJSON() ([]byte, error) {
 	}
 	if wa.DependsOn != nil {
 		objectMap["dependsOn"] = wa.DependsOn
+	}
+	if wa.UserProperties != nil {
+		objectMap["userProperties"] = wa.UserProperties
 	}
 	if wa.Type != "" {
 		objectMap["type"] = wa.Type
@@ -89623,6 +89958,15 @@ func (wa *WebActivity) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				wa.DependsOn = &dependsOn
+			}
+		case "userProperties":
+			if v != nil {
+				var userProperties map[string]*string
+				err = json.Unmarshal(*v, &userProperties)
+				if err != nil {
+					return err
+				}
+				wa.UserProperties = userProperties
 			}
 		case "type":
 			if v != nil {

@@ -1,4 +1,4 @@
-// Package automation implements the Azure ARM Automation service API version .
+// Package automation implements the Azure ARM Automation service API version 2015-10-31.
 //
 // Automation Client
 package automation

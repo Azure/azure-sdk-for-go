@@ -87366,9 +87366,9 @@ func (tpr TriggerPipelineReference) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// TriggerReference tumbling window trigger reference type.
+// TriggerReference trigger reference type.
 type TriggerReference struct {
-	// Type - Tumbling window trigger reference type.
+	// Type - Trigger reference type.
 	Type *string `json:"type,omitempty"`
 	// ReferenceName - Reference trigger name.
 	ReferenceName *string `json:"referenceName,omitempty"`

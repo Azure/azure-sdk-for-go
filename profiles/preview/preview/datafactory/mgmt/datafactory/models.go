@@ -721,6 +721,14 @@ const (
 	TypeTextFormat           TypeBasicDatasetStorageFormat = original.TypeTextFormat
 )
 
+type TypeBasicDependencyReference = original.TypeBasicDependencyReference
+
+const (
+	TypeDependencyReference                          TypeBasicDependencyReference = original.TypeDependencyReference
+	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = original.TypeSelfDependencyTumblingWindowTriggerReference
+	TypeTumblingWindowTriggerDependencyReference     TypeBasicDependencyReference = original.TypeTumblingWindowTriggerDependencyReference
+)
+
 type TypeBasicIntegrationRuntime = original.TypeBasicIntegrationRuntime
 
 const (
@@ -964,6 +972,8 @@ type DatasetStorageFormat = original.DatasetStorageFormat
 type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type BasicDependencyReference = original.BasicDependencyReference
+type DependencyReference = original.DependencyReference
 type DistcpSettings = original.DistcpSettings
 type DocumentDbCollectionDataset = original.DocumentDbCollectionDataset
 type DocumentDbCollectionDatasetTypeProperties = original.DocumentDbCollectionDatasetTypeProperties
@@ -1238,6 +1248,7 @@ type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties
 type BasicSecretBase = original.BasicSecretBase
 type SecretBase = original.SecretBase
 type SecureString = original.SecureString
+type SelfDependencyTumblingWindowTriggerReference = original.SelfDependencyTumblingWindowTriggerReference
 type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
 type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
 type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
@@ -1288,6 +1299,7 @@ type TriggerListResponse = original.TriggerListResponse
 type TriggerListResponseIterator = original.TriggerListResponseIterator
 type TriggerListResponsePage = original.TriggerListResponsePage
 type TriggerPipelineReference = original.TriggerPipelineReference
+type TriggerReference = original.TriggerReference
 type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
 type TriggerRunListResponse = original.TriggerRunListResponse
@@ -1296,6 +1308,7 @@ type TriggerRunListResponsePage = original.TriggerRunListResponsePage
 type TriggersStartFuture = original.TriggersStartFuture
 type TriggersStopFuture = original.TriggersStopFuture
 type TumblingWindowTrigger = original.TumblingWindowTrigger
+type TumblingWindowTriggerDependencyReference = original.TumblingWindowTriggerDependencyReference
 type TumblingWindowTriggerTypeProperties = original.TumblingWindowTriggerTypeProperties
 type UntilActivity = original.UntilActivity
 type UntilActivityTypeProperties = original.UntilActivityTypeProperties
@@ -1574,6 +1587,9 @@ func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
 }
 func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
 	return original.PossibleTypeBasicDatasetStorageFormatValues()
+}
+func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
+	return original.PossibleTypeBasicDependencyReferenceValues()
 }
 func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
 	return original.PossibleTypeBasicIntegrationRuntimeValues()

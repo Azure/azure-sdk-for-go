@@ -52062,8 +52062,8 @@ func (lirr LinkedIntegrationRuntimeRbac) AsBasicLinkedIntegrationRuntimeProperti
 
 // LinkedIntegrationRuntimeRequest data factory name for linked integration runtime request.
 type LinkedIntegrationRuntimeRequest struct {
-	// FactoryName - The data factory name.
-	FactoryName *string `json:"factoryName,omitempty"`
+	// LinkedFactoryName - The data factory name for linked integration runtime.
+	LinkedFactoryName *string `json:"factoryName,omitempty"`
 }
 
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be

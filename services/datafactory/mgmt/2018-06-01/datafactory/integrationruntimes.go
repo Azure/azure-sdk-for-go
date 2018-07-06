@@ -870,7 +870,7 @@ func (client IntegrationRuntimesClient) RemoveLinks(ctx context.Context, resourc
 				{Target: "integrationRuntimeName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "integrationRuntimeName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: linkedIntegrationRuntimeRequest,
-			Constraints: []validation.Constraint{{Target: "linkedIntegrationRuntimeRequest.FactoryName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "linkedIntegrationRuntimeRequest.LinkedFactoryName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("datafactory.IntegrationRuntimesClient", "RemoveLinks", err.Error())
 	}
 

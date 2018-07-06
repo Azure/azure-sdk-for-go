@@ -4,13 +4,9 @@
   unused-packages = true
 
 [[constraint]]
-    name = "pack.ag/amqp"
-    version = "0.5.1"
-
-[[constraint]]
     name = "github.com/Azure/azure-sdk-for-go"
     version = "15"
 
 [[constraint]]
     name = "github.com/Azure/azure-amqp-common-go"
-    version = "0.5"
+    version = "0.6"

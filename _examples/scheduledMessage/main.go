@@ -38,7 +38,6 @@ func main() {
 	fmt.Printf("sent message at %v and should arrive in about a minute\n", time.Now().UTC())
 
 	received, err := q.ReceiveOne(context.Background())
-	received.Complete()
 	q.Close(context.Background())
 	fmt.Printf("received message: %q at %v\n", string(received.Data), time.Now().UTC())
 }

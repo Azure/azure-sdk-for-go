@@ -15,8 +15,8 @@
     "sas",
     "uuid"
   ]
-  revision = "8d02d4e77aba80165452199bb9bb24a82eb3b219"
-  version = "v0.5.0"
+  revision = "e05d7e9b03e1fd3a074d0f0b819bad445e3a0a69"
+  version = "v0.6.0"
 
 [[projects]]
   name = "github.com/Azure/azure-sdk-for-go"
@@ -39,8 +39,8 @@
     "autorest/to",
     "autorest/validation"
   ]
-  revision = "76796dcb80ab6491bf22e344402023c081a7a282"
-  version = "v10.11.1"
+  revision = "1f7cd6cfe0adea687ad44a512dfe76140f804318"
+  version = "v10.12.0"
 
 [[projects]]
   branch = "master"
@@ -131,7 +131,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "db08ff08e8622530d9ed3a0e8ac279f6d4c02196"
+  revision = "32a936f46389aa10549d60bd7833e54b01685d09"
 
 [[projects]]
   name = "pack.ag/amqp"
@@ -139,12 +139,12 @@
     ".",
     "internal/testconn"
   ]
-  revision = "b9bf967e3a73da612f8923137a4db396a766431e"
-  version = "v0.5.1"
+  revision = "751cf0d4eb77d69534dabeff0f3afb2a0eb8588c"
+  version = "v0.6.2"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "14a0287ff34d4c20b38ecb8a7960acb5fbba7d5c5e00c646cc4dd25da2390a95"
+  inputs-digest = "5e8578c26e6b7e59308cc99417b0a42224a3e199de96722b578d9f4bfa31262b"
   solver-name = "gps-cdcl"
   solver-version = 1

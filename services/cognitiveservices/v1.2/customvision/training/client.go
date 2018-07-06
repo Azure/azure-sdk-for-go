@@ -32,7 +32,7 @@ import (
 
 const (
 	// DefaultBaseURI is the default URI used for the service Training
-	DefaultBaseURI = "https://*.api.cognitive.microsoft.com/customvision/v2.0"
+	DefaultBaseURI = "https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Training"
 )
 
 // BaseClient is the base client for Training.
@@ -94,7 +94,7 @@ func (client BaseClient) CreateImageRegionsPreparer(ctx context.Context, project
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/regions", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/regions", pathParameters),
 		autorest.WithJSON(batch),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -166,7 +166,7 @@ func (client BaseClient) CreateImagesFromDataPreparer(ctx context.Context, proje
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithMultiPartFormData(formDataParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
@@ -230,7 +230,7 @@ func (client BaseClient) CreateImagesFromFilesPreparer(ctx context.Context, proj
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/files", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/files", pathParameters),
 		autorest.WithJSON(batch),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -293,7 +293,7 @@ func (client BaseClient) CreateImagesFromPredictionsPreparer(ctx context.Context
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/predictions", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/predictions", pathParameters),
 		autorest.WithJSON(batch),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -356,7 +356,7 @@ func (client BaseClient) CreateImagesFromUrlsPreparer(ctx context.Context, proje
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/urls", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/urls", pathParameters),
 		autorest.WithJSON(batch),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -418,7 +418,7 @@ func (client BaseClient) CreateImageTagsPreparer(ctx context.Context, projectID 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/tags", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/tags", pathParameters),
 		autorest.WithJSON(batch),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -486,7 +486,7 @@ func (client BaseClient) CreateProjectPreparer(ctx context.Context, name string,
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/training/projects"),
+		autorest.WithPath("/projects"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -555,7 +555,7 @@ func (client BaseClient) CreateTagPreparer(ctx context.Context, projectID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/tags", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/tags", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -626,7 +626,7 @@ func (client BaseClient) DeleteImageRegionsPreparer(ctx context.Context, project
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/regions", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/regions", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -696,7 +696,7 @@ func (client BaseClient) DeleteImagesPreparer(ctx context.Context, projectID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -770,7 +770,7 @@ func (client BaseClient) DeleteImageTagsPreparer(ctx context.Context, projectID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/tags", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/tags", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -831,7 +831,7 @@ func (client BaseClient) DeleteIterationPreparer(ctx context.Context, projectID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -900,7 +900,7 @@ func (client BaseClient) DeletePredictionPreparer(ctx context.Context, projectID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/predictions", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/predictions", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -959,7 +959,7 @@ func (client BaseClient) DeleteProjectPreparer(ctx context.Context, projectID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1019,7 +1019,7 @@ func (client BaseClient) DeleteTagPreparer(ctx context.Context, projectID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/tags/{tagId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/tags/{tagId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1088,7 +1088,7 @@ func (client BaseClient) ExportIterationPreparer(ctx context.Context, projectID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}/export", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}/export", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1148,7 +1148,7 @@ func (client BaseClient) GetDomainPreparer(ctx context.Context, domainID uuid.UU
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/domains/{domainId}", pathParameters),
+		autorest.WithPathParameters("/domains/{domainId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1201,7 +1201,7 @@ func (client BaseClient) GetDomainsPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/training/domains"),
+		autorest.WithPath("/domains"),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1262,7 +1262,7 @@ func (client BaseClient) GetExportsPreparer(ctx context.Context, projectID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}/export", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}/export", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1331,7 +1331,7 @@ func (client BaseClient) GetImagePerformanceCountPreparer(ctx context.Context, p
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}/performance/images/count", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}/performance/images/count", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1419,7 +1419,7 @@ func (client BaseClient) GetImagePerformancesPreparer(ctx context.Context, proje
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}/performance/images", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}/performance/images", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1482,7 +1482,7 @@ func (client BaseClient) GetImageRegionProposalsPreparer(ctx context.Context, pr
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/{projectId}/images/{imageId}/regionproposals", pathParameters),
+		autorest.WithPathParameters("/{projectId}/images/{imageId}/regionproposals", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1553,7 +1553,7 @@ func (client BaseClient) GetImagesByIdsPreparer(ctx context.Context, projectID u
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/id", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/id", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1615,7 +1615,7 @@ func (client BaseClient) GetIterationPreparer(ctx context.Context, projectID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1686,7 +1686,7 @@ func (client BaseClient) GetIterationPerformancePreparer(ctx context.Context, pr
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}/performance", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}/performance", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1746,7 +1746,7 @@ func (client BaseClient) GetIterationsPreparer(ctx context.Context, projectID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1805,7 +1805,7 @@ func (client BaseClient) GetProjectPreparer(ctx context.Context, projectID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1858,7 +1858,7 @@ func (client BaseClient) GetProjectsPreparer(ctx context.Context) (*http.Request
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/training/projects"),
+		autorest.WithPath("/projects"),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1925,7 +1925,7 @@ func (client BaseClient) GetTagPreparer(ctx context.Context, projectID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/tags/{tagId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/tags/{tagId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1997,7 +1997,7 @@ func (client BaseClient) GetTaggedImageCountPreparer(ctx context.Context, projec
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/tagged/count", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/tagged/count", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2087,7 +2087,7 @@ func (client BaseClient) GetTaggedImagesPreparer(ctx context.Context, projectID 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/tagged", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/tagged", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2153,7 +2153,7 @@ func (client BaseClient) GetTagsPreparer(ctx context.Context, projectID uuid.UUI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/tags", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/tags", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2221,7 +2221,7 @@ func (client BaseClient) GetUntaggedImageCountPreparer(ctx context.Context, proj
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/untagged/count", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/untagged/count", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2305,7 +2305,7 @@ func (client BaseClient) GetUntaggedImagesPreparer(ctx context.Context, projectI
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/images/untagged", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/images/untagged", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2367,7 +2367,7 @@ func (client BaseClient) QueryPredictionsPreparer(ctx context.Context, projectID
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/predictions/query", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/predictions/query", pathParameters),
 		autorest.WithJSON(query),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2438,7 +2438,7 @@ func (client BaseClient) QuickTestImagePreparer(ctx context.Context, projectID u
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/quicktest/image", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/quicktest/image", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithMultiPartFormData(formDataParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
@@ -2508,7 +2508,7 @@ func (client BaseClient) QuickTestImageURLPreparer(ctx context.Context, projectI
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/quicktest/url", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/quicktest/url", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
@@ -2569,7 +2569,7 @@ func (client BaseClient) TrainProjectPreparer(ctx context.Context, projectID uui
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/train", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/train", pathParameters),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -2632,7 +2632,7 @@ func (client BaseClient) UpdateIterationPreparer(ctx context.Context, projectID 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/iterations/{iterationId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/iterations/{iterationId}", pathParameters),
 		autorest.WithJSON(updatedIteration),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2694,7 +2694,7 @@ func (client BaseClient) UpdateProjectPreparer(ctx context.Context, projectID uu
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}", pathParameters),
 		autorest.WithJSON(updatedProject),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -2758,7 +2758,7 @@ func (client BaseClient) UpdateTagPreparer(ctx context.Context, projectID uuid.U
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/training/projects/{projectId}/tags/{tagId}", pathParameters),
+		autorest.WithPathParameters("/projects/{projectId}/tags/{tagId}", pathParameters),
 		autorest.WithJSON(updatedTag),
 		autorest.WithHeader("Training-Key", client.APIKey))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

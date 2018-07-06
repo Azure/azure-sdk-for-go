@@ -1481,13 +1481,15 @@ const (
 	TypeDependencyReference TypeBasicDependencyReference = "DependencyReference"
 	// TypeSelfDependencyTumblingWindowTriggerReference ...
 	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = "SelfDependencyTumblingWindowTriggerReference"
+	// TypeTriggerDependencyReference ...
+	TypeTriggerDependencyReference TypeBasicDependencyReference = "TriggerDependencyReference"
 	// TypeTumblingWindowTriggerDependencyReference ...
 	TypeTumblingWindowTriggerDependencyReference TypeBasicDependencyReference = "TumblingWindowTriggerDependencyReference"
 )
 
 // PossibleTypeBasicDependencyReferenceValues returns an array of possible values for the TypeBasicDependencyReference const type.
 func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference {
-	return []TypeBasicDependencyReference{TypeDependencyReference, TypeSelfDependencyTumblingWindowTriggerReference, TypeTumblingWindowTriggerDependencyReference}
+	return []TypeBasicDependencyReference{TypeDependencyReference, TypeSelfDependencyTumblingWindowTriggerReference, TypeTriggerDependencyReference, TypeTumblingWindowTriggerDependencyReference}
 }
 
 // TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
@@ -27661,12 +27663,14 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 type BasicDependencyReference interface {
 	AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool)
 	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+	AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool)
 	AsDependencyReference() (*DependencyReference, bool)
 }
 
 // DependencyReference referenced dependency
 type DependencyReference struct {
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference'
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
 }
 
@@ -27686,6 +27690,10 @@ func unmarshalBasicDependencyReference(body []byte) (BasicDependencyReference, e
 		var twtdr TumblingWindowTriggerDependencyReference
 		err := json.Unmarshal(body, &twtdr)
 		return twtdr, err
+	case string(TypeTriggerDependencyReference):
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
 	default:
 		var dr DependencyReference
 		err := json.Unmarshal(body, &dr)
@@ -27728,6 +27736,16 @@ func (dr DependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (
 
 // AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
 func (dr DependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for DependencyReference.
+func (dr DependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
 	return nil, false
 }
 
@@ -77720,7 +77738,7 @@ type SelfDependencyTumblingWindowTriggerReference struct {
 	Offset *string `json:"offset,omitempty"`
 	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Size *string `json:"size,omitempty"`
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference'
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
 }
 
@@ -77747,6 +77765,16 @@ func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsSelfDependencyTumbl
 
 // AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
 func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for SelfDependencyTumblingWindowTriggerReference.
+func (sdtwtr SelfDependencyTumblingWindowTriggerReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
 	return nil, false
 }
 
@@ -87244,6 +87272,100 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &t, true
 }
 
+// BasicTriggerDependencyReference trigger referenced dependency
+type BasicTriggerDependencyReference interface {
+	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
+	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
+}
+
+// TriggerDependencyReference trigger referenced dependency
+type TriggerDependencyReference struct {
+	// ReferenceTrigger - Referenced trigger
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
+	Type TypeBasicDependencyReference `json:"type,omitempty"`
+}
+
+func unmarshalBasicTriggerDependencyReference(body []byte) (BasicTriggerDependencyReference, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeTumblingWindowTriggerDependencyReference):
+		var twtdr TumblingWindowTriggerDependencyReference
+		err := json.Unmarshal(body, &twtdr)
+		return twtdr, err
+	default:
+		var tdr TriggerDependencyReference
+		err := json.Unmarshal(body, &tdr)
+		return tdr, err
+	}
+}
+func unmarshalBasicTriggerDependencyReferenceArray(body []byte) ([]BasicTriggerDependencyReference, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tdrArray := make([]BasicTriggerDependencyReference, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tdr, err := unmarshalBasicTriggerDependencyReference(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tdrArray[index] = tdr
+	}
+	return tdrArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) MarshalJSON() ([]byte, error) {
+	tdr.Type = TypeTriggerDependencyReference
+	objectMap := make(map[string]interface{})
+	if tdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = tdr.ReferenceTrigger
+	}
+	if tdr.Type != "" {
+		objectMap["type"] = tdr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSelfDependencyTumblingWindowTriggerReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool) {
+	return nil, false
+}
+
+// AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
+	return &tdr, true
+}
+
+// AsDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsDependencyReference() (*DependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicDependencyReference is the BasicDependencyReference implementation for TriggerDependencyReference.
+func (tdr TriggerDependencyReference) AsBasicDependencyReference() (BasicDependencyReference, bool) {
+	return &tdr, true
+}
+
 // TriggerListResponse a list of trigger resources.
 type TriggerListResponse struct {
 	autorest.Response `json:"-"`
@@ -87805,13 +87927,13 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 
 // TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency
 type TumblingWindowTriggerDependencyReference struct {
-	// ReferenceTrigger - Referenced trigger
-	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
 	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Offset *string `json:"offset,omitempty"`
 	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Size *string `json:"size,omitempty"`
-	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference'
+	// ReferenceTrigger - Referenced trigger
+	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
+	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
 }
 
@@ -87819,14 +87941,14 @@ type TumblingWindowTriggerDependencyReference struct {
 func (twtdr TumblingWindowTriggerDependencyReference) MarshalJSON() ([]byte, error) {
 	twtdr.Type = TypeTumblingWindowTriggerDependencyReference
 	objectMap := make(map[string]interface{})
-	if twtdr.ReferenceTrigger != nil {
-		objectMap["referenceTrigger"] = twtdr.ReferenceTrigger
-	}
 	if twtdr.Offset != nil {
 		objectMap["offset"] = twtdr.Offset
 	}
 	if twtdr.Size != nil {
 		objectMap["size"] = twtdr.Size
+	}
+	if twtdr.ReferenceTrigger != nil {
+		objectMap["referenceTrigger"] = twtdr.ReferenceTrigger
 	}
 	if twtdr.Type != "" {
 		objectMap["type"] = twtdr.Type
@@ -87841,6 +87963,16 @@ func (twtdr TumblingWindowTriggerDependencyReference) AsSelfDependencyTumblingWi
 
 // AsTumblingWindowTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
 func (twtdr TumblingWindowTriggerDependencyReference) AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool) {
+	return &twtdr, true
+}
+
+// AsTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsTriggerDependencyReference() (*TriggerDependencyReference, bool) {
+	return nil, false
+}
+
+// AsBasicTriggerDependencyReference is the BasicDependencyReference implementation for TumblingWindowTriggerDependencyReference.
+func (twtdr TumblingWindowTriggerDependencyReference) AsBasicTriggerDependencyReference() (BasicTriggerDependencyReference, bool) {
 	return &twtdr, true
 }
 

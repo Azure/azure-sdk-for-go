@@ -726,6 +726,7 @@ type TypeBasicDependencyReference = original.TypeBasicDependencyReference
 const (
 	TypeDependencyReference                          TypeBasicDependencyReference = original.TypeDependencyReference
 	TypeSelfDependencyTumblingWindowTriggerReference TypeBasicDependencyReference = original.TypeSelfDependencyTumblingWindowTriggerReference
+	TypeTriggerDependencyReference                   TypeBasicDependencyReference = original.TypeTriggerDependencyReference
 	TypeTumblingWindowTriggerDependencyReference     TypeBasicDependencyReference = original.TypeTumblingWindowTriggerDependencyReference
 )
 
@@ -1295,6 +1296,8 @@ type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypePro
 type TextFormat = original.TextFormat
 type BasicTrigger = original.BasicTrigger
 type Trigger = original.Trigger
+type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
+type TriggerDependencyReference = original.TriggerDependencyReference
 type TriggerListResponse = original.TriggerListResponse
 type TriggerListResponseIterator = original.TriggerListResponseIterator
 type TriggerListResponsePage = original.TriggerListResponsePage

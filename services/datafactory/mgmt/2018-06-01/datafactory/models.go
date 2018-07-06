@@ -52,15 +52,15 @@ type AuthorizationType string
 const (
 	// AuthorizationTypeKey ...
 	AuthorizationTypeKey AuthorizationType = "Key"
-	// AuthorizationTypeLinkedIntegrationRuntimeProperties ...
-	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = "LinkedIntegrationRuntimeProperties"
+	// AuthorizationTypeLinkedIntegrationRuntimeType ...
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
 	// AuthorizationTypeRBAC ...
 	AuthorizationTypeRBAC AuthorizationType = "RBAC"
 )
 
 // PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
 func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeProperties, AuthorizationTypeRBAC}
+	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeRBAC}
 }
 
 // AzureSearchIndexWriteBehaviorType enumerates the values for azure search index write behavior type.
@@ -51894,61 +51894,109 @@ type LinkedIntegrationRuntime struct {
 	CreateTime *date.Time `json:"createTime,omitempty"`
 }
 
-// LinkedIntegrationRuntimeKey the key authorization type.
-type LinkedIntegrationRuntimeKey struct {
+// LinkedIntegrationRuntimeKeyAuthorization the key authorization type integration runtime.
+type LinkedIntegrationRuntimeKeyAuthorization struct {
 	// Key - The key used for authorization.
 	Key *SecureString `json:"key,omitempty"`
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
 	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) MarshalJSON() ([]byte, error) {
-	lirk.AuthorizationType = AuthorizationTypeKey
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) MarshalJSON() ([]byte, error) {
+	lirka.AuthorizationType = AuthorizationTypeKey
 	objectMap := make(map[string]interface{})
-	if lirk.Key != nil {
-		objectMap["key"] = lirk.Key
+	if lirka.Key != nil {
+		objectMap["key"] = lirka.Key
 	}
-	if lirk.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirk.AuthorizationType
+	if lirka.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirka.AuthorizationType
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
 	return nil, false
 }
 
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
-	return &lirk, true
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return &lirka, true
 }
 
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
 	return nil, false
 }
 
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeKey.
-func (lirk LinkedIntegrationRuntimeKey) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirk, true
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeKeyAuthorization.
+func (lirka LinkedIntegrationRuntimeKeyAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirka, true
 }
 
-// BasicLinkedIntegrationRuntimeProperties the base definition of a linked integration runtime properties.
-type BasicLinkedIntegrationRuntimeProperties interface {
-	AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool)
-	AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool)
-	AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool)
-}
-
-// LinkedIntegrationRuntimeProperties the base definition of a linked integration runtime properties.
-type LinkedIntegrationRuntimeProperties struct {
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+// LinkedIntegrationRuntimeRbacAuthorization the role based access control (RBAC) authorization type integration
+// runtime.
+type LinkedIntegrationRuntimeRbacAuthorization struct {
+	// ResourceID - The resource identifier of the integration runtime to be shared.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
 	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
 }
 
-func unmarshalBasicLinkedIntegrationRuntimeProperties(body []byte) (BasicLinkedIntegrationRuntimeProperties, error) {
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) MarshalJSON() ([]byte, error) {
+	lirra.AuthorizationType = AuthorizationTypeRBAC
+	objectMap := make(map[string]interface{})
+	if lirra.ResourceID != nil {
+		objectMap["resourceId"] = lirra.ResourceID
+	}
+	if lirra.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirra.AuthorizationType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
+	return &lirra, true
+}
+
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
+	return nil, false
+}
+
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return nil, false
+}
+
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeRbacAuthorization.
+func (lirra LinkedIntegrationRuntimeRbacAuthorization) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirra, true
+}
+
+// LinkedIntegrationRuntimeRequest data factory name for linked integration runtime request.
+type LinkedIntegrationRuntimeRequest struct {
+	// LinkedFactoryName - The data factory name for linked integration runtime.
+	LinkedFactoryName *string `json:"factoryName,omitempty"`
+}
+
+// BasicLinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type BasicLinkedIntegrationRuntimeType interface {
+	AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool)
+	AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool)
+	AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool)
+}
+
+// LinkedIntegrationRuntimeType the base definition of a linked integration runtime.
+type LinkedIntegrationRuntimeType struct {
+	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeType', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
+	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
+}
+
+func unmarshalBasicLinkedIntegrationRuntimeType(body []byte) (BasicLinkedIntegrationRuntimeType, error) {
 	var m map[string]interface{}
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -51957,113 +52005,66 @@ func unmarshalBasicLinkedIntegrationRuntimeProperties(body []byte) (BasicLinkedI
 
 	switch m["authorizationType"] {
 	case string(AuthorizationTypeRBAC):
-		var lirr LinkedIntegrationRuntimeRbac
-		err := json.Unmarshal(body, &lirr)
-		return lirr, err
+		var lirra LinkedIntegrationRuntimeRbacAuthorization
+		err := json.Unmarshal(body, &lirra)
+		return lirra, err
 	case string(AuthorizationTypeKey):
-		var lirk LinkedIntegrationRuntimeKey
-		err := json.Unmarshal(body, &lirk)
-		return lirk, err
+		var lirka LinkedIntegrationRuntimeKeyAuthorization
+		err := json.Unmarshal(body, &lirka)
+		return lirka, err
 	default:
-		var lirp LinkedIntegrationRuntimeProperties
-		err := json.Unmarshal(body, &lirp)
-		return lirp, err
+		var lirt LinkedIntegrationRuntimeType
+		err := json.Unmarshal(body, &lirt)
+		return lirt, err
 	}
 }
-func unmarshalBasicLinkedIntegrationRuntimePropertiesArray(body []byte) ([]BasicLinkedIntegrationRuntimeProperties, error) {
+func unmarshalBasicLinkedIntegrationRuntimeTypeArray(body []byte) ([]BasicLinkedIntegrationRuntimeType, error) {
 	var rawMessages []*json.RawMessage
 	err := json.Unmarshal(body, &rawMessages)
 	if err != nil {
 		return nil, err
 	}
 
-	lirpArray := make([]BasicLinkedIntegrationRuntimeProperties, len(rawMessages))
+	lirtArray := make([]BasicLinkedIntegrationRuntimeType, len(rawMessages))
 
 	for index, rawMessage := range rawMessages {
-		lirp, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*rawMessage)
+		lirt, err := unmarshalBasicLinkedIntegrationRuntimeType(*rawMessage)
 		if err != nil {
 			return nil, err
 		}
-		lirpArray[index] = lirp
+		lirtArray[index] = lirt
 	}
-	return lirpArray, nil
+	return lirtArray, nil
 }
 
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) MarshalJSON() ([]byte, error) {
-	lirp.AuthorizationType = AuthorizationTypeLinkedIntegrationRuntimeProperties
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) MarshalJSON() ([]byte, error) {
+	lirt.AuthorizationType = AuthorizationTypeLinkedIntegrationRuntimeType
 	objectMap := make(map[string]interface{})
-	if lirp.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirp.AuthorizationType
+	if lirt.AuthorizationType != "" {
+		objectMap["authorizationType"] = lirt.AuthorizationType
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
+// AsLinkedIntegrationRuntimeRbacAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeRbacAuthorization() (*LinkedIntegrationRuntimeRbacAuthorization, bool) {
 	return nil, false
 }
 
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
+// AsLinkedIntegrationRuntimeKeyAuthorization is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeKeyAuthorization() (*LinkedIntegrationRuntimeKeyAuthorization, bool) {
 	return nil, false
 }
 
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
-	return &lirp, true
+// AsLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsLinkedIntegrationRuntimeType() (*LinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
 }
 
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeProperties.
-func (lirp LinkedIntegrationRuntimeProperties) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirp, true
-}
-
-// LinkedIntegrationRuntimeRbac the role based access control (RBAC) authorization type.
-type LinkedIntegrationRuntimeRbac struct {
-	// ResourceID - The resource identifier of the integration runtime to be shared.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// AuthorizationType - Possible values include: 'AuthorizationTypeLinkedIntegrationRuntimeProperties', 'AuthorizationTypeRBAC', 'AuthorizationTypeKey'
-	AuthorizationType AuthorizationType `json:"authorizationType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) MarshalJSON() ([]byte, error) {
-	lirr.AuthorizationType = AuthorizationTypeRBAC
-	objectMap := make(map[string]interface{})
-	if lirr.ResourceID != nil {
-		objectMap["resourceId"] = lirr.ResourceID
-	}
-	if lirr.AuthorizationType != "" {
-		objectMap["authorizationType"] = lirr.AuthorizationType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsLinkedIntegrationRuntimeRbac is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeRbac() (*LinkedIntegrationRuntimeRbac, bool) {
-	return &lirr, true
-}
-
-// AsLinkedIntegrationRuntimeKey is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeKey() (*LinkedIntegrationRuntimeKey, bool) {
-	return nil, false
-}
-
-// AsLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsLinkedIntegrationRuntimeProperties() (*LinkedIntegrationRuntimeProperties, bool) {
-	return nil, false
-}
-
-// AsBasicLinkedIntegrationRuntimeProperties is the BasicLinkedIntegrationRuntimeProperties implementation for LinkedIntegrationRuntimeRbac.
-func (lirr LinkedIntegrationRuntimeRbac) AsBasicLinkedIntegrationRuntimeProperties() (BasicLinkedIntegrationRuntimeProperties, bool) {
-	return &lirr, true
-}
-
-// LinkedIntegrationRuntimeRequest data factory name for linked integration runtime request.
-type LinkedIntegrationRuntimeRequest struct {
-	// LinkedFactoryName - The data factory name for linked integration runtime.
-	LinkedFactoryName *string `json:"factoryName,omitempty"`
+// AsBasicLinkedIntegrationRuntimeType is the BasicLinkedIntegrationRuntimeType implementation for LinkedIntegrationRuntimeType.
+func (lirt LinkedIntegrationRuntimeType) AsBasicLinkedIntegrationRuntimeType() (BasicLinkedIntegrationRuntimeType, bool) {
+	return &lirt, true
 }
 
 // BasicLinkedService the Azure Data Factory nested object which contains the information and credential which can be
@@ -78680,7 +78681,7 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 
 // SelfHostedIntegrationRuntimeTypeProperties the self-hosted integration runtime properties.
 type SelfHostedIntegrationRuntimeTypeProperties struct {
-	LinkedInfo BasicLinkedIntegrationRuntimeProperties `json:"linkedInfo,omitempty"`
+	LinkedInfo BasicLinkedIntegrationRuntimeType `json:"linkedInfo,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for SelfHostedIntegrationRuntimeTypeProperties struct.
@@ -78694,7 +78695,7 @@ func (shirtp *SelfHostedIntegrationRuntimeTypeProperties) UnmarshalJSON(body []b
 		switch k {
 		case "linkedInfo":
 			if v != nil {
-				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeProperties(*v)
+				linkedInfo, err := unmarshalBasicLinkedIntegrationRuntimeType(*v)
 				if err != nil {
 					return err
 				}

@@ -45,9 +45,9 @@ const (
 type AuthorizationType = original.AuthorizationType
 
 const (
-	AuthorizationTypeKey                                AuthorizationType = original.AuthorizationTypeKey
-	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeProperties
-	AuthorizationTypeRBAC                               AuthorizationType = original.AuthorizationTypeRBAC
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
@@ -1116,11 +1116,11 @@ type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
 type JSONFormat = original.JSONFormat
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
-type LinkedIntegrationRuntimeKey = original.LinkedIntegrationRuntimeKey
-type BasicLinkedIntegrationRuntimeProperties = original.BasicLinkedIntegrationRuntimeProperties
-type LinkedIntegrationRuntimeProperties = original.LinkedIntegrationRuntimeProperties
-type LinkedIntegrationRuntimeRbac = original.LinkedIntegrationRuntimeRbac
+type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
+type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
 type LinkedIntegrationRuntimeRequest = original.LinkedIntegrationRuntimeRequest
+type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
+type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse

@@ -24,6 +24,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/satori/go.uuid"
+	"io"
 	"net/http"
 )
 
@@ -5624,6 +5625,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ReadCloser ...
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
 // Resource the core properties of ARM resources
 type Resource struct {
 	// ID - Fully qualified resource Id for the resource
@@ -5962,7 +5969,7 @@ type RunbookDraftReplaceContentFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (s String, err error) {
+func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient) (rc ReadCloser, err error) {
 	var done bool
 	done, err = future.Done(client)
 	if err != nil {
@@ -5974,10 +5981,10 @@ func (future *RunbookDraftReplaceContentFuture) Result(client RunbookDraftClient
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
-		s, err = client.ReplaceContentResponder(s.Response.Response)
+	if rc.Response.Response, err = future.GetResult(sender); err == nil && rc.Response.Response.StatusCode != http.StatusNoContent {
+		rc, err = client.ReplaceContentResponder(rc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", s.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", rc.Response.Response, "Failure responding to request")
 		}
 	}
 	return

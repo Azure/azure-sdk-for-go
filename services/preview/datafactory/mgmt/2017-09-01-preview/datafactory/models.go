@@ -77734,9 +77734,9 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 
 // SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency.
 type SelfDependencyTumblingWindowTriggerReference struct {
-	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
 	Offset *string `json:"offset,omitempty"`
-	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
 	Size *string `json:"size,omitempty"`
 	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
@@ -87927,9 +87927,9 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 
 // TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency.
 type TumblingWindowTriggerDependencyReference struct {
-	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, .Net timespan format.
 	Offset *string `json:"offset,omitempty"`
-	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, .Net timespan format.
 	Size *string `json:"size,omitempty"`
 	// ReferenceTrigger - Referenced trigger.
 	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`

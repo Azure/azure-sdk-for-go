@@ -461,8 +461,6 @@ type ProjectResultList = original.ProjectResultList
 type VMFamily = original.VMFamily
 type OperationsClient = original.OperationsClient
 type ProjectsClient = original.ProjectsClient
-type ProjectsInSubscriptionClient = original.ProjectsInSubscriptionClient
-type SubscriptionNotificationClient = original.SubscriptionNotificationClient
 
 func NewAssessedMachinesClient(subscriptionID string, acceptLanguage string) AssessedMachinesClient {
 	return original.NewAssessedMachinesClient(subscriptionID, acceptLanguage)
@@ -574,18 +572,6 @@ func NewProjectsClient(subscriptionID string, acceptLanguage string) ProjectsCli
 }
 func NewProjectsClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsClient {
 	return original.NewProjectsClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewProjectsInSubscriptionClient(subscriptionID string, acceptLanguage string) ProjectsInSubscriptionClient {
-	return original.NewProjectsInSubscriptionClient(subscriptionID, acceptLanguage)
-}
-func NewProjectsInSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) ProjectsInSubscriptionClient {
-	return original.NewProjectsInSubscriptionClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
-}
-func NewSubscriptionNotificationClient(subscriptionID string, acceptLanguage string) SubscriptionNotificationClient {
-	return original.NewSubscriptionNotificationClient(subscriptionID, acceptLanguage)
-}
-func NewSubscriptionNotificationClientWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string) SubscriptionNotificationClient {
-	return original.NewSubscriptionNotificationClientWithBaseURI(baseURI, subscriptionID, acceptLanguage)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

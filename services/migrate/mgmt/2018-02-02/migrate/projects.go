@@ -186,6 +186,71 @@ func (client ProjectsClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
+// DeleteBySubscription delete all projects in the subscription. Deleting non-existent project is a no-operation.
+func (client ProjectsClient) DeleteBySubscription(ctx context.Context) (result autorest.Response, err error) {
+	req, err := client.DeleteBySubscriptionPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteBySubscriptionSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteBySubscriptionPreparer prepares the DeleteBySubscription request.
+func (client ProjectsClient) DeleteBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/deleteSubscriptionNotification", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteBySubscriptionSender sends the DeleteBySubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProjectsClient) DeleteBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// DeleteBySubscriptionResponder handles the response to the DeleteBySubscription request. The method always
+// closes the http.Response Body.
+func (client ProjectsClient) DeleteBySubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get get the project with the specified name.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that project is part of.
@@ -328,33 +393,33 @@ func (client ProjectsClient) GetKeysResponder(resp *http.Response) (result Proje
 	return
 }
 
-// List get all the projects in the resource group.
+// ListByResourceGroup get all the projects in the resource group.
 // Parameters:
 // resourceGroupName - name of the Azure Resource Group that project is part of.
-func (client ProjectsClient) List(ctx context.Context, resourceGroupName string) (result ProjectResultList, err error) {
-	req, err := client.ListPreparer(ctx, resourceGroupName)
+func (client ProjectsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ProjectResultList, err error) {
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client ProjectsClient) ListPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client ProjectsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -377,16 +442,82 @@ func (client ProjectsClient) ListPreparer(ctx context.Context, resourceGroupName
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProjectsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProjectsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ProjectsClient) ListResponder(resp *http.Response) (result ProjectResultList, err error) {
+func (client ProjectsClient) ListByResourceGroupResponder(resp *http.Response) (result ProjectResultList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListBySubscription get all the projects in the subscription.
+func (client ProjectsClient) ListBySubscription(ctx context.Context) (result ProjectResultList, err error) {
+	req, err := client.ListBySubscriptionPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListBySubscription", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListBySubscription", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListBySubscriptionPreparer prepares the ListBySubscription request.
+func (client ProjectsClient) ListBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-02"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Migrate/projects", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if len(client.AcceptLanguage) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProjectsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
+// closes the http.Response Body.
+func (client ProjectsClient) ListBySubscriptionResponder(resp *http.Response) (result ProjectResultList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -27659,7 +27659,7 @@ func (d2lstp *Db2LinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BasicDependencyReference referenced dependency
+// BasicDependencyReference referenced dependency.
 type BasicDependencyReference interface {
 	AsSelfDependencyTumblingWindowTriggerReference() (*SelfDependencyTumblingWindowTriggerReference, bool)
 	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
@@ -27668,7 +27668,7 @@ type BasicDependencyReference interface {
 	AsDependencyReference() (*DependencyReference, bool)
 }
 
-// DependencyReference referenced dependency
+// DependencyReference referenced dependency.
 type DependencyReference struct {
 	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
@@ -77732,7 +77732,7 @@ func (ss SecureString) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &ss, true
 }
 
-// SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency
+// SelfDependencyTumblingWindowTriggerReference self referenced tumbling window trigger dependency.
 type SelfDependencyTumblingWindowTriggerReference struct {
 	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Offset *string `json:"offset,omitempty"`
@@ -87272,15 +87272,15 @@ func (t Trigger) AsBasicTrigger() (BasicTrigger, bool) {
 	return &t, true
 }
 
-// BasicTriggerDependencyReference trigger referenced dependency
+// BasicTriggerDependencyReference trigger referenced dependency.
 type BasicTriggerDependencyReference interface {
 	AsTumblingWindowTriggerDependencyReference() (*TumblingWindowTriggerDependencyReference, bool)
 	AsTriggerDependencyReference() (*TriggerDependencyReference, bool)
 }
 
-// TriggerDependencyReference trigger referenced dependency
+// TriggerDependencyReference trigger referenced dependency.
 type TriggerDependencyReference struct {
-	// ReferenceTrigger - Referenced trigger
+	// ReferenceTrigger - Referenced trigger.
 	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
 	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
@@ -87925,13 +87925,13 @@ func (twt *TumblingWindowTrigger) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency
+// TumblingWindowTriggerDependencyReference referenced tumbling window trigger dependency.
 type TumblingWindowTriggerDependencyReference struct {
 	// Offset - Timespan applied to the start time of a tumbling window when evaluating dependency, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Offset *string `json:"offset,omitempty"`
 	// Size - The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used, pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	Size *string `json:"size,omitempty"`
-	// ReferenceTrigger - Referenced trigger
+	// ReferenceTrigger - Referenced trigger.
 	ReferenceTrigger *TriggerReference `json:"referenceTrigger,omitempty"`
 	// Type - Possible values include: 'TypeDependencyReference', 'TypeSelfDependencyTumblingWindowTriggerReference', 'TypeTumblingWindowTriggerDependencyReference', 'TypeTriggerDependencyReference'
 	Type TypeBasicDependencyReference `json:"type,omitempty"`
@@ -88002,7 +88002,7 @@ type TumblingWindowTriggerTypeProperties struct {
 	MaxConcurrency *int32 `json:"maxConcurrency,omitempty"`
 	// RetryPolicy - Retry policy that will be applied for failed pipeline runs.
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
-	// DependsOn - Tumbling window triggers that this trigger depends on. Only tumbling window triggers are supported.
+	// DependsOn - Triggers that this trigger depends on. Only tumbling window triggers are supported.
 	DependsOn *[]BasicDependencyReference `json:"dependsOn,omitempty"`
 }
 

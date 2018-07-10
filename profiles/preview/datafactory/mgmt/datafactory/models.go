@@ -42,6 +42,14 @@ const (
 	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
+type AuthorizationType = original.AuthorizationType
+
+const (
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
+)
+
 type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
 
 const (
@@ -245,6 +253,7 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
+	AccessDenied     IntegrationRuntimeState = original.AccessDenied
 	Initial          IntegrationRuntimeState = original.Initial
 	Limited          IntegrationRuntimeState = original.Limited
 	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
@@ -1106,6 +1115,12 @@ type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
 type JSONFormat = original.JSONFormat
+type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
+type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
+type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
+type LinkedIntegrationRuntimeRequest = original.LinkedIntegrationRuntimeRequest
+type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
+type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type BasicLinkedService = original.BasicLinkedService
 type LinkedService = original.LinkedService
 type LinkedServiceListResponse = original.LinkedServiceListResponse
@@ -1253,6 +1268,7 @@ type SelfHostedIntegrationRuntime = original.SelfHostedIntegrationRuntime
 type SelfHostedIntegrationRuntimeNode = original.SelfHostedIntegrationRuntimeNode
 type SelfHostedIntegrationRuntimeStatus = original.SelfHostedIntegrationRuntimeStatus
 type SelfHostedIntegrationRuntimeStatusTypeProperties = original.SelfHostedIntegrationRuntimeStatusTypeProperties
+type SelfHostedIntegrationRuntimeTypeProperties = original.SelfHostedIntegrationRuntimeTypeProperties
 type ServiceNowLinkedService = original.ServiceNowLinkedService
 type ServiceNowLinkedServiceTypeProperties = original.ServiceNowLinkedServiceTypeProperties
 type ServiceNowObjectDataset = original.ServiceNowObjectDataset
@@ -1386,6 +1402,9 @@ func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) L
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleAuthorizationTypeValues() []AuthorizationType {
+	return original.PossibleAuthorizationTypeValues()
 }
 func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
 	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()

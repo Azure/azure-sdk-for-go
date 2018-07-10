@@ -31,13 +31,13 @@ type ActivityClient struct {
 }
 
 // NewActivityClient creates an instance of the ActivityClient client.
-func NewActivityClient(subscriptionID string, countType1 CountType) ActivityClient {
-	return NewActivityClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewActivityClient(subscriptionID string) ActivityClient {
+	return NewActivityClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewActivityClientWithBaseURI creates an instance of the ActivityClient client.
-func NewActivityClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ActivityClient {
-	return ActivityClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) ActivityClient {
+	return ActivityClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the activity in the module identified by module name and activity name.

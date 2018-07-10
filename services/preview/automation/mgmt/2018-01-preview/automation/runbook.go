@@ -31,13 +31,13 @@ type RunbookClient struct {
 }
 
 // NewRunbookClient creates an instance of the RunbookClient client.
-func NewRunbookClient(subscriptionID string, countType1 CountType) RunbookClient {
-	return NewRunbookClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewRunbookClient(subscriptionID string) RunbookClient {
+	return NewRunbookClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewRunbookClientWithBaseURI creates an instance of the RunbookClient client.
-func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) RunbookClient {
-	return RunbookClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string) RunbookClient {
+	return RunbookClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create the runbook identified by runbook name.

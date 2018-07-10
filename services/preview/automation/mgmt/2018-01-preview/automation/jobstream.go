@@ -31,13 +31,13 @@ type JobStreamClient struct {
 }
 
 // NewJobStreamClient creates an instance of the JobStreamClient client.
-func NewJobStreamClient(subscriptionID string, countType1 CountType) JobStreamClient {
-	return NewJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewJobStreamClient(subscriptionID string) JobStreamClient {
+	return NewJobStreamClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewJobStreamClientWithBaseURI creates an instance of the JobStreamClient client.
-func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobStreamClient {
-	return JobStreamClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStreamClient {
+	return JobStreamClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the job stream identified by job stream id.

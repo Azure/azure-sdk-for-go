@@ -74,21 +74,6 @@ func PossibleContentSourceTypeValues() []ContentSourceType {
 	return []ContentSourceType{EmbeddedContent, URI}
 }
 
-// CountType enumerates the values for count type.
-type CountType string
-
-const (
-	// Nodeconfiguration ...
-	Nodeconfiguration CountType = "nodeconfiguration"
-	// Status ...
-	Status CountType = "status"
-)
-
-// PossibleCountTypeValues returns an array of possible values for the CountType const type.
-func PossibleCountTypeValues() []CountType {
-	return []CountType{Nodeconfiguration, Status}
-}
-
 // DscConfigurationProvisioningState enumerates the values for dsc configuration provisioning state.
 type DscConfigurationProvisioningState string
 

@@ -31,13 +31,13 @@ type CertificateClient struct {
 }
 
 // NewCertificateClient creates an instance of the CertificateClient client.
-func NewCertificateClient(subscriptionID string, countType1 CountType) CertificateClient {
-	return NewCertificateClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewCertificateClient(subscriptionID string) CertificateClient {
+	return NewCertificateClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCertificateClientWithBaseURI creates an instance of the CertificateClient client.
-func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) CertificateClient {
-	return CertificateClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
+	return CertificateClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a certificate.

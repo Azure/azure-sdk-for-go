@@ -31,13 +31,13 @@ type NodeCountInformationClient struct {
 }
 
 // NewNodeCountInformationClient creates an instance of the NodeCountInformationClient client.
-func NewNodeCountInformationClient(subscriptionID string, countType1 CountType) NodeCountInformationClient {
-	return NewNodeCountInformationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewNodeCountInformationClient(subscriptionID string) NodeCountInformationClient {
+	return NewNodeCountInformationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewNodeCountInformationClientWithBaseURI creates an instance of the NodeCountInformationClient client.
-func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeCountInformationClient {
-	return NodeCountInformationClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string) NodeCountInformationClient {
+	return NodeCountInformationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve counts for Dsc Nodes.
@@ -78,7 +78,7 @@ func (client NodeCountInformationClient) Get(ctx context.Context, resourceGroupN
 func (client NodeCountInformationClient) GetPreparer(ctx context.Context, resourceGroupName string, automationAccountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"automationAccountName": autorest.Encode("path", automationAccountName),
-		"countType":             autorest.Encode("path", client.CountType1),
+		"countType":             autorest.Encode("path", "status"),
 		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}

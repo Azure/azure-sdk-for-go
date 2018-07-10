@@ -31,14 +31,14 @@ type AgentRegistrationInformationClient struct {
 }
 
 // NewAgentRegistrationInformationClient creates an instance of the AgentRegistrationInformationClient client.
-func NewAgentRegistrationInformationClient(subscriptionID string, countType1 CountType) AgentRegistrationInformationClient {
-	return NewAgentRegistrationInformationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewAgentRegistrationInformationClient(subscriptionID string) AgentRegistrationInformationClient {
+	return NewAgentRegistrationInformationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAgentRegistrationInformationClientWithBaseURI creates an instance of the AgentRegistrationInformationClient
 // client.
-func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) AgentRegistrationInformationClient {
-	return AgentRegistrationInformationClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string) AgentRegistrationInformationClient {
+	return AgentRegistrationInformationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the automation agent registration information.

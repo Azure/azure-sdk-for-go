@@ -31,13 +31,13 @@ type DscConfigurationClient struct {
 }
 
 // NewDscConfigurationClient creates an instance of the DscConfigurationClient client.
-func NewDscConfigurationClient(subscriptionID string, countType1 CountType) DscConfigurationClient {
-	return NewDscConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewDscConfigurationClient(subscriptionID string) DscConfigurationClient {
+	return NewDscConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDscConfigurationClientWithBaseURI creates an instance of the DscConfigurationClient client.
-func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscConfigurationClient {
-	return DscConfigurationClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscConfigurationClient {
+	return DscConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create the configuration identified by configuration name.

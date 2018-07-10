@@ -31,13 +31,13 @@ type HybridRunbookWorkerGroupClient struct {
 }
 
 // NewHybridRunbookWorkerGroupClient creates an instance of the HybridRunbookWorkerGroupClient client.
-func NewHybridRunbookWorkerGroupClient(subscriptionID string, countType1 CountType) HybridRunbookWorkerGroupClient {
-	return NewHybridRunbookWorkerGroupClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewHybridRunbookWorkerGroupClient(subscriptionID string) HybridRunbookWorkerGroupClient {
+	return NewHybridRunbookWorkerGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewHybridRunbookWorkerGroupClientWithBaseURI creates an instance of the HybridRunbookWorkerGroupClient client.
-func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) HybridRunbookWorkerGroupClient {
-	return HybridRunbookWorkerGroupClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string) HybridRunbookWorkerGroupClient {
+	return HybridRunbookWorkerGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Delete delete a hybrid runbook worker group.

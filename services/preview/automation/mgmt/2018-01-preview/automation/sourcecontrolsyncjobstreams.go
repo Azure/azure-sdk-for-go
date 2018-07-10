@@ -32,13 +32,13 @@ type SourceControlSyncJobStreamsClient struct {
 }
 
 // NewSourceControlSyncJobStreamsClient creates an instance of the SourceControlSyncJobStreamsClient client.
-func NewSourceControlSyncJobStreamsClient(subscriptionID string, countType1 CountType) SourceControlSyncJobStreamsClient {
-	return NewSourceControlSyncJobStreamsClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewSourceControlSyncJobStreamsClient(subscriptionID string) SourceControlSyncJobStreamsClient {
+	return NewSourceControlSyncJobStreamsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSourceControlSyncJobStreamsClientWithBaseURI creates an instance of the SourceControlSyncJobStreamsClient client.
-func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlSyncJobStreamsClient {
-	return SourceControlSyncJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobStreamsClient {
+	return SourceControlSyncJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve a sync job stream identified by stream id.

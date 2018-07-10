@@ -31,13 +31,13 @@ type VariableClient struct {
 }
 
 // NewVariableClient creates an instance of the VariableClient client.
-func NewVariableClient(subscriptionID string, countType1 CountType) VariableClient {
-	return NewVariableClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewVariableClient(subscriptionID string) VariableClient {
+	return NewVariableClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVariableClientWithBaseURI creates an instance of the VariableClient client.
-func NewVariableClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) VariableClient {
-	return VariableClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewVariableClientWithBaseURI(baseURI string, subscriptionID string) VariableClient {
+	return VariableClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a variable.

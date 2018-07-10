@@ -31,13 +31,13 @@ type DscNodeClient struct {
 }
 
 // NewDscNodeClient creates an instance of the DscNodeClient client.
-func NewDscNodeClient(subscriptionID string, countType1 CountType) DscNodeClient {
-	return NewDscNodeClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewDscNodeClient(subscriptionID string) DscNodeClient {
+	return NewDscNodeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDscNodeClientWithBaseURI creates an instance of the DscNodeClient client.
-func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscNodeClient {
-	return DscNodeClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string) DscNodeClient {
+	return DscNodeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Delete delete the dsc node identified by node id.

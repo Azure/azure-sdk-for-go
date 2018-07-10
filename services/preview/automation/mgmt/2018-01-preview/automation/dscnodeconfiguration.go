@@ -31,13 +31,13 @@ type DscNodeConfigurationClient struct {
 }
 
 // NewDscNodeConfigurationClient creates an instance of the DscNodeConfigurationClient client.
-func NewDscNodeConfigurationClient(subscriptionID string, countType1 CountType) DscNodeConfigurationClient {
-	return NewDscNodeConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewDscNodeConfigurationClient(subscriptionID string) DscNodeConfigurationClient {
+	return NewDscNodeConfigurationClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDscNodeConfigurationClientWithBaseURI creates an instance of the DscNodeConfigurationClient client.
-func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscNodeConfigurationClient {
-	return DscNodeConfigurationClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscNodeConfigurationClient {
+	return DscNodeConfigurationClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create the node configuration identified by node configuration name.

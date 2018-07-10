@@ -31,13 +31,13 @@ type RunbookDraftClient struct {
 }
 
 // NewRunbookDraftClient creates an instance of the RunbookDraftClient client.
-func NewRunbookDraftClient(subscriptionID string, countType1 CountType) RunbookDraftClient {
-	return NewRunbookDraftClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewRunbookDraftClient(subscriptionID string) RunbookDraftClient {
+	return NewRunbookDraftClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewRunbookDraftClientWithBaseURI creates an instance of the RunbookDraftClient client.
-func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) RunbookDraftClient {
-	return RunbookDraftClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string) RunbookDraftClient {
+	return RunbookDraftClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the runbook draft identified by runbook name.

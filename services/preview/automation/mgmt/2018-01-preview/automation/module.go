@@ -31,13 +31,13 @@ type ModuleClient struct {
 }
 
 // NewModuleClient creates an instance of the ModuleClient client.
-func NewModuleClient(subscriptionID string, countType1 CountType) ModuleClient {
-	return NewModuleClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewModuleClient(subscriptionID string) ModuleClient {
+	return NewModuleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewModuleClientWithBaseURI creates an instance of the ModuleClient client.
-func NewModuleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ModuleClient {
-	return ModuleClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewModuleClientWithBaseURI(baseURI string, subscriptionID string) ModuleClient {
+	return ModuleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or Update the module identified by module name.

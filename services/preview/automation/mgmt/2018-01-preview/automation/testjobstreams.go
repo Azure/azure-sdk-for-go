@@ -31,13 +31,13 @@ type TestJobStreamsClient struct {
 }
 
 // NewTestJobStreamsClient creates an instance of the TestJobStreamsClient client.
-func NewTestJobStreamsClient(subscriptionID string, countType1 CountType) TestJobStreamsClient {
-	return NewTestJobStreamsClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewTestJobStreamsClient(subscriptionID string) TestJobStreamsClient {
+	return NewTestJobStreamsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTestJobStreamsClientWithBaseURI creates an instance of the TestJobStreamsClient client.
-func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) TestJobStreamsClient {
-	return TestJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) TestJobStreamsClient {
+	return TestJobStreamsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve a test job stream of the test job identified by runbook name and stream id.

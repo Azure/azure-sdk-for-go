@@ -54,12 +54,8 @@ const (
 	ContainerTypeCluster ContainerType = "Cluster"
 	// ContainerTypeDPMContainer ...
 	ContainerTypeDPMContainer ContainerType = "DPMContainer"
-	// ContainerTypeExchangeDAG ...
-	ContainerTypeExchangeDAG ContainerType = "ExchangeDAG"
 	// ContainerTypeGenericContainer ...
 	ContainerTypeGenericContainer ContainerType = "GenericContainer"
-	// ContainerTypeHyperVCluster ...
-	ContainerTypeHyperVCluster ContainerType = "HyperVCluster"
 	// ContainerTypeIaasVMContainer ...
 	ContainerTypeIaasVMContainer ContainerType = "IaasVMContainer"
 	// ContainerTypeIaasVMServiceContainer ...
@@ -68,12 +64,8 @@ const (
 	ContainerTypeInvalid ContainerType = "Invalid"
 	// ContainerTypeMABContainer ...
 	ContainerTypeMABContainer ContainerType = "MABContainer"
-	// ContainerTypeSharepointFarm ...
-	ContainerTypeSharepointFarm ContainerType = "SharepointFarm"
 	// ContainerTypeSQLAGWorkLoadContainer ...
 	ContainerTypeSQLAGWorkLoadContainer ContainerType = "SQLAGWorkLoadContainer"
-	// ContainerTypeSQLCluster ...
-	ContainerTypeSQLCluster ContainerType = "SqlCluster"
 	// ContainerTypeStorageContainer ...
 	ContainerTypeStorageContainer ContainerType = "StorageContainer"
 	// ContainerTypeUnknown ...
@@ -84,13 +76,11 @@ const (
 	ContainerTypeVMAppContainer ContainerType = "VMAppContainer"
 	// ContainerTypeWindows ...
 	ContainerTypeWindows ContainerType = "Windows"
-	// ContainerTypeWindowsClient ...
-	ContainerTypeWindowsClient ContainerType = "WindowsClient"
 )
 
 // PossibleContainerTypeValues returns an array of possible values for the ContainerType const type.
 func PossibleContainerTypeValues() []ContainerType {
-	return []ContainerType{ContainerTypeAzureBackupServerContainer, ContainerTypeAzureSQLContainer, ContainerTypeCluster, ContainerTypeDPMContainer, ContainerTypeExchangeDAG, ContainerTypeGenericContainer, ContainerTypeHyperVCluster, ContainerTypeIaasVMContainer, ContainerTypeIaasVMServiceContainer, ContainerTypeInvalid, ContainerTypeMABContainer, ContainerTypeSharepointFarm, ContainerTypeSQLAGWorkLoadContainer, ContainerTypeSQLCluster, ContainerTypeStorageContainer, ContainerTypeUnknown, ContainerTypeVCenter, ContainerTypeVMAppContainer, ContainerTypeWindows, ContainerTypeWindowsClient}
+	return []ContainerType{ContainerTypeAzureBackupServerContainer, ContainerTypeAzureSQLContainer, ContainerTypeCluster, ContainerTypeDPMContainer, ContainerTypeGenericContainer, ContainerTypeIaasVMContainer, ContainerTypeIaasVMServiceContainer, ContainerTypeInvalid, ContainerTypeMABContainer, ContainerTypeSQLAGWorkLoadContainer, ContainerTypeStorageContainer, ContainerTypeUnknown, ContainerTypeVCenter, ContainerTypeVMAppContainer, ContainerTypeWindows}
 }
 
 // ContainerTypeBasicProtectionContainer enumerates the values for container type basic protection container.
@@ -6671,8 +6661,7 @@ func (awc AzureWorkloadContainer) AsBasicProtectionContainer() (BasicProtectionC
 
 // AzureWorkloadContainerExtendedInfo extended information of the container.
 type AzureWorkloadContainerExtendedInfo struct {
-	// HostServerName - Host Os Name in case of Stand Alone and
-	//             Cluster Name in case of distributed container.
+	// HostServerName - Host Os Name in case of Stand Alone and Cluster Name in case of distributed container.
 	HostServerName *string `json:"hostServerName,omitempty"`
 	// InquiryInfo - Inquiry Status for the container.
 	InquiryInfo *InquiryInfo `json:"inquiryInfo,omitempty"`
@@ -7988,7 +7977,7 @@ type BMSBackupEnginesQueryObject struct {
 type BMSContainerQueryObject struct {
 	// BackupManagementType - Backup management type for this container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// ContainerType - Type of container for filter. Possible values include: 'ContainerTypeInvalid', 'ContainerTypeUnknown', 'ContainerTypeIaasVMContainer', 'ContainerTypeIaasVMServiceContainer', 'ContainerTypeDPMContainer', 'ContainerTypeAzureBackupServerContainer', 'ContainerTypeMABContainer', 'ContainerTypeCluster', 'ContainerTypeAzureSQLContainer', 'ContainerTypeWindows', 'ContainerTypeVCenter', 'ContainerTypeVMAppContainer', 'ContainerTypeSQLAGWorkLoadContainer', 'ContainerTypeStorageContainer', 'ContainerTypeGenericContainer', 'ContainerTypeSQLCluster', 'ContainerTypeExchangeDAG', 'ContainerTypeSharepointFarm', 'ContainerTypeHyperVCluster', 'ContainerTypeWindowsClient'
+	// ContainerType - Type of container for filter. Possible values include: 'ContainerTypeInvalid', 'ContainerTypeUnknown', 'ContainerTypeIaasVMContainer', 'ContainerTypeIaasVMServiceContainer', 'ContainerTypeDPMContainer', 'ContainerTypeAzureBackupServerContainer', 'ContainerTypeMABContainer', 'ContainerTypeCluster', 'ContainerTypeAzureSQLContainer', 'ContainerTypeWindows', 'ContainerTypeVCenter', 'ContainerTypeVMAppContainer', 'ContainerTypeSQLAGWorkLoadContainer', 'ContainerTypeStorageContainer', 'ContainerTypeGenericContainer'
 	ContainerType ContainerType `json:"containerType,omitempty"`
 	// BackupEngineName - Backup engine name
 	BackupEngineName *string `json:"backupEngineName,omitempty"`
@@ -10107,15 +10096,19 @@ type IaasVMRestoreRequest struct {
 	// VirtualNetworkID - This is the virtual network Id of the vnet that will be attached to the virtual machine.
 	//             User will be validated for join action permissions in the linked access.
 	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
-	// SubnetID - Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent the subnet.
+	// SubnetID - Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be
+	//             {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent
+	//             the subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
-	// TargetDomainNameID - Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual Machines.
+	// TargetDomainNameID - Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic
+	//             Virtual Machines.
 	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
 	// Region - Region in which the virtual machine is restored.
 	Region *string `json:"region,omitempty"`
 	// AffinityGroup - Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
 	AffinityGroup *string `json:"affinityGroup,omitempty"`
-	// CreateNewCloudService - Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service as it was at the time of backup.
+	// CreateNewCloudService - Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same
+	//             cloud service as it was at the time of backup.
 	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
 	// OriginalStorageAccountOption - Original Storage Account Option
 	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
@@ -10439,7 +10432,7 @@ type InquiryInfo struct {
 	// ErrorDetail - Error Details if the Status is non-success.
 	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
 	// InquiryDetails - Inquiry Details which will have workload specific details.
-	//              For e.g. - For SQL and oracle this will contain different details.
+	//             For e.g. - For SQL and oracle this will contain different details.
 	InquiryDetails *[]WorkloadInquiryDetails `json:"inquiryDetails,omitempty"`
 }
 

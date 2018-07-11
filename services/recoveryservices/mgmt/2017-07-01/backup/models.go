@@ -54,12 +54,8 @@ const (
 	ContainerTypeCluster ContainerType = "Cluster"
 	// ContainerTypeDPMContainer ...
 	ContainerTypeDPMContainer ContainerType = "DPMContainer"
-	// ContainerTypeExchangeDAG ...
-	ContainerTypeExchangeDAG ContainerType = "ExchangeDAG"
 	// ContainerTypeGenericContainer ...
 	ContainerTypeGenericContainer ContainerType = "GenericContainer"
-	// ContainerTypeHyperVCluster ...
-	ContainerTypeHyperVCluster ContainerType = "HyperVCluster"
 	// ContainerTypeIaasVMContainer ...
 	ContainerTypeIaasVMContainer ContainerType = "IaasVMContainer"
 	// ContainerTypeIaasVMServiceContainer ...
@@ -68,12 +64,8 @@ const (
 	ContainerTypeInvalid ContainerType = "Invalid"
 	// ContainerTypeMABContainer ...
 	ContainerTypeMABContainer ContainerType = "MABContainer"
-	// ContainerTypeSharepointFarm ...
-	ContainerTypeSharepointFarm ContainerType = "SharepointFarm"
 	// ContainerTypeSQLAGWorkLoadContainer ...
 	ContainerTypeSQLAGWorkLoadContainer ContainerType = "SQLAGWorkLoadContainer"
-	// ContainerTypeSQLCluster ...
-	ContainerTypeSQLCluster ContainerType = "SqlCluster"
 	// ContainerTypeStorageContainer ...
 	ContainerTypeStorageContainer ContainerType = "StorageContainer"
 	// ContainerTypeUnknown ...
@@ -84,13 +76,11 @@ const (
 	ContainerTypeVMAppContainer ContainerType = "VMAppContainer"
 	// ContainerTypeWindows ...
 	ContainerTypeWindows ContainerType = "Windows"
-	// ContainerTypeWindowsClient ...
-	ContainerTypeWindowsClient ContainerType = "WindowsClient"
 )
 
 // PossibleContainerTypeValues returns an array of possible values for the ContainerType const type.
 func PossibleContainerTypeValues() []ContainerType {
-	return []ContainerType{ContainerTypeAzureBackupServerContainer, ContainerTypeAzureSQLContainer, ContainerTypeCluster, ContainerTypeDPMContainer, ContainerTypeExchangeDAG, ContainerTypeGenericContainer, ContainerTypeHyperVCluster, ContainerTypeIaasVMContainer, ContainerTypeIaasVMServiceContainer, ContainerTypeInvalid, ContainerTypeMABContainer, ContainerTypeSharepointFarm, ContainerTypeSQLAGWorkLoadContainer, ContainerTypeSQLCluster, ContainerTypeStorageContainer, ContainerTypeUnknown, ContainerTypeVCenter, ContainerTypeVMAppContainer, ContainerTypeWindows, ContainerTypeWindowsClient}
+	return []ContainerType{ContainerTypeAzureBackupServerContainer, ContainerTypeAzureSQLContainer, ContainerTypeCluster, ContainerTypeDPMContainer, ContainerTypeGenericContainer, ContainerTypeIaasVMContainer, ContainerTypeIaasVMServiceContainer, ContainerTypeInvalid, ContainerTypeMABContainer, ContainerTypeSQLAGWorkLoadContainer, ContainerTypeStorageContainer, ContainerTypeUnknown, ContainerTypeVCenter, ContainerTypeVMAppContainer, ContainerTypeWindows}
 }
 
 // ContainerTypeBasicProtectionContainer enumerates the values for container type basic protection container.
@@ -620,12 +610,8 @@ const (
 	MabServerTypeCluster MabServerType = "Cluster"
 	// MabServerTypeDPMContainer ...
 	MabServerTypeDPMContainer MabServerType = "DPMContainer"
-	// MabServerTypeExchangeDAG ...
-	MabServerTypeExchangeDAG MabServerType = "ExchangeDAG"
 	// MabServerTypeGenericContainer ...
 	MabServerTypeGenericContainer MabServerType = "GenericContainer"
-	// MabServerTypeHyperVCluster ...
-	MabServerTypeHyperVCluster MabServerType = "HyperVCluster"
 	// MabServerTypeIaasVMContainer ...
 	MabServerTypeIaasVMContainer MabServerType = "IaasVMContainer"
 	// MabServerTypeIaasVMServiceContainer ...
@@ -634,12 +620,8 @@ const (
 	MabServerTypeInvalid MabServerType = "Invalid"
 	// MabServerTypeMABContainer ...
 	MabServerTypeMABContainer MabServerType = "MABContainer"
-	// MabServerTypeSharepointFarm ...
-	MabServerTypeSharepointFarm MabServerType = "SharepointFarm"
 	// MabServerTypeSQLAGWorkLoadContainer ...
 	MabServerTypeSQLAGWorkLoadContainer MabServerType = "SQLAGWorkLoadContainer"
-	// MabServerTypeSQLCluster ...
-	MabServerTypeSQLCluster MabServerType = "SqlCluster"
 	// MabServerTypeStorageContainer ...
 	MabServerTypeStorageContainer MabServerType = "StorageContainer"
 	// MabServerTypeUnknown ...
@@ -650,13 +632,11 @@ const (
 	MabServerTypeVMAppContainer MabServerType = "VMAppContainer"
 	// MabServerTypeWindows ...
 	MabServerTypeWindows MabServerType = "Windows"
-	// MabServerTypeWindowsClient ...
-	MabServerTypeWindowsClient MabServerType = "WindowsClient"
 )
 
 // PossibleMabServerTypeValues returns an array of possible values for the MabServerType const type.
 func PossibleMabServerTypeValues() []MabServerType {
-	return []MabServerType{MabServerTypeAzureBackupServerContainer, MabServerTypeAzureSQLContainer, MabServerTypeCluster, MabServerTypeDPMContainer, MabServerTypeExchangeDAG, MabServerTypeGenericContainer, MabServerTypeHyperVCluster, MabServerTypeIaasVMContainer, MabServerTypeIaasVMServiceContainer, MabServerTypeInvalid, MabServerTypeMABContainer, MabServerTypeSharepointFarm, MabServerTypeSQLAGWorkLoadContainer, MabServerTypeSQLCluster, MabServerTypeStorageContainer, MabServerTypeUnknown, MabServerTypeVCenter, MabServerTypeVMAppContainer, MabServerTypeWindows, MabServerTypeWindowsClient}
+	return []MabServerType{MabServerTypeAzureBackupServerContainer, MabServerTypeAzureSQLContainer, MabServerTypeCluster, MabServerTypeDPMContainer, MabServerTypeGenericContainer, MabServerTypeIaasVMContainer, MabServerTypeIaasVMServiceContainer, MabServerTypeInvalid, MabServerTypeMABContainer, MabServerTypeSQLAGWorkLoadContainer, MabServerTypeStorageContainer, MabServerTypeUnknown, MabServerTypeVCenter, MabServerTypeVMAppContainer, MabServerTypeWindows}
 }
 
 // ManagementType enumerates the values for management type.
@@ -875,6 +855,24 @@ const (
 // PossibleObjectTypeBasicRestoreRequestValues returns an array of possible values for the ObjectTypeBasicRestoreRequest const type.
 func PossibleObjectTypeBasicRestoreRequestValues() []ObjectTypeBasicRestoreRequest {
 	return []ObjectTypeBasicRestoreRequest{ObjectTypeAzureFileShareRestoreRequest, ObjectTypeAzureWorkloadRestoreRequest, ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest, ObjectTypeAzureWorkloadSAPHanaRestoreRequest, ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest, ObjectTypeAzureWorkloadSQLRestoreRequest, ObjectTypeIaasVMRestoreRequest, ObjectTypeRestoreRequest}
+}
+
+// ObjectTypeBasicValidateOperationRequest enumerates the values for object type basic validate operation
+// request.
+type ObjectTypeBasicValidateOperationRequest string
+
+const (
+	// ObjectTypeValidateIaasVMRestoreOperationRequest ...
+	ObjectTypeValidateIaasVMRestoreOperationRequest ObjectTypeBasicValidateOperationRequest = "ValidateIaasVMRestoreOperationRequest"
+	// ObjectTypeValidateOperationRequest ...
+	ObjectTypeValidateOperationRequest ObjectTypeBasicValidateOperationRequest = "ValidateOperationRequest"
+	// ObjectTypeValidateRestoreOperationRequest ...
+	ObjectTypeValidateRestoreOperationRequest ObjectTypeBasicValidateOperationRequest = "ValidateRestoreOperationRequest"
+)
+
+// PossibleObjectTypeBasicValidateOperationRequestValues returns an array of possible values for the ObjectTypeBasicValidateOperationRequest const type.
+func PossibleObjectTypeBasicValidateOperationRequestValues() []ObjectTypeBasicValidateOperationRequest {
+	return []ObjectTypeBasicValidateOperationRequest{ObjectTypeValidateIaasVMRestoreOperationRequest, ObjectTypeValidateOperationRequest, ObjectTypeValidateRestoreOperationRequest}
 }
 
 // OperationStatusValues enumerates the values for operation status values.
@@ -3543,6 +3541,8 @@ type AzureIaaSVMJobExtendedInfo struct {
 	InternalPropertyBag map[string]*string `json:"internalPropertyBag"`
 	// ProgressPercentage - Indicates progress of the job. Null if it has not started or completed.
 	ProgressPercentage *float64 `json:"progressPercentage,omitempty"`
+	// EstimatedRemainingDuration - Time remaining for execution of this job.
+	EstimatedRemainingDuration *string `json:"estimatedRemainingDuration,omitempty"`
 	// DynamicErrorMessage - Non localized error message on job execution.
 	DynamicErrorMessage *string `json:"dynamicErrorMessage,omitempty"`
 }
@@ -3561,6 +3561,9 @@ func (aisjei AzureIaaSVMJobExtendedInfo) MarshalJSON() ([]byte, error) {
 	}
 	if aisjei.ProgressPercentage != nil {
 		objectMap["progressPercentage"] = aisjei.ProgressPercentage
+	}
+	if aisjei.EstimatedRemainingDuration != nil {
+		objectMap["estimatedRemainingDuration"] = aisjei.EstimatedRemainingDuration
 	}
 	if aisjei.DynamicErrorMessage != nil {
 		objectMap["dynamicErrorMessage"] = aisjei.DynamicErrorMessage
@@ -3584,6 +3587,9 @@ type AzureIaaSVMJobTaskDetails struct {
 	Status *string `json:"status,omitempty"`
 	// ProgressPercentage - Progress of the task.
 	ProgressPercentage *float64 `json:"progressPercentage,omitempty"`
+	// TaskExecutionDetails - Details about execution of the task.
+	//             eg: number of bytes transfered etc
+	TaskExecutionDetails *string `json:"taskExecutionDetails,omitempty"`
 }
 
 // BasicAzureIaaSVMProtectedItem iaaS VM workload-specific backup item.
@@ -7850,8 +7856,7 @@ func (awc AzureWorkloadContainer) AsBasicProtectionContainer() (BasicProtectionC
 
 // AzureWorkloadContainerExtendedInfo extended information of the container.
 type AzureWorkloadContainerExtendedInfo struct {
-	// HostServerName - Host Os Name in case of Stand Alone and
-	//             Cluster Name in case of distributed container.
+	// HostServerName - Host Os Name in case of Stand Alone and Cluster Name in case of distributed container.
 	HostServerName *string `json:"hostServerName,omitempty"`
 	// InquiryInfo - Inquiry Status for the container.
 	InquiryInfo *InquiryInfo `json:"inquiryInfo,omitempty"`
@@ -9417,7 +9422,7 @@ type BMSBackupSummariesQueryObject struct {
 type BMSContainerQueryObject struct {
 	// BackupManagementType - Backup management type for this container. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// ContainerType - Type of container for filter. Possible values include: 'ContainerTypeInvalid', 'ContainerTypeUnknown', 'ContainerTypeIaasVMContainer', 'ContainerTypeIaasVMServiceContainer', 'ContainerTypeDPMContainer', 'ContainerTypeAzureBackupServerContainer', 'ContainerTypeMABContainer', 'ContainerTypeCluster', 'ContainerTypeAzureSQLContainer', 'ContainerTypeWindows', 'ContainerTypeVCenter', 'ContainerTypeVMAppContainer', 'ContainerTypeSQLAGWorkLoadContainer', 'ContainerTypeStorageContainer', 'ContainerTypeGenericContainer', 'ContainerTypeSQLCluster', 'ContainerTypeExchangeDAG', 'ContainerTypeSharepointFarm', 'ContainerTypeHyperVCluster', 'ContainerTypeWindowsClient'
+	// ContainerType - Type of container for filter. Possible values include: 'ContainerTypeInvalid', 'ContainerTypeUnknown', 'ContainerTypeIaasVMContainer', 'ContainerTypeIaasVMServiceContainer', 'ContainerTypeDPMContainer', 'ContainerTypeAzureBackupServerContainer', 'ContainerTypeMABContainer', 'ContainerTypeCluster', 'ContainerTypeAzureSQLContainer', 'ContainerTypeWindows', 'ContainerTypeVCenter', 'ContainerTypeVMAppContainer', 'ContainerTypeSQLAGWorkLoadContainer', 'ContainerTypeStorageContainer', 'ContainerTypeGenericContainer'
 	ContainerType ContainerType `json:"containerType,omitempty"`
 	// BackupEngineName - Backup engine name
 	BackupEngineName *string `json:"backupEngineName,omitempty"`
@@ -11989,15 +11994,19 @@ type IaasVMRestoreRequest struct {
 	// VirtualNetworkID - This is the virtual network Id of the vnet that will be attached to the virtual machine.
 	//             User will be validated for join action permissions in the linked access.
 	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
-	// SubnetID - Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent the subnet.
+	// SubnetID - Subnet ID, is the subnet ID associated with the to be restored VM. For Classic VMs it would be
+	//             {VnetID}/Subnet/{SubnetName} and, for the Azure Resource Manager VMs it would be ARM resource ID used to represent
+	//             the subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
-	// TargetDomainNameID - Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic Virtual Machines.
+	// TargetDomainNameID - Fully qualified ARM ID of the domain name to be associated to the VM being restored. This applies only to Classic
+	//             Virtual Machines.
 	TargetDomainNameID *string `json:"targetDomainNameId,omitempty"`
 	// Region - Region in which the virtual machine is restored.
 	Region *string `json:"region,omitempty"`
 	// AffinityGroup - Affinity group associated to VM to be restored. Used only for Classic Compute Virtual Machines.
 	AffinityGroup *string `json:"affinityGroup,omitempty"`
-	// CreateNewCloudService - Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same cloud service as it was at the time of backup.
+	// CreateNewCloudService - Should a new cloud service be created while restoring the VM. If this is false, VM will be restored to the same
+	//             cloud service as it was at the time of backup.
 	CreateNewCloudService *bool `json:"createNewCloudService,omitempty"`
 	// OriginalStorageAccountOption - Original Storage Account Option
 	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
@@ -12321,7 +12330,7 @@ type InquiryInfo struct {
 	// ErrorDetail - Error Details if the Status is non-success.
 	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
 	// InquiryDetails - Inquiry Details which will have workload specific details.
-	//              For e.g. - For SQL and oracle this will contain different details.
+	//             For e.g. - For SQL and oracle this will contain different details.
 	InquiryDetails *[]WorkloadInquiryDetails `json:"inquiryDetails,omitempty"`
 }
 
@@ -13265,7 +13274,7 @@ type MabJob struct {
 	ActionsInfo *[]JobSupportedAction `json:"actionsInfo,omitempty"`
 	// MabServerName - Name of server protecting the DS.
 	MabServerName *string `json:"mabServerName,omitempty"`
-	// MabServerType - Server type of MAB container. Possible values include: 'MabServerTypeInvalid', 'MabServerTypeUnknown', 'MabServerTypeIaasVMContainer', 'MabServerTypeIaasVMServiceContainer', 'MabServerTypeDPMContainer', 'MabServerTypeAzureBackupServerContainer', 'MabServerTypeMABContainer', 'MabServerTypeCluster', 'MabServerTypeAzureSQLContainer', 'MabServerTypeWindows', 'MabServerTypeVCenter', 'MabServerTypeVMAppContainer', 'MabServerTypeSQLAGWorkLoadContainer', 'MabServerTypeStorageContainer', 'MabServerTypeGenericContainer', 'MabServerTypeSQLCluster', 'MabServerTypeExchangeDAG', 'MabServerTypeSharepointFarm', 'MabServerTypeHyperVCluster', 'MabServerTypeWindowsClient'
+	// MabServerType - Server type of MAB container. Possible values include: 'MabServerTypeInvalid', 'MabServerTypeUnknown', 'MabServerTypeIaasVMContainer', 'MabServerTypeIaasVMServiceContainer', 'MabServerTypeDPMContainer', 'MabServerTypeAzureBackupServerContainer', 'MabServerTypeMABContainer', 'MabServerTypeCluster', 'MabServerTypeAzureSQLContainer', 'MabServerTypeWindows', 'MabServerTypeVCenter', 'MabServerTypeVMAppContainer', 'MabServerTypeSQLAGWorkLoadContainer', 'MabServerTypeStorageContainer', 'MabServerTypeGenericContainer'
 	MabServerType MabServerType `json:"mabServerType,omitempty"`
 	// WorkloadType - Workload type of backup item. Possible values include: 'WorkloadTypeInvalid', 'WorkloadTypeVM', 'WorkloadTypeFileFolder', 'WorkloadTypeAzureSQLDb', 'WorkloadTypeSQLDB', 'WorkloadTypeExchange', 'WorkloadTypeSharepoint', 'WorkloadTypeVMwareVM', 'WorkloadTypeSystemState', 'WorkloadTypeClient', 'WorkloadTypeGenericDataSource', 'WorkloadTypeSQLDataBase', 'WorkloadTypeAzureFileShare', 'WorkloadTypeSAPHanaDatabase'
 	WorkloadType WorkloadType `json:"workloadType,omitempty"`
@@ -14175,7 +14184,8 @@ type PreValidateEnableBackupResponse struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// Recommendation - Recommended action for user
 	Recommendation *string `json:"recommendation,omitempty"`
-	// ContainerName - Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for portal
+	// ContainerName - Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
+	//             for portal
 	ContainerName *string `json:"containerName,omitempty"`
 	// ProtectedItemName - Specifies the product specific ds name. E.g. vm;iaasvmcontainer;rgname;vmname. This is required for portal
 	ProtectedItemName *string `json:"protectedItemName,omitempty"`
@@ -17529,6 +17539,423 @@ type TokenInformation struct {
 	ExpiryTimeInUtcTicks *int64 `json:"expiryTimeInUtcTicks,omitempty"`
 	// SecurityPIN - Security PIN
 	SecurityPIN *string `json:"securityPIN,omitempty"`
+}
+
+// ValidateIaasVMRestoreOperationRequest azureRestoreValidation request.
+type ValidateIaasVMRestoreOperationRequest struct {
+	// RestoreRequest - Sets restore request to be validated
+	RestoreRequest BasicRestoreRequest `json:"restoreRequest,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeValidateOperationRequest', 'ObjectTypeValidateIaasVMRestoreOperationRequest', 'ObjectTypeValidateRestoreOperationRequest'
+	ObjectType ObjectTypeBasicValidateOperationRequest `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) MarshalJSON() ([]byte, error) {
+	vivror.ObjectType = ObjectTypeValidateIaasVMRestoreOperationRequest
+	objectMap := make(map[string]interface{})
+	objectMap["restoreRequest"] = vivror.RestoreRequest
+	if vivror.ObjectType != "" {
+		objectMap["objectType"] = vivror.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsValidateIaasVMRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) AsValidateIaasVMRestoreOperationRequest() (*ValidateIaasVMRestoreOperationRequest, bool) {
+	return &vivror, true
+}
+
+// AsValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) AsValidateRestoreOperationRequest() (*ValidateRestoreOperationRequest, bool) {
+	return nil, false
+}
+
+// AsBasicValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) AsBasicValidateRestoreOperationRequest() (BasicValidateRestoreOperationRequest, bool) {
+	return &vivror, true
+}
+
+// AsValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) AsValidateOperationRequest() (*ValidateOperationRequest, bool) {
+	return nil, false
+}
+
+// AsBasicValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateIaasVMRestoreOperationRequest.
+func (vivror ValidateIaasVMRestoreOperationRequest) AsBasicValidateOperationRequest() (BasicValidateOperationRequest, bool) {
+	return &vivror, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateIaasVMRestoreOperationRequest struct.
+func (vivror *ValidateIaasVMRestoreOperationRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "restoreRequest":
+			if v != nil {
+				restoreRequest, err := unmarshalBasicRestoreRequest(*v)
+				if err != nil {
+					return err
+				}
+				vivror.RestoreRequest = restoreRequest
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectTypeBasicValidateOperationRequest
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				vivror.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicValidateOperationRequest base class for validate operation request.
+type BasicValidateOperationRequest interface {
+	AsValidateIaasVMRestoreOperationRequest() (*ValidateIaasVMRestoreOperationRequest, bool)
+	AsValidateRestoreOperationRequest() (*ValidateRestoreOperationRequest, bool)
+	AsBasicValidateRestoreOperationRequest() (BasicValidateRestoreOperationRequest, bool)
+	AsValidateOperationRequest() (*ValidateOperationRequest, bool)
+}
+
+// ValidateOperationRequest base class for validate operation request.
+type ValidateOperationRequest struct {
+	// ObjectType - Possible values include: 'ObjectTypeValidateOperationRequest', 'ObjectTypeValidateIaasVMRestoreOperationRequest', 'ObjectTypeValidateRestoreOperationRequest'
+	ObjectType ObjectTypeBasicValidateOperationRequest `json:"objectType,omitempty"`
+}
+
+func unmarshalBasicValidateOperationRequest(body []byte) (BasicValidateOperationRequest, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["objectType"] {
+	case string(ObjectTypeValidateIaasVMRestoreOperationRequest):
+		var vivror ValidateIaasVMRestoreOperationRequest
+		err := json.Unmarshal(body, &vivror)
+		return vivror, err
+	case string(ObjectTypeValidateRestoreOperationRequest):
+		var vror ValidateRestoreOperationRequest
+		err := json.Unmarshal(body, &vror)
+		return vror, err
+	default:
+		var vor ValidateOperationRequest
+		err := json.Unmarshal(body, &vor)
+		return vor, err
+	}
+}
+func unmarshalBasicValidateOperationRequestArray(body []byte) ([]BasicValidateOperationRequest, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	vorArray := make([]BasicValidateOperationRequest, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		vor, err := unmarshalBasicValidateOperationRequest(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		vorArray[index] = vor
+	}
+	return vorArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ValidateOperationRequest.
+func (vor ValidateOperationRequest) MarshalJSON() ([]byte, error) {
+	vor.ObjectType = ObjectTypeValidateOperationRequest
+	objectMap := make(map[string]interface{})
+	if vor.ObjectType != "" {
+		objectMap["objectType"] = vor.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsValidateIaasVMRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateOperationRequest.
+func (vor ValidateOperationRequest) AsValidateIaasVMRestoreOperationRequest() (*ValidateIaasVMRestoreOperationRequest, bool) {
+	return nil, false
+}
+
+// AsValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateOperationRequest.
+func (vor ValidateOperationRequest) AsValidateRestoreOperationRequest() (*ValidateRestoreOperationRequest, bool) {
+	return nil, false
+}
+
+// AsBasicValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateOperationRequest.
+func (vor ValidateOperationRequest) AsBasicValidateRestoreOperationRequest() (BasicValidateRestoreOperationRequest, bool) {
+	return nil, false
+}
+
+// AsValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateOperationRequest.
+func (vor ValidateOperationRequest) AsValidateOperationRequest() (*ValidateOperationRequest, bool) {
+	return &vor, true
+}
+
+// AsBasicValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateOperationRequest.
+func (vor ValidateOperationRequest) AsBasicValidateOperationRequest() (BasicValidateOperationRequest, bool) {
+	return &vor, true
+}
+
+// ValidateOperationRequestResource base class for validate operation request.
+type ValidateOperationRequestResource struct {
+	// Properties - ValidateOperationRequestResource properties
+	Properties BasicValidateOperationRequest `json:"properties,omitempty"`
+	// ID - Resource Id represents the complete path to the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - Resource name associated with the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ETag - Optional ETag.
+	ETag *string `json:"eTag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateOperationRequestResource.
+func (vorr ValidateOperationRequestResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = vorr.Properties
+	if vorr.ID != nil {
+		objectMap["id"] = vorr.ID
+	}
+	if vorr.Name != nil {
+		objectMap["name"] = vorr.Name
+	}
+	if vorr.Type != nil {
+		objectMap["type"] = vorr.Type
+	}
+	if vorr.Location != nil {
+		objectMap["location"] = vorr.Location
+	}
+	if vorr.Tags != nil {
+		objectMap["tags"] = vorr.Tags
+	}
+	if vorr.ETag != nil {
+		objectMap["eTag"] = vorr.ETag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateOperationRequestResource struct.
+func (vorr *ValidateOperationRequestResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicValidateOperationRequest(*v)
+				if err != nil {
+					return err
+				}
+				vorr.Properties = properties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vorr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vorr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vorr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				vorr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vorr.Tags = tags
+			}
+		case "eTag":
+			if v != nil {
+				var eTag string
+				err = json.Unmarshal(*v, &eTag)
+				if err != nil {
+					return err
+				}
+				vorr.ETag = &eTag
+			}
+		}
+	}
+
+	return nil
+}
+
+// ValidateOperationResponse base class for validate operation response.
+type ValidateOperationResponse struct {
+	// ValidationResults - Gets the validation result
+	ValidationResults *[]ErrorDetail `json:"validationResults,omitempty"`
+}
+
+// ValidateOperationsResponse ...
+type ValidateOperationsResponse struct {
+	autorest.Response         `json:"-"`
+	ValidateOperationResponse *ValidateOperationResponse `json:"validateOperationResponse,omitempty"`
+}
+
+// BasicValidateRestoreOperationRequest azureRestoreValidation request.
+type BasicValidateRestoreOperationRequest interface {
+	AsValidateIaasVMRestoreOperationRequest() (*ValidateIaasVMRestoreOperationRequest, bool)
+	AsValidateRestoreOperationRequest() (*ValidateRestoreOperationRequest, bool)
+}
+
+// ValidateRestoreOperationRequest azureRestoreValidation request.
+type ValidateRestoreOperationRequest struct {
+	// RestoreRequest - Sets restore request to be validated
+	RestoreRequest BasicRestoreRequest `json:"restoreRequest,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeValidateOperationRequest', 'ObjectTypeValidateIaasVMRestoreOperationRequest', 'ObjectTypeValidateRestoreOperationRequest'
+	ObjectType ObjectTypeBasicValidateOperationRequest `json:"objectType,omitempty"`
+}
+
+func unmarshalBasicValidateRestoreOperationRequest(body []byte) (BasicValidateRestoreOperationRequest, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["objectType"] {
+	case string(ObjectTypeValidateIaasVMRestoreOperationRequest):
+		var vivror ValidateIaasVMRestoreOperationRequest
+		err := json.Unmarshal(body, &vivror)
+		return vivror, err
+	default:
+		var vror ValidateRestoreOperationRequest
+		err := json.Unmarshal(body, &vror)
+		return vror, err
+	}
+}
+func unmarshalBasicValidateRestoreOperationRequestArray(body []byte) ([]BasicValidateRestoreOperationRequest, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	vrorArray := make([]BasicValidateRestoreOperationRequest, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		vror, err := unmarshalBasicValidateRestoreOperationRequest(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		vrorArray[index] = vror
+	}
+	return vrorArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) MarshalJSON() ([]byte, error) {
+	vror.ObjectType = ObjectTypeValidateRestoreOperationRequest
+	objectMap := make(map[string]interface{})
+	objectMap["restoreRequest"] = vror.RestoreRequest
+	if vror.ObjectType != "" {
+		objectMap["objectType"] = vror.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsValidateIaasVMRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) AsValidateIaasVMRestoreOperationRequest() (*ValidateIaasVMRestoreOperationRequest, bool) {
+	return nil, false
+}
+
+// AsValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) AsValidateRestoreOperationRequest() (*ValidateRestoreOperationRequest, bool) {
+	return &vror, true
+}
+
+// AsBasicValidateRestoreOperationRequest is the BasicValidateOperationRequest implementation for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) AsBasicValidateRestoreOperationRequest() (BasicValidateRestoreOperationRequest, bool) {
+	return &vror, true
+}
+
+// AsValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) AsValidateOperationRequest() (*ValidateOperationRequest, bool) {
+	return nil, false
+}
+
+// AsBasicValidateOperationRequest is the BasicValidateOperationRequest implementation for ValidateRestoreOperationRequest.
+func (vror ValidateRestoreOperationRequest) AsBasicValidateOperationRequest() (BasicValidateOperationRequest, bool) {
+	return &vror, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ValidateRestoreOperationRequest struct.
+func (vror *ValidateRestoreOperationRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "restoreRequest":
+			if v != nil {
+				restoreRequest, err := unmarshalBasicRestoreRequest(*v)
+				if err != nil {
+					return err
+				}
+				vror.RestoreRequest = restoreRequest
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectTypeBasicValidateOperationRequest
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				vror.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
 }
 
 // WeeklyRetentionFormat weekly retention format.

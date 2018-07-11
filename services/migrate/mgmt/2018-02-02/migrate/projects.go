@@ -109,7 +109,7 @@ func (client ProjectsClient) CreateResponder(resp *http.Response) (result Projec
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -180,72 +180,7 @@ func (client ProjectsClient) DeleteResponder(resp *http.Response) (result autore
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// DeleteBySubscription delete all projects in the subscription. Deleting non-existent project is a no-operation.
-func (client ProjectsClient) DeleteBySubscription(ctx context.Context) (result autorest.Response, err error) {
-	req, err := client.DeleteBySubscriptionPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteBySubscriptionSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteBySubscriptionResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "migrate.ProjectsClient", "DeleteBySubscription", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteBySubscriptionPreparer prepares the DeleteBySubscription request.
-func (client ProjectsClient) DeleteBySubscriptionPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-02"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/deleteSubscriptionNotification", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	if len(client.AcceptLanguage) > 0 {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Accept-Language", autorest.String(client.AcceptLanguage)))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteBySubscriptionSender sends the DeleteBySubscription request. The method will close the
-// http.Response Body if it receives an error.
-func (client ProjectsClient) DeleteBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteBySubscriptionResponder handles the response to the DeleteBySubscription request. The method always
-// closes the http.Response Body.
-func (client ProjectsClient) DeleteBySubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -315,7 +250,7 @@ func (client ProjectsClient) GetResponder(resp *http.Response) (result Project, 
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -386,7 +321,7 @@ func (client ProjectsClient) GetKeysResponder(resp *http.Response) (result Proje
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -455,7 +390,7 @@ func (client ProjectsClient) ListByResourceGroupResponder(resp *http.Response) (
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -521,7 +456,7 @@ func (client ProjectsClient) ListBySubscriptionResponder(resp *http.Response) (r
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -598,7 +533,7 @@ func (client ProjectsClient) UpdateResponder(resp *http.Response) (result Projec
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError, http.StatusServiceUnavailable),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
